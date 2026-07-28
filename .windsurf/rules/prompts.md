@@ -1,0 +1,1 @@
+../../.agents/quran/standards/always-on-prompt.md
