@@ -11,7 +11,7 @@ type ChildrenRenderProps = {
   isOpen: boolean;
 };
 
-type Props = {
+export interface CollapsibleProps {
   id?: string;
   title?: React.ReactNode;
   prefix?: React.ReactNode;
@@ -26,14 +26,15 @@ type Props = {
   direction?: CollapsibleDirection;
   headerClassName?: string;
   headerLeftClassName?: string;
-};
+  className?: string;
+}
 
 export enum CollapsibleDirection {
   Left = 'left',
   Right = 'right',
 }
 
-const Collapsible = ({
+const Collapsible: React.FC<CollapsibleProps> = ({
   id,
   isDefaultOpen = false,
   prefix,
@@ -48,22 +49,20 @@ const Collapsible = ({
   direction = CollapsibleDirection.Left,
   headerClassName,
   headerLeftClassName,
-}: Props) => {
+  className,
+}) => {
   const [isOpen, setIsOpen] = useState(shouldOpen ?? isDefaultOpen);
 
   const handleOpenChange = useCallback(
     (newOpen: boolean) => {
       setIsOpen(newOpen);
-      if (onOpenChange) {
-        onOpenChange(newOpen);
-      }
+      if (onOpenChange) onOpenChange(newOpen);
     },
     [onOpenChange],
   );
 
   useEffect(() => {
-    if (typeof shouldOpen !== 'boolean') return;
-    setIsOpen(shouldOpen);
+    if (typeof shouldOpen === 'boolean') setIsOpen(shouldOpen);
   }, [shouldOpen]);
 
   const onSuffixClicked = useCallback(
@@ -79,7 +78,6 @@ const Collapsible = ({
   const onSuffixKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (shouldSuffixTrigger && (e.key === 'Enter' || e.key === ' ')) {
-        // Simulate a click that will bubble to the Trigger
         e.currentTarget.click();
       } else if (!shouldSuffixTrigger) {
         e.preventDefault();
@@ -102,10 +100,8 @@ const Collapsible = ({
     [shouldSuffixTrigger, onSuffixClicked, onSuffixKeyDown],
   );
 
-  const renderPrefix = () => {
-    if (!prefix) return null;
-
-    return (
+  const renderPrefix = () =>
+    prefix && (
       <div
         className={classNames(styles.prefixContainer, {
           [styles.prefixRotated]: shouldRotatePrefixOnToggle && isOpen,
@@ -114,12 +110,9 @@ const Collapsible = ({
         {prefix}
       </div>
     );
-  };
 
-  const renderSuffix = () => {
-    if (!suffix) return null;
-
-    return (
+  const renderSuffix = () =>
+    suffix && (
       <div
         className={classNames(styles.suffixContainer, {
           [styles.suffixRotated]: shouldRotateSuffixOnToggle && isOpen,
@@ -129,7 +122,6 @@ const Collapsible = ({
         {suffix}
       </div>
     );
-  };
 
   const renderHeaderContent = () => {
     if (direction === CollapsibleDirection.Left) {
@@ -141,7 +133,6 @@ const Collapsible = ({
         </div>
       );
     }
-
     return (
       <>
         <div className={styles.headerLeft}>{title}</div>
@@ -151,11 +142,17 @@ const Collapsible = ({
   };
 
   return (
-    <CollapsiblePrimitive.Root onOpenChange={handleOpenChange} open={isOpen}>
+    <CollapsiblePrimitive.Root
+      className={classNames(styles.root, className)}
+      onOpenChange={handleOpenChange}
+      open={isOpen}
+    >
       <CollapsiblePrimitive.Trigger asChild data-testid={id} id={id}>
-        <div className={classNames(styles.header, headerClassName)}>{renderHeaderContent()}</div>
+        <div role="button" tabIndex={0} className={classNames(styles.header, headerClassName)}>
+          {renderHeaderContent()}
+        </div>
       </CollapsiblePrimitive.Trigger>
-      <CollapsiblePrimitive.CollapsibleContent>
+      <CollapsiblePrimitive.CollapsibleContent className={styles.content}>
         {children({ isOpen })}
       </CollapsiblePrimitive.CollapsibleContent>
     </CollapsiblePrimitive.Root>

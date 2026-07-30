@@ -1,3 +1,7 @@
+.root {
+  inline-size: 100%;
+}
+
 .header {
   display: flex;
   align-items: flex-end;
@@ -28,4 +32,40 @@
 
 .suffixRotated {
   transform: rotate(180deg);
+}
+
+.content {
+  overflow: hidden;
+
+  &[data-state='open'] {
+    animation: slideDown 300ms ease-out forwards;
+  }
+
+  &[data-state='closed'] {
+    animation: slideUp 300ms ease-out forwards;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    block-size: 0;
+    opacity: 0;
+  }
+
+  to {
+    block-size: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    block-size: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+
+  to {
+    block-size: 0;
+    opacity: 0;
+  }
 }
