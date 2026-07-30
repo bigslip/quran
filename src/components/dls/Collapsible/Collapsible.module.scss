@@ -47,6 +47,7 @@
   display: flex;
   align-items: center;
   margin-inline-end: var(--spacing-xxsmall);
+  transition: transform 0.2s ease;
 }
 
 .prefixRotated {
@@ -57,6 +58,7 @@
   display: flex;
   align-items: center;
   margin-inline-end: var(--spacing-xxsmall);
+  transition: transform 0.2s ease;
 }
 
 .suffixRotated {

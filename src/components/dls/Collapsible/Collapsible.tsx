@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useCallback, useMemo, useState } from 'react';
 
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
@@ -66,28 +64,28 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   );
 
   const onSuffixClicked = useCallback(() => {
-    if (shouldSuffixTrigger) {
-      handleOpenChange(!isOpen);
-    }
-  }, [handleOpenChange, isOpen, shouldSuffixTrigger]);
+    handleOpenChange(!isOpen);
+  }, [handleOpenChange, isOpen]);
 
   const onSuffixKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (shouldSuffixTrigger && (e.key === 'Enter' || e.key === ' ')) {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         handleOpenChange(!isOpen);
       }
     },
-    [handleOpenChange, isOpen, shouldSuffixTrigger],
+    [handleOpenChange, isOpen],
   );
 
-  const suffixProps = useMemo(
-    () => ({
+  const suffixProps = useMemo(() => {
+    if (!shouldSuffixTrigger) return {};
+    return {
+      role: 'button',
+      tabIndex: 0,
       onClick: onSuffixClicked,
       onKeyDown: onSuffixKeyDown,
-    }),
-    [onSuffixClicked, onSuffixKeyDown],
-  );
+    };
+  }, [shouldSuffixTrigger, onSuffixClicked, onSuffixKeyDown]);
 
   const renderPrefix = () =>
     prefix && (
@@ -136,10 +134,8 @@ const Collapsible: React.FC<CollapsibleProps> = ({
       open={isOpen}
     >
       <div className={classNames(styles.header, headerClassName)}>
-        <CollapsiblePrimitive.Trigger asChild data-testid={id} id={id}>
-          <div role="button" tabIndex={0} className={styles.trigger}>
-            {renderTriggerContent()}
-          </div>
+        <CollapsiblePrimitive.Trigger className={styles.trigger} data-testid={id} id={id}>
+          {renderTriggerContent()}
         </CollapsiblePrimitive.Trigger>
         {renderSuffix()}
       </div>

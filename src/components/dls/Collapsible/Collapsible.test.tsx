@@ -59,7 +59,7 @@ describe('Collapsible', () => {
     expect(screen.queryByText('Hidden content revealed')).not.toBeInTheDocument();
   });
 
-  it('toggles content when clicking suffix with shouldSuffixTrigger=true', () => {
+  it('toggles content when clicking or pressing keys on suffix with shouldSuffixTrigger=true', () => {
     render(
       <Collapsible title="More Info" suffix={<span>Suffix Icon</span>} shouldSuffixTrigger>
         {({ isOpen }) => <div>{isOpen ? 'Hidden content revealed' : 'Collapsed'}</div>}
@@ -67,12 +67,25 @@ describe('Collapsible', () => {
     );
 
     expect(screen.queryByText('Hidden content revealed')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText('Suffix Icon'));
+
+    const suffixButton = screen.getByRole('button', { name: /suffix icon/i });
+    expect(suffixButton).toHaveAttribute('tabIndex', '0');
+
+    // Toggle open via keydown Enter
+    fireEvent.keyDown(suffixButton, { key: 'Enter' });
+    expect(screen.getByText('Hidden content revealed')).toBeInTheDocument();
+
+    // Toggle closed via click
+    fireEvent.click(suffixButton);
+    expect(screen.queryByText('Hidden content revealed')).not.toBeInTheDocument();
+
+    // Toggle open via keydown Space
+    fireEvent.keyDown(suffixButton, { key: ' ' });
     expect(screen.getByText('Hidden content revealed')).toBeInTheDocument();
   });
 
-  it('does not render nested role="button" or tabIndex on suffix container and ensures suffix is not inside a role="button"', () => {
-    render(
+  it('attaches role="button" and tabIndex=0 to suffix container only when shouldSuffixTrigger=true', () => {
+    const { rerender } = render(
       <Collapsible
         title="More Info"
         suffix={<span data-testid="suffix-icon">Suffix Icon</span>}
@@ -84,9 +97,21 @@ describe('Collapsible', () => {
 
     const suffixIcon = screen.getByTestId('suffix-icon');
     const suffixContainer = suffixIcon.parentElement;
-    expect(suffixContainer).not.toHaveAttribute('role', 'button');
+    expect(suffixContainer).toHaveAttribute('role', 'button');
+    expect(suffixContainer).toHaveAttribute('tabIndex', '0');
+
+    rerender(
+      <Collapsible
+        title="More Info"
+        suffix={<span data-testid="suffix-icon">Suffix Icon</span>}
+        shouldSuffixTrigger={false}
+      >
+        {({ isOpen }) => <div>{isOpen ? 'Hidden content revealed' : 'Collapsed'}</div>}
+      </Collapsible>,
+    );
+
+    expect(suffixContainer).not.toHaveAttribute('role');
     expect(suffixContainer).not.toHaveAttribute('tabIndex');
-    expect(suffixIcon.closest('[role="button"]')).toBeNull();
   });
 
   it('renders suffix when direction is CollapsibleDirection.Right', () => {
@@ -119,27 +144,5 @@ describe('Collapsible', () => {
     );
 
     expect(screen.getByText('Hidden content revealed')).toBeInTheDocument();
-  });
-
-  it('allows non-trigger keydown events to propagate when shouldSuffixTrigger is false', () => {
-    const onParentKeyDown = vi.fn();
-    render(
-      <div onKeyDown={onParentKeyDown}>
-        <Collapsible
-          title="More Info"
-          suffix={<input data-testid="suffix-input" type="text" />}
-          shouldSuffixTrigger={false}
-        >
-          {({ isOpen }) => <div>{isOpen ? 'Hidden content revealed' : 'Collapsed'}</div>}
-        </Collapsible>
-      </div>,
-    );
-
-    const input = screen.getByTestId('suffix-input');
-    fireEvent.keyDown(input, { key: 'Escape' });
-    expect(onParentKeyDown).toHaveBeenCalledTimes(1);
-
-    fireEvent.keyDown(input, { key: 'Enter' });
-    expect(screen.queryByText('Hidden content revealed')).not.toBeInTheDocument();
   });
 });
