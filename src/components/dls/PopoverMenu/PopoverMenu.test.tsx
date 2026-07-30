@@ -95,4 +95,30 @@ describe('PopoverMenu', () => {
     await userEvent.click(screen.getByText('Disabled Item'));
     expect(onClick).not.toHaveBeenCalled();
   });
+
+  it('synchronizes internal state when controlled isOpen prop changes dynamically', async () => {
+    const { rerender } = render(
+      <PopoverMenu isOpen={false} trigger={<button type="button">Controlled Menu</button>}>
+        <PopoverMenuItem onClick={() => {}}>Controlled Item</PopoverMenuItem>
+      </PopoverMenu>,
+    );
+
+    expect(screen.queryByText('Controlled Item')).not.toBeInTheDocument();
+
+    rerender(
+      <PopoverMenu isOpen={true} trigger={<button type="button">Controlled Menu</button>}>
+        <PopoverMenuItem onClick={() => {}}>Controlled Item</PopoverMenuItem>
+      </PopoverMenu>,
+    );
+
+    await waitFor(() => expect(screen.getByText('Controlled Item')).toBeInTheDocument());
+
+    rerender(
+      <PopoverMenu isOpen={false} trigger={<button type="button">Controlled Menu</button>}>
+        <PopoverMenuItem onClick={() => {}}>Controlled Item</PopoverMenuItem>
+      </PopoverMenu>,
+    );
+
+    await waitFor(() => expect(screen.queryByText('Controlled Item')).not.toBeInTheDocument());
+  });
 });

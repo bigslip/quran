@@ -57,9 +57,12 @@ export const PopoverMenuComponent = ({
   className,
   dir,
 }: PopoverMenuProps) => {
-  const [open, setOpen] = useState(isOpen);
+  const [open, setOpen] = useState(isOpen ?? false);
   const pageDirection = useDirection();
   const direction = dir || pageDirection;
+
+  const isControlled = isOpen !== undefined;
+  const currentOpen = isControlled ? isOpen : open;
 
   const activeSide = expandDirection || side;
   const activeClassName = classNames(styles.content, contentClassName, className, {
@@ -84,13 +87,15 @@ export const PopoverMenuComponent = ({
   };
 
   useEffect(() => {
-    setOpen(isOpen);
+    if (isOpen !== undefined) {
+      setOpen(isOpen);
+    }
   }, [isOpen]);
 
   return (
     <PrimitiveDropdownMenu.Root
       dir={direction as Direction}
-      open={open}
+      open={currentOpen}
       modal={isModal}
       onOpenChange={handleOpenChange}
     >
@@ -114,6 +119,10 @@ export type PopoverMenuItemProps = {
   onClick?: () => void;
   disabled?: boolean;
   isDisabled?: boolean;
+  /**
+   * Whether the popover menu should close after clicking this item.
+   * @default false (preserved for legacy compatibility)
+   */
   shouldCloseMenuAfterClick?: boolean;
   shouldFlipOnRTL?: boolean;
   className?: string;
