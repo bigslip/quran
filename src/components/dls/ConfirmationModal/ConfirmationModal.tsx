@@ -1,76 +1,69 @@
-/* eslint-disable react/no-array-index-key */
-import { useMemo } from 'react';
+import React, { ReactNode } from 'react';
 
-import { useConfirmModal } from './hooks';
-
-import Modal from '@/dls/Modal/Modal';
+import Button, { ButtonType, ButtonVariant } from '@/components/dls/Button/Button';
+import { useConfirmModal } from '@/components/dls/ConfirmationModal/hooks';
+import ContentModal from '@/components/dls/ContentModal/ContentModal';
 import ZIndexVariant from '@/types/enums/ZIndexVariant';
 
-interface ConfirmationModalProps {
+export interface ConfirmationModalProps {
+  isOpen?: boolean;
+  title?: ReactNode;
+  body?: ReactNode;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  isConfirmDanger?: boolean;
   zIndexVariant?: ZIndexVariant;
 }
 
-const ConfirmationModal = ({ zIndexVariant }: ConfirmationModalProps = {}) => {
-  const { onCancel, onConfirm, state } = useConfirmModal();
+const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+  isOpen: propsIsOpen,
+  title: propsTitle,
+  body: propsBody,
+  confirmText: propsConfirmText,
+  cancelText: propsCancelText,
+  onConfirm: propsOnConfirm,
+  onCancel: propsOnCancel,
+  isConfirmDanger = false,
+  zIndexVariant,
+}) => {
+  const { state: modalState, onCancel: onHookCancel, onConfirm: onHookConfirm } = useConfirmModal();
 
-  const actions = useMemo(() => {
-    const returnedActions = [];
-    if (state.confirmText && onConfirm) {
-      returnedActions.push({
-        label: state.confirmText,
-        onClick: onConfirm,
-        dataTestId: 'confirmation-modal-confirm-button',
-      });
-    }
-    if (state.cancelText && onCancel) {
-      returnedActions.push({
-        label: state.cancelText,
-        onClick: onCancel,
-        isCloseAction: true,
-        dataTestId: 'confirmation-modal-cancel-button',
-      });
-    }
-    return returnedActions;
-  }, [onCancel, onConfirm, state.cancelText, state.confirmText]);
+  const isOpen = propsIsOpen !== undefined ? propsIsOpen : modalState.open;
+  const title = propsTitle ?? modalState.title ?? 'Confirm';
+  const body = propsBody ?? modalState.subtitle ?? modalState.description;
+  const confirmText = propsConfirmText ?? modalState.confirmText ?? 'Confirm';
+  const cancelText = propsCancelText ?? modalState.cancelText ?? 'Cancel';
+  const onConfirm = propsOnConfirm ?? onHookConfirm;
+  const onCancel = propsOnCancel ?? onHookCancel;
 
-  const onClose = () => {
-    if (onCancel) {
-      onCancel();
-    }
-  };
+  const footer = (
+    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+      {onCancel && (
+        <Button variant={ButtonVariant.Ghost} onClick={onCancel}>
+          {cancelText}
+        </Button>
+      )}
+      {onConfirm && (
+        <Button type={isConfirmDanger ? ButtonType.Error : ButtonType.Primary} onClick={onConfirm}>
+          {confirmText}
+        </Button>
+      )}
+    </div>
+  );
 
   return (
-    <Modal
-      isOpen={!!state.open}
-      onClickOutside={onClose}
-      onEscapeKeyDown={onClose}
+    <ContentModal
+      isOpen={isOpen}
+      onClose={onCancel}
+      header={title}
+      footer={footer}
+      hasCloseButton
       zIndexVariant={zIndexVariant}
     >
-      <Modal.Body>
-        <Modal.Header>
-          <Modal.Title>{state.title}</Modal.Title>
-          <Modal.Subtitle>{state.subtitle}</Modal.Subtitle>
-        </Modal.Header>
-        <p>{state.description}</p>
-      </Modal.Body>
-      <Modal.Footer>
-        {actions.map((action, index) => {
-          const { onClick, label, dataTestId } = action;
-          if (action.isCloseAction) {
-            return (
-              <Modal.CloseAction key={index} onClick={onClick} dataTestId={dataTestId}>
-                {label}
-              </Modal.CloseAction>
-            );
-          }
-          return (
-            <Modal.Action key={index} onClick={onClick} dataTestId={dataTestId}>
-              {label}
-            </Modal.Action>
-          );
-        })}
-      </Modal.Footer>
-    </Modal>
+      <p style={{ margin: 0, color: 'var(--color-text-faded)' }}>{body}</p>
+    </ContentModal>
   );
 };
 

@@ -1,35 +1,28 @@
-/* eslint-disable no-alert */
-import Button from '../Button/Button';
+import { useState } from 'react';
 
-import ConfirmationModal from './ConfirmationModal';
-import { useConfirm } from './hooks';
+import Button from '@/components/dls/Button/Button';
+import ConfirmationModal from '@/components/dls/ConfirmationModal/ConfirmationModal';
 
 export default {
   title: 'dls/ConfirmationModal',
   component: ConfirmationModal,
 };
 
-export const Example = () => {
-  const confirm = useConfirm();
-  const onClick = async () => {
-    const isConfirmed = await confirm({
-      title: 'are you sure?',
-      subtitle: 'really?',
-      description: 'seriously are you sure?',
-      confirmText: 'yes',
-      cancelText: 'no',
-    });
-
-    if (isConfirmed) {
-      alert('user is really sure');
-    } else {
-      alert('user is not sure');
-    }
-  };
+export const Default = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <Button onClick={onClick}>test</Button>
-      <ConfirmationModal />
+      <Button onClick={() => setIsOpen(true)}>Delete Account</Button>
+      <ConfirmationModal
+        isOpen={isOpen}
+        onCancel={() => setIsOpen(false)}
+        onConfirm={() => setIsOpen(false)}
+        title="Delete Account?"
+        body="Are you absolutely sure you want to delete your account? This action cannot be undone."
+        confirmText="Yes, delete"
+        cancelText="Cancel"
+        isConfirmDanger
+      />
     </>
   );
 };
