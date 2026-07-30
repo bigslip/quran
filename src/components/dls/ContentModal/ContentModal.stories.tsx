@@ -117,9 +117,10 @@ export const WithHeaderAndFooter = () => {
         }
       >
         <p>Please read these terms carefully before using our service.</p>
-        <p style={{ marginTop: '1rem' }}>By using the service, you agree to be bound by these terms.</p>
+        <p style={{ marginTop: '1rem' }}>
+          By using the service, you agree to be bound by these terms.
+        </p>
       </ContentModal>
     </>
   );
 };
-
