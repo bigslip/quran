@@ -3,7 +3,7 @@ import * as matchers from '@testing-library/jest-dom/matchers';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { describe, expect, it, afterEach, vi } from 'vitest';
 
-import Collapsible from './Collapsible';
+import Collapsible, { CollapsibleDirection } from './Collapsible';
 
 expect.extend(matchers);
 
@@ -71,7 +71,7 @@ describe('Collapsible', () => {
     expect(screen.getByText('Hidden content revealed')).toBeInTheDocument();
   });
 
-  it('does not render nested role="button" or tabIndex on suffix container', () => {
+  it('does not render nested role="button" or tabIndex on suffix container and ensures suffix is not inside a role="button"', () => {
     render(
       <Collapsible
         title="More Info"
@@ -82,9 +82,25 @@ describe('Collapsible', () => {
       </Collapsible>,
     );
 
-    const suffixContainer = screen.getByTestId('suffix-icon').parentElement;
+    const suffixIcon = screen.getByTestId('suffix-icon');
+    const suffixContainer = suffixIcon.parentElement;
     expect(suffixContainer).not.toHaveAttribute('role', 'button');
     expect(suffixContainer).not.toHaveAttribute('tabIndex');
+    expect(suffixIcon.closest('[role="button"]')).toBeNull();
+  });
+
+  it('renders suffix when direction is CollapsibleDirection.Right', () => {
+    render(
+      <Collapsible
+        title="More Info"
+        direction={CollapsibleDirection.Right}
+        suffix={<span data-testid="right-suffix">Right Suffix</span>}
+      >
+        {({ isOpen }) => <div>{isOpen ? 'Hidden content revealed' : 'Collapsed'}</div>}
+      </Collapsible>,
+    );
+
+    expect(screen.getByTestId('right-suffix')).toBeInTheDocument();
   });
 
   it('supports controlled open state via shouldOpen prop', () => {

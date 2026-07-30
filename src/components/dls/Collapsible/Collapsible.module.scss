@@ -4,14 +4,43 @@
 
 .header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
+  inline-size: 100%;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.triggerRight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
   cursor: pointer;
 }
 
 .headerLeft {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .prefixContainer {

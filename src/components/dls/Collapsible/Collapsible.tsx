@@ -65,22 +65,20 @@ const Collapsible: React.FC<CollapsibleProps> = ({
     [isControlled, onOpenChange],
   );
 
-  const onSuffixClicked = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!shouldSuffixTrigger) {
-        e.stopPropagation();
-      }
-    },
-    [shouldSuffixTrigger],
-  );
+  const onSuffixClicked = useCallback(() => {
+    if (shouldSuffixTrigger) {
+      handleOpenChange(!isOpen);
+    }
+  }, [handleOpenChange, isOpen, shouldSuffixTrigger]);
 
   const onSuffixKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (!shouldSuffixTrigger && (e.key === 'Enter' || e.key === ' ')) {
-        e.stopPropagation();
+      if (shouldSuffixTrigger && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        handleOpenChange(!isOpen);
       }
     },
-    [shouldSuffixTrigger],
+    [handleOpenChange, isOpen, shouldSuffixTrigger],
   );
 
   const suffixProps = useMemo(
@@ -114,21 +112,20 @@ const Collapsible: React.FC<CollapsibleProps> = ({
       </div>
     );
 
-  const renderHeaderContent = () => {
+  const renderTriggerContent = () => {
     if (direction === CollapsibleDirection.Left) {
       return (
         <div className={classNames(styles.headerLeft, headerLeftClassName)}>
           {renderPrefix()}
           {title}
-          {renderSuffix()}
         </div>
       );
     }
     return (
-      <>
+      <div className={classNames(styles.triggerRight, headerLeftClassName)}>
         <div className={styles.headerLeft}>{title}</div>
         {renderPrefix()}
-      </>
+      </div>
     );
   };
 
@@ -138,11 +135,14 @@ const Collapsible: React.FC<CollapsibleProps> = ({
       onOpenChange={handleOpenChange}
       open={isOpen}
     >
-      <CollapsiblePrimitive.Trigger asChild data-testid={id} id={id}>
-        <div role="button" tabIndex={0} className={classNames(styles.header, headerClassName)}>
-          {renderHeaderContent()}
-        </div>
-      </CollapsiblePrimitive.Trigger>
+      <div className={classNames(styles.header, headerClassName)}>
+        <CollapsiblePrimitive.Trigger asChild data-testid={id} id={id}>
+          <div role="button" tabIndex={0} className={styles.trigger}>
+            {renderTriggerContent()}
+          </div>
+        </CollapsiblePrimitive.Trigger>
+        {renderSuffix()}
+      </div>
       <CollapsiblePrimitive.CollapsibleContent className={styles.content}>
         {children({ isOpen })}
       </CollapsiblePrimitive.CollapsibleContent>
