@@ -1,14 +1,20 @@
 import { useState } from 'react';
 
-import Button from '@/components/dls/Button/Button';
-import ConfirmationModal from '@/components/dls/ConfirmationModal/ConfirmationModal';
+import type { Meta, StoryObj } from '@storybook/react';
 
-export default {
+import ConfirmationModal from './ConfirmationModal';
+
+import Button from '@/components/dls/Button/Button';
+
+const meta = {
   title: 'dls/ConfirmationModal',
   component: ConfirmationModal,
-};
+  tags: ['autodocs'],
+} as Meta<typeof ConfirmationModal>;
 
-export const Default = () => {
+export default meta;
+
+const DefaultStory = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -25,4 +31,8 @@ export const Default = () => {
       />
     </>
   );
+};
+
+export const Default: StoryObj<typeof ConfirmationModal> = {
+  render: () => <DefaultStory />,
 };

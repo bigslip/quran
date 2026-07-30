@@ -62,10 +62,10 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       onClose={onCancel}
       header={title}
       footer={footer}
-      hasCloseButton
+      hasCloseButton={Boolean(onCancel)}
       zIndexVariant={zIndexVariant}
     >
-      <p className={styles.body}>{body}</p>
+      {body && <p className={styles.body}>{body}</p>}
     </ContentModal>
   );
 };
