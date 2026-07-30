@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import HoverCard from './index';
 
 const meta = {
@@ -10,7 +11,11 @@ export default meta;
 
 export const Default: StoryObj<typeof HoverCard> = {
   args: {
-    children: <span style={{ textDecoration: 'underline', cursor: 'pointer', padding: '2rem' }}>Hover over me</span>,
+    children: (
+      <span style={{ textDecoration: 'underline', cursor: 'pointer', padding: '2rem' }}>
+        Hover over me
+      </span>
+    ),
     content: (
       <div style={{ maxWidth: '200px' }}>
         <h4 style={{ margin: '0 0 0.5rem 0' }}>Detailed Info</h4>

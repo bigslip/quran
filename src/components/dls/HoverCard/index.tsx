@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
+
 import * as RadixHoverCard from '@radix-ui/react-hover-card';
 import classnames from 'classnames';
+
 import styles from './HoverCard.module.scss';
 
 export enum ContentSide {
@@ -60,9 +62,7 @@ const HoverCard: React.FC<HoverCardProps> = ({
       {...(typeof open !== 'undefined' && { open })}
       {...(onOpenChange && { onOpenChange })}
     >
-      <RadixHoverCard.Trigger asChild>
-        {children}
-      </RadixHoverCard.Trigger>
+      <RadixHoverCard.Trigger asChild>{children}</RadixHoverCard.Trigger>
       <RadixHoverCard.Portal>
         <RadixHoverCard.Content
           className={classnames(styles.content, className)}

@@ -1,17 +1,19 @@
+/* eslint-disable i18next/no-literal-string, import/no-extraneous-dependencies */
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
+
 import HoverCard from './index';
 
 expect.extend(matchers);
 
 beforeAll(() => {
-  global.ResizeObserver = class ResizeObserver {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  };
+  global.ResizeObserver = vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+  }));
 });
 
 describe('HoverCard', () => {
@@ -19,7 +21,7 @@ describe('HoverCard', () => {
     render(
       <HoverCard content={<div>Hidden Info</div>} openDelay={0} closeDelay={0}>
         <span>Hover me</span>
-      </HoverCard>
+      </HoverCard>,
     );
 
     expect(screen.getByText('Hover me')).toBeInTheDocument();
