@@ -68,7 +68,6 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   const onSuffixClicked = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!shouldSuffixTrigger) {
-        e.preventDefault();
         e.stopPropagation();
       }
     },
@@ -80,7 +79,6 @@ const Collapsible: React.FC<CollapsibleProps> = ({
       if (shouldSuffixTrigger && (e.key === 'Enter' || e.key === ' ')) {
         e.currentTarget.click();
       } else if (!shouldSuffixTrigger) {
-        e.preventDefault();
         e.stopPropagation();
       }
     },
@@ -88,15 +86,11 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   );
 
   const suffixProps = useMemo(
-    () =>
-      shouldSuffixTrigger
-        ? {
-            onClick: onSuffixClicked,
-            onKeyDown: onSuffixKeyDown,
-            role: 'button' as const,
-            tabIndex: 0,
-          }
-        : {},
+    () => ({
+      onClick: onSuffixClicked,
+      onKeyDown: onSuffixKeyDown,
+      ...(shouldSuffixTrigger ? { role: 'button' as const, tabIndex: 0 } : {}),
+    }),
     [shouldSuffixTrigger, onSuffixClicked, onSuffixKeyDown],
   );
 
