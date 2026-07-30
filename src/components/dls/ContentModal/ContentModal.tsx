@@ -107,6 +107,7 @@ const ContentModal = ({
               [styles.autoHeight]: !isFixedHeight,
               [styles.isBottomSheetOnMobile]: isBottomSheetOnMobile,
             })}
+            aria-describedby={undefined}
             onEscapeKeyDown={onEscapeKeyDown}
             onPointerDownOutside={onPointerDownOutside}
             onOpenAutoFocus={handleOpenAutoFocus}
@@ -115,11 +116,11 @@ const ContentModal = ({
             {hasHeader && (
               <div className={classNames(styles.header, headerClassName)}>
                 {hasCloseButton && (
-                  <Close className={classNames(styles.closeIcon, closeIconClassName)}>
+                  <Close asChild className={classNames(styles.closeIcon, closeIconClassName)}>
                     <Button
                       variant={ButtonVariant.Ghost}
                       shape={ButtonShape.Circle}
-                      onClick={onClose}
+                      ariaLabel="Close"
                     >
                       <CloseIcon />
                     </Button>

@@ -96,3 +96,28 @@ export const WithoutCloseIcon = () => {
     </>
   );
 };
+
+export const WithHeaderAndFooter = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Open</button>
+      <ContentModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        header="Terms of Service"
+        hasCloseButton
+        footer={
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+            <button onClick={() => setIsOpen(false)}>Cancel</button>
+            <button onClick={() => setIsOpen(false)}>Accept</button>
+          </div>
+        }
+      >
+        <p>Please read these terms carefully before using our service.</p>
+        <p style={{ marginTop: '1rem' }}>By using the service, you agree to be bound by these terms.</p>
+      </ContentModal>
+    </>
+  );
+};
+
