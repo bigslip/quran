@@ -16,57 +16,69 @@ export enum ContentAlign {
   END = 'end',
 }
 
-interface Props {
-  body: ReactNode;
+export interface ClickableHoverCardProps {
   children: ReactNode | ReactNode[];
-  onOpenChange?: (open: boolean) => void;
-  open?: boolean;
-  contentSide?: ContentSide;
-  contentAlign?: ContentAlign;
+  content?: ReactNode;
+  body?: ReactNode;
+  side?: 'top' | 'right' | 'bottom' | 'left';
+  contentSide?: ContentSide | 'top' | 'right' | 'bottom' | 'left';
+  align?: 'start' | 'center' | 'end';
+  contentAlign?: ContentAlign | 'start' | 'center' | 'end';
   avoidCollisions?: boolean;
   tip?: boolean;
   openDelay?: number;
   closeDelay?: number;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const ClickableHoverCard: React.FC<Props> = ({
-  body,
+const ClickableHoverCard: React.FC<ClickableHoverCardProps> = ({
   children,
-  onOpenChange,
-  open,
+  content,
+  body,
+  side,
   contentSide = ContentSide.BOTTOM,
+  align,
   contentAlign = ContentAlign.CENTER,
   avoidCollisions = true,
   openDelay = 400,
   closeDelay = 300,
   tip = true,
-}) => (
-  <Popover
-    open={open}
-    contentSide={contentSide}
-    {...(onOpenChange && { onOpenChange })}
-    contentAlign={contentAlign}
-    avoidCollisions={avoidCollisions}
-    trigger={
-      <HoverCard
-        openDelay={openDelay}
-        body={body}
-        closeDelay={closeDelay}
-        open={open}
-        contentSide={contentSide}
-        avoidCollisions={avoidCollisions}
-        contentAlign={contentAlign}
-        tip
-        {...(typeof open !== 'undefined' && { open })}
-        {...(onOpenChange && { onOpenChange })}
-      >
-        {children}
-      </HoverCard>
-    }
-    tip={tip}
-  >
-    {body}
-  </Popover>
-);
+  open,
+  onOpenChange,
+}) => {
+  const actualContent = content ?? body;
+  const actualSide = (side ?? contentSide) as ContentSide;
+  const actualAlign = (align ?? contentAlign) as ContentAlign;
+
+  return (
+    <Popover
+      open={open}
+      contentSide={actualSide}
+      contentAlign={actualAlign}
+      avoidCollisions={avoidCollisions}
+      useTooltipStyles={false}
+      {...(onOpenChange && { onOpenChange })}
+      trigger={
+        <HoverCard
+          openDelay={openDelay}
+          closeDelay={closeDelay}
+          body={actualContent}
+          side={actualSide}
+          align={actualAlign}
+          avoidCollisions={avoidCollisions}
+          tip={tip}
+          {...(typeof open !== 'undefined' && { open })}
+          {...(onOpenChange && { onOpenChange })}
+        >
+          {children}
+        </HoverCard>
+      }
+      tip={tip}
+    >
+      {actualContent}
+    </Popover>
+  );
+};
 
 export default ClickableHoverCard;
