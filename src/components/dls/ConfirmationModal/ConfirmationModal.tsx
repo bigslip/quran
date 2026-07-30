@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import styles from './ConfirmationModal.module.scss';
+
 import Button, { ButtonType, ButtonVariant } from '@/components/dls/Button/Button';
 import { useConfirmModal } from '@/components/dls/ConfirmationModal/hooks';
 import ContentModal from '@/components/dls/ContentModal/ContentModal';
@@ -30,16 +32,17 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 }) => {
   const { state: modalState, onCancel: onHookCancel, onConfirm: onHookConfirm } = useConfirmModal();
 
-  const isOpen = propsIsOpen !== undefined ? propsIsOpen : modalState.open;
+  const isHookMode = propsIsOpen === undefined;
+  const isOpen = isHookMode ? modalState.open : propsIsOpen;
   const title = propsTitle ?? modalState.title ?? 'Confirm';
   const body = propsBody ?? modalState.subtitle ?? modalState.description;
   const confirmText = propsConfirmText ?? modalState.confirmText ?? 'Confirm';
   const cancelText = propsCancelText ?? modalState.cancelText ?? 'Cancel';
-  const onConfirm = propsOnConfirm ?? onHookConfirm;
-  const onCancel = propsOnCancel ?? onHookCancel;
+  const onConfirm = propsOnConfirm ?? (isHookMode ? onHookConfirm : undefined);
+  const onCancel = propsOnCancel ?? (isHookMode ? onHookCancel : undefined);
 
   const footer = (
-    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+    <div className={styles.footer}>
       {onCancel && (
         <Button variant={ButtonVariant.Ghost} onClick={onCancel}>
           {cancelText}
@@ -62,7 +65,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       hasCloseButton
       zIndexVariant={zIndexVariant}
     >
-      <p style={{ margin: 0, color: 'var(--color-text-faded)' }}>{body}</p>
+      <p className={styles.body}>{body}</p>
     </ContentModal>
   );
 };

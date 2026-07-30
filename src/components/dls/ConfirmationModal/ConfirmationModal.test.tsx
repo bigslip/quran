@@ -19,12 +19,17 @@ vi.mock('next/router', () => ({
 }));
 
 vi.mock('@/components/dls/ContentModal/ContentModal', () => ({
-  default: ({ isOpen, header, footer, children }: any) =>
+  default: ({ isOpen, header, footer, children, onClose }: any) =>
     isOpen ? (
       <div data-testid="content-modal">
         <div>{header}</div>
         <div>{children}</div>
         <div>{footer}</div>
+        {onClose && (
+          <button type="button" data-testid="close-btn" onClick={onClose}>
+            Close
+          </button>
+        )}
       </div>
     ) : null,
 }));
@@ -70,10 +75,19 @@ describe('ConfirmationModal', () => {
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
 
+  it('does not throw when closed or rendered without onCancel in prop mode', () => {
+    expect(() => {
+      render(<ConfirmationModal isOpen onConfirm={vi.fn()} />);
+      expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+      expect(screen.queryByTestId('close-btn')).not.toBeInTheDocument();
+    }).not.toThrow();
+  });
+
   it('renders confirm button with danger styling when isConfirmDanger is true', () => {
     const onConfirm = vi.fn();
     render(<ConfirmationModal isOpen onConfirm={onConfirm} confirmText="Delete" isConfirmDanger />);
     const confirmBtn = screen.getByRole('button', { name: 'Delete' });
     expect(confirmBtn).toBeInTheDocument();
+    expect(confirmBtn.className).toContain('error');
   });
 });

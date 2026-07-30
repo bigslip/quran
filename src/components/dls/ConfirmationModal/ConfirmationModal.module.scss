@@ -1,0 +1,10 @@
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-small2-px);
+}
+
+.body {
+  margin: 0;
+  color: var(--color-text-faded);
+}
