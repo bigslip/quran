@@ -1,6 +1,5 @@
-/* eslint-disable react/no-multi-comp */
-
-import { useEffect, useState } from 'react';
+/* eslint-disable react/no-multi-comp, max-lines, react/boolean-prop-naming */
+import React, { useEffect, useState } from 'react';
 
 import * as PrimitiveDropdownMenu from '@radix-ui/react-dropdown-menu';
 import classNames from 'classnames';
@@ -23,23 +22,25 @@ export enum PopoverMenuAlign {
   END = 'end',
 }
 
-type PopoverMenuProps = {
+export type PopoverMenuProps = {
   isOpen?: boolean;
   children: React.ReactNode;
   trigger?: React.ReactNode;
   isPortalled?: boolean;
   isModal?: boolean;
   onOpenChange?: (open: boolean) => void;
-  expandDirection?: PopoverMenuExpandDirection;
-  align?: PopoverMenuAlign;
+  expandDirection?: PopoverMenuExpandDirection | 'top' | 'right' | 'bottom' | 'left';
+  side?: PopoverMenuExpandDirection | 'top' | 'right' | 'bottom' | 'left';
+  align?: PopoverMenuAlign | 'start' | 'center' | 'end';
   sideOffset?: number;
   contentClassName?: string;
+  className?: string;
   shouldClose?: boolean;
   shouldUseModalZIndex?: boolean;
   dir?: Direction;
 };
 
-const PopoverMenu = ({
+export const PopoverMenuComponent = ({
   children,
   isOpen,
   trigger,
@@ -48,22 +49,28 @@ const PopoverMenu = ({
   shouldClose = true,
   shouldUseModalZIndex = false,
   onOpenChange,
-  expandDirection: side = PopoverMenuExpandDirection.BOTTOM,
+  expandDirection,
+  side = PopoverMenuExpandDirection.BOTTOM,
   align = PopoverMenuAlign.CENTER,
   sideOffset = 0,
   contentClassName,
+  className,
   dir,
 }: PopoverMenuProps) => {
   const [open, setOpen] = useState(isOpen);
   const pageDirection = useDirection();
   const direction = dir || pageDirection;
+
+  const activeSide = expandDirection || side;
+  const activeClassName = classNames(styles.content, contentClassName, className, {
+    [styles.modalZIndex]: shouldUseModalZIndex,
+  });
+
   const content = (
     <PrimitiveDropdownMenu.Content
-      className={classNames(styles.content, contentClassName, {
-        [styles.modalZIndex]: shouldUseModalZIndex,
-      })}
-      side={side}
-      align={align}
+      className={activeClassName}
+      side={activeSide as PopoverMenuExpandDirection}
+      align={align as PopoverMenuAlign}
       sideOffset={sideOffset}
     >
       {children}
@@ -89,7 +96,7 @@ const PopoverMenu = ({
     >
       {trigger && (
         <PrimitiveDropdownMenu.Trigger asChild>
-          <span>{trigger}</span>
+          {React.isValidElement(trigger) ? trigger : <span>{trigger}</span>}
         </PrimitiveDropdownMenu.Trigger>
       )}
       {isPortalled ? (
@@ -101,10 +108,11 @@ const PopoverMenu = ({
   );
 };
 
-type PopoverMenuItemProps = {
+export type PopoverMenuItemProps = {
   children: React.ReactNode;
   icon?: React.ReactNode;
   onClick?: () => void;
+  disabled?: boolean;
   isDisabled?: boolean;
   shouldCloseMenuAfterClick?: boolean;
   shouldFlipOnRTL?: boolean;
@@ -114,10 +122,12 @@ type PopoverMenuItemProps = {
   shouldStopPropagation?: boolean;
   dataTestId?: string;
 };
-PopoverMenu.Item = ({
+
+export const PopoverMenuItem = ({
   children,
   icon,
   onClick,
+  disabled,
   isDisabled,
   shouldCloseMenuAfterClick = false,
   shouldFlipOnRTL = false,
@@ -127,10 +137,12 @@ PopoverMenu.Item = ({
   shouldStopPropagation,
   dataTestId,
 }: PopoverMenuItemProps) => {
+  const activeDisabled = disabled ?? isDisabled;
   return (
     <PrimitiveDropdownMenu.Item
       className={classNames(styles.item, className, { [styles.selected]: isSelected })}
       onClick={(e) => {
+        if (activeDisabled) return;
         if (shouldStopPropagation) e.stopPropagation();
         if (!shouldCloseMenuAfterClick) {
           // Prevent auto-close so menu only closes on outside click
@@ -138,7 +150,7 @@ PopoverMenu.Item = ({
         }
         if (onClick) onClick();
       }}
-      disabled={isDisabled}
+      disabled={activeDisabled}
       id={id}
       data-testid={dataTestId}
       data-selected={isSelected}
@@ -157,8 +169,17 @@ PopoverMenu.Item = ({
   );
 };
 
-PopoverMenu.Divider = () => {
+export const PopoverMenuDivider = () => {
   return <PrimitiveDropdownMenu.Separator className={styles.separator} />;
 };
+
+type PopoverMenuType = typeof PopoverMenuComponent & {
+  Item: typeof PopoverMenuItem;
+  Divider: typeof PopoverMenuDivider;
+};
+
+export const PopoverMenu = PopoverMenuComponent as PopoverMenuType;
+PopoverMenu.Item = PopoverMenuItem;
+PopoverMenu.Divider = PopoverMenuDivider;
 
 export default PopoverMenu;
