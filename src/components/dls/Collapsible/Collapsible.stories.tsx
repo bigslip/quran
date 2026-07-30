@@ -12,7 +12,7 @@ const meta = {
   title: 'dls/Collapsible',
   component: Collapsible,
   tags: ['autodocs'],
-} as Meta<typeof Collapsible>;
+} satisfies Meta<typeof Collapsible>;
 
 export default meta;
 

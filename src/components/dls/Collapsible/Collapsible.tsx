@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
 import classNames from 'classnames';
@@ -51,19 +51,19 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   headerLeftClassName,
   className,
 }) => {
-  const [isOpen, setIsOpen] = useState(shouldOpen ?? isDefaultOpen);
+  const isControlled = typeof shouldOpen === 'boolean';
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(isDefaultOpen);
+  const isOpen = isControlled ? (shouldOpen as boolean) : uncontrolledOpen;
 
   const handleOpenChange = useCallback(
     (newOpen: boolean) => {
-      setIsOpen(newOpen);
+      if (!isControlled) {
+        setUncontrolledOpen(newOpen);
+      }
       if (onOpenChange) onOpenChange(newOpen);
     },
-    [onOpenChange],
+    [isControlled, onOpenChange],
   );
-
-  useEffect(() => {
-    if (typeof shouldOpen === 'boolean') setIsOpen(shouldOpen);
-  }, [shouldOpen]);
 
   const onSuffixClicked = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -76,9 +76,7 @@ const Collapsible: React.FC<CollapsibleProps> = ({
 
   const onSuffixKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (shouldSuffixTrigger && (e.key === 'Enter' || e.key === ' ')) {
-        e.currentTarget.click();
-      } else if (!shouldSuffixTrigger) {
+      if (!shouldSuffixTrigger && (e.key === 'Enter' || e.key === ' ')) {
         e.stopPropagation();
       }
     },
@@ -89,9 +87,8 @@ const Collapsible: React.FC<CollapsibleProps> = ({
     () => ({
       onClick: onSuffixClicked,
       onKeyDown: onSuffixKeyDown,
-      ...(shouldSuffixTrigger ? { role: 'button' as const, tabIndex: 0 } : {}),
     }),
-    [shouldSuffixTrigger, onSuffixClicked, onSuffixKeyDown],
+    [onSuffixClicked, onSuffixKeyDown],
   );
 
   const renderPrefix = () =>
