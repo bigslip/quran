@@ -1,6 +1,9 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import * as matchers from '@testing-library/jest-dom/matchers';
 import ContentModal from './ContentModal';
+
+expect.extend(matchers);
 
 vi.mock('next/router', () => ({
   useRouter: () => ({
@@ -28,9 +31,9 @@ describe('ContentModal', () => {
         My Body
       </ContentModal>,
     );
-    expect(screen.getByText('My Header')).toBeDefined();
-    expect(screen.getByText('My Body')).toBeDefined();
-    expect(screen.getByText('My Footer')).toBeDefined();
+    expect(screen.getByText('My Header')).toBeInTheDocument();
+    expect(screen.getByText('My Body')).toBeInTheDocument();
+    expect(screen.getByText('My Footer')).toBeInTheDocument();
   });
 
   it('does not render when closed', () => {

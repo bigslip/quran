@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
-/* eslint-disable react/button-has-type */
 import { useState } from 'react';
 
+import Button, { ButtonVariant } from '../Button/Button';
 import Spinner from '../Spinner/Spinner';
 
 import ContentModal from './ContentModal';
@@ -37,7 +37,7 @@ export const Normal = () => {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Open</button>
+      <Button onClick={() => setIsOpen(true)}>Open</Button>
       <ContentModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         {content}
         {content}
@@ -55,7 +55,7 @@ export const Loading = () => {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Open</button>
+      <Button onClick={() => setIsOpen(true)}>Open</Button>
       <ContentModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <Spinner />
       </ContentModal>
@@ -67,7 +67,7 @@ export const UnTriggered = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Open</button>
+      <Button onClick={() => setIsOpen(true)}>Open</Button>
       <ContentModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         {content}
         {content}
@@ -84,7 +84,7 @@ export const WithoutCloseIcon = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Open</button>
+      <Button onClick={() => setIsOpen(true)}>Open</Button>
       <ContentModal isOpen={isOpen} onClose={() => setIsOpen(false)} hasCloseButton={false}>
         {content}
         {content}
@@ -101,7 +101,7 @@ export const WithHeaderAndFooter = () => {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Open</button>
+      <Button onClick={() => setIsOpen(true)}>Open</Button>
       <ContentModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -109,8 +109,10 @@ export const WithHeaderAndFooter = () => {
         hasCloseButton
         footer={
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-            <button onClick={() => setIsOpen(false)}>Cancel</button>
-            <button onClick={() => setIsOpen(false)}>Accept</button>
+            <Button variant={ButtonVariant.Ghost} onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => setIsOpen(false)}>Accept</Button>
           </div>
         }
       >
