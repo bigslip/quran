@@ -60,18 +60,30 @@ export type Tab = {
 type OldTabsProps = {
   tabs: Tab[];
   selected: string;
-  onSelect: (value: string) => void;
+  onSelect?: (value: string) => void;
   className?: string;
   containerClassName?: string;
   activeClassName?: string;
 };
 
-const OldTabs: React.FC<OldTabsProps> = ({ tabs, selected, onSelect, className }) => {
+const OldTabs: React.FC<OldTabsProps> = ({
+  tabs,
+  selected,
+  onSelect,
+  className,
+  containerClassName,
+  activeClassName,
+}) => {
   return (
-    <Tabs value={selected} onValueChange={onSelect} className={className}>
+    <Tabs value={selected} onValueChange={onSelect} className={containerClassName}>
       <TabsList>
         {tabs.map((tab) => (
-          <TabsTrigger key={tab.value} value={tab.value} id={tab.id}>
+          <TabsTrigger
+            key={tab.value}
+            value={tab.value}
+            id={tab.id}
+            className={classnames(className, selected === tab.value && activeClassName)}
+          >
             {tab.title}
           </TabsTrigger>
         ))}
