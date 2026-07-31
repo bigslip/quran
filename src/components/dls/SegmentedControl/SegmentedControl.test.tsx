@@ -29,10 +29,10 @@ describe('SegmentedControl', () => {
       />
     );
     
-    expect(screen.getByRole('tab', { name: 'Map' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'List' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Map' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'List' })).toBeInTheDocument();
     
-    fireEvent.click(screen.getByRole('tab', { name: 'List' }));
+    fireEvent.click(screen.getByRole('button', { name: 'List' }));
     expect(onChange).toHaveBeenCalledWith('list');
   });
 
@@ -50,9 +50,9 @@ describe('SegmentedControl', () => {
       />
     );
     
-    const mapTab = screen.getByRole('tab', { name: 'Map' });
-    const listTab = screen.getByRole('tab', { name: 'List' });
-    const gridTab = screen.getByRole('tab', { name: 'Grid' });
+    const mapTab = screen.getByRole('button', { name: 'Map' });
+    const listTab = screen.getByRole('button', { name: 'List' });
+    const gridTab = screen.getByRole('button', { name: 'Grid' });
 
     mapTab.focus();
     expect(mapTab).toHaveFocus();
@@ -98,9 +98,9 @@ describe('SegmentedControl', () => {
       />
     );
     
-    const mapTab = screen.getByRole('tab', { name: 'Map' });
-    const listTab = screen.getByRole('tab', { name: 'List' });
-    const gridTab = screen.getByRole('tab', { name: 'Grid' });
+    const mapTab = screen.getByRole('button', { name: 'Map' });
+    const listTab = screen.getByRole('button', { name: 'List' });
+    const gridTab = screen.getByRole('button', { name: 'Grid' });
 
     mapTab.focus();
     expect(mapTab).toHaveFocus();

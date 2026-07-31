@@ -46,18 +46,18 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   };
 
   return (
-    <div className={classnames(styles.container, className)} role="tablist">
+    <div className={classnames(styles.container, className)} role="group">
       {options.map((option, index) => (
         <button
           key={option.value}
           type="button"
-          role="tab"
+          role="button"
           className={classnames(styles.tab, {
             [styles.active]: value === option.value,
           })}
           onClick={() => onChange(option.value)}
           onKeyDown={(e) => handleKeyDown(e, index)}
-          aria-selected={value === option.value}
+          aria-pressed={value === option.value}
           tabIndex={value === option.value ? 0 : -1}
         >
           {option.label}
