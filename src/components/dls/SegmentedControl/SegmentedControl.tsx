@@ -8,7 +8,7 @@ export interface TabOption {
   value: string;
 }
 
-export interface SegmentedControlProps {
+export interface SegmentedControlProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   options: TabOption[];
   value: string;
   onChange: (value: string) => void;
@@ -20,6 +20,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   value,
   onChange,
   className,
+  ...props
 }) => {
   const direction = useDirection();
 
@@ -35,6 +36,10 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
       nextIndex = isRtl
         ? (index + 1) % options.length
         : (index - 1 + options.length) % options.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = options.length - 1;
     }
 
     if (nextIndex !== null) {
@@ -46,12 +51,11 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   };
 
   return (
-    <div className={classnames(styles.container, className)} role="group">
+    <div className={classnames(styles.container, className)} role="group" {...props}>
       {options.map((option, index) => (
         <button
           key={option.value}
           type="button"
-          role="button"
           className={classnames(styles.tab, {
             [styles.active]: value === option.value,
           })}
