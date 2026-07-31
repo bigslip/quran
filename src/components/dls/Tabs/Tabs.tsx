@@ -50,3 +50,34 @@ export const TabsContent = React.forwardRef<
   />
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
+
+export type Tab = {
+  title: React.ReactNode;
+  value: string;
+  id?: string;
+};
+
+type OldTabsProps = {
+  tabs: Tab[];
+  selected: string;
+  onSelect: (value: string) => void;
+  className?: string;
+  containerClassName?: string;
+  activeClassName?: string;
+};
+
+const OldTabs: React.FC<OldTabsProps> = ({ tabs, selected, onSelect, className }) => {
+  return (
+    <Tabs value={selected} onValueChange={onSelect} className={className}>
+      <TabsList>
+        {tabs.map((tab) => (
+          <TabsTrigger key={tab.value} value={tab.value} id={tab.id}>
+            {tab.title}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
+  );
+};
+
+export default OldTabs;
