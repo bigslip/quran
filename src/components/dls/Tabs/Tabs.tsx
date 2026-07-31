@@ -1,6 +1,7 @@
 import React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import classnames from 'classnames';
+import { TestId } from '@/tests/test-ids';
 import styles from './Tabs.module.scss';
 
 export const Tabs = React.forwardRef<
@@ -75,7 +76,13 @@ const OldTabs: React.FC<OldTabsProps> = ({
   activeClassName,
 }) => {
   return (
-    <Tabs value={selected} onValueChange={onSelect} className={containerClassName}>
+    <Tabs
+      value={selected}
+      onValueChange={onSelect}
+      className={containerClassName}
+      data-testid={TestId.TABS_CONTAINER}
+      data-selectedtab={selected}
+    >
       <TabsList>
         {tabs.map((tab) => (
           <TabsTrigger
