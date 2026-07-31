@@ -37,15 +37,15 @@ const MyQuranPage = (): JSX.Element => {
   const tabs = useMemo(
     () => [
       {
-        name: t('saved'),
+        label: t('saved'),
         value: MyQuranTab.SAVED,
       },
       {
-        name: t('recent'),
+        label: t('recent'),
         value: MyQuranTab.RECENT,
       },
       {
-        name: t('notes-and-reflections'),
+        label: t('notes-and-reflections'),
         value: MyQuranTab.NOTES_AND_REFLECTIONS,
       },
     ],
@@ -80,7 +80,7 @@ const MyQuranPage = (): JSX.Element => {
           wrapperClassName={styles.mainContent}
           className={styles.pageContainer}
         >
-          <TabSwitcher selected={selectedTab} items={tabs} onSelect={onTabChange} />
+          <TabSwitcher value={selectedTab} options={tabs} onChange={onTabChange} />
           <div className={styles.tabContent}>{tabComponents[selectedTab]}</div>
         </PageContainer>
       </main>
