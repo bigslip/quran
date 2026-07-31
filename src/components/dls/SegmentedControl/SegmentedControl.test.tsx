@@ -5,8 +5,14 @@ import SegmentedControl from './SegmentedControl';
 
 expect.extend(matchers);
 
+let mockDirection = 'ltr';
+vi.mock('@/hooks/useDirection', () => ({
+  default: () => mockDirection,
+}));
+
 afterEach(() => {
   cleanup();
+  mockDirection = 'ltr';
 });
 
 describe('SegmentedControl', () => {
@@ -75,5 +81,38 @@ describe('SegmentedControl', () => {
     fireEvent.keyDown(gridTab, { key: 'ArrowLeft' });
     expect(onChange).toHaveBeenCalledWith('list');
     expect(listTab).toHaveFocus();
+  });
+
+  it('supports reverse ArrowRight and ArrowLeft keyboard navigation for RTL', () => {
+    mockDirection = 'rtl';
+    const onChange = vi.fn();
+    render(
+      <SegmentedControl
+        options={[
+          { label: 'Map', value: 'map' },
+          { label: 'List', value: 'list' },
+          { label: 'Grid', value: 'grid' },
+        ]}
+        value="map"
+        onChange={onChange}
+      />
+    );
+    
+    const mapTab = screen.getByRole('tab', { name: 'Map' });
+    const listTab = screen.getByRole('tab', { name: 'List' });
+    const gridTab = screen.getByRole('tab', { name: 'Grid' });
+
+    mapTab.focus();
+    expect(mapTab).toHaveFocus();
+
+    // ArrowRight in RTL: Map -> Grid (previous item, wrap around)
+    fireEvent.keyDown(mapTab, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenCalledWith('grid');
+    expect(gridTab).toHaveFocus();
+
+    // ArrowLeft in RTL: Grid -> Map (next item, wrap around)
+    fireEvent.keyDown(gridTab, { key: 'ArrowLeft' });
+    expect(onChange).toHaveBeenCalledWith('map');
+    expect(mapTab).toHaveFocus();
   });
 });

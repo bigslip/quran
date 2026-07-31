@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import useDirection from '@/hooks/useDirection';
 import styles from './SegmentedControl.module.scss';
 
 export interface TabOption {
@@ -20,12 +21,20 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   onChange,
   className,
 }) => {
+  const direction = useDirection();
+
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     let nextIndex = null;
+    const isRtl = direction === 'rtl';
+
     if (e.key === 'ArrowRight') {
-      nextIndex = (index + 1) % options.length;
+      nextIndex = isRtl
+        ? (index - 1 + options.length) % options.length
+        : (index + 1) % options.length;
     } else if (e.key === 'ArrowLeft') {
-      nextIndex = (index - 1 + options.length) % options.length;
+      nextIndex = isRtl
+        ? (index + 1) % options.length
+        : (index - 1 + options.length) % options.length;
     }
 
     if (nextIndex !== null) {
