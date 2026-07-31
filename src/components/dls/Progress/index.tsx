@@ -1,42 +1,29 @@
+import React from 'react';
+
 import * as RadixProgress from '@radix-ui/react-progress';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 import styles from './Progress.module.scss';
 
-export enum ProgressSize {
-  Small = 'small',
-  Medium = 'medium',
-  Large = 'large',
-}
-
-interface ProgressProps {
+export interface ProgressProps {
   value: number;
-  size?: ProgressSize;
-  rootStyles?: string;
-  indicatorStyles?: string;
+  size?: 'small' | 'medium' | 'large';
+  className?: string;
 }
 
-const Progress: React.FC<ProgressProps> = ({
-  value,
-  rootStyles,
-  size = ProgressSize.Small,
-  indicatorStyles,
-}) => {
-  const rootClassNames = classNames(
-    styles.progressRoot,
-    {
-      [styles.progressSmall]: size === ProgressSize.Small,
-      [styles.progressMedium]: size === ProgressSize.Medium,
-      [styles.progressLarge]: size === ProgressSize.Large,
-    },
-    rootStyles,
-  );
+const Progress: React.FC<ProgressProps> = ({ value, size = 'medium', className }) => {
+  // Clamp value between 0 and 100
+  const clampedValue = Math.min(100, Math.max(0, value || 0));
 
   return (
-    <RadixProgress.Root className={rootClassNames} value={value}>
+    <RadixProgress.Root
+      className={classnames(styles.root, className)}
+      value={clampedValue}
+      data-size={size}
+    >
       <RadixProgress.Indicator
-        className={classNames(styles.progressIndicator, indicatorStyles)}
-        style={{ transform: `translateX(-${100 - value}%)` }}
+        className={styles.indicator}
+        style={{ transform: `translateX(-${100 - clampedValue}%)` }}
       />
     </RadixProgress.Root>
   );
