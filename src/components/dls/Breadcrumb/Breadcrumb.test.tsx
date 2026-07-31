@@ -1,9 +1,10 @@
-import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, expect, it, afterEach } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
 import Breadcrumb from './Breadcrumb';
 
 expect.extend(matchers);
+afterEach(cleanup);
 
 describe('Breadcrumb', () => {
   it('renders breadcrumb items and separators', () => {
@@ -20,5 +21,18 @@ describe('Breadcrumb', () => {
     expect(screen.getByText('Home')).toHaveAttribute('href', '/');
     expect(screen.getByText('Surahs')).toHaveAttribute('href', '/surahs');
     expect(screen.getByText('Al-Fatihah')).not.toHaveAttribute('href');
+  });
+
+  it('renders nothing when items array is empty', () => {
+    const { container } = render(<Breadcrumb items={[]} />);
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it('renders correctly with a single item', () => {
+    render(<Breadcrumb items={[{ label: 'Home' }]} />);
+    
+    const home = screen.getByText('Home');
+    expect(home).not.toHaveAttribute('href');
+    expect(home).toHaveAttribute('aria-current', 'page');
   });
 });

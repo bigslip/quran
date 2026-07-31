@@ -14,19 +14,24 @@ export interface BreadcrumbProps {
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className }) => {
+  if (!items?.length) return null;
+
   return (
     <nav aria-label="Breadcrumb" className={className}>
       <ol className={styles.container}>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={index} className={styles.item} aria-current={isLast ? 'page' : undefined}>
+            <li key={item.href || item.label} className={styles.item}>
               {item.href && !isLast ? (
                 <Link href={item.href} className={styles.link}>
                   {item.label}
                 </Link>
               ) : (
-                <span className={classnames({ [styles.current]: isLast })}>
+                <span 
+                  className={classnames({ [styles.current]: isLast })} 
+                  aria-current={isLast ? 'page' : undefined}
+                >
                   {item.label}
                 </span>
               )}
