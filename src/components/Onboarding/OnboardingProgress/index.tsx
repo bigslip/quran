@@ -24,7 +24,7 @@ const OnboardingProgress = () => {
   return (
     <div className={styles.progressContainer}>
       <p>{localizedPercent}%</p>
-      <Progress value={completedPercent} rootStyles={styles.progressBar} />
+      <Progress value={completedPercent} className={styles.progressBar} />
     </div>
   );
 };
