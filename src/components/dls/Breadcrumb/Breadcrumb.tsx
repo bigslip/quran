@@ -22,7 +22,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className }) => {
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item.href || item.label} className={styles.item}>
+            <li key={index} className={styles.item}>
               {item.href && !isLast ? (
                 <Link href={item.href} className={styles.link}>
                   {item.label}
