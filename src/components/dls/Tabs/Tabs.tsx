@@ -1,63 +1,52 @@
 import React from 'react';
-
-import classNames from 'classnames';
-
+import * as TabsPrimitive from '@radix-ui/react-tabs';
+import classnames from 'classnames';
 import styles from './Tabs.module.scss';
 
-import { TestId } from '@/tests/test-ids';
+export const Tabs = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Root
+    ref={ref}
+    className={classnames(styles.root, className)}
+    {...props}
+  />
+));
+Tabs.displayName = TabsPrimitive.Root.displayName;
 
-export type Tab = {
-  title: React.ReactNode;
-  value: string;
-  id?: string;
-};
+export const TabsList = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.List
+    ref={ref}
+    className={classnames(styles.list, className)}
+    {...props}
+  />
+));
+TabsList.displayName = TabsPrimitive.List.displayName;
 
-type TabsProps = {
-  tabs: Tab[];
-  selected: string;
-  onSelect?: (value: string) => void;
-  containerClassName?: string;
-  className?: string;
-  activeClassName?: string;
-};
+export const TabsTrigger = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Trigger
+    ref={ref}
+    className={classnames(styles.trigger, className)}
+    {...props}
+  />
+));
+TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-// TODO: move this to Radix UI Tabs component
-const Tabs = ({
-  tabs,
-  onSelect,
-  selected,
-  className,
-  activeClassName,
-  containerClassName,
-}: TabsProps) => {
-  return (
-    <div
-      className={classNames(styles.container, containerClassName)}
-      role="tablist"
-      data-selectedtab={selected}
-      data-testid={TestId.TABS_CONTAINER}
-    >
-      {tabs.map((tab) => (
-        <div
-          className={classNames(styles.tabItem, className, {
-            [activeClassName]: selected === tab.value,
-            [styles.tabItemSelected]: selected === tab.value && !activeClassName,
-          })}
-          key={tab.value}
-          role="tab"
-          aria-selected={selected === tab.value}
-          tabIndex={0}
-          id={tab.id}
-          {...(onSelect && {
-            onKeyDown: () => onSelect(tab.value),
-            onClick: () => onSelect(tab.value),
-          })}
-        >
-          {tab.title}
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default Tabs;
+export const TabsContent = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Content
+    ref={ref}
+    className={classnames(styles.content, className)}
+    {...props}
+  />
+));
+TabsContent.displayName = TabsPrimitive.Content.displayName;
