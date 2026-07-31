@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import TabSwitcher from './TabSwitcher';
+import SegmentedControl from './SegmentedControl';
 
 const meta = {
-  title: 'dls/TabSwitcher',
-  component: TabSwitcher,
+  title: 'dls/SegmentedControl',
+  component: SegmentedControl,
   tags: ['autodocs'],
-} as Meta<typeof TabSwitcher>;
+} as Meta<typeof SegmentedControl>;
 export default meta;
 
-export const Default: StoryObj<typeof TabSwitcher> = {
+export const Default: StoryObj<typeof SegmentedControl> = {
   render: () => {
     const [view, setView] = useState('grid');
     return (
-      <TabSwitcher
+      <SegmentedControl
         value={view}
         onChange={setView}
         options={[

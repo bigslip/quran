@@ -1,33 +1,45 @@
-.container {
-  display: inline-flex;
-  background-color: var(--color-background-alternative);
-  border-radius: var(--border-radius-rounded);
-  padding: 0.25rem;
-}
+@use 'src/styles/breakpoints';
 
-.tab {
-  background: transparent;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius-rounded);
-  font-size: var(--font-size-small);
-  font-weight: 500;
-  color: var(--color-text-faded);
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    color: var(--color-text-default);
+.tabSwitcherContainer {
+  .switchContainer {
+    @include breakpoints.smallerThanTablet {
+      display: none;
+    }
+    background-color: var(--color-background-alternative-faint);
+    .switchButton {
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-default-new);
+    }
   }
 
-  &.active {
-    background-color: var(--color-background-default);
-    color: var(--color-primary-medium);
-    box-shadow: var(--shadow-small);
-  }
+  .tabsContainer {
+    display: grid;
+    @include breakpoints.tablet {
+      display: none;
+    }
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(fit-content, 1fr);
+    inline-size: 100%;
+    border-block-end: unset;
 
-  &:focus-visible {
-    outline: 2px solid var(--color-primary-medium);
-    outline-offset: 2px;
+    .tabs {
+      background-color: var(--color-background-elevated-new);
+      text-align: center;
+      font-size: var(--font-size-xsmall-px);
+      color: var(--color-text-faded-new);
+      font-weight: var(--font-weight-medium);
+      padding-inline: var(--spacing-medium3-px);
+      padding-block: var(--spacing-medium2-px);
+      border-block-end: var(--spacing-micro-px) solid var(--color-separators-ayah-level);
+    }
+
+    .tabs + .tabs {
+      margin-inline-start: unset;
+    }
+
+    .activeTab {
+      border-block-end: var(--spacing-micro-px) solid var(--color-success-medium);
+      color: var(--color-text-link-new);
+    }
   }
 }
