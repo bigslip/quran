@@ -1,3 +1,4 @@
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import classNames from 'classnames';
 
 import styles from './Spinner.module.scss';
@@ -33,7 +34,7 @@ const Spinner = ({
     })}
     role="status"
   >
-    <span className="sr-only">Loading...</span>
+    <VisuallyHidden>Loading...</VisuallyHidden>
     <div className={styles.container}>{getSpans()}</div>
   </div>
 );

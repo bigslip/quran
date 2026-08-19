@@ -1,30 +1,30 @@
-import { render, screen, cleanup } from '@testing-library/react';
-import { describe, it, expect, afterEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 
 import Spinner, { SpinnerSize } from './Spinner';
 
 describe('Spinner', () => {
-  afterEach(() => {
-    cleanup();
-  });
-
   it('renders with role="status"', () => {
-    render(<Spinner />);
-    expect(screen.getByRole('status')).not.toBeNull();
+    const { unmount } = render(<Spinner />);
+    expect(screen.getByRole('status')).toBeDefined();
+    unmount();
   });
 
   it('contains visually hidden text for screen readers', () => {
-    render(<Spinner />);
-    expect(screen.getByText('Loading...')).not.toBeNull();
+    const { unmount } = render(<Spinner />);
+    expect(screen.getByText('Loading...')).toBeDefined();
+    unmount();
   });
 
   it('applies the correct size class', () => {
-    const { container } = render(<Spinner size={SpinnerSize.Large} />);
+    const { container, unmount } = render(<Spinner size={SpinnerSize.Large} />);
     expect((container.firstChild as HTMLElement).className).toContain('large');
+    unmount();
   });
 
   it('applies delayed visibility class when shouldDelayVisibility is true', () => {
-    const { container } = render(<Spinner shouldDelayVisibility />);
+    const { container, unmount } = render(<Spinner shouldDelayVisibility />);
     expect((container.firstChild as HTMLElement).className).toContain('delayVisibility');
+    unmount();
   });
 });
