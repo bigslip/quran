@@ -23,12 +23,11 @@ const Skeleton = ({
     <span
       aria-hidden="true"
       {...props}
-      className={classNames(styles.skeleton, {
+      className={classNames(styles.skeleton, className, {
         [styles.baseSize]: !children && !className,
         [styles.active]: isActive,
         [styles.rounded]: isRounded,
         [styles.squared]: isSquared,
-        [className]: className,
       })}
     >
       {children && <span className={styles.content}>{children}</span>}
