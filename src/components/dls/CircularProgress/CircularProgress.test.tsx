@@ -12,7 +12,7 @@ afterEach(() => {
 
 describe('CircularProgressbar', () => {
   it('should render the progressbar with proper ARIA attributes', () => {
-    render(<CircularProgressbar value={50} ariaLabel="Loading progress" />);
+    render(<CircularProgressbar value={50} aria-label="Loading progress" />);
 
     const progressbar = screen.getByRole('progressbar');
     expect(progressbar).toBeInTheDocument();
@@ -24,13 +24,23 @@ describe('CircularProgressbar', () => {
 
   it('should render correct valuenow with custom bounds', () => {
     render(
-      <CircularProgressbar value={150} minValue={100} maxValue={200} ariaLabel="Custom progress" />,
+      <CircularProgressbar value={150} minValue={100} maxValue={200} aria-label="Custom progress" />,
     );
 
     const progressbar = screen.getByRole('progressbar');
     expect(progressbar).toHaveAttribute('aria-valuenow', '150');
     expect(progressbar).toHaveAttribute('aria-valuemin', '100');
     expect(progressbar).toHaveAttribute('aria-valuemax', '200');
+  });
+
+  it('should bound aria-valuenow within minValue and maxValue', () => {
+    const { rerender } = render(<CircularProgressbar value={300} minValue={100} maxValue={200} />);
+    let progressbar = screen.getByRole('progressbar');
+    expect(progressbar).toHaveAttribute('aria-valuenow', '200'); // bounded to maxValue
+
+    rerender(<CircularProgressbar value={50} minValue={100} maxValue={200} />);
+    progressbar = screen.getByRole('progressbar');
+    expect(progressbar).toHaveAttribute('aria-valuenow', '100'); // bounded to minValue
   });
 
   it('should render text when provided', () => {

@@ -40,10 +40,10 @@ export type CircularProgressbarDefaultProps = {
   text: string;
 };
 
-export type CircularProgressbarProps = CircularProgressbarDefaultProps & {
-  value: number;
-  ariaLabel?: string;
-};
+export type CircularProgressbarProps = CircularProgressbarDefaultProps &
+  Omit<React.SVGProps<SVGSVGElement>, 'value' | 'text' | 'className'> & {
+    value: number;
+  };
 
 const defaultProps: Partial<CircularProgressbarDefaultProps> = {
   background: false,
@@ -72,7 +72,10 @@ const CircularProgressbar: React.FC<Partial<CircularProgressbarProps>> = ({ ...i
     counterClockwise,
     strokeWidth,
     text,
-    ...props
+    value,
+    minValue,
+    maxValue,
+    ...svgProps
   } = defaultsDeep(initialProps, defaults(initialProps, defaultProps));
 
   const getBackgroundPadding = () => {
@@ -90,11 +93,11 @@ const CircularProgressbar: React.FC<Partial<CircularProgressbarProps>> = ({ ...i
     return VIEWBOX_HEIGHT_HALF - strokeWidth / 2 - getBackgroundPadding();
   };
 
+  const boundedValue = Math.min(Math.max(value as number, minValue as number), maxValue as number);
+
   // Ratio of path length to trail length, as a value between 0 and 1
   const getPathRatio = () => {
-    const { value, minValue, maxValue } = props;
-    const boundedValue = Math.min(Math.max(value, minValue), maxValue);
-    return (boundedValue - minValue) / (maxValue - minValue);
+    return (boundedValue - (minValue as number)) / ((maxValue as number) - (minValue as number));
   };
 
   const pathRadius = getPathRadius();
@@ -106,10 +109,11 @@ const CircularProgressbar: React.FC<Partial<CircularProgressbarProps>> = ({ ...i
       viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
       data-test-id="CircularProgressbar"
       role="progressbar"
-      aria-valuenow={props.value}
-      aria-valuemin={props.minValue}
-      aria-valuemax={props.maxValue}
-      aria-label={props.ariaLabel}
+      aria-valuenow={boundedValue}
+      aria-valuemin={minValue}
+      aria-valuemax={maxValue}
+      aria-valuetext={text}
+      {...svgProps}
     >
       {background ? (
         <circle
@@ -123,21 +127,26 @@ const CircularProgressbar: React.FC<Partial<CircularProgressbarProps>> = ({ ...i
       <Path
         className={classNames(classes?.trail)}
         counterClockwise={counterClockwise}
-        dashRatio={circleRatio}
+        dashRatio={circleRatio as number}
         pathRadius={pathRadius}
-        strokeWidth={strokeWidth}
+        strokeWidth={strokeWidth as number}
       />
 
       <Path
         className={classNames(classes?.path)}
         counterClockwise={counterClockwise}
-        dashRatio={pathRatio * circleRatio}
+        dashRatio={pathRatio * (circleRatio as number)}
         pathRadius={pathRadius}
-        strokeWidth={strokeWidth}
+        strokeWidth={strokeWidth as number}
       />
 
       {text ? (
-        <text className={classNames(classes?.text)} x={VIEWBOX_CENTER_X} y={VIEWBOX_CENTER_Y}>
+        <text
+          className={classNames(classes?.text)}
+          x={VIEWBOX_CENTER_X}
+          y={VIEWBOX_CENTER_Y}
+          aria-hidden="true"
+        >
           {text}
         </text>
       ) : null}
