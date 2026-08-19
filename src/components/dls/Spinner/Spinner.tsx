@@ -31,7 +31,9 @@ const Spinner = ({
       [styles.centered]: isCentered,
       [styles.delayVisibility]: shouldDelayVisibility,
     })}
+    role="status"
   >
+    <span className="sr-only">Loading...</span>
     <div className={styles.container}>{getSpans()}</div>
   </div>
 );
