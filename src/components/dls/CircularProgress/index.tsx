@@ -42,6 +42,7 @@ export type CircularProgressbarDefaultProps = {
 
 export type CircularProgressbarProps = CircularProgressbarDefaultProps & {
   value: number;
+  ariaLabel?: string;
 };
 
 const defaultProps: Partial<CircularProgressbarDefaultProps> = {
@@ -104,6 +105,11 @@ const CircularProgressbar: React.FC<Partial<CircularProgressbarProps>> = ({ ...i
       className={classNames(classes?.root, className)}
       viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
       data-test-id="CircularProgressbar"
+      role="progressbar"
+      aria-valuenow={props.value}
+      aria-valuemin={props.minValue}
+      aria-valuemax={props.maxValue}
+      aria-label={props.ariaLabel}
     >
       {background ? (
         <circle
