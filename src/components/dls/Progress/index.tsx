@@ -5,13 +5,14 @@ import classnames from 'classnames';
 
 import styles from './Progress.module.scss';
 
-export interface ProgressProps {
+export interface ProgressProps
+  extends Omit<React.ComponentPropsWithoutRef<typeof RadixProgress.Root>, 'value'> {
   value: number;
   size?: 'small' | 'medium' | 'large';
   className?: string;
 }
 
-const Progress: React.FC<ProgressProps> = ({ value, size = 'medium', className }) => {
+const Progress: React.FC<ProgressProps> = ({ value, size = 'medium', className, ...props }) => {
   // Clamp value between 0 and 100
   const clampedValue = Math.min(100, Math.max(0, value || 0));
 
@@ -20,6 +21,7 @@ const Progress: React.FC<ProgressProps> = ({ value, size = 'medium', className }
       className={classnames(styles.root, className)}
       value={clampedValue}
       data-size={size}
+      {...props}
     >
       <RadixProgress.Indicator
         className={styles.indicator}
