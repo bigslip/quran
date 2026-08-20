@@ -15,14 +15,14 @@ type Props = {
   containerClassName?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Pill: React.FC<Props> = ({ children, size = PillSize.MEDIUM, containerClassName, ...props }) => {
+const Pill: React.FC<Props> = ({ children, size = PillSize.MEDIUM, containerClassName, className, ...props }) => {
   return (
     <div
-      {...props}
-      className={classNames(containerClassName, styles.container, {
+      className={classNames(className, containerClassName, styles.container, {
         [styles.medium]: size === PillSize.MEDIUM,
         [styles.small]: size === PillSize.SMALL,
       })}
+      {...props}
     >
       {children}
     </div>

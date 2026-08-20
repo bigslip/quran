@@ -7,7 +7,7 @@ export default {
     size: {
       control: 'radio',
       options: Object.values(PillSize),
-      description: 'The value that will be used with aria-label',
+      description: 'The size of the pill',
       table: {
         category: 'Optional',
       },
