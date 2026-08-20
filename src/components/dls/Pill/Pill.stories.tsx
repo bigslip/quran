@@ -1,4 +1,4 @@
-import Pill, { PillSize } from './index';
+import Pill, { PillSize } from './Pill';
 
 export default {
   title: 'dls/Pill',
