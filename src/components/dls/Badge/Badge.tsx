@@ -13,6 +13,7 @@ type BadgeProps = React.HTMLAttributes<HTMLDivElement> & {
   contentClassName?: string;
   className?: string;
   position?: BadgePosition;
+  contentProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
 const Badge = ({
@@ -21,14 +22,15 @@ const Badge = ({
   contentClassName,
   className,
   position = BadgePosition.BOTTOM_RIGHT,
+  contentProps,
   ...props
 }: BadgeProps) => {
   return (
-    <div className={classNames(styles.container, className)}>
+    <div className={classNames(styles.container, className)} role="status" {...props}>
       {children}
       <div
-        role="status"
-        {...props}
+        aria-hidden="true"
+        {...contentProps}
         className={classNames(contentClassName, styles.content, {
           [styles.topLeft]: position === BadgePosition.TOP_LEFT,
           [styles.bottomRight]: position === BadgePosition.BOTTOM_RIGHT,
