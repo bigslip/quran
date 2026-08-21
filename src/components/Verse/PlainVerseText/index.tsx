@@ -25,7 +25,7 @@ type Props = {
   titleText?: string;
   quranFont?: QuranFont;
   highlightedWordLocation?: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 /**
  * A component to only show the verse text without extra functionalities such as ayah
@@ -43,6 +43,8 @@ const PlainVerseText: React.FC<Props> = ({
   titleText,
   quranFont: quranFontFromProps,
   highlightedWordLocation,
+  className,
+  ...props
 }: Props): JSX.Element => {
   const {
     quranFont: quranFontFromStore,
@@ -56,7 +58,7 @@ const PlainVerseText: React.FC<Props> = ({
   const shouldShowTitle = !!titleText;
 
   return (
-    <>
+    <div className={className} {...props}>
       <SeoTextForVerse words={words} />
       <TajweedFontPalettes pageNumber={pageNumber} quranFont={quranFont} />
       <div
@@ -113,7 +115,7 @@ const PlainVerseText: React.FC<Props> = ({
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
