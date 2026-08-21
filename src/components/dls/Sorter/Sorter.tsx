@@ -1,3 +1,4 @@
+import React from 'react';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -27,7 +28,7 @@ type SorterProps<T extends string> = {
   onChange: (optionId: T) => void;
   onOpenChange?: (isOpen: boolean) => void;
   dataTestPrefix?: string;
-};
+} & React.HTMLAttributes<HTMLButtonElement>;
 
 const Sorter = <T extends string>({
   options,
@@ -35,6 +36,8 @@ const Sorter = <T extends string>({
   onChange,
   onOpenChange,
   dataTestPrefix = 'sorter',
+  className,
+  ...props
 }: SorterProps<T>) => {
   const { t } = useTranslation('common');
 
@@ -66,8 +69,9 @@ const Sorter = <T extends string>({
       trigger={
         <button
           type="button"
-          className={styles.sortTrigger}
+          className={classNames(styles.sortTrigger, className)}
           data-has-selected={selectedOptionId !== null}
+          {...props}
         >
           <IconContainer
             className={styles.iconWrapper}
