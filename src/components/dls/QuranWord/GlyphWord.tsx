@@ -1,4 +1,5 @@
 /* eslint-disable react/no-danger */
+import React from 'react';
 
 import classNames from 'classnames';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -23,7 +24,7 @@ type UthmaniWordTextProps = {
 
   quranTextFontScaleOverride?: number; // Optional font scale override
   mushafLinesOverride?: MushafLines; // Optional mushaf lines override
-};
+} & React.HTMLAttributes<HTMLSpanElement>;
 
 /**
  * Get the text of the verse's word. This is used to show textUthmani as a fallback
@@ -60,13 +61,16 @@ const GlyphWord = ({
   charType,
   quranTextFontScaleOverride,
   mushafLinesOverride,
+  className,
+  style,
+  ...props
 }: UthmaniWordTextProps) => {
   // Get values from Redux as the default
   const reduxStyles = useSelector(selectQuranReaderStyles, shallowEqual);
 
   // Use prop overrides if provided, otherwise fall back to Redux values.
-  const quranTextFontScale = quranTextFontScaleOverride ?? reduxStyles.quranTextFontScale;
-  const mushafLines = mushafLinesOverride ?? reduxStyles.mushafLines;
+  const quranTextFontScale = quranTextFontScaleOverride ?? reduxStyles?.quranTextFontScale ?? 3;
+  const mushafLines = mushafLinesOverride ?? reduxStyles?.mushafLines ?? MushafLines.SixteenLines;
 
   // The extra space before the glyph should only be added where the issue occurs,
   // which is in firefox with the Madani V1 Mushaf and the font scale is less than 6
@@ -85,7 +89,7 @@ const GlyphWord = ({
       }}
       data-font-scale={quranTextFontScale}
       data-font={font}
-      className={classNames(styles.styledWord, {
+      className={classNames(className, styles.styledWord, {
         [styles.tajweedTextHighlighted]:
           font === QuranFont.TajweedV4 && charType !== CharType.End && isHighlighted,
         [styles.wordSpacing]: addExtraSpace,
@@ -93,9 +97,11 @@ const GlyphWord = ({
         [styles[getFontClassName(FALLBACK_FONT, quranTextFontScale, mushafLines, true)]]:
           !isFontLoaded,
       })}
-      {...(isFontLoaded && {
-        style: { fontFamily: getFontFaceNameForPage(font, pageNumber) },
-      })}
+      style={{
+        ...style,
+        ...(isFontLoaded && { fontFamily: getFontFaceNameForPage(font, pageNumber) })
+      }}
+      {...props}
     />
   );
 };

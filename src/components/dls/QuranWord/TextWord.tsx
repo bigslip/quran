@@ -11,7 +11,7 @@ type MadaniWordTextProps = {
   text: string;
   font: string;
   charType: CharType;
-};
+} & React.HTMLAttributes<HTMLSpanElement>;
 
 const DEFAULT_FONT_FAMILY = 'UthmanicHafs';
 const INDO_PAK = 'IndoPak';
@@ -21,15 +21,16 @@ const UTHMANI_HAFS_FONTS = decamelizeKeys({
   textIndopak: INDO_PAK,
 });
 
-const TextWord: React.FC<MadaniWordTextProps> = ({ text, font, charType }) => (
+const TextWord: React.FC<MadaniWordTextProps> = ({ text, font, charType, className, ...props }) => (
   <span
-    className={classNames(styles.word, {
+    className={classNames(className, styles.word, {
       [styles[DEFAULT_FONT_FAMILY]]:
         charType === CharType.End ||
         !UTHMANI_HAFS_FONTS[font] ||
         UTHMANI_HAFS_FONTS[font] === DEFAULT_FONT_FAMILY,
       [styles[INDO_PAK]]: UTHMANI_HAFS_FONTS[font] === INDO_PAK,
     })}
+    {...props}
   >
     {text}
   </span>
