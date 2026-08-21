@@ -28,7 +28,8 @@ type IconContainerProps = {
   className?: string;
   shouldFlipOnRTL?: boolean;
   shouldForceSetColors?: boolean;
-};
+} & React.HTMLAttributes<HTMLSpanElement>;
+
 const IconContainer = ({
   icon,
   size = IconSize.Medium,
@@ -36,6 +37,7 @@ const IconContainer = ({
   shouldFlipOnRTL = true,
   shouldForceSetColors = true,
   className,
+  ...props
 }: IconContainerProps) => {
   const dir = useDirection();
   return (
@@ -54,6 +56,7 @@ const IconContainer = ({
       })}
       data-auto-flip-icon={shouldFlipOnRTL}
       dir={dir}
+      {...props}
     >
       {icon}
     </span>
