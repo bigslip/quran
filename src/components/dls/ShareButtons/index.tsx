@@ -23,7 +23,7 @@ import useThemeDetector from '@/hooks/useThemeDetector';
 import CodeCircleIcon from '@/icons/code-embed-circle.svg';
 import CopyLinkIcon from '@/icons/copy-link-new.svg';
 import FacebookIcon from '@/icons/fb.svg';
-import VideoIcon from '@/public/icons/video-link-new.svg';
+import VideoIcon from '@/icons/video-link-new.svg';
 import { selectAyahWidgetOverrides } from '@/redux/slices/ayahWidget';
 import { selectQuranFont } from '@/redux/slices/QuranReader/styles';
 import { selectSelectedTranslations } from '@/redux/slices/QuranReader/translations';
@@ -32,7 +32,7 @@ import QueryParam from '@/types/QueryParam';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getQuranMediaMakerNavigationUrl } from '@/utils/navigation';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   url: string;
   title: string;
   analyticsContext: string;
@@ -52,6 +52,8 @@ const ShareButtons: React.FC<Props> = ({
   analyticsContext,
   verse,
   hideVideoGeneration = false,
+  className,
+  ...props
 }) => {
   const { t } = useTranslation('common');
   const [isCopied, setIsCopied] = useState(false);
@@ -140,7 +142,7 @@ const ShareButtons: React.FC<Props> = ({
   };
 
   return (
-    <div className={styles.shareOptionsButtons}>
+    <div className={classNames(styles.shareOptionsButtons, className)} {...props}>
       <div className={styles.shareOptionButton}>
         <FacebookShareButton url={url} title={title} onClick={onFacebookShareButtonClicked}>
           <div className={styles.utilityIconWrapper}>
