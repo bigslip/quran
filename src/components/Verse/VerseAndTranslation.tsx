@@ -50,7 +50,7 @@ import ChaptersData from 'types/ChaptersData';
  * />
  * ```
  */
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   chaptersData?: ChaptersData;
   chapter: number;
   from: number;
@@ -66,7 +66,7 @@ interface Props {
 const VerseAndTranslation: React.FC<Props> = (props) => {
   // If fixedFontScale is provided as a prop, use it; otherwise, get from hook (Redux)
   const { lang } = useTranslation();
-  const { fixedFontScale, chapter, ...restProps } = props;
+  const { fixedFontScale, chapter, className, ...restProps } = props;
   const {
     data,
     error,
@@ -87,7 +87,7 @@ const VerseAndTranslation: React.FC<Props> = (props) => {
   if (!data) return <Spinner />;
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, className)} {...restProps}>
       {data?.verses?.map((verse) => (
         <div key={verse.verseKey} className={styles.verseContainer}>
           <div className={classNames(styles.arabicVerseContainer, restProps.arabicVerseClassName)}>
