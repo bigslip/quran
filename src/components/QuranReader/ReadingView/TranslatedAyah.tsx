@@ -27,7 +27,7 @@ type TranslatedAyahProps = {
   languageId: number;
   lang: string;
   isLastVerse?: boolean;
-};
+} & React.HTMLAttributes<HTMLSpanElement>;
 
 /**
  * Renders a single translated ayah with hover highlight, click interactions, and footnote support.
@@ -41,6 +41,8 @@ const TranslatedAyah: React.FC<TranslatedAyahProps> = ({
   languageId,
   lang,
   isLastVerse = false,
+  className,
+  ...props
 }) => {
   const dispatch = useDispatch();
   const studyModeIsOpen = useSelector(selectStudyModeIsOpen);
@@ -148,7 +150,7 @@ const TranslatedAyah: React.FC<TranslatedAyahProps> = ({
   return (
     <>
       <span
-        className={classNames(styles.ayah, styles[langData.direction], styles.clickable, {
+        className={classNames(className, styles.ayah, styles[langData.direction], styles.clickable, {
           [styles.hasActiveFootnote]: showFootnote,
           [styles.isActive]: isStudyModeModalOpen,
         })}
@@ -157,6 +159,7 @@ const TranslatedAyah: React.FC<TranslatedAyahProps> = ({
         onKeyDown={handleAyahKeyDown}
         role="button"
         tabIndex={0}
+        {...props}
       >
         {verseNumberElement}
         {translationTextElement}
