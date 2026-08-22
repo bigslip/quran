@@ -18,7 +18,7 @@ import { getLanguageDataById } from '@/utils/locale';
 import { getFootnote } from 'src/api';
 import Footnote from 'types/Footnote';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   shouldShowReference?: boolean;
   translationFontScale: number;
   text: string;
@@ -38,6 +38,7 @@ const TranslationText: React.FC<Props> = ({
   reference,
   chapterName,
   className,
+  ...props
 }) => {
   const { t, lang } = useTranslation('quran-reader');
   const [isLoading, setIsLoading] = useState(false);
@@ -167,6 +168,7 @@ const TranslationText: React.FC<Props> = ({
     <div
       className={classNames(styles[`translation-font-size-${translationFontScale}`], className)}
       translate="no"
+      {...props}
     >
       <TranslationAndReference
         text={text}

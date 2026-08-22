@@ -30,7 +30,7 @@ type TranslationViewProps = {
   quranReaderDataType: QuranReaderDataType;
   initialData: VersesResponse;
   resourceId: number | string; // can be the chapter, verse, tafsir, hizb, juz, rub or page's ID.
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const EndOfScrollingControls = dynamic(() => import('../EndOfScrollingControls'), {
   ssr: false,
@@ -44,6 +44,8 @@ const TranslationView = ({
   quranReaderDataType,
   initialData,
   resourceId,
+  className,
+  ...props
 }: TranslationViewProps) => {
   const [apiPageToVersesMap, setApiPageToVersesMap] = useState<Record<number, Verse[]>>({
     1: initialData.verses,
@@ -147,10 +149,11 @@ const TranslationView = ({
       )}
 
       <div
-        className={classNames(styles.wrapper, {
+        className={classNames(className, styles.wrapper, {
           [styles.singleVerseWrapper]: isSingleVerse,
         })}
         onCopy={(event) => onCopyQuranWords(event, verses, quranReaderStyles.quranFont)}
+        {...props}
       >
         <Virtuoso
           ref={virtuosoRef}

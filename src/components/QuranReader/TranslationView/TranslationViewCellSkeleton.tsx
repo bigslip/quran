@@ -17,11 +17,11 @@ const TRANSLATION_TEXT_SAMPLE =
   'He has revealed to you ˹O Prophet˺ the Book in truth, confirming what came before it, as He revealed the Torah and the Gospel';
 const TRANSLATION_AUTHOR_SAMPLE = '— Dr. Mustafa Khattab, the Clear Quran';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   hasActionMenuItems?: boolean;
 }
 
-const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = true }) => {
+const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = true, className, ...props }) => {
   const { value: selectedTranslations }: { value: number[] } = useGetQueryParamOrReduxValue(
     QueryParam.TRANSLATIONS,
   );
@@ -31,7 +31,7 @@ const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = tru
   );
 
   return (
-    <div className={classNames(cellStyles.cellContainer, skeletonStyles.cellContainer)}>
+    <div className={classNames(className, cellStyles.cellContainer, skeletonStyles.cellContainer)} {...props}>
       <div className={cellStyles.actionContainer}>
         <div className={cellStyles.actionContainerLeft}>
           {range(0, 4).map((index) => (
