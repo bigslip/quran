@@ -35,7 +35,7 @@ export type LineProps = {
   // eslint-disable-next-line react/no-unused-prop-types
   bookmarksRangeUrl: string | null;
   pageHeaderChapterId?: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const Line = ({
   lineKey,
@@ -44,6 +44,10 @@ const Line = ({
   pageIndex,
   lineIndex,
   pageHeaderChapterId,
+  quranReaderStyles,
+  bookmarksRangeUrl,
+  className,
+  ...props
 }: LineProps) => {
   const audioService = useContext(AudioPlayerMachineContext);
   const isHighlighted = useXstateSelector(audioService, (state) => {
@@ -105,10 +109,11 @@ const Line = ({
       data-page={pageNumber}
       data-chapter-id={chapterId}
       data-hizb={hizbNumber}
-      className={classNames(styles.container, {
+      className={classNames(className, styles.container, {
         [styles.highlighted]: isHighlighted,
         [styles.mobileInline]: isBigTextLayout,
       })}
+      {...props}
     >
       {shouldShowChapterHeader && chapterId !== pageHeaderChapterId && (
         <ChapterHeader chapterId={firstWordData[0]} isTranslationView={false} />
