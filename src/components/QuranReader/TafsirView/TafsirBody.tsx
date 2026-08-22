@@ -60,7 +60,7 @@ type TafsirBodyProps = {
     languageAndTafsirSelection: JSX.Element;
     body: JSX.Element;
   }) => JSX.Element;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const TafsirBody = ({
   initialChapterId,
@@ -73,6 +73,8 @@ const TafsirBody = ({
   showNavigation = true,
   shouldShowFontControl = true,
   hasSeparateTafsirLayout = false,
+  className,
+  ...props
 }: TafsirBodyProps) => {
   const quranReaderStyles = useSelector(selectQuranReaderStyles, shallowEqual);
   const { lang, t } = useTranslation('common');
@@ -337,12 +339,14 @@ const TafsirBody = ({
   const body = (
     <div
       className={classNames(
+        className,
         styles.tafsirContainer,
         styles[`tafsir-font-size-${quranReaderStyles.tafsirFontScale}`],
       )}
       // disable browser translation for tafsir content
       // @see {https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/translate}
       translate="no"
+      {...props}
     >
       <DataFetcher
         loading={TafsirSkeleton}
