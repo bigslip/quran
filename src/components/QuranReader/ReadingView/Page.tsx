@@ -27,7 +27,7 @@ type PageProps = {
   pageIndex: number;
   bookmarksRangeUrl: string | null;
   lang: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const Page = ({
   verses,
@@ -36,6 +36,8 @@ const Page = ({
   pageIndex,
   bookmarksRangeUrl,
   lang,
+  className,
+  ...props
 }: PageProps) => {
   const readingPreference = useSelector(selectReadingPreference);
 
@@ -64,7 +66,7 @@ const Page = ({
   // Render translation-only page for "Reading - Translation" mode
   if (isReadingTranslation) {
     return (
-      <div id={`page-${pageNumber}`} className={styles.translationPageContainer}>
+      <div id={`page-${pageNumber}`} className={classNames(className, styles.translationPageContainer)} {...props}>
         {chapterHeader}
         <TranslationPage
           verses={verses}
@@ -79,11 +81,12 @@ const Page = ({
   return (
     <div
       id={`page-${pageNumber}`}
-      className={classNames(styles.container, {
+      className={classNames(className, styles.container, {
         [styles.mobileCenterText]: isBigTextLayout,
         [styles[getLineWidthClassName(FALLBACK_FONT, quranTextFontScale, mushafLines, true)]]:
           !isFontLoaded,
       })}
+      {...props}
     >
       {chapterHeader}
       <div className={styles.linesContainer}>
