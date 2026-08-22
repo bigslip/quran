@@ -1,3 +1,6 @@
+import React from 'react';
+import classNames from 'classnames';
+
 import { useActor } from '@xstate/react';
 
 import CloseRadioButton from './Buttons/CloseRadioButton';
@@ -6,11 +9,15 @@ import styles from './RadioPlaybackControl.module.scss';
 
 import useCurrentStationInfo from 'src/xstate/Radio/useCurrentStationInfo';
 
-const RadioPlaybackControl = ({ radioActor }) => {
+interface RadioPlaybackControlProps extends React.HTMLAttributes<HTMLDivElement> {
+  radioActor: any;
+}
+
+const RadioPlaybackControl = ({ radioActor, className, ...props }: RadioPlaybackControlProps) => {
   const [radioService] = useActor(radioActor);
   const stationInfo = useCurrentStationInfo((radioService as any).context);
   return (
-    <div className={styles.container}>
+    <div className={classNames(className, styles.container)} {...props}>
       <div className={styles.infoContainer}>
         <div className={styles.title}>{stationInfo.title}</div>
         <div className={styles.description}>{stationInfo.description}</div>

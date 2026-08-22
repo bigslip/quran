@@ -51,7 +51,7 @@ const getAudioPlayerDownloadProgress = (audioPlayer: HTMLAudioElement) => {
   return 0;
 };
 
-const AudioPlayer = () => {
+const AudioPlayer = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
   const audioPlayerRef = useRef<HTMLAudioElement>();
   const audioService = useContext(AudioPlayerMachineContext);
   const isVisible = useSelector(audioService, (state) => state.matches('VISIBLE'));
@@ -145,11 +145,12 @@ const AudioPlayer = () => {
   return (
     <>
       <div
-        className={classNames(styles.container, styles.containerDefault, {
+        className={classNames(className, styles.container, styles.containerDefault, {
           [styles.containerHidden]: !isVisible || isStudyModeOpen,
           [styles.containerOnboarding]: isActive,
         })}
         data-testid="audio-player-body"
+        {...props}
       >
         {/* We have to create an inline audio player and hide it due to limitations of how safari requires a play action to trigger: https://stackoverflow.com/questions/31776548/why-cant-javascript-play-audio-files-on-iphone-safari */}
         <audio

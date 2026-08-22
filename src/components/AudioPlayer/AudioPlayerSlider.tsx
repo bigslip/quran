@@ -12,11 +12,11 @@ import { secondsFormatter } from '@/utils/datetime';
 import { logEvent } from '@/utils/eventLogger';
 import { AudioPlayerMachineContext } from 'src/xstate/AudioPlayerMachineContext';
 
-interface AudioPlayerSliderProps {
+interface AudioPlayerSliderProps extends React.HTMLAttributes<HTMLDivElement> {
   isEmbedded?: boolean;
 }
 
-const AudioPlayerSlider = ({ isEmbedded }: AudioPlayerSliderProps): JSX.Element => {
+const AudioPlayerSlider = ({ isEmbedded, className, ...props }: AudioPlayerSliderProps): JSX.Element => {
   const router = useRouter();
   const { locale } = router;
   const direction = useDirection();
@@ -31,7 +31,7 @@ const AudioPlayerSlider = ({ isEmbedded }: AudioPlayerSliderProps): JSX.Element 
   });
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(className, styles.container)} {...props}>
       <span className={styles.currentTime} data-testid="audio-elapsed">
         {secondsFormatter(elapsed, locale)}
       </span>

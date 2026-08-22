@@ -1,4 +1,6 @@
 import { useContext } from 'react';
+import classNames from 'classnames';
+
 
 import { useSelector } from '@xstate/react';
 import useTranslation from 'next-translate/useTranslation';
@@ -14,18 +16,18 @@ import useGetChaptersData from '@/hooks/useGetChaptersData';
 import { selectIsLoading } from 'src/xstate/actors/audioPlayer/selectors';
 import { AudioPlayerMachineContext } from 'src/xstate/AudioPlayerMachineContext';
 
-interface PlaybackControlsProps {
+interface PlaybackControlsProps extends React.HTMLAttributes<HTMLDivElement> {
   isEmbedded?: boolean;
 }
 
-const PlaybackControls = ({ isEmbedded }: PlaybackControlsProps) => {
+const PlaybackControls = ({ isEmbedded, className, ...props }: PlaybackControlsProps) => {
   const audioService = useContext(AudioPlayerMachineContext);
   const isLoading = useSelector(audioService, selectIsLoading);
   const { lang } = useTranslation('common');
   const chaptersData = useGetChaptersData(lang);
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(className, styles.container)} {...props}>
       <div className={styles.actionItem}>
         <OverflowAudioPlayerActionsMenu isEmbedded={isEmbedded} />
       </div>

@@ -122,3 +122,19 @@ describe('AudioPlayer', () => {
     });
   });
 });
+
+  describe('prop forwarding', () => {
+    it('spreads attributes to the wrapper element', () => {
+      const audioService = createMockAudioService('VISIBLE.AUDIO_PLAYER_INITIATED.PLAYING');
+      const { getByTestId } = render(
+        <AudioPlayerMachineContext.Provider
+          value={audioService as unknown as React.ContextType<typeof AudioPlayerMachineContext>}
+        >
+          <AudioPlayer aria-hidden="true" data-testid="audio-player-wrapper" className="extra-class" />
+        </AudioPlayerMachineContext.Provider>,
+      );
+      const el = getByTestId('audio-player-wrapper');
+      expect(el.getAttribute('aria-hidden')).toBe('true');
+      expect(el.classList.contains('extra-class')).toBe(true);
+    });
+  });
