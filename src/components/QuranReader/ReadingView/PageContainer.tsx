@@ -34,7 +34,7 @@ type Props = {
   setMushafPageToVersesMap: (data: Record<number, Verse[]>) => void;
   initialData: VersesResponse;
   readingPreference: ReadingPreference;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const getPageVersesRange = (
   currentMushafPage: number,
@@ -82,6 +82,8 @@ const PageContainer: React.FC<Props> = ({
   setMushafPageToVersesMap,
   initialData,
   readingPreference,
+  className,
+  ...props
 }: Props): JSX.Element => {
   /**
    * HYDRATION RACE CONDITION FIX:
@@ -209,6 +211,8 @@ const PageContainer: React.FC<Props> = ({
       pageIndex={pageIndex}
       bookmarksRangeUrl={bookmarksRangeUrl}
       lang={lang}
+      className={className}
+      {...props}
     />
   );
 };
