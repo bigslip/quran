@@ -19,7 +19,10 @@ import { resetPassword } from '@/utils/auth/authRequests';
 import { logButtonClick, logFormSubmission } from '@/utils/eventLogger';
 import { getLoginNavigationUrl } from '@/utils/navigation';
 
-const ResetPasswordForm: React.FC = () => {
+const ResetPasswordForm: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  className,
+  ...props
+}) => {
   const { t } = useTranslation('login');
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,12 +83,16 @@ const ResetPasswordForm: React.FC = () => {
   );
 
   return (
-    <div className={styles.outerContainer}>
+    <div {...props} className={classNames(styles.outerContainer, className)}>
       <div className={styles.authContainer}>
         <AuthHeader />
         <h1 className={styles.authTitle}>{t('set-new-password')}</h1>
         <div className={styles.formContainer}>
-          {generalError && <div className={styles.generalError}>{generalError}</div>}
+          {generalError && (
+            <div className={styles.generalError} aria-live="polite">
+              {generalError}
+            </div>
+          )}
 
           <FormBuilder
             formFields={formFields}

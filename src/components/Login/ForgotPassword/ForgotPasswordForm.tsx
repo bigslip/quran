@@ -19,7 +19,10 @@ import { requestPasswordReset } from '@/utils/auth/authRequests';
 import { logButtonClick, logFormSubmission } from '@/utils/eventLogger';
 import { getLoginNavigationUrl } from '@/utils/navigation';
 
-const ForgotPasswordForm: React.FC = () => {
+const ForgotPasswordForm: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  className,
+  ...props
+}) => {
   const { t } = useTranslation('login');
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -73,7 +76,7 @@ const ForgotPasswordForm: React.FC = () => {
   );
 
   return (
-    <div className={styles.outerContainer}>
+    <div {...props} className={classNames(styles.outerContainer, className)}>
       <div className={styles.authContainer}>
         <AuthHeader />
         <h1 className={styles.authTitle}>{t('forgot-password-title')}</h1>

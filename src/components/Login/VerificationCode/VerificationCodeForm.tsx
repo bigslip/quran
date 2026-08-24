@@ -1,6 +1,7 @@
 /* eslint-disable react-func/max-lines-per-function */
 import { FC } from 'react';
 
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
 
 import VerificationCodeBase from './VerificationCodeBase';
@@ -12,7 +13,7 @@ import SignUpRequest from '@/types/auth/SignUpRequest';
 import { signUp } from '@/utils/auth/authRequests';
 import { logFormSubmission } from '@/utils/eventLogger';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   email: string;
   onBack: () => void;
   onResendCode: () => Promise<void>;
@@ -28,6 +29,8 @@ const VerificationCodeForm: FC<Props> = ({
   signUpData,
   onSuccess,
   handleSubmit,
+  className,
+  ...props
 }) => {
   const router = useRouter();
 
@@ -55,7 +58,7 @@ const VerificationCodeForm: FC<Props> = ({
   };
 
   return (
-    <div className={styles.authContainer}>
+    <div {...props} className={classNames(styles.authContainer, className)}>
       <AuthHeader />
       <VerificationCodeBase
         email={email}

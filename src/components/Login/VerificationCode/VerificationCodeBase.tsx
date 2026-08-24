@@ -121,7 +121,11 @@ const VerificationCodeBase: FC<Props> = ({
             characterSelected: styles.characterSelected,
           }}
         />
-        {error && <div className={styles.error}>{error}</div>}
+        {error && (
+          <div className={styles.error} aria-live="polite">
+            {error}
+          </div>
+        )}
       </div>
 
       <div className={styles.spamNote}>{t('verification-code-spam-note')}</div>
