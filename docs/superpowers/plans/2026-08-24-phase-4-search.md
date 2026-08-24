@@ -65,5 +65,5 @@
 **Files:**
 - Create `src/pages/search.test.tsx`
 
-- [ ] **Step 1:** Write an integration test for `SearchPage`. Mock the API calls and Redux state. Verify that entering a query updates the URL, triggers a search, and displays the `SearchBodyContainer`.
-- [ ] **Step 2:** Run test — expect PASS.
+- [x] **Step 1:** Write an integration test for `SearchPage`. Mock the API calls and Redux state. Verify that entering a query updates the URL, triggers a search, and displays the `SearchBodyContainer`.
+- [x] **Step 2:** Run test — expect PASS.

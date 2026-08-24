@@ -14,13 +14,14 @@ import { signUp } from '@/utils/auth/authRequests';
 import { logFormSubmission } from '@/utils/eventLogger';
 import SignUpRequest from 'types/auth/SignUpRequest';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   onSuccess: (data: SignUpRequest) => void;
 }
 
-const SignUpForm = ({ onSuccess }: Props) => {
+const SignUpForm = ({ onSuccess, className, ...props }: Props) => {
   const { t } = useTranslation('login');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleSubmit = async (data: SignUpRequest) => {
     logFormSubmission('sign_up');
@@ -66,7 +67,7 @@ const SignUpForm = ({ onSuccess }: Props) => {
   const formFields = addCustomRenderToFormFields(getSignUpFormFields(t));
 
   return (
-    <div className={styles.formContainer}>
+    <div className={classNames(styles.formContainer, className)} {...props}>
       <FormBuilder
         formFields={formFields}
         onSubmit={handleSubmit}
