@@ -7,14 +7,14 @@ import styles from './Filter.module.scss';
 import Combobox from '@/dls/Forms/Combobox';
 import AvailableLanguage from 'types/AvailableLanguage';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   onLanguageChange: (languageIsoCode: string[]) => void;
   selectedLanguages: string;
   languages: AvailableLanguage[];
 }
 
 const LanguagesFilter: React.FC<Props> = memo(
-  ({ languages, selectedLanguages, onLanguageChange }) => {
+  ({ languages, selectedLanguages, onLanguageChange, className, ...props }) => {
     const { t } = useTranslation('search');
     /*
       We need to only pick the languages that exist in the list of available languages
@@ -37,7 +37,7 @@ const LanguagesFilter: React.FC<Props> = memo(
     );
 
     return (
-      <div className={styles.comboboxItems}>
+      <div className={[styles.comboboxItems, className].filter(Boolean).join(' ')} {...props}>
         <Combobox
           isMultiSelect
           id="languagesFilter"

@@ -6,17 +6,17 @@ import TranslationGroup from './TranslationGroup';
 import { getTranslationsByLanguages } from '@/utils/search';
 import AvailableTranslation from 'types/AvailableTranslation';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   onTranslationChange: (translationId: string[]) => void;
   selectedTranslations: string;
   translations: AvailableTranslation[];
 }
 
 const TranslationsFilter: React.FC<Props> = memo(
-  ({ translations, selectedTranslations, onTranslationChange }) => {
+  ({ translations, selectedTranslations, onTranslationChange, className, ...props }) => {
     const translationsByLanguages = getTranslationsByLanguages(translations);
     return (
-      <div className={styles.comboboxItems}>
+      <div className={[styles.comboboxItems, className].filter(Boolean).join(' ')} {...props}>
         {Object.entries(translationsByLanguages).map(([language, languageTranslations]) => {
           return (
             <TranslationGroup

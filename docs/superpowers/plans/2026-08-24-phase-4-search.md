@@ -31,9 +31,9 @@
 - Create `src/components/Search/SearchHistory/index.test.tsx`
 - Modify `src/components/Search/SearchHistory/index.tsx` (if needed for ARIA or fixes)
 
-- [ ] **Step 1:** Write a failing test for `SearchHistory` verifying it pulls from Redux `selectSearchHistory`, renders suggestions, and dispatches `removeSearchHistoryRecord` when the remove button is clicked.
+- [x] **Step 1:** Write a failing test for `SearchHistory` verifying it pulls from Redux `selectSearchHistory`, renders suggestions, and dispatches `removeSearchHistoryRecord` when the remove button is clicked.
 - [x] **Step 2:** Run test — expect FAIL (until mocked properly).
-- [ ] **Step 3:** Refactor `SearchHistory` if necessary to spread `HTMLAttributes` to its root div (to support overlays/primitives).
+- [x] **Step 3:** Refactor `SearchHistory` if necessary to spread `HTMLAttributes` to its root div (to support overlays/primitives).
 - [x] **Step 4:** Run test — expect PASS.
 
 ---
