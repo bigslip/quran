@@ -19,10 +19,10 @@
 - Modify `src/components/Search/CommandBar/ExpandedSearchInputSection/index.tsx`
 - Create `src/components/Search/CommandBar/ExpandedSearchInputSection/index.test.tsx`
 
-- [ ] **Step 1:** Write a failing test for `ExpandedSearchInputSection` asserting that given a search query matching a Surah name (e.g. "Yasin"), it renders a suggestion for that Surah immediately without an API call.
-- [ ] **Step 2:** Run test — expect FAIL.
-- [ ] **Step 3:** Implement Fuse.js client-side search inside `ExpandedSearchInputSection` for surah names (using `chaptersData`), combined with recent searches. Avoid calling `getNewSearchResults` API for basic chapter name matches.
-- [ ] **Step 4:** Run test — expect PASS.
+- [x] **Step 1:** Write a failing test for `ExpandedSearchInputSection` asserting that given a search query matching a Surah name (e.g. "Yasin"), it renders a suggestion for that Surah immediately without an API call.
+- [x] **Step 2:** Run test — expect FAIL.
+- [x] **Step 3:** Implement Fuse.js client-side search inside `ExpandedSearchInputSection` for surah names (using `chaptersData`), combined with recent searches. Avoid calling `getNewSearchResults` API for basic chapter name matches.
+- [x] **Step 4:** Run test — expect PASS.
 
 ---
 
@@ -32,9 +32,9 @@
 - Modify `src/components/Search/SearchHistory/index.tsx` (if needed for ARIA or fixes)
 
 - [ ] **Step 1:** Write a failing test for `SearchHistory` verifying it pulls from Redux `selectSearchHistory`, renders suggestions, and dispatches `removeSearchHistoryRecord` when the remove button is clicked.
-- [ ] **Step 2:** Run test — expect FAIL (until mocked properly).
+- [x] **Step 2:** Run test — expect FAIL (until mocked properly).
 - [ ] **Step 3:** Refactor `SearchHistory` if necessary to spread `HTMLAttributes` to its root div (to support overlays/primitives).
-- [ ] **Step 4:** Run test — expect PASS.
+- [x] **Step 4:** Run test — expect PASS.
 
 ---
 

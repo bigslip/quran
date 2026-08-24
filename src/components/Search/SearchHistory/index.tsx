@@ -13,12 +13,19 @@ import SearchQuerySource from '@/types/SearchQuerySource';
 import { areArraysEqual } from '@/utils/array';
 import { logButtonClick } from '@/utils/eventLogger';
 
-interface Props {
+import classNames from 'classnames';
+
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   onSearchKeywordClicked: (searchQuery: string) => void;
   source: SearchQuerySource;
 }
 
-const SearchHistory: React.FC<Props> = ({ onSearchKeywordClicked, source }) => {
+const SearchHistory: React.FC<Props> = ({
+  onSearchKeywordClicked,
+  source,
+  className,
+  ...rest
+}) => {
   const { t } = useTranslation('common');
   const searchHistory = useSelector(selectSearchHistory, areArraysEqual) as string[];
   const dispatch = useDispatch();
@@ -34,10 +41,10 @@ const SearchHistory: React.FC<Props> = ({ onSearchKeywordClicked, source }) => {
 
   // if there are no recent search queries.
   if (!searchHistory.length) {
-    return <></>;
+    return <div style={{ display: 'none' }} className={className} {...rest} />;
   }
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, className)} {...rest}>
       <Header text={t('search.recent')} />
       {searchHistory.map((recentSearchQuery) => (
         <SearchQuerySuggestion
