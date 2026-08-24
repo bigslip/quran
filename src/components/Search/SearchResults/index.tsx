@@ -1,5 +1,6 @@
 import React from 'react';
 
+import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
 import SearchResultItem from './SearchResultItem';
@@ -11,7 +12,7 @@ import SearchQuerySource from '@/types/SearchQuerySource';
 import { toLocalizedNumber } from '@/utils/locale';
 import { SearchResponse } from 'types/ApiResponses';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   searchResult: SearchResponse;
   searchQuery: string;
   currentPage?: number;
@@ -27,6 +28,8 @@ const SearchResults: React.FC<Props> = ({
   currentPage,
   onPageChange,
   pageSize,
+  className,
+  ...props
 }) => {
   const results = searchResult.result.navigation.concat(searchResult.result.verses);
   const isSearchDrawer = source === SearchQuerySource.SearchDrawer;
@@ -39,7 +42,7 @@ const SearchResults: React.FC<Props> = ({
   };
 
   return (
-    <div>
+    <div className={classNames(className)} {...props}>
       {isSearchDrawer ? (
         <SearchResultsHeader searchQuery={searchQuery} source={source} />
       ) : (
