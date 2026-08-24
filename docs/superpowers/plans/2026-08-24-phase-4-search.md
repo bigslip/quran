@@ -43,10 +43,10 @@
 - Create `src/components/Search/Filters/TranslationsFilter.test.tsx`
 - Create `src/components/Search/Filters/LanguagesFilter.test.tsx`
 
-- [ ] **Step 1:** Write tests for `TranslationsFilter` ensuring it correctly filters translations based on the search input, dispatches selected translations, and renders correctly.
-- [ ] **Step 2:** Write tests for `LanguagesFilter`.
-- [ ] **Step 3:** Ensure both components spread `HTMLAttributes` to their root elements.
-- [ ] **Step 4:** Run tests — expect PASS.
+- [x] **Step 1:** Write tests for `TranslationsFilter` ensuring it correctly filters translations based on the search input, dispatches selected translations, and renders correctly.
+- [x] **Step 2:** Write tests for `LanguagesFilter`.
+- [x] **Step 3:** Ensure both components spread `HTMLAttributes` to their root elements.
+- [x] **Step 4:** Run tests — expect PASS.
 
 ---
 
@@ -55,9 +55,9 @@
 - Create `src/components/Search/SearchResults/index.test.tsx`
 - Modify `src/components/Search/SearchResults/index.tsx`
 
-- [ ] **Step 1:** Write a test for `SearchResults` that mocks a `SearchResponse` and verifies it renders a list of `SearchResultItem`s.
-- [ ] **Step 2:** Check if `SearchResults` correctly forwards `HTMLAttributes` to its root div to support the `Skeleton` primitive while loading.
-- [ ] **Step 3:** Run test — expect PASS.
+- [x] **Step 1:** Write a test for `SearchResults` that mocks a `SearchResponse` and verifies it renders a list of `SearchResultItem`s.
+- [x] **Step 2:** Check if `SearchResults` correctly forwards `HTMLAttributes` to its root div to support the `Skeleton` primitive while loading.
+- [x] **Step 3:** Run test — expect PASS.
 
 ---
 
