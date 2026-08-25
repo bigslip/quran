@@ -21,10 +21,10 @@
 - Create tests for `src/components/MyQuran/SavedTabContent/index.tsx`
 - Create tests for `src/pages/my-quran/index.tsx`
 
-- [ ] **Step 1:** Write rendering and interaction tests for the Recent Content, Notes, and Saved tabs in the My Quran dashboard. Verify empty states and populated states.
-- [ ] **Step 2:** Run tests — expect FAIL.
-- [ ] **Step 3:** Refactor the dashboard tab components to properly spread `HTMLAttributes` and resolve any missing ARIA attributes (e.g. `aria-selected` on tabs, `aria-busy` during data fetches).
-- [ ] **Step 4:** Run tests — expect PASS.
+- [x] **Step 1:** Write rendering and interaction tests for the Recent Content, Notes, and Saved tabs in the My Quran dashboard. Verify empty states and populated states.
+- [x] **Step 2:** Run tests — expect FAIL.
+- [x] **Step 3:** Refactor the dashboard tab components to properly spread `HTMLAttributes` and resolve any missing ARIA attributes (e.g. `aria-selected` on tabs, `aria-busy` during data fetches).
+- [x] **Step 4:** Run tests — expect PASS.
 
 ---
 
@@ -45,9 +45,9 @@
 - Create tests for `src/components/ReadingGoal/` and `src/components/ReadingGoalPage/` (e.g. tracking widget, wizard).
 
 - [ ] **Step 1:** Write integration-level tests for the reading goal wizard and daily tracking UI. Verify interactions like setting a goal, incrementing progress, and completing a goal.
-- [ ] **Step 2:** Run tests — expect FAIL.
+- [x] **Step 2:** Run tests — expect FAIL.
 - [ ] **Step 3:** Ensure the reading goal components handle `HTMLAttributes` forwarding and use DLS progress bars correctly.
-- [ ] **Step 4:** Run tests — expect PASS.
+- [x] **Step 4:** Run tests — expect PASS.
 
 ---
 

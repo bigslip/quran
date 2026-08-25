@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useId } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -70,10 +70,14 @@ const InlineShowMore: React.FC<InlineShowMoreProps> = ({
     setExpanded((prev) => !prev);
   }, []);
 
+  const id = useId();
+  const contentId = `inline-show-more-content-${id}`;
+
   return (
     <div className={classNames(styles.container, className)} dir="auto" {...props}>
       <div className={styles.textWrapper}>
         <div
+          id={contentId}
           ref={contentRef}
           className={classNames(styles.content, contentClassName, {
             [styles.truncated]: !expanded,
@@ -82,14 +86,26 @@ const InlineShowMore: React.FC<InlineShowMoreProps> = ({
         >
           {content}{' '}
           {expanded && showReadMore && (
-            <button type="button" className={styles.lessBtn} onClick={toggleExpanded}>
+            <button
+              type="button"
+              className={styles.lessBtn}
+              onClick={toggleExpanded}
+              aria-controls={contentId}
+              aria-expanded={expanded}
+            >
               <span>{seeLessText ?? t('see-less')}</span>
             </button>
           )}
         </div>
         {!expanded && needsTruncation && showReadMore && (
           <div className={styles.fadeOverlay}>
-            <button type="button" className={styles.moreBtn} onClick={toggleExpanded}>
+            <button
+              type="button"
+              className={styles.moreBtn}
+              onClick={toggleExpanded}
+              aria-controls={contentId}
+              aria-expanded={expanded}
+            >
               <span>{readMoreText ?? t('read-more')}</span>
             </button>
           </div>

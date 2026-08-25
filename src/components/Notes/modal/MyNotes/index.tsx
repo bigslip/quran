@@ -59,7 +59,6 @@ const MyNotesModal: React.FC<MyNotesModalProps> = ({
         headerClassName={modalStyles.headerClassName}
         closeIconClassName={modalStyles.closeIconContainer}
         contentClassName={classNames(modalStyles.content, modalStyles.myNotesModalContent)}
-        innerContentClassName={myNotesStyles.container}
         dataTestId="my-notes-modal-content"
         header={
           <button

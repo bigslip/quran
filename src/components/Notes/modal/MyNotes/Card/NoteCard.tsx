@@ -19,7 +19,7 @@ import { toLocalizedNumber } from '@/utils/locale';
 import { getSurahRangeNavigationUrlByVerseKey } from '@/utils/navigation';
 import { parseVerseRange, readableVerseRangeKeys } from '@/utils/verseKeys';
 
-export interface NoteCardProps {
+export interface NoteCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id'> {
   note: NoteWithRecentReflection;
   onEdit: (note: Note) => void;
   onPostToQr: (note: Note) => void;
@@ -35,6 +35,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
   onDelete,
   isDeletingNote,
   showReadMore = false,
+  ...rest
 }) => {
   const { t, lang } = useTranslation('notes');
   const chaptersData = useContext(DataContext);
@@ -69,7 +70,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
   const LinkOrDiv = showReadMore ? Link : 'div';
 
   return (
-    <div key={note.id} className={styles.noteCard} data-testid={`note-card-${note.id}`}>
+    <div key={note.id} className={styles.noteCard} data-testid={`note-card-${note.id}`} {...rest}>
       <div className={styles.noteHeader}>
         <div className={styles.noteInfo}>
           <LinkOrDiv

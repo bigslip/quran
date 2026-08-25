@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import useSWR from 'swr';
 
@@ -15,7 +16,7 @@ import { Note } from '@/types/auth/Note';
 import { getNotesByVerse } from '@/utils/auth/api';
 import { makeGetNotesByVerseUrl } from '@/utils/auth/apiPaths';
 
-interface MyNotesProps {
+export interface MyNotesProps extends React.HTMLAttributes<HTMLDivElement> {
   onAddNote: () => void;
   onEditNote: (note: Note) => void;
   verseKey: string;
@@ -33,6 +34,7 @@ const MyNotes: React.FC<MyNotesProps> = ({
   processingNoteId,
   onPostToQrClick,
   onDeleteNoteClick,
+  ...rest
 }) => {
   const { t } = useTranslation('notes');
 
@@ -61,7 +63,7 @@ const MyNotes: React.FC<MyNotesProps> = ({
   }, [processingNoteId]);
 
   return (
-    <>
+    <div className={classNames(styles.container, rest.className)} {...rest}>
       {showStatus ? (
         <div className={styles.statusContainer} data-error={!!error}>
           {isLoading && <Spinner size={SpinnerSize.Large} />}
@@ -94,7 +96,7 @@ const MyNotes: React.FC<MyNotesProps> = ({
           {t('add-another-note')}
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 
