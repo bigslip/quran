@@ -21,7 +21,7 @@ import { logButtonClick } from '@/utils/eventLogger';
 // It will be used to calculate approximate min height to prevent block size jumping during virtuoso initial calculations
 const PROXIMATE_NOTE_HEIGHT = 100;
 
-interface NotesTabContentProps {
+interface NotesTabContentProps extends React.HTMLAttributes<HTMLDivElement> {
   notes: NoteWithRecentReflection[];
   isLoading: boolean;
   isValidating: boolean;
@@ -42,6 +42,7 @@ const NotesTabContent: React.FC<NotesTabContentProps> = ({
   error,
   loadMore,
   mutateCache,
+  ...props
 }) => {
   const { t } = useTranslation('notes');
 
@@ -106,7 +107,7 @@ const NotesTabContent: React.FC<NotesTabContentProps> = ({
   }
 
   return (
-    <>
+    <div {...props} aria-busy={isValidatingOrLoading ? 'true' : undefined}>
       <div style={{ minBlockSize: notes.length * PROXIMATE_NOTE_HEIGHT }}>
         <Virtuoso
           data={notes}
@@ -143,7 +144,7 @@ const NotesTabContent: React.FC<NotesTabContentProps> = ({
       />
 
       <ConfirmationModal zIndexVariant={ZIndexVariant.ULTRA} />
-    </>
+    </div>
   );
 };
 

@@ -24,7 +24,9 @@ import { toLocalizedDate, toLocalizedVerseKeyAuto } from '@/utils/locale';
 import { getChapterWithStartingVerseUrl } from '@/utils/navigation';
 import { getVerseAndChapterNumbersFromKey } from '@/utils/verse';
 
-const RecentContent = () => {
+interface RecentContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const RecentContent: React.FC<RecentContentProps> = ({ ...props }) => {
   const { lang } = useTranslation();
   const { t } = useTranslation('my-quran');
   const chaptersData = useContext(DataContext);
@@ -44,7 +46,7 @@ const RecentContent = () => {
 
   if (isLoading) {
     return (
-      <div className={styles.recentContentContainer}>
+      <div className={styles.recentContentContainer} aria-busy="true" {...props}>
         {Array.from({ length: 3 }).map((item, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <Skeleton key={`skeleton-${index}`} className={styles.skeleton} />
@@ -55,7 +57,7 @@ const RecentContent = () => {
 
   if (recentItems.length === 0) {
     return (
-      <div className={styles.recentContentContainer}>
+      <div className={styles.recentContentContainer} {...props}>
         <p className={styles.emptyState} data-testid={TestId.MY_QURAN_RECENT_CONTENT_EMPTY_STATE}>
           {t('recent-empty')}
         </p>
@@ -64,7 +66,7 @@ const RecentContent = () => {
   }
 
   return (
-    <div className={styles.recentContentContainer}>
+    <div className={styles.recentContentContainer} {...props}>
       {recentItems.map(({ verseKey, timestamp }) => {
         const [chapterId] = getVerseAndChapterNumbersFromKey(verseKey);
         const surah = getChapterData(chaptersData, chapterId);

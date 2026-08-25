@@ -17,7 +17,9 @@ import useReadingBookmarkDisplay from '@/hooks/useReadingBookmarkDisplay';
 import useRecentlySaved from '@/hooks/useRecentlySaved';
 import BookmarkType from '@/types/BookmarkType';
 
-const SavedTabContent: React.FC = () => {
+interface SavedTabContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const SavedTabContent: React.FC<SavedTabContentProps> = ({ ...props }) => {
   const { isLoggedIn } = useIsLoggedIn();
   const { t } = useTranslation('my-quran');
   const { bookmark, isLoading: isBookmarkLoading } = useReadingBookmarkDisplay();
@@ -119,7 +121,11 @@ const SavedTabContent: React.FC = () => {
     isLoggedIn && (isRecentlySavedLoading || filteredRecentlySaved.length > 0);
 
   return (
-    <div className={styles.container}>
+    <div 
+      className={styles.container} 
+      {...props} 
+      aria-busy={isCollectionsLoading || isBookmarkLoading || isRecentlySavedLoading ? 'true' : undefined}
+    >
       {!selectedCollection && (
         <MyReadingBookmark bookmark={bookmark} isLoading={isBookmarkLoading} />
       )}
