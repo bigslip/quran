@@ -33,6 +33,7 @@ const EmailNotificationSettingsForm: FC = () => {
     <Section
       title={t('email-notification-settings')}
       dataTestId={TestId.AUTH_UPDATE_PROFILE_EMAIL_NOTIFICATION_SETTINGS_SECTION}
+      aria-busy={isSaving}
     >
       {preferences.map((preference) => (
         <NotificationCheckbox

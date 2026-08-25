@@ -44,6 +44,7 @@ const PersonalizationForm: FC = () => {
     <Section
       title={t('personalization')}
       dataTestId={TestId.AUTH_UPDATE_PROFILE_PERSONALIZATION_SECTION}
+      aria-busy={isProcessing || isRemoving}
     >
       <div className={styles.profilePictureContainer}>
         <p className={styles.profilePictureTitle}>{t('profile-picture')}</p>
