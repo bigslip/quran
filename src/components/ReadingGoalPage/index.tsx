@@ -31,11 +31,11 @@ import { isLoggedIn } from '@/utils/auth/login';
 import { logFormSubmission } from '@/utils/eventLogger';
 import { getLoginNavigationUrl, getReadingGoalNavigationUrl } from '@/utils/navigation';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   initialExampleKey: ReadingGoalExampleKey | null;
 }
 
-const ReadingGoalOnboarding: React.FC<Props> = ({ initialExampleKey }) => {
+const ReadingGoalOnboarding: React.FC<Props> = ({ initialExampleKey, className, ...props }) => {
   const { t } = useTranslation('reading-goal');
   const router = useRouter();
   const chaptersData = useContext(DataContext);
@@ -169,7 +169,7 @@ const ReadingGoalOnboarding: React.FC<Props> = ({ initialExampleKey }) => {
   };
 
   return (
-    <div className={classNames(layoutStyle.flowItem)}>
+    <div className={classNames(layoutStyle.flowItem, className)} {...props}>
       <Progress value={percentage} />
 
       <div className={styles.tabContainer}>
