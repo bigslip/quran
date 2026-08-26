@@ -13,7 +13,7 @@ import { addReadingGoal } from '@/utils/auth/api';
 import { logButtonClick } from '@/utils/eventLogger';
 import { GoalCategory } from 'types/auth/Goal';
 
-interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   section: string;
   subscribedText: string;
   enrollText: string;
@@ -29,6 +29,7 @@ const EnrollButton = ({
   isEnrolled,
   isLoading,
   mutate,
+  ...rest
 }: Props) => {
   const [isEnrollLoading, setIsEnrollLoading] = useState(false);
   const toast = useToast();
@@ -55,18 +56,17 @@ const EnrollButton = ({
     }
   };
 
-  if (isLoading) {
-    return <Spinner dataTestId={TestId.RAMADAN_CHALLENGE_ENROLL_BUTTON_SPINNER} />;
-  }
+  // Button handles isLoading natively below
 
   return (
     <Button
       onClick={handleEnroll}
       variant={isDisabled ? ButtonVariant.Ghost : ButtonVariant.Shadow}
-      isLoading={isEnrollLoading}
+      isLoading={isEnrollLoading || isLoading}
       isDisabled={isDisabled}
       aria-live="polite"
       className={styles.button}
+      {...rest}
     >
       {isDisabled ? subscribedText : enrollText}
     </Button>

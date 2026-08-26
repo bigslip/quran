@@ -13,14 +13,14 @@ import { TestId } from '@/tests/test-ids';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getLoginNavigationUrl } from '@/utils/navigation';
 
-interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   section: string;
 }
 
 const SUBSCRIBED_TEXT = 'Subscribed!';
 const ENROLL_TEXT = 'Join the Surah Al-Mulk Challenge';
 
-const UnauthEnrollButton = ({ section }: Props) => {
+const UnauthEnrollButton = ({ section, ...rest }: Props) => {
   const router = useRouter();
   const { isLoggedIn } = useIsLoggedIn();
   const { isLoading, isEnrolled, mutate } = useRamadanChallengeStatus();
@@ -29,9 +29,7 @@ const UnauthEnrollButton = ({ section }: Props) => {
     logButtonClick(`guest_ramadan_challenge_${section}`);
   };
 
-  if (isLoading) {
-    return <Spinner dataTestId={TestId.RAMADAN_CHALLENGE_GUEST_USER_BUTTON_SPINNER} />;
-  }
+  // Spinner is handled natively by Button inside the return or inside EnrollButtonNotification
 
   if (isLoggedIn) {
     return (
@@ -43,6 +41,7 @@ const UnauthEnrollButton = ({ section }: Props) => {
           section={section}
           subscribedText={SUBSCRIBED_TEXT}
           enrollText={ENROLL_TEXT}
+          {...rest}
         />
       </HeadlessServiceProvider>
     );
@@ -55,6 +54,7 @@ const UnauthEnrollButton = ({ section }: Props) => {
       variant={ButtonVariant.Shadow}
       isLoading={isLoading}
       className={styles.button}
+      {...rest}
     >
       {ENROLL_TEXT}
     </Button>
