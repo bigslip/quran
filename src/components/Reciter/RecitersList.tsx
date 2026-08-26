@@ -1,3 +1,4 @@
+import React from 'react';
 import Card, { CardSize } from '../dls/Card/Card';
 
 import styles from './RecitersList.module.scss';
@@ -9,11 +10,11 @@ import Reciter from 'types/Reciter';
 
 type RecitersListProps = {
   reciters: Reciter[];
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-const RecitersList = ({ reciters }: RecitersListProps) => {
+const RecitersList = ({ reciters, ...props }: RecitersListProps) => {
   return (
-    <div className={styles.container}>
+    <div className={styles.container} {...props}>
       {reciters.map((reciter) => {
         return (
           <Link key={reciter.id} href={getReciterNavigationUrl(reciter.id.toString())}>

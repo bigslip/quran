@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useSelector } from '@xstate/react';
 import classNames from 'classnames';
@@ -28,9 +28,9 @@ import Reciter from 'types/Reciter';
 type ChaptersListProps = {
   filteredChapters: Chapter[];
   selectedReciter: Reciter;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-const ChaptersList = ({ filteredChapters, selectedReciter }: ChaptersListProps) => {
+const ChaptersList = ({ filteredChapters, selectedReciter, ...props }: ChaptersListProps) => {
   const toast = useToast();
   const { t, lang } = useTranslation();
   const audioService = useContext(AudioPlayerMachineContext);
@@ -76,7 +76,7 @@ const ChaptersList = ({ filteredChapters, selectedReciter }: ChaptersListProps) 
   };
 
   return (
-    <div className={styles.chapterListContainer}>
+    <div className={styles.chapterListContainer} {...props}>
       {filteredChapters.map((chapter) => {
         const isAudioPlayingThisChapter =
           isAudioPlaying &&
@@ -96,6 +96,11 @@ const ChaptersList = ({ filteredChapters, selectedReciter }: ChaptersListProps) 
             tabIndex={0}
             onKeyPress={onClick}
             onClick={onClick}
+            aria-label={
+              isAudioPlayingThisChapter
+                ? `${t('common:audio.player.pause')} ${chapter.transliteratedName}`
+                : `${t('common:audio.player.play')} ${chapter.transliteratedName}`
+            }
           >
             <div className={styles.chapterInfoContainer}>
               <div className={styles.playIconWrapper}>

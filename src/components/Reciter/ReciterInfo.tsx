@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { useContext, useState, useMemo } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
@@ -18,11 +18,11 @@ import Reciter from 'types/Reciter';
 
 type ReciterInfoProps = {
   selectedReciter: Reciter;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const MAX_BIO_LENGTH = 400;
 
-const ReciterInfo = ({ selectedReciter }: ReciterInfoProps) => {
+const ReciterInfo = ({ selectedReciter, ...props }: ReciterInfoProps) => {
   const { t } = useTranslation();
 
   const audioService = useContext(AudioPlayerMachineContext);
@@ -49,7 +49,7 @@ const ReciterInfo = ({ selectedReciter }: ReciterInfoProps) => {
   }, [selectedReciter?.bio, isBioTruncated, shouldShowMoreButton]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} {...props}>
       <div className={styles.reciterImageContainer}>
         <Image
           className={styles.reciterImage}

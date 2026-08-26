@@ -1,3 +1,4 @@
+import React from 'react';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -10,11 +11,12 @@ import SearchIcon from '@/icons/search.svg';
 type QuranReciterListHeroProps = {
   searchQuery: string;
   onSearchQueryChange: (newSearchQuery: string) => void;
-};
-const QuranReciterListHero = ({ onSearchQueryChange, searchQuery }: QuranReciterListHeroProps) => {
+} & React.HTMLAttributes<HTMLDivElement>;
+
+const QuranReciterListHero = ({ onSearchQueryChange, searchQuery, ...props }: QuranReciterListHeroProps) => {
   const { t } = useTranslation();
   return (
-    <div className={classNames(styles.container)}>
+    <div className={classNames(styles.container)} {...props}>
       <div className={styles.backgroundImage} />
       <div className={styles.title}>{t('reciter:quran-reciters')}</div>
 
