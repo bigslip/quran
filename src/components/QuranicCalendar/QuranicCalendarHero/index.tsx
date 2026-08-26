@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import classNames from 'classnames';
 import umalqura from '@umalqura/core';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -21,12 +22,12 @@ import {
   getQuranicCalendarNavigationUrl,
 } from '@/utils/navigation';
 
-type Props = {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   currentQuranicCalendarWeek: number;
   currentHijriDate: umalqura.UmAlQura;
 };
 
-const QuranicCalendarHero: React.FC<Props> = ({ currentQuranicCalendarWeek, currentHijriDate }) => {
+const QuranicCalendarHero: React.FC<Props> = ({ currentQuranicCalendarWeek, currentHijriDate, className, ...htmlAttributes }) => {
   const { t, lang } = useTranslation('quranic-calendar');
   const toast = useToast();
   const {
@@ -67,7 +68,7 @@ const QuranicCalendarHero: React.FC<Props> = ({ currentQuranicCalendarWeek, curr
   };
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, className)} {...htmlAttributes}>
       <div className={styles.backgroundImage}>
         <Background />
       </div>

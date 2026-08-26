@@ -19,11 +19,11 @@ import { toLocalizedNumber } from '@/utils/locale';
 import { getLoginNavigationUrl, getQuranicCalendarNavigationUrl } from '@/utils/navigation';
 import { isMobile } from '@/utils/responsive';
 
-interface MyProgressProps {
+interface MyProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   onWeekSelect: (weekNumber: number) => void;
 }
 
-const MyProgress: React.FC<MyProgressProps> = ({ onWeekSelect }) => {
+const MyProgress: React.FC<MyProgressProps> = ({ onWeekSelect, className, ...htmlAttributes }) => {
   const { t, lang } = useTranslation('quranic-calendar');
   const router = useRouter();
 
@@ -54,7 +54,7 @@ const MyProgress: React.FC<MyProgressProps> = ({ onWeekSelect }) => {
   }, [router]);
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, className)} {...htmlAttributes}>
       <div className={styles.headerRow}>
         <h2 className={styles.title}>{t('my-progress')}</h2>
 

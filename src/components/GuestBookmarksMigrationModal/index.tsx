@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useSelector } from 'react-redux';
+import classNames from 'classnames';
 
 import styles from './GuestBookmarksMigrationModal.module.scss';
 
@@ -50,7 +51,7 @@ const safeRemoveLocalStorageItem = (key: string) => {
   }
 };
 
-const GuestBookmarksMigrationModal = () => {
+const GuestBookmarksMigrationModal: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...htmlAttributes }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { isLoggedIn } = useIsLoggedIn();
@@ -118,7 +119,7 @@ const GuestBookmarksMigrationModal = () => {
       contentClassName={styles.modal}
     >
       <Modal.Body>
-        <div className={styles.container}>
+        <div className={classNames(styles.container, className)} {...htmlAttributes}>
           <div className={styles.header}>
             <Modal.Title>
               <span className={styles.title}>{t('bookmarks-migration.title')}</span>
