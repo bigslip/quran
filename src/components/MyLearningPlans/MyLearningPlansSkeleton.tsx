@@ -1,10 +1,17 @@
+import React, { HTMLAttributes } from 'react';
+import classNames from 'classnames';
 import styles from './MyLearningPlansSkeleton.module.scss';
 
 import Skeleton from '@/dls/Skeleton/Skeleton';
 
-const MyLearningPlansSkeleton = () => {
+const MyLearningPlansSkeleton = (props: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className={styles.containerSkeleton}>
+    <div
+      aria-busy="true"
+      aria-label="Loading plans"
+      {...props}
+      className={classNames(styles.containerSkeleton, props.className)}
+    >
       <div className={styles.titleContainerSkeleton}>
         <Skeleton className={styles.titleSkeleton} />
       </div>

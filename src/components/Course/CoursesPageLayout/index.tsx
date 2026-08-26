@@ -19,12 +19,12 @@ const Loading = () => <Spinner />;
 
 type Props = {
   isMyCourses?: boolean;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-const CoursesPageLayout: React.FC<Props> = ({ isMyCourses = false }) => {
+const CoursesPageLayout: React.FC<Props> = ({ isMyCourses = false, className, ...props }) => {
   const { t, lang } = useTranslation('learn');
   return (
-    <div className={layoutStyles.pageContainer}>
+    <div {...props} className={classNames(layoutStyles.pageContainer, className)}>
       <ContentContainer>
         <p className={styles.title}>
           {isMyCourses ? t('common:my-learning-plans') : t('common:learning-plans')}

@@ -33,10 +33,10 @@
 - Create tests for components inside `src/components/Notes/` (e.g. `NoteItem`, `NotesList`)
 - Modify component sources as necessary.
 
-- [ ] **Step 1:** Write unit tests for the Notes components. Validate rendering of a note, editing, deleting, and attaching verses.
-- [ ] **Step 2:** Ensure components correctly spread HTML attributes and use `aria-expanded`/`aria-controls` for any collapsible note contents or modals.
-- [ ] **Step 3:** Run tests — expect FAIL.
-- [ ] **Step 4:** Refactor and fix tests until PASS.
+- [x] **Step 1:** Write unit tests for the Notes components. Validate rendering of a note, editing, deleting, and attaching verses.
+- [x] **Step 2:** Ensure components correctly spread HTML attributes and use `aria-expanded`/`aria-controls` for any collapsible note contents or modals.
+- [x] **Step 3:** Run tests — expect FAIL.
+- [x] **Step 4:** Refactor and fix tests until PASS.
 
 ---
 
@@ -44,9 +44,9 @@
 **Files:**
 - Create tests for `src/components/ReadingGoal/` and `src/components/ReadingGoalPage/` (e.g. tracking widget, wizard).
 
-- [ ] **Step 1:** Write integration-level tests for the reading goal wizard and daily tracking UI. Verify interactions like setting a goal, incrementing progress, and completing a goal.
+- [x] **Step 1:** Write integration-level tests for the reading goal wizard and daily tracking UI. Verify interactions like setting a goal, incrementing progress, and completing a goal.
 - [x] **Step 2:** Run tests — expect FAIL.
-- [ ] **Step 3:** Ensure the reading goal components handle `HTMLAttributes` forwarding and use DLS progress bars correctly.
+- [x] **Step 3:** Ensure the reading goal components handle `HTMLAttributes` forwarding and use DLS progress bars correctly.
 - [x] **Step 4:** Run tests — expect PASS.
 
 ---
@@ -56,7 +56,7 @@
 - Create tests for `src/components/QuranicCalendar/` (e.g. Hijri calendar rendering, week tracking).
 - Create tests for `src/components/GuestBookmarksMigrationModal/`.
 
-- [ ] **Step 1:** Write tests for the calendar components to ensure correct date rendering and interactions (e.g. switching months, selecting days).
-- [ ] **Step 2:** Write tests for the Guest Bookmarks Migration Modal (verifying focus management, ARIA labels, and migration triggers).
-- [ ] **Step 3:** Run tests — expect FAIL.
-- [ ] **Step 4:** Fix the components/tests until PASS.
+- [x] **Step 1:** Write tests for the calendar components to ensure correct date rendering and interactions (e.g. switching months, selecting days).
+- [x] **Step 2:** Write tests for the Guest Bookmarks Migration Modal (verifying focus management, ARIA labels, and migration triggers).
+- [x] **Step 3:** Run tests — expect FAIL.
+- [x] **Step 4:** Fix the components/tests until PASS.
