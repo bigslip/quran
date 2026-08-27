@@ -461,7 +461,7 @@ export const toLocalizedVersesRange = (range: string, lang: string): string =>
  * @returns {string}
  */
 export const getOpenGraphLocale = (currentLocale: string): string =>
-  `${LANG_LOCALE_MAP[currentLocale]}`.replace('-', '_');
+  `${LANG_LOCALE_MAP[currentLocale] || 'en-US'}`.replace('-', '_');
 
 /**
  * Generate the alternate locales that the current content can be served in.

@@ -33,14 +33,15 @@ export interface SEOProps extends NextSeoProps {
   dangerouslySetAllPagesToNoIndex?: boolean;
 }
 
-const isProduction = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production';
 export function createSEOConfig({
   title,
   description,
   canonicalUrl,
   locale,
 }: SeoConfigType = {}): SEOProps {
+  const isProduction = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production';
   const seoTitle = title || '';
+  const resolvedLocale = locale || 'en';
 
   return {
     title: seoTitle,
@@ -52,13 +53,13 @@ export function createSEOConfig({
     canonical: canonicalUrl,
     openGraph: {
       type: 'website',
-      locale: getOpenGraphLocale(locale),
+      locale: getOpenGraphLocale(resolvedLocale),
       url: canonicalUrl,
       title: seoTitle,
       description,
       images: [
         {
-          url: getDefaultOgImageUrl({ locale }),
+          url: getDefaultOgImageUrl({ locale: resolvedLocale }),
           width: 1200,
           height: 630,
           alt: config.siteName,
@@ -139,9 +140,12 @@ export function createSEOConfig({
  * @param {VersesResponse} response
  * @returns {string}
  */
-export const getPageOrJuzMetaDescription = (response: VersesResponse): string => {
-  return response.verses
-    .slice(0, 4)
-    .map((verse) => verse.textImlaeiSimple)
-    .join(' - ');
+export const getPageOrJuzMetaDescription = (response?: VersesResponse): string => {
+  return (
+    response?.verses
+      ?.slice(0, 4)
+      .map((verse) => verse?.textImlaeiSimple)
+      .filter(Boolean)
+      .join(' - ') || ''
+  );
 };
