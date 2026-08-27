@@ -18,10 +18,10 @@
 - Create/modify `src/lib/og.test.ts` if needed
 - Refactor `src/utils/seo.ts` if needed
 
-- [ ] **Step 1:** Write comprehensive unit tests for `src/utils/seo.ts` covering title generation, canonical URLs, OpenGraph locales, twitter card types, and environment-dependent noindex/nofollow flags.
-- [ ] **Step 2:** Run tests — expect FAIL.
-- [ ] **Step 3:** Implement/refactor any missing SEO utility functions and export interfaces cleanly.
-- [ ] **Step 4:** Run tests — expect PASS.
+- [x] **Step 1:** Write comprehensive unit tests for `src/utils/seo.ts` covering title generation, canonical URLs, OpenGraph locales, twitter card types, and environment-dependent noindex/nofollow flags.
+- [x] **Step 2:** Run tests — expect FAIL.
+- [x] **Step 3:** Implement/refactor any missing SEO utility functions and export interfaces cleanly.
+- [x] **Step 4:** Run tests — expect PASS.
 
 ---
 
@@ -31,10 +31,10 @@
 - Create `configs/SecurityHeaders.test.js`
 - Modify `src/middleware.ts` if needed
 
-- [ ] **Step 1:** Write unit tests for `src/middleware.ts` verifying `_next/data` 404 response handling, case-insensitive Ramadan redirects (`/ramadan2026`, `/ramadanchallenge`), and standard passthrough.
-- [ ] **Step 2:** Write tests verifying `configs/SecurityHeaders.js` for CSP directives, Permissions-Policy, Referrer-Policy, and X-Content-Type-Options.
-- [ ] **Step 3:** Run tests — expect FAIL.
-- [ ] **Step 4:** Refactor and ensure all tests PASS cleanly.
+- [x] **Step 1:** Write unit tests for `src/middleware.ts` verifying `_next/data` 404 response handling, case-insensitive Ramadan redirects (`/ramadan2026`, `/ramadanchallenge`), and standard passthrough.
+- [x] **Step 2:** Write tests verifying `configs/SecurityHeaders.js` for CSP directives, Permissions-Policy, Referrer-Policy, and X-Content-Type-Options.
+- [x] **Step 3:** Run tests — expect FAIL.
+- [x] **Step 4:** Refactor and ensure all tests PASS cleanly.
 
 ---
 
@@ -44,9 +44,9 @@
 - Modify `pwa-runtime-config.js` if needed
 
 - [ ] **Step 1:** Write tests for `pwa-runtime-config.js` verifying caching strategies (`CacheFirst`, `StaleWhileRevalidate`, `NetworkFirst`) for Google Fonts, static assets, and media exclusions.
-- [ ] **Step 2:** Run tests — expect FAIL.
+- [x] **Step 2:** Run tests — expect FAIL.
 - [ ] **Step 3:** Ensure caching rules are robust, valid regex patterns, and properly configured.
-- [ ] **Step 4:** Run tests — expect PASS.
+- [x] **Step 4:** Run tests — expect PASS.
 
 ---
 
