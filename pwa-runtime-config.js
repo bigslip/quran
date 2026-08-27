@@ -187,7 +187,7 @@ module.exports = [
       const { pathname } = url;
       const isSameOrigin = self.origin === url.origin;
       // cache everything except mp3 files
-      return !isSameOrigin && !pathname.endsWith('.mp3');
+      return !isSameOrigin && !pathname.toLowerCase().endsWith('.mp3');
     },
     handler: 'NetworkFirst',
     options: {

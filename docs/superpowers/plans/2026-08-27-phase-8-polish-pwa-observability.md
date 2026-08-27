@@ -43,9 +43,9 @@
 - Create `pwa-runtime-config.test.js`
 - Modify `pwa-runtime-config.js` if needed
 
-- [ ] **Step 1:** Write tests for `pwa-runtime-config.js` verifying caching strategies (`CacheFirst`, `StaleWhileRevalidate`, `NetworkFirst`) for Google Fonts, static assets, and media exclusions.
+- [x] **Step 1:** Write tests for `pwa-runtime-config.js` verifying caching strategies (`CacheFirst`, `StaleWhileRevalidate`, `NetworkFirst`) for Google Fonts, static assets, and media exclusions.
 - [x] **Step 2:** Run tests — expect FAIL.
-- [ ] **Step 3:** Ensure caching rules are robust, valid regex patterns, and properly configured.
+- [x] **Step 3:** Ensure caching rules are robust, valid regex patterns, and properly configured.
 - [x] **Step 4:** Run tests — expect PASS.
 
 ---

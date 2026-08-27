@@ -15,7 +15,11 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: 'jsdom',
-    include: ['**/src/**/*.test.{js,ts,jsx,tsx}', '**/configs/**/*.test.{js,ts,jsx,tsx}'],
+    include: [
+      '**/src/**/*.test.{js,ts,jsx,tsx}',
+      '**/configs/**/*.test.{js,ts,jsx,tsx}',
+      '*.test.{js,ts,jsx,tsx}',
+    ],
   },
   esbuild: {
     tsconfigRaw: JSON.stringify({
