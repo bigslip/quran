@@ -49,7 +49,11 @@ describe('ContentModal', () => {
 
   it('calls onClose when close button clicked', () => {
     const onClose = vi.fn();
-    render(<ContentModal isOpen onClose={onClose} hasCloseButton />);
+    render(
+      <ContentModal isOpen onClose={onClose} hasCloseButton>
+        <div>Modal Content</div>
+      </ContentModal>
+    );
     fireEvent.click(screen.getByRole('button', { name: /close/i }));
     expect(onClose).toHaveBeenCalledTimes(1);
   });

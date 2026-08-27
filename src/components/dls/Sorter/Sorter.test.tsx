@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import Sorter, { ArrowDirection } from './Sorter';
-import useTranslation from 'next-translate/useTranslation';
 
 // Mock next-translate
 vi.mock('next-translate/useTranslation', () => ({

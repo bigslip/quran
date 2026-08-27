@@ -4,6 +4,7 @@ import { describe, it, expect, vi } from 'vitest';
 import SearchResults from './index';
 import SearchQuerySource from '@/types/SearchQuerySource';
 import { SearchResponse } from 'types/ApiResponses';
+import SearchService from 'types/Search/SearchService';
 
 vi.mock('next-translate/useTranslation', () => ({
   default: () => ({
@@ -30,7 +31,7 @@ vi.mock('@/hooks/useScrollToTop', () => ({
 }));
 
 const mockSearchResult: SearchResponse = {
-  service: 'mock-service',
+  service: SearchService.QDC,
   pagination: {
     perPage: 10,
     currentPage: 1,

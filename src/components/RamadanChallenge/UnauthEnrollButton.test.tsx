@@ -35,7 +35,7 @@ describe('UnauthEnrollButton', () => {
     (useIsLoggedIn as any).mockReturnValue({ isLoggedIn: false });
     (useRamadanChallengeStatus as any).mockReturnValue({ isLoading: true });
 
-    const { container } = render(<UnauthEnrollButton section="test" />);
+    render(<UnauthEnrollButton section="test" />);
     expect(screen.getByRole('status')).not.toBeNull();
   });
 

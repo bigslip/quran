@@ -42,7 +42,7 @@ describe('RecentContent', () => {
       timestamps: [],
     } as any);
 
-    const { container } = render(<RecentContent data-testid="recent-content" />);
+    render(<RecentContent data-testid="recent-content" />);
     const element = screen.getByTestId('recent-content');
     expect(element).toHaveAttribute('aria-busy', 'true');
   });

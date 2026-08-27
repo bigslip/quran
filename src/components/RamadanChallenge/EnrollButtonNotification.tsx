@@ -8,14 +8,12 @@ import EnrollButton from './EnrollButton';
 import styles from './EnrollButton.module.scss';
 
 import Button, { ButtonVariant } from '@/dls/Button/Button';
-import Spinner from '@/dls/Spinner/Spinner';
 import { ToastStatus, useToast } from '@/dls/Toast/Toast';
 import useEmailNotificationSettings from '@/hooks/auth/useEmailNotificationSettings';
 import { logErrorToSentry } from '@/lib/sentry';
-import { TestId } from '@/tests/test-ids';
 import { logButtonClick } from '@/utils/eventLogger';
 
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface Props extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   section: string;
   subscribedText: string;
   enrollText: string;

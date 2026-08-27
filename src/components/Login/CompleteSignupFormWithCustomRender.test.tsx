@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import addCustomRenderToCompleteSignupFormFields from './CompleteSignupFormWithCustomRender';
 import { FormBuilderFormField } from '../FormBuilder/FormBuilderTypes';
+import { FormFieldType } from 'types/FormField';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 
@@ -16,7 +17,7 @@ vi.mock('./AuthInput', () => ({
 describe('addCustomRenderToCompleteSignupFormFields', () => {
   it('adds customRender that propagates all props to AuthInput', () => {
     const fields: FormBuilderFormField[] = [
-      { field: 'firstName', type: 'text', label: 'First Name' }
+      { field: 'firstName', type: FormFieldType.Text, label: 'First Name' }
     ];
 
     const result = addCustomRenderToCompleteSignupFormFields(fields, undefined, {});

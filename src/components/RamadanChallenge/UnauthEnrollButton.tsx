@@ -6,14 +6,12 @@ import styles from './EnrollButton.module.scss';
 import EnrollButtonNotification from './EnrollButtonNotification';
 
 import Button, { ButtonVariant } from '@/dls/Button/Button';
-import Spinner from '@/dls/Spinner/Spinner';
 import useIsLoggedIn from '@/hooks/auth/useIsLoggedIn';
 import useRamadanChallengeStatus from '@/hooks/useGetRamadanChallengeStatus';
-import { TestId } from '@/tests/test-ids';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getLoginNavigationUrl } from '@/utils/navigation';
 
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface Props extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   section: string;
 }
 

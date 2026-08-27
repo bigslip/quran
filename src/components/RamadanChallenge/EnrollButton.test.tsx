@@ -55,7 +55,7 @@ describe('EnrollButton', () => {
   });
 
   it('shows loading spinner when isLoading is true', () => {
-    const { container } = render(
+    render(
       <EnrollButton
         section="test"
         subscribedText="Subscribed"

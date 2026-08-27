@@ -28,7 +28,7 @@ type SorterProps<T extends string> = {
   onChange: (optionId: T) => void;
   onOpenChange?: (isOpen: boolean) => void;
   dataTestPrefix?: string;
-} & React.HTMLAttributes<HTMLButtonElement>;
+} & Omit<React.HTMLAttributes<HTMLButtonElement>, 'onChange'>;
 
 const Sorter = <T extends string>({
   options,

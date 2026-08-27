@@ -8,7 +8,7 @@ expect.extend(matchers);
 
 describe('MyLearningPlansSkeleton', () => {
   it('renders correctly', () => {
-    const { container } = render(<MyLearningPlansSkeleton data-testid="skeleton" aria-label="Loading plans" className="custom-class" />);
+    render(<MyLearningPlansSkeleton data-testid="skeleton" aria-label="Loading plans" className="custom-class" />);
     
     // Should spread HTMLAttributes like data-testid
     expect(screen.getByTestId('skeleton')).toBeInTheDocument();

@@ -6,7 +6,6 @@ import useAuthRedirect from './useAuthRedirect';
 import useAuthData from './useAuthData';
 
 import QueryParam from '@/types/QueryParam';
-import { SSO_ENABLED } from '@/utils/auth/constants';
 import { ROUTES } from '@/utils/navigation';
 
 vi.mock('next/router', () => ({

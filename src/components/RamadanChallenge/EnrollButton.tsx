@@ -5,15 +5,13 @@ import { useState } from 'react';
 import styles from './EnrollButton.module.scss';
 
 import Button, { ButtonVariant } from '@/dls/Button/Button';
-import Spinner from '@/dls/Spinner/Spinner';
 import { ToastStatus, useToast } from '@/dls/Toast/Toast';
 import { logErrorToSentry } from '@/lib/sentry';
-import { TestId } from '@/tests/test-ids';
 import { addReadingGoal } from '@/utils/auth/api';
 import { logButtonClick } from '@/utils/eventLogger';
 import { GoalCategory } from 'types/auth/Goal';
 
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface Props extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   section: string;
   subscribedText: string;
   enrollText: string;

@@ -34,7 +34,7 @@ vi.mock('react-redux', () => ({
 }));
 
 vi.mock('@/utils/media/utils', async (importOriginal) => {
-  const actual = await importOriginal();
+  const actual = (await importOriginal()) as any;
   return {
     ...actual,
     getBackgroundVideoById: () => ({ videoSrc: 'test.mp4' }),

@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { selectIsPersistGateHydrationComplete } from '@/redux/slices/persistGateHydration';
 import { selectPinnedVerses, setPinnedVerses, setServerIds } from '@/redux/slices/QuranReader/pinnedVerses';
@@ -9,7 +9,6 @@ import { getPinnedItems, syncPinnedItems } from '@/utils/auth/api';
 
 import useSyncPinnedVerses from './useSyncPinnedVerses';
 import * as userDataSyncUtils from '@/utils/auth/userDataSync';
-import { PinnedItemTargetType } from 'types/PinnedItem';
 
 vi.mock('@/contexts/AuthContext', () => ({
   useAuthContext: vi.fn(() => ({
@@ -105,7 +104,7 @@ describe('useSyncPinnedVerses', () => {
       },
     } as any);
 
-    mockGetLastSyncAt.mockReturnValueOnce(null).mockReturnValue(new Date().toISOString());
+    mockGetLastSyncAt.mockReturnValueOnce(null).mockReturnValue(new Date());
 
     renderHook(() => useSyncPinnedVerses());
 

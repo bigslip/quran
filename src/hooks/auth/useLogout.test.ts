@@ -9,7 +9,6 @@ import { clearBookmarks } from '@/redux/slices/QuranReader/bookmarks';
 import { clearReadingTracker } from '@/redux/slices/QuranReader/readingTracker';
 import { ROUTES, PROTECTED_ROUTES } from '@/utils/navigation';
 import { logButtonClick } from '@/utils/eventLogger';
-import { removeUserIdCookie } from '@/utils/auth/login';
 
 import useLogout from './useLogout';
 

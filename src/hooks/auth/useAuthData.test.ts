@@ -1,13 +1,13 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import useSWR from 'swr';
-import React from 'react';
-
 import useAuthData from './useAuthData';
 import { AuthState } from '@/types/auth/AuthState';
 
 const dispatchMock = vi.fn();
 const stateMock: AuthState = {
+  user: undefined,
+  isProfileComplete: true,
   isAuthenticated: true,
   isLoading: false,
   error: null,

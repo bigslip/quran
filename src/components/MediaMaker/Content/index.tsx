@@ -60,9 +60,6 @@ const MediaMakerContent: React.FC<Props> = ({
   orientation,
   chapterEnglishName,
   isPlayer = false,
-  videoId,
-  previewMode,
-  translations,
   ...rest
 }) => {
   const chaptersDataArabic = useGetChaptersData('ar');

@@ -45,7 +45,7 @@ vi.mock('@/redux/slices/CommandBar/state', () => ({
 const chaptersData = {
   '1': { id: '1', transliteratedName: 'Al-Fatihah', translatedName: 'The Opener' },
   '36': { id: '36', transliteratedName: 'Ya-Sin', translatedName: 'Ya Sin' },
-};
+} as any;
 
 vi.mock('next/router', () => ({
   useRouter: vi.fn(() => ({

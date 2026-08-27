@@ -1,7 +1,6 @@
 import { render, screen, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import VerseText from './VerseText';
-import { CharType } from 'types/Word';
 import StartingVerseHighlightContext from '@/contexts/StartingVerseHighlightContext';
 
 // Mock Redux

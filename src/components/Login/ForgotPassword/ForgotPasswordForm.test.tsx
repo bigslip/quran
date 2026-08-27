@@ -47,7 +47,7 @@ describe('ForgotPasswordForm', () => {
   });
 
   it('spreads HTMLAttributes to the root element', () => {
-    const { container } = render(
+    render(
       <ForgotPasswordForm data-testid="forgot-password-root" className="custom-class" />
     );
     const rootElement = screen.getByTestId('forgot-password-root');

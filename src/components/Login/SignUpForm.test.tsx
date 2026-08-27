@@ -3,7 +3,6 @@ import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/re
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import SignUpForm from './SignUpForm';
 import { signUp } from '@/utils/auth/authRequests';
-import { logFormSubmission } from '@/utils/eventLogger';
 
 // Mock dependencies
 vi.mock("/public/icons/show.svg", () => ({
@@ -62,7 +61,7 @@ describe('SignUpForm', () => {
   });
 
   it('spreads HTMLAttributes to the root element', () => {
-    const { container } = render(
+    render(
       <SignUpForm onSuccess={mockOnSuccess} data-testid="signup-form-root" className="custom-class" />
     );
     const rootElement = screen.getByTestId('signup-form-root');

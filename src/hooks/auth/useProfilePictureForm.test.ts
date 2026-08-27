@@ -62,7 +62,7 @@ describe('useProfilePictureForm', () => {
       return { isLoading: false };
     });
 
-    const { result } = renderHook(() => useProfilePictureForm());
+    renderHook(() => useProfilePictureForm());
     
     await act(async () => {
       await triggerUpload('base64string');
@@ -81,7 +81,7 @@ describe('useProfilePictureForm', () => {
       return { isLoading: false };
     });
 
-    const { result } = renderHook(() => useProfilePictureForm());
+    renderHook(() => useProfilePictureForm());
     
     await act(async () => {
       await triggerUpload('base64string');
@@ -99,7 +99,7 @@ describe('useProfilePictureForm', () => {
       return { isLoading: false };
     });
 
-    const { result } = renderHook(() => useProfilePictureForm());
+    renderHook(() => useProfilePictureForm());
     
     await act(async () => {
       await triggerRemove();

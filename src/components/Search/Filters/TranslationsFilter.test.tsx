@@ -81,7 +81,7 @@ describe('TranslationsFilter', () => {
   });
 
   it('spreads HTMLAttributes like data-testid to root element', () => {
-    const { container } = render(
+    render(
       <TranslationsFilter
         translations={mockTranslations}
         selectedTranslations=""

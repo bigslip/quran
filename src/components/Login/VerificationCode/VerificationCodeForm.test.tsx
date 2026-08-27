@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, cleanup, act } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import VerificationCodeForm from './VerificationCodeForm';
 import { signUp } from '@/utils/auth/authRequests';
@@ -46,7 +46,11 @@ describe('VerificationCodeForm', () => {
     signUpData: {
       email: 'test@example.com',
       password: 'password123',
-    },
+      confirmPassword: 'password123',
+      firstName: 'Test',
+      lastName: 'User',
+      username: 'testuser',
+    } as any,
     onSuccess: vi.fn(),
   };
 
@@ -64,7 +68,7 @@ describe('VerificationCodeForm', () => {
   });
 
   it('spreads HTMLAttributes to the root element', () => {
-    const { container } = render(
+    render(
       <VerificationCodeForm {...defaultProps} data-testid="verification-code-root" className="custom-class" />
     );
     const rootElement = screen.getByTestId('verification-code-root');

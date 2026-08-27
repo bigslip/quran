@@ -99,7 +99,6 @@ describe('SegmentedControl', () => {
     );
     
     const mapTab = screen.getByRole('button', { name: 'Map' });
-    const listTab = screen.getByRole('button', { name: 'List' });
     const gridTab = screen.getByRole('button', { name: 'Grid' });
 
     mapTab.focus();

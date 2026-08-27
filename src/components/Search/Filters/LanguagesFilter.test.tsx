@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import LanguagesFilter from './LanguagesFilter';
 import AvailableLanguage from 'types/AvailableLanguage';
@@ -22,7 +21,6 @@ const mockLanguages: AvailableLanguage[] = [
     isoCode: 'en',
     nativeName: 'English',
     direction: 'ltr',
-    translationsCount: 1,
     translatedName: {
       name: 'English',
       languageName: 'english',
@@ -34,7 +32,6 @@ const mockLanguages: AvailableLanguage[] = [
     isoCode: 'ru',
     nativeName: 'Русский',
     direction: 'ltr',
-    translationsCount: 1,
     translatedName: {
       name: 'Russian',
       languageName: 'english',

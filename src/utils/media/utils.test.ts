@@ -490,7 +490,7 @@ describe('prepareGenerateMediaFileRequestData', () => {
       previewMode: PreviewMode.DISABLED,
       type: MediaType.VIDEO,
       chaptersDataArabic: '',
-    } as GenerateMediaFileRequest;
+    } as unknown as GenerateMediaFileRequest;
 
     const result = prepareGenerateMediaFileRequestData(rawData);
 
@@ -865,7 +865,7 @@ describe('prepareGenerateMediaFileRequestData', () => {
       type: MediaType.IMAGE,
       chaptersDataArabic: '',
       previewMode: PreviewMode.DISABLED,
-    } as GenerateMediaFileRequest;
+    } as unknown as GenerateMediaFileRequest;
 
     const result = prepareGenerateMediaFileRequestData(rawData);
 

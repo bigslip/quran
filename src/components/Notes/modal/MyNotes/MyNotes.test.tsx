@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import useSWR from 'swr';
@@ -63,7 +63,7 @@ describe('MyNotes', () => {
       error: undefined,
     });
 
-    const { container } = render(
+    render(
       <MyNotes
         onAddNote={vi.fn()}
         onEditNote={vi.fn()}

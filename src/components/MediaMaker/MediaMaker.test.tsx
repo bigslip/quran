@@ -68,7 +68,7 @@ vi.mock('remotion', () => ({
 
 describe('MediaMaker Components', () => {
   it('VideoSettings accepts HTML attributes', () => {
-    const props = {
+    const props: any = {
       chaptersList: [],
       reciters: [],
       playerRef: { current: null },
@@ -81,7 +81,7 @@ describe('MediaMaker Components', () => {
   });
   
   it('MediaMakerContent accepts HTML attributes', () => {
-    const props = {
+    const props: any = {
       verses: [],
       audio: { audioUrl: 'test', verseTimings: [] },
       timestamps: [],

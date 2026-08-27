@@ -58,7 +58,7 @@ describe('ResetPasswordForm', () => {
   });
 
   it('spreads HTMLAttributes to the root element', () => {
-    const { container } = render(
+    render(
       <ResetPasswordForm data-testid="reset-password-root" className="custom-class" />
     );
     const rootElement = screen.getByTestId('reset-password-root');

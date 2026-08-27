@@ -64,7 +64,7 @@ describe('SignInForm', () => {
   });
 
   it('spreads HTMLAttributes to the root element', () => {
-    const { container } = render(<SignInForm data-testid="signin-form-root" className="custom-class" />);
+    render(<SignInForm data-testid="signin-form-root" className="custom-class" />);
     const rootElement = screen.getByTestId('signin-form-root');
     expect(rootElement).toBeTruthy();
     expect(rootElement.className).toContain('custom-class');

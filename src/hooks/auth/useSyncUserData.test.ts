@@ -1,7 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { useSelector } from 'react-redux';
 import { selectGuestReadingBookmark } from '@/redux/slices/guestBookmark';
 import { selectIsPersistGateHydrationComplete } from '@/redux/slices/persistGateHydration';
 import { selectBookmarks, selectBookmarkedPages } from '@/redux/slices/QuranReader/bookmarks';
@@ -107,7 +106,7 @@ describe('useSyncUserData', () => {
     vi.mocked(selectQuranReaderStyles).mockReturnValue({ quranFont: 'v1', mushafLines: 15 } as any);
     
     mockGetLastSyncAt.mockReturnValue(null);
-    mockSyncUserLocalData.mockResolvedValue({ lastSyncAt: new Date().toISOString() });
+    mockSyncUserLocalData.mockResolvedValue({ lastSyncAt: new Date(), success: true });
 
     renderHook(() => useSyncUserData());
 

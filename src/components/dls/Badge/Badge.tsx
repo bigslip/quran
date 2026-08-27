@@ -7,7 +7,7 @@ export enum BadgePosition {
   BOTTOM_RIGHT = 'bottom-right',
 }
 
-type BadgeProps = React.HTMLAttributes<HTMLDivElement> & {
+type BadgeProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> & {
   content: React.ReactNode;
   children: React.ReactNode;
   contentClassName?: string;

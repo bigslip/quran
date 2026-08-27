@@ -14,7 +14,7 @@ const meta: Meta<typeof CircularProgressbar> = {
     background: false,
     backgroundPadding: 0,
     circleRatio: 1,
-    ariaLabel: 'Loading progress',
+    'aria-label': 'Loading progress',
   },
   argTypes: {
     value: { control: { type: 'range', min: 0, max: 100, step: 1 } },

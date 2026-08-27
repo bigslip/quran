@@ -71,7 +71,7 @@ describe('ProgressPageGoalWidget', () => {
       ranges: [],
       remainingDailyTargetRanges: [],
       progress: 0,
-    },
+    } as any,
   };
 
   it('renders loading state correctly', () => {
@@ -99,7 +99,7 @@ describe('ProgressPageGoalWidget', () => {
         daysLeft: 15,
         nextVerseToRead: '1:1',
       },
-    };
+    } as any;
 
     render(<ProgressPageGoalWidget {...defaultProps} goal={goal} />);
     
