@@ -67,7 +67,7 @@ import { isValidVerseFrom, isValidVerseKey, isValidVerseTo } from '@/utils/valid
 import { VersesResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
 
-interface MediaMaker {
+interface MediaMaker extends React.HTMLAttributes<HTMLDivElement> {
   juzVerses?: VersesResponse;
   reciters: Reciter[];
   translationsData: Translation[];
@@ -84,6 +84,7 @@ const MediaMaker: NextPage<MediaMaker> = ({
   verses: defaultVerses,
   audio: defaultAudio,
   translationsData,
+  ...rest
 }) => {
   const { t, lang } = useTranslation('common');
   const mediaSettings = useGetMediaSettings(reciters, translationsData);
@@ -441,7 +442,7 @@ const MediaMaker: NextPage<MediaMaker> = ({
   return (
     <>
       {SEOComponent}
-      <div className={styles.pageContainer}>
+      <div className={styles.pageContainer} {...rest}>
         {!isPreviewMode && (
           <div className={styles.titleContainer}>
             <h1>{t('media:title')}</h1>

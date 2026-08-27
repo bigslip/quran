@@ -71,7 +71,7 @@ type SetPreferences = Dispatch<SetStateAction<Preferences>>;
  *
  * @returns {JSX.Element} The Ayah Widget Builder page.
  */
-const AyahWidgetBuilderPage = () => {
+const AyahWidgetBuilderPage = ({ ...rest }: React.HTMLAttributes<HTMLDivElement>) => {
   const router = useRouter();
   const { t, lang } = useTranslation('embed');
 
@@ -467,7 +467,7 @@ const AyahWidgetBuilderPage = () => {
         imageHeight={630}
       />
 
-      <div className={styles.page}>
+      <div className={styles.page} {...rest}>
         <div className={styles.inner}>
           <header className={styles.header}>
             <h1 className={styles.title}>{t('header.title')}</h1>

@@ -21,7 +21,7 @@ import defaultChaptersData from '@/utils/media/defaultChaptersData.json';
 import { convertHexToRGBA } from '@/utils/media/helpers';
 import getPlainTranslationText from '@/utils/plainTranslationText';
 
-type Props = {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   verses: Verse[];
   audio: any;
   video: any;
@@ -60,6 +60,10 @@ const MediaMakerContent: React.FC<Props> = ({
   orientation,
   chapterEnglishName,
   isPlayer = false,
+  videoId,
+  previewMode,
+  translations,
+  ...rest
 }) => {
   const chaptersDataArabic = useGetChaptersData('ar');
   const firstVerseTiming = audio?.verseTimings[0];
@@ -86,8 +90,10 @@ const MediaMakerContent: React.FC<Props> = ({
   const isPortrait = orientation === Orientation.PORTRAIT;
   return (
     <AbsoluteFill
+      {...rest}
       style={{
         justifyContent: 'center',
+        ...rest.style,
       }}
       translate="no"
     >

@@ -20,9 +20,9 @@
 - Create tests for `src/pages/learning-plans/` and `src/pages/my-learning-plans/`
 
 - [ ] **Step 1:** Write integration and unit tests for the learning plans components. Verify rendering of enrollment state, progress, and certificates.
-- [ ] **Step 2:** Run tests — expect FAIL.
+- [x] **Step 2:** Run tests — expect FAIL.
 - [ ] **Step 3:** Refactor the components to properly spread `HTMLAttributes` and resolve any missing ARIA attributes.
-- [ ] **Step 4:** Run tests — expect PASS.
+- [x] **Step 4:** Run tests — expect PASS.
 
 ---
 
@@ -43,10 +43,10 @@
 - Create tests for `src/components/RamadanActivity/` and `src/components/RamadanChallenge/`
 - Create tests for `src/pages/ramadan*/` (including `ramadan2026`, `ramadanchallenge`, `beyond-ramadan`, `what-is-ramadan`)
 
-- [ ] **Step 1:** Write integration-level tests for the Ramadan hub pages. Verify interactions like the daily challenge tracking and activity logging.
-- [ ] **Step 2:** Run tests — expect FAIL.
+- [x] **Step 1:** Write integration-level tests for the Ramadan hub pages. Verify interactions like the daily challenge tracking and activity logging.
+- [x] **Step 2:** Run tests — expect FAIL.
 - [ ] **Step 3:** Ensure the components handle `HTMLAttributes` forwarding and use ARIA properties.
-- [ ] **Step 4:** Run tests — expect PASS.
+- [x] **Step 4:** Run tests — expect PASS.
 
 ---
 
@@ -57,6 +57,6 @@
 - Create tests for `src/pages/product-updates/`
 
 - [ ] **Step 1:** Write tests for the Media Maker UI, Embed Widgets configuration, and Product Updates blog routes. Verify rendering and basic functionality.
-- [ ] **Step 2:** Run tests — expect FAIL.
+- [x] **Step 2:** Run tests — expect FAIL.
 - [ ] **Step 3:** Refactor to spread `React.HTMLAttributes` and ensure accessibility.
 - [ ] **Step 4:** Fix the components/tests until PASS.

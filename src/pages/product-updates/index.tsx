@@ -15,12 +15,12 @@ import { getAllChaptersData } from '@/utils/chapter';
 import { getCanonicalUrl, getProductUpdatesUrl } from '@/utils/navigation';
 import { REVALIDATION_PERIOD_ON_ERROR_SECONDS } from '@/utils/staticPageGeneration';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   pages?: any[];
   chaptersData?: any;
 }
 
-const ProductUpdatesPage: NextPage<Props> = ({ pages }) => {
+const ProductUpdatesPage: NextPage<Props> = ({ pages, ...rest }) => {
   const { t, lang } = useTranslation('common');
   // TODO: add getLanguageAlternates when we internationalize this page
   return (
@@ -30,7 +30,7 @@ const ProductUpdatesPage: NextPage<Props> = ({ pages }) => {
         url={getCanonicalUrl(lang, getProductUpdatesUrl())}
       />
       <PageContainer>
-        <div className={styles.container}>
+        <div className={styles.container} {...rest}>
           <LocalizationMessage />
           {pages.map((page) => (
             <Page key={page.slug.current} page={page} />
