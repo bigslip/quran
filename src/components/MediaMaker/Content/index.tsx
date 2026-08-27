@@ -84,7 +84,12 @@ const MediaMakerContent: React.FC<Props> = ({
       : (verseTiming?.timestampTo / 1000) * 30;
   }, [audio?.verseTimings, firstVerseTiming?.normalizedEnd]);
 
-  const audioHasStartAndEndRanges = typeof startFrom === 'number' && typeof endAt === 'number';
+  const audioHasStartAndEndRanges =
+    typeof startFrom === 'number' &&
+    !Number.isNaN(startFrom) &&
+    typeof endAt === 'number' &&
+    !Number.isNaN(endAt) &&
+    Boolean(audio?.audioUrl);
 
   const videoPath = staticFile(`${isPlayer ? '/publicMin' : ''}${video.videoSrc}`);
   const isPortrait = orientation === Orientation.PORTRAIT;
