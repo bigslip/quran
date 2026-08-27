@@ -55,5 +55,5 @@
 - Verification across full test suite
 - Typecheck & build health audit
 
-- [ ] **Step 1:** Run full test suite across all phases (1–8) and ensure 100% pass rate.
-- [ ] **Step 2:** Generate final Phase 8 review artifact.
+- [x] **Step 1:** Run full test suite across all phases (1–8) and ensure 100% pass rate.
+- [x] **Step 2:** Generate final Phase 8 review artifact.
