@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -34,8 +35,8 @@ describe('EnrollmentCount', () => {
   it('renders the count when count is >= MINIMUM_ENROLLMENT_COUNT', () => {
     (useSWR as any).mockReturnValue({ data: { data: { count: 501 } } });
     render(<EnrollmentCount />);
-    expect(screen.getByText('501+')).toBeDefined();
-    expect(screen.getByText(/people around the world have joined the challenge!/)).toBeDefined();
+    expect(screen.getByText('501+')).toBeInTheDocument();
+    expect(screen.getByText(/people around the world have joined the challenge!/)).toBeInTheDocument();
   });
 
   it('forwards HTMLAttributes correctly', () => {

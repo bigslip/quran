@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -43,7 +44,7 @@ describe('UnauthEnrollButton', () => {
     (useRamadanChallengeStatus as any).mockReturnValue({ isLoading: false, isEnrolled: false, mutate: vi.fn() });
 
     render(<UnauthEnrollButton section="test" />);
-    expect(screen.getByTestId('mock-enroll-button-notification')).toBeDefined();
+    expect(screen.getByTestId('mock-enroll-button-notification')).toBeInTheDocument();
   });
 
   it('renders Button with login url when not logged in', () => {

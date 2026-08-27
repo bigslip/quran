@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -36,7 +37,7 @@ describe('EnrollButton', () => {
         mutate={vi.fn()}
       />
     );
-    expect(screen.getByText('Enroll')).toBeDefined();
+    expect(screen.getByText('Enroll')).toBeInTheDocument();
   });
 
   it('renders correctly when enrolled', () => {
@@ -50,7 +51,7 @@ describe('EnrollButton', () => {
         mutate={vi.fn()}
       />
     );
-    expect(screen.getByText('Subscribed')).toBeDefined();
+    expect(screen.getByText('Subscribed')).toBeInTheDocument();
   });
 
   it('shows loading spinner when isLoading is true', () => {

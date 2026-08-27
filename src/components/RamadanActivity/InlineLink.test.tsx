@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -15,7 +16,7 @@ afterEach(() => {
 describe('InlineLink', () => {
   it('renders correctly', () => {
     render(<InlineLink href="https://example.com" text="Example" />);
-    expect(screen.getByText('Example')).toBeDefined();
+    expect(screen.getByText('Example')).toBeInTheDocument();
     const link = screen.getByText('Example').closest('a');
     expect(link).toHaveProperty('href', 'https://example.com/');
   });

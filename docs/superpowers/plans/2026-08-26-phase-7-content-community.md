@@ -56,7 +56,7 @@
 - Create tests for `src/pages/embed/`
 - Create tests for `src/pages/product-updates/`
 
-- [ ] **Step 1:** Write tests for the Media Maker UI, Embed Widgets configuration, and Product Updates blog routes. Verify rendering and basic functionality.
+- [x] **Step 1:** Write tests for the Media Maker UI, Embed Widgets configuration, and Product Updates blog routes. Verify rendering and basic functionality.
 - [x] **Step 2:** Run tests — expect FAIL.
-- [ ] **Step 3:** Refactor to spread `React.HTMLAttributes` and ensure accessibility.
-- [ ] **Step 4:** Fix the components/tests until PASS.
+- [x] **Step 3:** Refactor to spread `React.HTMLAttributes` and ensure accessibility.
+- [x] **Step 4:** Fix the components/tests until PASS.

@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -50,10 +51,10 @@ describe('RamadanChallengePage', () => {
     render(<RamadanChallengePage />);
     
     // Check main title
-    expect(screen.getByText('Take the Meaningful Memorization Challenge This Ramadan')).toBeDefined();
+    expect(screen.getByText('Take the Meaningful Memorization Challenge This Ramadan')).toBeInTheDocument();
 
     // Check EnrollmentCount renders using mocked SWR data
-    expect(screen.getByText(/people around the world have joined the challenge!/)).toBeDefined();
+    expect(screen.getByText(/people around the world have joined the challenge!/)).toBeInTheDocument();
 
     // Check Enroll Buttons exist (there are 2 UnauthEnrollButton components which render as links when not logged in)
     const enrollButtons = screen.getAllByRole('link', { name: /Join the Surah Al-Mulk Challenge/i });
