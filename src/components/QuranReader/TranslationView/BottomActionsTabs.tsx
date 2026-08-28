@@ -55,7 +55,10 @@ const BottomActionsTabs: React.FC<BottomActionsTabsProps> = ({
     e: React.KeyboardEvent,
     onClick: (e: React.MouseEvent | React.KeyboardEvent) => void,
   ) => {
-    onClick(e);
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(e);
+    }
   };
 
   const filteredTabs = React.useMemo(() => tabs.filter((tab) => tab.condition !== false), [tabs]);

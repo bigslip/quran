@@ -151,6 +151,7 @@ const areVersesEqual = (
   prevProps: TranslationViewCellProps,
   nextProps: TranslationViewCellProps,
 ): boolean =>
+  prevProps.className === nextProps.className &&
   prevProps.verse.id === nextProps.verse.id &&
   prevProps.isFirstCellWithHeader === nextProps.isFirstCellWithHeader &&
   !verseFontChanged(
