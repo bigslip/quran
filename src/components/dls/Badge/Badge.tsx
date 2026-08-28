@@ -26,10 +26,9 @@ const Badge = ({
   ...props
 }: BadgeProps) => {
   return (
-    <div className={classNames(styles.container, className)} role="status" {...props}>
+    <div className={classNames(styles.container, className)} {...props}>
       {children}
       <div
-        aria-hidden="true"
         {...contentProps}
         className={classNames(contentClassName, styles.content, {
           [styles.topLeft]: position === BadgePosition.TOP_LEFT,

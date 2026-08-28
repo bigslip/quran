@@ -1,8 +1,10 @@
 import { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 
 import * as Dialog from '@radix-ui/react-dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
 
 import Button, { ButtonShape, ButtonVariant } from '../Button/Button';
 
@@ -51,6 +53,7 @@ const ContentModal = ({
   footer,
   footerClassName,
 }: ContentModalProps) => {
+  const { t } = useTranslation('common');
   const overlayRef = useRef<HTMLDivElement>();
   const contentRef = useRef<HTMLDivElement>(null);
   const { locale } = useRouter();
@@ -77,6 +80,7 @@ const ContentModal = ({
   const Overlay = isFake ? FakeContentModal.FakeContentOverlay : Dialog.Overlay;
   const Content = isFake ? FakeContentModal.FakeContentContent : Dialog.Content;
   const Close = isFake ? FakeContentModal.FakeContentClose : Dialog.Close;
+  const Title = isFake ? ({ children }: any) => children : Dialog.Title;
 
   const handleOpenChange = useCallback(
     (open: boolean) => {
@@ -86,7 +90,7 @@ const ContentModal = ({
   );
 
   return (
-    <Root open={isOpen} onClose={onClose} onOpenChange={handleOpenChange}>
+    <Root open={isOpen} onOpenChange={handleOpenChange}>
       <Portal>
         <Overlay
           ref={overlayRef}
@@ -113,21 +117,33 @@ const ContentModal = ({
             onOpenAutoFocus={handleOpenAutoFocus}
             data-testid={dataTestId ?? 'root-dialog'}
           >
-            {hasHeader && (
+            {hasHeader ? (
               <div className={classNames(styles.header, headerClassName)}>
                 {hasCloseButton && (
                   <Close asChild className={classNames(styles.closeIcon, closeIconClassName)}>
                     <Button
                       variant={ButtonVariant.Ghost}
                       shape={ButtonShape.Circle}
-                      ariaLabel="Close"
+                      ariaLabel={t('close')}
                     >
                       <CloseIcon />
                     </Button>
                   </Close>
                 )}
-                {header}
+                {typeof header === 'string' ? (
+                  <Title asChild>
+                    <h2>{header}</h2>
+                  </Title>
+                ) : (
+                  <Title asChild>{header}</Title>
+                )}
               </div>
+            ) : (
+              <Title asChild>
+                <VisuallyHidden>
+                  <h2>Modal</h2>
+                </VisuallyHidden>
+              </Title>
             )}
             <div
               className={classNames(styles.content, innerContentClassName)}

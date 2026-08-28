@@ -29,8 +29,9 @@ type Options = {
   actions?: Action[];
   status?: ToastStatus;
   testId?: string;
+  duration?: number;
 };
-const TOAST_DURATION = 3000; // 3 second
+const TOAST_DURATION = 5000; // 5 seconds
 const toast = (content: React.ReactNode, options: Options = {}) => {
   const toastId = primitiveToast(
     <div className={styles.contentContainer} data-testid={options.testId}>
@@ -89,7 +90,7 @@ export const useToast = () => {
 
   return useCallback(
     (content: React.ReactNode, options: Options = {}) => {
-      setShouldRenderToast(true);
+      setShouldRenderToast?.(true);
       toast(content, options);
     },
     [setShouldRenderToast],

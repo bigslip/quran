@@ -34,7 +34,6 @@ describe('Badge', () => {
       </Badge>,
     );
     const badgeElement = screen.getByLabelText('New notification');
-    expect(badgeElement).toHaveAttribute('role', 'status');
     expect(badgeElement).toHaveAttribute('aria-label', 'New notification');
   });
 });

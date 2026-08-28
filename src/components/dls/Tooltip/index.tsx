@@ -123,7 +123,7 @@ const Tooltip: React.FC<Props> = ({
       {...(typeof open !== 'undefined' && { open })}
       {...(onOpenChange && { onOpenChange })}
     >
-      <RadixTooltip.Trigger aria-label="Open tooltip" asChild>
+      <RadixTooltip.Trigger asChild>
         <span className={styles.trigger}>{children}</span>
       </RadixTooltip.Trigger>
       {suffixContent ? (
