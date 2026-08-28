@@ -39,7 +39,7 @@ const AudioPlayerSlider = ({ isEmbedded, className, ...props }: AudioPlayerSlide
         <Slider
           showThumbs={false}
           variant={SliderVariant.Secondary}
-          label="audio-player"
+          label="audio-player-download"
           value={[downloadProgress]}
           onValueChange={([newTimestamp]) => {
             logEvent('audio_player_slider_value_change');
@@ -52,7 +52,7 @@ const AudioPlayerSlider = ({ isEmbedded, className, ...props }: AudioPlayerSlide
       </div>
       <div className={sliderContainerClass}>
         <Slider
-          label="audio-player"
+          label="audio-player-seek"
           value={[elapsed]}
           onValueChange={([newTimestamp]) => {
             logEvent('audio_player_slider_value_change');

@@ -14,6 +14,7 @@ const CloseRadioButton = () => {
   return (
     <Button
       tooltip={t('close')}
+      ariaLabel={t('close')}
       shape={ButtonShape.Circle}
       variant={ButtonVariant.Ghost}
       onClick={withStopPropagation(() => {

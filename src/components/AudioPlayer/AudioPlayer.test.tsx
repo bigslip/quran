@@ -121,7 +121,6 @@ describe('AudioPlayer', () => {
       expect(audioService.send).toHaveBeenCalledWith({ type: 'UPDATE_TIMING' });
     });
   });
-});
 
   describe('prop forwarding', () => {
     it('spreads attributes to the wrapper element', () => {
@@ -138,3 +137,4 @@ describe('AudioPlayer', () => {
       expect(el.classList.contains('extra-class')).toBe(true);
     });
   });
+});

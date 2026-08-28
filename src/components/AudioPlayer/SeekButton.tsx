@@ -49,6 +49,7 @@ const SeekButton = ({ type, isLoading, chaptersData }: SeekButtonProps) => {
   return (
     <Button
       tooltip={type === SeekButtonType.PrevAyah ? t('previous-ayah') : t('next-ayah')}
+      ariaLabel={type === SeekButtonType.PrevAyah ? t('previous-ayah') : t('next-ayah')}
       variant={ButtonVariant.Ghost}
       shape={ButtonShape.Circle}
       onClick={onSeek}

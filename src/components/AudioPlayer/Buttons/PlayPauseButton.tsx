@@ -26,6 +26,7 @@ const PlayPauseButton = () => {
     return (
       <Button
         tooltip={`${t('loading')}...`}
+        ariaLabel={`${t('loading')}...`}
         shape={ButtonShape.Circle}
         variant={ButtonVariant.Ghost}
         isDisabled={isLoading}
@@ -39,6 +40,7 @@ const PlayPauseButton = () => {
     return (
       <Button
         tooltip={t('audio.player.pause')}
+        ariaLabel={t('audio.player.pause')}
         shape={ButtonShape.Circle}
         variant={ButtonVariant.Ghost}
         onClick={withStopPropagation(() => {
@@ -54,6 +56,7 @@ const PlayPauseButton = () => {
   return (
     <Button
       tooltip={t('audio.player.play')}
+      ariaLabel={t('audio.player.play')}
       shape={ButtonShape.Circle}
       variant={ButtonVariant.Ghost}
       onClick={withStopPropagation(() => {

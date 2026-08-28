@@ -14,6 +14,7 @@ const CloseButton = () => {
   return (
     <Button
       tooltip={t('audio.player.close-audio-player')}
+      ariaLabel={t('audio.player.close-audio-player')}
       shape={ButtonShape.Circle}
       variant={ButtonVariant.Ghost}
       onClick={withStopPropagation(() => {
