@@ -55,6 +55,7 @@ describe('GlyphWord', () => {
     render(
       <GlyphWord 
         font={QuranFont.MadaniV1} 
+        qpcUthmaniHafs="FALLBACK"
         textCodeV1="V1_GLYPH" 
         textCodeV2="V2_GLYPH" 
         pageNumber={1} 

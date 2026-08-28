@@ -187,6 +187,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           {...(onClick && { onClick })}
           // eslint-disable-next-line @typescript-eslint/naming-convention
           {...(ariaLabel && { ariaLabel })}
+          {...(props as any)}
         >
           <div dir={direction} className={classes} data-auto-flip-icon={shouldFlipOnRTL}>
             {prefixFinal && (

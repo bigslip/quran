@@ -22,11 +22,11 @@ export enum TabId {
 }
 
 export interface TabConfig {
-  id: TabId;
+  id: TabId | string;
   label: string;
   icon: JSX.Element;
   onClick: (e: React.MouseEvent | React.KeyboardEvent) => void;
-  condition: boolean | undefined;
+  condition?: boolean;
   isAdditionalTab?: boolean;
 }
 

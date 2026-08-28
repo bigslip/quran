@@ -92,10 +92,6 @@ const VerseAndTranslation: React.FC<Props> = (props) => {
     to,
     quranFont,
     translationsLimit,
-    chaptersData,
-    titleText,
-    arabicVerseClassName,
-    translationClassName,
   });
   const chapterData = useMemo(() => {
     if (!chaptersData) return null;
