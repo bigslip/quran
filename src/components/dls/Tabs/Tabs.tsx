@@ -1,19 +1,24 @@
 import React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import classnames from 'classnames';
+import useDirection from '@/hooks/useDirection';
 import { TestId } from '@/tests/test-ids';
 import styles from './Tabs.module.scss';
 
 export const Tabs = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Root
-    ref={ref}
-    className={classnames(styles.root, className)}
-    {...props}
-  />
-));
+>(({ className, dir, ...props }, ref) => {
+  const defaultDir = useDirection();
+  return (
+    <TabsPrimitive.Root
+      ref={ref}
+      dir={dir || (defaultDir as 'ltr' | 'rtl')}
+      className={classnames(styles.root, className)}
+      {...props}
+    />
+  );
+});
 Tabs.displayName = TabsPrimitive.Root.displayName;
 
 export const TabsList = React.forwardRef<

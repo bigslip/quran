@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import Link from 'next/link';
+import Link from '@/dls/Link/Link';
 import styles from './Breadcrumb.module.scss';
 
 export interface BreadcrumbItem {
@@ -8,16 +8,16 @@ export interface BreadcrumbItem {
   href?: string;
 }
 
-export interface BreadcrumbProps {
+export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
   items: BreadcrumbItem[];
   className?: string;
 }
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className }) => {
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className, ...props }) => {
   if (!items?.length) return null;
 
   return (
-    <nav aria-label="Breadcrumb" className={className}>
+    <nav aria-label="Breadcrumb" className={className} {...props}>
       <ol className={styles.container}>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
