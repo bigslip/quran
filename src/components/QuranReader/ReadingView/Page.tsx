@@ -66,7 +66,13 @@ const Page = ({
   // Render translation-only page for "Reading - Translation" mode
   if (isReadingTranslation) {
     return (
-      <div id={`page-${pageNumber}`} className={classNames(className, styles.translationPageContainer)} {...props}>
+      <div
+        id={`page-${pageNumber}`}
+        role="region"
+        aria-label={`Page ${pageNumber}`}
+        className={classNames(className, styles.translationPageContainer)}
+        {...props}
+      >
         {chapterHeader}
         <TranslationPage
           verses={verses}
@@ -81,6 +87,8 @@ const Page = ({
   return (
     <div
       id={`page-${pageNumber}`}
+      role="region"
+      aria-label={`Page ${pageNumber}`}
       className={classNames(className, styles.container, {
         [styles.mobileCenterText]: isBigTextLayout,
         [styles[getLineWidthClassName(FALLBACK_FONT, quranTextFontScale, mushafLines, true)]]:

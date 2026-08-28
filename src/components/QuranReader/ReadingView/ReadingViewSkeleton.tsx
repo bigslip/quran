@@ -14,9 +14,10 @@ import { getMushafLinesNumber } from '@/utils/page';
 
 type Props = {
   readingPreference?: ReadingPreference;
+  className?: string;
 };
 
-const ReadingViewSkeleton = ({ readingPreference }: Props) => {
+const ReadingViewSkeleton = ({ readingPreference, className }: Props) => {
   const { quranFont, quranTextFontScale, mushafLines } = useSelector(
     selectQuranReaderStyles,
     shallowEqual,
@@ -30,7 +31,7 @@ const ReadingViewSkeleton = ({ readingPreference }: Props) => {
   const isTranslationMode = readingPreference === ReadingPreference.ReadingTranslation;
 
   return (
-    <div className={styles.skeletonContainer}>
+    <div className={classNames(styles.skeletonContainer, className)}>
       {range(numberOfLines).map((i) => (
         <Skeleton
           key={i}

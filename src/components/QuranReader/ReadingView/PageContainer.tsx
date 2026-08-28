@@ -199,7 +199,7 @@ const PageContainer: React.FC<Props> = ({
   // Only show skeleton when we truly have no data.
   // Keep showing existing content while revalidating to prevent header flickering during mode switches.
   if (!effectiveVerses) {
-    return <ReadingViewSkeleton readingPreference={readingPreference} />;
+    return <ReadingViewSkeleton readingPreference={readingPreference} className={className} />;
   }
 
   return (
