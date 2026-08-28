@@ -154,7 +154,11 @@ const Input: React.FC<Props> = ({
 
   return (
     <>
-      {label && <p className={styles.label}>{label}</p>}
+      {label && (
+        <label htmlFor={id} className={styles.label}>
+          {label}
+        </label>
+      )}
       <div
         className={classNames(styles.container, containerClassName, {
           [styles.smallContainer]: size === InputSize.Small,
@@ -193,6 +197,7 @@ const Input: React.FC<Props> = ({
           )}
           type={htmlType}
           required={isRequired}
+          aria-invalid={type === InputType.Error ? true : undefined}
           dir="auto"
           id={id}
           data-testid={dataTestId}

@@ -25,7 +25,7 @@ interface Props {
   disabled?: boolean;
   required?: boolean;
   size?: SelectSize;
-  value?: string;
+  value?: string | number;
   placeholder?: string;
   onChange?: (value: string | number) => void;
   defaultStyle?: boolean;
@@ -82,7 +82,7 @@ const Select: React.FC<Props> = ({
         onChange={onSelectChange}
         disabled={disabled}
         required={required}
-        {...(value ? { value } : { defaultValue: '' })}
+        {...(value !== undefined ? { value } : { defaultValue: '' })}
         data-testid={testId}
       >
         <option value="" disabled hidden>

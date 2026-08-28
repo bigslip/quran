@@ -11,9 +11,9 @@ import ValidationErrors from './ValidationErrors';
 
 import Button, { ButtonProps } from '@/dls/Button/Button';
 import Checkbox from '@/dls/Forms/Checkbox/Checkbox';
-import Input from '@/dls/Forms/Input';
+import Input, { InputType } from '@/dls/Forms/Input';
 import StarRating from '@/dls/Forms/StarRating';
-import TextArea from '@/dls/Forms/TextArea';
+import TextArea, { TextAreaType } from '@/dls/Forms/TextArea';
 import { FormFieldType } from '@/types/FormField';
 
 // Stable empty object reference to prevent unnecessary re-renders
@@ -46,6 +46,7 @@ type FormBuilderProps<T> = {
 const FormFieldTypeToComponentMap = {
   [FormFieldType.TextArea]: TextArea,
   [FormFieldType.Text]: Input,
+  [FormFieldType.Email]: Input,
   [FormFieldType.Password]: Input,
   [FormFieldType.Phone]: Input,
   [FormFieldType.Number]: Input,
@@ -56,6 +57,7 @@ const FormFieldTypeToComponentMap = {
 const isFieldTextInput = (type: FormFieldType) => {
   return [
     FormFieldType.Text,
+    FormFieldType.Email,
     FormFieldType.Password,
     FormFieldType.Phone,
     FormFieldType.Number,
@@ -172,7 +174,6 @@ const FormBuilder = <T,>({
               }
 
               const inputFieldProps = {
-                key: formField.field,
                 value: field.value,
                 id: formField.field,
                 name: formField.field,
@@ -191,6 +192,12 @@ const FormBuilder = <T,>({
                   htmlType: formField.type,
                   fixedWidth: false,
                 }),
+                ...(error && {
+                  type:
+                    formField.type === FormFieldType.TextArea
+                      ? TextAreaType.Error
+                      : InputType.Error,
+                }),
                 ...(formField.type === FormFieldType.Checkbox &&
                   typeof formField.checked !== 'undefined' && {
                     checked: formField.checked,
@@ -199,7 +206,7 @@ const FormBuilder = <T,>({
               const InputField = FormFieldTypeToComponentMap[formField.type];
               return (
                 <div className={classNames(styles.inputContainer, formField.containerClassName)}>
-                  <InputField {...inputFieldProps} />
+                  <InputField key={formField.field} {...inputFieldProps} />
                   {renderError(error, formField.errorClassName)}
                   {renderExtraSection(formField, field.value)}
                 </div>

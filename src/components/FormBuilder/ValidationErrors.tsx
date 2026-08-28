@@ -53,7 +53,7 @@ const ValidationErrors: FC<Props> = ({ error, rules }) => {
             className={styles.ruleIcon}
             icon={isValid ? <CheckIcon /> : <CloseIcon />}
           />
-          <span className={styles.ruleText}>{t(rule.errorMessage)}</span>
+          <span className={styles.ruleText}>{rule.errorMessage}</span>
         </div>
       ))}
     </div>
