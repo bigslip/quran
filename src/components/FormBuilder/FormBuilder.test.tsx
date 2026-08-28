@@ -52,7 +52,7 @@ describe('FormBuilder', () => {
     const fields = [
       {
         field: 'email',
-        type: FormFieldType.Email,
+        type: FormFieldType.Text,
         label: 'Email',
         placeholder: 'Enter email',
       },

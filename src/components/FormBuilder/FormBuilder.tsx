@@ -43,10 +43,9 @@ type FormBuilderProps<T> = {
 /**
  * {@see https://legacy.reactjs.org/docs/jsx-in-depth.html#choosing-the-type-at-runtime}
  */
-const FormFieldTypeToComponentMap = {
+const FormFieldTypeToComponentMap: Record<FormFieldType, any> = {
   [FormFieldType.TextArea]: TextArea,
   [FormFieldType.Text]: Input,
-  [FormFieldType.Email]: Input,
   [FormFieldType.Password]: Input,
   [FormFieldType.Phone]: Input,
   [FormFieldType.Number]: Input,
@@ -57,7 +56,6 @@ const FormFieldTypeToComponentMap = {
 const isFieldTextInput = (type: FormFieldType) => {
   return [
     FormFieldType.Text,
-    FormFieldType.Email,
     FormFieldType.Password,
     FormFieldType.Phone,
     FormFieldType.Number,

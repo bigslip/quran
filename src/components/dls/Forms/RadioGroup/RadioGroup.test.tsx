@@ -24,7 +24,7 @@ describe('RadioGroup', () => {
   ];
 
   it('renders radio group with items and labels', () => {
-    render(<RadioGroup items={mockItems} ariaLabel="Test group" />);
+    render(<RadioGroup items={mockItems} label="Test group" />);
 
     expect(screen.getByRole('radiogroup')).toBeDefined();
     expect(screen.getByText('Option 1')).toBeDefined();
@@ -33,7 +33,7 @@ describe('RadioGroup', () => {
 
   it('calls onChange when an option is selected', () => {
     const handleChange = vi.fn();
-    render(<RadioGroup items={mockItems} onChange={handleChange} ariaLabel="Test group" />);
+    render(<RadioGroup items={mockItems} onChange={handleChange} label="Test group" />);
 
     const radio2 = screen.getByLabelText('Option 2');
     fireEvent.click(radio2);
@@ -41,7 +41,7 @@ describe('RadioGroup', () => {
   });
 
   it('disables item when disabled is set', () => {
-    render(<RadioGroup items={mockItems} ariaLabel="Test group" />);
+    render(<RadioGroup items={mockItems} label="Test group" />);
 
     const radio3 = screen.getByLabelText('Option 3');
     expect((radio3 as HTMLButtonElement).disabled).toBe(true);

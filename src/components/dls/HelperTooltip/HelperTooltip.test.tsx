@@ -1,7 +1,6 @@
 /* eslint-disable i18next/no-literal-string, import/no-extraneous-dependencies */
 import * as matchers from '@testing-library/jest-dom/matchers';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
@@ -39,8 +38,9 @@ describe('HelperTooltip', () => {
 
   it('shows help text on hover', async () => {
     renderHelperTooltip(<HelperTooltip>Some advanced configuration</HelperTooltip>);
-    const trigger = screen.getByLabelText('Open tooltip');
-    await userEvent.hover(trigger);
+    const icon = screen.getByTestId('help-circle-icon');
+    fireEvent.focus(icon);
+    fireEvent.mouseEnter(icon);
     await waitFor(() => {
       expect(screen.getAllByText('Some advanced configuration').length).toBeGreaterThan(0);
     });
@@ -56,8 +56,9 @@ describe('HelperTooltip', () => {
     renderHelperTooltip(
       <HelperTooltip contentSide={ContentSide.RIGHT}>Right tooltip text</HelperTooltip>,
     );
-    const trigger = screen.getByLabelText('Open tooltip');
-    await userEvent.hover(trigger);
+    const icon = screen.getByTestId('help-circle-icon');
+    fireEvent.focus(icon);
+    fireEvent.mouseEnter(icon);
     await waitFor(() => {
       expect(screen.getAllByText('Right tooltip text').length).toBeGreaterThan(0);
     });
