@@ -660,7 +660,14 @@ export const audioPlayerMachine =
           },
           on: {
             CLOSE: {
-              actions: ['resetElapsedTime', 'resetAyahNumber', 'resetWordLocation', 'pauseAudio'],
+              actions: [
+                'stopRepeatActor',
+                'exitRadio',
+                'resetElapsedTime',
+                'resetAyahNumber',
+                'resetWordLocation',
+                'pauseAudio',
+              ],
               description: 'User closes the audio player',
               target: 'HIDDEN',
             },
@@ -765,8 +772,10 @@ export const audioPlayerMachine =
           /**
            * This is hack for safari where the audioplayer goes to ended, instead of waiting for the buffer data
            */
-          context.audioPlayer.currentTime = context.elapsed - 0.0001;
-          context.audioPlayer.play();
+          context.audioPlayer.currentTime = Math.max(0, context.elapsed - 0.0001);
+          context.audioPlayer.play()?.catch(() => {
+            // Handled safely without uncaught rejection
+          });
         },
         setRecitersList: assign({
           recitersList: (context, event) => event.recitersList,
@@ -1147,6 +1156,18 @@ export const audioPlayerMachine =
               console.log(`The media session action "${action}" is not supported yet.`);
             }
           }
+
+          return () => {
+            if ('mediaSession' in navigator) {
+              for (const [action] of actionHandlers) {
+                try {
+                  navigator.mediaSession.setActionHandler(action as MediaSessionAction, null);
+                } catch {
+                  // Ignore cleanup errors for unsupported actions
+                }
+              }
+            }
+          };
         },
       },
       delays: {
