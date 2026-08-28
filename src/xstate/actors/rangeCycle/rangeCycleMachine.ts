@@ -263,7 +263,7 @@ export const createRangeCycleMachine = ({
         }),
 
         sendRangeRepeatFinished: pure((context: any) => {
-          const actions = [sendParent({ type: 'RANGE_REPEAT_FINISHED' })];
+          const actions: any[] = [sendParent({ type: 'RANGE_REPEAT_FINISHED' })];
           if (context?.verseCycleActor?.id) {
             actions.unshift(stop(context.verseCycleActor.id));
           }
