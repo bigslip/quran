@@ -223,12 +223,16 @@ const RepeatAudioModal = ({
   };
 
   const onRepetitionModeChange = (mode: RepetitionMode) => {
-    logValueChange('repitition_mode', repetitionMode, mode);
-    setVerseRepetition((prevVerseRepetition) => ({
-      ...prevVerseRepetition,
-      from: mode === RepetitionMode.Single ? selectedVerseKey : firstVerseKeyInThisChapter,
-      to: mode === RepetitionMode.Single ? selectedVerseKey : lastVerseKeyInThisChapter,
-    }));
+    logValueChange('repetition_mode', repetitionMode, mode);
+    setVerseRepetition((prevVerseRepetition) => {
+      const defaultSingleKey =
+        selectedVerseKey ?? prevVerseRepetition.from ?? firstVerseKeyInThisChapter;
+      return {
+        ...prevVerseRepetition,
+        from: mode === RepetitionMode.Single ? defaultSingleKey : firstVerseKeyInThisChapter,
+        to: mode === RepetitionMode.Single ? defaultSingleKey : lastVerseKeyInThisChapter,
+      };
+    });
     setRepetitionMode(mode);
   };
 

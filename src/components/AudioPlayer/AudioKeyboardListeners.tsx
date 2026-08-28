@@ -10,6 +10,16 @@ type AudioKeyBoardListenersProps = {
   isAudioPlayerHidden: boolean;
 };
 
+const isInteractiveElement = (target: EventTarget | null): boolean => {
+  if (!(target instanceof HTMLElement)) return false;
+  const interactiveTags = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA', 'A'];
+  return (
+    interactiveTags.includes(target.tagName) ||
+    target.isContentEditable ||
+    target.getAttribute('role') === 'button'
+  );
+};
+
 const AudioKeyBoardListeners = ({
   togglePlaying,
   isAudioPlayerHidden,
@@ -17,6 +27,9 @@ const AudioKeyBoardListeners = ({
   const audioService = useContext(AudioPlayerMachineContext);
   const toggleAudioPlayer = useCallback(
     (event: KeyboardEvent) => {
+      if (isInteractiveElement(event.target)) {
+        return;
+      }
       logEvent('audio_player_toggle_keyboard_shortcut');
       event.preventDefault();
       togglePlaying();

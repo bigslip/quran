@@ -59,6 +59,7 @@ const SelectRepetitionMode = ({
         <Combobox
           clearable={false}
           id={RepetitionMode.Single}
+          label={t('audio.player.search-verse')}
           value={verseKey}
           items={comboboxVerseItems}
           onChange={(val) => onSingleVerseChange(val)}

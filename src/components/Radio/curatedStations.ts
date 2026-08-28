@@ -10,7 +10,7 @@ const popularRecitersId = ['7', '3', '10', '4'];
 const generatePopularRecitersAudioTracks = (): AudioTrack[] => {
   return popularRecitersId
     .map((reciter) =>
-      range(1, QURAN_CHAPTERS_COUNT).map((chapter) => ({
+      range(1, QURAN_CHAPTERS_COUNT + 1).map((chapter) => ({
         surah: chapter.toString(),
         reciterId: reciter.toString(),
       })),
@@ -22,7 +22,7 @@ const JUZ_AMMA_FIRST_CHAPTER = 78;
 const generateJuzAmmaAudioTracks = (): AudioTrack[] => {
   return popularRecitersId
     .map((reciter) =>
-      range(JUZ_AMMA_FIRST_CHAPTER, QURAN_CHAPTERS_COUNT).map((chapter) => ({
+      range(JUZ_AMMA_FIRST_CHAPTER, QURAN_CHAPTERS_COUNT + 1).map((chapter) => ({
         surah: chapter.toString(),
         reciterId: reciter.toString(),
       })),

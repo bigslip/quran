@@ -19,7 +19,13 @@ const useCurrentStationInfo = (context: RadioContext): StationInfo => {
   );
 
   const getCuratedStationInfo = (): StationInfo => {
-    const curatedStation = curatedStations[stationState.id];
+    const curatedStation = stationState?.id ? curatedStations[stationState.id] : null;
+    if (!curatedStation) {
+      return {
+        title: '',
+        description: '',
+      };
+    }
     return {
       title: t(`curated-station.${curatedStation.title}`),
       description: t(`curated-station.${curatedStation.description}`),
