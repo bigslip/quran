@@ -215,10 +215,12 @@ const QuranWord = ({
   }, [readingPreference]);
 
   const seekToWordIfPlaying = useCallback(() => {
+    if (!audioService) return false;
     const currentState = audioService.getSnapshot();
+    if (!currentState?.matches) return false;
     const isPlaying = currentState.matches('VISIBLE.AUDIO_PLAYER_INITIATED.PLAYING');
     const currentSurah = getChapterNumberFromKey(word.verseKey);
-    const isSameSurah = currentState.context.surah === Number(currentSurah);
+    const isSameSurah = currentState.context?.surah === Number(currentSurah);
 
     if (isPlaying && isSameSurah) {
       const wordSegment = getWordTimeSegment(currentState.context.audioData.verseTimings, word);

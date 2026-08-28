@@ -122,7 +122,9 @@ const PlayVerseAudioButton: React.FC<PlayVerseAudioProps> = ({
       shape={ButtonShape.Circle}
       id="play-verse-button" // this ID is for onboarding
       className={classNames(styles.iconContainer, styles.verseAction)}
-      ariaLabel={t('aria.play-surah', { surahName: chapterData.transliteratedName })}
+      ariaLabel={t('aria.play-surah', {
+        surahName: chapterData?.transliteratedName ?? chapterId,
+      })}
     >
       <span className={classNames(styles.icon, styles.playIcon)}>
         <IconContainer

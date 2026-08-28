@@ -94,7 +94,7 @@ const VerseText = ({
     isReadingMode &&
     (quranTextFontScale > 3 || showWordByWordTranslation || showWordByWordTransliteration);
 
-  const VerseTextContainer: any = shouldShowH1ForSEO ? 'h1' : 'div';
+  const VerseTextContainer: React.ElementType = shouldShowH1ForSEO ? 'h1' : 'div';
   const fontClassName = isFontLoaded
     ? getFontClassName(quranFont, quranTextFontScale, mushafLines)
     : getFontClassName(FALLBACK_FONT, quranTextFontScale, mushafLines, true);

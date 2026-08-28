@@ -18,11 +18,13 @@ vi.mock('@/redux/slices/QuranReader/styles', () => ({
 
 describe('GlyphWord', () => {
   afterEach(cleanup);
-  it('renders glyph and spreads props', () => {
+
+  it('renders glyph and spreads props when font is loaded', () => {
     render(
       <GlyphWord 
         font={QuranFont.QPCHafs} 
-        qpcUthmaniHafs="A" textCodeV2="A" 
+        qpcUthmaniHafs="A" 
+        textCodeV2="A" 
         pageNumber={1} 
         isFontLoaded={true}
         data-testid="glyph-word" 
@@ -32,5 +34,35 @@ describe('GlyphWord', () => {
     const el = screen.getByTestId('glyph-word');
     expect(el.textContent).toBe('A');
     expect(el.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('renders fallback qpcUthmaniHafs glyph when font is not loaded', () => {
+    render(
+      <GlyphWord 
+        font={QuranFont.MadaniV2} 
+        qpcUthmaniHafs="FALLBACK_GLYPH" 
+        textCodeV2="V2_GLYPH" 
+        pageNumber={1} 
+        isFontLoaded={false}
+        data-testid="glyph-word" 
+      />
+    );
+    const el = screen.getByTestId('glyph-word');
+    expect(el.textContent).toBe('FALLBACK_GLYPH');
+  });
+
+  it('renders textCodeV1 for MadaniV1 font when loaded', () => {
+    render(
+      <GlyphWord 
+        font={QuranFont.MadaniV1} 
+        textCodeV1="V1_GLYPH" 
+        textCodeV2="V2_GLYPH" 
+        pageNumber={1} 
+        isFontLoaded={true}
+        data-testid="glyph-word" 
+      />
+    );
+    const el = screen.getByTestId('glyph-word');
+    expect(el.textContent).toBe('V1_GLYPH');
   });
 });

@@ -9,7 +9,7 @@ import styles from './TajweedWordImage.module.scss';
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import { makeCDNUrl } from '@/utils/cdn';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLSpanElement> {
   path: string;
   alt: string;
 }
@@ -27,10 +27,17 @@ const FONT_SIZE_CLASS_MAP = {
   10: styles.xl6,
 };
 
-const TajweedWord: React.FC<Props> = ({ path, alt }) => {
+const TajweedWord: React.FC<Props> = ({ path, alt, className, ...props }) => {
   const { quranTextFontScale } = useSelector(selectQuranReaderStyles);
   return (
-    <span className={classNames(styles.imageContainer, FONT_SIZE_CLASS_MAP[quranTextFontScale])}>
+    <span
+      className={classNames(
+        styles.imageContainer,
+        className,
+        FONT_SIZE_CLASS_MAP[quranTextFontScale],
+      )}
+      {...props}
+    >
       <img src={`${makeCDNUrl(`images/${path}`)}`} alt={alt} />
     </span>
   );
