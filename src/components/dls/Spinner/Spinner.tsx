@@ -6,14 +6,15 @@ import styles from './Spinner.module.scss';
 export enum SpinnerSize {
   Small = 'small',
   Medium = 'medium',
-  Large = 'Large',
+  Large = 'large',
 }
-type SpinnerProps = {
+export type SpinnerProps = React.HTMLAttributes<HTMLDivElement> & {
   dataTestId?: string;
   size?: SpinnerSize;
   isCentered?: boolean;
   className?: string;
   shouldDelayVisibility?: boolean;
+  label?: string;
 };
 
 const Spinner = ({
@@ -22,6 +23,8 @@ const Spinner = ({
   isCentered = true,
   className,
   shouldDelayVisibility,
+  label = 'Loading...',
+  ...props
 }: SpinnerProps) => (
   <div
     data-testid={dataTestId}
@@ -33,8 +36,9 @@ const Spinner = ({
       [styles.delayVisibility]: shouldDelayVisibility,
     })}
     role="status"
+    {...props}
   >
-    <VisuallyHidden>Loading...</VisuallyHidden>
+    <VisuallyHidden>{label}</VisuallyHidden>
     <div className={styles.container}>{getSpans()}</div>
   </div>
 );

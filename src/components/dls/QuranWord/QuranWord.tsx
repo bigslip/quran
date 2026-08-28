@@ -351,7 +351,7 @@ const QuranWord = ({
     [handleInteraction],
   );
 
-  const onKeyPress = useCallback(
+  const onKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault(); // Prevent scrolling on Space key
@@ -380,7 +380,7 @@ const QuranWord = ({
   const shouldHandleWordClicking = !isInteractionDisabled;
   return (
     <div
-      {...(shouldHandleWordClicking && { onClick, onKeyPress, role: 'button', tabIndex: 0 })}
+      {...(shouldHandleWordClicking && { onClick, onKeyDown, role: 'button', tabIndex: 0 })}
       {...(!isInteractionDisabled && { onMouseEnter, onMouseLeave })}
       {...{
         [DATA_ATTRIBUTE_WORD_LOCATION]: wordLocation,

@@ -59,7 +59,10 @@ export enum ButtonVariant {
  * In this case, the `ref` parameter will not be forwarded and will be `null` when accessed by consumers.
  * If you need to access the underlying element via ref, avoid using the `href` prop.
  */
-export type ButtonProps = {
+export type ButtonProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'prefix' | 'type' | 'onClick'
+> & {
   size?: ButtonSize;
   shape?: ButtonShape;
   prefix?: React.ReactNode;
@@ -127,6 +130,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const direction = useDirection();
+    const isButtonDisabled = disabled || isLoading;
     const classes = classNames(styles.base, className, {
       [styles.withText]: typeof children === 'string',
       [styles.withIcon]: typeof children !== 'string',
@@ -173,7 +177,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     let content;
 
-    if (href && !disabled) {
+    if (href && !isButtonDisabled) {
       content = (
         <Link
           href={href}
@@ -207,7 +211,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           type={htmlType || 'button'}
           dir={direction}
           className={classes}
-          disabled={disabled}
+          disabled={isButtonDisabled}
+          aria-busy={isLoading || undefined}
           onClick={onClick}
           onPointerDown={onPointerDown}
           data-auto-flip-icon={shouldFlipOnRTL}

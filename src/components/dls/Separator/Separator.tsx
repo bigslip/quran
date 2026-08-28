@@ -8,7 +8,7 @@ export enum SeparatorWeight {
   SemiBold = 'semiBold',
 }
 
-type SeparatorProps = {
+export type SeparatorProps = React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> & {
   isVertical?: boolean;
   className?: string;
   weight?: SeparatorWeight;
@@ -18,12 +18,15 @@ const Separator = ({
   isVertical = false,
   className,
   weight = SeparatorWeight.SemiBold,
+  orientation,
+  ...props
 }: SeparatorProps) => (
   <SeparatorPrimitive.Separator
-    orientation={isVertical ? 'vertical' : 'horizontal'}
+    orientation={orientation || (isVertical ? 'vertical' : 'horizontal')}
     className={classNames(styles.base, styles[weight], {
       [className]: className,
     })}
+    {...props}
   />
 );
 
