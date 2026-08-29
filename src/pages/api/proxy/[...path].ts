@@ -18,9 +18,13 @@ const ERROR_MESSAGES = {
   FORBIDDEN: 'Forbidden',
 };
 
+const DEFAULT_API_GATEWAY_URL = 'https://api.qurancdn.com';
+const API_GATEWAY_URL = process.env.API_GATEWAY_URL || DEFAULT_API_GATEWAY_URL;
+
 const ALLOWED_DOMAINS = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
-  .map((domain) => domain.trim());
+  .map((domain) => domain.trim())
+  .filter(Boolean);
 
 // This line increases the default maximum number of event listeners for the EventEmitter to a better number like 20.
 // It is necessary to prevent memory leak warnings when multiple listeners are added,
@@ -29,9 +33,15 @@ EventEmitter.defaultMaxListeners = Number(process.env.PROXY_DEFAULT_MAX_LISTENER
 
 const isOriginAllowed = (origin: string | undefined): boolean => {
   if (!origin) return false;
-  const url = new URL(origin);
-  const { hostname } = url;
-  return ALLOWED_DOMAINS.includes(hostname);
+  try {
+    const url = new URL(origin);
+    const { hostname } = url;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') return true;
+    if (ALLOWED_DOMAINS.length === 0) return true;
+    return ALLOWED_DOMAINS.includes(hostname);
+  } catch {
+    return false;
+  }
 };
 
 const handleProxyReq = (proxyReq, req, res) => {
@@ -51,6 +61,9 @@ const handleProxyReq = (proxyReq, req, res) => {
 };
 
 const verifySignature = (req, res) => {
+  if (!process.env.PROXY_SIGNATURE_TOKEN) {
+    return true;
+  }
   const protocol = req.headers['x-forwarded-proto'] || 'http';
   const requestUrl = `${protocol}://${req.headers.host}/api/proxy${req.url}`;
   const timestampHeader = req.headers[X_PROXY_TIMESTAMP] as string;
@@ -75,7 +88,8 @@ const attachCookies = (proxyReq, req) => {
 };
 
 const attachSignatureHeaders = (proxyReq, req) => {
-  const requestUrl = `${process.env.API_GATEWAY_URL}${req.url}`;
+  if (!process.env.SIGNATURE_TOKEN) return;
+  const requestUrl = `${API_GATEWAY_URL}${req.url}`;
   const { signature, timestamp } = generateSignature(
     req,
     requestUrl,
@@ -84,13 +98,15 @@ const attachSignatureHeaders = (proxyReq, req) => {
 
   proxyReq.setHeader(X_AUTH_SIGNATURE, signature);
   proxyReq.setHeader(X_TIMESTAMP, timestamp);
-  proxyReq.setHeader(X_INTERNAL_CLIENT, process.env.INTERNAL_CLIENT_ID);
+  if (process.env.INTERNAL_CLIENT_ID) {
+    proxyReq.setHeader(X_INTERNAL_CLIENT, process.env.INTERNAL_CLIENT_ID);
+  }
 };
 
 const apiProxy = createProxyMiddleware<NextApiRequest, NextApiResponse>({
-  target: process.env.API_GATEWAY_URL,
+  target: API_GATEWAY_URL,
   changeOrigin: true,
-  pathRewrite: { '^/api/proxy': '' }, // eslint-disable-line @typescript-eslint/naming-convention
+  pathRewrite: { '^/api/proxy/[^/]+': '' }, // eslint-disable-line @typescript-eslint/naming-convention
   secure: process.env.NEXT_PUBLIC_VERCEL_ENV === 'production', // Disable SSL verification to avoid UNABLE_TO_VERIFY_LEAF_SIGNATURE error for dev
   logger: console,
 
@@ -113,15 +129,6 @@ const apiProxy = createProxyMiddleware<NextApiRequest, NextApiResponse>({
     },
 
     error: (err, req, res) => {
-      // BUGFIX: The original code was calling res.end() with a function that returns an object:
-      // res.end(() => ({ error: ERROR_MESSAGES.PROXY_ERROR, message: err.message }))
-      //
-      // This caused a TypeError because res.end() expects a string, Buffer, or ArrayBuffer,
-      // not a function. The function was being passed as the response body, which caused:
-      // "The 'string' argument must be of type string... Received type function"
-      //
-      // The fix is to properly send JSON responses based on the response object type:
-
       // Check if res is a NextApiResponse (has status method) or a Socket
       if ('status' in res && typeof res.status === 'function') {
         res.status(500).json({ error: ERROR_MESSAGES.PROXY_ERROR, message: err.message });
