@@ -77,7 +77,14 @@ export const secondsToReadableFormat = (s: number, t: Translate, locale: string)
  * @param {string} locale locale
  * @returns {string}
  */
-export const secondsToShortReadableFormat = (s: number, locale: string): string => {
+export const secondsToShortReadableFormat = (
+  s: number,
+  locale: string,
+  t?: Translate,
+): string => {
+  if (t) {
+    return secondsToReadableFormat(s, t, locale);
+  }
   const results: string[] = [];
 
   let seconds = s;

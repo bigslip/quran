@@ -33,10 +33,11 @@ const useGetWeekDays = () => {
       const day = new Date(sunday);
       day.setDate(sunday.getDate() + i);
 
+      const dateString = dateToDateString(day);
       days.push({
-        current: day.getDate() === today.getDate(),
+        current: dateString === dateToDateString(today),
         date: day,
-        dateString: dateToDateString(day),
+        dateString,
       });
     }
 

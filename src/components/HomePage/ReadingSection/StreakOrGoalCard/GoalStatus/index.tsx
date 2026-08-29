@@ -73,7 +73,7 @@ const GoalStatus: React.FC<Props> = ({
       />
     );
   } else if (goalType === GoalType.TIME) {
-    let timeDisplay = secondsToShortReadableFormat(goal.progress.amountLeft, lang);
+    let timeDisplay = secondsToShortReadableFormat(goal.progress.amountLeft, lang, t);
     if (shouldShowOnlyLargestTimeUnit) {
       // Only show the first/largest unit (e.g., "1 hour" from "1 hour, 5 minutes, 12 seconds")
       const firstUnit = timeDisplay.split(',')[0];

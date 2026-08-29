@@ -5,7 +5,7 @@ import styles from './OptionButton.module.scss';
 
 import MoonIllustrationSVG from '@/public/images/moon-illustration.svg';
 
-interface OptionButtonProps {
+interface OptionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   option: string;
   description?: string;
   selected?: boolean;
@@ -21,6 +21,8 @@ const OptionButton: React.FC<OptionButtonProps> = ({
   recommended,
   icon: Icon = MoonIllustrationSVG,
   onSelect,
+  className,
+  ...props
 }) => {
   const { t } = useTranslation('reading-goal');
 
@@ -28,7 +30,9 @@ const OptionButton: React.FC<OptionButtonProps> = ({
     <button
       type="button"
       onClick={onSelect}
-      className={classNames(styles.button, selected && styles.selected)}
+      aria-pressed={selected}
+      className={classNames(styles.button, selected && styles.selected, className)}
+      {...props}
     >
       <Icon className={styles.icon} />
       {recommended && <span className={styles.recommended}>{t('recommended')}</span>}
