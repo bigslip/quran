@@ -312,3 +312,22 @@ export const getResultSuffix = (
 
   return '';
 };
+
+/**
+ * Sanitizes search highlight HTML, allowing only safe inline markup tags (mark, em, strong, b).
+ * All tag attributes and disallowed tags/scripts are stripped.
+ */
+export const sanitizeSearchHighlight = (html: string): string => {
+  if (!html) return '';
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/<(\/)?([a-zA-Z0-9]+)[^>]*>/g, (match, isClosing, tagName) => {
+      const allowedTags = ['mark', 'em', 'strong', 'b'];
+      const lowerTag = tagName.toLowerCase();
+      if (allowedTags.includes(lowerTag)) {
+        return isClosing ? `</${lowerTag}>` : `<${lowerTag}>`;
+      }
+      return '';
+    });
+};

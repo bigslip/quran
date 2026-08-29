@@ -78,7 +78,10 @@ export function getErrorKeyFromCode(errorCode: string): string {
  * @param {string} errorMessage - The error message
  * @returns {string} The translation key
  */
-export function getErrorKeyFromMessage(errorMessage: string): string {
+export function getErrorKeyFromMessage(errorMessage?: string): string {
+  if (!errorMessage || typeof errorMessage !== 'string') {
+    return 'voice.error';
+  }
   // Check for network errors in the message
   if (errorMessage.includes('offline') || errorMessage.includes('network')) {
     return 'voice.network';

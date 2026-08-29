@@ -48,11 +48,11 @@ const SearchResults: React.FC<Props> = ({
       ) : (
         <>
           {searchQuery && (
-            <>
+            <div role="status" aria-live="polite">
               {t('search-results', {
                 count: toLocalizedNumber(searchResult.pagination.totalRecords, lang),
               })}
-            </>
+            </div>
           )}
         </>
       )}

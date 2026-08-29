@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
 
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -33,14 +33,24 @@ const SearchResultsHeader: React.FC<Props> = ({ searchQuery, onSearchResultClick
       logButtonClick(`${source}_show_all`);
     });
   };
+
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onNavigationLinkClicked();
+    }
+  };
+
   return (
     <div className={styles.resultsSummaryContainer}>
-      <p className={styles.resultsSummary}>{t('common:search-results-no-count')}</p>
+      <p className={styles.resultsSummary} role="status" aria-live="polite">
+        {t('common:search-results-no-count')}
+      </p>
       <div
         role="button"
         onClick={onNavigationLinkClicked}
         tabIndex={0}
-        onKeyDown={onNavigationLinkClicked}
+        onKeyDown={onKeyDown}
       >
         <div className={styles.moreResultsContainer}>
           <p className={styles.showAll} data-testid="more-results">
