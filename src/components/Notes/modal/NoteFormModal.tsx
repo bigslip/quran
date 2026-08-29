@@ -105,6 +105,9 @@ const NoteFormModal: React.FC<NoteFormModalProps> = ({
           <TextArea
             id="note"
             name="note"
+            ariaLabel={t('notes:note')}
+            aria-invalid={!!errors.note}
+            aria-describedby={errors.note ? 'note-input-error' : undefined}
             placeholder={t('notes:body-placeholder')}
             containerClassName={styles.textArea}
             value={noteInput}
@@ -113,7 +116,13 @@ const NoteFormModal: React.FC<NoteFormModalProps> = ({
           />
 
           {errors.note && (
-            <div className={styles.error} data-testid={`note-input-error-${errors.note.id}`}>
+            <div
+              id="note-input-error"
+              role="alert"
+              aria-live="polite"
+              className={styles.error}
+              data-testid={`note-input-error-${errors.note.id}`}
+            >
               {errors.note.message}
             </div>
           )}

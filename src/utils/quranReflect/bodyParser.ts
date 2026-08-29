@@ -22,6 +22,22 @@ const tagToLink = (tag: string, hashtagStyle: string): string => {
 };
 
 /**
+ * Sanitizes reflection HTML by stripping dangerous script/style tags and non-whitelisted attributes/schemes.
+ *
+ * @param {string} html - The input HTML string.
+ * @returns {string} Sanitized string.
+ */
+export const sanitizeReflectionHtml = (html: string): string => {
+  if (!html) return '';
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/on\w+="[^"]*"/gi, '')
+    .replace(/on\w+='[^']*'/gi, '')
+    .replace(/javascript:[^'"]*/gi, '');
+};
+
+/**
  * Replaces URLs in a given text with HTML anchor tags.
  *
  * @param {string} text - The input text containing URLs.
@@ -48,9 +64,10 @@ const replaceUrlsWithLinks = (text: string): string => {
 };
 
 export const parseReflectionBody = (reflectionBody: string, hashtagStyle: string): string => {
+  const sanitized = sanitizeReflectionHtml(reflectionBody || '');
   return (
     // 1. Wraps URLs in links: Find all URLs starting with http or https. The captured URL is then used to create a link.
-    replaceUrlsWithLinks(reflectionBody)
+    replaceUrlsWithLinks(sanitized)
       // 2. Replaces new lines: match all occurrences of new lines (\n) and carriage returns (\r) and replaces them with the <br> tag.
       .replace(/\r?\n/g, '<br>')
       // 3. Wraps hashtags in links: Find all hashtags starting with # followed by one or more word characters. Skip hashtags inside anchor tags.

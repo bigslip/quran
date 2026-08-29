@@ -137,7 +137,10 @@ const updateNoteCaches = (
 
   // Update general notes list (My Notes tab)
   const cacheKeys = (cache as unknown as { keys?: () => string[] })?.keys?.();
-  if (!cacheKeys) mutate(baseNotesUrl, undefined, { revalidate: true });
+  if (!cacheKeys) {
+    mutate(baseNotesUrl, undefined, { revalidate: true });
+    return;
+  }
 
   const notesListKeys = [...cacheKeys].filter(
     (key) => key.startsWith('$inf$') && key.includes(baseNotesUrl),

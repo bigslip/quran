@@ -34,7 +34,6 @@ const PostQRConfirmationModal: React.FC<PostQRConfirmationModalProps> = ({
         <Header
           onClick={onBack}
           data-testid="qr-confirmation-modal-title"
-          aria-label={t('common:back')}
         >
           {t('take-a-note-or-reflection')}
         </Header>
