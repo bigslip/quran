@@ -81,7 +81,14 @@ const MyQuranPage = (): JSX.Element => {
           className={styles.pageContainer}
         >
           <TabSwitcher selected={selectedTab} items={tabs} onSelect={onTabChange} />
-          <div className={styles.tabContent}>{tabComponents[selectedTab]}</div>
+          <div
+            role="tabpanel"
+            id={`tabpanel-${selectedTab}`}
+            aria-labelledby={`tab-${selectedTab}`}
+            className={styles.tabContent}
+          >
+            {tabComponents[selectedTab]}
+          </div>
         </PageContainer>
       </main>
     </>

@@ -10,7 +10,7 @@ import DataContext from '@/contexts/DataContext';
 import BookmarkIcon from '@/icons/bookmark-star.svg';
 import ChevronRightIcon from '@/icons/chevron-right.svg';
 import { getChapterData } from '@/utils/chapter';
-import { toLocalizedNumber } from '@/utils/locale';
+import { toLocalizedDate, toLocalizedNumber } from '@/utils/locale';
 import { getVerseNavigationUrlByVerseKey } from '@/utils/navigation';
 
 export interface ReadingBookmarkData {
@@ -24,9 +24,9 @@ export interface ReadingBookmarkData {
   verseKey?: string;
 }
 
-export interface MyReadingBookmarkProps {
+interface MyReadingBookmarkProps {
   bookmark: ReadingBookmarkData | null;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const MyReadingBookmark: React.FC<MyReadingBookmarkProps> = ({ bookmark, isLoading }) => {
@@ -46,20 +46,16 @@ const MyReadingBookmark: React.FC<MyReadingBookmarkProps> = ({ bookmark, isLoadi
     }
   }, [bookmark, router]);
 
-  const displayText = useMemo(() => {
-    if (!bookmark || !chaptersData) return null;
+  const subtitleText = useMemo(() => {
+    if (!bookmark) return null;
 
     if (bookmark.type === 'ayah' && bookmark.surahNumber && bookmark.ayahNumber) {
-      const chapterData = getChapterData(chaptersData, bookmark.surahNumber.toString());
-      if (!chapterData) return null;
-
+      const chapter = getChapterData(chaptersData, bookmark.surahNumber.toString());
       const surahName = isArabicOrUrdu
-        ? chapterData.translatedName
-        : chapterData.transliteratedName;
-      const surahNum = toLocalizedNumber(bookmark.surahNumber, lang);
+        ? chapter?.nameArabic || bookmark.surahNameArabic
+        : chapter?.transliteratedName || bookmark.surahName;
       const ayahNum = toLocalizedNumber(bookmark.ayahNumber, lang);
-
-      return `${surahName} ${surahNum}:${ayahNum}`;
+      return `${surahName} : ${ayahNum}`;
     }
 
     if (bookmark.type === 'page' && bookmark.pageNumber) {
@@ -72,7 +68,7 @@ const MyReadingBookmark: React.FC<MyReadingBookmarkProps> = ({ bookmark, isLoadi
 
   const dateText = useMemo(() => {
     if (!bookmark?.createdAt) return null;
-    return new Date(bookmark.createdAt).toLocaleDateString(lang, {
+    return toLocalizedDate(bookmark.createdAt, lang, {
       month: 'long',
       day: 'numeric',
       year: 'numeric',

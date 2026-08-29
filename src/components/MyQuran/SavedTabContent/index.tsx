@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 import React, { useMemo, useState, useCallback } from 'react';
 
+import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
 import styles from './SavedTabContent.module.scss';
@@ -19,7 +20,7 @@ import BookmarkType from '@/types/BookmarkType';
 
 interface SavedTabContentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const SavedTabContent: React.FC<SavedTabContentProps> = ({ ...props }) => {
+const SavedTabContent: React.FC<SavedTabContentProps> = ({ className, ...props }) => {
   const { isLoggedIn } = useIsLoggedIn();
   const { t } = useTranslation('my-quran');
   const { bookmark, isLoading: isBookmarkLoading } = useReadingBookmarkDisplay();
@@ -121,9 +122,9 @@ const SavedTabContent: React.FC<SavedTabContentProps> = ({ ...props }) => {
     isLoggedIn && (isRecentlySavedLoading || filteredRecentlySaved.length > 0);
 
   return (
-    <div 
-      className={styles.container} 
-      {...props} 
+    <div
+      className={classNames(styles.container, className)}
+      {...props}
       aria-busy={isCollectionsLoading || isBookmarkLoading || isRecentlySavedLoading ? 'true' : undefined}
     >
       {!selectedCollection && (

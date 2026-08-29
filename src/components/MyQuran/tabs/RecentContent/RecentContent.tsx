@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 
+import classNames from 'classnames';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -26,7 +27,7 @@ import { getVerseAndChapterNumbersFromKey } from '@/utils/verse';
 
 interface RecentContentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const RecentContent: React.FC<RecentContentProps> = ({ ...props }) => {
+const RecentContent: React.FC<RecentContentProps> = ({ className, ...props }) => {
   const { lang } = useTranslation();
   const { t } = useTranslation('my-quran');
   const chaptersData = useContext(DataContext);
@@ -44,9 +45,11 @@ const RecentContent: React.FC<RecentContentProps> = ({ ...props }) => {
     logButtonClick('my_quran_recent_content_item', { verseKey });
   };
 
+  const containerClassName = classNames(styles.recentContentContainer, className);
+
   if (isLoading) {
     return (
-      <div className={styles.recentContentContainer} aria-busy="true" {...props}>
+      <div className={containerClassName} aria-busy="true" {...props}>
         {Array.from({ length: 3 }).map((item, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <Skeleton key={`skeleton-${index}`} className={styles.skeleton} />
@@ -57,7 +60,7 @@ const RecentContent: React.FC<RecentContentProps> = ({ ...props }) => {
 
   if (recentItems.length === 0) {
     return (
-      <div className={styles.recentContentContainer} {...props}>
+      <div className={containerClassName} {...props}>
         <p className={styles.emptyState} data-testid={TestId.MY_QURAN_RECENT_CONTENT_EMPTY_STATE}>
           {t('recent-empty')}
         </p>
@@ -66,7 +69,7 @@ const RecentContent: React.FC<RecentContentProps> = ({ ...props }) => {
   }
 
   return (
-    <div className={styles.recentContentContainer} {...props}>
+    <div className={containerClassName} {...props}>
       {recentItems.map(({ verseKey, timestamp }) => {
         const [chapterId] = getVerseAndChapterNumbersFromKey(verseKey);
         const surah = getChapterData(chaptersData, chapterId);
@@ -90,7 +93,7 @@ const RecentContent: React.FC<RecentContentProps> = ({ ...props }) => {
               <p>
                 {surah.transliteratedName} {toLocalizedVerseKeyAuto(verseKey, lang)}
               </p>
-              <IconContainer icon={<ArrowIcon />} />
+              <IconContainer icon={<ArrowIcon />} shouldFlipOnRTL />
             </div>
             <div className={styles.recentContentItemDescription}>
               <p>
