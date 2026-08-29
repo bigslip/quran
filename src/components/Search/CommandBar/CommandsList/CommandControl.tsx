@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 import Button, { ButtonSize, ButtonVariant } from '@/dls/Button/Button';
 import CloseIcon from '@/icons/close.svg';
@@ -16,11 +16,13 @@ const CommandControl: React.FC<Props> = ({
   commandKey,
   isSelected,
 }) => {
+  const { t } = useTranslation('common');
   if (isClearable) {
     return (
       <Button
         variant={ButtonVariant.Ghost}
         size={ButtonSize.Small}
+        ariaLabel={t('remove')}
         onClick={(e) => onRemoveCommandClicked(e, commandKey)}
       >
         <CloseIcon />

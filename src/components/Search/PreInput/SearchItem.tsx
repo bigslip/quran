@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React from 'react';
+
 import styles from './SearchItem.module.scss';
 
 import IconContainer, { IconColor, IconSize } from '@/dls/IconContainer/IconContainer';
@@ -17,9 +17,9 @@ const SearchItem = ({ title, prefix: icon, suffix, onClick }: SearchItemProps) =
       <span className={styles.prefix}>
         <IconContainer size={IconSize.Small} color={IconColor.secondary} icon={icon} />
       </span>
-      <span className={styles.itemContent} onClick={onClick}>
+      <button type="button" className={styles.itemContent} onClick={onClick}>
         {title}
-      </span>
+      </button>
       {suffix && <span>{suffix}</span>}
     </div>
   );

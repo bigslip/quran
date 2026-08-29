@@ -35,7 +35,7 @@ const SearchResultItemIcon = ({ type }: Props) => {
     return <></>;
   }
 
-  return Icon ? <Icon /> : <NavigateToIcon />;
+  return Icon ? <Icon aria-hidden="true" /> : <NavigateToIcon aria-hidden="true" />;
 };
 
 export default SearchResultItemIcon;

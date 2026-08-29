@@ -13,6 +13,7 @@ import styles from './ExpandedSearchInputSection.module.scss';
 import { getNewSearchResults } from '@/api';
 import DataFetcher from '@/components/DataFetcher';
 import DataContext from '@/contexts/DataContext';
+import useDebounce from '@/hooks/useDebounce';
 import { selectRecentNavigations } from '@/redux/slices/CommandBar/state';
 import { selectSelectedTranslations } from '@/redux/slices/QuranReader/translations';
 import {
@@ -38,20 +39,27 @@ const NAVIGATE_TO = [
     resultType: SearchNavigationType.PAGE,
   },
   {
-    name: 'Surah Yasin',
+    name: 'Surah Yaseen',
     key: '36',
     resultType: SearchNavigationType.SURAH,
   },
   {
-    name: '2:255',
+    name: 'Surah Al-Mulk',
+    key: '67',
+    resultType: SearchNavigationType.SURAH,
+  },
+  {
+    name: 'Ayatul Kursi',
     key: '2:255',
     resultType: SearchNavigationType.AYAH,
   },
 ];
 
 interface Props {
-  searchQuery: string;
+  searchQuery?: string;
 }
+
+const DEBOUNCE_SEARCH_MS = 350;
 
 const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
   const selectedTranslations = useSelector(selectSelectedTranslations, areArraysEqual) as string[];
@@ -61,10 +69,11 @@ const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
     areArraysEqual,
   ) as SearchNavigationResult[];
   const chaptersData = useContext(DataContext);
+  const debouncedSearchQuery = useDebounce<string>(searchQuery, DEBOUNCE_SEARCH_MS);
 
   // Convert chaptersData to array for Fuse
   const chaptersArray = React.useMemo(
-    () => Object.entries(chaptersData).map(([id, chapter]) => ({ ...chapter, id })),
+    () => Object.entries(chaptersData || {}).map(([id, chapter]) => ({ ...chapter, id })),
     [chaptersData],
   );
 
@@ -72,7 +81,7 @@ const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
   const fuse = React.useMemo(
     () =>
       new Fuse(chaptersArray, {
-        keys: ['transliteratedName', 'translatedName'],
+        keys: ['transliteratedName', 'translatedName', 'nameArabic', 'nameSimple', 'nameComplex'],
         threshold: 0.3,
       }),
     [chaptersArray],
@@ -112,8 +121,10 @@ const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
   );
 
   const quickSearchFetcher = useCallback(() => {
-    return getNewSearchResults(getQuickSearchQuery(searchQuery, 10, selectedTranslations));
-  }, [searchQuery, selectedTranslations]);
+    return getNewSearchResults(
+      getQuickSearchQuery(debouncedSearchQuery, 10, selectedTranslations),
+    );
+  }, [debouncedSearchQuery, selectedTranslations]);
 
   /**
    * This function will be used by DataFetcher and will run only when there is no API error
@@ -183,14 +194,16 @@ const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
     [chaptersData, getPreInputCommands, lang, recentNavigations.length, searchQuery, t, fuseMatches],
   );
 
-  const shouldFetchApi = searchQuery && fuseMatches.length === 0;
+  const shouldFetchApi = debouncedSearchQuery && fuseMatches.length === 0;
 
   return (
     <div className={styles.container}>
       <div className={classNames(styles.bodyContainer, { [styles.height]: !!searchQuery })}>
         {shouldFetchApi ? (
           <DataFetcher
-            queryKey={makeNewSearchResultsUrl(getQuickSearchQuery(searchQuery, 10))}
+            queryKey={makeNewSearchResultsUrl(
+              getQuickSearchQuery(debouncedSearchQuery, 10, selectedTranslations),
+            )}
             render={dataFetcherRender}
             fetcher={quickSearchFetcher}
           />

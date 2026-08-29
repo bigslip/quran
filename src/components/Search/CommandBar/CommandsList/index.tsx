@@ -2,7 +2,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import React, { MouseEvent, useState, useCallback, RefObject, useEffect } from 'react';
+import React, { MouseEvent, useState, useCallback, RefObject, useEffect, useMemo } from 'react';
 
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
@@ -129,23 +129,39 @@ const CommandsList: React.FC<Props> = ({
     },
     [scrollToSelectedCommand],
   );
+  const allCommands = useMemo(() => {
+    return Object.values(groups || {}).flat();
+  }, [groups]);
+
   useHotkeys(
     'enter',
     () => {
       // Stop the microphone if it's active
       dispatch(stopMicrophone());
 
-      router.push(getSearchQueryNavigationUrl(searchQuery)).then(() => {
-        navigateToLink({
-          name: searchQuery,
-          resultType: SearchNavigationType.SEARCH_PAGE,
-          key: searchQuery,
-          group: RESULTS_GROUP,
+      const selectedCommand =
+        selectedCommandIndex !== null
+          ? allCommands.find((cmd) => cmd.index === selectedCommandIndex)
+          : null;
+
+      if (selectedCommand) {
+        navigateToLink(selectedCommand);
+        return;
+      }
+
+      if (searchQuery) {
+        router.push(getSearchQueryNavigationUrl(searchQuery)).then(() => {
+          navigateToLink({
+            name: searchQuery,
+            resultType: SearchNavigationType.SEARCH_PAGE,
+            key: searchQuery,
+            group: RESULTS_GROUP,
+          });
         });
-      });
+      }
     },
-    { enabled: !!searchQuery, enableOnFormTags: ['INPUT'] },
-    [searchQuery, navigateToLink, router],
+    { enabled: numberOfCommands > 0 || !!searchQuery, enableOnFormTags: ['INPUT'] },
+    [allCommands, selectedCommandIndex, searchQuery, navigateToLink, router, numberOfCommands, dispatch],
   );
   const onRemoveCommandClicked = (
     event: MouseEvent<Element>,
