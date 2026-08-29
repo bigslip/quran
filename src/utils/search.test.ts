@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 import {
   sanitizeSearchHighlight,
   getTranslationsByLanguages,
-  getSearchNavigationResult,
   getResultType,
 } from './search';
 import { SearchNavigationType } from 'types/Search/SearchNavigationResult';

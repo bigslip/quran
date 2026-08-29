@@ -1,3 +1,4 @@
+import React, { MouseEvent } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 
 import Button, { ButtonSize, ButtonVariant } from '@/dls/Button/Button';

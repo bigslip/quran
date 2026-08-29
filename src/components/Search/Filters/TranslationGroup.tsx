@@ -30,7 +30,7 @@ const TranslationGroup = ({
     const groupIds = new Set(translations.map((t) => t.id.toString()));
     const nextSelectedTranslations = areAllTranslationsSelected
       ? selectedTranslations.filter((id) => !groupIds.has(id))
-      : Array.from(new Set([...selectedTranslations, ...groupIds]));
+      : Array.from(new Set(selectedTranslations.concat(Array.from(groupIds))));
     onTranslationsChange(nextSelectedTranslations);
   };
 

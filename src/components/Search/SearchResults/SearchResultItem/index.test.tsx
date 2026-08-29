@@ -63,7 +63,7 @@ describe('SearchResultItem', () => {
       <DataContext.Provider value={mockChaptersData as any}>
         <SearchResultItem
           source={SearchQuerySource.SearchPage}
-          service={SearchService.KEYWORD}
+          service={SearchService.QDC}
           result={mockSurahResult}
         />
       </DataContext.Provider>,
@@ -77,7 +77,7 @@ describe('SearchResultItem', () => {
       <DataContext.Provider value={mockChaptersData as any}>
         <SearchResultItem
           source={SearchQuerySource.SearchPage}
-          service={SearchService.KEYWORD}
+          service={SearchService.QDC}
           result={mockSurahResult}
         />
       </DataContext.Provider>,
