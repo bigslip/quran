@@ -38,9 +38,11 @@ export const readingTrackerSlice = createSlice({
       action: PayloadAction<{
         lastReadVerse: LastReadVerse;
         chaptersData: ChaptersData;
+        timestamp?: number;
       }>,
     ) => {
-      const { lastReadVerse, chaptersData } = action.payload;
+      const { lastReadVerse, chaptersData, timestamp } = action.payload;
+      const currentTimestamp = timestamp ?? Date.now();
       let newRecentReadingSessions = { ...state.recentReadingSessions };
       // if the verse key already exists, and he re-visited it again, we need to mark it as the latest session.
       if (newRecentReadingSessions[lastReadVerse.verseKey]) {
@@ -48,7 +50,7 @@ export const readingTrackerSlice = createSlice({
         delete newRecentReadingSessions[lastReadVerse.verseKey];
         // insert the same entry again but at the beginning
         newRecentReadingSessions = {
-          [lastReadVerse.verseKey]: +new Date(),
+          [lastReadVerse.verseKey]: currentTimestamp,
           ...newRecentReadingSessions,
         };
         return generateNewState(state, lastReadVerse, newRecentReadingSessions);
@@ -67,7 +69,7 @@ export const readingTrackerSlice = createSlice({
       ) {
         delete newRecentReadingSessions[lastReadingSessionVerseKey];
         newRecentReadingSessions = {
-          [lastReadVerse.verseKey]: +new Date(),
+          [lastReadVerse.verseKey]: currentTimestamp,
           ...newRecentReadingSessions,
         };
         return generateNewState(state, lastReadVerse, newRecentReadingSessions);
@@ -75,7 +77,7 @@ export const readingTrackerSlice = createSlice({
       const earliestSession = sessionsVerseKeys[numberOfSessions - 1];
       // insert a new entry at the beginning
       newRecentReadingSessions = {
-        [lastReadVerse.verseKey]: +new Date(),
+        [lastReadVerse.verseKey]: currentTimestamp,
         ...newRecentReadingSessions,
       };
       // if the number of sessions already exceeded the maximum, delete the latest session

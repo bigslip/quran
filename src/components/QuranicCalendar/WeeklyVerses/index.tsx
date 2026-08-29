@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -23,14 +24,21 @@ import { getLoginNavigationUrl, getQuranicCalendarNavigationUrl } from '@/utils/
 import { parseVerseRange } from '@/utils/verseKeys';
 import DataContext from 'src/contexts/DataContext';
 
-type Props = {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   weekNumber: number;
   weekRanges: string;
   isLoading?: boolean;
   weekData?: QuranProgramWeekResponse;
 };
 
-const WeeklyVerses: React.FC<Props> = ({ weekNumber, weekRanges, isLoading, weekData }) => {
+const WeeklyVerses: React.FC<Props> = ({
+  weekNumber,
+  weekRanges,
+  isLoading,
+  weekData,
+  className,
+  ...props
+}) => {
   const { t } = useTranslation('quranic-calendar');
   const chaptersData = useContext(DataContext);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
@@ -84,7 +92,7 @@ const WeeklyVerses: React.FC<Props> = ({ weekNumber, weekRanges, isLoading, week
 
   if (isLoading) {
     return (
-      <div className={styles.container}>
+      <div className={classNames(styles.container, className)} {...props}>
         <h2 className={styles.title}>{t('read-this-weeks-verses')}</h2>
         <div className={styles.loadingContainer}>
           <Spinner />
@@ -101,7 +109,7 @@ const WeeklyVerses: React.FC<Props> = ({ weekNumber, weekRanges, isLoading, week
   };
 
   return (
-    <div>
+    <div className={className} {...props}>
       <h2 className={styles.title}>{t('read-this-weeks-verses')}</h2>
       <p className={styles.subtitle}>{t('verses-subtitle')}</p>
 

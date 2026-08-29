@@ -10,7 +10,7 @@ import styles from './Calendar.module.scss';
 import { getMonthDateObject, numberToPaddedString } from '@/utils/datetime';
 import { toLocalizedNumber } from '@/utils/locale';
 
-interface CalendarProps {
+interface CalendarProps extends React.HTMLAttributes<HTMLDivElement> {
   month: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   year: number;
   getIsDayDisabled?: (day: number, dateString: string) => boolean;
@@ -18,7 +18,15 @@ interface CalendarProps {
   isLoading?: boolean;
 }
 
-const Calendar = ({ month, year, getIsDayDisabled, onDayClick, isLoading }: CalendarProps) => {
+const Calendar = ({
+  month,
+  year,
+  getIsDayDisabled,
+  onDayClick,
+  isLoading,
+  className,
+  ...props
+}: CalendarProps) => {
   const { lang } = useTranslation();
 
   // YYYY-MM
@@ -41,7 +49,7 @@ const Calendar = ({ month, year, getIsDayDisabled, onDayClick, isLoading }: Cale
   );
 
   return (
-    <div className={styles.outerContainer}>
+    <div className={classNames(styles.outerContainer, className)} {...props}>
       {isLoading && <Spinner />}
       <div className={styles.calendarContainer}>
         {/* eslint-disable-next-line @typescript-eslint/naming-convention */}

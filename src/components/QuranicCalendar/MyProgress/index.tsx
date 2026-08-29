@@ -53,6 +53,14 @@ const MyProgress: React.FC<MyProgressProps> = ({ onWeekSelect, className, ...htm
     router.replace(getLoginNavigationUrl(getQuranicCalendarNavigationUrl()));
   }, [router]);
 
+  const handleWeekSelect = useCallback(
+    (weekNumber: number) => {
+      onWeekSelect(weekNumber);
+      window.scrollTo({ top: 0 });
+    },
+    [onWeekSelect],
+  );
+
   return (
     <div className={classNames(styles.container, className)} {...htmlAttributes}>
       <div className={styles.headerRow}>
@@ -87,7 +95,7 @@ const MyProgress: React.FC<MyProgressProps> = ({ onWeekSelect, className, ...htm
             monthSlides={monthSlides}
             getWeekClass={getWeekClass}
             isProgramCompleted={subscriptionData?.isCompleted}
-            onWeekSelect={onWeekSelect}
+            onWeekSelect={handleWeekSelect}
           />
         ) : (
           <>
@@ -99,7 +107,7 @@ const MyProgress: React.FC<MyProgressProps> = ({ onWeekSelect, className, ...htm
                     month={month}
                     getWeekClass={getWeekClass}
                     isProgramCompleted={subscriptionData?.isCompleted}
-                    onWeekSelect={onWeekSelect}
+                    onWeekSelect={handleWeekSelect}
                   />
                 ))}
               </div>
