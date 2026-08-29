@@ -106,9 +106,11 @@ const FormBuilder = <T,>({
   );
 
   const renderError = useCallback(
-    (error: any, errorClassName?: string) =>
+    (error: any, errorClassName?: string, fieldName?: string) =>
       error && (
         <span
+          id={fieldName ? `${fieldName}-error` : undefined}
+          role="alert"
           className={classNames(styles.errorText, errorClassName)}
           data-testid="form-builder-validation-errors"
         >
@@ -157,6 +159,12 @@ const FormBuilder = <T,>({
                       onChange: field.onChange,
                       placeholder: formField.placeholder,
                       dataTestId: formField.dataTestId,
+                      error,
+                      isInvalid: !!error,
+                      'aria-invalid': !!error,
+                      'aria-describedby': error ? `${formField.field}-error` : undefined,
+                      id: formField.field,
+                      name: formField.field,
                     })}
                     {formField.shouldShowValidationErrors
                       ? isFieldDirty && (
@@ -165,7 +173,7 @@ const FormBuilder = <T,>({
                             rules={formField.rules ?? []}
                           />
                         )
-                      : renderError(error, formField.errorClassName)}
+                      : renderError(error, formField.errorClassName, formField.field)}
                     {renderExtraSection(formField, field.value)}
                   </div>
                 );

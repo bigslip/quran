@@ -205,7 +205,11 @@ const CompleteSignupForm: React.FC<CompleteSignupFormProps> = ({
         <h1 className={styles.authTitle}>{t('complete-signup.title')}</h1>
         <p className={styles.description}>{t('complete-signup.description')}</p>
         <div className={styles.formContainer}>
-          {generalError && <div className={styles.generalError}>{generalError}</div>}
+          {generalError && (
+            <div className={styles.generalError} role="alert" aria-live="polite">
+              {generalError}
+            </div>
+          )}
           {userData && (
             <FormBuilder
               key={userData.id}

@@ -4,9 +4,13 @@ import classNames from 'classnames';
 
 import styles from './AuthInput.module.scss';
 
-import Input, { InputSize } from '@/components/dls/Forms/Input';
+import Input, { InputSize, InputType } from '@/components/dls/Forms/Input';
 
-interface AuthInputProps {
+export interface AuthInputProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'size' | 'onChange' | 'value' | 'type'
+  > {
   id: string;
   value: string;
   onChange: (value: string) => void;
@@ -16,6 +20,10 @@ interface AuthInputProps {
   name?: string;
   autoComplete?: string;
   className?: string;
+  error?: any;
+  isInvalid?: boolean;
+  type?: InputType;
+  dataTestId?: string;
 }
 
 /**
@@ -34,7 +42,16 @@ const AuthInput: React.FC<AuthInputProps> = ({
   name,
   autoComplete,
   className,
+  error,
+  isInvalid,
+  type,
+  dataTestId,
+  'aria-invalid': ariaInvalid,
+  'aria-describedby': ariaDescribedby,
+  ...restProps
 }) => {
+  const hasError = isInvalid || !!error;
+
   return (
     <Input
       id={id}
@@ -45,6 +62,7 @@ const AuthInput: React.FC<AuthInputProps> = ({
       htmlType={htmlType}
       name={name}
       size={InputSize.Large}
+      type={hasError ? InputType.Error : type || InputType.Default}
       fixedWidth={false}
       shouldFlipOnRTL
       containerClassName={classNames(styles.authContainer, className, {
@@ -53,7 +71,11 @@ const AuthInput: React.FC<AuthInputProps> = ({
       inputClassName={classNames(styles.authInput, {
         [styles.hasValue]: value,
       })}
+      aria-invalid={ariaInvalid !== undefined ? ariaInvalid : hasError}
+      aria-describedby={ariaDescribedby}
+      data-testid={dataTestId}
       {...(autoComplete && { autoComplete })}
+      {...restProps}
     />
   );
 };

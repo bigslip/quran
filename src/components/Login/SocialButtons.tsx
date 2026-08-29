@@ -25,7 +25,12 @@ const SocialButtons: FC<Props> = ({ redirect, ...props }) => {
   };
 
   return (
-    <div role="group" className={styles.authButtons} {...props}>
+    <div
+      role="group"
+      aria-label={t('continue-with-social')}
+      className={styles.authButtons}
+      {...props}
+    >
       <Button
         href={makeGoogleLoginUrl(redirect)}
         prefix={<GoogleIcon />}
