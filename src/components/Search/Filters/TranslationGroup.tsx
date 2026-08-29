@@ -1,3 +1,5 @@
+import React, { useMemo } from 'react';
+
 import styles from './TranslationGroup.module.scss';
 
 import Checkbox from '@/dls/Forms/Checkbox/Checkbox';
@@ -9,6 +11,7 @@ type TranslationGroupProps = {
   selectedTranslations: string[];
   onTranslationsChange: (translationsId: string[]) => void;
 };
+
 const TranslationGroup = ({
   language,
   translations,
@@ -24,9 +27,10 @@ const TranslationGroup = ({
   );
 
   const onLanguageSelected = () => {
+    const groupIds = new Set(translations.map((t) => t.id.toString()));
     const nextSelectedTranslations = areAllTranslationsSelected
-      ? []
-      : translations.map((translation) => translation.id.toString());
+      ? selectedTranslations.filter((id) => !groupIds.has(id))
+      : Array.from(new Set([...selectedTranslations, ...groupIds]));
     onTranslationsChange(nextSelectedTranslations);
   };
 
@@ -37,7 +41,15 @@ const TranslationGroup = ({
     onTranslationsChange(nextTranslations);
   };
 
-  let languageCheckboxCheckedStatus;
+  const sortedTranslations = useMemo(
+    () =>
+      [...translations].sort((a: AvailableTranslation, b: AvailableTranslation) =>
+        a.authorName.localeCompare(b.authorName),
+      ),
+    [translations],
+  );
+
+  let languageCheckboxCheckedStatus: boolean | 'indeterminate';
   if (areSomeTranslationsSelected) languageCheckboxCheckedStatus = 'indeterminate';
   if (areAllTranslationsSelected) languageCheckboxCheckedStatus = true;
   if (!areSomeTranslationsSelected && !areAllTranslationsSelected) {
@@ -45,7 +57,7 @@ const TranslationGroup = ({
   }
 
   return (
-    <div key={language}>
+    <div role="group" aria-labelledby={language} key={language}>
       <span className={styles.header}>
         <Checkbox
           id={language}
@@ -55,20 +67,16 @@ const TranslationGroup = ({
         />
       </span>
       <div className={styles.itemsContainer}>
-        {translations
-          .sort((a: AvailableTranslation, b: AvailableTranslation) =>
-            a.authorName.localeCompare(b.authorName),
-          )
-          .map((translation: AvailableTranslation) => (
-            <div key={translation.id} className={styles.item}>
-              <Checkbox
-                id={translation.id.toString()}
-                checked={selectedTranslations.includes(translation.id.toString())}
-                label={translation.translatedName.name}
-                onChange={onSelectedTranslationsChange(translation.id)}
-              />
-            </div>
-          ))}
+        {sortedTranslations.map((translation: AvailableTranslation) => (
+          <div key={translation.id} className={styles.item}>
+            <Checkbox
+              id={translation.id.toString()}
+              checked={selectedTranslations.includes(translation.id.toString())}
+              label={translation.translatedName.name}
+              onChange={onSelectedTranslationsChange(translation.id)}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

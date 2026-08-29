@@ -16,14 +16,24 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 const LanguagesFilter: React.FC<Props> = memo(
   ({ languages, selectedLanguages, onLanguageChange, className, ...props }) => {
     const { t } = useTranslation('search');
+
+    const selectedLanguageList = useMemo(
+      () => (selectedLanguages ? selectedLanguages.split(',').filter(Boolean) : []),
+      [selectedLanguages],
+    );
+
     /*
       We need to only pick the languages that exist in the list of available languages
       to avoid selecting non-existent items since the languages can come from the URL path
       which the user can edit to enter invalid values.
     */
-    const matchedLanguages = languages
-      .filter((language) => selectedLanguages.split(',').includes(language.isoCode))
-      .map((language) => language.isoCode);
+    const matchedLanguages = useMemo(
+      () =>
+        languages
+          .filter((language) => selectedLanguageList.includes(language.isoCode))
+          .map((language) => language.isoCode),
+      [languages, selectedLanguageList],
+    );
 
     const languagesItems = useMemo(
       () =>
@@ -43,8 +53,8 @@ const LanguagesFilter: React.FC<Props> = memo(
           id="languagesFilter"
           value={matchedLanguages}
           items={languagesItems}
-          onChange={onLanguageChange}
-          placeholder={t('language-select')}
+          onChange={(newValues: string[]) => onLanguageChange(newValues)}
+          placeholder={t('filter.languages-placeholder')}
         />
       </div>
     );

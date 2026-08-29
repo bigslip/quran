@@ -48,32 +48,19 @@ const SearchPage: NextPage<SearchPageProps> = (): JSX.Element => {
   const { t, lang } = useTranslation('common');
   const selectedTranslations = useSelector(selectSelectedTranslations, areArraysEqual) as string[];
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      return params.get(QueryParam.QUERY) || params.get(QueryParam.QUERY_OLD) || '';
-    }
-    return '';
-  });
-  const [currentPage, setCurrentPage] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      return Number(params.get(QueryParam.PAGE)) || 1;
-    }
-    return 1;
-  });
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Handle URL changes (both initial load and navigation)
   useEffect(() => {
     if (!router.isReady) return;
 
-    const query = router.query[QueryParam.QUERY] || router.query[QueryParam.QUERY_OLD];
+    const query =
+      (router.query[QueryParam.QUERY] || router.query[QueryParam.QUERY_OLD] || '') as string;
     const page = Number(router.query[QueryParam.PAGE]) || 1;
 
-    if (query) {
-      setSearchQuery(query as string);
-      setCurrentPage(page);
-    }
+    setSearchQuery(query);
+    setCurrentPage(page);
   }, [router.isReady, router.query]);
 
   const onPageChange = (page: number) => {

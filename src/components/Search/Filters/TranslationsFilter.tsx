@@ -1,22 +1,25 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import styles from './Filter.module.scss';
 import TranslationGroup from './TranslationGroup';
 
-import { getTranslationsByLanguages } from '@/utils/search';
 import AvailableTranslation from 'types/AvailableTranslation';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  onTranslationChange: (translationId: string[]) => void;
+  onTranslationChange: (translationsId: string[]) => void;
+  translationsByLanguages: Record<string, AvailableTranslation[]>;
   selectedTranslations: string;
-  translations: AvailableTranslation[];
 }
 
 const TranslationsFilter: React.FC<Props> = memo(
-  ({ translations, selectedTranslations, onTranslationChange, className, ...props }) => {
-    const translationsByLanguages = getTranslationsByLanguages(translations);
+  ({ translationsByLanguages, selectedTranslations, onTranslationChange, className, ...props }) => {
+    const selectedTranslationIds = useMemo(
+      () => (selectedTranslations ? selectedTranslations.split(',').filter(Boolean) : []),
+      [selectedTranslations],
+    );
+
     return (
-      <div className={[styles.comboboxItems, className].filter(Boolean).join(' ')} {...props}>
+      <div className={[styles.items, className].filter(Boolean).join(' ')} {...props}>
         {Object.entries(translationsByLanguages).map(([language, languageTranslations]) => {
           return (
             <TranslationGroup
@@ -24,7 +27,7 @@ const TranslationsFilter: React.FC<Props> = memo(
               key={language}
               translations={languageTranslations}
               onTranslationsChange={(nextTranslations) => onTranslationChange(nextTranslations)}
-              selectedTranslations={selectedTranslations.split(',')}
+              selectedTranslations={selectedTranslationIds}
             />
           );
         })}
