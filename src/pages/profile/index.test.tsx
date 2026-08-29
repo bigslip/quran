@@ -23,6 +23,18 @@ vi.mock('next/router', () => ({
   }),
 }));
 
+vi.mock('react-redux', () => ({
+  useDispatch: () => vi.fn(),
+  useSelector: vi.fn().mockReturnValue([]),
+}));
+
+vi.mock('@/contexts/AuthContext', () => ({
+  useAuthContext: () => ({
+    logout: vi.fn(),
+    state: {},
+  }),
+}));
+
 vi.mock('@/dls/Toast/Toast', () => ({
   useToast: vi.fn(),
   ToastStatus: { Error: 'error', Success: 'success' },
