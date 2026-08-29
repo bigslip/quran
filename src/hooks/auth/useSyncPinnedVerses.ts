@@ -8,7 +8,6 @@ import { selectIsPersistGateHydrationComplete } from '@/redux/slices/persistGate
 import { selectPinnedVerses } from '@/redux/slices/QuranReader/pinnedVerses';
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import { getMushafId } from '@/utils/api';
-import { getLastSyncAt } from '@/utils/auth/userDataSync';
 
 /**
  * Syncs pinned verses with the backend on first login only.

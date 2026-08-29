@@ -9,11 +9,12 @@ import Input, { InputSize, InputType } from '@/components/dls/Forms/Input';
 export interface AuthInputProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
-    'size' | 'onChange' | 'value' | 'type'
+    'size' | 'onChange' | 'value' | 'type' | 'onClick'
   > {
   id: string;
   value: string;
   onChange: (value: string) => void;
+  onClick?: () => void;
   placeholder?: string;
   disabled?: boolean;
   htmlType?: 'text' | 'email' | 'password';
@@ -36,6 +37,7 @@ const AuthInput: React.FC<AuthInputProps> = ({
   id,
   value,
   onChange,
+  onClick,
   placeholder,
   disabled = false,
   htmlType = 'text',
@@ -57,12 +59,13 @@ const AuthInput: React.FC<AuthInputProps> = ({
       id={id}
       value={value}
       onChange={onChange}
+      onClick={onClick}
       placeholder={placeholder}
       disabled={disabled}
       htmlType={htmlType}
       name={name}
       size={InputSize.Large}
-      type={hasError ? InputType.Error : type || InputType.Default}
+      type={hasError ? InputType.Error : type}
       fixedWidth={false}
       shouldFlipOnRTL
       containerClassName={classNames(styles.authContainer, className, {
