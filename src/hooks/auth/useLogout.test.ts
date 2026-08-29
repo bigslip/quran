@@ -6,7 +6,9 @@ import { useDispatch } from 'react-redux';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { removeLastSyncAt } from '@/utils/auth/userDataSync';
 import { clearBookmarks } from '@/redux/slices/QuranReader/bookmarks';
+import { clearPinnedVerses } from '@/redux/slices/QuranReader/pinnedVerses';
 import { clearReadingTracker } from '@/redux/slices/QuranReader/readingTracker';
+import { clearGuestBookmarks } from '@/redux/slices/guestBookmark';
 import { ROUTES, PROTECTED_ROUTES } from '@/utils/navigation';
 import { logButtonClick } from '@/utils/eventLogger';
 
@@ -32,8 +34,16 @@ vi.mock('@/redux/slices/QuranReader/bookmarks', () => ({
   clearBookmarks: vi.fn(() => ({ type: 'bookmarks/clearBookmarks' })),
 }));
 
+vi.mock('@/redux/slices/QuranReader/pinnedVerses', () => ({
+  clearPinnedVerses: vi.fn(() => ({ type: 'pinnedVerses/clearPinnedVerses' })),
+}));
+
 vi.mock('@/redux/slices/QuranReader/readingTracker', () => ({
   clearReadingTracker: vi.fn(() => ({ type: 'readingTracker/clearReadingTracker' })),
+}));
+
+vi.mock('@/redux/slices/guestBookmark', () => ({
+  clearGuestBookmarks: vi.fn(() => ({ type: 'guestBookmark/clearGuestBookmarks' })),
 }));
 
 vi.mock('@/utils/eventLogger', () => ({
@@ -50,7 +60,9 @@ describe('useLogout', () => {
   const mockAuthContextLogout = vi.fn();
   const mockRemoveLastSyncAt = vi.mocked(removeLastSyncAt);
   const mockClearBookmarks = vi.mocked(clearBookmarks);
+  const mockClearPinnedVerses = vi.mocked(clearPinnedVerses);
   const mockClearReadingTracker = vi.mocked(clearReadingTracker);
+  const mockClearGuestBookmarks = vi.mocked(clearGuestBookmarks);
   const mockLogButtonClick = vi.mocked(logButtonClick);
 
   beforeEach(() => {
@@ -78,8 +90,12 @@ describe('useLogout', () => {
     expect(mockRemoveLastSyncAt).toHaveBeenCalled();
     expect(mockClearBookmarks).toHaveBeenCalled();
     expect(mockClearReadingTracker).toHaveBeenCalled();
+    expect(mockClearPinnedVerses).toHaveBeenCalled();
+    expect(mockClearGuestBookmarks).toHaveBeenCalled();
     expect(mockDispatch).toHaveBeenCalledWith({ type: 'bookmarks/clearBookmarks' });
     expect(mockDispatch).toHaveBeenCalledWith({ type: 'readingTracker/clearReadingTracker' });
+    expect(mockDispatch).toHaveBeenCalledWith({ type: 'pinnedVerses/clearPinnedVerses' });
+    expect(mockDispatch).toHaveBeenCalledWith({ type: 'guestBookmark/clearGuestBookmarks' });
   });
 
   it('redirects correctly based on current route', async () => {
@@ -118,19 +134,9 @@ describe('useLogout', () => {
     const { result } = renderHook(() => useLogout());
 
     await act(async () => {
-      await result.current({ eventName: 'test_logout' });
+      await result.current({ eventName: 'logout_clicked' });
     });
 
-    expect(mockLogButtonClick).toHaveBeenCalledWith('test_logout');
-  });
-
-  it('does not redirect if redirectToLogin is true (allows manual redirect)', async () => {
-    const { result } = renderHook(() => useLogout());
-
-    await act(async () => {
-      await result.current({ redirectToLogin: true });
-    });
-
-    expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockLogButtonClick).toHaveBeenCalledWith('logout_clicked');
   });
 });

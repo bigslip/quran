@@ -46,7 +46,6 @@ const useSyncPinnedVerses = () => {
     }
     if (!isPersistGateHydrationComplete) return () => {};
     if (hasSyncedRef.current || isSyncingRef.current) return () => {};
-    if (getLastSyncAt()) return () => {};
 
     const currentRetryTimeoutRef = retryTimeoutRef;
     isSyncingRef.current = true;

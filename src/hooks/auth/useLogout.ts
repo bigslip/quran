@@ -6,7 +6,9 @@ import { useDispatch } from 'react-redux';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { logErrorToSentry } from '@/lib/sentry';
 import { clearBookmarks } from '@/redux/slices/QuranReader/bookmarks';
+import { clearPinnedVerses } from '@/redux/slices/QuranReader/pinnedVerses';
 import { clearReadingTracker } from '@/redux/slices/QuranReader/readingTracker';
+import { clearGuestBookmarks } from '@/redux/slices/guestBookmark';
 import QueryParam from '@/types/QueryParam';
 import { removeUserIdCookie } from '@/utils/auth/login';
 import { removeLastSyncAt } from '@/utils/auth/userDataSync';
@@ -46,6 +48,8 @@ const useLogout = (): LogoutFunction => {
         removeLastSyncAt();
         dispatch(clearBookmarks());
         dispatch(clearReadingTracker());
+        dispatch(clearPinnedVerses());
+        dispatch(clearGuestBookmarks());
 
         if (!redirectToLogin) {
           if (PROTECTED_ROUTES.includes(router.pathname)) {
