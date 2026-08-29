@@ -46,7 +46,7 @@ const MyReadingBookmark: React.FC<MyReadingBookmarkProps> = ({ bookmark, isLoadi
     }
   }, [bookmark, router]);
 
-  const subtitleText = useMemo(() => {
+  const displayText = useMemo(() => {
     if (!bookmark) return null;
 
     if (bookmark.type === 'ayah' && bookmark.surahNumber && bookmark.ayahNumber) {
@@ -68,7 +68,7 @@ const MyReadingBookmark: React.FC<MyReadingBookmarkProps> = ({ bookmark, isLoadi
 
   const dateText = useMemo(() => {
     if (!bookmark?.createdAt) return null;
-    return toLocalizedDate(bookmark.createdAt, lang, {
+    return toLocalizedDate(new Date(bookmark.createdAt), lang, {
       month: 'long',
       day: 'numeric',
       year: 'numeric',

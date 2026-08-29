@@ -14,7 +14,7 @@ import ReflectionIntro from '@/components/Notes/modal/ReflectionIntro';
 import DataContext from '@/contexts/DataContext';
 import Button, { ButtonSize, ButtonVariant } from '@/dls/Button/Button';
 import ContentModal from '@/dls/ContentModal/ContentModal';
-import TextArea from '@/dls/Forms/TextArea';
+import TextArea, { TextAreaType } from '@/dls/Forms/TextArea';
 import { readableVerseRangeKeys } from '@/utils/verseKeys';
 
 interface NoteFormModalProps {
@@ -105,9 +105,8 @@ const NoteFormModal: React.FC<NoteFormModalProps> = ({
           <TextArea
             id="note"
             name="note"
-            ariaLabel={t('notes:note')}
-            aria-invalid={!!errors.note}
-            aria-describedby={errors.note ? 'note-input-error' : undefined}
+            label={t('notes:note')}
+            type={errors.note ? TextAreaType.Error : undefined}
             placeholder={t('notes:body-placeholder')}
             containerClassName={styles.textArea}
             value={noteInput}
