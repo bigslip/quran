@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
 
+import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
 import styles from './ChapterCard.module.scss';
 
 import Card from '@/components/HomePage/Card';
 import DataContext from '@/contexts/DataContext';
-import Button, { ButtonSize } from '@/dls/Button/Button';
 import IconContainer, { IconSize } from '@/dls/IconContainer/IconContainer';
-import Link, { LinkVariant } from '@/dls/Link/Link';
 import ArrowIcon from '@/icons/arrow.svg';
 import { getChapterData } from '@/utils/chapter';
 import { logButtonClick } from '@/utils/eventLogger';
@@ -63,27 +62,20 @@ const ChapterCard: React.FC<Props> = ({
             </span>
           </div>
           {isContinueReading ? (
-            <Link href={link} variant={LinkVariant.Primary} onClick={onContinueReadingClicked}>
-              <div className={styles.continueReading}>
-                <span>{t('common:verse')}</span>
-                <span>{toLocalizedNumber(verseNumber, lang)}</span>
-                <IconContainer
-                  size={IconSize.Xsmall}
-                  icon={<ArrowIcon />}
-                  shouldForceSetColors={false}
-                  className={styles.continueReadingArrowIcon}
-                />
-              </div>
-            </Link>
+            <div className={styles.continueReading}>
+              <span>{t('common:verse')}</span>
+              <span>{toLocalizedNumber(verseNumber, lang)}</span>
+              <IconContainer
+                size={IconSize.Xsmall}
+                icon={<ArrowIcon />}
+                shouldForceSetColors={false}
+                className={styles.continueReadingArrowIcon}
+              />
+            </div>
           ) : (
-            <Button
-              size={ButtonSize.Small}
-              href={link}
-              onClick={onBeginClicked}
-              className={styles.beginButton}
-            >
+            <div className={classNames(styles.continueReading, styles.beginButton)}>
               {t('begin')}
-            </Button>
+            </div>
           )}
         </div>
       </div>
