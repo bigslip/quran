@@ -103,7 +103,10 @@ export const fetcher = async function fetcher<T>(
   const res = await fetch(input, reqInit);
   if (fullResponse) return res as unknown as T;
   if (!res.ok || res.status === 500 || res.status === 404) {
-    throw res;
+    const error = new Error(`Request failed with status ${res.status}: ${res.statusText}`);
+    (error as any).status = res.status;
+    (error as any).response = res;
+    throw error;
   }
   const json = await res.json();
   return camelizeKeys(json);
