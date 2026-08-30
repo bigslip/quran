@@ -22,10 +22,16 @@
   &::after {
     content: '';
     position: absolute;
-    inset-inline: 0;
+    inset-inline: 5%;
     inset-block-end: calc(var(--spacing-large-px) / 1.25);
     block-size: 1px;
-    background: var(--color-borders-hairline);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-border-subtle, var(--color-borders-hairline)) 20%,
+      var(--color-border-subtle, var(--color-borders-hairline)) 80%,
+      transparent 100%
+    );
   }
 }
 

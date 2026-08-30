@@ -8,16 +8,25 @@
   inline-size: 100%;
   inset-block-end: 0;
   text-align: center;
-  background: var(--color-background-default);
+  background: var(--color-surface-floating, var(--color-background-default));
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   transition: var(--transition-regular);
   z-index: var(--z-index-sticky);
-  box-shadow: var(--shadow-large);
-  border-block-start: 1px solid var(--color-borders-hairline);
+  box-shadow: var(--elevation-floating, var(--shadow-large));
+  border-block-start: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
   block-size: constants.$audio-player-default-height;
+  will-change: transform;
+
   @include breakpoints.tablet {
+    inset-block-end: var(--spacing-medium-px);
+    inset-inline: 0;
+    margin-inline: auto;
+    max-inline-size: min(92%, 56rem);
+    border-radius: 16px;
+    border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
     block-size: constants.$audio-player-default-desktop-height;
   }
-  will-change: transform;
 }
 
 .containerOnboarding {

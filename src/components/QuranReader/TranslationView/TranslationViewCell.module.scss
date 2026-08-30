@@ -7,6 +7,7 @@
   flex-direction: column;
   padding-block: var(--spacing-medium2-px);
   --gap-size: calc(0.5 * var(--spacing-mega));
+  transition: background-color var(--transition-regular), box-shadow var(--transition-regular);
 
   @include breakpoints.tablet {
     padding-block: var(--spacing-large-px);
@@ -18,7 +19,9 @@
 }
 
 .highlightedContainer {
-  background: var(--color-background-alternative-faded);
+  background: var(--color-primary-subtle, var(--color-background-alternative-faded));
+  border-radius: var(--border-radius-default, 8px);
+  box-shadow: 0 0 0 1px var(--color-border-subtle);
 }
 
 .contentContainer {
@@ -42,6 +45,7 @@
   direction: rtl;
   margin-block-start: var(--spacing-large-px);
   margin-block-end: var(--spacing-medium-plus-px);
+  line-height: 2.4;
 
   @include breakpoints.tablet {
     margin-block-start: var(--spacing-xxlarge-px);
@@ -50,6 +54,7 @@
 
 .verseTranslationsContainer {
   margin-block-end: var(--spacing-large-px);
+  line-height: 1.8;
 
   @include breakpoints.tablet {
     margin-block-end: var(--spacing-xxlarge-px);
@@ -76,27 +81,29 @@
 }
 
 .iconContainer.verseAction {
-  color: var(--color-text-default);
+  color: var(--color-text-secondary, var(--color-text-default));
   block-size: calc(2.2 * var(--spacing-medium));
   inline-size: calc(2.2 * var(--spacing-medium));
+  border-radius: var(--border-radius-pill);
+  transition: all var(--transition-fast);
 
   &:hover {
-    color: var(--color-text-default);
-    background-color: transparent;
+    color: var(--color-primary, var(--color-text-default));
+    background-color: var(--color-primary-subtle, transparent);
     background-image: none;
   }
 
   @media (hover: hover) {
     &:hover {
-      color: var(--color-success-medium);
-      background-color: var(--color-success-medium);
-      @include utility.lighten-background-color;
+      color: var(--color-primary, var(--color-success-medium));
+      background-color: var(--color-primary-subtle, var(--color-success-medium));
+      border-radius: var(--border-radius-pill);
     }
 
     &:hover:not(.bookmarkAction) {
       .icon span {
         svg {
-          color: var(--color-success-medium) !important;
+          color: var(--color-primary, var(--color-success-medium)) !important;
         }
       }
     }
@@ -209,8 +216,10 @@
   align-items: center;
   gap: calc(var(--spacing-xsmall) / 2);
   cursor: pointer;
-  color: var(--color-grey-icons-new);
-  transition: color 0.2s ease;
+  color: var(--color-text-secondary, var(--color-grey-icons-new));
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+  padding: 4px 8px;
+  border-radius: var(--border-radius-pill);
   flex-shrink: 0;
 
   @include breakpoints.smallerThanTablet {
@@ -220,7 +229,8 @@
   }
 
   &:hover {
-    color: var(--color-success-medium);
+    color: var(--color-primary, var(--color-success-medium));
+    background-color: var(--color-primary-subtle);
   }
 }
 
@@ -238,10 +248,6 @@
     block-size: var(--spacing-medium2);
     color: currentColor;
 
-    &:hover {
-      color: currentColor;
-    }
-
     @include breakpoints.smallerThanTablet {
       inline-size: var(--spacing-medium);
       block-size: var(--spacing-medium);
@@ -251,6 +257,7 @@
 
 .tabLabel {
   font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
 
   @include breakpoints.smallerThanTablet {

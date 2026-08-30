@@ -24,9 +24,10 @@ $icon-border-radius: var(--spacing-hairline-px);
   display: flex;
   align-items: center;
   gap: $container-gap;
-  padding: $container-padding;
+  padding: calc($container-padding * 2);
   background-color: var(--color-background-alternative-faint);
-  border-radius: $container-border-radius;
+  border: 1px solid var(--color-border-subtle, transparent);
+  border-radius: $pill-border-radius;
 }
 
 .pill {
@@ -38,28 +39,33 @@ $icon-border-radius: var(--spacing-hairline-px);
   border-radius: $pill-border-radius;
   border: none;
   cursor: pointer;
-  transition: background-color var(--transition-regular), color var(--transition-regular),
-    box-shadow var(--transition-regular);
+  transition: background-color var(--transition-fast), color var(--transition-fast),
+    box-shadow var(--transition-fast), transform var(--transition-fast);
   font-family: var(--font-family);
   font-size: $font-size;
   font-weight: var(--font-weight-semibold);
   line-height: 1.2em;
   white-space: nowrap;
   box-sizing: border-box;
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
 .pillSelected {
-  background-color: var(--color-background-elevated);
-  box-shadow: var(--shadow-small-new);
-  color: var(--color-text-default-new);
+  background-color: var(--color-surface-card, var(--color-background-elevated));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  color: var(--color-text-primary, var(--color-text-default-new));
 }
 
 .pillUnselected {
   background-color: transparent;
-  color: var(--color-text-faded-new);
+  color: var(--color-text-secondary, var(--color-text-faded-new));
 
   &:hover {
-    opacity: 0.8;
+    color: var(--color-text-primary);
+    background-color: var(--color-primary-subtle);
   }
 }
 

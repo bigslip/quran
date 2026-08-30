@@ -5,23 +5,31 @@
   display: inline-flex;
   align-items: center;
   text-align: center;
-  color: var(--color-grey-icons-new);
-  font-size: var(--font-size-large2);
+  color: var(--color-primary, var(--color-grey-icons-new));
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
   margin-inline-end: var(--spacing-xxsmall-px);
+  padding-inline: calc(var(--spacing-small-px) * 0.85);
+  padding-block: var(--spacing-hairline-px);
+  background-color: var(--color-primary-subtle);
+  border: 1px solid var(--color-border-subtle, transparent);
+  border-radius: var(--border-radius-pill);
   box-sizing: content-box;
   inline-size: max-content;
   block-size: max-content;
+  transition: all var(--transition-fast);
 
   @include breakpoints.smallerThanTablet {
-    font-size: var(--font-size-normal);
+    font-size: var(--font-size-xsmall);
   }
 
   @media (hover: hover) {
     &:hover {
       opacity: 1;
-      color: var(--color-success-medium);
-      background-color: var(--color-success-medium);
-      @include utility.lighten-background-color;
+      color: var(--color-text-white);
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
     }
   }
 }

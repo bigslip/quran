@@ -4,6 +4,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-block: var(--spacing-hairline-px);
+}
+
+.actionItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.04);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
 }
 
 .actionItem + .actionItem {

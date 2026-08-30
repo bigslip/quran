@@ -15,6 +15,13 @@
     // Keep page controls above reader content but below floating donation card and header layers.
     z-index: 298;
     inset-inline-end: var(--spacing-large);
+    background: var(--color-surface-floating, var(--color-background-elevated));
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+    border-radius: var(--border-radius-pill);
+    padding: calc(var(--spacing-micro) / 2);
+    box-shadow: var(--elevation-floating);
   }
 }
 
