@@ -540,7 +540,9 @@
     "suggest": "Veuillez commencer à réciter et votre Ayah apparaîtra.",
     "suggest-subtitle": "Récitez n'importe quelle Ayah en arabe, et l'Ayah apparaîtra",
     "suggest-title": "Récitez maintenant",
-    "voice-search-powered-by": "Recherche Vocale Propulsée par"
+    "voice-search-powered-by": "Recherche Vocale Propulsée par",
+    "start": "Démarrer la recherche vocale",
+    "stop": "Arrêter la recherche vocale"
   },
   "wbw": "Mot par mot",
   "wbw-lang-summary": "Source de la traduction mot à mot: <link>{{source}}</link>. Cette source est indépendante de la sélection de la traduction des Ayahs.",
@@ -553,5 +555,6 @@
     "title": "Clic sur le mot"
   },
   "word-tooltip": "Info-bulle du mot",
-  "yes": "Oui"
+  "yes": "Oui",
+  "page-number": "Page {{page}}"
 }

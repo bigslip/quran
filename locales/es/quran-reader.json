@@ -264,5 +264,6 @@
   "verses-pinned": "{{count}} versos fijados",
   "verses-range": "Gama de versos",
   "view-on-quran-reflect": "Ver en QuranReflect",
-  "wbw-helper-text": "Seleccione opciones para mostrar la traducción, transliteración y/o recitación de cada palabra."
+  "wbw-helper-text": "Seleccione opciones para mostrar la traducción, transliteración y/o recitación de cada palabra.",
+  "page-number": "Página {{page}}"
 }

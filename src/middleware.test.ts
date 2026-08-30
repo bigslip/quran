@@ -6,18 +6,18 @@ import middleware from './middleware';
 
 describe('Edge Middleware', () => {
   describe('_next/data requests', () => {
-    it('returns a 404 response for _next/data URLs to prevent stale data hydration across deployments', () => {
+    it('allows _next/data URLs to pass through for client-side page transitions', () => {
       const req = new NextRequest('https://quran.com/_next/data/build123/en/surah/1.json');
       const res = middleware(req);
 
-      expect(res.status).toBe(404);
+      expect(res.headers.get('x-middleware-next')).toBe('1');
     });
 
-    it('returns a 404 response if _next/data is in query or subpath', () => {
+    it('allows _next/data in subpath to pass through', () => {
       const req = new NextRequest('https://quran.com/api/_next/data/test');
       const res = middleware(req);
 
-      expect(res.status).toBe(404);
+      expect(res.headers.get('x-middleware-next')).toBe('1');
     });
   });
 

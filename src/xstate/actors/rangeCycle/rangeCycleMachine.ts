@@ -20,6 +20,7 @@ export const createRangeCycleMachine = ({
   /** @xstate-layout N4IgpgJg5mDOIC5QCcCGA7GBhAngYwBswBBPAFwHtkA6AS3QAVkKpk5YBiAFQEkBZAKIBlLsT4MA+gFUGAEWJcBsxKAAOFWLTK0K6FSAAeiAGwB2AIzUALACZTAVnMAOZ1fsAGYwBoQORI+pjAGYnKwBOELdw+2NjAF84nzRMMFxCEnIqOkZmVnYOACUBBgEFCSExAQliAE1iAAl9dU1tXX0jBCszajCnd3cnIKtPczDzUysfPwQAWnGransxoLD3GydTTatxhKSMbHwiUkoaeiYWNlhOIpKygDkBAA0uarrGpBBmrR09D46YsLUCY2MZhexDGz2KxOKaIWyWcxQjaOdzbIJBey7EDJA7pY5ZM65S7XYqlF4MIoANVeDSaGm+bT+-mMgOBoPBtiRsIQQVMQWoiOhDnMqPM6MxiWx+1ShwyJ2y5zyVw4lIEBSEVRuZIkADEeHceEJ6ko6S0fu1EDMbCyBcEgu4xZs7PZuXN3IFrWZwqZUT6nMYbFicTK8ZkaMGBOgIJAOKaGb9QB0hvyHGEbNb7FD3B5Jr44TbBciRWiMQlJegKNH4B9g2kjmGFUT2HHWgnDIh1gtzFYgnYwsZtmYzNzTE5Ar2QRYwtEVk4g9K63KshGo5AW+ambMMQswhFeQN+k5kdyzGPjODwTYMU4bOZ5ylF-iaAAzei0WAACzXHy+rYtW+zRZwhZUxgncXsb25MFLD6exIWCMUYicMJ71xesTnXRlE0tXkx13dE-UPY881mGwrFMRZQNCOw3HMMj1jLOIgA */
   createMachine(
     {
+      predictableActionArguments: true,
       context: {
         verseCycleActor: null as ActorRefFrom<ReturnType<typeof createVerseCycleMachine>>,
         totalVerseCycle,

@@ -555,5 +555,6 @@
     "title": "Word Click"
   },
   "word-tooltip": "Word Tooltip",
-  "yes": "Yes"
+  "yes": "Yes",
+  "page-number": "Page {{page}}"
 }

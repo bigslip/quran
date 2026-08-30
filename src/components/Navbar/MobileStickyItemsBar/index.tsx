@@ -33,7 +33,7 @@ const MobileStickyItemsBar = () => {
       className={classNames(styles.container, styles[isVisible ? 'visible' : 'hidden'], {
         [styles.dimmed]: isDrawerOpen,
       })}
-      inert={isDrawerOpen || undefined}
+      inert={(isDrawerOpen ? '' : undefined) as unknown as boolean}
     >
       <div className={styles.centerVertically}>
         <div className={styles.leftCTA}>

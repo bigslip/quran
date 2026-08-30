@@ -540,7 +540,9 @@
     "suggest": "Begin alsjeblieft met reciteren en je vers zal verschijnen.",
     "suggest-subtitle": "Reciteer een vers in het Arabisch, en het vers zal verschijnen.",
     "suggest-title": "Reciteer nu",
-    "voice-search-powered-by": "Stem zoeken Aangedreven door"
+    "voice-search-powered-by": "Stem zoeken Aangedreven door",
+    "start": "Start gesproken zoekopdracht",
+    "stop": "Stop gesproken zoekopdracht"
   },
   "wbw": "Woord voor woord",
   "wbw-lang-summary": "Woord voor woord vertalings- bron: <link> {{source}} </link> . Deze bron is onafhankelijk van de selectie van de vers vertaling.",
@@ -553,5 +555,6 @@
     "title": "Woord klik"
   },
   "word-tooltip": "woord info knop",
-  "yes": "Ja"
+  "yes": "Ja",
+  "page-number": "Pagina {{page}}"
 }

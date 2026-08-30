@@ -10,6 +10,7 @@ export const createVerseCycleMachine = ({ timestampFrom, timestampTo, totalVerse
   /** @xstate-layout N4IgpgJg5mDOIC5QDcwCdZgMIE8DGANmAIJ4AuA9mgHQCWAdgApoVRpywDEAqowCLEAKgFEA+oICSAWQkA5AOKJQABwqxaZWhXpKQAD0QBaAEwB2AJzULxgCznjAZgAMTgBxOLAGhA5EAVktzIKDXP2MARlsbJ3CAX1jvVAxsfCJSShokzGF6CEhOXVV1TW1dAwRwu2oANjdq8PqG41dmh29fBAdTcOpzU1C3G1dw8OdHeISQego8+CQQLJTCEnIqOiYWNg5CtQ0tHXnyw2qHG2obRwdRroHzNp9-B2o-Fxs32vDTCxtq+MT0TC4ZbpNaLHJ5CA7Yr7MqIYxuaiuIYudzhO7mEbtRDhJx+c6uaqmALdGxo0nmP4LAFLNKrGgAMwYtFgAAtIFC9qVDtiHK5eqY7Gi3F9og4-FiEPY+aYImZqh9zNU-KZKYsgbSMhySgdQEclXyLg4rkb+i87hLDGj8S8PFdXATusZfhMgA */
   createMachine(
     {
+      predictableActionArguments: true,
       context: {
         timestampFrom,
         timestampTo,

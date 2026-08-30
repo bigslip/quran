@@ -51,7 +51,7 @@ const NavigationDrawerBody = ({ isLanguageDrawerOpen }: NavigationDrawerBodyProp
       <div
         className={styles.mainListItems}
         aria-hidden={isLanguageDrawerOpen}
-        inert={isLanguageDrawerOpen || undefined}
+        inert={(isLanguageDrawerOpen ? '' : undefined) as unknown as boolean}
       >
         <div className={styles.listItems}>
           <FundraisingBanner />

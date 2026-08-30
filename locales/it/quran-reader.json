@@ -264,5 +264,6 @@
   "verses-pinned": "{{count}} versi appuntati",
   "verses-range": "Gamma di versi",
   "view-on-quran-reflect": "Visualizza su QuranReflect",
-  "wbw-helper-text": "Seleziona le opzioni per mostrare la traduzione, la traslitterazione e/o la recitazione di ogni parola."
+  "wbw-helper-text": "Seleziona le opzioni per mostrare la traduzione, la traslitterazione e/o la recitazione di ogni parola.",
+  "page-number": "Pagina {{page}}"
 }

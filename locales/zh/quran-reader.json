@@ -264,5 +264,6 @@
   "verses-pinned": "{{count}} 诗句被钉住了",
   "verses-range": "节文范围",
   "view-on-quran-reflect": "查看 QuranReflect",
-  "wbw-helper-text": "选择选项以显示每个单词的翻译、音译和/或朗诵。"
+  "wbw-helper-text": "选择选项以显示每个单词的翻译、音译和/或朗诵。",
+  "page-number": "第 {{page}} 页"
 }

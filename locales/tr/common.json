@@ -540,7 +540,9 @@
     "suggest": "Lütfen okumaya başlayın, ayetiniz görünecektir.",
     "suggest-subtitle": "Arapça herhangi bir ayeti okuyun ve ayet görünecektir",
     "suggest-title": "Şimdi oku",
-    "voice-search-powered-by": "Sesli arama sağlayıcısı"
+    "voice-search-powered-by": "Sesli arama sağlayıcısı",
+    "start": "Sesli aramayı başlat",
+    "stop": "Sesli aramayı durdur"
   },
   "wbw": "Kelime kelime",
   "wbw-lang-summary": "Kelime kelime çeviri kaynağı: <link> {{source}} </link> . Bu kaynak ayet çeviri seçiminden bağımsızdır.",
@@ -553,5 +555,6 @@
     "title": "Kelime Tıklaması"
   },
   "word-tooltip": "Kelime İpucu",
-  "yes": "Evet"
+  "yes": "Evet",
+  "page-number": "Sayfa {{page}}"
 }

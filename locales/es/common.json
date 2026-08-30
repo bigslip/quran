@@ -540,7 +540,9 @@
     "suggest": "Por favor comienza a recitar y tu verso aparecerá.",
     "suggest-subtitle": "Recita cualquier verso en árabe y el verso aparecerá.",
     "suggest-title": "Recita ahora",
-    "voice-search-powered-by": "Búsqueda por voz con tecnología de"
+    "voice-search-powered-by": "Búsqueda por voz con tecnología de",
+    "start": "Iniciar búsqueda por voz",
+    "stop": "Detener búsqueda por voz"
   },
   "wbw": "Palabra por palabra",
   "wbw-lang-summary": "Fuente de la traducción palabra por palabra: <link> {{source}} </link>. Esta fuente es independiente de la selección de la traducción del verso.",
@@ -553,5 +555,6 @@
     "title": "Clic de palabra"
   },
   "word-tooltip": "Información sobre herramientas de Word",
-  "yes": "Sí"
+  "yes": "Sí",
+  "page-number": "Página {{page}}"
 }

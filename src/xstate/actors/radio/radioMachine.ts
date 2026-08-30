@@ -14,6 +14,7 @@ import { AudioTrack, StationType } from '@/components/Radio/types';
 export const createRadioMachine = () => {
   return createMachine(
     {
+      predictableActionArguments: true,
       tsTypes: {} as import('./radioMachine.typegen').Typegen0,
       schema: {
         context: {} as RadioContext,

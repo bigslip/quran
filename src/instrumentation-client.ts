@@ -25,7 +25,7 @@ const IGNORED_ERRORS: Array<string | RegExp> = [
 Sentry.init({
   enabled: SENTRY_ENABLED,
   dsn: SENTRY_ENABLED ? SENTRY_DSN : null,
-  debug: isDev,
+  debug: false,
   tracesSampleRate: isDev ? 1 : 0.1,
   replaysOnErrorSampleRate: isDev ? 1 : 0.01,
   // Session replays sample rate - only capture dev sessions

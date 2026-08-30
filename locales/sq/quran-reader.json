@@ -264,5 +264,6 @@
   "verses-pinned": "{{count}} vargjet e fiksuara",
   "verses-range": "Gama e vargjeve",
   "view-on-quran-reflect": "Shiko në QuranReflect",
-  "wbw-helper-text": "Zgjidh opsionet për të shfaqur përkthimin, transliterimin dhe/ose recitimin për secilën fjalë."
+  "wbw-helper-text": "Zgjidh opsionet për të shfaqur përkthimin, transliterimin dhe/ose recitimin për secilën fjalë.",
+  "page-number": "Faqe {{page}}"
 }

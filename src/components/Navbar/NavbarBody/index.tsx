@@ -152,7 +152,11 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
         className={classNames(styles.itemsContainer, {
           [styles.dimmed]: isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen,
         })}
-        inert={isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen || undefined}
+        inert={
+          (isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen
+            ? ''
+            : undefined) as unknown as boolean
+        }
       >
         <div className={styles.centerVertically}>
           <div className={styles.leftCTA}>

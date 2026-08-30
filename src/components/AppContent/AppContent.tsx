@@ -66,7 +66,7 @@ function AppContent({ Component, pageProps }: AppContentProps) {
           [styles.dimmed]: isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen,
         })}
         {...((isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen) && {
-          inert: true,
+          inert: '' as unknown as boolean,
           'aria-hidden': true, // eslint-disable-line @typescript-eslint/naming-convention
         })}
       >

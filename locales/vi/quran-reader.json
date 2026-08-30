@@ -264,5 +264,6 @@
   "verses-pinned": "{{count}} các câu thơ được ghim",
   "verses-range": "Phạm vi các câu",
   "view-on-quran-reflect": "Xem trên QuranReflect",
-  "wbw-helper-text": "Chọn các tùy chọn để hiển thị bản dịch, phiên âm và/hoặc đọc thuộc lòng cho mỗi từ."
+  "wbw-helper-text": "Chọn các tùy chọn để hiển thị bản dịch, phiên âm và/hoặc đọc thuộc lòng cho mỗi từ.",
+  "page-number": "Trang {{page}}"
 }

@@ -264,5 +264,6 @@
   "verses-pinned": "{{count}} آیات پن کی گئی",
   "verses-range": "آیات کی حد",
   "view-on-quran-reflect": "QuranReflect پر دیکھیں",
-  "wbw-helper-text": "ہر لفظ کے لیے ترجمہ، ٹرانسلیٹریشن اور تلاوت دیکھنے کے آپشنز منتخب کریں۔"
+  "wbw-helper-text": "ہر لفظ کے لیے ترجمہ، ٹرانسلیٹریشن اور تلاوت دیکھنے کے آپشنز منتخب کریں۔",
+  "page-number": "صفحہ {{page}}"
 }

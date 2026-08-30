@@ -540,7 +540,9 @@
     "suggest": "Per favore, inizia a recitare e il tuo verso apparirà.",
     "suggest-subtitle": "Recita qualsiasi versetto in arabo e il versetto apparirà",
     "suggest-title": "Recita ora",
-    "voice-search-powered-by": "Ricerca vocale fornita da"
+    "voice-search-powered-by": "Ricerca vocale fornita da",
+    "start": "Avvia ricerca vocale",
+    "stop": "Interrompi ricerca vocale"
   },
   "wbw": "Parola per parola",
   "wbw-lang-summary": "Fonte della traduzione parola per parola: <link> {{source}} </link> . Questa fonte è indipendente dalla selezione della traduzione in versi.",
@@ -553,5 +555,6 @@
     "title": "Clic sulla parola"
   },
   "word-tooltip": "Descrizione comando parola",
-  "yes": "sì"
+  "yes": "sì",
+  "page-number": "Pagina {{page}}"
 }

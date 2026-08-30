@@ -540,7 +540,9 @@
     "suggest": "Hãy bắt đầu đọc, câu Kinh của bạn sẽ hiện lên.",
     "suggest-subtitle": "Hãy đọc bất kỳ câu Kinh tiếng Ả Rập nào, câu đó sẽ hiện lên",
     "suggest-title": "Đọc ngay",
-    "voice-search-powered-by": "Tìm kiếm giọng nói được hỗ trợ bởi"
+    "voice-search-powered-by": "Tìm kiếm giọng nói được hỗ trợ bởi",
+    "start": "Bắt đầu tìm kiếm bằng giọng nói",
+    "stop": "Dừng tìm kiếm bằng giọng nói"
   },
   "wbw": "Từng từ",
   "wbw-lang-summary": "Nguồn dịch từng từ: <link>{{source}}</link>. Nguồn này tách biệt với lựa chọn bản dịch câu Kinh.",
@@ -553,5 +555,6 @@
     "title": "Nhấp chuột"
   },
   "word-tooltip": "Chú thích công cụ Word",
-  "yes": "Có"
+  "yes": "Có",
+  "page-number": "Trang {{page}}"
 }

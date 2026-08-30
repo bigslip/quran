@@ -264,5 +264,6 @@
   "verses-pinned": "{{count}} sabitlenmiş ayetler",
   "verses-range": "Ayet aralığı",
   "view-on-quran-reflect": "Kuran'da görüntüle",
-  "wbw-helper-text": "Her kelime için çeviri, transkripsiyon ve/veya sesli okuma seçeneklerini belirleyin."
+  "wbw-helper-text": "Her kelime için çeviri, transkripsiyon ve/veya sesli okuma seçeneklerini belirleyin.",
+  "page-number": "Sayfa {{page}}"
 }

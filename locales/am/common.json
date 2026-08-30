@@ -540,7 +540,9 @@
     "suggest": "እባክህ ማንበብ ጀምር፤ ጥቅስህም ይታያል።",
     "suggest-subtitle": "በአረብኛ የተጻፈ ማንኛውንም አንቀፅ አንብብ፤ አንቀፁም ይታያል",
     "suggest-title": "አሁን አንብብ",
-    "voice-search-powered-by": "የድምጽ ፍለጋ የተጎላበተው"
+    "voice-search-powered-by": "የድምጽ ፍለጋ የተጎላበተው",
+    "start": "የድምጽ ፍለጋ ጀምር",
+    "stop": "የድምጽ ፍለጋ አቁም"
   },
   "wbw": "ቃል በቃል",
   "wbw-lang-summary": "የቃል በቃል የትርጉም ምንጭ፡ <link>{{source}}</link>ይህ ምንጭ ከአያ(አንቀፅ) የትርጉም ምርጫ የተለየ ነው።",
@@ -553,5 +555,6 @@
     "title": "የቃላት ክሊክ"
   },
   "word-tooltip": "የቃል Tooltip",
-  "yes": "አዎ"
+  "yes": "አዎ",
+  "page-number": "ገጽ {{page}}"
 }

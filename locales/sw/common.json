@@ -540,7 +540,9 @@
     "suggest": "Tafadhali anza kusoma na aya yako itaonekana.",
     "suggest-subtitle": "Soma aya yoyote kwa Kiarabu, na aya itaonekana",
     "suggest-title": "Soma sasa",
-    "voice-search-powered-by": "Utafutaji wa Sauti Unaendeshwa na"
+    "voice-search-powered-by": "Utafutaji wa Sauti Unaendeshwa na",
+    "start": "Anza utafutaji wa sauti",
+    "stop": "Acha utafutaji wa sauti"
   },
   "wbw": "Neno Kwa Neno",
   "wbw-lang-summary": "Chanzo cha tarjuma ya neno kwa neno: <link> {{source}} </link>. Chanzo hiki hakijitegemei uteuzi wa tarjuma ya aya.",
@@ -553,5 +555,6 @@
     "title": "Bonyeza Neno"
   },
   "word-tooltip": "Tooltip ya Neno",
-  "yes": "Ndiyo"
+  "yes": "Ndiyo",
+  "page-number": "Ukurasa {{page}}"
 }

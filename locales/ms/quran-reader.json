@@ -264,5 +264,6 @@
   "verses-pinned": "{{count}} ayat-ayat yang disematkan",
   "verses-range": "Jarak rangka ayat",
   "view-on-quran-reflect": "Lihat di QuranReflect",
-  "wbw-helper-text": "Pilih pilihan untuk menunjukkan terjemahan, transliterasi dan/atau bacaan bagi setiap perkataan."
+  "wbw-helper-text": "Pilih pilihan untuk menunjukkan terjemahan, transliterasi dan/atau bacaan bagi setiap perkataan.",
+  "page-number": "Halaman {{page}}"
 }

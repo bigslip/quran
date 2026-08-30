@@ -540,7 +540,9 @@
     "suggest": "请开始诵读，经文就会显示",
     "suggest-subtitle": "用阿拉伯语背诵任何一节经文，这节经文就会出现",
     "suggest-title": "现在背诵",
-    "voice-search-powered-by": "语音搜索由"
+    "voice-search-powered-by": "语音搜索由",
+    "start": "开始语音搜索",
+    "stop": "停止语音搜索"
   },
   "wbw": "在单词下方显示其译文",
   "wbw-lang-summary": "逐字翻译来源： <link> {{source}} </link> 。此来源独立于诗歌翻译选择。",
@@ -553,5 +555,6 @@
     "title": "鼠标点击单词时发音"
   },
   "word-tooltip": "鼠标悬停在单词上时弹出其译文",
-  "yes": "是的"
+  "yes": "是的",
+  "page-number": "第 {{page}} 页"
 }

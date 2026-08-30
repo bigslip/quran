@@ -540,7 +540,9 @@
     "suggest": "Ju lutemi filloni të recitoni dhe vargu juaj do të shfaqet.",
     "suggest-subtitle": "Recitoni çdo varg në arabisht dhe vargu do të shfaqet",
     "suggest-title": "Recitoni tani",
-    "voice-search-powered-by": "Kërkimi me zë Mundësuar nga"
+    "voice-search-powered-by": "Kërkimi me zë Mundësuar nga",
+    "start": "Fillo kërkimin me zë",
+    "stop": "Ndalo kërkimin me zë"
   },
   "wbw": "Fjalë Për Fjalë",
   "wbw-lang-summary": "Burimi i përkthimit fjalë për fjalë: <link> {{source}} </link> . Ky burim është i pavarur nga përzgjedhja e përkthimit të vargjeve.",
@@ -553,5 +555,6 @@
     "title": "Klikoni në fjalë"
   },
   "word-tooltip": "Mesazh sugjerues për fjalët",
-  "yes": "Po"
+  "yes": "Po",
+  "page-number": "Faqe {{page}}"
 }

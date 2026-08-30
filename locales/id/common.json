@@ -540,7 +540,9 @@
     "suggest": "Baca ayatnya, maka ayat akan mulai muncul",
     "suggest-subtitle": "Baca ayat apa saja dalam bahasa Arab, dan ayat itu akan muncul",
     "suggest-title": "Baca sekarang",
-    "voice-search-powered-by": "Pencarian Suara oleh"
+    "voice-search-powered-by": "Pencarian Suara oleh",
+    "start": "Mulai pencarian suara",
+    "stop": "Hentikan pencarian suara"
   },
   "wbw": "Kata per kata",
   "wbw-lang-summary": "Sumber terjemahan kata per kata: <link> {{source}} </link> . Sumber ini tidak tergantung pada pemilihan terjemahan ayat.",
@@ -553,5 +555,6 @@
     "title": "Klik Kata"
   },
   "word-tooltip": "Tooltip Kata",
-  "yes": "Ya"
+  "yes": "Ya",
+  "page-number": "Halaman {{page}}"
 }
