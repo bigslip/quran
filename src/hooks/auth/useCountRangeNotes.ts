@@ -12,12 +12,16 @@ const useCountRangeNotes = (notesRange: Range) => {
   const { data, isValidating, error } = useSWRImmutable(
     notesRange && isLoggedIn() ? `countNotes/${notesRange.from}-${notesRange.to}` : null,
     async () => {
-      return countNotesWithinRange(notesRange.from, notesRange.to);
+      try {
+        return await countNotesWithinRange(notesRange.from, notesRange.to);
+      } catch {
+        return {};
+      }
     },
   );
 
   return {
-    data,
+    data: data || {},
     isLoading: isValidating && !data,
     error,
   };

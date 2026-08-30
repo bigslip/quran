@@ -26,7 +26,13 @@ const useCountRangeHadiths = (
   hadithRange: Range,
   language: Language,
 ): CountRangeHadithsResponse => {
-  const fetcher = () => getHadithCountWithinRange(hadithRange, language);
+  const fetcher = async () => {
+    try {
+      return await getHadithCountWithinRange(hadithRange, language);
+    } catch {
+      return {};
+    }
+  };
 
   const { data, isValidating, error } = useSWRImmutable<Record<string, number>>(
     hadithRange && language
@@ -36,7 +42,7 @@ const useCountRangeHadiths = (
   );
 
   return {
-    data,
+    data: data || {},
     isLoading: isValidating && !data,
     error,
   };

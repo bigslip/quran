@@ -24,17 +24,21 @@ const useCountRangeQuestions = (questionsRange: Range): CountRangeQuestionsRespo
       ? makeCountQuestionsWithinRangeUrl(questionsRange.from, questionsRange.to, lang as Language)
       : null,
     async (): Promise<Record<string, QuestionsData>> => {
-      const result = await countQuestionsWithinRange(
-        questionsRange.from,
-        questionsRange.to,
-        lang as Language,
-      );
-      return normalizeQuestionsData(result);
+      try {
+        const result = await countQuestionsWithinRange(
+          questionsRange.from,
+          questionsRange.to,
+          lang as Language,
+        );
+        return normalizeQuestionsData(result);
+      } catch {
+        return {};
+      }
     },
   );
 
   return {
-    data,
+    data: data || {},
     isLoading: isValidating && !data,
     error,
   };

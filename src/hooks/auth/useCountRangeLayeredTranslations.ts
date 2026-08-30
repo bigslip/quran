@@ -22,11 +22,17 @@ const useCountRangeLayeredTranslations = (range: Range): CountRangeLayeredTransl
 
   const { data, isValidating, error } = useSWRImmutable<Record<string, number>>(
     range ? makeLayeredTranslationCountWithinRangeUrl(range, language) : null,
-    () => getLayeredTranslationCountWithinRange(range, language),
+    async () => {
+      try {
+        return await getLayeredTranslationCountWithinRange(range, language);
+      } catch {
+        return {};
+      }
+    },
   );
 
   return {
-    data,
+    data: data || {},
     isLoading: isValidating && !data,
     error,
   };

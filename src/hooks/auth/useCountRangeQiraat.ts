@@ -24,11 +24,17 @@ type CountRangeQiraatResponse = {
 const useCountRangeQiraat = (qiraatRange: Range): CountRangeQiraatResponse => {
   const { data, isValidating, error } = useSWRImmutable<Record<string, number>>(
     qiraatRange ? makeQiraatJuncturesCountUrl(qiraatRange) : null,
-    () => getQiraatJuncturesCount(qiraatRange),
+    async () => {
+      try {
+        return await getQiraatJuncturesCount(qiraatRange);
+      } catch {
+        return {};
+      }
+    },
   );
 
   return {
-    data,
+    data: data || {},
     isLoading: isValidating && !data,
     error,
   };
