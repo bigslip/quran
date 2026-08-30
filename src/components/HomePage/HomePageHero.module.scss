@@ -93,23 +93,17 @@
   }
 }
 
-.searchWrapper {
-  inline-size: 100%;
-  display: flex;
-  justify-content: center;
-}
-
 .quickJumpContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: var(--spacing-xsmall-px);
-  margin-block-start: var(--spacing-medium-px);
+  margin-block-start: var(--spacing-xsmall-px);
   max-inline-size: 800px;
 
   @include breakpoints.smallerThanTablet {
-    margin-block-start: var(--spacing-small-px);
+    margin-block-start: var(--spacing-xxsmall-px);
     gap: var(--spacing-xxsmall-px);
   }
 }

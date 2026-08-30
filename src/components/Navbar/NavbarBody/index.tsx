@@ -15,6 +15,7 @@ import NavbarLogoWrapper from '@/components/Navbar/Logo/NavbarLogoWrapper';
 import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
 import Spinner from '@/dls/Spinner/Spinner';
 import useIsLoggedIn from '@/hooks/auth/useIsLoggedIn';
+import useIsMobile from '@/hooks/useIsMobile';
 import useNavbarDrawerActions from '@/hooks/useNavbarDrawerActions';
 import IconGlobe from '@/icons/globe.svg';
 import IconMenu from '@/icons/menu.svg';
@@ -48,6 +49,8 @@ interface Props {
 const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
   const { t } = useTranslation('common');
   const dispatch = useDispatch();
+  const isMobile = useIsMobile();
+  const [isMac, setIsMac] = useState(true);
   const isNavigationDrawerOpen = useSelector(selectIsNavigationDrawerOpen);
   const isSettingsDrawerOpen = useSelector(selectIsSettingsDrawerOpen);
   const isLanguageDrawerOpen = useSelector(selectIsLanguageDrawerOpen);
@@ -137,6 +140,13 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
     ctaButtonText: t('fundraising-sticky-banner-v2.cta'),
   };
 
+  useEffect(() => {
+    setIsMac(
+      typeof window !== 'undefined' &&
+        /Mac|iPod|iPhone|iPad/.test(navigator.platform || navigator.userAgent),
+    );
+  }, []);
+
   return (
     <>
       {isBannerVisible && (
@@ -163,6 +173,27 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
             <NavbarLogoWrapper />
           </div>
         </div>
+
+        <div className={styles.commandBarContainer}>
+          <button
+            type="button"
+            className={styles.commandBarPill}
+            onClick={openSearchDrawer}
+            aria-label={t('search.title')}
+            data-testid={!isMobile ? TestId.OPEN_SEARCH_DRAWER : 'navbar-command-bar-search'}
+          >
+            <span className={styles.searchIconWrapper}>
+              <IconSearch />
+            </span>
+            <span className={styles.commandBarPlaceholder}>
+              {t('command-bar.spotlight-placeholder')}
+            </span>
+            <kbd className={styles.commandBarKbd} aria-hidden="true" dir="ltr">
+              {isMac ? '⌘K' : 'Ctrl+K'}
+            </kbd>
+          </button>
+        </div>
+
         <div className={styles.centerVertically}>
           <div className={styles.rightCTA}>
             {!isLoggedIn && <ProfileAvatarButton />}
@@ -177,17 +208,19 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
             >
               <IconGlobe />
             </Button>
-            <Button
-              tooltip={t('search.title')}
-              variant={ButtonVariant.Ghost}
-              onClick={openSearchDrawer}
-              shape={ButtonShape.Circle}
-              shouldFlipOnRTL={false}
-              ariaLabel={t('search.title')}
-              data-testid="open-search-drawer"
-            >
-              <IconSearch />
-            </Button>
+            <div className={styles.mobileSearchButton}>
+              <Button
+                tooltip={t('search.title')}
+                variant={ButtonVariant.Ghost}
+                onClick={openSearchDrawer}
+                shape={ButtonShape.Circle}
+                shouldFlipOnRTL={false}
+                ariaLabel={t('search.title')}
+                data-testid={isMobile ? TestId.OPEN_SEARCH_DRAWER : 'open-search-drawer-mobile'}
+              >
+                <IconSearch />
+              </Button>
+            </div>
 
             {shouldRenderSidebarNavigation && <SidebarNavigation />}
             {isLoggedIn && <ProfileAvatarButton />}

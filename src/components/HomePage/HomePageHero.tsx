@@ -1,14 +1,12 @@
 import { useState } from 'react';
 
 import Head from 'next/head';
-import useTranslation from 'next-translate/useTranslation';
 
 import NavigationButton from './HeroButtons/NavigationButton';
 import PopularButton from './HeroButtons/PopularButton';
 import styles from './HomePageHero.module.scss';
 
 import PopularDropdown from '@/components/HomePage/PopularDropdown';
-import SearchInput from '@/components/Search/SearchInput';
 import Link from '@/dls/Link/Link';
 import Background from '@/icons/background.svg';
 import Logo from '@/icons/logo_main.svg';
@@ -18,11 +16,11 @@ const QUICK_JUMP_PILLS = [
   { label: 'Surah Yaseen (36)', href: '/36', key: 'yaseen' },
   { label: 'Surah Al-Mulk (67)', href: '/67', key: 'mulk' },
   { label: 'Surah Al-Kahf (18)', href: '/18', key: 'kahf' },
+  { label: 'Ayah Al-Kursi (2:255)', href: '/2/255', key: 'kursi' },
   { label: 'Juz 30 (Amma)', href: '/juz/30', key: 'juz30' },
 ];
 
 const HomePageHero = () => {
-  const { t } = useTranslation('common');
   const [isPopularDropdownOpen, setIsPopularDropdownOpen] = useState(false);
 
   const handlePopularClick = () => {
@@ -55,13 +53,6 @@ const HomePageHero = () => {
           </div>
           <div className={styles.logoContainer}>
             <Logo />
-          </div>
-          <div className={styles.searchWrapper}>
-            <SearchInput
-              placeholder={t('command-bar.placeholder')}
-              shouldExpandOnClick
-              shouldOpenDrawerOnMobile
-            />
           </div>
           <div className={styles.quickJumpContainer}>
             <div className={styles.quickJumpList}>

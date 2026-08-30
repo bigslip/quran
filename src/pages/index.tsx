@@ -75,6 +75,9 @@ const Index: NextPage<IndexProps> = ({
                 <HomepageFundraisingBanner />
               </div>
             )}
+            <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
+              <ChapterAndJuzListWrapper chapters={chapters} />
+            </div>
             {isMobile ? (
               <MobileHomepageSections
                 isUserLoggedIn={isUserLoggedIn}
@@ -154,10 +157,6 @@ const Index: NextPage<IndexProps> = ({
               )}
             >
               <HomePageApps />
-            </div>
-
-            <div className={styles.flowItem}>
-              <ChapterAndJuzListWrapper chapters={chapters} />
             </div>
           </div>
         </div>
