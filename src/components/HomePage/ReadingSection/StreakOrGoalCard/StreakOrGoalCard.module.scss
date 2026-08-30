@@ -44,9 +44,11 @@
 }
 
 .customGoalButton {
-  background-color: var(--color-primary);
-  color: var(--color-text-white);
+  background: var(--color-primary-gradient);
+  color: #070A13;
   font-weight: var(--font-weight-bold);
+  border-radius: var(--border-radius-pill);
+  box-shadow: 0 0 16px var(--color-primary-subtle);
 
   padding-block: 0;
   padding-inline-end: var(--spacing-small-px);
@@ -65,14 +67,14 @@
 
   svg {
     path {
-      fill: var(--color-text-white);
+      fill: #070A13;
     }
   }
 
   &:hover {
-    background-color: var(--color-primary);
-    color: var(--color-text-white);
-    filter: brightness(1.1);
+    color: #070A13;
+    filter: brightness(1.15);
+    box-shadow: 0 0 24px var(--color-primary);
   }
 }
 
@@ -133,6 +135,7 @@
 .circularProgressbarPath {
   stroke: var(--color-primary);
   stroke-linecap: round;
+  filter: drop-shadow(0 0 6px var(--color-primary));
   transition: stroke-dashoffset 0.5s ease 0s;
 }
 

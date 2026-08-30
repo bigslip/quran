@@ -9,7 +9,10 @@
   justify-content: space-between;
   block-size: var(--navbar-height);
   max-block-size: var(--navbar-height);
-  background-color: var(--color-background-elevated);
+  background-color: var(--color-surface-card);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border-bottom: 1px solid var(--color-border-subtle);
 
   svg,
   g {
@@ -69,10 +72,11 @@
   background: var(--color-surface-floating);
   backdrop-filter: var(--backdrop-filter-frosted);
   -webkit-backdrop-filter: var(--backdrop-filter-frosted);
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--color-border-iridescent);
   border-radius: var(--border-radius-pill);
   cursor: pointer;
   color: var(--color-text-secondary);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition:
     border-color var(--transition-fast) ease,
     background-color var(--transition-fast) ease,
@@ -81,8 +85,8 @@
 
   &:hover {
     border-color: var(--color-primary);
-    background-color: var(--color-primary-subtle);
-    box-shadow: 0 2px 8px var(--color-primary-subtle);
+    background-color: var(--color-surface-card-hover);
+    box-shadow: 0 0 16px var(--color-primary-subtle);
 
     .searchIconWrapper {
       color: var(--color-primary);
@@ -92,6 +96,7 @@
   &:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
+    box-shadow: 0 0 16px var(--color-primary-subtle);
   }
 }
 
@@ -129,8 +134,8 @@
   font-family: inherit;
   font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
-  background: var(--color-background-elevated);
-  border: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-iridescent);
   border-radius: var(--border-radius-small);
   margin-inline-start: var(--spacing-xsmall-px);
   line-height: 1;

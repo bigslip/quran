@@ -123,18 +123,23 @@
 
 .streakCard {
   background-color: var(--color-surface-card);
-  border: 1px solid var(--color-border-subtle);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-iridescent);
   border-radius: var(--border-radius-rounded);
   padding-inline: var(--spacing-medium-px);
   padding-block: var(--spacing-medium-px);
-  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1) !important;
   transition:
     transform var(--transition-fast) ease,
     border-color var(--transition-fast) ease,
+    background-color var(--transition-fast) ease,
     box-shadow var(--transition-fast) ease;
 
   @media (hover: hover) {
     &:hover {
+      transform: translateY(-2px);
+      background-color: var(--color-surface-card-hover);
       border-color: var(--color-primary);
       box-shadow: var(--shadow-card-hover) !important;
     }

@@ -1,20 +1,24 @@
 @use 'src/styles/breakpoints';
 
 .item {
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--color-border-iridescent);
   border-radius: var(--border-radius-rounded);
   background-color: var(--color-surface-card);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
   min-block-size: calc(4 * var(--spacing-medium));
   margin-block-end: var(--spacing-small);
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.02);
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   transition:
     transform var(--transition-fast) ease,
     border-color var(--transition-fast) ease,
+    background-color var(--transition-fast) ease,
     box-shadow var(--transition-fast) ease;
 
   @media (hover: hover) {
     &:hover {
-      transform: scale(1.015) translateY(-1px);
+      transform: translateY(-3px) scale(1.015);
+      background-color: var(--color-surface-card-hover);
       border-color: var(--color-primary);
       box-shadow: var(--shadow-card-hover);
     }

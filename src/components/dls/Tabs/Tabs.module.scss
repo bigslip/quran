@@ -6,8 +6,9 @@
 .list {
   display: flex;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--color-borders-hairline);
+  border-bottom: 1px solid var(--color-border-subtle);
   margin-bottom: 1rem;
+  gap: var(--spacing-xxsmall);
 }
 
 .trigger {
@@ -18,24 +19,31 @@
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-base);
-  color: var(--color-text-faded);
+  color: var(--color-text-secondary);
   user-select: none;
   border: none;
   border-bottom: 2px solid transparent;
   cursor: pointer;
+  border-radius: var(--border-radius-small-px) var(--border-radius-small-px) 0 0;
+  transition:
+    color var(--transition-fast) ease,
+    border-color var(--transition-fast) ease,
+    background-color var(--transition-fast) ease;
 
   &:hover {
-    color: var(--color-text-default);
+    color: var(--color-text-primary);
+    background-color: var(--color-primary-subtle);
   }
 
   &[data-state='active'] {
-    color: var(--color-primary-medium);
-    border-bottom-color: var(--color-primary-medium);
-    font-weight: 500;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+    box-shadow: 0 4px 12px var(--color-primary-subtle);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-primary-medium);
+    outline: 2px solid var(--color-primary);
     outline-offset: -2px;
   }
 }

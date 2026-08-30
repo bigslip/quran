@@ -33,6 +33,7 @@
 .remainingValue {
   font-weight: var(--font-weight-semibold);
   color: var(--color-primary);
+  text-shadow: 0 0 8px var(--color-primary-subtle);
   font-size: var(--font-size-xsmall);
   @include breakpoints.tablet {
     font-size: var(--font-size-normal);

@@ -3,32 +3,39 @@
 
 .chapterCard {
   background-color: var(--color-surface-card);
-  border: 1px solid var(--color-border-subtle);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-iridescent);
   border-radius: var(--border-radius-rounded);
   padding: var(--spacing-medium-px) var(--spacing-large-px);
   block-size: 100%;
   box-sizing: border-box;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   transition:
     transform var(--transition-fast) ease,
     border-color var(--transition-fast) ease,
+    background-color var(--transition-fast) ease,
     box-shadow var(--transition-fast) ease;
 
   @media (hover: hover) {
     &:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      background-color: var(--color-surface-card-hover);
       border-color: var(--color-primary);
       box-shadow: var(--shadow-card-hover);
 
       .numberBadge {
         background-color: var(--color-primary);
-        color: var(--color-text-inverse);
+        color: #070A13;
         border-color: var(--color-primary);
+        box-shadow: 0 0 16px var(--color-primary);
       }
 
       .continueReading {
         background-color: var(--color-primary-subtle);
         border-color: var(--color-primary);
         color: var(--color-primary);
+        box-shadow: 0 0 12px var(--color-primary-subtle);
       }
     }
   }
@@ -57,20 +64,22 @@
 }
 
 .numberBadge {
-  inline-size: 32px;
-  block-size: 32px;
+  inline-size: 34px;
+  block-size: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-primary-subtle);
-  border: 1px solid var(--color-border-subtle);
+  background-color: var(--color-surface-floating);
+  border: 1px solid var(--color-border-iridescent);
   border-radius: var(--border-radius-small-px);
   color: var(--color-primary);
   font-size: var(--font-size-xsmall-px);
   font-weight: var(--font-weight-bold);
+  box-shadow: 0 0 10px var(--color-primary-subtle);
   transition:
     background-color var(--transition-fast) ease,
     color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease,
     border-color var(--transition-fast) ease;
 }
 
@@ -79,7 +88,8 @@
   font-family: 'surahnames' !important;
   font-size: calc(2.4 * var(--font-size-jumbo-px));
   color: var(--color-text-primary);
-  opacity: 0.85;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.15));
 
   @include breakpoints.smallerThanTablet {
     font-size: calc(1.5 * var(--font-size-jumbo));
@@ -116,10 +126,12 @@
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-xxsmall-px);
-  padding-inline: var(--spacing-small-px);
+  padding-inline: var(--spacing-medium-px);
   padding-block: var(--spacing-xxsmall2-px);
-  background-color: var(--color-primary-subtle);
-  border: 1px solid var(--color-border-subtle);
+  background-color: var(--color-surface-floating);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-iridescent);
   border-radius: var(--border-radius-pill);
   color: var(--color-text-primary);
   font-size: var(--font-size-xsmall-px);
@@ -127,6 +139,7 @@
   transition:
     background-color var(--transition-fast) ease,
     border-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease,
     color var(--transition-fast) ease;
 }
 
@@ -140,13 +153,15 @@
 }
 
 .beginButton {
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  border-color: var(--color-primary);
+  background: var(--color-primary-gradient);
+  color: #070A13;
+  font-weight: var(--font-weight-bold);
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 16px var(--color-primary-subtle);
 
   &:hover {
-    background-color: var(--color-primary);
-    filter: brightness(1.1);
+    filter: brightness(1.15);
+    box-shadow: 0 0 24px var(--color-primary);
   }
 }
 

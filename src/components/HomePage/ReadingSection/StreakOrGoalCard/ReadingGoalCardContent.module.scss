@@ -37,6 +37,7 @@
 .circularProgressbarPath {
   stroke: var(--color-primary);
   stroke-linecap: round;
+  filter: drop-shadow(0 0 6px var(--color-primary));
   transition: stroke-dashoffset 0.5s ease 0s;
 }
 

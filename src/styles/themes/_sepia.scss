@@ -39,16 +39,22 @@
   --color-text-white: #ffffff;
   --color-text-gray: #495057;
 
-  // Modern Spiritual Sanctuary Tokens
+  // Modern Spiritual Sanctuary Tokens - Sepia Palette
   --color-primary: #1B5E20;
   --color-primary-subtle: rgba(27, 94, 32, 0.10);
+  --color-primary-gradient: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+  --color-secondary-gradient: linear-gradient(135deg, #B45309 0%, #D97706 100%);
   --color-accent-gold: #B45309;
   --color-surface-bg: #FBF7EE;
   --color-surface-card: #F4EBD9;
+  --color-surface-card-hover: #EFE4CE;
   --color-surface-floating: rgba(244, 235, 217, 0.90);
   --color-text-primary: #2A241C;
   --color-text-secondary: #6B5E4F;
   --color-border-subtle: rgba(215, 201, 178, 0.7);
+  --color-border-iridescent: rgba(215, 201, 178, 0.9);
+  --color-glow-celestial: 0 0 16px rgba(27, 94, 32, 0.15);
+  --color-glow-subtle: 0 8px 24px rgba(100, 80, 50, 0.08);
 
   --color-background-default: #FBF7EE;
   --color-background-elevated: #F4EBD9;

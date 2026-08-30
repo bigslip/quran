@@ -39,21 +39,27 @@
   --color-text-white: #ffffff;
   --color-text-gray: #495057;
 
-  // Modern Spiritual Sanctuary Tokens
-  --color-primary: #10B981;
-  --color-primary-subtle: rgba(16, 185, 129, 0.12);
+  // Royal Indigo & Celestial Emerald Tokens
+  --color-primary: #00F2FE;
+  --color-primary-subtle: rgba(0, 242, 254, 0.12);
+  --color-primary-gradient: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%);
+  --color-secondary-gradient: linear-gradient(135deg, #05FFA1 0%, #00F2FE 100%);
   --color-accent-gold: #FBBF24;
-  --color-surface-bg: #0B1117;
-  --color-surface-card: #141D26;
-  --color-surface-floating: rgba(20, 29, 38, 0.88);
-  --color-text-primary: #F1F5F9;
+  --color-surface-bg: #070A13;
+  --color-surface-card: rgba(14, 22, 40, 0.70);
+  --color-surface-card-hover: rgba(20, 32, 58, 0.85);
+  --color-surface-floating: rgba(14, 22, 40, 0.75);
+  --color-text-primary: #F0F4FA;
   --color-text-secondary: #94A3B8;
-  --color-border-subtle: rgba(51, 65, 85, 0.6);
+  --color-border-subtle: rgba(0, 242, 254, 0.18);
+  --color-border-iridescent: rgba(0, 242, 254, 0.22);
+  --color-glow-celestial: 0 0 24px rgba(0, 242, 254, 0.25);
+  --color-glow-subtle: 0 8px 32px rgba(0, 242, 254, 0.12);
 
-  --color-background-default: #0B1117;
-  --color-background-elevated: #141D26;
-  --color-background-elevated-new: #141D26;
-  --color-background-gradient: #141D26;
+  --color-background-default: #070A13;
+  --color-background-elevated: #0A0E1A;
+  --color-background-elevated-new: #0A0E1A;
+  --color-background-gradient: #0A0E1A;
 
   --color-background-alternative-faded: var(--shade-9);
   --color-background-alternative-faint: var(--shade-8);
@@ -88,8 +94,8 @@
   --shadow-chapter-header-actions: 0px 0px 4px rgba(0, 0, 0, 0.7);
   --shadow-tajweed-trigger: 0px 2px 4px rgba(0, 0, 0, 0.7);
   --shadow-reading-word-three-dots: 0px 0px 4px 0px rgba(0, 0, 0, 0.7);
-  --elevation-floating: 0 12px 32px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2);
-  --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --elevation-floating: 0 12px 32px rgba(0, 242, 254, 0.12), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 12px 32px rgba(0, 242, 254, 0.16), 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-word-glow: 0 0 12px var(--color-primary-subtle);
   font-palette: --Dark;
 
@@ -102,25 +108,25 @@
   --color-grey-icons: #868e96;
   --color-grey-icons-new: #9b9b9b;
   --color-daily-progress: #adb5bd;
-  --color-separators: #141D26;
-  --color-separators-new: #141D26;
-  --color-blue-buttons-and-icons: #2ca4ab;
-  --color-faint-blue-icons: #c2edef;
+  --color-separators: rgba(0, 242, 254, 0.12);
+  --color-separators-new: rgba(0, 242, 254, 0.12);
+  --color-blue-buttons-and-icons: #00F2FE;
+  --color-faint-blue-icons: rgba(0, 242, 254, 0.2);
   --color-black-buttons: #ffffff;
   --color-topics-grey: #161616;
   --color-topics-gold: #56354c;
   --color-gqc: #cb955b;
-  --color-qdc-blue: #22a5ad;
-  --color-qdc-faded-blue: #ebf9fa;
-  --color-qdc-faint-blue: #c2edef;
-  --color-qdc-deep-blue: #258c91;
-  --color-streaks-dark: #10B981;
-  --color-streaks-light: #93b69d;
+  --color-qdc-blue: #00F2FE;
+  --color-qdc-faded-blue: rgba(0, 242, 254, 0.1);
+  --color-qdc-faint-blue: rgba(0, 242, 254, 0.2);
+  --color-qdc-deep-blue: #4FACFE;
+  --color-streaks-dark: #00F2FE;
+  --color-streaks-light: rgba(0, 242, 254, 0.2);
   --color-calligraphy: #060606;
   --color-scholars-say-background: #fff8e4;
   --color-scholars-say-text: #7c6e21;
   --color-search-background: #000000;
   --color-check: rgba(56, 121, 75, 1);
   --color-green-light: rgba(228, 244, 233, 1);
-  --color-bookmark-icon: #22a5ad;
+  --color-bookmark-icon: #00F2FE;
 }
