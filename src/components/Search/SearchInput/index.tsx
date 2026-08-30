@@ -135,14 +135,21 @@ const SearchInput: React.FC<Props> = ({
             clearable
             prefix={<SearchIcon />}
             suffix={
-              isSpeechRecognitionSupported ? (
-                <VoiceSearch
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                  inputRef={inputRef}
-                  onError={handleMicError}
-                />
-              ) : null
+              <div className={styles.suffixWrapper}>
+                {!hasSearchQuery && (
+                  <span className={styles.keyboardShortcut} aria-hidden="true">
+                    ⌘K
+                  </span>
+                )}
+                {isSpeechRecognitionSupported ? (
+                  <VoiceSearch
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    inputRef={inputRef}
+                    onError={handleMicError}
+                  />
+                ) : null}
+              </div>
             }
             prefixSuffixContainerClassName={styles.prefixSuffixContainer}
             containerClassName={styles.input}

@@ -39,10 +39,21 @@
   --color-text-white: #ffffff;
   --color-text-gray: #495057;
 
-  --color-background-default: #1f2125;
-  --color-background-elevated: #1f2125;
-  --color-background-elevated-new: #1f2125;
-  --color-background-gradient: #1f2125;
+  // Modern Spiritual Sanctuary Tokens
+  --color-primary: #10B981;
+  --color-primary-subtle: rgba(16, 185, 129, 0.12);
+  --color-accent-gold: #FBBF24;
+  --color-surface-bg: #0B1117;
+  --color-surface-card: #141D26;
+  --color-surface-floating: rgba(20, 29, 38, 0.88);
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-border-subtle: rgba(51, 65, 85, 0.6);
+
+  --color-background-default: #0B1117;
+  --color-background-elevated: #141D26;
+  --color-background-elevated-new: #141D26;
+  --color-background-gradient: #141D26;
 
   --color-background-alternative-faded: var(--shade-9);
   --color-background-alternative-faint: var(--shade-8);
@@ -77,6 +88,9 @@
   --shadow-chapter-header-actions: 0px 0px 4px rgba(0, 0, 0, 0.7);
   --shadow-tajweed-trigger: 0px 2px 4px rgba(0, 0, 0, 0.7);
   --shadow-reading-word-three-dots: 0px 0px 4px 0px rgba(0, 0, 0, 0.7);
+  --elevation-floating: 0 12px 32px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --shadow-word-glow: 0 0 12px var(--color-primary-subtle);
   font-palette: --Dark;
 
   // scrollbar styles
@@ -88,8 +102,8 @@
   --color-grey-icons: #868e96;
   --color-grey-icons-new: #9b9b9b;
   --color-daily-progress: #adb5bd;
-  --color-separators: #1e2225;
-  --color-separators-new: #1b1d20;
+  --color-separators: #141D26;
+  --color-separators-new: #141D26;
   --color-blue-buttons-and-icons: #2ca4ab;
   --color-faint-blue-icons: #c2edef;
   --color-black-buttons: #ffffff;
@@ -100,7 +114,7 @@
   --color-qdc-faded-blue: #ebf9fa;
   --color-qdc-faint-blue: #c2edef;
   --color-qdc-deep-blue: #258c91;
-  --color-streaks-dark: #1c4428;
+  --color-streaks-dark: #10B981;
   --color-streaks-light: #93b69d;
   --color-calligraphy: #060606;
   --color-scholars-say-background: #fff8e4;

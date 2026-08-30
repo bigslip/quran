@@ -125,6 +125,9 @@
 
   --icon-size-small: 15px;
 
+  // Modern Spiritual Sanctuary Tokens
+  --backdrop-filter-frosted: blur(16px) saturate(180%);
+
   @include shades.shades-dangerous;
   @include light.mode;
 

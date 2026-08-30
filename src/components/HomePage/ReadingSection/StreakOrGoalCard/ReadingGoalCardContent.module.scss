@@ -35,18 +35,18 @@
 
 // PROGRESS BAR STYLES (shared styles)
 .circularProgressbarPath {
-  stroke: var(--color-streaks-dark);
+  stroke: var(--color-primary);
   stroke-linecap: round;
   transition: stroke-dashoffset 0.5s ease 0s;
 }
 
 .circularProgressbarTrail {
-  stroke: var(--color-daily-progress);
+  stroke: var(--color-border-subtle);
   stroke-linecap: round;
 }
 
 .circularProgressbarText {
-  fill: var(--color-text-black);
+  fill: var(--color-text-primary);
   font-size: var(--font-size-large-px);
   dominant-baseline: middle;
   text-anchor: middle;

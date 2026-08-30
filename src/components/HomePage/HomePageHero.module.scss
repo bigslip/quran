@@ -3,6 +3,7 @@
 
 .outerContainer {
   position: relative;
+  overflow: hidden;
 }
 
 .backgroundImage {
@@ -10,11 +11,13 @@
   z-index: -1;
   inset: 0;
   overflow: hidden;
-  background-color: var(--color-search-background);
+  background-color: var(--color-surface-bg);
+  opacity: 0.9;
 
   svg {
     inline-size: 100%;
     transform: translateY(-40%);
+    opacity: 0.7;
   }
 }
 
@@ -24,21 +27,145 @@
   block-size: 100%;
   align-items: center;
   padding-inline: var(--spacing-small);
-  padding-block: var(--spacing-medium2-px);
+  padding-block-start: var(--spacing-medium2-px);
+  padding-block-end: var(--spacing-large-px);
 
   @include breakpoints.tablet {
-    padding-block: var(--spacing-large-px);
+    padding-block-start: var(--spacing-large2-px);
+    padding-block-end: var(--spacing-xlarge-px);
   }
 
   margin-inline: auto;
 }
 
+.greetingCapsule {
+  margin-block-end: var(--spacing-small-px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.greetingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xsmall-px);
+  padding-inline: var(--spacing-medium-px);
+  padding-block: var(--spacing-xxsmall2-px);
+  background: var(--color-primary-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-pill);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.greetingPulse {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: var(--border-radius-circle);
+  background-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
+.greetingText {
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  letter-spacing: 0.02em;
+}
+
 .logoContainer {
   padding-block-end: var(--spacing-medium2-px);
-  @include breakpoints.smallerThanTablet {
-    display: none;
-    padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    max-inline-size: 100%;
+    block-size: auto;
   }
+
+  @include breakpoints.smallerThanTablet {
+    padding-block-end: var(--spacing-small-px);
+    svg {
+      max-inline-size: 200px;
+    }
+  }
+}
+
+.searchWrapper {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.quickJumpContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-xsmall-px);
+  margin-block-start: var(--spacing-medium-px);
+  max-inline-size: 800px;
+
+  @include breakpoints.smallerThanTablet {
+    margin-block-start: var(--spacing-small-px);
+    gap: var(--spacing-xxsmall-px);
+  }
+}
+
+.quickJumpList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall-px);
+
+  @include breakpoints.smallerThanTablet {
+    gap: var(--spacing-xxsmall-px);
+  }
+}
+
+.quickJumpPill {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--spacing-medium-px);
+  padding-block: var(--spacing-xxsmall-px);
+  background: var(--color-surface-floating);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-pill);
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  transition:
+    transform var(--transition-fast) ease,
+    background-color var(--transition-fast) ease,
+    border-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease,
+    color var(--transition-fast) ease;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-1px) scale(1.02);
+      background-color: var(--color-primary-subtle);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      box-shadow: 0 4px 12px var(--color-primary-subtle);
+    }
+  }
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: var(--spacing-small-px);
+    padding-block: var(--spacing-xxsmall-px);
+    font-size: 11px;
+  }
+}
+
+.pillText {
+  white-space: nowrap;
 }
 
 .buttonsContainer {
@@ -50,3 +177,4 @@
     margin-block-start: var(--spacing-small-px);
   }
 }
+

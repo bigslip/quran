@@ -18,11 +18,11 @@
     overflow: hidden;
     white-space: nowrap;
   }
-  color: var(--color-text-black);
+  color: var(--color-text-primary);
 }
 
 .subSection {
-  color: var(--color-text-black);
+  color: var(--color-text-primary);
   @include breakpoints.smallerThanTablet {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -31,8 +31,8 @@
 }
 
 .remainingValue {
-  font-weight: var(--font-weight-normal);
-  color: var(--color-text-gray);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
   font-size: var(--font-size-xsmall);
   @include breakpoints.tablet {
     font-size: var(--font-size-normal);
@@ -40,7 +40,8 @@
 }
 
 .remaining {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
   font-size: var(--font-size-xsmall);
   @include breakpoints.tablet {
     font-size: var(--font-size-normal);

@@ -53,23 +53,27 @@ const ChapterCard: React.FC<Props> = ({
       onClick={isContinueReading ? onContinueReadingClicked : onBeginClicked}
     >
       <div className={styles.surahContainer}>
-        <div className={styles.surahName} translate="no">
-          {surahNumberString.padStart(3, '0')}
+        <div className={styles.topSection}>
+          <div className={styles.numberBadge}>
+            <span>{toLocalizedNumber(surahNumber, lang)}</span>
+          </div>
+          <div className={styles.surahName} translate="no">
+            {surahNumberString.padStart(3, '0')}
+          </div>
         </div>
         <div className={styles.surahInfo}>
-          <div>
+          <div className={styles.nameContainer}>
             <span className={styles.transliteratedName} translate="no">
-              {toLocalizedNumber(surahNumber, lang)}. {chapterData.transliteratedName}
+              {chapterData.transliteratedName}
             </span>
             <span className={styles.translatedName} translate="no">
-              {' '}
               {isMobile() ? `${chapterData.translatedName}` : `(${chapterData.translatedName})`}
             </span>
           </div>
           {isContinueReading ? (
             <div className={styles.continueReading}>
-              <span>{t('common:verse')}</span>
-              <span>{toLocalizedNumber(verseNumber, lang)}</span>
+              <span className={styles.verseLabel}>{t('common:verse')}</span>
+              <span className={styles.verseValue}>{toLocalizedNumber(verseNumber, lang)}</span>
               <IconContainer
                 size={IconSize.Xsmall}
                 icon={<ArrowIcon />}
@@ -80,6 +84,12 @@ const ChapterCard: React.FC<Props> = ({
           ) : (
             <div className={classNames(styles.continueReading, styles.beginButton)}>
               {t('begin')}
+              <IconContainer
+                size={IconSize.Xsmall}
+                icon={<ArrowIcon />}
+                shouldForceSetColors={false}
+                className={styles.continueReadingArrowIcon}
+              />
             </div>
           )}
         </div>
@@ -89,3 +99,4 @@ const ChapterCard: React.FC<Props> = ({
 };
 
 export default ChapterCard;
+

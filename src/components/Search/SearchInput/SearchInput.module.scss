@@ -2,24 +2,31 @@
 @use 'src/styles/theme';
 
 .headerOuterContainer {
-  @include theme.light {
-    background: var(--color-background-elevated);
-  }
-  @include theme.sepia {
-    background: var(--color-background-elevated);
-  }
-  @include theme.dark {
-    background: rgba(52, 58, 64, 1);
-  }
+  background: var(--color-surface-floating);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
   position: relative;
   border-radius: var(--border-radius-pill);
+  border: 1px solid var(--color-border-subtle);
   box-shadow: var(--shadow-small);
   inline-size: 100%;
   margin: 0 auto;
   z-index: 1;
+  transition:
+    box-shadow var(--transition-fast) ease,
+    border-color var(--transition-fast) ease,
+    background-color var(--transition-fast) ease;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 4px 20px 0 var(--color-primary-subtle);
+    }
+  }
+
   @include breakpoints.tablet {
     inline-size: 750px;
-    block-size: 49px;
+    block-size: 50px;
   }
 }
 
@@ -29,10 +36,37 @@
   }
 }
 
+.suffixWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall-px);
+}
+
+.keyboardShortcut {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xxsmall-px);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background: var(--color-primary-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-xsmall2-px);
+  padding-inline: var(--spacing-xxsmall-px);
+  padding-block: var(--spacing-micro-px);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+
+  @include breakpoints.smallerThanTablet {
+    display: none;
+  }
+}
+
 .expanded {
   z-index: 100;
-  border-radius: var(--border-radius-circle-small);
   border-radius: var(--border-radius-circle-small) var(--border-radius-circle-small) 0 0;
+  border-color: var(--color-primary);
 }
 
 .inputContainer {
@@ -55,7 +89,7 @@
   }
 
   input::placeholder {
-    color: var(--color-text-faded-new);
+    color: var(--color-text-secondary);
     opacity: 1;
     font-size: var(--font-size-small-px);
     @include breakpoints.tablet {
@@ -82,10 +116,16 @@
   inset-inline: 0;
   inline-size: 100%;
   z-index: 100;
+  background: var(--color-surface-card);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-subtle);
+  border-block-start: none;
   border-radius: 0 0 var(--border-radius-circle-small) var(--border-radius-circle-small);
-  box-shadow: var(--shadow-small);
+  box-shadow: var(--elevation-floating);
   ::-webkit-scrollbar {
     inline-size: 7px;
     block-size: 7px;
   }
 }
+

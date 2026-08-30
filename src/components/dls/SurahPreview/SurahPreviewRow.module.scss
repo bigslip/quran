@@ -1,82 +1,119 @@
 @use 'src/styles/utility';
+@use 'src/styles/breakpoints';
+
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid var(--color-borders-hairline);
-  padding-block-start: var(--spacing-medium);
-  padding-block-end: var(--spacing-medium);
-  padding-inline-start: var(--spacing-large);
-  padding-inline-end: var(--spacing-large);
-  border-radius: var(--border-radius-default);
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border-subtle);
+  padding-block: var(--spacing-medium-px);
+  padding-inline: var(--spacing-large-px);
+  border-radius: var(--border-radius-rounded);
   cursor: pointer;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.02);
+  transition:
+    transform var(--transition-fast) ease,
+    border-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease,
+    background-color var(--transition-fast) ease;
 
   @media (hover: hover) {
     &:hover {
-      border: 1px solid var(--color-success-medium);
-      background-color: var(--color-background-alternative-faded);
+      transform: scale(1.015) translateY(-1px);
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-card-hover);
+      background-color: var(--color-surface-card);
 
       .surahNumber {
-        background-color: var(--color-success-medium);
+        background-color: var(--color-primary);
         color: var(--color-text-inverse);
+        border-color: var(--color-primary);
       }
-      .translatedSurahName {
-        color: var(--color-success-medium);
+      .surahName {
+        color: var(--color-primary);
       }
       .description {
-        color: var(--color-success-medium);
+        color: var(--color-primary);
       }
     }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: var(--spacing-medium-px);
   }
 }
 
 .surahNumber {
-  background-color: var(--color-background-alternative-faint);
+  background-color: var(--color-primary-subtle);
+  border: 1px solid var(--color-border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
-  inline-size: calc(2.5 * var(--spacing-medium));
-  block-size: calc(2.5 * var(--spacing-medium));
-  border-radius: var(--border-radius-default);
+  inline-size: 34px;
+  block-size: 34px;
+  border-radius: var(--border-radius-small-px);
   transform: rotate(45deg);
-  margin-inline-end: var(--spacing-large);
+  margin-inline-end: var(--spacing-large-px);
+  color: var(--color-primary);
+  flex-shrink: 0;
+  transition:
+    background-color var(--transition-fast) ease,
+    color var(--transition-fast) ease,
+    border-color var(--transition-fast) ease;
+
   & > span {
     transform: rotate(-45deg);
+    font-size: var(--font-size-xsmall-px);
     font-weight: var(--font-weight-bold);
   }
 }
+
 .surahNameContainer {
   display: flex;
   flex-direction: column;
-}
-.translatedSurahName {
-  font-size: var(--font-size-xsmall);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-faded);
+  gap: 2px;
 }
 
 .surahName {
+  font-size: var(--font-size-normal-px);
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  transition: color var(--transition-fast) ease;
+}
+
+.translatedSurahName {
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
 }
 
 .left {
   display: flex;
   align-items: center;
 }
+
 .right {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
+  gap: 2px;
 }
 
 .description {
   text-align: end;
-  font-size: var(--font-size-xsmall);
-  font-weight: var(--font-weight-bold);
-
-  color: var(--color-text-faded);
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast) ease;
 }
 
 .largeText {
   font-size: var(--font-size-large);
 }
+

@@ -1,19 +1,32 @@
 @use 'src/styles/theme';
 
 .card {
-  @include theme.light {
-    box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.1);
-  }
-  @include theme.dark {
-    box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.8);
-  }
-  @include theme.sepia {
-    box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.1);
-  }
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--border-radius-rounded);
   padding: var(--spacing-medium);
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.04);
+  transition:
+    transform var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease,
+    border-color var(--transition-fast) ease;
+
+  @include theme.dark {
+    box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.4);
+  }
+  @include theme.sepia {
+    box-shadow: 0px 4px 25px 0px rgba(100, 80, 50, 0.06);
+  }
 }
 
 .cardWithLink {
   cursor: pointer;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card-hover);
+      border-color: var(--color-primary);
+    }
+  }
 }
