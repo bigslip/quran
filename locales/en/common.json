@@ -540,6 +540,8 @@
     "suggest": "Please begin reciting and your verse will appear.",
     "suggest-subtitle": "Recite any verse in Arabic, and the verse will appear",
     "suggest-title": "Recite now",
+    "start": "Start voice search",
+    "stop": "Stop voice search",
     "voice-search-powered-by": "Voice Search Powered by"
   },
   "wbw": "Word By Word",

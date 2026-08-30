@@ -187,6 +187,14 @@ const nextConfig = {
       permanent: true,
     },
   ],
+  rewrites: async () => ({
+    fallback: [
+      {
+        source: '/fonts/quran/hafs/:path*',
+        destination: 'https://static.qurancdn.com/fonts/quran/hafs/:path*',
+      },
+    ],
+  }),
   compiler: {
     removeConsole: !isDev,
   },
