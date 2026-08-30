@@ -17,13 +17,14 @@ import { isLoggedIn } from '@/utils/auth/login';
 import { logButtonClick } from '@/utils/eventLogger';
 import { toLocalizedNumber } from '@/utils/locale';
 import { getLoginNavigationUrl, getQuranicCalendarNavigationUrl } from '@/utils/navigation';
-import { isMobile } from '@/utils/responsive';
+import useIsMobile from '@/hooks/useIsMobile';
 
 interface MyProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   onWeekSelect: (weekNumber: number) => void;
 }
 
 const MyProgress: React.FC<MyProgressProps> = ({ onWeekSelect, className, ...htmlAttributes }) => {
+  const isMobile = useIsMobile();
   const { t, lang } = useTranslation('quranic-calendar');
   const router = useRouter();
 
@@ -90,7 +91,7 @@ const MyProgress: React.FC<MyProgressProps> = ({ onWeekSelect, className, ...htm
       <p className={styles.subtitle}>{t('progress-subtitle')}</p>
 
       <div className={styles.progressCard}>
-        {isMobile() ? (
+        {isMobile ? (
           <CarouselView
             monthSlides={monthSlides}
             getWeekClass={getWeekClass}

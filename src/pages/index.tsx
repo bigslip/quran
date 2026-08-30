@@ -25,9 +25,9 @@ import { selectIsHomepageBannerVisible } from '@/redux/slices/fundraisingBanner'
 import { isLoggedIn } from '@/utils/auth/login';
 import { getAllChaptersData } from '@/utils/chapter';
 import { getLanguageAlternates } from '@/utils/locale';
+import useIsMobile from '@/hooks/useIsMobile';
 import { getCanonicalUrl } from '@/utils/navigation';
 import getCurrentDayAyah from '@/utils/quranInYearCalendar';
-import { isMobile } from '@/utils/responsive';
 import { ChaptersResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
 
@@ -41,6 +41,7 @@ const Index: NextPage<IndexProps> = ({
   chaptersData,
 }): JSX.Element => {
   const { t, lang } = useTranslation('home');
+  const isMobile = useIsMobile();
   const isUserLoggedIn = isLoggedIn();
   const todayAyah = useMemo(() => getCurrentDayAyah(), []);
   const isBannerVisible = useSelector(selectIsHomepageBannerVisible);
@@ -74,7 +75,7 @@ const Index: NextPage<IndexProps> = ({
                 <HomepageFundraisingBanner />
               </div>
             )}
-            {isMobile() ? (
+            {isMobile ? (
               <MobileHomepageSections
                 isUserLoggedIn={isUserLoggedIn}
                 todayAyah={todayAyah}

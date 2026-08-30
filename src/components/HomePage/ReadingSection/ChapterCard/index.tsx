@@ -13,7 +13,6 @@ import { getChapterData } from '@/utils/chapter';
 import { logButtonClick } from '@/utils/eventLogger';
 import { toLocalizedNumber } from '@/utils/locale';
 import { getChapterWithStartingVerseUrl, getPageNavigationUrl } from '@/utils/navigation';
-import { isMobile } from '@/utils/responsive';
 
 type Props = {
   surahNumber: number;
@@ -67,7 +66,7 @@ const ChapterCard: React.FC<Props> = ({
               {chapterData.transliteratedName}
             </span>
             <span className={styles.translatedName} translate="no">
-              {isMobile() ? `${chapterData.translatedName}` : `(${chapterData.translatedName})`}
+              {chapterData.translatedName}
             </span>
           </div>
           {isContinueReading ? (
