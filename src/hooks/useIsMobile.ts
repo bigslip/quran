@@ -15,14 +15,9 @@ export enum MobileSizeVariant {
  * @returns {boolean} True if the viewport is mobile-sized, false otherwise
  */
 const useIsMobile = (variant?: MobileSizeVariant): boolean => {
-  // Use a function for the initial state to correctly evaluate on client side
-  // during hydration, but safely handle SSR
-  const [isMobileView, setIsMobileView] = useState<boolean>(() => {
-    // During SSR, there is no window object
-    if (typeof window === 'undefined') return false;
-    // On client, immediately return the correct value
-    return variant === MobileSizeVariant.SMALL ? isSmallMobile() : isMobile();
-  });
+  // Start with false so initial client render matches SSR HTML during hydration,
+  // then update in useEffect after mount.
+  const [isMobileView, setIsMobileView] = useState<boolean>(false);
 
   useEffect(() => {
     // This will run after hydration and update the state if needed
