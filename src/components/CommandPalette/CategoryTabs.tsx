@@ -18,7 +18,7 @@ const CategoryTabs: React.FC<Props> = ({ activeTab, onSelectTab }) => {
     { id: CommandPaletteTab.All, label: t('all') || 'All', icon: '✦' },
     { id: CommandPaletteTab.Surahs, label: `${t('surahs') || 'Surahs'} (114)`, icon: '📖' },
     { id: CommandPaletteTab.Juz, label: `${t('juz') || 'Juz'} (30)`, icon: '📑' },
-    { id: CommandPaletteTab.Pages, label: `${t('page') || 'Pages'} (604)`, icon: '📄' },
+    { id: CommandPaletteTab.Pages, label: `${t('pages') || 'Pages'} (604)`, icon: '📄' },
   ];
 
   return (

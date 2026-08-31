@@ -1,5 +1,6 @@
 {
   "about": "About Us",
+  "all": "All",
   "allow": "Allow",
   "and": "and",
   "announcements": {
@@ -113,9 +114,15 @@
   "click-here": "Click here",
   "close": "Close",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "Navigations",
     "no-nav-results": "No navigation results",
     "placeholder": "Search the Quran...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
     "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "Recent navigations",
     "search-by-voice": "Search by voice",
@@ -481,10 +488,13 @@
   },
   "stay-on-track": "🎯 Stay on track!",
   "style": "Style",
+  "madinah": "Madinan",
+  "makkah": "Meccan",
   "submit": "Submit",
   "subscribe": "Subscribe",
   "subscribed": "Subscribed",
   "surah": "Surah",
+  "surahs": "Surahs",
   "tab-see-less": "See less...",
   "tab-see-more": "See more...",
   "tafsir": {

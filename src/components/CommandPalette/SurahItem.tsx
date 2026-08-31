@@ -24,8 +24,8 @@ const SurahItem = forwardRef<HTMLLIElement, Props>(
     const localizedVerses = toLocalizedNumber(chapter.versesCount, lang);
     const revelationType =
       chapter.revelationPlace === 'makkah'
-        ? t('surah-info:makkah') || 'Meccan'
-        : t('surah-info:madinah') || 'Madinan';
+        ? t('makkah') || 'Meccan'
+        : t('madinah') || 'Madinan';
 
     return (
       <li

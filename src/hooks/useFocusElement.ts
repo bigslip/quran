@@ -1,4 +1,4 @@
-import { useRef, RefObject } from 'react';
+import { useRef, RefObject, useCallback } from 'react';
 
 /**
  * A hook that focus a referenced element.
@@ -11,14 +11,15 @@ export const useFocusElement = <T extends HTMLElement>(
 ): [() => void, RefObject<T>] => {
   const elementRef = useRef<T>(null);
   // a function that will be invoked by the component using this hook to focus the the element being referenced (if found).
-  const executeFocus = (): void => {
+  const executeFocus = useCallback((): void => {
     // only focus when the ref has a value
     if (elementRef.current) {
       elementRef.current.focus(options);
     }
-  };
+  }, [options]);
 
   return [executeFocus, elementRef];
 };
 
 export default useFocusElement;
+

@@ -33,11 +33,11 @@ const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
       className={classNames(styles.bold, styles.alignStart, styles.surahName, {
         [styles.disabledOnMobile]: Boolean(isSidebarNavigationVisible),
       })}
+      onClick={onToggleSidebar}
     >
       <span
         className={styles.chapterInteractiveSpan}
         role="button"
-        onClick={onToggleSidebar}
         tabIndex={0}
         aria-pressed={isSidebarNavigationVisible === true}
         onKeyDown={(e) => {
