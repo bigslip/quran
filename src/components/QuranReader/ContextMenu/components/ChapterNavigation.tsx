@@ -11,14 +11,14 @@ import { toLocalizedNumber } from '@/utils/locale';
 
 interface ChapterNavigationProps {
   chapterName: string;
-  isSidebarNavigationVisible?: boolean | 'auto';
+  isSidebarNavigationVisible: boolean | 'auto';
   onToggleSidebar: (e: React.MouseEvent | React.KeyboardEvent) => void;
   chapterNumber: number;
 }
 
 /**
- * Component for displaying chapter name and triggering command palette navigation
- * @returns {JSX.Element} React component that displays chapter name and handles command palette navigation
+ * Component for displaying chapter name and handling sidebar navigation toggle
+ * @returns {JSX.Element} React component that displays chapter name and handles sidebar navigation toggle
  */
 const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
   chapterName,
@@ -31,13 +31,13 @@ const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
     <p
       data-testid={TestId.CHAPTER_NAVIGATION}
       className={classNames(styles.bold, styles.alignStart, styles.surahName, {
-        [styles.disabledOnMobile]: Boolean(isSidebarNavigationVisible),
+        [styles.disabledOnMobile]: isSidebarNavigationVisible,
       })}
-      onClick={onToggleSidebar}
     >
       <span
         className={styles.chapterInteractiveSpan}
         role="button"
+        onClick={onToggleSidebar}
         tabIndex={0}
         aria-pressed={isSidebarNavigationVisible === true}
         onKeyDown={(e) => {

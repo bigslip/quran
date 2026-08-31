@@ -17,13 +17,6 @@ export enum SettingsTab {
   WBW = 'wbw',
 }
 
-export enum CommandPaletteTab {
-  All = 'all',
-  Surahs = 'surahs',
-  Juz = 'juz',
-  Pages = 'pages',
-}
-
 export type Navbar = {
   isVisible: boolean;
   isNavigationDrawerOpen: boolean;
@@ -35,7 +28,6 @@ export type Navbar = {
   lastSettingsTab: SettingsTab;
   disableSearchDrawerTransition: boolean;
   lockVisibilityState: boolean;
-  commandPaletteTab?: CommandPaletteTab;
 };
 
 const initialState: Navbar = {
@@ -49,7 +41,6 @@ const initialState: Navbar = {
   lastSettingsTab: SettingsTab.Arabic,
   disableSearchDrawerTransition: false,
   lockVisibilityState: false,
-  commandPaletteTab: CommandPaletteTab.All,
 };
 
 export const navbarSlice = createSlice({
@@ -76,15 +67,6 @@ export const navbarSlice = createSlice({
     toggleSearchDrawerIsOpen: (state: Navbar) => ({
       ...state,
       isSearchDrawerOpen: !state.isSearchDrawerOpen,
-    }),
-    setCommandPaletteTab: (state: Navbar, action: PayloadAction<CommandPaletteTab>) => ({
-      ...state,
-      commandPaletteTab: action.payload,
-    }),
-    openCommandPaletteWithTab: (state: Navbar, action: PayloadAction<CommandPaletteTab>) => ({
-      ...state,
-      isSearchDrawerOpen: true,
-      commandPaletteTab: action.payload,
     }),
     setIsSettingsDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => ({
       ...state,
@@ -126,16 +108,12 @@ export const {
   setIsLanguageDrawerOpen,
   setSettingsView,
   toggleSearchDrawerIsOpen,
-  setCommandPaletteTab,
-  openCommandPaletteWithTab,
   setDisableSearchDrawerTransition,
   setLastSettingsTab,
 } = navbarSlice.actions;
 
 export const selectNavbar = (state: RootState) => state.navbar;
 export const selectIsSearchDrawerOpen = (state: RootState) => state.navbar.isSearchDrawerOpen;
-export const selectCommandPaletteTab = (state: RootState) =>
-  state.navbar.commandPaletteTab || CommandPaletteTab.All;
 export const selectIsNavigationDrawerOpen = (state: RootState) =>
   state.navbar.isNavigationDrawerOpen;
 export const selectIsSettingsDrawerOpen = (state: RootState) => state.navbar.isSettingsDrawerOpen;

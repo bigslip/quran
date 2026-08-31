@@ -59,7 +59,8 @@ interface Props {
  * @returns {boolean}
  */
 const getIsOpen = (type: DrawerType, navbar: Navbar): boolean => {
-  const { isNavigationDrawerOpen, isSettingsDrawerOpen, isLanguageDrawerOpen } = navbar;
+  const { isNavigationDrawerOpen, isSettingsDrawerOpen, isSearchDrawerOpen, isLanguageDrawerOpen } =
+    navbar;
   if (type === DrawerType.Navigation) {
     return isNavigationDrawerOpen;
   }
@@ -69,7 +70,7 @@ const getIsOpen = (type: DrawerType, navbar: Navbar): boolean => {
   if (type === DrawerType.Settings) {
     return isSettingsDrawerOpen;
   }
-  return false;
+  return isSearchDrawerOpen;
 };
 
 const getActionCreator = (type: DrawerType) => {
