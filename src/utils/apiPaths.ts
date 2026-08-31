@@ -150,10 +150,7 @@ export const makeAdvancedCopyUrl = (params: AdvancedCopyRequest): string =>
   makeUrl('/verses/advanced_copy', params as Record<string, unknown>);
 
 export const makeNewSearchResultsUrl = <T extends SearchMode>(params: SearchRequestParams<T>) => {
-  return getProxiedServiceUrl(
-    QuranFoundationService.SEARCH,
-    `/v1/search?${stringify(decamelizeKeys(params))}`,
-  );
+  return makeUrl('/search', params as Record<string, unknown>);
 };
 
 /**
@@ -225,7 +222,7 @@ export const makeChapterInfoUrl = (
  * @returns {string}
  */
 export const makeChapterMetadataUrl = (chapterId: string, language: string): string =>
-  makeUrl(`/chapters/${chapterId}/metadata`, { language });
+  makeUrl(`/chapters/${chapterId}/info`, { language });
 
 /**
  * Compose the url for the chapter's API.
