@@ -6,21 +6,24 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useOnboarding } from '@/components/Onboarding/OnboardingProvider';
 import useDebounceNavbarVisibility from '@/hooks/useDebounceNavbarVisibility';
 import useGetMushaf from '@/hooks/useGetMushaf';
-import { selectNavbar } from '@/redux/slices/navbar';
+import {
+  CommandPaletteTab,
+  selectNavbar,
+  setCommandPaletteTab,
+  setIsSearchDrawerOpen,
+} from '@/redux/slices/navbar';
 import { selectContextMenu } from '@/redux/slices/QuranReader/contextMenu';
 import { selectNotes } from '@/redux/slices/QuranReader/notes';
 import { selectReadingPreference } from '@/redux/slices/QuranReader/readingPreferences';
 import { selectLastReadVerseKey } from '@/redux/slices/QuranReader/readingTracker';
 import {
   selectIsSidebarNavigationVisible,
-  setIsSidebarNavigationVisible,
 } from '@/redux/slices/QuranReader/sidebarNavigation';
 import { ReadingPreference } from '@/types/QuranReader';
 import { getChapterData, getChapterReadingProgress } from '@/utils/chapter';
 import { logEvent } from '@/utils/eventLogger';
 import { getJuzNumberByHizb } from '@/utils/juz';
 import { toLocalizedNumber } from '@/utils/locale';
-import { isMobile } from '@/utils/responsive';
 import { getVerseNumberFromKey } from '@/utils/verse';
 import DataContext from 'src/contexts/DataContext';
 /**
@@ -79,16 +82,11 @@ const useContextMenuState = () => {
   }, [verseKey, chapterData]);
 
   // Event handlers
-  const handleSidebarToggle = (e: React.MouseEvent) => {
-    logEvent(`sidebar_navigation_${isSidebarNavigationVisible ? 'close' : 'open'}_trigger`);
+  const handleSidebarToggle = (e: React.MouseEvent | React.KeyboardEvent) => {
+    logEvent('context_menu_chapter_navigation_click');
     e.stopPropagation();
-
-    if (isSidebarNavigationVisible === 'auto') {
-      const shouldBeVisible = isMobile();
-      dispatch(setIsSidebarNavigationVisible(shouldBeVisible));
-    } else {
-      dispatch(setIsSidebarNavigationVisible(!isSidebarNavigationVisible));
-    }
+    dispatch(setCommandPaletteTab(CommandPaletteTab.Surahs));
+    dispatch(setIsSearchDrawerOpen(true));
   };
 
   return {
