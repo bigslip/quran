@@ -113,9 +113,16 @@
   "click-here": "Bofya hapa",
   "close": "Funga",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "Uchunguzi",
     "no-nav-results": "Hakuna matokeo",
     "placeholder": "Pekua Qur'ani...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "Uchunguzi wa hivi majuzi",
     "search-by-voice": "Tafuta kutumia sauti",
     "try-navigating": "Nenda hadi"

@@ -113,9 +113,16 @@
   "click-here": "คลิกที่นี่",
   "close": "ปิด",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "นำทาง",
     "no-nav-results": "ไม่มีผลลัพธ์การนำทาง",
     "placeholder": "ค้นหาอัลกุรอาน...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "การนำทางล่าสุด",
     "search-by-voice": "ค้นหาด้วยเสียง",
     "try-navigating": "ลองไปที่"

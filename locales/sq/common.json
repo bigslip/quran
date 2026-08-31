@@ -113,9 +113,16 @@
   "click-here": "Kliko këtu",
   "close": "Mbylle",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "Lundrimet",
     "no-nav-results": "Nuk ka rezultate navigimi",
     "placeholder": "Kërkoni në Kuran...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "Lundrimet e fundit",
     "search-by-voice": "Kërko me zë",
     "try-navigating": "Provoni të lundroni në"

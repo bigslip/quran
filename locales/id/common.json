@@ -113,9 +113,16 @@
   "click-here": "Klik disini",
   "close": "Tutup",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "Navigasi",
     "no-nav-results": "Tidak ada hasil navigasi",
     "placeholder": "Cari di Al Quran...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "Navigasi terbaru",
     "search-by-voice": "Cari dengan suara",
     "try-navigating": "Coba navigasikan ke"

@@ -113,9 +113,16 @@
   "click-here": "Cliquer ici",
   "close": "Fermer",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "Navigations",
     "no-nav-results": "Aucun résultat de navigation",
     "placeholder": "Rechercher dans le Coran...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "Navigations récentes",
     "search-by-voice": "Recherche vocale",
     "try-navigating": "Essayez de naviguer vers"

@@ -113,9 +113,16 @@
   "click-here": "点击这里",
   "close": "关闭",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "导航",
     "no-nav-results": "没有导航结果",
     "placeholder": "搜索《古兰经》...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "最近的导航",
     "search-by-voice": "语音搜索",
     "try-navigating": "尝试导航到"

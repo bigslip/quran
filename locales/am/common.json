@@ -113,9 +113,16 @@
   "click-here": "እዚህ ጠቅ ያድርጉ",
   "close": "ይዝጉ",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "አሰሳዎች",
     "no-nav-results": "የአሰሳ ውጤቶች የሉም",
     "placeholder": "ከቁርአን ይፈልጉ...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "የቅርብ ጊዜ አሰሳዎች",
     "search-by-voice": "በድምጽ ይፈልጉ",
     "try-navigating": "ወደሚከተለው አቅጣጫ ለማሰስ ይሞክሩ"

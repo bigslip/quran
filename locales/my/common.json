@@ -113,9 +113,16 @@
   "click-here": "ဤနေရာကိုကလစ်နှိပ်ပါ",
   "close": "ပိတ်ရန်",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "လမ်းညွှန်မှုများ",
     "no-nav-results": "လမ်းညွှန်ရလဒ်များ မရှိပါ",
     "placeholder": "ကုရ်အာန်ကို ရှာဖွေပါ...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "မကြာသေးမီက လမ်းညွှန်မှုများ",
     "search-by-voice": "အသံဖြင့် ရှာဖွေပါ",
     "try-navigating": "သို့ လမ်းညွှန်ကြည့်ပါ"

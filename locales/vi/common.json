@@ -113,9 +113,16 @@
   "click-here": "Nhấp vào đây",
   "close": "Đóng",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "Điều hướng",
     "no-nav-results": "Không có kết quả điều hướng",
     "placeholder": "Tìm kiếm Qur'an...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "Điều hướng gần đây",
     "search-by-voice": "Tìm kiếm bằng giọng nói",
     "try-navigating": "Hãy thử điều hướng đến"
