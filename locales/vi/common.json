@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Chú thích công cụ Word",
   "yes": "Có",
-  "page-number": "Trang {{page}}"
+  "page-number": "Trang {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

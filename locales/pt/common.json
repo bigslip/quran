@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Dica de ferramenta do Word",
   "yes": "sim",
-  "page-number": "Página {{page}}"
+  "page-number": "Página {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

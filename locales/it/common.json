@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Descrizione comando parola",
   "yes": "sì",
-  "page-number": "Pagina {{page}}"
+  "page-number": "Pagina {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

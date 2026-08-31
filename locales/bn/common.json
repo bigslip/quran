@@ -563,5 +563,6 @@
   },
   "word-tooltip": "শব্দ টুলটিপ",
   "yes": "হ্যাঁ",
-  "page-number": "পৃষ্ঠা {{page}}"
+  "page-number": "পৃষ্ঠা {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

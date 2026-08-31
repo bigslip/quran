@@ -563,5 +563,6 @@
   },
   "word-tooltip": "鼠标悬停在单词上时弹出其译文",
   "yes": "是的",
-  "page-number": "第 {{page}} 页"
+  "page-number": "第 {{page}} 页",
+  "pagination-navigation": "Pagination navigation"
 }

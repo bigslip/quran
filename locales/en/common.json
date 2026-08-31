@@ -567,5 +567,6 @@
   },
   "word-tooltip": "Word Tooltip",
   "yes": "Yes",
-  "page-number": "Page {{page}}"
+  "page-number": "Page {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

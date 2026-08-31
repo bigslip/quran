@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Word Tooltip",
   "yes": "Ya",
-  "page-number": "Halaman {{page}}"
+  "page-number": "Halaman {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

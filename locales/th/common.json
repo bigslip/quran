@@ -563,5 +563,6 @@
   },
   "word-tooltip": "แสดงคำแนะนำต่อคำ",
   "yes": "ใช่",
-  "page-number": "หน้า {{page}}"
+  "page-number": "หน้า {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

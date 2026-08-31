@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Info-bulle du mot",
   "yes": "Oui",
-  "page-number": "Page {{page}}"
+  "page-number": "Page {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

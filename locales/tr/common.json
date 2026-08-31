@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Kelime İpucu",
   "yes": "Evet",
-  "page-number": "Sayfa {{page}}"
+  "page-number": "Sayfa {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

@@ -563,5 +563,6 @@
   },
   "word-tooltip": "نکته ابزار Word",
   "yes": "آره",
-  "page-number": "صفحه {{page}}"
+  "page-number": "صفحه {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

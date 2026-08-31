@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Tooltip ya Neno",
   "yes": "Ndiyo",
-  "page-number": "Ukurasa {{page}}"
+  "page-number": "Ukurasa {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

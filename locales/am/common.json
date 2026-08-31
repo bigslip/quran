@@ -563,5 +563,6 @@
   },
   "word-tooltip": "የቃል Tooltip",
   "yes": "አዎ",
-  "page-number": "ገጽ {{page}}"
+  "page-number": "ገጽ {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

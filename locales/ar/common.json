@@ -563,5 +563,6 @@
   },
   "word-tooltip": "مربع منبثق للكلمة",
   "yes": "نعم",
-  "page-number": "صفحة {{page}}"
+  "page-number": "صفحة {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

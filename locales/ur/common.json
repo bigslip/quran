@@ -563,5 +563,6 @@
   },
   "word-tooltip": "لفظ کے اوپر",
   "yes": "جی ہاں",
-  "page-number": "صفحہ {{page}}"
+  "page-number": "صفحہ {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

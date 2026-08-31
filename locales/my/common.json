@@ -563,5 +563,6 @@
   },
   "word-tooltip": "စကားလုံး ကိရိယာ အကြံပြုချက်",
   "yes": "ဟုတ်ကဲ့",
-  "page-number": "စာမျက်နှာ {{page}}"
+  "page-number": "စာမျက်နှာ {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

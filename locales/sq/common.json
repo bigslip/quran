@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Mesazh sugjerues për fjalët",
   "yes": "Po",
-  "page-number": "Faqe {{page}}"
+  "page-number": "Faqe {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }

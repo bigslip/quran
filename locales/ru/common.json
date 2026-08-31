@@ -563,5 +563,6 @@
   },
   "word-tooltip": "Подсказка к слову",
   "yes": "да",
-  "page-number": "Страница {{page}}"
+  "page-number": "Страница {{page}}",
+  "pagination-navigation": "Pagination navigation"
 }
