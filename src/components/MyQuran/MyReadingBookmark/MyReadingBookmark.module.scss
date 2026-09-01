@@ -1,14 +1,15 @@
 @use 'src/styles/breakpoints';
 
 .container {
-  margin-block-end: var(--spacing-large-px);
+  margin-block-end: var(--spacing-xlarge-px);
 }
 
 .title {
   font-size: var(--font-size-large-px);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-default);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
   margin-block-end: var(--spacing-medium2-px);
+  letter-spacing: -0.01em;
 }
 
 .bookmarkCard {
@@ -16,16 +17,45 @@
   align-items: center;
   gap: var(--spacing-medium-px);
   inline-size: 100%;
-  padding: var(--spacing-medium2-px);
-  background: var(--color-background-alternative-faint-new);
-  border: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  padding: var(--spacing-medium2-px) var(--spacing-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
   border-radius: var(--border-radius-large-px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   cursor: pointer;
-  transition: background var(--transition-fast) ease-out;
+  transition: all var(--transition-regular) cubic-bezier(0.16, 1, 0.3, 1);
   text-align: inherit;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background-color: var(--color-background-alternative);
+    background-color: var(--color-surface-card-hover, var(--color-background-alternative));
+    border-color: var(--color-primary, #00F2FE);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 242, 254, 0.12);
+
+    .iconWrapper {
+      transform: scale(1.08);
+      box-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.3));
+    }
+
+    .chevron {
+      color: var(--color-primary, #00F2FE);
+      transform: translateX(4px);
+
+      [dir='rtl'] & {
+        transform: translateX(-4px);
+      }
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.99);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 
@@ -34,11 +64,13 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  inline-size: var(--spacing-xlarge-px);
-  block-size: var(--spacing-xlarge-px);
-  background: var(--color-success-faded);
-  border-radius: var(--font-size-xxsmall-px);
-  color: var(--color-bookmark-icon);
+  inline-size: calc(var(--spacing-xlarge-px) + var(--spacing-small-px));
+  block-size: calc(var(--spacing-xlarge-px) + var(--spacing-small-px));
+  background: var(--color-primary-subtle, rgba(0, 242, 254, 0.1));
+  border: 1px solid var(--color-border-subtle, rgba(0, 242, 254, 0.2));
+  border-radius: var(--border-radius-circle);
+  color: var(--color-primary, var(--color-bookmark-icon));
+  transition: all var(--transition-fast) ease;
 }
 
 .icon {
@@ -56,53 +88,55 @@
 .textContainer {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-micro2-px);
+  gap: var(--spacing-xxsmall-px);
 }
 
 .text {
-  font-size: var(--font-size-small-px);
-  font-weight: var(--font-weight-normal);
-  color: var(--color-text-default);
+  font-size: var(--font-size-normal-px);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary, var(--color-text-default));
 }
 
 .date {
   font-size: var(--font-size-xsmall-px);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-faded);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary, var(--color-text-faded));
 }
 
 .chevron {
-  color: var(--color-text-faded);
+  color: var(--color-text-secondary, var(--color-text-faded));
+  transition: all var(--transition-fast) ease;
 }
 
 .emptyState {
   display: flex;
   align-items: center;
   padding: var(--spacing-large-px);
-  background: var(--color-background-default);
-  border: var(--spacing-hairline-px) solid var(--color-borders-hairline);
-  border-radius: var(--border-radius-pill);
+  background: var(--color-surface-card, var(--color-background-default));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  border-radius: var(--border-radius-large-px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   justify-content: center;
 }
 
 .emptyText {
   font-size: var(--font-size-normal);
-  color: var(--color-text-faded);
+  color: var(--color-text-secondary, var(--color-text-faded));
   margin: 0;
   text-align: center;
 }
 
-// Simple skeleton loading state
 .skeleton {
   position: relative;
   inline-size: 100%;
-  block-size: calc(var(--spacing-xlarge-px) * 2);
-  background: var(--color-background-alternative-faint-new);
-  border: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  block-size: calc(var(--spacing-xlarge-px) * 2.2);
+  background: var(--color-surface-card, var(--color-background-alternative-faint-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
   border-radius: var(--border-radius-large-px);
   overflow: hidden;
 
-  // Icon skeleton
   &::after {
     content: '';
     position: absolute;
@@ -112,10 +146,9 @@
     inline-size: var(--spacing-xlarge-px);
     block-size: var(--spacing-xlarge-px);
     background: var(--color-background-alternative);
-    border-radius: var(--font-size-xxsmall-px);
+    border-radius: var(--border-radius-circle);
   }
 
-  // Content skeleton lines
   .skeletonLine {
     position: absolute;
     inset-inline-start: calc(

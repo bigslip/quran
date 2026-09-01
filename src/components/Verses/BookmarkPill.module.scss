@@ -1,40 +1,65 @@
 .bookmarkItem {
   box-sizing: border-box;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   margin-inline-end: var(--spacing-xsmall);
   white-space: nowrap;
+  background: var(--color-surface-card, var(--color-background-alternative-faint-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  border-radius: var(--border-radius-pill);
+  padding: var(--spacing-micro2-px) var(--spacing-small-px);
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    border-color: var(--color-primary, #00F2FE);
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--color-primary-subtle, rgba(0, 242, 254, 0.15));
+  }
 }
 
 .linkButtonContainer {
   font-weight: var(--font-weight-semibold);
-  text-decoration: underline;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--font-size-small-px);
+  color: var(--color-text-primary, var(--color-text-default));
+  text-decoration: none;
 }
 
 .closeIconContainer {
   display: flex;
   border: none;
-  inline-size: var(--spacing-xsmall);
+  inline-size: var(--spacing-medium-px);
   box-sizing: border-box;
   justify-content: center;
-  padding-inline-start: var(--spacing-small);
-  padding-inline-end: var(--spacing-small);
+  padding: 0;
+  margin-inline-start: var(--spacing-xxsmall-px);
   background-color: transparent;
-  color: var(--color-text-faded);
+  color: var(--color-text-secondary, var(--color-text-faded));
   align-items: center;
   cursor: pointer;
+  border-radius: var(--border-radius-circle);
+  transition: all var(--transition-fast) ease;
+
+  &:hover {
+    color: var(--color-error-medium, #f33);
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+
   &:disabled {
     cursor: not-allowed;
     opacity: var(--opacity-50);
   }
+
   & > span {
     display: flex;
     align-items: center;
     justify-content: center;
   }
+
   & svg {
-    inline-size: var(--spacing-medium);
-    block-size: var(--spacing-medium);
+    inline-size: var(--spacing-small2-px);
+    block-size: var(--spacing-small2-px);
   }
 }
 

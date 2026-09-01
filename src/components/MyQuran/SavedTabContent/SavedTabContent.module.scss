@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-large-px);
+  gap: var(--spacing-xlarge-px);
   position: relative;
 }
 
@@ -13,12 +13,13 @@
 
 // Smooth transition for search/filter section
 .searchSection {
-  transition: opacity var(--transition-moderate) ease-out;
+  transition: opacity var(--transition-moderate) ease-out, transform var(--transition-moderate) ease-out;
 
   &.hidden {
     opacity: 0;
     pointer-events: none;
     block-size: 0;
     overflow: hidden;
+    transform: translateY(calc(var(--spacing-xsmall-px) * -1));
   }
 }

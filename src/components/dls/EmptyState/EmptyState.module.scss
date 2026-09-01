@@ -1,0 +1,104 @@
+@use 'src/styles/breakpoints';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-block: var(--spacing-xlarge-px);
+  padding-inline: var(--spacing-large-px);
+  border-radius: var(--border-radius-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  min-block-size: calc(3 * var(--spacing-max));
+  animation: emptyFadeIn var(--transition-regular) ease-out;
+
+  @include breakpoints.tablet {
+    padding-block: calc(var(--spacing-mega-px) * 1.2);
+    padding-inline: var(--spacing-xlarge-px);
+  }
+}
+
+.compact {
+  padding-block: var(--spacing-large-px);
+  padding-inline: var(--spacing-medium-px);
+  min-block-size: auto;
+}
+
+.transparent {
+  background: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: calc(var(--spacing-large-px) * 2);
+  block-size: calc(var(--spacing-large-px) * 2);
+  border-radius: var(--border-radius-circle);
+  background: var(--color-primary-subtle, rgba(0, 242, 254, 0.1));
+  border: 1px solid var(--color-border-subtle, rgba(0, 242, 254, 0.2));
+  color: var(--color-primary, var(--color-text-link));
+  margin-block-end: var(--spacing-medium-px);
+  box-shadow: 0 0 20px var(--color-primary-subtle, rgba(0, 242, 254, 0.12));
+  transition: transform var(--transition-moderate) cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    transform: scale(1.08);
+  }
+
+  svg {
+    inline-size: var(--spacing-xlarge-px);
+    block-size: var(--spacing-xlarge-px);
+  }
+}
+
+.title {
+  font-size: var(--font-size-large);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
+  margin: 0;
+  margin-block-end: var(--spacing-xsmall-px);
+  text-wrap: balance;
+
+  @include breakpoints.tablet {
+    font-size: var(--font-size-xlarge);
+  }
+}
+
+.description {
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-secondary, var(--color-text-faded));
+  line-height: var(--line-height-normal);
+  max-inline-size: 32rem;
+  margin: 0;
+  margin-block-end: var(--spacing-medium-px);
+  text-wrap: balance;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small-px);
+  flex-wrap: wrap;
+  margin-block-start: var(--spacing-xsmall-px);
+}
+
+@keyframes emptyFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(var(--spacing-xsmall-px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

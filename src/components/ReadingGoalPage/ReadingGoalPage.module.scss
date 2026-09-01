@@ -20,7 +20,7 @@
 .optionsContainer {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-large);
+  gap: var(--spacing-medium-px);
   margin-block: var(--spacing-medium);
   flex: 1;
 
@@ -42,12 +42,17 @@
 .title {
   font-size: var(--font-size-jumbo);
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, #ffffff);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 .subtitle {
   font-size: var(--font-size-large);
   margin-block-start: var(--spacing-medium);
-  color: var(--color-text-faded);
+  color: var(--color-text-secondary, var(--color-text-faded));
+  line-height: var(--line-height-normal);
+  text-wrap: balance;
 }
 
 .navigationContainer {
@@ -55,13 +60,11 @@
   justify-content: center;
   align-items: center;
   gap: var(--spacing-medium);
-
-  // margin-block: var(--spacing-medium);
 }
 
 $circle-size: var(--spacing-small);
 $circle-spacing: var(--spacing-xxsmall);
-$circle-border: 4px;
+$circle-border: 3px;
 
 .previewWrapper {
   position: relative;
@@ -76,17 +79,26 @@ $circle-border: 4px;
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-large);
-  border-radius: var(--border-radius-rounded);
-  background-color: var(--color-background-alternative-faded);
+  border-radius: var(--border-radius-large-px);
+  background: var(--color-surface-card, var(--color-background-alternative-faded));
+  border: 1px solid var(--color-border-subtle, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   font-size: var(--font-size-large);
+  margin-block-end: var(--spacing-small-px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 
   &.lastDay {
     background: transparent;
+    border-color: transparent;
+    box-shadow: none;
   }
 
   h3 {
     font-size: var(--font-size-xlarge);
     font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary, #ffffff);
+    margin: 0;
   }
 
   &::before {
@@ -101,16 +113,16 @@ $circle-border: 4px;
 
     inline-size: $circle-size;
     block-size: $circle-size;
-    border: $circle-border solid var(--color-success-medium);
+    border: $circle-border solid var(--color-primary, #00F2FE);
     border-radius: var(--border-radius-circle);
     background-color: var(--color-background-default);
+    box-shadow: 0 0 10px var(--color-primary-subtle, rgba(0, 242, 254, 0.5));
   }
 
   &::after {
     content: '';
     position: absolute;
     inset-inline-start: 0;
-    // we need to translate the line directly under the circle and in the middle of it
     transform: translate(
       calc(-100% + ($circle-spacing * -1) + ($circle-size + $circle-border) / -2),
       calc(50% + ($circle-size + $circle-border) / 2)
@@ -123,9 +135,10 @@ $circle-border: 4px;
       );
     }
 
-    inline-size: 3px;
+    inline-size: 2px;
     block-size: 100%;
-    background-color: var(--color-success-medium);
+    background-color: var(--color-primary, #00F2FE);
+    opacity: 0.6;
   }
 
   &:last-of-type {
@@ -139,6 +152,8 @@ $circle-border: 4px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary, var(--color-text-faded));
 }
 
 .rangeInputContainer {
@@ -171,5 +186,6 @@ $circle-border: 4px;
 .label {
   font-size: var(--font-size-large);
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
   margin-block-end: var(--spacing-small);
 }

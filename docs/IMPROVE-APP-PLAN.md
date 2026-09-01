@@ -13,7 +13,7 @@
 | **Phase 1** | **Homepage & Chapter Grid** | Visual hierarchy, constrained spacing scale (8/16/24/32px), typography scale, glowing badges, clean card borders & micro-lift | **completed** |
 | **Phase 2** | **Quran Reader & Verse Immersion** | Verse typography rhythm (Arabic line-height 2.4), translation contrast, de-emphasized metadata, contextual action menu hover states | **completed** |
 | **Phase 3** | **Floating Audio Player & Dock** | Island dock elevation, sleek scrubber with tooltip time preview, unified button hierarchy, reciter badge | **completed** |
-| **Phase 4** | **My Quran Dashboard & Reading Goals** | Tabular metrics hierarchy, streak progress rings, empty states with clear CTAs, clean bookmark/note cards | **pending** |
+| **Phase 4** | **My Quran Dashboard & Reading Goals** | Tabular metrics hierarchy, streak progress rings, empty states with clear CTAs, clean bookmark/note cards | **completed** |
 
 ---
 
@@ -81,7 +81,28 @@
 
 ---
 
-## 5. Key Decisions & Change Log
+## 5. Phase 4 Scope & Refactoring UI Scorecard (My Quran Dashboard & Reading Goals)
+
+### Diagnostic Baseline (Refactoring UI & Modern Spiritual Sanctuary Standards):
+1. **Dashboard Metrics & Tabular Numbers:**
+   - Streak & progress metrics with large tabular numerals (`font-variant-numeric: tabular-nums`, `font-weight: 800`), glowing primary aura (`text-shadow: 0 0 16px var(--color-primary-subtle)`), and de-emphasized secondary labels (`var(--color-text-secondary)`).
+   - Streak and Flame badges with luminous gradient fill, glowing drop-shadows, and active day dots.
+2. **Saved Content & History Obsidian Glass Cards:**
+   - `CollectionsList`, `CollectionDetailView`, `RecentContent`, `RecentlySaved`, and `MyReadingBookmark` upgraded to frosted obsidian glass cards (`backdrop-filter: blur(16px)`), iridescent subtle borders (`var(--color-border-subtle)`), and magnetic 1.015x hover lift (`transform: translateY(-2px)`).
+   - Clean timestamps and contextual actions with accessible touch targets (40x40px min) and keyboard focus rings.
+3. **Serene Empty States with Clear CTAs:**
+   - Created reusable, accessible `EmptyState` component (`src/components/dls/EmptyState/`) featuring serene glowing icon container, balanced heading, reassuring subtitle, and primary high-contrast action CTA.
+4. **Reading Goal Wizard & Progress Visuals:**
+   - `OptionButton`: Period selector pills with distinct selected state illumination (`box-shadow: 0 0 20px var(--color-primary-subtle)`), glowing border, smooth hover lift, and uppercase recommended badge.
+   - Timeline day preview cards with luminous connecting pulse line and milestone dots.
+   - Circular and linear SVG progress bars with luminous gradient fills and glowing drop-shadows.
+5. **Theme Resilience & RTL Integrity:**
+   - Flawless across dark mode, light mode, and sepia mode.
+   - Complete CSS logical properties (`margin-inline`, `padding-inline`, `inset-inline-start`, `border-block-end`, `inline-size`, `block-size`).
+
+---
+
+## 6. Key Decisions & Change Log
 - **2026-09-01**: Journey initiated. Phase 1 active on Homepage Hero, Reading Section card, and Chapter Grid tabs.
 - **2026-09-01**: **Phase 1 Complete**.
   - Refactored `ChapterBlock.tsx` and `ChapterBlock.module.scss` with octagonal glowing chapter number badges (`transform: rotate(45deg)`), clear transliterated/translated hierarchy, and vertically centered Arabic ligatures (`surahnames` font).
@@ -104,5 +125,11 @@
   - Refactored `PlaybackControls.module.scss` with standardized spacing gap scale.
   - Upgraded `AudioPlayerSlider.module.scss` with tabular numeral timestamps and precision scrubber track integration.
   - Enhanced `RadioPlaybackControl.module.scss` with typography hierarchy and text truncation safety.
+- **2026-09-01**: **Phase 4 Complete**.
+  - Created reusable, modern `EmptyState` component (`src/components/dls/EmptyState/`) with serene glowing icon container, balanced headings, and high-contrast CTA buttons.
+  - Refactored `my-quran.module.scss`, `SavedTabContent.module.scss`, `CollectionsList.module.scss`, `CollectionDetailView.module.scss`, `RecentlySaved.module.scss`, `MyReadingBookmark.module.scss`, `SignInPrompt.module.scss`, `SearchAndFilters.module.scss`, and `RecentContent.module.scss` with frosted obsidian glass cards, 1.015x hover lift, glowing badges, and tabular figures.
+  - Upgraded `ReadingProgressPage.module.scss`, `ReadingHistory.module.scss`, `AddReading.module.scss`, `ReadingGoalPage.module.scss`, `OptionButton.module.scss`, and ReadingGoal modals with high-contrast tabular metrics, luminous SVG progress rings, and period selector illumination.
+  - Refined `StreakGoalCard.module.scss`, `QuranReaderStreak.module.scss`, and `ReadingStreak.module.scss` with glowing flame aura and active streak indicators.
+
 
 

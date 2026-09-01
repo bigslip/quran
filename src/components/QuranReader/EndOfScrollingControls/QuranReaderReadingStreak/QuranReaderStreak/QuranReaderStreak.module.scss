@@ -3,17 +3,20 @@
 }
 
 .streakTitle {
-  color: var(--color-success-medium);
+  color: var(--color-primary, var(--color-success-medium));
   font-size: var(--font-size-jumbo);
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
   display: flex;
   align-items: center;
+  text-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.3));
 }
 
 .dailyGoal {
   margin-block-start: var(--spacing-xsmall);
   font-size: var(--font-size-large);
   font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary, var(--color-text-faded));
 }
 
 .progressContainer {
@@ -29,5 +32,7 @@
   > p {
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary, var(--color-text-default));
   }
 }

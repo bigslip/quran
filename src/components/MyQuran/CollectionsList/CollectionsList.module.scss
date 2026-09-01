@@ -1,7 +1,7 @@
 @use 'src/styles/breakpoints';
 
 .container {
-  margin-block-end: var(--spacing-large-px);
+  margin-block-end: var(--spacing-xlarge-px);
 }
 
 .header {
@@ -13,9 +13,10 @@
 
 .title {
   font-size: var(--font-size-large-px);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-default);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .headerActions {
@@ -28,23 +29,42 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xsmall-px);
-  padding: 0;
+  padding: var(--spacing-micro2-px) var(--spacing-small2-px);
   font-size: var(--font-size-normal);
-  color: var(--color-text-default-new);
+  color: var(--color-primary, var(--color-text-link));
   font-weight: var(--font-weight-semibold);
-  background: transparent;
-  border: none;
+  background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+  border: 1px solid var(--color-border-subtle, rgba(0, 242, 254, 0.2));
+  border-radius: var(--border-radius-pill);
   cursor: pointer;
-  transition: all var(--transition-regular) ease;
+  transition: all var(--transition-regular) cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
-    color: var(--color-primary-medium);
+    background: var(--color-primary, #00F2FE);
+    color: #070A13;
+    box-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.2));
+    transform: translateY(-1px);
+
+    svg {
+      color: #070A13;
+      fill: #070A13;
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   svg {
     inline-size: var(--spacing-medium-plus-px);
     block-size: var(--spacing-medium-plus-px);
-    color: var(--color-text-default);
+    color: currentColor;
+    transition: color var(--transition-fast) ease;
   }
 }
 
@@ -52,21 +72,28 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xsmall-px);
-  padding: 0;
-  background: transparent;
-  border: none;
+  padding: var(--spacing-micro2-px) var(--spacing-small-px);
+  background: var(--color-surface-card, var(--color-background-alternative-faint));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  border-radius: var(--border-radius-pill);
   cursor: pointer;
   transition: all var(--transition-regular) ease;
 
   &:hover {
-    color: var(--color-primary-medium);
+    border-color: var(--color-primary, var(--color-primary-medium));
+    color: var(--color-primary, var(--color-primary-medium));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 
 .sortIcon {
   inline-size: var(--spacing-medium-plus2-px);
   block-size: var(--spacing-medium-plus2-px);
-  color: var(--color-text-default);
+  color: var(--color-text-secondary, var(--color-text-faded));
 }
 
 .sortSelect {
@@ -77,23 +104,27 @@
 
   select {
     text-align: center;
-
     padding-inline-start: 0;
     padding-inline-end: var(--spacing-medium-px);
-    font-size: var(--font-size-normal);
+    font-size: var(--font-size-small-px);
     font-weight: var(--font-weight-medium);
-    color: var(--color-text-default);
+    color: var(--color-text-primary, var(--color-text-default));
     cursor: pointer;
   }
+
   .selectArrow {
     display: none;
   }
 }
 
 .listContainer {
-  border: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
   border-radius: var(--border-radius-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .list {
@@ -106,14 +137,14 @@
   align-items: center;
   gap: var(--spacing-medium-px);
   inline-size: 100%;
-  padding: var(--spacing-medium2-px);
+  padding: var(--spacing-medium2-px) var(--spacing-large-px);
   background: transparent;
   border: none;
-  border-block-end: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  border-block-end: 1px solid var(--color-border-subtle, var(--color-separators-ayah-level));
   cursor: pointer;
-  transition: background var(--transition-fast) ease-out;
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
   text-align: start;
-  // Add subtle entrance animation for each item
+  position: relative;
   animation: fadeInSlide var(--transition-fast) ease-out backwards;
 
   &.lastItem {
@@ -121,11 +152,23 @@
   }
 
   &:hover {
-    background: var(--color-background-alternative);
+    background: var(--color-surface-card-hover, var(--color-background-alternative));
+    padding-inline-start: calc(var(--spacing-large-px) + var(--spacing-micro-px));
+
+    .collectionIcon svg {
+      transform: scale(1.1);
+      color: var(--color-primary, #00F2FE);
+    }
   }
 
   &:active {
-    background: var(--color-background-alternative);
+    background: var(--color-surface-card-hover, var(--color-background-alternative));
+    transform: scale(0.995);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
   }
 }
 
@@ -138,11 +181,17 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  inline-size: calc(var(--spacing-medium3-px) + var(--spacing-small-px));
+  block-size: calc(var(--spacing-medium3-px) + var(--spacing-small-px));
+  border-radius: var(--border-radius-circle);
+  background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+  border: 1px solid var(--color-border-subtle, rgba(0, 242, 254, 0.15));
 
   svg {
-    inline-size: var(--spacing-medium3-px);
-    block-size: var(--spacing-medium3-px);
-    color: var(--color-bookmark-icon);
+    inline-size: var(--spacing-medium2-px);
+    block-size: var(--spacing-medium2-px);
+    color: var(--color-bookmark-icon, var(--color-primary));
+    transition: transform var(--transition-fast) ease, color var(--transition-fast) ease;
   }
 }
 
@@ -150,19 +199,20 @@
   flex: 1;
   font-size: var(--font-size-normal);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-default);
+  color: var(--color-text-primary, var(--color-text-default));
 }
 
 .collectionBadge {
   display: flex;
   align-items: center;
   gap: var(--spacing-xxsmall-px);
-  padding: var(--spacing-xxsmall-px) var(--spacing-small2-px);
-  background: var(--color-success-faded);
+  padding: var(--spacing-micro2-px) var(--spacing-small2-px);
+  background: var(--color-primary-subtle, rgba(0, 242, 254, 0.1));
+  border: 1px solid var(--color-border-subtle, rgba(0, 242, 254, 0.2));
   border-radius: var(--border-radius-pill);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-xsmall-px);
-  color: var(--color-success-medium);
+  color: var(--color-primary, var(--color-text-link));
   transition: all var(--transition-regular) ease;
 }
 
@@ -170,13 +220,14 @@
   > svg {
     inline-size: var(--font-size-xsmall-px);
     block-size: var(--font-size-xsmall-px);
-    color: var(--color-success-medium);
+    color: currentColor;
   }
 }
 
 .collectionCount {
   font-size: var(--font-size-xsmall-px);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
 }
 
 .loadMoreContainer {
@@ -190,15 +241,20 @@
   align-items: center;
   gap: var(--spacing-xsmall-px);
   font-size: var(--font-size-normal);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-default);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary, var(--color-text-default));
   background: transparent;
-  border: none;
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  border-radius: var(--border-radius-pill);
   cursor: pointer;
-  padding: var(--spacing-small-px);
+  padding: var(--spacing-small-px) var(--spacing-large-px);
+  transition: all var(--transition-fast) ease;
 
   &:hover {
-    color: var(--color-primary-medium);
+    color: var(--color-primary, var(--color-primary-medium));
+    border-color: var(--color-primary, var(--color-primary-medium));
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    transform: translateY(-1px);
   }
 
   svg {
@@ -211,13 +267,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: var(--spacing-medium2-px);
-  background: var(--color-background-default);
-  border: var(--spacing-hairline-px) solid var(--color-separators-ayah-level);
+  padding: var(--spacing-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  border: 1px solid var(--color-border-subtle, var(--color-separators-ayah-level));
   border-radius: var(--border-radius-large-px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   gap: var(--spacing-medium-px);
   inline-size: 100%;
   box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .guestPromoFeatures {
@@ -235,7 +294,7 @@
   font-size: var(--font-size-normal);
   box-sizing: border-box;
   font-weight: var(--font-weight-normal);
-  color: var(--color-text-default);
+  color: var(--color-text-primary, var(--color-text-default));
   line-height: var(--line-height-normal);
   padding: 0;
 }
@@ -243,18 +302,18 @@
 .checkIcon {
   inline-size: var(--spacing-medium-plus-px);
   block-size: var(--spacing-medium-plus-px);
-  color: var(--color-success-medium);
+  color: var(--color-primary, var(--color-success-medium));
   flex-shrink: 0;
 
   path {
-    fill: var(--color-success-medium);
+    fill: currentColor;
   }
 }
 
 .guestPromoSeparator {
   inline-size: 100%;
-  block-size: var(--spacing-hairline-px);
-  background: var(--color-separators-ayah-level);
+  block-size: 1px;
+  background: var(--color-border-subtle, var(--color-separators-ayah-level));
   border: none;
   margin: 0;
 }
@@ -264,19 +323,26 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-xsmall) var(--spacing-medium);
-  background-color: var(--color-success-medium);
-  border-radius: var(--border-radius-small-px);
+  padding: var(--spacing-small-px) var(--spacing-large-px);
+  background: var(--color-primary-gradient, linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%));
+  border-radius: var(--border-radius-pill);
   border: none;
-  font-size: var(--font-size-xsmall-px);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-small-px);
+  font-weight: var(--font-weight-bold);
   line-height: 100%;
-  color: var(--color-background-default);
+  color: #070A13;
   cursor: pointer;
-  transition: background-color var(--transition-normal) ease;
+  transition: all var(--transition-fast) ease;
+  box-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.2));
+
+  &:hover {
+    filter: brightness(1.15);
+    box-shadow: 0 0 24px var(--color-primary, rgba(0, 242, 254, 0.4));
+    transform: translateY(-1px);
+  }
 
   &:active:not(:disabled) {
-    background-color: var(--color-success-dark);
+    transform: translateY(0) scale(0.97);
   }
 
   &:disabled {
@@ -290,9 +356,9 @@
   block-size: var(--spacing-medium3-px);
   background: linear-gradient(
     90deg,
-    var(--color-background-alternative) 25%,
+    var(--color-surface-card) 25%,
     var(--color-background-alternative-faded) 50%,
-    var(--color-background-alternative) 75%
+    var(--color-surface-card) 75%
   );
   background-size: 200% 100%;
   animation: loading 1.5s ease-in-out infinite;
@@ -304,13 +370,13 @@
   block-size: calc(var(--spacing-medium3-px) * 3);
   background: linear-gradient(
     90deg,
-    var(--color-background-alternative) 25%,
+    var(--color-surface-card) 25%,
     var(--color-background-alternative-faded) 50%,
-    var(--color-background-alternative) 75%
+    var(--color-surface-card) 75%
   );
   background-size: 200% 100%;
   animation: loading 1.5s ease-in-out infinite;
-  border-block-end: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  border-block-end: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
 
   &:last-child {
     border-block-end: none;

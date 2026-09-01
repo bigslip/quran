@@ -33,6 +33,9 @@
   align-items: center;
   gap: var(--spacing-medium);
   justify-content: space-between;
+  font-size: var(--font-size-large-px);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
 }
 
 .modalHeader {
@@ -56,19 +59,26 @@
 
 .modalContentContainer {
   inline-size: 100%;
-  margin-block-start: calc(var(--spacing-mega) * 2);
+  margin-block-start: calc(var(--spacing-mega) * 1.5);
+
   @include breakpoints.smallerThanTablet {
-    margin-block-end: calc(var(--spacing-mega) * 2);
+    margin-block-end: calc(var(--spacing-mega) * 1.5);
   }
 }
 
 .readingDay {
-  margin-block-end: var(--spacing-mega);
+  margin-block-end: var(--spacing-large);
+  padding: var(--spacing-medium-px);
+  border-radius: var(--border-radius-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
   h2 {
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bold);
-    color: var(--color-primary-medium);
+    color: var(--color-primary, var(--color-primary-medium));
   }
 
   & > div {
@@ -79,27 +89,22 @@
 .emptyMessage {
   font-size: var(--font-size-large);
   font-weight: var(--font-weight-bold);
-  color: var(--color-secondary-medium);
-
-  @include theme.light {
-    opacity: var(--opacity-85);
-    color: var(--color-secondary-faint);
-  }
-
+  color: var(--color-text-secondary, var(--color-secondary-medium));
   text-align: center;
   margin-block-end: var(--spacing-medium);
 }
 
 .readingInfo {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-normal);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-large);
+  gap: var(--spacing-medium);
 
   h3 {
-    margin-block-start: var(--spacing-mega);
-    font-size: var(--font-size-xlarge);
+    margin-block-start: var(--spacing-large);
+    font-size: var(--font-size-large);
     font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary, var(--color-text-default));
   }
 
   ul {
@@ -112,6 +117,8 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-small);
+      color: var(--color-text-primary, var(--color-text-default));
+      font-variant-numeric: tabular-nums;
 
       [dir='rtl'] & {
         svg {
@@ -125,7 +132,6 @@
 .readingStats {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  flex-direction: column;
   gap: var(--spacing-large);
 
   @include breakpoints.tablet {
@@ -145,16 +151,31 @@
     align-items: center;
     justify-content: center;
     padding-block: var(--spacing-large);
-    border-radius: var(--border-radius-rounded);
-    background: var(--color-background-alternative-faint);
-    border: 1px solid var(--color-background-alternative-medium);
+    padding-inline: var(--spacing-medium);
+    border-radius: var(--border-radius-large-px);
+    background: var(--color-surface-card, var(--color-background-elevated-new));
+    border: 1px solid var(--color-border-subtle, var(--color-background-alternative-medium));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     font-size: var(--font-size-xlarge);
     font-weight: var(--font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary, var(--color-text-default));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:hover {
+      border-color: var(--color-primary, #00F2FE);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 242, 254, 0.12);
+    }
 
     svg {
-      margin-block-end: var(--spacing-large);
+      margin-block-end: var(--spacing-medium);
       inline-size: calc(var(--spacing-mega) * 1.2);
       block-size: calc(var(--spacing-mega) * 1.2);
+      color: var(--color-primary, #00F2FE);
+      filter: drop-shadow(0 0 8px var(--color-primary-subtle, rgba(0, 242, 254, 0.3)));
     }
   }
 }

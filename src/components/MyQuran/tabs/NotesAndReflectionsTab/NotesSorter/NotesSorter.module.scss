@@ -4,48 +4,58 @@
 .popoverMenuContent {
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-medium-px);
-  gap: var(--spacing-medium-px);
+  padding: var(--spacing-small-px);
+  gap: var(--spacing-xxsmall-px);
   min-inline-size: fit-content;
-  border-radius: var(--border-radius-xsmall-px);
+  border-radius: var(--border-radius-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 
   & [data-selected='true'] {
-    background-color: transparent;
-    color: var(--color-text-link-new);
+    background-color: var(--color-primary-subtle, rgba(0, 242, 254, 0.1));
+    color: var(--color-primary, var(--color-text-link-new));
+    font-weight: var(--font-weight-semibold);
   }
 
   & .menuItem[data-highlighted='true'],
   & .menuItem:focus,
   & .menuItem:focus-visible {
-    background-color: transparent;
-    color: var(--color-text-link-new);
+    background-color: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    color: var(--color-primary, var(--color-text-link-new));
   }
 }
 
 .sortTrigger {
   all: unset;
-
   display: flex;
   align-items: center;
   cursor: pointer;
   gap: var(--spacing-xsmall);
-  border-radius: var(--border-radius-default);
-  color: var(--color-text-default-new);
+  padding: var(--spacing-micro2-px) var(--spacing-small-px);
+  border-radius: var(--border-radius-pill);
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  background: var(--color-surface-card, transparent);
+  color: var(--color-text-primary, var(--color-text-default-new));
   font-size: var(--font-size-normal);
   font-weight: var(--font-weight-medium);
-  transition: opacity var(--transition-fast);
+  transition: all var(--transition-fast) ease;
 
   &:dir(rtl) {
     flex-direction: row-reverse;
   }
 
   &:hover {
-    opacity: var(--opacity-85);
+    border-color: var(--color-primary, #00F2FE);
+    color: var(--color-primary, #00F2FE);
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
   }
 
   &:focus-visible {
-    outline: var(--spacing-micro-px) solid var(--color-primary-medium);
-    outline-offset: var(--spacing-micro-px);
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   &[data-has-selected='true'] .iconWrapper::before {
@@ -65,13 +75,12 @@
   > svg {
     inline-size: 100%;
     block-size: 100%;
-    color: var(--color-text-default-new);
+    color: currentColor;
   }
 
   &:dir(rtl)::before {
     inset-inline-start: 0;
     inset-inline-end: 100%;
-    // Magic number to align the dot to the inline end and block start of the icon
     transform: translateX(100%) translateY(20%);
   }
 
@@ -79,30 +88,33 @@
     position: absolute;
     inset-block-start: 0;
     inset-inline-start: 100%;
-    // Magic number to align the dot to the inline end and block start of the icon
     transform: translateX(-30%) translateY(-25%);
     inline-size: var(--spacing-xxsmall-px);
     aspect-ratio: 1;
     border-radius: var(--border-radius-circle);
-    background-color: var(--color-blue-buttons-and-icons);
+    background-color: var(--color-primary, #00F2FE);
+    box-shadow: 0 0 8px var(--color-primary, #00F2FE);
   }
 }
 
 .sortText {
   white-space: nowrap;
+  font-size: var(--font-size-small-px);
 
-  // Hide text on mobile
   @include breakpoints.smallerThanTablet {
     display: none;
   }
 }
 
 .menuItem {
-  color: var(--color-text-default-new);
-  padding: 0;
+  color: var(--color-text-primary, var(--color-text-default-new));
+  padding: var(--spacing-micro2-px) var(--spacing-small-px);
+  border-radius: var(--border-radius-small-px);
+  transition: all var(--transition-fast) ease;
+
   &:hover {
-    background-color: transparent;
-    color: var(--color-text-link-new);
+    background-color: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    color: var(--color-primary, var(--color-text-link-new));
   }
 }
 

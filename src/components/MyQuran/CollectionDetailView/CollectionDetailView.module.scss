@@ -3,7 +3,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  // Fade in animation for container entrance
   animation: fadeIn var(--transition-regular) ease-out;
 }
 
@@ -20,8 +19,6 @@
   }
 }
 
-// Spacer to preserve layout until collection search is implemented.
-// Important: do not keep an invisible input in the tab order.
 .searchSpacer {
   flex: 1;
   min-inline-size: min(30rem, 100%);
@@ -29,11 +26,10 @@
   align-items: center;
   box-sizing: border-box;
   padding: var(--spacing-xsmall-px) var(--spacing-small2-px);
-  border: var(--spacing-hairline-px) solid transparent;
+  border: 1px solid transparent;
   border-radius: var(--border-radius-pill);
-  // Match the old search control's height (icon + vertical padding + border).
   min-block-size: calc(
-    var(--spacing-medium) + (2 * var(--spacing-xsmall-px)) + (2 * var(--spacing-hairline-px))
+    var(--spacing-medium) + (2 * var(--spacing-xsmall-px)) + 2px
   );
   visibility: hidden;
   pointer-events: none;
@@ -52,34 +48,38 @@
 
 .filterButton {
   all: unset;
-
   display: flex;
   align-items: center;
   cursor: pointer;
   gap: var(--spacing-xsmall);
-  border-radius: var(--border-radius-default);
+  padding: var(--spacing-micro2-px) var(--spacing-small-px);
+  border-radius: var(--border-radius-pill);
   position: relative;
-  color: var(--color-text-default-new);
+  color: var(--color-text-primary, var(--color-text-default-new));
   font-size: var(--font-size-normal);
   font-weight: var(--font-weight-medium);
-  transition: opacity var(--transition-fast);
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  background: var(--color-surface-card, transparent);
+  transition: all var(--transition-fast) ease;
 
   &:hover {
-    opacity: var(--opacity-85);
+    border-color: var(--color-primary, #00F2FE);
+    color: var(--color-primary, #00F2FE);
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
   }
 
   &:focus-visible {
-    outline: var(--spacing-micro-px) solid var(--color-primary-medium);
-    outline-offset: var(--spacing-micro-px);
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 
 .filterIcon {
-  color: var(--color-text-default-new);
+  color: currentColor;
 }
 
 .filterText {
-  font-size: var(--font-size-normal);
+  font-size: var(--font-size-small-px);
   font-weight: var(--font-weight-medium);
   white-space: nowrap;
 
@@ -92,12 +92,12 @@
   position: absolute;
   inset-block-start: 0;
   inset-inline-start: 100%;
-  // these transform numbers used number to align the dot to the inline end and block start of the icon
   transform: translateX(-30%) translateY(-25%);
   inline-size: var(--spacing-xxsmall-px);
   aspect-ratio: 1;
   border-radius: var(--border-radius-circle);
-  background-color: var(--color-blue-buttons-and-icons);
+  background-color: var(--color-primary, #00F2FE);
+  box-shadow: 0 0 8px var(--color-primary, #00F2FE);
 }
 
 .header {
@@ -107,6 +107,7 @@
   gap: var(--spacing-xxsmall-px);
   margin-block-end: var(--spacing-medium-px);
   animation: slideDown var(--transition-moderate) ease-out;
+
   span {
     overflow-wrap: anywhere;
   }
@@ -120,16 +121,18 @@
 }
 
 .backButton {
-  padding: 0;
+  padding: var(--spacing-micro2-px) var(--spacing-small-px);
   block-size: auto;
   min-inline-size: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-default-new);
+  color: var(--color-text-primary, var(--color-text-default-new));
   font-size: var(--font-size-large-px);
   font-weight: var(--font-weight-semibold);
-  border-radius: var(--border-radius-small-px);
+  border-radius: var(--border-radius-pill);
+  background: transparent;
+  border: 1px solid transparent;
 
   & > span {
     gap: var(--spacing-xxsmall-px);
@@ -140,11 +143,18 @@
     line-height: 1;
   }
 
-  transition: all var(--transition-fast) ease-out;
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
   animation: fadeIn var(--transition-regular) ease-out var(--transition-fast) backwards;
 
   &:hover {
-    background: var(--color-background-alternative);
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    border-color: var(--color-border-subtle, rgba(0, 242, 254, 0.2));
+    color: var(--color-primary, #00F2FE);
+    transform: translateX(-2px);
+
+    [dir='rtl'] & {
+      transform: translateX(2px);
+    }
   }
 }
 
@@ -154,13 +164,13 @@
   justify-content: center;
   gap: var(--spacing-xxsmall-px);
   padding: var(--spacing-micro2-px) var(--spacing-small2-px);
-  background: var(--color-success-faded);
-  border: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  background: var(--color-primary-subtle, rgba(0, 242, 254, 0.1));
+  border: 1px solid var(--color-border-subtle, rgba(0, 242, 254, 0.2));
   border-radius: var(--border-radius-pill);
-  color: var(--color-text-link-new);
+  color: var(--color-primary, var(--color-text-link-new));
   font-size: var(--font-size-xsmall-px);
-  font-weight: var(--font-weight-semibold);
-  // Fade in with delay
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
   animation: fadeIn var(--transition-regular) ease-out calc(var(--transition-fast) * 2) backwards;
 }
 
@@ -176,14 +186,17 @@
   justify-content: center;
   padding: var(--spacing-xsmall-px);
   background: transparent;
-  border: none;
-  border-radius: var(--border-radius-small-px);
-  color: var(--color-text-main);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-circle);
+  color: var(--color-text-secondary, var(--color-text-main));
   cursor: pointer;
   transition: all var(--transition-fast) ease-out;
 
   &:hover {
-    background: var(--color-background-alternative);
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    color: var(--color-primary, #00F2FE);
+    border-color: var(--color-border-subtle, rgba(0, 242, 254, 0.2));
+    transform: scale(1.08);
   }
 
   &:active {
@@ -202,7 +215,6 @@
   margin-block-start: var(--spacing-medium-px);
   justify-content: center;
   inline-size: 100%;
-  // Fade in animation for load more button
   animation: fadeIn var(--transition-moderate) ease-out;
 
   button {
@@ -210,7 +222,8 @@
     transition: all var(--transition-fast) ease-out;
 
     &:hover {
-      transform: translateY(calc(var(--spacing-micro-px) * -1));
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.15));
     }
 
     &:active {
@@ -223,11 +236,9 @@
   display: flex;
   justify-content: center;
   padding-block: var(--spacing-mega-px);
-  // Fade in animation for loading state
   animation: fadeIn var(--transition-fast) ease-out;
 }
 
-// Stagger animation for list items
 .listItem {
   animation: fadeInSlide var(--transition-regular) ease-out backwards;
 }
@@ -269,33 +280,42 @@
   align-items: center;
   justify-content: space-between;
   margin-block-end: var(--spacing-medium-px);
+  padding: var(--spacing-small-px) var(--spacing-medium-px);
+  border-radius: var(--border-radius-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  border: 1px solid var(--color-border-subtle, var(--color-separators-ayah-level));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   animation: fadeIn var(--transition-regular) ease-out;
 }
 
 .bulkActionButton {
-  border: var(--spacing-hairline-px) solid var(--color-separators-ayah-level);
+  border: 1px solid var(--color-border-subtle, var(--color-separators-ayah-level));
   border-radius: var(--border-radius-pill);
-  font-size: var(--font-size-normal);
+  font-size: var(--font-size-small-px);
   font-weight: var(--font-weight-medium);
+  padding: var(--spacing-micro2-px) var(--spacing-small2-px);
 
   &,
   &:is(:hover, :active, :focus-visible) {
     background: transparent;
-    color: var(--color-text-faded-new);
+    color: var(--color-text-secondary, var(--color-text-faded-new));
   }
 
   &:disabled {
-    border: var(--spacing-hairline-px) solid var(--color-separators-ayah-level);
+    border-color: var(--color-border-subtle, var(--color-separators-ayah-level));
     color: var(--color-daily-progress);
   }
 
   &:is(:hover, :active, :focus-visible):not(:disabled) {
-    border: var(--spacing-hairline-px) solid var(--color-grey-icons-new);
+    border-color: var(--color-primary, #00F2FE);
+    color: var(--color-primary, #00F2FE);
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
   }
 }
 
 .separator {
-  border-block-start: var(--spacing-hairline-px) solid var(--color-separators-ayah-level);
+  border-block-start: 1px solid var(--color-border-subtle, var(--color-separators-ayah-level));
   margin-block-end: var(--spacing-medium-px);
   animation: fadeIn var(--transition-moderate) ease-out;
 }

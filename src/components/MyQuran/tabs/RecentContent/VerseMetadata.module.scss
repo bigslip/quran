@@ -2,4 +2,12 @@
   flex-grow: 1;
   block-size: 1rem;
   max-inline-size: calc(2 * var(--spacing-mega-px));
+  border-radius: var(--border-radius-pill);
+}
+
+.metadata {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary, var(--color-text-faded));
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
 }

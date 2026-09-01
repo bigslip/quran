@@ -2,16 +2,15 @@
 
 .container {
   margin-block-end: var(--spacing-xlarge-px);
-  // Fade in animation for container
   animation: fadeIn var(--transition-regular) ease-out;
 }
 
 .title {
   font-size: var(--font-size-large-px);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-default);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
   margin-block-end: var(--spacing-medium2-px);
-  // Stagger animation for title
+  letter-spacing: -0.01em;
   animation: slideDown var(--transition-moderate) ease-out;
 }
 
@@ -19,13 +18,10 @@
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  // Completely hide scrollbar
   scrollbar-width: none;
   -ms-overflow-style: none;
-  // Smooth scroll behavior
   scroll-behavior: smooth;
 
-  // Hide scrollbar for all browsers
   &::-webkit-scrollbar {
     display: none;
     inline-size: 0;
@@ -36,26 +32,24 @@
 .itemsList {
   display: flex;
   gap: var(--spacing-small-px);
-  // Add padding to prevent clipping on left and right sides
-  padding-inline: var(--spacing-small-px);
+  padding-inline: var(--spacing-micro-px);
+  padding-block: var(--spacing-micro-px);
 }
 
 .item {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-xsmall-px);
-  padding: var(--spacing-xxsmall2-px) var(--spacing-small2-px);
-  background: var(--color-background-alternative-faint-new);
-  border: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  padding: var(--spacing-micro2-px) var(--spacing-small2-px);
+  background: var(--color-surface-card, var(--color-background-alternative-faint-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
   border-radius: var(--border-radius-pill);
   cursor: pointer;
-  transition: all var(--transition-moderate) ease-out;
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   flex-shrink: 0;
-  // Fade and slide animation for each item
   animation: fadeInSlide var(--transition-fast) ease-out backwards;
 
-  // Stagger animation for items
   @for $i from 1 through 10 {
     &:nth-child(#{$i}) {
       animation-delay: calc(#{$i} * var(--transition-fast));
@@ -63,23 +57,53 @@
   }
 
   &:hover {
-    border-color: var(--color-borders-hairline-new);
+    border-color: var(--color-primary, #00F2FE);
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--color-primary-subtle, rgba(0, 242, 254, 0.15));
+
+    .itemText {
+      color: var(--color-primary, #00F2FE);
+    }
+
+    .itemArrow {
+      color: var(--color-primary, #00F2FE);
+      transform: translateX(2px);
+
+      [dir='rtl'] & {
+        transform: translateX(-2px);
+      }
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 
 .itemText {
   font-size: var(--font-size-small);
-  color: var(--color-text-default);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary, var(--color-text-default));
   transition: color var(--transition-fast) ease-out;
 }
 
 .itemArrow {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-secondary, var(--color-text-faded));
+  transition: all var(--transition-fast) ease-out;
+
   > svg {
     inline-size: var(--font-size-xsmall-px);
     block-size: var(--font-size-xsmall-px);
   }
-  color: var(--color-text-faded);
-  transition: all var(--transition-moderate) ease-out;
 }
 
 .skeleton {
@@ -87,9 +111,9 @@
   block-size: calc(var(--spacing-medium3-px) + var(--spacing-small-px));
   background: linear-gradient(
     90deg,
-    var(--color-background-alternative) 25%,
+    var(--color-surface-card) 25%,
     var(--color-background-alternative-faded) 50%,
-    var(--color-background-alternative) 75%
+    var(--color-surface-card) 75%
   );
   background-size: 200% 100%;
   animation: loading var(--transition-slow) ease-in-out infinite;
@@ -97,7 +121,6 @@
   flex-shrink: 0;
 }
 
-// Animation keyframes
 @keyframes loading {
   0% {
     background-position: 200% 0;

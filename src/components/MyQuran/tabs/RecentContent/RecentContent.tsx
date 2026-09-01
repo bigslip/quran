@@ -12,6 +12,7 @@ import ChapterIconContainer, {
   ChapterIconsSize,
 } from '@/components/chapters/ChapterIcon/ChapterIconContainer';
 import DataContext from '@/contexts/DataContext';
+import EmptyState from '@/dls/EmptyState';
 import IconContainer from '@/dls/IconContainer/IconContainer';
 import Skeleton from '@/dls/Skeleton/Skeleton';
 import useGetRecentlyReadVerseKeys from '@/hooks/auth/useGetRecentlyReadVerseKeys';
@@ -61,9 +62,10 @@ const RecentContent: React.FC<RecentContentProps> = ({ className, ...props }) =>
   if (recentItems.length === 0) {
     return (
       <div className={containerClassName} {...props}>
-        <p className={styles.emptyState} data-testid={TestId.MY_QURAN_RECENT_CONTENT_EMPTY_STATE}>
-          {t('recent-empty')}
-        </p>
+        <EmptyState
+          title={t('recent-empty')}
+          testId={TestId.MY_QURAN_RECENT_CONTENT_EMPTY_STATE}
+        />
       </div>
     );
   }

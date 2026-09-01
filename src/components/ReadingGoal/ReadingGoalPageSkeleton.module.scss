@@ -3,11 +3,11 @@
 .pageContainerSkeleton {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-medium2-px);
+  gap: var(--spacing-large-px);
 
   .cardsSkeletonContainer {
     display: grid;
-    gap: var(--spacing-medium2-px);
+    gap: var(--spacing-large-px);
 
     @include breakpoints.tablet {
       grid-template-columns: repeat(2, 1fr);
@@ -15,12 +15,14 @@
 
     .cardSkeleton {
       block-size: calc(2 * var(--spacing-mega-px));
+      border-radius: var(--border-radius-large-px);
     }
   }
 
   .calendarSkeleton {
     display: grid;
     gap: var(--spacing-medium2-px);
+
     @include breakpoints.tablet {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -28,6 +30,7 @@
     .calendarSkeletonItem {
       inline-size: 100%;
       block-size: var(--spacing-xxlarge-px);
+      border-radius: var(--border-radius-large-px);
     }
   }
 }
