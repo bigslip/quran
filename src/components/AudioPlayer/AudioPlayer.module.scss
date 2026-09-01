@@ -1,6 +1,7 @@
 @use 'src/styles/breakpoints';
 @use 'src/styles/constants';
 @use 'src/styles/utility';
+@use 'src/styles/theme';
 
 .container {
   position: fixed;
@@ -8,12 +9,12 @@
   inline-size: 100%;
   inset-block-end: 0;
   text-align: center;
-  background: var(--color-surface-floating, var(--color-background-default));
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  transition: var(--transition-regular);
+  background: var(--color-surface-floating, rgba(14, 22, 40, 0.90));
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  transition: transform var(--transition-regular), opacity var(--transition-regular), box-shadow var(--transition-regular);
   z-index: var(--z-index-sticky);
-  box-shadow: var(--elevation-floating, var(--shadow-large));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15), var(--elevation-floating, 0 8px 32px rgba(0, 0, 0, 0.25));
   border-block-start: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
   block-size: constants.$audio-player-default-height;
   will-change: transform;
@@ -22,10 +23,30 @@
     inset-block-end: var(--spacing-medium-px);
     inset-inline: 0;
     margin-inline: auto;
-    max-inline-size: min(92%, 56rem);
-    border-radius: 16px;
-    border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+    max-inline-size: min(92%, 56.25rem); /* ~900px */
+    border-radius: 20px;
+    border: 1px solid var(--color-border-iridescent, var(--color-border-subtle));
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45), 0 0 24px var(--color-primary-subtle, rgba(0, 242, 254, 0.15));
     block-size: constants.$audio-player-default-desktop-height;
+    padding-inline: var(--spacing-small);
+  }
+
+  @include theme.dark {
+    background: rgba(10, 16, 30, 0.92);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65), 0 0 24px rgba(0, 242, 254, 0.15);
+    border: 1px solid rgba(0, 242, 254, 0.22);
+  }
+
+  @include theme.light {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 16px 40px rgba(2, 132, 199, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(2, 132, 199, 0.18);
+  }
+
+  @include theme.sepia {
+    background: rgba(244, 235, 217, 0.94);
+    box-shadow: 0 16px 40px rgba(100, 80, 50, 0.15), 0 4px 16px rgba(42, 36, 28, 0.08);
+    border: 1px solid rgba(215, 201, 178, 0.9);
   }
 }
 
@@ -41,4 +62,5 @@
   align-items: center;
   display: flex;
   block-size: 100%;
+  justify-content: center;
 }

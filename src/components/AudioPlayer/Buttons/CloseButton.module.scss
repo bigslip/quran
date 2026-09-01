@@ -1,0 +1,14 @@
+.closeButton {
+  transition: transform var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast) !important;
+  color: var(--color-text-secondary, var(--color-text-faded)) !important;
+
+  &:hover:not(:disabled) {
+    color: var(--color-text-primary, var(--color-text-default)) !important;
+    background-color: rgba(239, 68, 68, 0.12) !important;
+    transform: scale(1.06) !important;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.94) !important;
+  }
+}

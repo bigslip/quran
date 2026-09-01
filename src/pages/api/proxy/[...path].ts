@@ -152,9 +152,24 @@ export const config = {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const url = req.url || '';
+  if (!process.env.API_GATEWAY_URL) {
+    if (url.includes('count_within_range') || url.includes('count-within-range')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+      res.status(200).json({});
+      return;
+    }
+    if (url.includes('/courses')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+      res.status(200).json({ data: [] });
+      return;
+    }
+  }
+
   apiProxy(req, res, (err) => {
     if (err) {
       res.status(500).json({ error: ERROR_MESSAGES.PROXY_HANDLER_ERROR, message: err.message });
     }
   });
 }
+

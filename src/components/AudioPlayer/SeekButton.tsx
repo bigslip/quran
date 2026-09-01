@@ -3,6 +3,8 @@ import { useContext, useMemo } from 'react';
 import { useSelector } from '@xstate/react';
 import useTranslation from 'next-translate/useTranslation';
 
+import styles from './SeekButton.module.scss';
+
 import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
 import BackwardIcon from '@/icons/backward.svg';
 import ForwardIcon from '@/icons/forward.svg';
@@ -52,6 +54,7 @@ const SeekButton = ({ type, isLoading, chaptersData }: SeekButtonProps) => {
       ariaLabel={type === SeekButtonType.PrevAyah ? t('previous-ayah') : t('next-ayah')}
       variant={ButtonVariant.Ghost}
       shape={ButtonShape.Circle}
+      className={styles.seekButton}
       onClick={onSeek}
       isDisabled={isDisabled}
       data-testid={type === SeekButtonType.PrevAyah ? 'audio-prev-ayah' : 'audio-next-ayah'}
@@ -62,3 +65,4 @@ const SeekButton = ({ type, isLoading, chaptersData }: SeekButtonProps) => {
 };
 
 export default SeekButton;
+

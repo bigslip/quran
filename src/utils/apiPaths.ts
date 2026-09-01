@@ -1,11 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-lines */
-import { decamelizeKeys } from 'humps';
-
 // eslint-disable-next-line import/no-cycle
 import { getDefaultWordFields, getMushafId, ITEMS_PER_PAGE, makeUrl } from './api';
-import stringify from './qs-stringify';
-import { getProxiedServiceUrl, QuranFoundationService } from './url';
 
 import { DEFAULT_RECITER } from '@/redux/defaultSettings/defaultSettings';
 import {
@@ -150,10 +146,7 @@ export const makeAdvancedCopyUrl = (params: AdvancedCopyRequest): string =>
   makeUrl('/verses/advanced_copy', params as Record<string, unknown>);
 
 export const makeNewSearchResultsUrl = <T extends SearchMode>(params: SearchRequestParams<T>) => {
-  return getProxiedServiceUrl(
-    QuranFoundationService.SEARCH,
-    `/v1/search?${stringify(decamelizeKeys(params))}`,
-  );
+  return makeUrl('/search', params as unknown as Record<string, unknown>);
 };
 
 /**
@@ -225,7 +218,7 @@ export const makeChapterInfoUrl = (
  * @returns {string}
  */
 export const makeChapterMetadataUrl = (chapterId: string, language: string): string =>
-  makeUrl(`/chapters/${chapterId}/metadata`, { language });
+  makeUrl(`/chapters/${chapterId}/info`, { language });
 
 /**
  * Compose the url for the chapter's API.

@@ -4,7 +4,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-block: var(--spacing-hairline-px);
+  padding-block: var(--spacing-xxsmall);
+  gap: var(--spacing-xsmall);
+
+  @include breakpoints.tablet {
+    gap: var(--spacing-small);
+    padding-block: var(--spacing-micro);
+  }
+
+  @include breakpoints.desktop {
+    gap: var(--spacing-medium);
+  }
 }
 
 .actionItem {
@@ -14,7 +24,7 @@
   transition: transform var(--transition-fast);
 
   &:hover {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 
   &:active {
@@ -23,8 +33,6 @@
 }
 
 .actionItem + .actionItem {
-  margin-inline-start: var(--spacing-xsmall);
-  @include breakpoints.desktop {
-    margin-inline-start: var(--spacing-medium);
-  }
+  margin-inline-start: 0;
 }
+

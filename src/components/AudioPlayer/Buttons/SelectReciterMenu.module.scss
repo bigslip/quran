@@ -1,17 +1,20 @@
 .reciterStyle {
+  display: inline;
   padding-inline-start: var(--spacing-micro);
   color: var(--color-text-secondary, var(--color-text-faded));
   font-size: var(--font-size-small);
 }
 
 .reciterList {
-  max-block-size: min(60vh, 62rem);
+  max-block-size: min(60vh, 32rem);
   overflow-y: auto;
   overscroll-behavior: contain;
   padding-block: var(--spacing-xxsmall);
+  scrollbar-width: thin;
 }
 
 .embeddedReciterList {
   max-block-size: none;
   overflow-y: visible;
 }
+

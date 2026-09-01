@@ -2,6 +2,8 @@ import { useContext } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 
+import styles from './CloseButton.module.scss';
+
 import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
 import CloseIcon from '@/icons/close.svg';
 import { withStopPropagation } from '@/utils/event';
@@ -17,6 +19,7 @@ const CloseButton = () => {
       ariaLabel={t('audio.player.close-audio-player')}
       shape={ButtonShape.Circle}
       variant={ButtonVariant.Ghost}
+      className={styles.closeButton}
       onClick={withStopPropagation(() => {
         logButtonClick(`audio_player_overflow_menu_close`);
         audioService.send({ type: 'CLOSE' });
@@ -30,3 +33,4 @@ const CloseButton = () => {
 };
 
 export default CloseButton;
+

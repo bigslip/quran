@@ -57,9 +57,9 @@ const SearchResults: React.FC<Props> = ({
         </>
       )}
       <>
-        {results.map((result) => (
+        {results.map((result, index) => (
           <SearchResultItem
-            key={result.key}
+            key={`${result.key || index}-${index}`}
             result={result}
             source={source}
             service={searchResult.service}
