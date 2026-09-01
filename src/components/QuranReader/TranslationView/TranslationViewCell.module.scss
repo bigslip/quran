@@ -5,12 +5,12 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  padding-block: var(--spacing-medium2-px);
+  padding-block: var(--spacing-medium-px);
   --gap-size: calc(0.5 * var(--spacing-mega));
   transition: background-color var(--transition-regular), box-shadow var(--transition-regular);
 
   @include breakpoints.tablet {
-    padding-block: var(--spacing-large-px);
+    padding-block: var(--spacing-xlarge-px);
   }
 }
 
@@ -19,9 +19,9 @@
 }
 
 .highlightedContainer {
-  background: var(--color-primary-subtle, var(--color-background-alternative-faded));
-  border-radius: var(--border-radius-default, 8px);
-  box-shadow: 0 0 0 1px var(--color-border-subtle);
+  background: var(--color-primary-subtle);
+  border-radius: var(--border-radius-default, 12px);
+  box-shadow: 0 0 0 1px var(--color-border-subtle), var(--color-glow-subtle);
 }
 
 .contentContainer {
@@ -37,32 +37,38 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-xxsmall-px);
-  block-size: var(--spacing-medium2-px);
+  gap: var(--spacing-xsmall-px);
+  block-size: var(--spacing-large-px);
 }
 
 .arabicVerseContainer {
   direction: rtl;
-  margin-block-start: var(--spacing-large-px);
-  margin-block-end: var(--spacing-medium-plus-px);
+  margin-block-start: var(--spacing-medium-px);
+  margin-block-end: var(--spacing-large-px);
   line-height: 2.4;
+  text-rendering: optimizeLegibility;
 
   @include breakpoints.tablet {
-    margin-block-start: var(--spacing-xxlarge-px);
+    margin-block-start: var(--spacing-large-px);
+    margin-block-end: var(--spacing-xlarge-px);
   }
 }
 
 .verseTranslationsContainer {
-  margin-block-end: var(--spacing-large-px);
-  line-height: 1.8;
+  margin-block-end: var(--spacing-medium-px);
+  line-height: 1.75;
 
   @include breakpoints.tablet {
-    margin-block-end: var(--spacing-xxlarge-px);
+    margin-block-end: var(--spacing-large-px);
   }
 }
 
 .verseTranslationContainer {
-  margin-block-end: var(--spacing-mega);
+  margin-block-end: var(--spacing-large-px);
+
+  &:last-child {
+    margin-block-end: 0;
+  }
 }
 
 .actionContainerLeft,
@@ -82,28 +88,33 @@
 
 .iconContainer.verseAction {
   color: var(--color-text-secondary, var(--color-text-default));
-  block-size: calc(2.2 * var(--spacing-medium));
-  inline-size: calc(2.2 * var(--spacing-medium));
+  block-size: 40px;
+  inline-size: 40px;
+  min-block-size: 40px;
+  min-inline-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: var(--border-radius-pill);
-  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
-    color: var(--color-primary, var(--color-text-default));
-    background-color: var(--color-primary-subtle, transparent);
-    background-image: none;
+    color: var(--color-primary);
+    background-color: var(--color-primary-subtle);
+    border-color: var(--color-border-subtle);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.96);
   }
 
   @media (hover: hover) {
-    &:hover {
-      color: var(--color-primary, var(--color-success-medium));
-      background-color: var(--color-primary-subtle, var(--color-success-medium));
-      border-radius: var(--border-radius-pill);
-    }
-
     &:hover:not(.bookmarkAction) {
       .icon span {
         svg {
-          color: var(--color-primary, var(--color-success-medium)) !important;
+          color: var(--color-primary) !important;
         }
       }
     }
@@ -113,6 +124,8 @@
 .bookmarkAction {
   &:hover {
     color: var(--color-bookmark-icon);
+    border-color: rgba(251, 191, 36, 0.3);
+    background-color: rgba(251, 191, 36, 0.12);
 
     .icon svg,
     .icon span svg {
@@ -157,15 +170,14 @@
 .actionItem {
   &:hover {
     svg {
-      color: var(--color-success-medium);
+      color: var(--color-primary);
     }
   }
 }
 
-// fix optical illussion for triangle icon inside circle button
+// fix optical illusion for triangle icon inside circle button
 .playIcon {
-  /* stylelint-disable-next-line csstools/use-logical */
-  margin-left: calc(0.5 * var(--spacing-xxsmall));
+  margin-inline-start: calc(0.5 * var(--spacing-xxsmall));
 }
 
 .actionContainerLeft .actionItem {
@@ -187,10 +199,10 @@
     @include utility.edgeHorizontalPadding;
   }
   box-sizing: border-box;
-  gap: var(--spacing-medium);
+  gap: var(--spacing-small);
 
   @media (min-width: 768px) {
-    gap: var(--spacing-large);
+    gap: var(--spacing-medium);
   }
 }
 
@@ -214,15 +226,20 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: calc(var(--spacing-xsmall) / 2);
+  gap: var(--spacing-xxsmall-px);
   cursor: pointer;
   color: var(--color-text-secondary, var(--color-grey-icons-new));
-  transition: color var(--transition-fast), background-color var(--transition-fast);
-  padding: 4px 8px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+  padding-block: 6px;
+  padding-inline: 12px;
   border-radius: var(--border-radius-pill);
   flex-shrink: 0;
 
   @include breakpoints.smallerThanTablet {
+    padding-block: 4px;
+    padding-inline: 8px;
     flex-shrink: 0;
     justify-content: center;
     min-inline-size: 0;
@@ -231,6 +248,12 @@
   &:hover {
     color: var(--color-primary, var(--color-success-medium));
     background-color: var(--color-primary-subtle);
+    border-color: var(--color-border-subtle);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
   }
 }
 

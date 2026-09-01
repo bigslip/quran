@@ -3,11 +3,9 @@
 
 // Component-specific design tokens
 $container-gap: var(--spacing-xxsmall-px);
-$container-padding: var(--spacing-hairline-px);
-$container-border-radius: var(--border-radius-rounded);
-
+$container-padding: 3px;
 $pill-gap: var(--spacing-xxsmall-px);
-$pill-padding-block: var(--spacing-xxsmall-px);
+$pill-padding-block: 4px;
 $pill-padding-inline: var(--spacing-small-px);
 $pill-border-radius: var(--border-radius-pill);
 $icon-only-pill-padding-inline: var(--spacing-small-px);
@@ -15,7 +13,7 @@ $icon-only-pill-padding-inline: var(--spacing-small-px);
 $expanded-gap: var(--spacing-small-px);
 $font-size: var(--font-size-small);
 
-$icon-size: var(--spacing-medium-px); // 15px - matches other mode icons
+$icon-size: var(--spacing-medium-px);
 $sub-option-icon-height: var(--spacing-medium-px);
 $divider-height: var(--spacing-medium-px);
 $icon-border-radius: var(--spacing-hairline-px);
@@ -24,10 +22,13 @@ $icon-border-radius: var(--spacing-hairline-px);
   display: flex;
   align-items: center;
   gap: $container-gap;
-  padding: calc($container-padding * 2);
-  background-color: var(--color-background-alternative-faint);
-  border: 1px solid var(--color-border-subtle, transparent);
+  padding: $container-padding;
+  background-color: var(--color-surface-card, var(--color-background-alternative-faint));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border-subtle);
   border-radius: $pill-border-radius;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .pill {
@@ -37,10 +38,9 @@ $icon-border-radius: var(--spacing-hairline-px);
   gap: $pill-gap;
   padding: $pill-padding-block $pill-padding-inline;
   border-radius: $pill-border-radius;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast),
-    box-shadow var(--transition-fast), transform var(--transition-fast);
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
   font-family: var(--font-family);
   font-size: $font-size;
   font-weight: var(--font-weight-semibold);
@@ -49,23 +49,25 @@ $icon-border-radius: var(--spacing-hairline-px);
   box-sizing: border-box;
 
   &:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
   }
 }
 
 .pillSelected {
-  background-color: var(--color-surface-card, var(--color-background-elevated));
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  color: var(--color-text-primary, var(--color-text-default-new));
+  background-color: var(--color-primary-subtle);
+  border-color: var(--color-border-subtle);
+  box-shadow: 0 0 12px var(--color-primary-subtle), var(--shadow-small-new);
+  color: var(--color-primary);
 }
 
 .pillUnselected {
   background-color: transparent;
-  color: var(--color-text-secondary, var(--color-text-faded-new));
+  color: var(--color-text-secondary);
 
   &:hover {
     color: var(--color-text-primary);
     background-color: var(--color-primary-subtle);
+    border-color: var(--color-border-subtle);
   }
 }
 
@@ -93,27 +95,27 @@ $icon-border-radius: var(--spacing-hairline-px);
   }
 }
 
-// Unselected state for main pill icons (Verse by Verse, Reading)
+// Unselected state for main pill icons
 .iconUnselected {
   rect:first-child {
     fill: none;
-    stroke: var(--color-text-faded-new);
+    stroke: currentColor;
   }
 
   path {
-    fill: var(--color-text-faded-new);
+    fill: currentColor;
   }
 }
 
-// Selected state for main pill icons (dark background)
+// Selected state for main pill icons
 .iconSelected {
   rect:first-child {
-    fill: var(--color-text-default-new, #272727);
-    stroke: var(--color-text-default-new, #272727);
+    fill: currentColor;
+    stroke: currentColor;
   }
 
   path {
-    fill: var(--color-background-elevated-new, #ffffff);
+    fill: var(--color-surface-bg, #ffffff);
   }
 }
 
@@ -139,16 +141,18 @@ $icon-border-radius: var(--spacing-hairline-px);
   font-size: $font-size;
   font-weight: var(--font-weight-semibold);
   line-height: 1.2em;
-  color: var(--color-text-faded-new);
-  transition: color var(--transition-regular);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast), opacity var(--transition-fast);
 
   &:hover {
-    opacity: 0.8;
+    color: var(--color-text-primary);
+    opacity: 0.9;
   }
 }
 
 .subOptionSelected {
-  color: var(--color-text-link-new);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
 }
 
 .subOptionIconContainer {
@@ -165,8 +169,6 @@ $icon-border-radius: var(--spacing-hairline-px);
   }
 }
 
-// Icon styling for Arabic/Translation sub-option icons
-// Following the same pattern as ReadingPreference.module.scss
 .subOptionIcon {
   transition: all var(--transition-regular);
   border-radius: $icon-border-radius;
@@ -177,27 +179,25 @@ $icon-border-radius: var(--spacing-hairline-px);
   }
 }
 
-// Unselected state for sub-option icons
 .subOptionIconUnselected {
   rect:first-child {
     fill: none;
-    stroke: var(--color-text-faded-new);
+    stroke: currentColor;
   }
 
   path {
-    fill: var(--color-text-faded-new);
+    fill: currentColor;
   }
 }
 
-// Selected state for sub-option icons - teal in light/dark, #72603F in sepia
 .subOptionIconSelected {
   rect:first-child {
-    fill: var(--color-text-link-new);
-    stroke: var(--color-text-link-new);
+    fill: var(--color-primary);
+    stroke: var(--color-primary);
   }
 
   path {
-    fill: var(--color-background-elevated-new, #ffffff);
+    fill: var(--color-surface-bg, #ffffff);
   }
 }
 
@@ -208,7 +208,7 @@ $icon-border-radius: var(--spacing-hairline-px);
 .divider {
   inline-size: var(--spacing-hairline-px);
   block-size: $divider-height;
-  background-color: var(--color-borders-hairline);
+  background-color: var(--color-border-subtle);
 }
 
 // Icon-only mode adjustments
@@ -221,3 +221,4 @@ $icon-border-radius: var(--spacing-hairline-px);
     padding: $pill-padding-block $icon-only-pill-padding-inline;
   }
 }
+

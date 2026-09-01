@@ -1,16 +1,15 @@
 @use 'src/styles/breakpoints';
 
-$icon-size: var(--spacing-medium-px); // 15px - matches other mode icons
+$icon-size: var(--spacing-medium-px);
 $border-width: var(--spacing-hairline-px);
-$selected-border-width: var(--mobile-reading-tabs-border);
+$selected-border-width: 2px;
 
 .container {
   block-size: var(--context-menu-mobile-reading-tabs-height);
   max-block-size: var(--context-menu-mobile-reading-tabs-height);
   inline-size: 100%;
-  display: none; // Hidden by default
+  display: none;
 
-  // Only show on mobile when navbar is visible
   @include breakpoints.smallerThanTablet {
     display: block;
   }
@@ -20,8 +19,10 @@ $selected-border-width: var(--mobile-reading-tabs-border);
   inline-size: 100%;
   display: flex;
   justify-content: space-between;
-  border-block-end: $border-width solid var(--color-borders-hairline);
-  background-color: var(--color-background-elevated-new);
+  border-block-end: $border-width solid var(--color-border-subtle);
+  background-color: var(--color-surface-floating, var(--color-background-elevated));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   block-size: var(--mobile-reading-mode-tabs-height);
 }
 
@@ -38,21 +39,27 @@ $selected-border-width: var(--mobile-reading-tabs-border);
   block-size: var(--mobile-reading-tabs-content-height);
   box-sizing: content-box;
   font-weight: var(--font-weight-medium);
-  color: var(--color-text-faded-new);
+  color: var(--color-text-secondary);
   inline-size: 50%;
-  border-block-end: $selected-border-width solid var(--color-separators-ayah-level);
+  border-block-end: $selected-border-width solid transparent;
   cursor: pointer;
-  transition: color var(--transition-regular), border-color var(--transition-regular);
+  transition: all var(--transition-fast);
 
   span {
     margin-inline-start: var(--spacing-small-px);
   }
+
+  &:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-primary-subtle);
+  }
 }
 
 .selectedTab {
-  color: var(--color-success-medium);
-  border-block-end: $selected-border-width solid var(--color-success-medium);
+  color: var(--color-primary);
+  border-block-end: $selected-border-width solid var(--color-primary);
   font-weight: var(--font-weight-semibold);
+  background-color: var(--color-primary-subtle);
 }
 
 .iconContainer {
@@ -71,3 +78,4 @@ $selected-border-width: var(--mobile-reading-tabs-border);
   transition: color var(--transition-regular);
   color: inherit;
 }
+

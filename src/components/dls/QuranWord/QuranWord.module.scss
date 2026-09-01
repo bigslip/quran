@@ -2,6 +2,7 @@
   display: inline-block;
   cursor: pointer;
   white-space: nowrap;
+  transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
 .interactionDisabled {
@@ -9,23 +10,21 @@
 }
 
 .additionalWordGap {
-  margin-inline-end: var(--spacing-xxsmall);
+  margin-inline-end: var(--spacing-xsmall-px);
 }
 
 .additionalStopSignGap {
-  margin-inline-end: var(--spacing-small);
+  margin-inline-end: var(--spacing-small-px);
 }
 
 .wbwContainer {
   text-align: center;
-  padding-block-start: var(--spacing-micro);
-  padding-block-end: var(--spacing-micro);
-  padding-inline-start: var(--spacing-micro);
-  padding-inline-end: var(--spacing-micro);
+  padding-block: var(--spacing-micro);
+  padding-inline: var(--spacing-micro);
 }
 
 .highlightOnHover {
-  transition: color var(--transition-fast);
+  transition: color var(--transition-fast), transform var(--transition-fast);
   &:hover {
     color: var(--color-primary, var(--color-success-medium));
   }
@@ -34,7 +33,7 @@
 .highlighted {
   color: var(--color-primary, var(--color-success-medium));
   background-color: var(--color-primary-subtle);
-  box-shadow: var(--shadow-word-glow);
+  box-shadow: var(--shadow-word-glow, 0 0 12px var(--color-primary-subtle));
   border-radius: var(--border-radius-rounded);
   transition: all var(--transition-fast);
 }
@@ -48,10 +47,12 @@
     position: absolute;
     inset-block-start: 0;
     inset-block-end: 0;
-    inset-inline-start: -2px;
-    inset-inline-end: -2px;
-    background-color: var(--color-primary-subtle, var(--color-success-faded));
+    inset-inline-start: -3px;
+    inset-inline-end: -3px;
+    background-color: var(--color-primary-subtle);
+    border: 1px solid var(--color-border-subtle);
     border-radius: var(--border-radius-rounded);
+    box-shadow: var(--shadow-word-glow, 0 0 12px var(--color-primary-subtle));
     z-index: -1;
   }
 }
@@ -79,3 +80,4 @@ div.popoverTrigger {
   margin-inline-start: 0;
   margin-inline-end: 0;
 }
+

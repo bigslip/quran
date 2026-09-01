@@ -4,24 +4,31 @@
 .verseLink {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  color: var(--color-primary, var(--color-grey-icons-new));
+  color: var(--color-primary);
   font-size: var(--font-size-small);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.02em;
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
   margin-inline-end: var(--spacing-xxsmall-px);
-  padding-inline: calc(var(--spacing-small-px) * 0.85);
-  padding-block: var(--spacing-hairline-px);
+  padding-inline: var(--spacing-small-px);
+  padding-block: 4px;
+  min-block-size: 32px;
   background-color: var(--color-primary-subtle);
-  border: 1px solid var(--color-border-subtle, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--border-radius-pill);
-  box-sizing: content-box;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
   inline-size: max-content;
-  block-size: max-content;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 
   @include breakpoints.smallerThanTablet {
     font-size: var(--font-size-xsmall);
+    padding-inline: calc(var(--spacing-small-px) * 0.75);
+    min-block-size: 28px;
   }
 
   @media (hover: hover) {
@@ -30,6 +37,11 @@
       color: var(--color-text-white);
       background-color: var(--color-primary);
       border-color: var(--color-primary);
+      box-shadow: var(--color-glow-celestial);
+      transform: translateY(-1px);
+    }
+    &:active {
+      transform: translateY(0) scale(0.97);
     }
   }
 }
@@ -45,8 +57,12 @@
   &:hover,
   &:focus {
     cursor: default;
-    color: var(--color-grey-icons-new);
-    background-color: transparent;
-    opacity: 1;
+    color: var(--color-text-secondary);
+    background-color: var(--color-primary-subtle);
+    border-color: var(--color-border-subtle);
+    opacity: 0.85;
+    box-shadow: none;
+    transform: none;
   }
 }
+
