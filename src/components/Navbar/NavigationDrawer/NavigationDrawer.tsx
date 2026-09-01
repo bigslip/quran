@@ -1,5 +1,5 @@
 /* eslint-disable react/no-multi-comp */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -11,8 +11,8 @@ import ProfileAvatarButton from '../NavbarBody/ProfileAvatarButton';
 import styles from './NavigationDrawer.module.scss';
 import NavigationDrawerBodySkeleton from './NavigationDrawerBodySkeleton';
 
+import useAuthData from '@/hooks/auth/useAuthData';
 import { selectNavbar } from '@/redux/slices/navbar';
-import { isLoggedIn } from '@/utils/auth/login';
 
 const NavigationDrawerBody = dynamic(() => import('./NavigationDrawerBody'), {
   ssr: false,
@@ -20,8 +20,15 @@ const NavigationDrawerBody = dynamic(() => import('./NavigationDrawerBody'), {
 });
 
 const NavigationDrawer = () => {
+  const [isMounted, setIsMounted] = useState(false);
   const { isNavigationDrawerOpen, isLanguageDrawerOpen } = useSelector(selectNavbar, shallowEqual);
-  const isUserLoggedIn = isLoggedIn();
+  const { isAuthenticated } = useAuthData();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const isUserLoggedIn = isMounted && isAuthenticated;
 
   return (
     <Drawer

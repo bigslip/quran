@@ -2,11 +2,14 @@
 import React from 'react';
 
 import classNames from 'classnames';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import styles from './GlyphWord.module.scss';
 
-import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
+import {
+  selectQuranMushafLines,
+  selectQuranTextFontScale,
+} from '@/redux/slices/QuranReader/styles';
 import { CharType } from '@/types/Word';
 import { isFirefox } from '@/utils/device-detector';
 import { getFontClassName, getFontFaceNameForPage } from '@/utils/fontFaceHelper';
@@ -66,11 +69,12 @@ const GlyphWord = ({
   ...props
 }: UthmaniWordTextProps) => {
   // Get values from Redux as the default
-  const reduxStyles = useSelector(selectQuranReaderStyles, shallowEqual);
+  const defaultFontScale = useSelector(selectQuranTextFontScale);
+  const defaultMushafLines = useSelector(selectQuranMushafLines);
 
   // Use prop overrides if provided, otherwise fall back to Redux values.
-  const quranTextFontScale = quranTextFontScaleOverride ?? reduxStyles?.quranTextFontScale ?? 3;
-  const mushafLines = mushafLinesOverride ?? reduxStyles?.mushafLines ?? MushafLines.SixteenLines;
+  const quranTextFontScale = quranTextFontScaleOverride ?? defaultFontScale ?? 3;
+  const mushafLines = mushafLinesOverride ?? defaultMushafLines ?? MushafLines.SixteenLines;
 
   // The extra space before the glyph should only be added where the issue occurs,
   // which is in firefox with the Madani V1 Mushaf and the font scale is less than 6

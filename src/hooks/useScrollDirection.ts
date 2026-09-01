@@ -46,7 +46,7 @@ const useScrollDirection = (
 
   // bind the scroll listener on mount and un-bind it on un-mounting.
   useEffect(() => {
-    window.addEventListener('scroll', onScrollThrottled);
+    window.addEventListener('scroll', onScrollThrottled, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScrollThrottled);
     };

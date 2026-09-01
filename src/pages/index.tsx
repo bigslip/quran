@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable react/no-multi-comp */
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import { NextPage, GetStaticProps } from 'next';
@@ -21,11 +21,11 @@ import MobileHomepageSections from '@/components/HomePage/MobileHomepageSections
 import QuranInYearSection from '@/components/HomePage/QuranInYearSection';
 import ReadingSection from '@/components/HomePage/ReadingSection';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
+import useAuthData from '@/hooks/auth/useAuthData';
+import useIsMobile from '@/hooks/useIsMobile';
 import { selectIsHomepageBannerVisible } from '@/redux/slices/fundraisingBanner';
-import { isLoggedIn } from '@/utils/auth/login';
 import { getAllChaptersData } from '@/utils/chapter';
 import { getLanguageAlternates } from '@/utils/locale';
-import useIsMobile from '@/hooks/useIsMobile';
 import { getCanonicalUrl } from '@/utils/navigation';
 import getCurrentDayAyah from '@/utils/quranInYearCalendar';
 import { ChaptersResponse } from 'types/ApiResponses';
@@ -41,8 +41,15 @@ const Index: NextPage<IndexProps> = ({
   chaptersData,
 }): JSX.Element => {
   const { t, lang } = useTranslation('home');
+  const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
-  const isUserLoggedIn = isLoggedIn();
+  const { isAuthenticated } = useAuthData();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const isUserLoggedIn = isMounted && isAuthenticated;
   const todayAyah = useMemo(() => getCurrentDayAyah(), []);
   const isBannerVisible = useSelector(selectIsHomepageBannerVisible);
 

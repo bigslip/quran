@@ -19,18 +19,33 @@ export const contextMenuSlice = createSlice({
   name: SliceName.CONTEXT_MENU,
   initialState,
   reducers: {
-    setIsExpanded: (state: ContextMenu, action: PayloadAction<boolean>) => ({
-      ...state,
-      isExpanded: action.payload,
-    }),
-    setShowReadingPreferenceSwitcher: (state: ContextMenu, action: PayloadAction<boolean>) => ({
-      ...state,
-      showReadingPreferenceSwitcher: action.payload,
-    }),
-    setIsTajweedBarExpanded: (state: ContextMenu, action: PayloadAction<boolean>) => ({
-      ...state,
-      isTajweedBarExpanded: action.payload,
-    }),
+    setIsExpanded: (state: ContextMenu, action: PayloadAction<boolean>) => {
+      if (state.isExpanded === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        isExpanded: action.payload,
+      };
+    },
+    setShowReadingPreferenceSwitcher: (state: ContextMenu, action: PayloadAction<boolean>) => {
+      if (state.showReadingPreferenceSwitcher === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        showReadingPreferenceSwitcher: action.payload,
+      };
+    },
+    setIsTajweedBarExpanded: (state: ContextMenu, action: PayloadAction<boolean>) => {
+      if (state.isTajweedBarExpanded === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        isTajweedBarExpanded: action.payload,
+      };
+    },
   },
 });
 

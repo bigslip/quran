@@ -165,14 +165,16 @@ const SearchPage: NextPage<SearchPageProps> = (): JSX.Element => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   try {
-    const availableLanguagesResponse = await getAvailableLanguages(locale);
+    const [availableLanguagesResponse, chaptersData] = await Promise.all([
+      getAvailableLanguages(locale),
+      getAllChaptersData(locale),
+    ]);
 
     let languages = [];
     if (availableLanguagesResponse.status !== 500) {
       const { languages: responseLanguages } = availableLanguagesResponse;
       languages = responseLanguages;
     }
-    const chaptersData = await getAllChaptersData(locale);
 
     return {
       props: {

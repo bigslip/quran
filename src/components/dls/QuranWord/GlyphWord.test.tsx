@@ -5,15 +5,14 @@ import { QuranFont } from 'types/QuranReader';
 
 // Mock react-redux
 vi.mock('react-redux', () => ({
-  useSelector: vi.fn(() => ({
-    quranTextFontScale: 3,
-    mushafLines: '16_lines',
-  })),
+  useSelector: vi.fn(),
   shallowEqual: vi.fn(),
 }));
 
 vi.mock('@/redux/slices/QuranReader/styles', () => ({
   selectQuranReaderStyles: vi.fn(),
+  selectQuranMushafLines: vi.fn(),
+  selectQuranTextFontScale: vi.fn(),
 }));
 
 describe('GlyphWord', () => {

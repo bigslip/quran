@@ -56,8 +56,10 @@ const RadioPage = ({ reciters }: RadioPageProps) => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   try {
-    const chaptersData = await getAllChaptersData(locale);
-    const { reciters } = await getAvailableReciters(locale, ['profile_picture']);
+    const [chaptersData, { reciters }] = await Promise.all([
+      getAllChaptersData(locale),
+      getAvailableReciters(locale, ['profile_picture']),
+    ]);
     return {
       props: {
         chaptersData,

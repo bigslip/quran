@@ -33,6 +33,11 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
   swcMinify: true,
+  modularizeImports: {
+    lodash: {
+      transform: 'lodash/{{member}}',
+    },
+  },
   experimental: {
     instrumentationHook: true,
   },

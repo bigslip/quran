@@ -20,7 +20,6 @@ import TextWord from './TextWord';
 
 import Wrapper from '@/components/Wrapper/Wrapper';
 import MobilePopover from '@/dls/Popover/HoverablePopover';
-import useIsMobile from '@/hooks/useIsMobile';
 import ArrowIcon from '@/icons/arrow.svg';
 import { selectShowTooltipWhenPlayingAudio } from '@/redux/slices/AudioPlayer/state';
 import {
@@ -42,6 +41,7 @@ import { areArraysEqual } from '@/utils/array';
 import { milliSecondsToSeconds } from '@/utils/datetime';
 import { logButtonClick } from '@/utils/eventLogger';
 import { isQCFFont } from '@/utils/fontFaceHelper';
+import { isMobile } from '@/utils/responsive';
 import { getChapterNumberFromKey, getVerseNumberFromKey, makeWordLocation } from '@/utils/verse';
 import { getWordTimeSegment } from 'src/xstate/actors/audioPlayer/audioPlayerMachineHelper';
 import { selectIsAudioPlayerVisible } from 'src/xstate/actors/audioPlayer/selectors';
@@ -107,7 +107,6 @@ const QuranWord = ({
 }: QuranWordProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation('quran-reader');
-  const isMobile = useIsMobile();
   const wordClickFunctionality = useSelector(selectWordClickFunctionality);
   const audioService = useContext(AudioPlayerMachineContext);
 
@@ -298,7 +297,7 @@ const QuranWord = ({
       return;
     }
 
-    if (isMobile && !isRecitationEnabled && word.charTypeName === CharType.Word && showTooltip) {
+    if (isMobile() && !isRecitationEnabled && word.charTypeName === CharType.Word && showTooltip) {
       return;
     }
 
@@ -319,7 +318,6 @@ const QuranWord = ({
     word,
     isArabicReadingMode,
     isRecitationEnabled,
-    isMobile,
     showTooltip,
     handleWordAction,
     handleReadingModeWordClick,

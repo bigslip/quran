@@ -5,6 +5,16 @@ import MyQuranPage from './index';
 
 afterEach(cleanup);
 
+vi.mock('next/dynamic', () => ({
+  default: (loader: () => Promise<any>) => {
+    let Component: any = null;
+    loader().then((mod) => {
+      Component = mod.default || mod;
+    });
+    return (props: any) => (Component ? <Component {...props} /> : null);
+  },
+}));
+
 vi.mock('next/router', () => ({
   useRouter: () => ({ query: {}, replace: vi.fn(), pathname: '/my-quran' }),
 }));

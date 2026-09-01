@@ -43,10 +43,12 @@ const ProductUpdatesPage: NextPage<Props> = ({ pages, ...rest }) => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   try {
-    const pages = await executeGroqQuery(
-      '*[_type == "productUpdate"]| order(date desc){ title, slug, mainPhoto, date, summary }',
-    );
-    const chaptersData = await getAllChaptersData(locale);
+    const [pages, chaptersData] = await Promise.all([
+      executeGroqQuery(
+        '*[_type == "productUpdate"]| order(date desc){ title, slug, mainPhoto, date, summary }',
+      ),
+      getAllChaptersData(locale),
+    ]);
     return {
       props: {
         pages,

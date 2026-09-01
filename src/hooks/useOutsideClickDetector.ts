@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 /**
  * A hook that detects clicking outside an element.
@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
  * @param {React.RefObject<HTMLElement>} ref
  * @param {()=> void} onClickOutsideDetected
  * @param {boolean} enableDetection
+ * @param {boolean} preventDefault
  */
 const useOutsideClickDetector = (
   ref: React.RefObject<HTMLElement>,
@@ -13,6 +14,9 @@ const useOutsideClickDetector = (
   enableDetection: boolean,
   preventDefault: boolean = false,
 ) => {
+  const onClickOutsideDetectedRef = useRef(onClickOutsideDetected);
+  onClickOutsideDetectedRef.current = onClickOutsideDetected;
+
   useEffect(() => {
     if (!enableDetection) return () => {};
 
@@ -22,7 +26,7 @@ const useOutsideClickDetector = (
           event.preventDefault();
           event.stopPropagation();
         }
-        onClickOutsideDetected();
+        onClickOutsideDetectedRef.current?.();
       }
     };
 
@@ -31,7 +35,7 @@ const useOutsideClickDetector = (
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [ref, onClickOutsideDetected, enableDetection, preventDefault]);
+  }, [ref, enableDetection, preventDefault]);
 };
 
 export default useOutsideClickDetector;

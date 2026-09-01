@@ -15,8 +15,8 @@ import QuranWord from '@/dls/QuranWord/QuranWord';
 import { TooltipType } from '@/dls/Tooltip';
 import { selectInlineDisplayWordByWordPreferences } from '@/redux/slices/QuranReader/readingPreferences';
 import {
-  selectReadingViewSelectedVerseKey,
-  selectReadingViewHoveredVerseKey,
+  selectIsVerseHovered,
+  selectIsVerseSelected,
 } from '@/redux/slices/QuranReader/readingViewVerse';
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import QueryParam from '@/types/QueryParam';
@@ -76,8 +76,8 @@ const VerseText = ({
     shouldShowWordByWordTranslation ?? reduxWbwPrefs?.showWordByWordTranslation ?? false;
   const showWordByWordTransliteration =
     shouldShowWordByWordTransliteration ?? reduxWbwPrefs?.showWordByWordTransliteration ?? false;
-  const selectedVerseKey = useSelector(selectReadingViewSelectedVerseKey, shallowEqual);
-  const hoveredVerseKey = useSelector(selectReadingViewHoveredVerseKey, shallowEqual);
+  const isVerseSelected = useSelector(selectIsVerseSelected(firstWord.verseKey));
+  const isVerseHovered = useSelector(selectIsVerseHovered(firstWord.verseKey));
   const centerAlignPage = useMemo(
     () => isCenterAlignedPage(pageNumber, lineNumber, quranFont),
     [pageNumber, lineNumber, quranFont],
@@ -124,7 +124,6 @@ const VerseText = ({
           {words?.map((word) => {
             const isHighlightedWord =
               highlightedWordPosition !== undefined && word.position === highlightedWordPosition;
-            const isHoveredWord = word.verseKey === hoveredVerseKey;
             return (
               <QuranWord
                 key={word.location}
@@ -132,7 +131,7 @@ const VerseText = ({
                 font={quranFont}
                 isFontLoaded={isFontLoaded}
                 isHighlighted={
-                  isHighlightedWord || word.verseKey === selectedVerseKey || isHoveredWord
+                  isHighlightedWord || isVerseSelected || isVerseHovered
                 }
                 isStartingVerseHighlighted={word.verseKey === startingVerseHighlightVerseKey}
                 tooltipType={tooltipType}

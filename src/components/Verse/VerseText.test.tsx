@@ -46,6 +46,8 @@ vi.mock('@/redux/slices/QuranReader/readingPreferences', () => ({
 vi.mock('@/redux/slices/QuranReader/readingViewVerse', () => ({
   selectReadingViewSelectedVerseKey: vi.fn(),
   selectReadingViewHoveredVerseKey: vi.fn(),
+  selectIsVerseHovered: vi.fn(() => vi.fn(() => false)),
+  selectIsVerseSelected: vi.fn(() => vi.fn(() => false)),
 }));
 
 describe('VerseText', () => {

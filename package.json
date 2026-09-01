@@ -30,6 +30,7 @@
     "test:watch": "vitest watch",
     "browser:audit": "node scripts/chrome-live-monitor.mjs",
     "browser:monitor": "node scripts/chrome-live-monitor.mjs --watch",
+    "download:wbw-audio": "node scripts/download-wbw-audio.mjs",
     "analyze": "cross-env ANALYZE_BUNDLE=true yarn build",
     "rename:v4-font-files": "node scripts/rename-v4-font-files.js",
     "remove:v4-font-files": "node scripts/remove-v4-font-files.js",

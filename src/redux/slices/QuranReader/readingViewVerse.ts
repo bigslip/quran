@@ -48,6 +48,12 @@ export const selectReadingViewHoveredVerseKey = (state: RootState) =>
 export const selectReadingViewSelectedVerseKey = (state: RootState) =>
   state.readingViewVerse.selectedVerseKey;
 
+export const selectIsVerseHovered = (verseKey: string) => (state: RootState) =>
+  state.readingViewVerse.hoveredVerseKey === verseKey;
+
+export const selectIsVerseSelected = (verseKey: string) => (state: RootState) =>
+  state.readingViewVerse.selectedVerseKey === verseKey;
+
 export const { setReadingViewHoveredVerseKey, setReadingViewSelectedVerseKey, clearAllHighlights } =
   readingViewVerse.actions;
 export default readingViewVerse.reducer;

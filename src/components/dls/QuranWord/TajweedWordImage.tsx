@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import styles from './TajweedWordImage.module.scss';
 
-import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
+import { selectQuranTextFontScale } from '@/redux/slices/QuranReader/styles';
 import { makeCDNUrl } from '@/utils/cdn';
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
@@ -28,7 +28,7 @@ const FONT_SIZE_CLASS_MAP = {
 };
 
 const TajweedWord: React.FC<Props> = ({ path, alt, className, ...props }) => {
-  const { quranTextFontScale } = useSelector(selectQuranReaderStyles);
+  const quranTextFontScale = useSelector(selectQuranTextFontScale);
   return (
     <span
       className={classNames(

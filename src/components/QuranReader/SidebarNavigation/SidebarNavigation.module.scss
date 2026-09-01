@@ -255,6 +255,9 @@ $isNavbarVisible: var(--isNavbarVisible);
   [dir='rtl'] & {
     direction: rtl;
   }
+  content-visibility: auto;
+  contain-intrinsic-size: auto 44px;
+  contain: layout style;
   padding: var(--spacing-xsmall);
   border-radius: var(--border-radius-rounded);
   &:hover {

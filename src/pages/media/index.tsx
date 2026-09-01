@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Player, PlayerRef, RenderPoster } from '@remotion/player';
+import type { PlayerRef, RenderPoster } from '@remotion/player';
 import classNames from 'classnames';
 import { GetStaticProps, NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -76,6 +77,10 @@ interface MediaMaker extends React.HTMLAttributes<HTMLDivElement> {
   chaptersData: ChaptersData;
   englishChaptersList: ChaptersData;
 }
+
+const Player = dynamic(() => import('@remotion/player').then((mod) => mod.Player), {
+  ssr: false,
+}) as typeof import('@remotion/player').Player;
 
 const MediaMaker: NextPage<MediaMaker> = ({
   chaptersData,
@@ -514,29 +519,23 @@ const MediaMaker: NextPage<MediaMaker> = ({
   );
 };
 
-const fetchRecitersAndTranslations = async (locale) => {
-  const { reciters } = await getAvailableReciters(locale, []);
-  const { translations } = await getAvailableTranslations(locale);
-  return { reciters, translations };
-};
-
-const fetchChapterData = async (locale) => {
-  const chaptersData = await getAllChaptersData(locale);
-  const englishChaptersList = await getAllChaptersData('en');
-  return { chaptersData, englishChaptersList };
-};
-
-const fetchVersesAndAudio = async (locale) => {
-  const verses = await getChapterVerses(DEFAULT_SURAH, locale, DEFAULT_API_PARAMS);
-  const chapterAudioData = await getChapterAudioData(DEFAULT_RECITER_ID, DEFAULT_SURAH, true);
-  return { verses, chapterAudioData };
-};
-
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   try {
-    const { reciters, translations } = await fetchRecitersAndTranslations(locale);
-    const { chaptersData, englishChaptersList } = await fetchChapterData(locale);
-    const { verses, chapterAudioData } = await fetchVersesAndAudio(locale);
+    const [
+      recitersData,
+      translationsDataRes,
+      chaptersData,
+      englishChaptersList,
+      verses,
+      chapterAudioData,
+    ] = await Promise.all([
+      getAvailableReciters(locale, []),
+      getAvailableTranslations(locale),
+      getAllChaptersData(locale),
+      getAllChaptersData('en'),
+      getChapterVerses(DEFAULT_SURAH, locale, DEFAULT_API_PARAMS),
+      getChapterAudioData(DEFAULT_RECITER_ID, DEFAULT_SURAH, true),
+    ]);
 
     return {
       props: {
@@ -544,8 +543,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
         verses,
         chaptersData,
         englishChaptersList,
-        reciters: reciters || [],
-        translationsData: translations || [],
+        reciters: recitersData.reciters || [],
+        translationsData: translationsDataRes.translations || [],
       },
       revalidate: ONE_MONTH_REVALIDATION_PERIOD_SECONDS,
     };

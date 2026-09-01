@@ -123,19 +123,21 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
       : String(params.pageId);
 
   try {
-    const pageVersesResponse = await getPageVerses(
-      pageId,
-      locale,
-      getPageVersesParams(
-        defaultMushafId,
-        getDefaultWordFields(getQuranReaderStylesInitialState(locale).quranFont),
+    const [pageVersesResponse, pagesLookupResponse, chaptersData] = await Promise.all([
+      getPageVerses(
+        pageId,
+        locale,
+        getPageVersesParams(
+          defaultMushafId,
+          getDefaultWordFields(getQuranReaderStylesInitialState(locale).quranFont),
+        ),
       ),
-    );
-    const pagesLookupResponse = await getPagesLookup({
-      pageNumber: Number(pageId),
-      mushaf: defaultMushafId,
-    });
-    const chaptersData = await getAllChaptersData(locale);
+      getPagesLookup({
+        pageNumber: Number(pageId),
+        mushaf: defaultMushafId,
+      }),
+      getAllChaptersData(locale),
+    ]);
     return {
       props: {
         chaptersData,

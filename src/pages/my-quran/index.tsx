@@ -1,18 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-
 import { GetStaticProps } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 
 import styles from './my-quran.module.scss';
 
 import HeaderNavigation from '@/components/HeaderNavigation';
-import SavedTabContent from '@/components/MyQuran/SavedTabContent';
 import MyQuranTab from '@/components/MyQuran/tabs';
-import NotesAndReflectionsTab from '@/components/MyQuran/tabs/NotesAndReflectionsTab';
-import RecentContent from '@/components/MyQuran/tabs/RecentContent/RecentContent';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import PageContainer from '@/components/PageContainer';
+import Spinner from '@/dls/Spinner/Spinner';
 import TabSwitcher from '@/dls/TabSwitcher/TabSwitcher';
 import { getAllChaptersData } from '@/utils/chapter';
 import { logEvent } from '@/utils/eventLogger';
@@ -20,11 +18,25 @@ import { getLanguageAlternates } from '@/utils/locale';
 import { getCanonicalUrl, getMyQuranNavigationUrl } from '@/utils/navigation';
 
 const MY_QURAN_PATH = getMyQuranNavigationUrl();
-const tabComponents = {
-  [MyQuranTab.SAVED]: <SavedTabContent />,
-  [MyQuranTab.RECENT]: <RecentContent />,
-  [MyQuranTab.NOTES_AND_REFLECTIONS]: <NotesAndReflectionsTab />,
-};
+
+const SavedTabContent = dynamic(() => import('@/components/MyQuran/SavedTabContent'), {
+  ssr: false,
+  loading: () => <Spinner />,
+});
+const RecentContent = dynamic(
+  () => import('@/components/MyQuran/tabs/RecentContent/RecentContent'),
+  {
+    ssr: false,
+    loading: () => <Spinner />,
+  },
+);
+const NotesAndReflectionsTab = dynamic(
+  () => import('@/components/MyQuran/tabs/NotesAndReflectionsTab'),
+  {
+    ssr: false,
+    loading: () => <Spinner />,
+  },
+);
 
 const MyQuranPage = (): JSX.Element => {
   const { lang, t } = useTranslation('my-quran');
@@ -87,7 +99,9 @@ const MyQuranPage = (): JSX.Element => {
             aria-labelledby={`tab-${selectedTab}`}
             className={styles.tabContent}
           >
-            {tabComponents[selectedTab]}
+            {selectedTab === MyQuranTab.SAVED && <SavedTabContent />}
+            {selectedTab === MyQuranTab.RECENT && <RecentContent />}
+            {selectedTab === MyQuranTab.NOTES_AND_REFLECTIONS && <NotesAndReflectionsTab />}
           </div>
         </PageContainer>
       </main>

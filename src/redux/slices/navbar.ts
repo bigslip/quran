@@ -47,55 +47,101 @@ export const navbarSlice = createSlice({
   name: SliceName.NAVBAR,
   initialState,
   reducers: {
-    setIsVisible: (state: Navbar, action: PayloadAction<boolean>) => ({
-      ...state,
-      // Only update visibility if the lock is not active
-      isVisible: state.lockVisibilityState ? state.isVisible : action.payload,
-    }),
-    setLockVisibilityState: (state: Navbar, action: PayloadAction<boolean>) => ({
-      ...state,
-      lockVisibilityState: action.payload,
-    }),
-    setIsNavigationDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => ({
-      ...state,
-      isNavigationDrawerOpen: action.payload,
-    }),
-    setIsSearchDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => ({
-      ...state,
-      isSearchDrawerOpen: action.payload,
-    }),
+    setIsVisible: (state: Navbar, action: PayloadAction<boolean>) => {
+      const nextVisible = state.lockVisibilityState ? state.isVisible : action.payload;
+      if (state.isVisible === nextVisible) {
+        return state;
+      }
+      return {
+        ...state,
+        // Only update visibility if the lock is not active
+        isVisible: nextVisible,
+      };
+    },
+    setLockVisibilityState: (state: Navbar, action: PayloadAction<boolean>) => {
+      if (state.lockVisibilityState === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        lockVisibilityState: action.payload,
+      };
+    },
+    setIsNavigationDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => {
+      if (state.isNavigationDrawerOpen === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        isNavigationDrawerOpen: action.payload,
+      };
+    },
+    setIsSearchDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => {
+      if (state.isSearchDrawerOpen === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        isSearchDrawerOpen: action.payload,
+      };
+    },
     toggleSearchDrawerIsOpen: (state: Navbar) => ({
       ...state,
       isSearchDrawerOpen: !state.isSearchDrawerOpen,
     }),
-    setIsSettingsDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => ({
-      ...state,
-      isSettingsDrawerOpen: action.payload,
-      // Reset views when drawer is closed
-      ...(action.payload === false && {
-        settingsView: SettingsView.Body,
-        lastSettingsView: SettingsView.Body,
-      }),
-    }),
-    setIsLanguageDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => ({
-      ...state,
-      isLanguageDrawerOpen: action.payload,
-    }),
-    setSettingsView: (state: Navbar, action: PayloadAction<SettingsView>) => ({
-      ...state,
-      settingsView: action.payload,
-      // Track the last non-Body view for navigation context
-      lastSettingsView:
-        action.payload !== SettingsView.Body ? action.payload : state.lastSettingsView,
-    }),
-    setDisableSearchDrawerTransition: (state: Navbar, action: PayloadAction<boolean>) => ({
-      ...state,
-      disableSearchDrawerTransition: action.payload,
-    }),
-    setLastSettingsTab: (state: Navbar, action: PayloadAction<SettingsTab>) => ({
-      ...state,
-      lastSettingsTab: action.payload,
-    }),
+    setIsSettingsDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => {
+      if (state.isSettingsDrawerOpen === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        isSettingsDrawerOpen: action.payload,
+        // Reset views when drawer is closed
+        ...(action.payload === false && {
+          settingsView: SettingsView.Body,
+          lastSettingsView: SettingsView.Body,
+        }),
+      };
+    },
+    setIsLanguageDrawerOpen: (state: Navbar, action: PayloadAction<boolean>) => {
+      if (state.isLanguageDrawerOpen === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        isLanguageDrawerOpen: action.payload,
+      };
+    },
+    setSettingsView: (state: Navbar, action: PayloadAction<SettingsView>) => {
+      if (state.settingsView === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        settingsView: action.payload,
+        // Track the last non-Body view for navigation context
+        lastSettingsView:
+          action.payload !== SettingsView.Body ? action.payload : state.lastSettingsView,
+      };
+    },
+    setDisableSearchDrawerTransition: (state: Navbar, action: PayloadAction<boolean>) => {
+      if (state.disableSearchDrawerTransition === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        disableSearchDrawerTransition: action.payload,
+      };
+    },
+    setLastSettingsTab: (state: Navbar, action: PayloadAction<SettingsTab>) => {
+      if (state.lastSettingsTab === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        lastSettingsTab: action.payload,
+      };
+    },
   },
 });
 
