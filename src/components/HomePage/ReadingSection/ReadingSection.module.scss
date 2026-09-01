@@ -5,16 +5,19 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-block-start: var(--spacing-medium2-px);
-  padding-block-end: var(--spacing-medium);
+  padding-block-start: var(--spacing-large-px);
+  padding-block-end: var(--spacing-medium-px);
+
   @include breakpoints.tablet {
-    padding-block-end: var(--spacing-large-px);
     padding-block-start: var(--spacing-xlarge-px);
+    padding-block-end: var(--spacing-large-px);
   }
 
   h1 {
     font-size: var(--font-size-xlarge-px);
     font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+
     @include breakpoints.tablet {
       font-size: var(--font-size-xxlarge-px);
     }
@@ -25,23 +28,24 @@
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  gap: var(--spacing-medium);
+  gap: var(--spacing-medium-px);
 
   @include breakpoints.smallerThanTablet {
-    gap: 0;
+    gap: var(--spacing-small-px);
     flex-direction: column;
   }
 }
 
 .cardContainer {
-  @include breakpoints.smallerThanTablet {
-    inline-size: 100%;
-    padding-block-end: var(--spacing-small-px);
-  }
   inline-size: 50%;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-medium);
+  gap: var(--spacing-medium-px);
+
+  @include breakpoints.smallerThanTablet {
+    inline-size: 100%;
+    padding-block-end: 0;
+  }
 
   &:first-child {
     > :first-child {
@@ -52,6 +56,9 @@
 
 .myQuranText {
   font-size: var(--font-size-small-px);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+
   @include breakpoints.tablet {
     font-size: var(--font-size-normal-px);
   }
@@ -60,6 +67,8 @@
 .stayConsistentText {
   padding-block-start: var(--spacing-xxsmall-px);
   font-size: var(--font-size-xsmall-px);
+  color: var(--color-text-secondary);
+
   @include breakpoints.tablet {
     padding-block-start: var(--spacing-small-px);
     font-size: var(--font-size-normal-px);
@@ -69,6 +78,7 @@
 .iconContainer {
   display: flex;
   padding-inline-end: var(--spacing-xxsmall-px);
+
   @include breakpoints.tablet {
     padding-inline-end: var(--spacing-small-px);
   }
@@ -76,6 +86,7 @@
   svg {
     inline-size: var(--spacing-medium2-px);
     block-size: var(--spacing-medium2-px);
+
     @include breakpoints.tablet {
       inline-size: var(--spacing-large-px);
       block-size: var(--spacing-large-px);
@@ -85,10 +96,12 @@
 
 .myQuranContainer {
   display: flex;
+
   svg {
     fill: var(--color-blue-buttons-and-icons);
     color: var(--color-blue-buttons-and-icons);
   }
+
   @include breakpoints.smallerThanTablet {
     svg {
       inline-size: 12px !important;
@@ -101,7 +114,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--spacing-micro);
+  gap: var(--spacing-xsmall-px);
+
   @include breakpoints.tablet {
     font-size: var(--font-size-large-px);
   }
@@ -127,26 +141,29 @@
   -webkit-backdrop-filter: var(--backdrop-filter-frosted);
   border: 1px solid var(--color-border-iridescent);
   border-radius: var(--border-radius-rounded);
-  padding-inline: var(--spacing-medium-px);
+  padding-inline: var(--spacing-large-px);
   padding-block: var(--spacing-medium-px);
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1) !important;
-  transition:
-    transform var(--transition-fast) ease,
-    border-color var(--transition-fast) ease,
-    background-color var(--transition-fast) ease,
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    border-color var(--transition-fast) ease, background-color var(--transition-fast) ease,
     box-shadow var(--transition-fast) ease;
 
   @media (hover: hover) {
     &:hover {
-      transform: translateY(-2px);
+      transform: translateY(-2px) scale(1.015);
       background-color: var(--color-surface-card-hover);
       border-color: var(--color-primary);
       box-shadow: var(--shadow-card-hover) !important;
     }
   }
 
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
   @include breakpoints.smallerThanTablet {
-    padding: var(--spacing-small-px);
+    padding: var(--spacing-medium-px);
   }
 }
 

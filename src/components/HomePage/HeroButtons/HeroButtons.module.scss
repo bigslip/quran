@@ -10,11 +10,8 @@
   text-wrap: nowrap;
   padding: var(--spacing-medium2-px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition:
-    transform var(--transition-fast) ease,
-    background-color var(--transition-fast) ease,
-    border-color var(--transition-fast) ease,
-    box-shadow var(--transition-fast) ease,
+  transition: transform var(--transition-fast) ease, background-color var(--transition-fast) ease,
+    border-color var(--transition-fast) ease, box-shadow var(--transition-fast) ease,
     color var(--transition-fast) ease;
 
   @media (hover: hover) {

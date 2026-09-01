@@ -6,15 +6,18 @@
   inline-size: 100%;
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-small-px);
+
   @include breakpoints.tablet {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-small);
+    gap: var(--spacing-medium-px);
   }
+
   @include breakpoints.desktop {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-small);
+    gap: var(--spacing-medium-px);
     grid-template-rows: masonry;
   }
 }
@@ -25,7 +28,8 @@
 }
 
 .chapterContainer + .chapterContainer {
-  margin-block-start: var(--spacing-small);
+  margin-block-start: var(--spacing-small-px);
+
   @include breakpoints.tablet {
     margin-block-start: 0;
   }
@@ -36,15 +40,17 @@
   @include breakpoints.tablet {
     column-count: 2;
   }
+
   @include breakpoints.desktop {
     column-count: 3;
   }
-  column-gap: 1em;
+
+  column-gap: var(--spacing-medium-px);
 }
 
 // tabs
 .tabsContainer {
-  padding-block-end: var(--spacing-medium);
+  padding-block-end: var(--spacing-medium-px);
 }
 
 .tabItem {
@@ -54,28 +60,39 @@
 // sorter
 .sorter {
   display: flex;
-  margin-block-start: var(--spacing-xsmall);
+  margin-block-start: var(--spacing-small-px);
   justify-content: flex-end;
   align-items: baseline;
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-xsmall-px);
+  color: var(--color-text-secondary);
 }
+
 .sortByValue {
   display: flex;
   align-items: center;
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   cursor: pointer;
-  margin-inline-start: var(--spacing-xxsmall);
+  margin-inline-start: var(--spacing-xxsmall-px);
+  color: var(--color-text-primary);
+  transition: color var(--transition-fast) ease;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+
   & > span {
     display: flex;
     align-items: center;
   }
+
   & > .rotate180 > svg {
     transform: rotate(180deg);
   }
+
   & > span > svg {
-    inline-size: var(--spacing-small);
-    margin-inline-start: var(--spacing-xxsmall);
+    inline-size: var(--spacing-small-px);
+    margin-inline-start: var(--spacing-xxsmall-px);
     transition: transform var(--transition-regular);
   }
 }
@@ -89,8 +106,8 @@
 }
 
 .revelationOrderDisclaimer {
-  margin-block-start: var(--spacing-medium);
-  padding: var(--spacing-small);
+  margin-block-start: var(--spacing-medium-px);
+  padding: var(--spacing-small2-px);
   border: 1px var(--color-borders-hairline) solid;
   border-radius: var(--border-radius-default);
   background-color: var(--color-success-faded);

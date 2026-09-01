@@ -2,11 +2,13 @@
 @use 'src/styles/theme';
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
     box-shadow: 0 0 8px var(--color-primary);
   }
+
   50% {
     opacity: 0.6;
     transform: scale(0.85);
@@ -17,9 +19,9 @@
 .outerContainer {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle at 50% -20%, rgba(0, 242, 254, 0.12) 0%, rgba(7, 10, 19, 0) 70%),
-              radial-gradient(circle at 15% 35%, rgba(5, 255, 161, 0.05) 0%, rgba(7, 10, 19, 0) 50%),
-              radial-gradient(circle at 85% 55%, rgba(79, 172, 254, 0.07) 0%, rgba(7, 10, 19, 0) 50%);
+  background: radial-gradient(circle at 50% -20%, var(--color-primary-subtle) 0%, transparent 70%),
+    radial-gradient(circle at 15% 35%, var(--color-primary-subtle) 0%, transparent 50%),
+    radial-gradient(circle at 85% 55%, var(--color-primary-subtle) 0%, transparent 50%);
 }
 
 .backgroundImage {
@@ -34,7 +36,7 @@
     inline-size: 100%;
     transform: translateY(-35%);
     opacity: 0.45;
-    filter: drop-shadow(0 0 40px rgba(0, 242, 254, 0.1));
+    filter: drop-shadow(0 0 40px var(--color-primary-subtle));
   }
 }
 
@@ -43,13 +45,13 @@
   flex-direction: column;
   block-size: 100%;
   align-items: center;
-  padding-inline: var(--spacing-small);
-  padding-block-start: var(--spacing-medium2-px);
+  padding-inline: var(--spacing-medium-px);
+  padding-block-start: var(--spacing-medium3-px);
   padding-block-end: var(--spacing-large-px);
 
   @include breakpoints.tablet {
-    padding-block-start: var(--spacing-large2-px);
-    padding-block-end: var(--spacing-xlarge-px);
+    padding-block-start: var(--spacing-xlarge-px);
+    padding-block-end: var(--spacing-xxlarge-px);
   }
 
   margin-inline: auto;
@@ -93,11 +95,11 @@
 }
 
 .logoContainer {
-  padding-block-end: var(--spacing-medium2-px);
+  padding-block-end: var(--spacing-medium-px);
   display: flex;
   justify-content: center;
   align-items: center;
-  filter: drop-shadow(0 0 24px rgba(0, 242, 254, 0.22));
+  filter: drop-shadow(0 0 24px var(--color-primary-subtle));
   transition: filter var(--transition-regular) ease;
 
   svg {
@@ -107,6 +109,7 @@
 
   @include breakpoints.smallerThanTablet {
     padding-block-end: var(--spacing-small-px);
+
     svg {
       max-inline-size: 200px;
     }
@@ -155,12 +158,9 @@
   font-size: var(--font-size-xsmall-px);
   font-weight: var(--font-weight-medium);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  transition:
-    transform var(--transition-fast) ease,
-    background var(--transition-fast) ease,
-    border-color var(--transition-fast) ease,
-    box-shadow var(--transition-fast) ease,
-    color var(--transition-fast) ease;
+  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    background var(--transition-fast) ease, border-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease, color var(--transition-fast) ease;
 
   @media (hover: hover) {
     &:hover {
@@ -170,6 +170,11 @@
       color: var(--color-primary);
       box-shadow: 0 0 20px var(--color-primary-subtle), 0 8px 24px rgba(0, 0, 0, 0.2);
     }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   @include breakpoints.smallerThanTablet {
@@ -186,10 +191,10 @@
 .buttonsContainer {
   display: flex;
   gap: var(--spacing-medium-px);
-  margin-block-start: var(--spacing-medium);
+  margin-block-start: var(--spacing-medium-px);
+
   @include breakpoints.smallerThanTablet {
     gap: var(--spacing-small-px);
     margin-block-start: var(--spacing-small-px);
   }
 }
-

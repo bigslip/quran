@@ -12,7 +12,7 @@
   background-color: var(--color-surface-card);
   backdrop-filter: var(--backdrop-filter-frosted);
   -webkit-backdrop-filter: var(--backdrop-filter-frosted);
-  border-bottom: 1px solid var(--color-border-subtle);
+  border-block-end: 1px solid var(--color-border-subtle);
 
   svg,
   g {
@@ -29,6 +29,7 @@
 
 .bannerContainerCenter {
   display: none;
+
   @include breakpoints.tablet {
     display: flex;
     justify-content: center;
@@ -42,7 +43,7 @@
 
 .leftCTA {
   display: flex;
-  margin-inline-start: var(--spacing-medium);
+  margin-inline-start: var(--spacing-medium-px);
   align-items: center;
 
   @include breakpoints.tablet {
@@ -59,7 +60,7 @@
     max-inline-size: 380px;
     justify-content: center;
     align-items: center;
-    margin-inline: var(--spacing-small);
+    margin-inline: var(--spacing-small-px);
   }
 }
 
@@ -68,7 +69,7 @@
   align-items: center;
   inline-size: 100%;
   block-size: 38px;
-  padding-inline: var(--spacing-small-px);
+  padding-inline: var(--spacing-medium-px);
   background: var(--color-surface-floating);
   backdrop-filter: var(--backdrop-filter-frosted);
   -webkit-backdrop-filter: var(--backdrop-filter-frosted);
@@ -77,11 +78,8 @@
   cursor: pointer;
   color: var(--color-text-secondary);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition:
-    border-color var(--transition-fast) ease,
-    background-color var(--transition-fast) ease,
-    box-shadow var(--transition-fast) ease,
-    color var(--transition-fast) ease;
+  transition: border-color var(--transition-fast) ease, background-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease, color var(--transition-fast) ease;
 
   &:hover {
     border-color: var(--color-primary);
@@ -152,7 +150,7 @@
 
 .rightCTA {
   display: flex;
-  margin-inline-end: var(--spacing-medium);
+  margin-inline-end: var(--spacing-medium-px);
   align-items: center;
 
   > button,
@@ -165,8 +163,7 @@
 
     > button,
     > div > button {
-      margin-inline-start: var(--spacing-xsmall);
+      margin-inline-start: var(--spacing-xsmall-px);
     }
   }
 }
-

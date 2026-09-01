@@ -6,12 +6,15 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-micro-px);
+
   @include breakpoints.smallerThanTablet {
     justify-content: center;
     gap: var(--spacing-small-px);
   }
+
   @include breakpoints.tablet {
     flex-wrap: wrap;
+
     & > :nth-child(1) {
       margin: auto;
     }
@@ -22,6 +25,7 @@
   font-size: var(--font-size-jumbo);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
+
   @include breakpoints.tablet {
     font-size: var(--font-size-xjumbo-px);
   }
@@ -31,11 +35,13 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-small-px);
+
   & > svg:first-child {
     min-inline-size: var(--spacing-medium3-px);
     min-block-size: var(--spacing-medium3-px);
     color: var(--color-primary);
     fill: var(--color-primary);
+
     @include breakpoints.tablet {
       min-inline-size: var(--spacing-xxlarge-px);
       min-block-size: var(--spacing-xxlarge-px);
@@ -45,11 +51,10 @@
 
 .customGoalButton {
   background: var(--color-primary-gradient);
-  color: #070A13;
+  color: #070a13;
   font-weight: var(--font-weight-bold);
   border-radius: var(--border-radius-pill);
   box-shadow: 0 0 16px var(--color-primary-subtle);
-
   padding-block: 0;
   padding-inline-end: var(--spacing-small-px);
 
@@ -67,12 +72,12 @@
 
   svg {
     path {
-      fill: #070A13;
+      fill: #070a13;
     }
   }
 
   &:hover {
-    color: #070A13;
+    color: #070a13;
     filter: brightness(1.15);
     box-shadow: 0 0 24px var(--color-primary);
   }
@@ -81,6 +86,7 @@
 .circularProgressbar {
   block-size: calc(var(--spacing-xxlarge-px) + var(--spacing-small-px));
   inline-size: calc(var(--spacing-xxlarge-px) + var(--spacing-small-px));
+
   @include breakpoints.smallerThanTablet {
     block-size: calc(var(--spacing-large-px) + var(--spacing-small-px));
     inline-size: calc(var(--spacing-large-px) + var(--spacing-small-px));
@@ -93,6 +99,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-small-px);
+
   @include breakpoints.smallerThanTablet {
     min-inline-size: 0;
     overflow: hidden;
@@ -114,10 +121,12 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-micro);
+
   @include breakpoints.smallerThanTablet {
     min-inline-size: 0;
     overflow: hidden;
   }
+
   @include breakpoints.tablet {
     margin: auto;
   }
@@ -127,6 +136,7 @@
   font-size: var(--font-size-normal);
   color: var(--color-text-secondary);
   font-weight: var(--font-weight-semibold);
+
   @include breakpoints.tablet {
     font-size: var(--font-size-large-px);
   }
