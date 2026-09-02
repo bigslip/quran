@@ -78,3 +78,6 @@ keys
 
 # Specs
 docs/specs
+
+# Local Quran Audio Assets
+public/audio/wbw/*.mp3

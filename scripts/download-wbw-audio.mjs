@@ -36,11 +36,8 @@ const getArg = (name, defaultValue) => {
 const hasFlag = (name) => args.includes(`--${name}`);
 
 const SURAH_ARG = getArg('surah', 'all');
-const CONCURRENCY = parseInt(getArg('concurrency', '20'), 10);
+const CONCURRENCY = parseInt(getArg('concurrency', '25'), 10);
 const FORCE = hasFlag('force');
-
-// Pad number to 3 digits (e.g. 1 -> "001")
-const pad3 = (num) => String(num).padStart(3, '0');
 
 // Ensure output directory exists
 if (!fs.existsSync(OUTPUT_DIR)) {
@@ -50,7 +47,7 @@ if (!fs.existsSync(OUTPUT_DIR)) {
 /**
  * Fetch with retry and exponential backoff
  */
-async function fetchWithRetry(url, options = {}, retries = 3, backoff = 500) {
+async function fetchWithRetry(url, options = {}, retries = 3, backoff = 400) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const res = await fetch(url, {
@@ -61,7 +58,7 @@ async function fetchWithRetry(url, options = {}, retries = 3, backoff = 500) {
         },
       });
       if (res.ok) return res;
-      if (res.status === 404) return null; // File does not exist on remote
+      if (res.status === 404) return null;
       if (attempt === retries) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
     } catch (err) {
       if (attempt === retries) throw err;
@@ -89,7 +86,7 @@ function getSurahList(surahArg) {
 }
 
 /**
- * Fetch all word audio locations for a Surah
+ * Fetch all word audio tasks for a Surah
  */
 async function fetchSurahAudioTasks(surahId) {
   const tasks = [];
@@ -112,7 +109,6 @@ async function fetchSurahAudioTasks(surahId) {
       for (const verse of verses) {
         const words = verse.words || [];
         for (const word of words) {
-          // Only download actual words (ignore Ayah end markers)
           if (word.char_type_name === 'word' && word.audio_url) {
             const fileName = path.basename(word.audio_url);
             const downloadUrl = `${CDN_BASE_URL}${fileName}`;
@@ -149,11 +145,10 @@ async function fetchSurahAudioTasks(surahId) {
 async function downloadAudioFile(task) {
   const { fileName, downloadUrl, targetPath } = task;
 
-  // Skip if already exists and has non-zero size
   if (!FORCE && fs.existsSync(targetPath)) {
     const stat = fs.statSync(targetPath);
-    if (stat.size > 0) {
-      return { status: 'skipped', fileName };
+    if (stat.size > 200) {
+      return { status: 'skipped', fileName, bytes: stat.size };
     }
   }
 
@@ -164,7 +159,6 @@ async function downloadAudioFile(task) {
     }
     const buffer = Buffer.from(await res.arrayBuffer());
 
-    // Basic validity check: MP3 header or reasonable size (> 200 bytes)
     if (buffer.length < 200) {
       return { status: 'invalid', fileName };
     }
@@ -174,46 +168,6 @@ async function downloadAudioFile(task) {
   } catch (err) {
     return { status: 'failed', fileName, error: err.message };
   }
-}
-
-/**
- * Concurrency worker pool runner
- */
-async function runWorkerPool(tasks, concurrency, onProgress) {
-  let currentIndex = 0;
-  let completedCount = 0;
-  const results = {
-    downloaded: 0,
-    skipped: 0,
-    not_found: 0,
-    failed: 0,
-    totalBytes: 0,
-  };
-
-  const workers = Array.from({ length: concurrency }, async () => {
-    while (currentIndex < tasks.length) {
-      const taskIndex = currentIndex++;
-      const task = tasks[taskIndex];
-      const result = await downloadAudioFile(task);
-
-      completedCount++;
-      if (result.status === 'downloaded') {
-        results.downloaded++;
-        results.totalBytes += result.bytes || 0;
-      } else if (result.status === 'skipped') {
-        results.skipped++;
-      } else if (result.status === 'not_found') {
-        results.not_found++;
-      } else {
-        results.failed++;
-      }
-
-      onProgress(completedCount, tasks.length, results);
-    }
-  });
-
-  await Promise.all(workers);
-  return results;
 }
 
 /**
@@ -228,6 +182,24 @@ function formatBytes(bytes) {
 }
 
 /**
+ * Process tasks with concurrency pool
+ */
+async function runWorkerPool(tasks, concurrency, onProgress) {
+  let currentIndex = 0;
+
+  const workers = Array.from({ length: Math.min(concurrency, tasks.length || 1) }, async () => {
+    while (currentIndex < tasks.length) {
+      const taskIndex = currentIndex++;
+      const task = tasks[taskIndex];
+      const result = await downloadAudioFile(task);
+      onProgress(result);
+    }
+  });
+
+  await Promise.all(workers);
+}
+
+/**
  * Main execution
  */
 async function main() {
@@ -239,63 +211,73 @@ async function main() {
   console.log(`🔄 Force Overwrite  : ${FORCE ? 'Yes' : 'No (skipping existing)'}`);
 
   const surahs = getSurahList(SURAH_ARG);
-  console.log(`📖 Surahs to Process : ${surahs.length} surah(s) [${surahs.slice(0, 5).join(', ')}${surahs.length > 5 ? '...' : ''}]\n`);
+  console.log(`📖 Surahs to Process : ${surahs.length} surah(s)\n`);
 
-  console.log('⏳ Fetching word metadata from QuranCDN...');
-  const allTasks = [];
-  const startTime = Date.now();
+  const globalStats = {
+    totalWords: 0,
+    downloaded: 0,
+    skipped: 0,
+    not_found: 0,
+    failed: 0,
+    totalBytes: 0,
+  };
+
+  const overallStartTime = Date.now();
 
   for (let i = 0; i < surahs.length; i++) {
     const surahId = surahs[i];
-    process.stdout.write(`\r🔍 Indexing Surah ${surahId} (${i + 1}/${surahs.length})... `);
+    const surahStartTime = Date.now();
+
+    process.stdout.write(`\r⏳ [${i + 1}/${surahs.length}] Fetching Surah ${surahId} words... `);
     const tasks = await fetchSurahAudioTasks(surahId);
-    allTasks.push(...tasks);
+    globalStats.totalWords += tasks.length;
+
+    let surahDownloaded = 0;
+    let surahSkipped = 0;
+    let surahFailed = 0;
+
+    await runWorkerPool(tasks, CONCURRENCY, (result) => {
+      if (result.status === 'downloaded') {
+        globalStats.downloaded++;
+        surahDownloaded++;
+        globalStats.totalBytes += result.bytes || 0;
+      } else if (result.status === 'skipped') {
+        globalStats.skipped++;
+        surahSkipped++;
+      } else if (result.status === 'not_found') {
+        globalStats.not_found++;
+      } else {
+        globalStats.failed++;
+        surahFailed++;
+      }
+    });
+
+    const surahDuration = ((Date.now() - surahStartTime) / 1000).toFixed(1);
+    const totalElapsed = ((Date.now() - overallStartTime) / 1000).toFixed(0);
+
+    console.log(
+      `\r✅ [${i + 1}/${surahs.length}] Surah ${pad3(surahId)}: ${tasks.length} words ` +
+        `(${surahDownloaded} new, ${surahSkipped} cached) in ${surahDuration}s ` +
+        `| Total: ${globalStats.downloaded} new (${formatBytes(globalStats.totalBytes)}) | Elapsed: ${totalElapsed}s`
+    );
   }
 
-  console.log(`\n✅ Found ${allTasks.length.toLocaleString()} word audio files to process.\n`);
+  const totalTime = ((Date.now() - overallStartTime) / 1000).toFixed(1);
 
-  if (allTasks.length === 0) {
-    console.log('No audio tasks found. Exiting.');
-    return;
-  }
-
-  console.log('🚀 Starting downloads...\n');
-
-  let lastPrint = 0;
-  const downloadStartTime = Date.now();
-
-  const results = await runWorkerPool(allTasks, CONCURRENCY, (completed, total, stats) => {
-    const now = Date.now();
-    if (now - lastPrint > 150 || completed === total) {
-      lastPrint = now;
-      const elapsedSec = (now - downloadStartTime) / 1000;
-      const speed = elapsedSec > 0 ? (completed / elapsedSec).toFixed(1) : 0;
-      const percent = ((completed / total) * 100).toFixed(1);
-      const remaining = total - completed;
-      const etaSec = speed > 0 ? Math.round(remaining / speed) : 0;
-
-      process.stdout.write(
-        `\r[${percent}%] ${completed}/${total} | ` +
-          `⚡ ${speed} files/s | ` +
-          `⬇️ ${stats.downloaded} new | ` +
-          `⏭️ ${stats.skipped} skipped | ` +
-          `⏱️ ETA: ${etaSec}s    `
-      );
-    }
-  });
-
-  const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
-
-  console.log('\n\n══════════════════════════════════════════════════════════════');
-  console.log('🎉 Word-by-Word Audio Download Summary:');
-  console.log(`   • Total Audio Files   : ${allTasks.length.toLocaleString()}`);
-  console.log(`   • Downloaded (New)    : ${results.downloaded.toLocaleString()} (${formatBytes(results.totalBytes)})`);
-  console.log(`   • Skipped (Existing)  : ${results.skipped.toLocaleString()}`);
-  console.log(`   • Not Found / 404     : ${results.not_found}`);
-  console.log(`   • Failed              : ${results.failed}`);
+  console.log('\n══════════════════════════════════════════════════════════════');
+  console.log('🎉 Complete Word-by-Word Audio Download Summary:');
+  console.log(`   • Total Audio Files   : ${globalStats.totalWords.toLocaleString()}`);
+  console.log(`   • Downloaded (New)    : ${globalStats.downloaded.toLocaleString()} (${formatBytes(globalStats.totalBytes)})`);
+  console.log(`   • Skipped (Cached)    : ${globalStats.skipped.toLocaleString()}`);
+  console.log(`   • Not Found           : ${globalStats.not_found}`);
+  console.log(`   • Failed              : ${globalStats.failed}`);
   console.log(`   • Elapsed Time        : ${totalTime}s`);
   console.log(`   • Output Directory    : ${OUTPUT_DIR}`);
   console.log('══════════════════════════════════════════════════════════════\n');
+}
+
+function pad3(num) {
+  return String(num).padStart(3, '0');
 }
 
 main().catch((err) => {
