@@ -1,5 +1,11 @@
 {
   "achieve-quran-goals": "حقق أهدافك في القرآن",
+  "all-surahs": "الكل ({{count}})",
+  "makki": "مكية ({{count}})",
+  "madani": "مدنية ({{count}})",
+  "search-surah": "ابحث عن سورة بالاسم أو الرقم...",
+  "no-surahs-found": "لم يتم العثور على أي سورة مطابقة لبحثك",
+  "clear-filters": "مسح التصفية",
   "apps": {
     "description": "تطبيقات مرتبطة لتعزيز تقدمك مع القرآن الكريم.",
     "featured-apps": "التطبيقات المميزة",

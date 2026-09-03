@@ -1,5 +1,11 @@
 {
   "achieve-quran-goals": "Achieve Your Quran Goals",
+  "all-surahs": "All ({{count}})",
+  "makki": "Makki ({{count}})",
+  "madani": "Madani ({{count}})",
+  "search-surah": "Search Surah (e.g. Kahf or 18)...",
+  "no-surahs-found": "No Surahs found matching your search",
+  "clear-filters": "Clear filters",
   "apps": {
     "description": "Connected apps to further your growth with the Quran.",
     "featured-apps": "Featured Apps",
