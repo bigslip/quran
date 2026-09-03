@@ -42,25 +42,30 @@
 
   // Modern Spiritual Sanctuary Tokens - Light Palette
   --color-primary: #0284C7;
-  --color-primary-subtle: rgba(2, 132, 199, 0.08);
+  --color-primary-subtle: rgba(2, 132, 199, 0.10);
   --color-primary-gradient: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
   --color-secondary-gradient: linear-gradient(135deg, #0D9488 0%, #0284C7 100%);
   --color-accent-gold: #D97706;
-  --color-surface-bg: #F0F4FA;
-  --color-surface-card: #FFFFFF;
-  --color-surface-card-hover: #F8FAFC;
-  --color-surface-floating: rgba(255, 255, 255, 0.85);
+  --color-accent-gold-subtle: rgba(217, 119, 6, 0.12);
+  --color-accent-emerald: #0D9488;
+  --color-accent-emerald-subtle: rgba(13, 148, 136, 0.12);
+  --color-surface-bg: #F8FAFC;
+  --color-surface-card: rgba(255, 255, 255, 0.92);
+  --color-surface-card-hover: #FFFFFF;
+  --color-surface-floating: rgba(255, 255, 255, 0.90);
   --color-text-primary: #0F172A;
-  --color-text-secondary: #64748B;
-  --color-border-subtle: rgba(226, 232, 240, 0.8);
-  --color-border-iridescent: rgba(2, 132, 199, 0.18);
-  --color-glow-celestial: 0 0 16px rgba(2, 132, 199, 0.15);
-  --color-glow-subtle: 0 8px 24px rgba(2, 132, 199, 0.08);
+  --color-text-secondary: #475569;
+  --color-border-subtle: rgba(2, 132, 199, 0.14);
+  --color-border-iridescent: rgba(2, 132, 199, 0.22);
+  --color-glow-celestial: 0 0 20px rgba(2, 132, 199, 0.18);
+  --color-glow-subtle: 0 8px 24px rgba(2, 132, 199, 0.10);
+  --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-card-hover: 0 12px 32px rgba(2, 132, 199, 0.14), 0 4px 12px rgba(15, 23, 42, 0.06);
 
-  --color-background-default: #F0F4FA;
-  --color-background-elevated: #ffffff;
-  --color-background-elevated-new: #ffffff;
-  --color-background-gradient: #ffffff;
+  --color-background-default: #F8FAFC;
+  --color-background-elevated: #FFFFFF;
+  --color-background-elevated-new: #FFFFFF;
+  --color-background-gradient: #FFFFFF;
 
   --color-background-alternative-faded: var(--shade-0);
   --color-background-alternative-faint: var(--shade-1);

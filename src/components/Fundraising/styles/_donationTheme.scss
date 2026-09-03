@@ -28,35 +28,35 @@
 
 @mixin donationCardThemeVars {
   @include theme.light {
-    --donation-card-gradient-start: #2ca4ab;
-    --donation-card-gradient-end: #124245;
+    --donation-card-gradient-start: #0284c7;
+    --donation-card-gradient-end: #0369a1;
     --donation-card-title: #ffffff;
-    --donation-card-text: #ffffff;
-    --donation-card-cta-bg: #2ca4ab;
-    --donation-card-cta-fg: #ffffff;
+    --donation-card-text: #f0fdfa;
+    --donation-card-cta-bg: #ffffff;
+    --donation-card-cta-fg: #0369a1;
     --donation-card-close: #ffffff;
-    --donation-card-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+    --donation-card-shadow: 0 12px 36px rgba(2, 132, 199, 0.2), 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   @include theme.dark {
-    --donation-card-gradient-start: #2ca4ab;
-    --donation-card-gradient-end: #124245;
-    --donation-card-title: #ffffff;
-    --donation-card-text: #ffffff;
-    --donation-card-cta-bg: #2ca4ab;
-    --donation-card-cta-fg: #ffffff;
-    --donation-card-close: #ffffff;
-    --donation-card-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+    --donation-card-gradient-start: #0e2a47;
+    --donation-card-gradient-end: #0a1c30;
+    --donation-card-title: #f0f4fa;
+    --donation-card-text: #cbd5e1;
+    --donation-card-cta-bg: #00f2fe;
+    --donation-card-cta-fg: #070a13;
+    --donation-card-close: #94a3b8;
+    --donation-card-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 242, 254, 0.15);
   }
 
   @include theme.sepia {
-    --donation-card-gradient-start: #72603f;
-    --donation-card-gradient-end: #d8b677;
+    --donation-card-gradient-start: #785e3a;
+    --donation-card-gradient-end: #543f25;
     --donation-card-title: #ffffff;
-    --donation-card-text: #ffffff;
-    --donation-card-cta-bg: #72603f;
-    --donation-card-cta-fg: #ffffff;
+    --donation-card-text: #fdfbf7;
+    --donation-card-cta-bg: #ffffff;
+    --donation-card-cta-fg: #543f25;
     --donation-card-close: #ffffff;
-    --donation-card-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+    --donation-card-shadow: 0 12px 36px rgba(120, 94, 58, 0.2);
   }
 }

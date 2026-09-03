@@ -8,7 +8,7 @@
   -webkit-backdrop-filter: var(--backdrop-filter-frosted);
   min-block-size: calc(4 * var(--spacing-medium));
   margin-block-end: var(--spacing-small);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
   box-sizing: border-box;
   transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
     border-color var(--transition-fast) ease, background-color var(--transition-fast) ease,
@@ -30,6 +30,10 @@
 
       .nameArabic {
         color: var(--color-primary);
+      }
+
+      .chapterIconWrapper {
+        filter: drop-shadow(0 0 12px var(--color-primary));
       }
 
       .numberOfVerses {

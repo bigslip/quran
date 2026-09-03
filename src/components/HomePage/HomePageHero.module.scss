@@ -237,13 +237,29 @@
   white-space: nowrap;
 }
 
-.buttonsContainer {
+.commandDeck {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: var(--spacing-medium-px);
-  margin-block-start: var(--spacing-medium-px);
+  inline-size: 100%;
+  max-inline-size: 860px;
+  margin-block-start: var(--spacing-small-px);
 
   @include breakpoints.smallerThanTablet {
     gap: var(--spacing-small-px);
-    margin-block-start: var(--spacing-small-px);
+  }
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-medium-px);
+  margin-block-start: var(--spacing-xxsmall-px);
+
+  @include breakpoints.smallerThanTablet {
+    gap: var(--spacing-small-px);
+    margin-block-start: 0;
   }
 }

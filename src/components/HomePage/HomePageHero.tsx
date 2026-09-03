@@ -83,36 +83,38 @@ const HomePageHero = () => {
           <div className={styles.logoContainer}>
             <Logo />
           </div>
-          <div className={styles.quickJumpContainer}>
-            <div className={styles.quickJumpList}>
-              {QUICK_JUMP_PILLS.map((pill) => {
-                const badgeInfo = getPillBadge(pill.key);
-                return (
-                  <Link
-                    key={pill.href}
-                    href={pill.href}
-                    className={classNames(styles.quickJumpPill, {
-                      [badgeInfo?.pillClassName]: !!badgeInfo,
-                    })}
-                    onClick={() => onQuickJumpClick(pill.key)}
-                  >
-                    <span className={styles.pillText}>{pill.label}</span>
-                    {badgeInfo && (
-                      <span className={classNames(styles.pillBadge, badgeInfo.className)}>
-                        {badgeInfo.badgeText}
-                      </span>
-                    )}
-                  </Link>
-                );
-              })}
+          <div className={styles.commandDeck}>
+            <div className={styles.quickJumpContainer}>
+              <div className={styles.quickJumpList}>
+                {QUICK_JUMP_PILLS.map((pill) => {
+                  const badgeInfo = getPillBadge(pill.key);
+                  return (
+                    <Link
+                      key={pill.href}
+                      href={pill.href}
+                      className={classNames(styles.quickJumpPill, {
+                        [badgeInfo?.pillClassName]: !!badgeInfo,
+                      })}
+                      onClick={() => onQuickJumpClick(pill.key)}
+                    >
+                      <span className={styles.pillText}>{pill.label}</span>
+                      {badgeInfo && (
+                        <span className={classNames(styles.pillBadge, badgeInfo.className)}>
+                          {badgeInfo.badgeText}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
+            {!isPopularDropdownOpen && (
+              <div className={styles.buttonsContainer}>
+                <NavigationButton />
+                <PopularButton onClick={handlePopularClick} />
+              </div>
+            )}
           </div>
-          {!isPopularDropdownOpen && (
-            <div className={styles.buttonsContainer}>
-              <NavigationButton />
-              <PopularButton onClick={handlePopularClick} />
-            </div>
-          )}
           <PopularDropdown isOpen={isPopularDropdownOpen} onClose={handleDropdownClose} />
         </div>
       </div>
