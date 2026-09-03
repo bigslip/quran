@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import classNames from 'classnames';
 import Head from 'next/head';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -9,9 +10,11 @@ import styles from './HomePageHero.module.scss';
 
 import PopularDropdown from '@/components/HomePage/PopularDropdown';
 import Link from '@/dls/Link/Link';
+import useHasMounted from '@/hooks/useHasMounted';
 import Background from '@/icons/background.svg';
 import Logo from '@/icons/logo_main.svg';
 import { logButtonClick } from '@/utils/eventLogger';
+import { isFriday, isNightTime } from '@/utils/spiritualTime';
 
 const QUICK_JUMP_PILLS = [
   { label: 'Surah Yaseen (36)', href: '/36', key: 'yaseen' },
@@ -24,6 +27,10 @@ const QUICK_JUMP_PILLS = [
 const HomePageHero = () => {
   const { t } = useTranslation('home');
   const [isPopularDropdownOpen, setIsPopularDropdownOpen] = useState(false);
+  const hasMounted = useHasMounted();
+
+  const isFridayToday = hasMounted && isFriday();
+  const isNightNow = hasMounted && isNightTime();
 
   const handlePopularClick = () => {
     setIsPopularDropdownOpen((prev) => !prev);
@@ -35,6 +42,24 @@ const HomePageHero = () => {
 
   const onQuickJumpClick = (itemKey: string) => {
     logButtonClick('homepage_hero_quick_jump', { surah: itemKey });
+  };
+
+  const getPillBadge = (key: string) => {
+    if (key === 'kahf' && isFridayToday) {
+      return {
+        badgeText: `✦ ${t('friday-sunnah', { defaultValue: 'Friday Sunnah' })}`,
+        className: styles.fridayBadge,
+        pillClassName: styles.fridayPill,
+      };
+    }
+    if (key === 'mulk' && isNightNow) {
+      return {
+        badgeText: `☾ ${t('night-recitation', { defaultValue: 'Night Recitation' })}`,
+        className: styles.nightBadge,
+        pillClassName: styles.nightPill,
+      };
+    }
+    return null;
   };
 
   return (
@@ -60,16 +85,26 @@ const HomePageHero = () => {
           </div>
           <div className={styles.quickJumpContainer}>
             <div className={styles.quickJumpList}>
-              {QUICK_JUMP_PILLS.map((pill) => (
-                <Link
-                  key={pill.href}
-                  href={pill.href}
-                  className={styles.quickJumpPill}
-                  onClick={() => onQuickJumpClick(pill.key)}
-                >
-                  <span className={styles.pillText}>{pill.label}</span>
-                </Link>
-              ))}
+              {QUICK_JUMP_PILLS.map((pill) => {
+                const badgeInfo = getPillBadge(pill.key);
+                return (
+                  <Link
+                    key={pill.href}
+                    href={pill.href}
+                    className={classNames(styles.quickJumpPill, {
+                      [badgeInfo?.pillClassName]: !!badgeInfo,
+                    })}
+                    onClick={() => onQuickJumpClick(pill.key)}
+                  >
+                    <span className={styles.pillText}>{pill.label}</span>
+                    {badgeInfo && (
+                      <span className={classNames(styles.pillBadge, badgeInfo.className)}>
+                        {badgeInfo.badgeText}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           </div>
           {!isPopularDropdownOpen && (

@@ -184,6 +184,55 @@
   }
 }
 
+.fridayPill,
+.nightPill {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 16px var(--color-primary-subtle), 0 4px 14px rgba(0, 0, 0, 0.15);
+  background: var(--color-surface-floating);
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 24px var(--color-primary-subtle), 0 8px 24px rgba(0, 0, 0, 0.22);
+    }
+  }
+}
+
+.pillBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall-px);
+  margin-inline-start: var(--spacing-xsmall-px);
+  padding-inline: var(--spacing-xsmall-px);
+  padding-block: var(--spacing-micro-px);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--border-radius-pill);
+  line-height: 1.2;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+
+  @include breakpoints.smallerThanTablet {
+    font-size: 10px;
+    padding-inline: var(--spacing-xxsmall-px);
+    margin-inline-start: var(--spacing-xxsmall-px);
+  }
+}
+
+.fridayBadge {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border-iridescent);
+  box-shadow: 0 0 10px var(--color-primary-subtle);
+}
+
+.nightBadge {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border-iridescent);
+  box-shadow: 0 0 10px var(--color-primary-subtle);
+}
+
 .pillText {
   white-space: nowrap;
 }
