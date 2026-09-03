@@ -1,20 +1,20 @@
-import classNames from 'classnames';
+import React from 'react';
+
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
 
+import AppStoreBadge from './HomePageApps/AppStoreBadge';
+import CompanionAppCard, { AppItem } from './HomePageApps/CompanionAppCard';
 import styles from './HomePageApps.module.scss';
 
+import ArrowIcon from '@/icons/arrow.svg';
+import MobileIcon from '@/icons/mobile.svg';
+import SparkleIcon from '@/icons/star.svg';
 import { logButtonClick } from '@/utils/eventLogger';
 import { APPS_URL } from '@/utils/navigation';
 
-interface App {
-  id: string;
-  name: string;
-  description: string;
-  iconSrc: string;
-  iconAlt: string;
-  href: string;
-}
+const IOS_APP_URL = 'https://apps.apple.com/us/app/quran-by-quran-com-قرآن/id1118663303';
+const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.quran.labs.androidquran';
 
 const HomePageApps: React.FC = () => {
   const { t } = useTranslation('home');
@@ -23,7 +23,7 @@ const HomePageApps: React.FC = () => {
     logButtonClick(`home_apps_${appId.replaceAll('-', '_')}`);
   };
 
-  const apps: App[] = [
+  const companionApps: AppItem[] = [
     {
       id: 'quranreflect',
       name: t('apps.quranreflect.name'),
@@ -48,63 +48,85 @@ const HomePageApps: React.FC = () => {
       iconAlt: t('apps.quran-space.name'),
       href: 'https://quran.space/',
     },
-    {
-      id: 'quran-ios',
-      name: t('apps.quran-ios.name'),
-      description: t('apps.quran-ios.description'),
-      iconSrc: '/images/app-portal/qdc-ios-logo.webp',
-      iconAlt: t('apps.quran-ios.name'),
-      href: 'https://apps.apple.com/us/app/quran-by-quran-com-قرآن/id1118663303',
-    },
-    {
-      id: 'quran-android',
-      name: t('apps.quran-android.name'),
-      description: t('apps.quran-android.description'),
-      iconSrc: '/images/app-portal/qdc-android-logo.webp',
-      iconAlt: t('apps.quran-android.name'),
-      href: 'https://play.google.com/store/apps/details?id=com.quran.labs.androidquran',
-    },
   ];
 
   return (
-    <div className={styles.container}>
+    <section className={styles.container} aria-label={t('apps.title')}>
       <div className={styles.header}>
-        <h2 className={styles.title}>{t('apps.title')}</h2>
-        <p className={styles.subtitle}>{t('apps.description')}</p>
+        <div className={styles.titleWrapper}>
+          <h2 className={styles.title}>{t('apps.title')}</h2>
+          <p className={styles.subtitle}>{t('apps.description')}</p>
+        </div>
+        <Link
+          href={APPS_URL}
+          className={styles.seeMoreLink}
+          onClick={() => logButtonClick('home_apps_see_more')}
+        >
+          <span>{t('apps.see-more')}</span>
+          <ArrowIcon className={styles.linkArrow} />
+        </Link>
       </div>
-      <div className={styles.appsContainer}>
-        <div className={styles.appsHeader}>
-          <div className={styles.featured}>{t('apps.featured-apps')}</div>
-          <Link
-            href={APPS_URL}
-            className={styles.seeMoreLink}
-            onClick={() => logButtonClick('home_apps_see_more')}
-          >
-            {t('apps.see-more')}
-          </Link>
+
+      <div className={styles.sanctuaryCard}>
+        <div className={styles.sanctuaryGlow} aria-hidden="true" />
+        <div className={styles.sanctuaryContent}>
+          <div className={styles.sanctuaryMeta}>
+            <div className={styles.companionBadge}>
+              <MobileIcon className={styles.mobileBadgeIcon} />
+              <span>{t('home:sanctuary-companion', { defaultValue: 'Mobile Companion' })}</span>
+            </div>
+            <h3 className={styles.sanctuaryTitle}>
+              {t('home:companion-title', { defaultValue: 'Carry the Quran Everywhere' })}
+            </h3>
+            <p className={styles.sanctuaryDescription}>
+              {t('home:companion-desc', {
+                defaultValue:
+                  'Read offline, listen to 30+ reciters, set custom goals, and sync your reading seamlessly across all your devices.',
+              })}
+            </p>
+
+            <div className={styles.storeBadges}>
+              <AppStoreBadge
+                platform="ios"
+                href={IOS_APP_URL}
+                onClick={() => handleAppClick('quran-ios')}
+              />
+              <AppStoreBadge
+                platform="android"
+                href={ANDROID_APP_URL}
+                onClick={() => handleAppClick('quran-android')}
+              />
+            </div>
+          </div>
+
+          <div className={styles.featurePills}>
+            <div className={styles.featurePill}>
+              <SparkleIcon className={styles.featureIcon} />
+              <span>{t('offline-mushaf', { defaultValue: 'Offline Mushaf' })}</span>
+            </div>
+            <div className={styles.featurePill}>
+              <SparkleIcon className={styles.featureIcon} />
+              <span>{t('audio-sync', { defaultValue: 'Audio Sync' })}</span>
+            </div>
+            <div className={styles.featurePill}>
+              <SparkleIcon className={styles.featureIcon} />
+              <span>{t('daily-reminders', { defaultValue: 'Daily Reminders' })}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.companionGrid}>
+        <div className={styles.ecosystemHeader}>
+          <span className={styles.ecosystemTitle}>{t('apps.featured-apps')}</span>
         </div>
         <div className={styles.apps}>
-          {apps.map((app) => (
-            <Link
-              key={app.id}
-              className={classNames(styles.appCard, styles[app.id])}
-              onClick={() => handleAppClick(app.id)}
-              href={app.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={app.iconSrc} alt={app.iconAlt} className={styles.appIconImage} />
-
-              <div className={styles.appInfo}>
-                <h3 className={styles.appName}>{app.name}</h3>
-                <p className={styles.appDescription}>{app.description}</p>
-              </div>
-            </Link>
+          {companionApps.map((app) => (
+            <CompanionAppCard key={app.id} app={app} onClick={handleAppClick} />
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

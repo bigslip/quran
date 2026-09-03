@@ -3,6 +3,7 @@
   "all": "All",
   "allow": "Allow",
   "and": "and",
+  "topics": "Topics",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {

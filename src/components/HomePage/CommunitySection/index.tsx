@@ -1,26 +1,14 @@
 import React from 'react';
 
-import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
 import styles from './CommunitySection.module.scss';
+import QuranReflectCard from './QuranReflectCard';
+import RamadanCard from './RamadanCard';
 
-import Card from '@/components/HomePage/Card';
-import IconContainer, { IconSize } from '@/dls/IconContainer/IconContainer';
-import DiamondIcon from '@/icons/diamond.svg';
-import QRColoredIcon from '@/icons/qr-colored.svg';
-import QRLogoIcon from '@/icons/qr-logo.svg';
-import ArrowIcon from '@/public/icons/arrow.svg';
 import { TestId } from '@/tests/test-ids';
 import Language from '@/types/Language';
 import { logButtonClick } from '@/utils/eventLogger';
-import { ROUTES } from '@/utils/navigation';
-import { getQRNavigationUrl } from '@/utils/quranReflect/navigation';
-
-const RAMADAN_EVENT = {
-  title: 'Discover Ramadan Activities!',
-  description: 'Tools & content to stay engaged all month',
-};
 
 const CommunitySection = () => {
   const { lang, t } = useTranslation('home');
@@ -34,65 +22,22 @@ const CommunitySection = () => {
   };
 
   return (
-    <>
+    <section className={styles.section} aria-label={t('common:community.title')}>
       <div className={styles.header}>
-        <h1>{t('common:community.title')}</h1>
+        <div className={styles.titleWrapper}>
+          <h2 className={styles.title}>{t('common:community.title')}</h2>
+          <span className={styles.headerSubtitle}>
+            {t('home:community-subtitle', {
+              defaultValue: 'Connect, reflect, and share insights with the global Ummah',
+            })}
+          </span>
+        </div>
       </div>
       <div className={styles.cardsContainer} data-testid={TestId.COMMUNITY_SECTION}>
-        {lang === Language.EN && (
-          <Card
-            className={classNames(styles.card, styles.ramadanCard)}
-            link={ROUTES.RAMADAN_2026}
-            isNewTab
-            linkClassName={styles.link}
-            onClick={onRamadanCardClicked}
-          >
-            <div className={styles.cardContent}>
-              <div className={styles.cardTitle}>
-                <div className={styles.cardHeader}>
-                  <DiamondIcon className={styles.ramadanIcon} />
-                  <p className={classNames(styles.cardDescription, styles.ramadanTitle)}>
-                    {RAMADAN_EVENT.title}
-                  </p>
-                </div>
-                <IconContainer
-                  size={IconSize.Xsmall}
-                  icon={<ArrowIcon />}
-                  shouldForceSetColors={false}
-                  className={classNames(styles.arrowIcon, styles.ramadanArrowIcon)}
-                />
-              </div>
-              <p className={classNames(styles.cardDescription, styles.ramadanDescription)}>
-                {RAMADAN_EVENT.description}
-              </p>
-            </div>
-          </Card>
-        )}
-        <Card
-          className={styles.card}
-          link={getQRNavigationUrl()}
-          isNewTab
-          linkClassName={styles.link}
-          onClick={onQRCardClicked}
-        >
-          <div className={styles.cardContent}>
-            <div className={styles.cardTitle}>
-              <div className={styles.cardHeader}>
-                <QRColoredIcon className={styles.coloredIcon} />
-                <QRLogoIcon className={styles.logoIcon} />
-              </div>
-              <IconContainer
-                size={IconSize.Xsmall}
-                icon={<ArrowIcon />}
-                shouldForceSetColors={false}
-                className={styles.arrowIcon}
-              />
-            </div>
-            <p className={styles.cardDescription}>{t('qr-community')}</p>
-          </div>
-        </Card>
+        {lang === Language.EN && <RamadanCard onClick={onRamadanCardClicked} />}
+        <QuranReflectCard onClick={onQRCardClicked} />
       </div>
-    </>
+    </section>
   );
 };
 

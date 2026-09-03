@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import Head from 'next/head';
+import useTranslation from 'next-translate/useTranslation';
 
 import NavigationButton from './HeroButtons/NavigationButton';
 import PopularButton from './HeroButtons/PopularButton';
@@ -21,6 +22,7 @@ const QUICK_JUMP_PILLS = [
 ];
 
 const HomePageHero = () => {
+  const { t } = useTranslation('home');
   const [isPopularDropdownOpen, setIsPopularDropdownOpen] = useState(false);
 
   const handlePopularClick = () => {
@@ -48,7 +50,9 @@ const HomePageHero = () => {
           <div className={styles.greetingCapsule}>
             <span className={styles.greetingBadge}>
               <span className={styles.greetingPulse} />
-              <span className={styles.greetingText}>Assalamu Alaikum</span>
+              <span className={styles.greetingText}>
+                {t('greeting', { defaultValue: 'Assalamu Alaikum' })}
+              </span>
             </span>
           </div>
           <div className={styles.logoContainer}>
@@ -81,4 +85,3 @@ const HomePageHero = () => {
   );
 };
 export default HomePageHero;
-

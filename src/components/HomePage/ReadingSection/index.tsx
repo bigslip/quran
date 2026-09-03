@@ -17,6 +17,7 @@ import Link, { LinkVariant } from '@/dls/Link/Link';
 import useGetRecentlyReadVerseKeys from '@/hooks/auth/useGetRecentlyReadVerseKeys';
 import useGetStreakWithMetadata from '@/hooks/auth/useGetStreakWithMetadata';
 import useGlobalReadingBookmark from '@/hooks/auth/useGlobalReadingBookmark';
+import useIsMobile from '@/hooks/useIsMobile';
 import useMappedBookmark from '@/hooks/useMappedBookmark';
 import BookmarkRemoveIcon from '@/icons/bookmark_remove.svg';
 import { selectGuestReadingBookmark } from '@/redux/slices/guestBookmark';
@@ -27,7 +28,6 @@ import { getMushafId } from '@/utils/api';
 import { GuestReadingBookmark } from '@/utils/bookmark';
 import { logButtonClick } from '@/utils/eventLogger';
 import { MY_QURAN_URL } from '@/utils/navigation';
-import useIsMobile from '@/hooks/useIsMobile';
 import { getPageFirstVerseKey } from '@/utils/verse';
 
 interface Props {}

@@ -26,13 +26,24 @@
     "see-more": "See more",
     "title": "Quran Apps"
   },
+  "app-store": "App Store",
+  "audio-sync": "Audio Sync",
   "begin": "Begin",
   "calendar-cta": "Calendar",
   "chapters-and-verses": "Chapters and Verses",
+  "community-subtitle": "Connect, reflect, and share insights with the global Ummah",
+  "companion-desc": "Read offline, listen to 30+ reciters, set custom goals, and sync your reading seamlessly across all your devices.",
+  "companion-title": "Carry the Quran Everywhere",
   "continue-learning-plan": "Continue Learning",
   "continue-read": "Continue Reading",
+  "daily-reminders": "Daily Reminders",
+  "download-on": "Download on the",
   "explore-topics": "Explore Topics",
+  "featured-reflections": "Daily Reflection",
   "first-time-reading": "New to the Quran? <link>Start here</link>",
+  "get-it-on": "Get it on",
+  "google-play": "Google Play",
+  "greeting": "Assalamu Alaikum",
   "grow-beyond-ramadan": "Grow with us <modalLink>Beyond Ramadan</modalLink>",
   "know-someone": "Grow with us this <modalLink>Ramadan</modalLink>",
   "learning-plan": "Learning Plans",
@@ -43,6 +54,7 @@
   "no-page-bookmarks": "You do not have any page bookmarks yet",
   "no-recently-read": "You do not have any reading sessions yet",
   "noble-quran": "The Noble Quran",
+  "offline-mushaf": "Offline Mushaf",
   "popular": "Popular",
   "qgj": {
     "learning-plans": {
@@ -66,11 +78,16 @@
     "title": "Quran Growth Journey"
   },
   "qr-community": "Read today's featured Verses and Reflections",
+  "qr-community-name": "QuranReflect Community",
+  "qr-community-subtitle": "Global Quran Reflections",
   "quran-in-year": "Quran in a Year",
   "quran-in-year-cta": "This Week’s Reading",
   "quran-in-year-verse-title": "A verse from this week's reading",
   "ramadan-activities-cta": "<link>Follow the <b>Global Quranic Calendar</b> for weekly readings, inspiring podcasts, and a call to reflect!</link>",
   "ramadan-challenge": "Join the Ramadan Challenge",
+  "ramadan-event-desc": "Tools & content to stay engaged and spiritually uplifted all month",
+  "ramadan-event-tag": "Ramadan 2026",
+  "ramadan-event-title": "Discover Ramadan Activities!",
   "ramadan": {
     "header": "Tools to Deepen Your Connection with the Quran",
     "title": "Ready for Ramadan?"
@@ -78,6 +95,7 @@
   "read-juz": "Read Juz",
   "recently-read": "Recently Read",
   "revelation-order-disclaimer": "This view shows the chronological order of Surahs in the Quran based on when they were revealed to the Prophet Muhammad <hover>ﷺ</hover>. The chronology is a subject of scholarly opinion and some Surahs were revealed in parts at different times. The ordering here is based on the work of <link>Tanzil.net</link>. [Note: the compiled Mushaf order from al-Fatiha to al-Nas is a matter of consensus.]",
+  "sanctuary-companion": "Mobile Companion",
   "see-more-learning-plans": "See More",
   "set-custom-goal": "Set a Goal",
   "share-quran": {

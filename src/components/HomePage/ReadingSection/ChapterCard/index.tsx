@@ -98,4 +98,3 @@ const ChapterCard: React.FC<Props> = ({
 };
 
 export default ChapterCard;
-
