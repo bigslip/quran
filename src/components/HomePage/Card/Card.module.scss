@@ -1,6 +1,7 @@
 @use 'src/styles/theme';
 
 .card {
+  box-sizing: border-box;
   background-color: var(--color-surface-card);
   backdrop-filter: var(--backdrop-filter-frosted);
   -webkit-backdrop-filter: var(--backdrop-filter-frosted);

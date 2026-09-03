@@ -25,33 +25,23 @@ async function capture() {
   const desktopAboveFold = path.join(ARTIFACT_DIR, 'desktop_above_fold.png');
   await desktopPage.screenshot({ path: desktopAboveFold });
 
-  // Scroll down to Chapter Scrubber & Grid
-  await desktopPage.evaluate(() => window.scrollTo(0, 500));
+  // Scroll down to Community Section
+  const communityEl = await desktopPage.$('[data-testid="community-section"]');
+  if (communityEl) {
+    await communityEl.scrollIntoViewIfNeeded();
+    await desktopPage.waitForTimeout(500);
+    const desktopCommunity = path.join(ARTIFACT_DIR, 'desktop_community_section.png');
+    await desktopPage.screenshot({ path: desktopCommunity });
+  }
+
+  // Scroll down to Apps Section
+  await desktopPage.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await desktopPage.waitForTimeout(500);
-  const desktopScrubber = path.join(ARTIFACT_DIR, 'desktop_scrubber_grid.png');
-  await desktopPage.screenshot({ path: desktopScrubber });
-
-  // Scroll down to Below the Fold Sections (Topics, Learning, Community, Apps)
-  await desktopPage.evaluate(() => window.scrollTo(0, 1800));
-  await desktopPage.waitForTimeout(500);
-  const desktopBelowFold = path.join(ARTIFACT_DIR, 'desktop_below_fold.png');
-  await desktopPage.screenshot({ path: desktopBelowFold });
-
-  // 2. Mobile Viewport (390x844 - iPhone 14)
-  const mobileContext = await browser.newContext({
-    viewport: { width: 390, height: 844 },
-    deviceScaleFactor: 2,
-    isMobile: true,
-  });
-  const mobilePage = await mobileContext.newPage();
-  await mobilePage.goto('http://localhost:4000', { waitUntil: 'networkidle' });
-  await mobilePage.waitForTimeout(1000);
-
-  const mobileAboveFold = path.join(ARTIFACT_DIR, 'mobile_above_fold.png');
-  await mobilePage.screenshot({ path: mobileAboveFold });
+  const desktopFooter = path.join(ARTIFACT_DIR, 'desktop_footer_apps.png');
+  await desktopPage.screenshot({ path: desktopFooter });
 
   await browser.close();
-  console.log('All screenshots captured successfully!');
+  console.log('Community and Apps screenshots captured successfully!');
 }
 
 capture().catch((err) => {
