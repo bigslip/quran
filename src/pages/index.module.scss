@@ -16,10 +16,10 @@ $list-max-width: 80rem;
 }
 
 .flow > .flowItem {
-  margin-block-start: calc(1.5 * var(--spacing-medium));
+  margin-block-start: var(--spacing-medium2);
 
   @include breakpoints.tablet {
-    margin-block-start: calc(2 * var(--spacing-medium));
+    margin-block-start: var(--spacing-mega);
   }
 }
 
@@ -62,28 +62,28 @@ $list-max-width: 80rem;
 }
 
 .homepageCard:not(:first-child) {
-  padding-block-start: var(--spacing-medium2-px);
+  padding-block-start: var(--spacing-medium2);
   @include breakpoints.tablet {
-    padding-block-start: var(--spacing-large-px);
+    padding-block-start: var(--spacing-large);
   }
 }
 
 .homepageCard {
   @include breakpoints.smallerThanTablet {
-    padding-inline: var(--spacing-small-px);
-    margin-inline: var(--spacing-medium2-px);
+    padding-inline: var(--spacing-small);
+    margin-inline: var(--spacing-medium2);
   }
-  padding-block-end: var(--spacing-medium2-px);
+  padding-block-end: var(--spacing-medium2);
   @include breakpoints.tablet {
-    padding-block-end: var(--spacing-large-px);
+    padding-block-end: var(--spacing-large);
   }
   border-block-end: 1px solid var(--color-separators-ayah-level);
 }
 
 .appsSection {
-  padding-block-end: var(--spacing-medium4-px);
+  padding-block-end: var(--spacing-large);
   @include breakpoints.tablet {
-    padding-block-end: var(--spacing-large-px);
+    padding-block-end: var(--spacing-large);
   }
 
   border-block-end: 0;

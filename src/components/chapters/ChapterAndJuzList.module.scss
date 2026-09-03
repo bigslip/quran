@@ -55,6 +55,16 @@
 
 .tabItem {
   background-color: unset;
+  color: var(--color-text-secondary);
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+
+  &[data-state='active'] {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+  }
 }
 
 // sorter

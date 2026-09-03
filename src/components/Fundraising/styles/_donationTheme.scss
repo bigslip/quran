@@ -6,7 +6,7 @@
     --donation-strip-gradient-end: #124245;
     --donation-strip-text: #ffffff;
     --donation-strip-cta-bg: #ebf9fa;
-    --donation-strip-cta-fg: #2ca4ab;
+    --donation-strip-cta-fg: #0e6369;
   }
 
   @include theme.dark {
@@ -14,7 +14,7 @@
     --donation-strip-gradient-end: #124245;
     --donation-strip-text: #ffffff;
     --donation-strip-cta-bg: #272f33;
-    --donation-strip-cta-fg: #2ca4ab;
+    --donation-strip-cta-fg: #38d3db;
   }
 
   @include theme.sepia {
@@ -22,7 +22,7 @@
     --donation-strip-gradient-end: #124245;
     --donation-strip-text: #ffffff;
     --donation-strip-cta-bg: #f2e0bf;
-    --donation-strip-cta-fg: #72603f;
+    --donation-strip-cta-fg: #5a492d;
   }
 }
 
