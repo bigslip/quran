@@ -83,6 +83,9 @@ const HomePageHero = () => {
           <div className={styles.logoContainer}>
             <Logo />
           </div>
+          <p className={styles.heroSubtitle}>
+            {t('hero-tagline', { defaultValue: 'Read · Recite · Reflect' })}
+          </p>
           <div className={styles.commandDeck}>
             <div className={styles.quickJumpContainer}>
               <div className={styles.quickJumpList}>

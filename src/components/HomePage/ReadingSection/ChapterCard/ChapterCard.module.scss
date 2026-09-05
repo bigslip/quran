@@ -73,11 +73,11 @@
   align-items: center;
   justify-content: center;
   background-color: var(--color-surface-floating);
-  border: 1px solid var(--color-border-iridescent);
+  border: 1px solid rgba(217, 119, 6, 0.35);
   border-radius: var(--border-radius-small-px);
   transform: rotate(45deg);
-  color: var(--color-primary);
-  box-shadow: 0 0 10px var(--color-primary-subtle);
+  color: var(--color-accent-gold);
+  box-shadow: 0 0 12px var(--color-accent-gold-subtle);
   flex-shrink: 0;
   transition: background-color var(--transition-fast) ease, color var(--transition-fast) ease,
     box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease;
@@ -94,8 +94,8 @@
   font-family: 'surahnames' !important;
   font-size: calc(2.4 * var(--font-size-jumbo-px));
   color: var(--color-text-primary);
-  opacity: 0.9;
-  filter: drop-shadow(0 0 12px var(--color-primary-subtle));
+  opacity: 0.95;
+  filter: drop-shadow(0 0 16px var(--color-accent-gold-subtle));
 
   @include breakpoints.smallerThanTablet {
     font-size: calc(1.5 * var(--font-size-jumbo));
@@ -117,9 +117,11 @@
 }
 
 .transliteratedName {
+  font-family: var(--font-family-display);
   font-size: var(--font-size-medium-px);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
+  letter-spacing: 0.04em;
 }
 
 .translatedName {
@@ -157,15 +159,15 @@
 }
 
 .beginButton {
-  background: var(--color-primary-gradient);
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
   color: #070a13;
   font-weight: var(--font-weight-bold);
-  border: 1px solid var(--color-primary);
-  box-shadow: 0 0 16px var(--color-primary-subtle);
+  border: 1px solid rgba(217, 119, 6, 0.4);
+  box-shadow: 0 0 16px rgba(217, 119, 6, 0.25);
 
   &:hover {
     filter: brightness(1.15);
-    box-shadow: 0 0 24px var(--color-primary);
+    box-shadow: 0 0 24px rgba(217, 119, 6, 0.4);
   }
 }
 

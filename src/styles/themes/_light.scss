@@ -40,27 +40,30 @@
   --color-text-white: #ffffff;
   --color-text-gray: #495057;
 
-  // Modern Spiritual Sanctuary Tokens - Light Palette
+  // Modern Spiritual Sanctuary Tokens - Light Palette (Muezzin Islamic Architecture Inspired)
+  --font-family-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-family-sans: 'Plus Jakarta Sans', 'Figtree', sans-serif;
   --color-primary: #0284C7;
   --color-primary-subtle: rgba(2, 132, 199, 0.10);
   --color-primary-gradient: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
   --color-secondary-gradient: linear-gradient(135deg, #0D9488 0%, #0284C7 100%);
-  --color-accent-gold: #D97706;
+  --color-accent-gold: #B45309;
+  --color-accent-gold-rich: #D97706;
   --color-accent-gold-subtle: rgba(217, 119, 6, 0.12);
-  --color-accent-emerald: #0D9488;
-  --color-accent-emerald-subtle: rgba(13, 148, 136, 0.12);
+  --color-accent-emerald: #065F46;
+  --color-accent-emerald-subtle: rgba(6, 95, 70, 0.10);
   --color-surface-bg: #F8FAFC;
-  --color-surface-card: rgba(255, 255, 255, 0.92);
+  --color-surface-card: rgba(255, 255, 255, 0.94);
   --color-surface-card-hover: #FFFFFF;
-  --color-surface-floating: rgba(255, 255, 255, 0.90);
+  --color-surface-floating: rgba(255, 255, 255, 0.92);
   --color-text-primary: #0F172A;
   --color-text-secondary: #475569;
-  --color-border-subtle: rgba(2, 132, 199, 0.14);
-  --color-border-iridescent: rgba(2, 132, 199, 0.22);
-  --color-glow-celestial: 0 0 20px rgba(2, 132, 199, 0.18);
+  --color-border-subtle: rgba(217, 119, 6, 0.18);
+  --color-border-iridescent: rgba(217, 119, 6, 0.28);
+  --color-glow-celestial: 0 0 24px rgba(217, 119, 6, 0.18);
   --color-glow-subtle: 0 8px 24px rgba(2, 132, 199, 0.10);
-  --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
-  --shadow-card-hover: 0 12px 32px rgba(2, 132, 199, 0.14), 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-card: 0 6px 24px rgba(15, 23, 42, 0.06), 0 0 1px rgba(217, 119, 6, 0.2);
+  --shadow-card-hover: 0 16px 36px rgba(217, 119, 6, 0.16), 0 4px 12px rgba(15, 23, 42, 0.08);
 
   --color-background-default: #F8FAFC;
   --color-background-elevated: #FFFFFF;

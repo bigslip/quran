@@ -39,27 +39,31 @@
   --color-text-white: #ffffff;
   --color-text-gray: #495057;
 
-  // Royal Indigo & Celestial Emerald Tokens
+  // Royal Indigo, Mosque Emerald & Celestial Gold Tokens (Muezzin Islamic Architecture Inspired)
+  --font-family-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-family-sans: 'Plus Jakarta Sans', 'Figtree', sans-serif;
   --color-primary: #00F2FE;
   --color-primary-subtle: rgba(0, 242, 254, 0.12);
   --color-primary-gradient: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%);
   --color-secondary-gradient: linear-gradient(135deg, #05FFA1 0%, #00F2FE 100%);
   --color-accent-gold: #FBBF24;
-  --color-accent-gold-subtle: rgba(251, 191, 36, 0.15);
+  --color-accent-gold-rich: #F59E0B;
+  --color-accent-gold-subtle: rgba(251, 191, 36, 0.18);
   --color-accent-emerald: #05FFA1;
-  --color-accent-emerald-subtle: rgba(5, 255, 161, 0.15);
+  --color-accent-emerald-subtle: rgba(5, 255, 161, 0.16);
   --color-surface-bg: #070A13;
-  --color-surface-card: rgba(14, 22, 40, 0.70);
-  --color-surface-card-hover: rgba(20, 32, 58, 0.85);
-  --color-surface-floating: rgba(14, 22, 40, 0.75);
+  --color-surface-card: rgba(14, 22, 40, 0.75);
+  --color-surface-card-hover: rgba(22, 36, 64, 0.88);
+  --color-surface-floating: rgba(14, 22, 40, 0.80);
   --color-text-primary: #F0F4FA;
   --color-text-secondary: #94A3B8;
-  --color-border-subtle: rgba(0, 242, 254, 0.18);
-  --color-border-iridescent: rgba(0, 242, 254, 0.22);
-  --color-glow-celestial: 0 0 24px rgba(0, 242, 254, 0.25);
+  --color-border-subtle: rgba(251, 191, 36, 0.18);
+  --color-border-iridescent: rgba(0, 242, 254, 0.25);
+  --color-glow-celestial: 0 0 28px rgba(0, 242, 254, 0.25);
+  --color-glow-gold: 0 0 24px rgba(251, 191, 36, 0.22);
   --color-glow-subtle: 0 8px 32px rgba(0, 242, 254, 0.12);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 242, 254, 0.2);
-  --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 242, 254, 0.25);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 1px rgba(251, 191, 36, 0.25);
+  --shadow-card-hover: 0 18px 52px rgba(0, 0, 0, 0.65), 0 0 24px rgba(251, 191, 36, 0.28);
 
   --color-background-default: #070A13;
   --color-background-elevated: #0A0E1A;

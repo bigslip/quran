@@ -18,26 +18,26 @@
     &:hover {
       transform: translateY(-2px) scale(1.015);
       background-color: var(--color-surface-card-hover);
-      border-color: var(--color-primary);
+      border-color: var(--color-accent-gold);
       box-shadow: var(--shadow-card-hover);
 
       .surahNumber {
-        background: var(--color-primary);
+        background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
         color: #070a13;
-        border-color: var(--color-primary);
-        box-shadow: 0 0 16px var(--color-primary);
+        border-color: var(--color-accent-gold);
+        box-shadow: 0 0 16px rgba(217, 119, 6, 0.4);
       }
 
       .nameArabic {
-        color: var(--color-primary);
+        color: var(--color-accent-gold);
       }
 
       .chapterIconWrapper {
-        filter: drop-shadow(0 0 12px var(--color-primary));
+        filter: drop-shadow(0 0 12px var(--color-accent-gold-subtle));
       }
 
       .numberOfVerses {
-        color: var(--color-primary);
+        color: var(--color-accent-gold);
       }
     }
   }
@@ -86,8 +86,8 @@
 
 .surahNumber {
   background: var(--color-surface-floating);
-  border: 1px solid var(--color-border-iridescent);
-  box-shadow: 0 0 10px var(--color-primary-subtle);
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  box-shadow: 0 0 12px var(--color-accent-gold-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,10 +96,9 @@
   border-radius: var(--border-radius-small-px);
   transform: rotate(45deg);
   margin-inline-end: var(--spacing-xsmall-px);
-  color: var(--color-primary);
+  color: var(--color-accent-gold);
   flex-shrink: 0;
-  transition: background var(--transition-fast) ease, color var(--transition-fast) ease,
-    box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease;
+  transition: all var(--transition-fast) ease;
 
   & > span {
     transform: rotate(-45deg);
@@ -117,10 +116,12 @@
 }
 
 .nameArabic {
+  font-family: var(--font-family-display);
   font-size: var(--font-size-normal-px);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
   line-height: 1.25;
+  letter-spacing: 0.03em;
   transition: color var(--transition-fast) ease;
   white-space: nowrap;
   overflow: hidden;

@@ -21,10 +21,12 @@
 }
 
 .title {
+  font-family: var(--font-family-display);
   font-size: var(--font-size-xlarge-px);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-default-new);
   line-height: 1.2;
+  letter-spacing: 0.04em;
   margin: 0;
 
   @include breakpoints.tablet {

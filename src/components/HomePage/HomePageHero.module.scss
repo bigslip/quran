@@ -95,7 +95,7 @@
 }
 
 .logoContainer {
-  padding-block-end: var(--spacing-medium-px);
+  padding-block-end: var(--spacing-xsmall-px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,11 +108,30 @@
   }
 
   @include breakpoints.smallerThanTablet {
-    padding-block-end: var(--spacing-small-px);
+    padding-block-end: var(--spacing-xxsmall-px);
 
     svg {
       max-inline-size: 200px;
     }
+  }
+}
+
+.heroSubtitle {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-xsmall-px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent-gold);
+  margin-block-start: 0;
+  margin-block-end: var(--spacing-small-px);
+  text-align: center;
+  font-weight: var(--font-weight-semibold);
+  opacity: 0.92;
+  text-shadow: 0 0 16px var(--color-accent-gold-subtle);
+
+  @include breakpoints.tablet {
+    font-size: var(--font-size-small-px);
+    letter-spacing: 0.22em;
   }
 }
 
@@ -166,9 +185,9 @@
     &:hover {
       transform: translateY(-2px) scale(1.03);
       background: var(--color-surface-card-hover);
-      border-color: var(--color-primary);
-      color: var(--color-primary);
-      box-shadow: 0 0 20px var(--color-primary-subtle), 0 8px 24px rgba(0, 0, 0, 0.2);
+      border-color: var(--color-accent-gold);
+      color: var(--color-accent-gold);
+      box-shadow: 0 0 20px var(--color-accent-gold-subtle), 0 8px 24px rgba(0, 0, 0, 0.2);
     }
   }
 
@@ -184,16 +203,28 @@
   }
 }
 
-.fridayPill,
-.nightPill {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 16px var(--color-primary-subtle), 0 4px 14px rgba(0, 0, 0, 0.15);
+.fridayPill {
+  border-color: rgba(217, 119, 6, 0.35);
+  box-shadow: 0 0 16px var(--color-accent-gold-subtle), 0 4px 14px rgba(0, 0, 0, 0.15);
   background: var(--color-surface-floating);
 
   @media (hover: hover) {
     &:hover {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 24px var(--color-primary-subtle), 0 8px 24px rgba(0, 0, 0, 0.22);
+      border-color: var(--color-accent-gold);
+      box-shadow: 0 0 24px var(--color-accent-gold-subtle), 0 8px 24px rgba(0, 0, 0, 0.22);
+    }
+  }
+}
+
+.nightPill {
+  border-color: rgba(5, 255, 161, 0.35);
+  box-shadow: 0 0 16px var(--color-accent-emerald-subtle), 0 4px 14px rgba(0, 0, 0, 0.15);
+  background: var(--color-surface-floating);
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-accent-emerald);
+      box-shadow: 0 0 24px var(--color-accent-emerald-subtle), 0 8px 24px rgba(0, 0, 0, 0.22);
     }
   }
 }
@@ -220,17 +251,17 @@
 }
 
 .fridayBadge {
-  background: var(--color-primary-subtle);
-  color: var(--color-primary);
-  border: 1px solid var(--color-border-iridescent);
-  box-shadow: 0 0 10px var(--color-primary-subtle);
+  background: var(--color-accent-gold-subtle);
+  color: var(--color-accent-gold);
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  box-shadow: 0 0 10px var(--color-accent-gold-subtle);
 }
 
 .nightBadge {
-  background: var(--color-primary-subtle);
-  color: var(--color-primary);
-  border: 1px solid var(--color-border-iridescent);
-  box-shadow: 0 0 10px var(--color-primary-subtle);
+  background: var(--color-accent-emerald-subtle);
+  color: var(--color-accent-emerald);
+  border: 1px solid rgba(5, 255, 161, 0.3);
+  box-shadow: 0 0 10px var(--color-accent-emerald-subtle);
 }
 
 .pillText {
