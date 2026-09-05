@@ -34,19 +34,6 @@
   }
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding-inline: var(--spacing-xsmall);
-  padding-block: var(--spacing-micro2-px);
-  font-size: var(--font-size-xxsmall-px);
-  font-weight: var(--font-weight-semibold);
-  border-radius: var(--border-radius-pill);
-  background-color: var(--color-primary-subtle);
-  color: var(--color-primary);
-  border: 1px solid var(--color-border-subtle);
-}
-
 .container {
   display: flex;
   inline-size: 100%;

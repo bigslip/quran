@@ -223,19 +223,6 @@
   -webkit-backdrop-filter: blur(12px);
 }
 
-.quoteWatermark {
-  position: absolute;
-  inset-inline-end: var(--spacing-small-px);
-  inset-block-start: -15px;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 120px;
-  line-height: 1;
-  color: var(--color-primary);
-  opacity: 0.05;
-  pointer-events: none;
-  user-select: none;
-}
-
 .reflectionHeader {
   display: flex;
   align-items: center;

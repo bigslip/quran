@@ -247,40 +247,6 @@
   line-height: 1.2;
 }
 
-.featurePills {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: var(--spacing-small-px);
-
-  @include breakpoints.tablet {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-.featurePill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xxsmall-px);
-  padding-inline: var(--spacing-small-px);
-  padding-block: var(--spacing-xxsmall);
-  border-radius: var(--border-radius-pill);
-  background-color: var(--color-surface-bg);
-  border: 1px solid var(--color-border-subtle);
-  font-size: var(--font-size-xxsmall-px);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-default-new);
-}
-
-.featureIcon {
-  inline-size: 10px;
-  block-size: 10px;
-  path {
-    fill: var(--color-primary);
-  }
-}
-
 // Companion Ecosystem Grid
 .companionGrid {
   display: flex;

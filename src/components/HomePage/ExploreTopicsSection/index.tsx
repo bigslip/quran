@@ -73,9 +73,6 @@ const ExploreTopicsSection: React.FC = () => {
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
           <h2 className={styles.title}>{t('home:explore-topics')}</h2>
-          <span className={styles.badge}>
-            {TOPICS.length} {t('common:featured', { defaultValue: 'Featured' })}
-          </span>
         </div>
       </div>
       <div className={styles.container} data-testid="explore-topics-container">

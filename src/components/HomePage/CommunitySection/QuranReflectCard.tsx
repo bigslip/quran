@@ -32,9 +32,6 @@ const QuranReflectCard: React.FC<QuranReflectCardProps> = ({ onClick }) => {
       onClick={onClick}
     >
       <div className={styles.cardContent}>
-        <div className={styles.quoteWatermark} aria-hidden="true">
-          “
-        </div>
         <div className={styles.reflectionHeader}>
           <div className={styles.brandRow}>
             <QRColoredIcon className={styles.coloredIcon} />

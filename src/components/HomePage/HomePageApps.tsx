@@ -9,7 +9,6 @@ import styles from './HomePageApps.module.scss';
 
 import ArrowIcon from '@/icons/arrow.svg';
 import MobileIcon from '@/icons/mobile.svg';
-import SparkleIcon from '@/icons/star.svg';
 import { logButtonClick } from '@/utils/eventLogger';
 import { APPS_URL } from '@/utils/navigation';
 
@@ -99,21 +98,6 @@ const HomePageApps: React.FC = () => {
                 href={ANDROID_APP_URL}
                 onClick={() => handleAppClick('quran-android')}
               />
-            </div>
-          </div>
-
-          <div className={styles.featurePills}>
-            <div className={styles.featurePill}>
-              <SparkleIcon className={styles.featureIcon} />
-              <span>{t('offline-mushaf', { defaultValue: 'Offline Mushaf' })}</span>
-            </div>
-            <div className={styles.featurePill}>
-              <SparkleIcon className={styles.featureIcon} />
-              <span>{t('audio-sync', { defaultValue: 'Audio Sync' })}</span>
-            </div>
-            <div className={styles.featurePill}>
-              <SparkleIcon className={styles.featureIcon} />
-              <span>{t('daily-reminders', { defaultValue: 'Daily Reminders' })}</span>
             </div>
           </div>
         </div>
