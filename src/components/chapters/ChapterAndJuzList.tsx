@@ -355,6 +355,7 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
                       surahName={chapter.transliteratedName}
                       surahNumber={Number(chapter.id)}
                       translatedSurahName={chapter.translatedName as string}
+                      revelationPlace={chapter.revelationPlace}
                       isMinimalLayout={shouldUseMinimalLayout(lang)}
                     />
                   </Link>

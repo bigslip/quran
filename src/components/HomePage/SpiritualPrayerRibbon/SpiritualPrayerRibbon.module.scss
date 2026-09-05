@@ -1,0 +1,202 @@
+.ribbonContainer {
+  inline-size: 100%;
+  max-inline-size: var(--page-container-max-width, 1280px);
+  margin-inline: auto;
+  margin-block-start: var(--spacing-small, 12px);
+  margin-block-end: var(--spacing-large, 24px);
+  padding-inline: var(--spacing-medium, 16px);
+}
+
+.plaque {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-medium, 16px);
+  padding-inline: var(--spacing-large, 24px);
+  padding-block: var(--spacing-medium, 14px);
+  background: var(--color-surface-card, rgba(255, 255, 255, 0.92));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border-subtle, rgba(217, 119, 6, 0.22));
+  border-radius: var(--border-radius-rounded, 16px);
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    block-size: 2px;
+    background: linear-gradient(90deg, transparent 0%, #D97706 50%, transparent 100%);
+    opacity: 0.85;
+  }
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+    align-items: stretch;
+    padding-inline: var(--spacing-medium, 16px);
+    gap: var(--spacing-small, 12px);
+  }
+}
+
+.dateBlock {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small, 10px);
+  flex-shrink: 0;
+}
+
+.crescentIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 36px;
+  block-size: 36px;
+  border-radius: 50%;
+  background: rgba(217, 119, 6, 0.12);
+  color: #D97706;
+  font-size: 1.1rem;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  box-shadow: 0 0 12px rgba(217, 119, 6, 0.15);
+}
+
+.dateDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hijriDate {
+  font-family: var(--font-family-display, 'Cinzel', serif);
+  font-size: var(--font-size-base, 0.95rem);
+  font-weight: 600;
+  color: var(--color-text-primary, #0F172A);
+  letter-spacing: 0.02em;
+}
+
+.gregorianDate {
+  font-size: var(--font-size-xs, 0.78rem);
+  color: var(--color-text-secondary, #64748B);
+}
+
+.prayerTimeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-block: 4px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 991px) {
+    justify-content: space-between;
+  }
+}
+
+.prayerPill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: 12px;
+  padding-block: 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  min-inline-size: 64px;
+  position: relative;
+  transition: all 0.25s ease;
+
+  [data-theme='dark'] & {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  &.nextPrayer {
+    background: rgba(217, 119, 6, 0.12);
+    border-color: rgba(217, 119, 6, 0.4);
+    box-shadow: 0 0 16px rgba(217, 119, 6, 0.18);
+    transform: translateY(-2px);
+
+    .prayerName {
+      color: #D97706;
+      font-weight: 700;
+    }
+
+    .prayerTime {
+      color: var(--color-text-primary, #0F172A);
+      font-weight: 700;
+    }
+  }
+}
+
+.prayerName {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary, #64748B);
+  font-weight: 500;
+}
+
+.prayerTime {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #0F172A);
+  font-variant-numeric: tabular-nums;
+  margin-block-start: 2px;
+}
+
+.nextDot {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 4px;
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: 50%;
+  background: #D97706;
+  box-shadow: 0 0 6px #F59E0B;
+}
+
+.countdownBadge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+
+  @media (max-width: 991px) {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    border-block-start: 1px dashed rgba(217, 119, 6, 0.2);
+    padding-block-start: 8px;
+  }
+}
+
+.countdownLabel {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary, #64748B);
+
+  strong {
+    color: #D97706;
+    font-weight: 700;
+  }
+}
+
+.countdownTimer {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding-inline: 8px;
+  padding-block: 2px;
+  background: rgba(217, 119, 6, 0.1);
+  color: #D97706;
+  border-radius: 6px;
+  border: 1px solid rgba(217, 119, 6, 0.2);
+}

@@ -53,7 +53,9 @@
   padding-block-end: var(--spacing-medium-px);
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-small-px);
 }
 
 .tabItem {
@@ -83,7 +85,7 @@
 // sorter
 .sorter {
   display: flex;
-  margin-block-start: var(--spacing-small-px);
+  margin-block-start: 0;
   justify-content: flex-end;
   align-items: center;
   font-size: var(--font-size-xsmall-px);

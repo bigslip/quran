@@ -19,18 +19,24 @@ const ChapterBlock: React.FC<Props> = ({ chapter }: Props) => {
   const chapterIdString = String(chapter.id);
   const localizedChapterNumber = toLocalizedNumber(Number(chapter.id), lang);
   const localizedVersesCount = toLocalizedNumber(chapter.versesCount, lang);
+  const isMakkah = chapter.revelationPlace === 'makkah';
 
   return (
     <div key={chapter.id} className={styles.item}>
       <Link as={`/${chapter.id}`} href="/[chapterId]" passHref className={styles.link}>
         <div className={styles.container}>
           <div className={classNames(styles.leftContainer, styles.sectionContainer)}>
-            <div className={styles.surahNumber}>
+            <div className={styles.surahNumber} aria-label={`${t('surah')} ${localizedChapterNumber}`}>
               <span>{localizedChapterNumber}</span>
             </div>
             <div className={styles.detailsContainer}>
-              <div className={styles.nameArabic} translate="no">
-                {chapter.transliteratedName}
+              <div className={styles.nameHeader}>
+                <span className={styles.nameArabic} translate="no">
+                  {chapter.transliteratedName}
+                </span>
+                <span className={classNames(styles.revelationTag, isMakkah ? styles.makkah : styles.madinah)}>
+                  {isMakkah ? t('makki', { defaultValue: 'Makki' }) : t('madani', { defaultValue: 'Madani' })}
+                </span>
               </div>
               <div className={styles.nameTranslated} translate="no">
                 {chapter.translatedName as string}

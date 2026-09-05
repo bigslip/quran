@@ -20,6 +20,7 @@ import LearningPlansSection from '@/components/HomePage/LearningPlansSection';
 import MobileHomepageSections from '@/components/HomePage/MobileHomepageSections';
 import QuranInYearSection from '@/components/HomePage/QuranInYearSection';
 import ReadingSection from '@/components/HomePage/ReadingSection';
+import SpiritualPrayerRibbon from '@/components/HomePage/SpiritualPrayerRibbon/SpiritualPrayerRibbon';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import useAuthData from '@/hooks/auth/useAuthData';
 import useIsMobile from '@/hooks/useIsMobile';
@@ -66,6 +67,7 @@ const Index: NextPage<IndexProps> = ({
       <div className={styles.pageContainer}>
         <div className={styles.flow}>
           <HomePageHero />
+          <SpiritualPrayerRibbon />
           <div className={styles.bodyContainer}>
             <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
               <ReadingSection />

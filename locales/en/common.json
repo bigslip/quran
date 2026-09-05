@@ -5,6 +5,8 @@
   "allow": "Allow",
   "and": "and",
   "topics": "Topics",
+  "makkah-short": "Makki",
+  "madinah-short": "Madani",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
