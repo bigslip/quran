@@ -249,19 +249,24 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
         revalidate: ONE_WEEK_REVALIDATION_PERIOD_SECONDS, // chapters will be generated at runtime if not found in the cache, then cached for subsequent requests for 7 days.
       };
     }
-    // if it's a verseKey
+    let versesResponse: VersesResponse;
     if (!isValidChapter) {
       const [extractedChapterId, verseNumber] =
         getVerseAndChapterNumbersFromKey(chapterIdOrVerseKeyOrSlug);
       chapterId = extractedChapterId;
       // only get 1 verse
       apiParams = { ...apiParams, ...{ page: verseNumber, perPage: 1 } };
-      pagesLookupResponse = await getPagesLookup({
-        chapterNumber: Number(chapterId),
-        mushaf: defaultMushafId,
-        from: chapterIdOrVerseKeyOrSlug,
-        to: chapterIdOrVerseKeyOrSlug,
-      });
+      const [lookupRes, versesRes] = await Promise.all([
+        getPagesLookup({
+          chapterNumber: Number(chapterId),
+          mushaf: defaultMushafId,
+          from: chapterIdOrVerseKeyOrSlug,
+          to: chapterIdOrVerseKeyOrSlug,
+        }),
+        getChapterVerses(formatStringNumber(chapterId), locale, apiParams),
+      ]);
+      pagesLookupResponse = lookupRes;
+      versesResponse = versesRes;
     } else {
       // if it's a chapter
       pagesLookupResponse = await getPagesLookup({
@@ -284,8 +289,8 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
           to: firstPageOfChapterLookup.to,
         },
       };
+      versesResponse = await getChapterVerses(formatStringNumber(chapterId), locale, apiParams);
     }
-    const versesResponse = await getChapterVerses(formatStringNumber(chapterId), locale, apiParams);
     const metaData = { numberOfVerses };
 
     versesResponse.metaData = metaData;

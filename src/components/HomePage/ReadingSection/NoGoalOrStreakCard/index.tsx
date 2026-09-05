@@ -9,7 +9,7 @@ import CirclesIcon from '@/icons/circles.svg';
 import ArrowIcon from '@/public/icons/arrow.svg';
 import { getReadingGoalNavigationUrl } from '@/utils/navigation';
 
-const NoGoalOrStreakCard = () => {
+const NoGoalOrStreakCard: React.FC = () => {
   const { t } = useTranslation('home');
 
   return (
@@ -33,4 +33,4 @@ const NoGoalOrStreakCard = () => {
   );
 };
 
-export default NoGoalOrStreakCard;
+export default React.memo(NoGoalOrStreakCard);

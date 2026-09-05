@@ -109,4 +109,4 @@ const GlyphWord = ({
     />
   );
 };
-export default GlyphWord;
+export default React.memo(GlyphWord);

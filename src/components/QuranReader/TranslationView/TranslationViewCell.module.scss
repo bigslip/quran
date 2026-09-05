@@ -8,6 +8,8 @@
   padding-block: var(--spacing-medium-px);
   --gap-size: calc(0.5 * var(--spacing-mega));
   transition: background-color var(--transition-regular), box-shadow var(--transition-regular);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
 
   @include breakpoints.tablet {
     padding-block: var(--spacing-xlarge-px);

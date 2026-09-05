@@ -7,8 +7,8 @@ import useTranslation from 'next-translate/useTranslation';
 import styles from './ChapterBlock.module.scss';
 import ChapterIconContainer from './ChapterIcon/ChapterIconContainer';
 
-import Chapter from 'types/Chapter';
 import { toLocalizedNumber } from '@/utils/locale';
+import Chapter from 'types/Chapter';
 
 type Props = {
   chapter: Chapter;
@@ -26,7 +26,10 @@ const ChapterBlock: React.FC<Props> = ({ chapter }: Props) => {
       <Link as={`/${chapter.id}`} href="/[chapterId]" passHref className={styles.link}>
         <div className={styles.container}>
           <div className={classNames(styles.leftContainer, styles.sectionContainer)}>
-            <div className={styles.surahNumber} aria-label={`${t('surah')} ${localizedChapterNumber}`}>
+            <div
+              className={styles.surahNumber}
+              aria-label={`${t('surah')} ${localizedChapterNumber}`}
+            >
               <span>{localizedChapterNumber}</span>
             </div>
             <div className={styles.detailsContainer}>
@@ -34,8 +37,15 @@ const ChapterBlock: React.FC<Props> = ({ chapter }: Props) => {
                 <span className={styles.nameArabic} translate="no">
                   {chapter.transliteratedName}
                 </span>
-                <span className={classNames(styles.revelationTag, isMakkah ? styles.makkah : styles.madinah)}>
-                  {isMakkah ? t('makki', { defaultValue: 'Makki' }) : t('madani', { defaultValue: 'Madani' })}
+                <span
+                  className={classNames(
+                    styles.revelationTag,
+                    isMakkah ? styles.makkah : styles.madinah,
+                  )}
+                >
+                  {isMakkah
+                    ? t('makki', { defaultValue: 'Makki' })
+                    : t('madani', { defaultValue: 'Madani' })}
                 </span>
               </div>
               <div className={styles.nameTranslated} translate="no">
@@ -57,4 +67,4 @@ const ChapterBlock: React.FC<Props> = ({ chapter }: Props) => {
   );
 };
 
-export default ChapterBlock;
+export default React.memo(ChapterBlock);

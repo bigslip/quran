@@ -63,4 +63,4 @@ const RamadanCard: React.FC<RamadanCardProps> = ({ onClick }) => {
   );
 };
 
-export default RamadanCard;
+export default React.memo(RamadanCard);

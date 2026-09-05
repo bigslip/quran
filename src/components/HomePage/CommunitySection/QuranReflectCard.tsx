@@ -81,4 +81,4 @@ const QuranReflectCard: React.FC<QuranReflectCardProps> = ({ onClick }) => {
   );
 };
 
-export default QuranReflectCard;
+export default React.memo(QuranReflectCard);

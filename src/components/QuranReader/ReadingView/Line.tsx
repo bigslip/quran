@@ -1,4 +1,4 @@
-import { memo, RefObject, useCallback, useContext, useRef } from 'react';
+import { memo, RefObject, useCallback, useContext, useMemo, useRef } from 'react';
 
 import { useSelector as useXstateSelector } from '@xstate/react';
 import classNames from 'classnames';
@@ -50,13 +50,13 @@ const Line = ({
   ...props
 }: LineProps) => {
   const audioService = useContext(AudioPlayerMachineContext);
+  const lineVerseKeys = useMemo(() => new Set(words.map((word) => word.verseKey)), [words]);
   const isHighlighted = useXstateSelector(audioService, (state) => {
     // Don't highlight when audio player is closed
     if (!selectIsAudioPlayerVisible(state)) return false;
 
     const { surah, ayahNumber } = state.context;
-    const verseKeys = words.map((word) => word.verseKey);
-    return verseKeys.includes(`${surah}:${ayahNumber}`);
+    return lineVerseKeys.has(`${surah}:${ayahNumber}`);
   });
 
   const [scrollToSelectedItem, selectedItemRef]: [() => void, RefObject<HTMLDivElement>] =

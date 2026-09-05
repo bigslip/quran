@@ -1,25 +1,36 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+
 import useTranslation from 'next-translate/useTranslation';
-import useHasMounted from 'src/hooks/useHasMounted';
-import { getDailySpiritualData } from 'src/utils/spiritualTime';
+
 import styles from './SpiritualPrayerRibbon.module.scss';
+
+import useHasMounted from '@/hooks/useHasMounted';
+import { getDailySpiritualData } from '@/utils/spiritualTime';
 
 const SpiritualPrayerRibbon: React.FC = () => {
   const { t, lang } = useTranslation('home');
   const hasMounted = useHasMounted();
 
-  if (!hasMounted) {
+  const spiritualData = useMemo(() => {
+    if (!hasMounted) return null;
+    return getDailySpiritualData(new Date(), lang);
+  }, [hasMounted, lang]);
+
+  if (!hasMounted || !spiritualData) {
     return null;
   }
 
-  const spiritualData = getDailySpiritualData(new Date(), lang);
-
   return (
-    <section className={styles.ribbonContainer} aria-label={t('daily-spiritual-sanctuary', { defaultValue: 'Daily Spiritual Sanctuary' })}>
+    <section
+      className={styles.ribbonContainer}
+      aria-label={t('daily-spiritual-sanctuary', { defaultValue: 'Daily Spiritual Sanctuary' })}
+    >
       <div className={styles.plaque}>
         {/* Left: Hijri Date & Status */}
         <div className={styles.dateBlock}>
-          <span className={styles.crescentIcon} aria-hidden="true">☪</span>
+          <span className={styles.crescentIcon} aria-hidden="true">
+            ☪
+          </span>
           <div className={styles.dateDetails}>
             <span className={styles.hijriDate}>{spiritualData.hijriDate}</span>
             <span className={styles.gregorianDate}>{spiritualData.gregorianDate}</span>
@@ -46,10 +57,14 @@ const SpiritualPrayerRibbon: React.FC = () => {
         {/* Right: Next Prayer Countdown */}
         <div className={styles.countdownBadge}>
           <span className={styles.countdownLabel}>
-            {t('next-prayer-prefix', { defaultValue: 'Next' })}: <strong>{spiritualData.nextPrayerName}</strong>
+            {t('next-prayer-prefix', { defaultValue: 'Next' })}:{' '}
+            <strong>{spiritualData.nextPrayerName}</strong>
           </span>
           <span className={styles.countdownTimer}>
-            {t('in-time', { time: spiritualData.nextPrayerRemaining, defaultValue: `in ${spiritualData.nextPrayerRemaining}` })}
+            {t('in-time', {
+              time: spiritualData.nextPrayerRemaining,
+              defaultValue: `in ${spiritualData.nextPrayerRemaining}`,
+            })}
           </span>
         </div>
       </div>
@@ -57,4 +72,4 @@ const SpiritualPrayerRibbon: React.FC = () => {
   );
 };
 
-export default SpiritualPrayerRibbon;
+export default React.memo(SpiritualPrayerRibbon);

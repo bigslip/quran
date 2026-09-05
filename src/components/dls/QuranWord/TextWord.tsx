@@ -36,4 +36,4 @@ const TextWord: React.FC<MadaniWordTextProps> = ({ text, font, charType, classNa
   </span>
 );
 
-export default TextWord;
+export default React.memo(TextWord);

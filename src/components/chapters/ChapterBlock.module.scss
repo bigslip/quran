@@ -10,6 +10,8 @@
   margin-block-end: var(--spacing-small);
   box-shadow: var(--shadow-card);
   box-sizing: border-box;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 72px;
   transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
     border-color var(--transition-fast) ease, background-color var(--transition-fast) ease,
     box-shadow var(--transition-fast) ease;

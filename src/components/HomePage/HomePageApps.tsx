@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
@@ -19,36 +19,39 @@ const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.quran
 const HomePageApps: React.FC = () => {
   const { t } = useTranslation('home');
 
-  const handleAppClick = (appId: string) => {
+  const handleAppClick = useCallback((appId: string) => {
     logButtonClick(`home_apps_${appId.replaceAll('-', '_')}`);
-  };
+  }, []);
 
-  const companionApps: AppItem[] = [
-    {
-      id: 'quranreflect',
-      name: t('apps.quranreflect.name'),
-      description: t('apps.quranreflect.description'),
-      iconSrc: '/images/app-portal/icon_web_optimized.png',
-      iconAlt: t('apps.quranreflect.name'),
-      href: 'https://quranreflect.com/apps',
-    },
-    {
-      id: 'qariah',
-      name: t('apps.qariah.name'),
-      description: t('apps.qariah.description'),
-      iconSrc: '/images/app-portal/featured/qaariah-icon.webp',
-      iconAlt: t('apps.qariah.name'),
-      href: 'https://qariah.app/',
-    },
-    {
-      id: 'quran-space',
-      name: t('apps.quran-space.name'),
-      description: t('apps.quran-space.description'),
-      iconSrc: '/images/app-portal/quran-space-100.jpg',
-      iconAlt: t('apps.quran-space.name'),
-      href: 'https://quran.space/',
-    },
-  ];
+  const companionApps: AppItem[] = useMemo(
+    () => [
+      {
+        id: 'quranreflect',
+        name: t('apps.quranreflect.name'),
+        description: t('apps.quranreflect.description'),
+        iconSrc: '/images/app-portal/icon_web_optimized.png',
+        iconAlt: t('apps.quranreflect.name'),
+        href: 'https://quranreflect.com/apps',
+      },
+      {
+        id: 'qariah',
+        name: t('apps.qariah.name'),
+        description: t('apps.qariah.description'),
+        iconSrc: '/images/app-portal/featured/qaariah-icon.webp',
+        iconAlt: t('apps.qariah.name'),
+        href: 'https://qariah.app/',
+      },
+      {
+        id: 'quran-space',
+        name: t('apps.quran-space.name'),
+        description: t('apps.quran-space.description'),
+        iconSrc: '/images/app-portal/quran-space-100.jpg',
+        iconAlt: t('apps.quran-space.name'),
+        href: 'https://quran.space/',
+      },
+    ],
+    [t],
+  );
 
   return (
     <section className={styles.container} aria-label={t('apps.title')}>
@@ -130,4 +133,4 @@ const HomePageApps: React.FC = () => {
   );
 };
 
-export default HomePageApps;
+export default React.memo(HomePageApps);

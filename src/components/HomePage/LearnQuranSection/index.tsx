@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 
@@ -17,18 +17,18 @@ import { makeGetCoursesUrl } from '@/utils/auth/apiPaths';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getCoursesNavigationUrl } from '@/utils/navigation';
 
-const LearnQuranSection = () => {
+const LearnQuranSection: React.FC = () => {
   const { t, lang } = useTranslation('home');
 
-  const onSeeMoreClicked = () => {
+  const onSeeMoreClicked = useCallback(() => {
     logButtonClick('homepage_learning_plans_see_more');
-  };
+  }, []);
 
-  const onLearningPlanCardClicked = (slug: string) => {
+  const onLearningPlanCardClicked = useCallback((slug: string) => {
     logButtonClick('homepage_learning_plans_card', {
       slug,
     });
-  };
+  }, []);
 
   return (
     <DataFetcher
@@ -93,4 +93,4 @@ const LearnQuranSection = () => {
   );
 };
 
-export default LearnQuranSection;
+export default React.memo(LearnQuranSection);

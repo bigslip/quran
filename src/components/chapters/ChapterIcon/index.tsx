@@ -14,4 +14,4 @@ const ChapterIcon: React.FC<Props> = ({ id }) => (
   </span>
 );
 
-export default ChapterIcon;
+export default React.memo(ChapterIcon);

@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import { NextPage, GetStaticProps } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import useTranslation from 'next-translate/useTranslation';
 import { useSelector } from 'react-redux';
@@ -11,14 +12,7 @@ import { useSelector } from 'react-redux';
 import styles from './index.module.scss';
 
 import ChapterAndJuzListWrapper from '@/components/chapters/ChapterAndJuzList';
-import HomepageFundraisingBanner from '@/components/Fundraising/HomepageFundraisingBanner';
-import CommunitySection from '@/components/HomePage/CommunitySection';
-import ExploreTopicsSection from '@/components/HomePage/ExploreTopicsSection';
-import HomePageApps from '@/components/HomePage/HomePageApps';
 import HomePageHero from '@/components/HomePage/HomePageHero';
-import LearningPlansSection from '@/components/HomePage/LearningPlansSection';
-import MobileHomepageSections from '@/components/HomePage/MobileHomepageSections';
-import QuranInYearSection from '@/components/HomePage/QuranInYearSection';
 import ReadingSection from '@/components/HomePage/ReadingSection';
 import SpiritualPrayerRibbon from '@/components/HomePage/SpiritualPrayerRibbon/SpiritualPrayerRibbon';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
@@ -31,6 +25,25 @@ import { getCanonicalUrl } from '@/utils/navigation';
 import getCurrentDayAyah from '@/utils/quranInYearCalendar';
 import { ChaptersResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
+
+const HomepageFundraisingBanner = dynamic(
+  () => import('@/components/Fundraising/HomepageFundraisingBanner'),
+  { ssr: false },
+);
+
+const MobileHomepageSections = dynamic(
+  () => import('@/components/HomePage/MobileHomepageSections'),
+);
+
+const LearningPlansSection = dynamic(() => import('@/components/HomePage/LearningPlansSection'));
+
+const QuranInYearSection = dynamic(() => import('@/components/HomePage/QuranInYearSection'));
+
+const ExploreTopicsSection = dynamic(() => import('@/components/HomePage/ExploreTopicsSection'));
+
+const CommunitySection = dynamic(() => import('@/components/HomePage/CommunitySection'));
+
+const HomePageApps = dynamic(() => import('@/components/HomePage/HomePageApps'));
 
 type IndexProps = {
   chaptersResponse: ChaptersResponse;
@@ -72,7 +85,7 @@ const Index: NextPage<IndexProps> = ({
             <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
               <ReadingSection />
             </div>
-            {isBannerVisible && (
+            {isBannerVisible ? (
               <div
                 className={classNames(
                   styles.flowItem,
@@ -83,7 +96,7 @@ const Index: NextPage<IndexProps> = ({
               >
                 <HomepageFundraisingBanner />
               </div>
-            )}
+            ) : null}
             <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
               <ChapterAndJuzListWrapper chapters={chapters} />
             </div>
@@ -102,7 +115,7 @@ const Index: NextPage<IndexProps> = ({
                     >
                       <LearningPlansSection />
                     </div>
-                    {todayAyah && (
+                    {todayAyah ? (
                       <div
                         className={classNames(
                           styles.flowItem,
@@ -112,7 +125,7 @@ const Index: NextPage<IndexProps> = ({
                       >
                         <QuranInYearSection chaptersData={chaptersData} />
                       </div>
-                    )}
+                    ) : null}
                     <div
                       className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}
                     >
@@ -136,7 +149,7 @@ const Index: NextPage<IndexProps> = ({
                     >
                       <LearningPlansSection />
                     </div>
-                    {todayAyah && (
+                    {todayAyah ? (
                       <div
                         className={classNames(
                           styles.flowItem,
@@ -146,7 +159,7 @@ const Index: NextPage<IndexProps> = ({
                       >
                         <QuranInYearSection chaptersData={chaptersData} />
                       </div>
-                    )}
+                    ) : null}
                     <div
                       className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}
                     >

@@ -25,9 +25,10 @@ import {
   isValidVerseRange,
   isValidVerseId,
   isValidVerseNumber,
+  isValidChapterId,
 } from '@/utils/validator';
 import { generateVerseKeysBetweenTwoVerseKeys } from '@/utils/verseKeys';
-import { ChapterResponse, VersesResponse } from 'types/ApiResponses';
+import { ChapterResponse, VersesResponse, PagesLookUpResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
 import MetaData from 'types/MetaData';
 
@@ -78,11 +79,15 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   let chapterIdOrSlug = String(params.chapterId);
   const verseIdOrRange = String(params.verseId);
   // 1. make sure the chapter Id/slug is valid using BE since slugs are stored in BE first
-  const sluggedChapterId = await getChapterIdBySlug(chapterIdOrSlug, locale);
+  const [sluggedChapterId, chaptersData] = await Promise.all([
+    isValidChapterId(chapterIdOrSlug)
+      ? Promise.resolve(null)
+      : getChapterIdBySlug(chapterIdOrSlug, locale),
+    getAllChaptersData(locale),
+  ]);
   if (sluggedChapterId) {
     chapterIdOrSlug = sluggedChapterId;
   }
-  const chaptersData = await getAllChaptersData(locale);
   // 2. make sure that verse id/range are valid before calling BE to get the verses.
   if (
     !isValidVerseId(chaptersData, chapterIdOrSlug, verseIdOrRange) &&
@@ -117,15 +122,30 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     metaData.numberOfVerses = Number(toVerseNumber) - Number(fromVerseNumber) + 1;
   }
   try {
-    const pagesLookupResponse = await getPagesLookup({
-      chapterNumber: Number(chapterIdOrSlug),
-      mushaf: defaultMushafId,
-      from: isVerse ? `${chapterIdOrSlug}:${verseIdOrRange}` : metaData.from,
-      to: isVerse ? `${chapterIdOrSlug}:${verseIdOrRange}` : metaData.to,
-    });
+    let pagesLookupResponse: PagesLookUpResponse;
+    let versesResponse: VersesResponse;
 
-    // if it's range, we need to set the per page as the number of verses of the first page of the range in the actual Mushaf
-    if (!isVerse) {
+    if (isVerse) {
+      const [lookupRes, versesRes] = await Promise.all([
+        getPagesLookup({
+          chapterNumber: Number(chapterIdOrSlug),
+          mushaf: defaultMushafId,
+          from: `${chapterIdOrSlug}:${verseIdOrRange}`,
+          to: `${chapterIdOrSlug}:${verseIdOrRange}`,
+        }),
+        getChapterVerses(chapterIdOrSlug, locale, apiParams),
+      ]);
+      pagesLookupResponse = lookupRes;
+      versesResponse = versesRes;
+    } else {
+      pagesLookupResponse = await getPagesLookup({
+        chapterNumber: Number(chapterIdOrSlug),
+        mushaf: defaultMushafId,
+        from: metaData.from,
+        to: metaData.to,
+      });
+
+      // if it's range, we need to set the per page as the number of verses of the first page of the range in the actual Mushaf
       const firstRangeMushafPage = Object.keys(pagesLookupResponse.pages)[0];
       const firstRangeMushafPageLookup = pagesLookupResponse.pages[firstRangeMushafPage];
       const firstRangeMushafPageNumberOfVerses = generateVerseKeysBetweenTwoVerseKeys(
@@ -134,9 +154,9 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
         firstRangeMushafPageLookup.to,
       ).length;
       apiParams = { ...apiParams, ...{ perPage: firstRangeMushafPageNumberOfVerses } };
-    }
 
-    const versesResponse = await getChapterVerses(chapterIdOrSlug, locale, apiParams);
+      versesResponse = await getChapterVerses(chapterIdOrSlug, locale, apiParams);
+    }
     // if any of the APIs have failed due to internal server error, we will still receive a response but the body will be something like {"status":500,"error":"Internal Server Error"}.
     if (!versesResponse.verses || !versesResponse.verses.length) {
       return {

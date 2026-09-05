@@ -66,7 +66,7 @@ const renderTopicIcon = (type?: 'sparkle' | 'star' | 'book') => {
   }
 };
 
-const ExploreTopicsSection = () => {
+const ExploreTopicsSection: React.FC = () => {
   const { t } = useTranslation('quick-links');
   return (
     <section className={styles.section} aria-label={t('home:explore-topics')}>
@@ -109,4 +109,4 @@ const ExploreTopicsSection = () => {
   );
 };
 
-export default ExploreTopicsSection;
+export default React.memo(ExploreTopicsSection);

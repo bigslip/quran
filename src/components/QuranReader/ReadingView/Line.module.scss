@@ -10,6 +10,8 @@
 
 .container {
   direction: rtl;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
 }
 
 .mobileInline {

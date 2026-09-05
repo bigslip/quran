@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -8,13 +9,16 @@ import NavigationButton from './HeroButtons/NavigationButton';
 import PopularButton from './HeroButtons/PopularButton';
 import styles from './HomePageHero.module.scss';
 
-import PopularDropdown from '@/components/HomePage/PopularDropdown';
 import Link from '@/dls/Link/Link';
 import useHasMounted from '@/hooks/useHasMounted';
 import Background from '@/icons/background.svg';
 import Logo from '@/icons/logo_main.svg';
 import { logButtonClick } from '@/utils/eventLogger';
 import { isFriday, isNightTime } from '@/utils/spiritualTime';
+
+const PopularDropdown = dynamic(() => import('@/components/HomePage/PopularDropdown'), {
+  ssr: false,
+});
 
 const QUICK_JUMP_PILLS = [
   { label: 'Surah Yaseen (36)', href: '/36', key: 'yaseen' },
@@ -24,7 +28,7 @@ const QUICK_JUMP_PILLS = [
   { label: 'Juz 30 (Amma)', href: '/juz/30', key: 'juz30' },
 ];
 
-const HomePageHero = () => {
+const HomePageHero: React.FC = () => {
   const { t } = useTranslation('home');
   const [isPopularDropdownOpen, setIsPopularDropdownOpen] = useState(false);
   const hasMounted = useHasMounted();
@@ -32,35 +36,38 @@ const HomePageHero = () => {
   const isFridayToday = hasMounted && isFriday();
   const isNightNow = hasMounted && isNightTime();
 
-  const handlePopularClick = () => {
+  const handlePopularClick = useCallback(() => {
     setIsPopularDropdownOpen((prev) => !prev);
-  };
+  }, []);
 
-  const handleDropdownClose = () => {
+  const handleDropdownClose = useCallback(() => {
     setIsPopularDropdownOpen(false);
-  };
+  }, []);
 
-  const onQuickJumpClick = (itemKey: string) => {
+  const onQuickJumpClick = useCallback((itemKey: string) => {
     logButtonClick('homepage_hero_quick_jump', { surah: itemKey });
-  };
+  }, []);
 
-  const getPillBadge = (key: string) => {
-    if (key === 'kahf' && isFridayToday) {
-      return {
-        badgeText: `✦ ${t('friday-sunnah', { defaultValue: 'Friday Sunnah' })}`,
-        className: styles.fridayBadge,
-        pillClassName: styles.fridayPill,
-      };
-    }
-    if (key === 'mulk' && isNightNow) {
-      return {
-        badgeText: `☾ ${t('night-recitation', { defaultValue: 'Night Recitation' })}`,
-        className: styles.nightBadge,
-        pillClassName: styles.nightPill,
-      };
-    }
-    return null;
-  };
+  const getPillBadge = useCallback(
+    (key: string) => {
+      if (key === 'kahf' && isFridayToday) {
+        return {
+          badgeText: `✦ ${t('friday-sunnah', { defaultValue: 'Friday Sunnah' })}`,
+          className: styles.fridayBadge,
+          pillClassName: styles.fridayPill,
+        };
+      }
+      if (key === 'mulk' && isNightNow) {
+        return {
+          badgeText: `☾ ${t('night-recitation', { defaultValue: 'Night Recitation' })}`,
+          className: styles.nightBadge,
+          pillClassName: styles.nightPill,
+        };
+      }
+      return null;
+    },
+    [isFridayToday, isNightNow, t],
+  );
 
   return (
     <div className={styles.outerContainer}>
@@ -118,10 +125,12 @@ const HomePageHero = () => {
               </div>
             )}
           </div>
-          <PopularDropdown isOpen={isPopularDropdownOpen} onClose={handleDropdownClose} />
+          {isPopularDropdownOpen && (
+            <PopularDropdown isOpen={isPopularDropdownOpen} onClose={handleDropdownClose} />
+          )}
         </div>
       </div>
     </div>
   );
 };
-export default HomePageHero;
+export default React.memo(HomePageHero);

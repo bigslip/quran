@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -21,7 +21,7 @@ type SurahPreviewRowProps = {
   isMinimalLayout?: boolean;
   isLoading?: boolean;
 };
-const SurahPreviewRow = ({
+const SurahPreviewRow: React.FC<SurahPreviewRowProps> = ({
   surahName,
   surahNumber,
   translatedSurahName,
@@ -71,8 +71,15 @@ const SurahPreviewRow = ({
               {surahName}
             </span>
             {revelationPlace && (
-              <span className={classNames(styles.revelationTag, isMakkah ? styles.makkah : styles.madinah)}>
-                {isMakkah ? t('common:makkah-short', { defaultValue: 'Makki' }) : t('common:madinah-short', { defaultValue: 'Madani' })}
+              <span
+                className={classNames(
+                  styles.revelationTag,
+                  isMakkah ? styles.makkah : styles.madinah,
+                )}
+              >
+                {isMakkah
+                  ? t('common:makkah-short', { defaultValue: 'Makki' })
+                  : t('common:madinah-short', { defaultValue: 'Madani' })}
               </span>
             )}
           </div>
@@ -99,4 +106,4 @@ const SurahPreviewRow = ({
   );
 };
 
-export default SurahPreviewRow;
+export default React.memo(SurahPreviewRow);

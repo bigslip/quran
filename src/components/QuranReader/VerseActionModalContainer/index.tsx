@@ -1,14 +1,15 @@
 /* eslint-disable max-lines */
 import React, { useCallback, useEffect, useRef } from 'react';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import AdvancedCopyModal from './AdvancedCopyModal';
-import BookmarkModal from './BookmarkModal';
-import FeedbackModal from './FeedbackModal';
-import NotesModals from './NotesModals';
-import ReaderBioModal from './ReaderBioModal';
+const AdvancedCopyModal = dynamic(() => import('./AdvancedCopyModal'), { ssr: false });
+const BookmarkModal = dynamic(() => import('./BookmarkModal'), { ssr: false });
+const FeedbackModal = dynamic(() => import('./FeedbackModal'), { ssr: false });
+const NotesModals = dynamic(() => import('./NotesModals'), { ssr: false });
+const ReaderBioModal = dynamic(() => import('./ReaderBioModal'), { ssr: false });
 
 import { getChapterVerses } from '@/api';
 import useBatchedCountRangeNotes from '@/hooks/auth/useBatchedCountRangeNotes';

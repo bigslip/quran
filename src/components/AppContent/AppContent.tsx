@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { DefaultSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
@@ -6,9 +7,12 @@ import { useSelector } from 'react-redux';
 
 import styles from './AppContent.module.scss';
 
-import AudioPlayer from '@/components/AudioPlayer/AudioPlayer';
 import AuthRedirects from '@/components/Auth/AuthRedirects';
 import UserAccountModal from '@/components/Auth/UserAccountModal';
+
+const AudioPlayer = dynamic(() => import('@/components/AudioPlayer/AudioPlayer'), {
+  ssr: false,
+});
 import DeveloperUtility from '@/components/DeveloperUtility/DeveloperUtility';
 import GlobalListeners from '@/components/GlobalListeners';
 import Navbar from '@/components/Navbar/Navbar';

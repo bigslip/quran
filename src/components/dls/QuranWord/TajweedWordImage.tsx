@@ -43,4 +43,4 @@ const TajweedWord: React.FC<Props> = ({ path, alt, className, ...props }) => {
   );
 };
 
-export default TajweedWord;
+export default React.memo(TajweedWord);

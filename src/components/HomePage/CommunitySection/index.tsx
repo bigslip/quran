@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 
@@ -10,16 +10,16 @@ import { TestId } from '@/tests/test-ids';
 import Language from '@/types/Language';
 import { logButtonClick } from '@/utils/eventLogger';
 
-const CommunitySection = () => {
+const CommunitySection: React.FC = () => {
   const { lang, t } = useTranslation('home');
 
-  const onQRCardClicked = () => {
+  const onQRCardClicked = useCallback(() => {
     logButtonClick('homepage_community_qr_card');
-  };
+  }, []);
 
-  const onRamadanCardClicked = () => {
+  const onRamadanCardClicked = useCallback(() => {
     logButtonClick('homepage_community_ramadan_card');
-  };
+  }, []);
 
   return (
     <section className={styles.section} aria-label={t('common:community.title')}>
@@ -34,11 +34,11 @@ const CommunitySection = () => {
         </div>
       </div>
       <div className={styles.cardsContainer} data-testid={TestId.COMMUNITY_SECTION}>
-        {lang === Language.EN && <RamadanCard onClick={onRamadanCardClicked} />}
+        {lang === Language.EN ? <RamadanCard onClick={onRamadanCardClicked} /> : null}
         <QuranReflectCard onClick={onQRCardClicked} />
       </div>
     </section>
   );
 };
 
-export default CommunitySection;
+export default React.memo(CommunitySection);

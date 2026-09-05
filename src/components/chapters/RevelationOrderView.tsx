@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { useRouter } from 'next/router';
 import { Translate } from 'next-translate';
@@ -21,12 +21,20 @@ import { getSurahNavigationUrl } from '@/utils/navigation';
 import REVELATION_ORDER from '@/utils/revelationOrder';
 
 const MECCAN_SURAH_STRING_IDENTIFIER = 'makkah'; // the value is coming from the backend, ideally we would've set it up as an enum, but other pieces of the code are relying on this as a string, so we'll keep it as a string for now.
+
+const REVELATION_ORDER_MAP = new Map<number, number>(
+  REVELATION_ORDER.map((id, index) => [id, index]),
+);
+
 type RevelationOrderViewProps = {
   isDescending: boolean;
   chapters: Chapter[];
 };
 
-const RevelationOrderView = ({ isDescending, chapters }: RevelationOrderViewProps) => {
+const RevelationOrderView: React.FC<RevelationOrderViewProps> = ({
+  isDescending,
+  chapters,
+}: RevelationOrderViewProps) => {
   const { t, lang } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -36,26 +44,29 @@ const RevelationOrderView = ({ isDescending, chapters }: RevelationOrderViewProp
   } = usePersistPreferenceGroup();
   const [clickedSurahId, setClickedSurahId] = useState(null);
 
-  const onSurahClicked = (surahId: string | number) => {
-    if (isLoggedIn()) {
-      setClickedSurahId(surahId);
-      onSettingsChange(
-        'isReadingByRevelationOrder',
-        true,
-        setIsReadingByRevelationOrder(true),
-        setIsReadingByRevelationOrder(false),
-        PreferenceGroup.READING,
-        () => {
-          // navigate to the selected Surah on success
-          router.push(getSurahNavigationUrl(surahId));
-        },
-      );
-    } else {
-      dispatch(setIsReadingByRevelationOrder(true));
-      router.push(getSurahNavigationUrl(surahId));
-    }
-    logButtonClick('revelation_ordering_surah');
-  };
+  const onSurahClicked = useCallback(
+    (surahId: string | number) => {
+      if (isLoggedIn()) {
+        setClickedSurahId(surahId);
+        onSettingsChange(
+          'isReadingByRevelationOrder',
+          true,
+          setIsReadingByRevelationOrder(true),
+          setIsReadingByRevelationOrder(false),
+          PreferenceGroup.READING,
+          () => {
+            // navigate to the selected Surah on success
+            router.push(getSurahNavigationUrl(surahId));
+          },
+        );
+      } else {
+        dispatch(setIsReadingByRevelationOrder(true));
+        router.push(getSurahNavigationUrl(surahId));
+      }
+      logButtonClick('revelation_ordering_surah');
+    },
+    [dispatch, onSettingsChange, router],
+  );
 
   const sortedChaptersByRevelationOrder = useMemo(
     () =>
@@ -64,13 +75,15 @@ const RevelationOrderView = ({ isDescending, chapters }: RevelationOrderViewProp
             .slice()
             .sort(
               (a, b) =>
-                REVELATION_ORDER.indexOf(Number(b.id)) - REVELATION_ORDER.indexOf(Number(a.id)),
+                (REVELATION_ORDER_MAP.get(Number(b.id)) ?? 0) -
+                (REVELATION_ORDER_MAP.get(Number(a.id)) ?? 0),
             )
         : chapters
             .slice()
             .sort(
               (a, b) =>
-                REVELATION_ORDER.indexOf(Number(a.id)) - REVELATION_ORDER.indexOf(Number(b.id)),
+                (REVELATION_ORDER_MAP.get(Number(a.id)) ?? 0) -
+                (REVELATION_ORDER_MAP.get(Number(b.id)) ?? 0),
             ),
     [isDescending, chapters],
   );
@@ -120,4 +133,4 @@ const getTranslatedSurahName = (chapter: Chapter, t: Translate, lang: string) =>
   return `${toLocalizedNumber(Number(chapter.id), lang)}: ${chapter.translatedName as string}`;
 };
 
-export default RevelationOrderView;
+export default React.memo(RevelationOrderView);

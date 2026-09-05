@@ -43,4 +43,4 @@ const CompanionAppCard: React.FC<CompanionAppCardProps> = ({ app, onClick }) => 
   );
 };
 
-export default CompanionAppCard;
+export default React.memo(CompanionAppCard);

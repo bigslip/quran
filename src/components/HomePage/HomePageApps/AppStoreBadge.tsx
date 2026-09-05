@@ -48,4 +48,4 @@ const AppStoreBadge: React.FC<AppStoreBadgeProps> = ({ platform, href, onClick }
   );
 };
 
-export default AppStoreBadge;
+export default React.memo(AppStoreBadge);

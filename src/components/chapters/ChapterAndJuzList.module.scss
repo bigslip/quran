@@ -25,6 +25,8 @@
 .chapterContainer {
   background-color: var(--color-surface-card);
   border-radius: var(--border-radius-rounded);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 68px;
 }
 
 .chapterContainer + .chapterContainer {

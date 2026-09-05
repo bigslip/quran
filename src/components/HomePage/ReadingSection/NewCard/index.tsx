@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 
@@ -13,9 +13,9 @@ import { ROUTES } from '@/utils/navigation';
 const NewCard: React.FC = () => {
   const { t } = useTranslation('home');
 
-  const onRamadanChallengeClicked = () => {
+  const onRamadanChallengeClicked = useCallback(() => {
     logButtonClick('homepage_ramadan_challenge_link');
-  };
+  }, []);
 
   return (
     <Card
@@ -41,4 +41,4 @@ const NewCard: React.FC = () => {
   );
 };
 
-export default NewCard;
+export default React.memo(NewCard);

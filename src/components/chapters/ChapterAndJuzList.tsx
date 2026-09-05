@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable react/no-multi-comp */
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
@@ -69,13 +69,65 @@ const MOST_VISITED_CHAPTERS = {
   67: true,
 };
 
+const DIACRITICS_REGEX = /[\u0300-\u036f]/g;
+const SEPARATORS_REGEX = /[-_']/g;
+const WHITESPACE_REGEX = /\s+/g;
+const NUMERIC_REGEX = /^\d+$/;
+
+interface SearchableChapter {
+  chapter: Chapter;
+  idNum: number;
+  idStr: string;
+  transliteratedNorm: string;
+  transliteratedCompact: string;
+  translatedNorm: string;
+  translatedCompact: string;
+  simpleNorm: string;
+  complexNorm: string;
+  slugNorm: string;
+  arabicName: string;
+  revelationPlace: string;
+}
+
+const isChapterMatch = (
+  item: SearchableChapter,
+  query: string,
+  normalizedQuery: string,
+  compactQuery: string,
+  isNumeric: boolean,
+  lang: string,
+): boolean => {
+  if (isNumeric && (item.idStr === query || item.idStr.startsWith(query))) {
+    return true;
+  }
+  const localizedId = toLocalizedNumber(item.idNum, lang);
+  if (localizedId.includes(query) || item.idStr.includes(query)) {
+    return true;
+  }
+  if (
+    item.transliteratedNorm.includes(normalizedQuery) ||
+    item.transliteratedCompact.includes(compactQuery) ||
+    item.translatedNorm.includes(normalizedQuery) ||
+    item.translatedCompact.includes(compactQuery)
+  ) {
+    return true;
+  }
+  if (item.simpleNorm?.includes(normalizedQuery) || item.complexNorm?.includes(normalizedQuery)) {
+    return true;
+  }
+  if (item.arabicName?.includes(query) || item.slugNorm?.includes(normalizedQuery)) {
+    return true;
+  }
+  return false;
+};
+
 const normalizeSearchText = (text: string) =>
   text
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[-_']/g, ' ')
-    .replace(/\s+/g, ' ')
+    .replace(DIACRITICS_REGEX, '')
+    .replace(SEPARATORS_REGEX, ' ')
+    .replace(WHITESPACE_REGEX, ' ')
     .trim();
 
 const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
@@ -89,23 +141,53 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const allCount = chapters.length;
-  const makkiCount = useMemo(
-    () => chapters.filter((c) => c.revelationPlace === 'makkah').length,
-    [chapters],
-  );
-  const madaniCount = useMemo(
-    () => chapters.filter((c) => c.revelationPlace === 'madinah').length,
-    [chapters],
-  );
 
-  const onSort = () => {
+  // Single combined loop for counts (js-combine-iterations)
+  const { makkiCount, madaniCount } = useMemo(() => {
+    let makki = 0;
+    let madani = 0;
+    for (let i = 0; i < chapters.length; i += 1) {
+      if (chapters[i].revelationPlace === 'makkah') {
+        makki += 1;
+      } else if (chapters[i].revelationPlace === 'madinah') {
+        madani += 1;
+      }
+    }
+    return { makkiCount: makki, madaniCount: madani };
+  }, [chapters]);
+
+  // Pre-index normalized fields for search (js-index-maps, js-cache-function-results)
+  const searchableChapters: SearchableChapter[] = useMemo(() => {
+    return chapters.map((chapter) => {
+      const transliterated = normalizeSearchText(chapter.transliteratedName || '');
+      const translated = normalizeSearchText(
+        typeof chapter.translatedName === 'string' ? chapter.translatedName : '',
+      );
+      return {
+        chapter,
+        idNum: Number(chapter.id),
+        idStr: String(chapter.id),
+        transliteratedNorm: transliterated,
+        transliteratedCompact: transliterated.replace(WHITESPACE_REGEX, ''),
+        translatedNorm: translated,
+        translatedCompact: translated.replace(WHITESPACE_REGEX, ''),
+        simpleNorm: chapter.nameSimple ? normalizeSearchText(chapter.nameSimple) : '',
+        complexNorm: chapter.nameComplex ? normalizeSearchText(chapter.nameComplex) : '',
+        slugNorm: chapter.slug ? normalizeSearchText(chapter.slug) : '',
+        arabicName: chapter.nameArabic || '',
+        revelationPlace: chapter.revelationPlace,
+      };
+    });
+  }, [chapters]);
+
+  const onSort = useCallback(() => {
     setSortBy((prevValue) => {
       const newValue = prevValue === Sort.DESC ? Sort.ASC : Sort.DESC;
       // eslint-disable-next-line i18next/no-literal-string
       logValueChange(`homepage_${view}_sorting`, prevValue, newValue);
       return newValue;
     });
-  };
+  }, [view]);
 
   const tabs = useMemo(
     () => [
@@ -116,114 +198,64 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
     [t],
   );
 
-  const onTabSelected = (newView) => {
+  const onTabSelected = useCallback((newView: string) => {
     // eslint-disable-next-line i18next/no-literal-string
     logButtonClick(`homepage_${newView}_tab`);
     setView(newView as View);
-  };
+  }, []);
 
-  const onRevelationFilterChange = (newFilter: RevelationFilter) => {
+  const onRevelationFilterChange = useCallback((newFilter: RevelationFilter) => {
     // eslint-disable-next-line i18next/no-literal-string
     logButtonClick(`homepage_surah_filter_${newFilter}`);
     setRevelationFilter(newFilter);
-  };
+  }, []);
 
-  const handleClearSearch = () => {
+  const handleClearSearch = useCallback(() => {
     setSearchQuery('');
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
-  };
+  }, []);
 
-  const handleResetFilters = () => {
+  const handleResetFilters = useCallback(() => {
     setSearchQuery('');
     setRevelationFilter(RevelationFilter.All);
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
-  };
+  }, []);
 
   const filteredChapters = useMemo(() => {
-    let result = chapters;
-
-    // Filter by revelation place
-    if (revelationFilter === RevelationFilter.Makki) {
-      result = result.filter((chapter) => chapter.revelationPlace === 'makkah');
-    } else if (revelationFilter === RevelationFilter.Madani) {
-      result = result.filter((chapter) => chapter.revelationPlace === 'madinah');
-    }
-
-    // Filter by search query
     const query = searchQuery.trim();
-    if (query) {
-      const normalizedQuery = normalizeSearchText(query);
-      const compactQuery = normalizedQuery.replace(/\s+/g, '');
-      const isNumeric = /^\d+$/.test(query);
+    const hasQuery = query.length > 0;
+    const normalizedQuery = hasQuery ? normalizeSearchText(query) : '';
+    const compactQuery = hasQuery ? normalizedQuery.replace(WHITESPACE_REGEX, '') : '';
+    const isNumeric = hasQuery && NUMERIC_REGEX.test(query);
 
-      result = result.filter((chapter) => {
-        const chapterIdStr = String(chapter.id);
-        if (isNumeric) {
-          if (chapterIdStr === query || chapterIdStr.startsWith(query)) {
-            return true;
-          }
-        }
-
-        const localizedId = toLocalizedNumber(Number(chapter.id), lang);
-        if (localizedId.includes(query)) {
-          return true;
-        }
-
-        if (chapterIdStr.includes(query)) {
-          return true;
-        }
-
-        const transliterated = normalizeSearchText(chapter.transliteratedName || '');
-        const compactTransliterated = transliterated.replace(/\s+/g, '');
+    const matched = searchableChapters
+      .filter((item) => {
         if (
-          transliterated.includes(normalizedQuery) ||
-          compactTransliterated.includes(compactQuery)
+          revelationFilter !== RevelationFilter.All &&
+          item.revelationPlace !== revelationFilter
         ) {
-          return true;
+          return false;
         }
-
-        const translated = normalizeSearchText(
-          typeof chapter.translatedName === 'string' ? chapter.translatedName : '',
-        );
-        const compactTranslated = translated.replace(/\s+/g, '');
         if (
-          translated.includes(normalizedQuery) ||
-          compactTranslated.includes(compactQuery)
+          hasQuery &&
+          !isChapterMatch(item, query, normalizedQuery, compactQuery, isNumeric, lang)
         ) {
-          return true;
+          return false;
         }
-
-        if (chapter.nameSimple) {
-          const simple = normalizeSearchText(chapter.nameSimple);
-          if (simple.includes(normalizedQuery)) return true;
-        }
-
-        if (chapter.nameComplex) {
-          const complex = normalizeSearchText(chapter.nameComplex);
-          if (complex.includes(normalizedQuery)) return true;
-        }
-
-        if (chapter.nameArabic && chapter.nameArabic.includes(query)) {
-          return true;
-        }
-
-        if (chapter.slug && normalizeSearchText(chapter.slug).includes(normalizedQuery)) {
-          return true;
-        }
-
-        return false;
-      });
-    }
+        return true;
+      })
+      .map((item) => item.chapter);
 
     // Sort chapters
-    return sortBy === Sort.DESC
-      ? result.slice().sort((a, b) => Number(b.id) - Number(a.id))
-      : result.slice().sort((a, b) => Number(a.id) - Number(b.id));
-  }, [chapters, revelationFilter, searchQuery, sortBy, lang]);
+    if (sortBy === Sort.DESC) {
+      return matched.slice().sort((a, b) => Number(b.id) - Number(a.id));
+    }
+    return matched;
+  }, [searchableChapters, revelationFilter, searchQuery, sortBy, lang]);
 
   return (
     <>
@@ -283,7 +315,7 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
               aria-label={t('home:search-surah')}
               data-testid="surah-search-input"
             />
-            {searchQuery && (
+            {searchQuery ? (
               <button
                 type="button"
                 className={styles.clearButton}
@@ -293,7 +325,7 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
               >
                 <ClearIcon />
               </button>
-            )}
+            ) : null}
           </div>
           <div className={styles.pillsContainer} role="group" aria-label="Surah filter">
             <button
@@ -395,5 +427,4 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
   );
 };
 
-export default ChapterAndJuzList;
-
+export default React.memo(ChapterAndJuzList);

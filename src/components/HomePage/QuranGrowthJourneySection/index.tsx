@@ -7,7 +7,7 @@ import styles from './QuranGrowthJourneySection.module.scss';
 import NoGoalOrStreakCard from '@/components/HomePage/ReadingSection/NoGoalOrStreakCard';
 import useGetStreakWithMetadata from '@/hooks/auth/useGetStreakWithMetadata';
 
-const QuranGrowthJourneySection = () => {
+const QuranGrowthJourneySection: React.FC = () => {
   const { t } = useTranslation('home');
   const { goal, streak } = useGetStreakWithMetadata({
     showDayName: true,
@@ -27,4 +27,4 @@ const QuranGrowthJourneySection = () => {
   );
 };
 
-export default QuranGrowthJourneySection;
+export default React.memo(QuranGrowthJourneySection);

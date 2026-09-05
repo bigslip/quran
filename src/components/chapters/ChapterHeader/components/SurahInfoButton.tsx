@@ -4,15 +4,23 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 
+import dynamic from 'next/dynamic';
+
 import styles from '../ChapterHeader.module.scss';
 
-import SurahInfoContent from '@/components/chapters/Info/SurahInfoContent';
 import surahInfoStyles from '@/components/chapters/Info/SurahInfoModal.module.scss';
-import ContentModal, { ContentModalSize } from '@/components/dls/ContentModal/ContentModal';
+import { ContentModalSize } from '@/components/dls/ContentModal/ContentModal';
 import DataContext from '@/contexts/DataContext';
 import { getChapterData } from '@/utils/chapter';
 import { logButtonClick } from '@/utils/eventLogger';
 import { fakeNavigate, getSurahInfoNavigationUrl, getSurahNavigationUrl } from '@/utils/navigation';
+
+const ContentModal = dynamic(() => import('@/components/dls/ContentModal/ContentModal'), {
+  ssr: false,
+});
+const SurahInfoContent = dynamic(() => import('@/components/chapters/Info/SurahInfoContent'), {
+  ssr: false,
+});
 
 interface SurahInfoButtonProps {
   chapterId: string;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -32,13 +32,13 @@ const ChapterCard: React.FC<Props> = ({
   const surahNumberString = surahNumber.toString();
   const chapterData = getChapterData(chaptersData, surahNumberString);
 
-  const onContinueReadingClicked = () => {
+  const onContinueReadingClicked = useCallback(() => {
     logButtonClick('homepage_chapter_card_continue_reading');
-  };
+  }, []);
 
-  const onBeginClicked = () => {
+  const onBeginClicked = useCallback(() => {
     logButtonClick('homepage_chapter_card_begin');
-  };
+  }, []);
 
   const link = pageNumber
     ? getPageNavigationUrl(pageNumber)
@@ -97,4 +97,4 @@ const ChapterCard: React.FC<Props> = ({
   );
 };
 
-export default ChapterCard;
+export default React.memo(ChapterCard);

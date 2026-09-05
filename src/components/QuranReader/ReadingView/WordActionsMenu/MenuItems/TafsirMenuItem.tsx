@@ -1,13 +1,19 @@
 import React, { useRef, useState } from 'react';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { useSelector } from 'react-redux';
 
-import ContentModal from '@/components/dls/ContentModal/ContentModal';
 import PopoverMenu from '@/components/dls/PopoverMenu/PopoverMenu';
-import TafsirBody from '@/components/QuranReader/TafsirView/TafsirBody';
 import IconContainer, { IconColor, IconSize } from '@/dls/IconContainer/IconContainer';
+
+const ContentModal = dynamic(() => import('@/components/dls/ContentModal/ContentModal'), {
+  ssr: false,
+});
+const TafsirBody = dynamic(() => import('@/components/QuranReader/TafsirView/TafsirBody'), {
+  ssr: false,
+});
 import BookOpenIcon from '@/icons/book-open.svg';
 import { selectSelectedTafsirs } from '@/redux/slices/QuranReader/tafsirs';
 import { logButtonClick, logEvent } from '@/utils/eventLogger';

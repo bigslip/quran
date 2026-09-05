@@ -65,12 +65,12 @@ const CourseCard: React.FC<CourseCardProps> = ({
               </span>
             )}
           </div>
-          {course.dailyMinutes && (
+          {course.dailyMinutes ? (
             <div className={styles.metaInfo}>
               {course.dailyMinutes} {t('common:mins', { defaultValue: 'mins' })}
               {t('common:day-unit', { defaultValue: '/day' })}
             </div>
-          )}
+          ) : null}
         </div>
 
         <div className={styles.cardBody}>
@@ -88,4 +88,4 @@ const CourseCard: React.FC<CourseCardProps> = ({
   );
 };
 
-export default CourseCard;
+export default React.memo(CourseCard);

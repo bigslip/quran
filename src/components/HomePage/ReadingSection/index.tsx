@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -131,9 +131,9 @@ const ReadingSection: React.FC<Props> = () => {
     showDayName: true,
   });
 
-  const onMyQuranClicked = () => {
+  const onMyQuranClicked = useCallback(() => {
     logButtonClick('homepage_my_quran');
-  };
+  }, []);
 
   let headerText = '';
   if (isGuestWithReadingSessions || isUserWithReadingSessions) {
@@ -168,8 +168,11 @@ const ReadingSection: React.FC<Props> = () => {
     />
   );
 
-  const goalsOrStreakCard =
-    streak || goal ? (
+  const hasStreakOrGoal = Boolean(streak || goal);
+
+  let goalsOrStreakCard: React.ReactNode = null;
+  if (hasStreakOrGoal) {
+    goalsOrStreakCard = (
       <Card className={styles.streakCard}>
         <div className={styles.cardOuterContainer}>
           <div className={classNames(styles.streakCardLeft, styles.cardWithIcon)}>
@@ -177,9 +180,10 @@ const ReadingSection: React.FC<Props> = () => {
           </div>
         </div>
       </Card>
-    ) : (
-      <>{!isMobile && <NoGoalOrStreakCard />}</>
     );
+  } else if (!isMobile) {
+    goalsOrStreakCard = <NoGoalOrStreakCard />;
+  }
 
   const newCard = <NewCard />;
 
@@ -262,4 +266,4 @@ const ReadingSection: React.FC<Props> = () => {
   return <></>;
 };
 
-export default ReadingSection;
+export default React.memo(ReadingSection);

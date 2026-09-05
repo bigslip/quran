@@ -15,14 +15,19 @@ const useOutsideClickDetector = (
   preventDefault: boolean = false,
 ) => {
   const onClickOutsideDetectedRef = useRef(onClickOutsideDetected);
-  onClickOutsideDetectedRef.current = onClickOutsideDetected;
+  const preventDefaultRef = useRef(preventDefault);
+
+  useEffect(() => {
+    onClickOutsideDetectedRef.current = onClickOutsideDetected;
+    preventDefaultRef.current = preventDefault;
+  });
 
   useEffect(() => {
     if (!enableDetection) return () => {};
 
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && event.target instanceof Node && !ref.current.contains(event.target)) {
-        if (preventDefault) {
+        if (preventDefaultRef.current) {
           event.preventDefault();
           event.stopPropagation();
         }
@@ -35,7 +40,7 @@ const useOutsideClickDetector = (
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [ref, enableDetection, preventDefault]);
+  }, [ref, enableDetection]);
 };
 
 export default useOutsideClickDetector;
