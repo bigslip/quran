@@ -1,6 +1,7 @@
 import React from 'react';
 
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { useSelector, shallowEqual } from 'react-redux';
 
 import LanguageDrawer from './LanguageDrawer/LanguageDrawer';
@@ -8,7 +9,6 @@ import MobileStickyItemsBar from './MobileStickyItemsBar';
 import styles from './Navbar.module.scss';
 import NavbarBody from './NavbarBody';
 import NavigationDrawer from './NavigationDrawer/NavigationDrawer';
-import SearchDrawer from './SearchDrawer/SearchDrawer';
 import SettingsDrawer from './SettingsDrawer/SettingsDrawer';
 
 import { useOnboarding } from '@/components/Onboarding/OnboardingProvider';
@@ -20,6 +20,10 @@ import {
   selectIsSettingsDrawerOpen,
   selectNavbar,
 } from '@/redux/slices/navbar';
+
+const SearchModal = dynamic(() => import('./SearchModal/SearchModal'), {
+  ssr: false,
+});
 
 const Navbar = () => {
   const { isActive } = useOnboarding();
@@ -45,8 +49,8 @@ const Navbar = () => {
       >
         <NavbarBody isBannerVisible={isBannerVisible} />
       </nav>
-      {/* Drawers rendered outside nav to avoid transform containment issues */}
-      <SearchDrawer />
+      {/* Modals and Drawers rendered outside nav to avoid transform containment issues */}
+      <SearchModal />
       <SettingsDrawer />
       <NavigationDrawer />
       <LanguageDrawer />

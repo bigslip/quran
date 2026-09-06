@@ -85,7 +85,20 @@ export const navbarSlice = createSlice({
         isSearchDrawerOpen: action.payload,
       };
     },
+    setIsSearchModalOpen: (state: Navbar, action: PayloadAction<boolean>) => {
+      if (state.isSearchDrawerOpen === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        isSearchDrawerOpen: action.payload,
+      };
+    },
     toggleSearchDrawerIsOpen: (state: Navbar) => ({
+      ...state,
+      isSearchDrawerOpen: !state.isSearchDrawerOpen,
+    }),
+    toggleSearchModalIsOpen: (state: Navbar) => ({
       ...state,
       isSearchDrawerOpen: !state.isSearchDrawerOpen,
     }),
@@ -150,16 +163,19 @@ export const {
   setLockVisibilityState,
   setIsNavigationDrawerOpen,
   setIsSearchDrawerOpen,
+  setIsSearchModalOpen,
   setIsSettingsDrawerOpen,
   setIsLanguageDrawerOpen,
   setSettingsView,
   toggleSearchDrawerIsOpen,
+  toggleSearchModalIsOpen,
   setDisableSearchDrawerTransition,
   setLastSettingsTab,
 } = navbarSlice.actions;
 
 export const selectNavbar = (state: RootState) => state.navbar;
 export const selectIsSearchDrawerOpen = (state: RootState) => state.navbar.isSearchDrawerOpen;
+export const selectIsSearchModalOpen = (state: RootState) => state.navbar.isSearchDrawerOpen;
 export const selectIsNavigationDrawerOpen = (state: RootState) =>
   state.navbar.isNavigationDrawerOpen;
 export const selectIsSettingsDrawerOpen = (state: RootState) => state.navbar.isSettingsDrawerOpen;

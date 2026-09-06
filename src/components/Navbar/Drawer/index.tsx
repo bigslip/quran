@@ -6,8 +6,6 @@ import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import SearchDrawerFooter from '../SearchDrawer/Footer';
-
 import styles from './Drawer.module.scss';
 import DrawerCloseButton from './DrawerCloseButton';
 
@@ -225,7 +223,6 @@ const Drawer: React.FC<Props> = ({
         id={bodyId}
       >
         {children}
-        {isSearchDrawer && <SearchDrawerFooter />}
       </div>
     </div>
   );

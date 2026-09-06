@@ -39,7 +39,12 @@ const useNavbarDrawerActions = () => {
     dispatch(setIsLanguageDrawerOpen(true));
   }, [dispatch]);
 
-  return { openSearchDrawer, openNavigationDrawer, openLanguageDrawer };
+  return {
+    openSearchDrawer,
+    openSearchModal: openSearchDrawer,
+    openNavigationDrawer,
+    openLanguageDrawer,
+  };
 };
 
 export default useNavbarDrawerActions;

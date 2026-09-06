@@ -32,7 +32,8 @@ const SearchResults: React.FC<Props> = ({
   ...props
 }) => {
   const results = searchResult.result.navigation.concat(searchResult.result.verses);
-  const isSearchDrawer = source === SearchQuerySource.SearchDrawer;
+  const isSearchDrawer =
+    source === SearchQuerySource.SearchDrawer || source === SearchQuerySource.SearchModal;
   const { t, lang } = useTranslation('common');
   const scrollToTop = useScrollToTop();
 
