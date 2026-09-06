@@ -30,10 +30,10 @@ const RamadanCard: React.FC<RamadanCardProps> = ({ onClick }) => {
       <div className={styles.cardContent}>
         <div className={styles.ramadanHeader}>
           <div className={styles.diamondBadge}>
-            <DiamondIcon className={styles.ramadanIcon} />
+            <DiamondIcon className={styles.ramadanIcon} aria-hidden="true" />
           </div>
           <div className={styles.eventTag}>
-            <StarIcon className={styles.sparkleIcon} />
+            <StarIcon className={styles.sparkleIcon} aria-hidden="true" />
             <span>{t('ramadan-event-tag', { defaultValue: 'Ramadan 2026' })}</span>
           </div>
         </div>

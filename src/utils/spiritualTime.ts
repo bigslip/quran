@@ -20,18 +20,30 @@ export interface SpiritualTimeData {
 }
 
 /**
+ * Helper to ensure a valid Date object is used.
+ */
+const getValidDate = (date?: Date): Date => {
+  if (date instanceof Date && !Number.isNaN(date.getTime())) {
+    return date;
+  }
+  return new Date();
+};
+
+/**
  * Checks if the given date (or current date) is Friday (Jumu'ah).
  * In JavaScript, getDay() returns 5 for Friday.
  */
 export const isFriday = (date: Date = new Date()): boolean => {
-  return date.getDay() === 5;
+  const safeDate = getValidDate(date);
+  return safeDate.getDay() === 5;
 };
 
 /**
  * Checks if the current hour is evening/night (20:00 to 04:59).
  */
 export const isNightTime = (date: Date = new Date()): boolean => {
-  const hours = date.getHours();
+  const safeDate = getValidDate(date);
+  const hours = safeDate.getHours();
   return hours >= 20 || hours < 5;
 };
 
@@ -43,7 +55,8 @@ export const isNightTime = (date: Date = new Date()): boolean => {
  * - 'night': 20:00 - 04:59
  */
 export const getTimeOfDayPeriod = (date: Date = new Date()): TimeOfDayPeriod => {
-  const hours = date.getHours();
+  const safeDate = getValidDate(date);
+  const hours = safeDate.getHours();
   if (hours >= 5 && hours < 12) {
     return 'morning';
   }
@@ -61,13 +74,14 @@ export const getTimeOfDayPeriod = (date: Date = new Date()): TimeOfDayPeriod => 
  */
 export const getFormattedHijriDate = (date: Date = new Date(), locale: string = 'en'): string => {
   try {
+    const safeDate = getValidDate(date);
     const calendarLocale = locale.startsWith('ar') ? 'ar-SA-u-ca-islamic-umalqura' : 'en-u-ca-islamic-umalqura';
     const formatter = new Intl.DateTimeFormat(calendarLocale, {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     });
-    return formatter.format(date);
+    return formatter.format(safeDate);
   } catch {
     return '1448 AH';
   }
@@ -77,15 +91,16 @@ export const getFormattedHijriDate = (date: Date = new Date(), locale: string = 
  * Computes standard representative prayer times for the daily ribbon.
  */
 export const getDailySpiritualData = (date: Date = new Date(), locale: string = 'en'): SpiritualTimeData => {
-  const hijri = getFormattedHijriDate(date, locale);
+  const safeDate = getValidDate(date);
+  const hijri = getFormattedHijriDate(safeDate, locale);
   const gregorian = new Intl.DateTimeFormat(locale.startsWith('ar') ? 'ar' : 'en', {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
-  }).format(date);
+  }).format(safeDate);
 
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+  const hours = safeDate.getHours();
+  const minutes = safeDate.getMinutes();
   const currentMinutesFromMidnight = hours * 60 + minutes;
 
   // Approximate solar prayer times in minutes from midnight for aesthetic display

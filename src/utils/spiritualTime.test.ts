@@ -84,4 +84,13 @@ describe('spiritualTime', () => {
       expect(getTimeOfDayPeriod(nightEnd)).toBe('night');
     });
   });
+
+  describe('defensive Date handling', () => {
+    it('handles invalid dates gracefully without throwing', () => {
+      const invalidDate = new Date('invalid');
+      expect(() => isFriday(invalidDate)).not.toThrow();
+      expect(() => isNightTime(invalidDate)).not.toThrow();
+      expect(() => getTimeOfDayPeriod(invalidDate)).not.toThrow();
+    });
+  });
 });

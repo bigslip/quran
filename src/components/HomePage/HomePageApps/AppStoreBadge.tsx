@@ -28,9 +28,9 @@ const AppStoreBadge: React.FC<AppStoreBadgeProps> = ({ platform, href, onClick }
       rel="noopener noreferrer"
     >
       {isIos ? (
-        <AppleIcon className={styles.storeIcon} />
+        <AppleIcon className={styles.storeIcon} aria-hidden="true" />
       ) : (
-        <GoogleIcon className={styles.storeIcon} />
+        <GoogleIcon className={styles.storeIcon} aria-hidden="true" />
       )}
       <div className={styles.storeText}>
         <span className={styles.storeSubtext}>

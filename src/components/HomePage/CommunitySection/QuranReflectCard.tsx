@@ -34,11 +34,11 @@ const QuranReflectCard: React.FC<QuranReflectCardProps> = ({ onClick }) => {
       <div className={styles.cardContent}>
         <div className={styles.reflectionHeader}>
           <div className={styles.brandRow}>
-            <QRColoredIcon className={styles.coloredIcon} />
-            <QRLogoIcon className={styles.logoIcon} />
+            <QRColoredIcon className={styles.coloredIcon} aria-hidden="true" />
+            <QRLogoIcon className={styles.logoIcon} aria-hidden="true" />
           </div>
           <span className={styles.verseRefPill}>
-            <DiamondIcon className={styles.pillIcon} />
+            <DiamondIcon className={styles.pillIcon} aria-hidden="true" />
             {t('home:featured-reflections', { defaultValue: 'Daily Reflection' })}
           </span>
         </div>

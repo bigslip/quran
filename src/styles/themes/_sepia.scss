@@ -40,11 +40,17 @@
   --color-text-gray: #495057;
 
   // Modern Spiritual Sanctuary Tokens - Sepia Palette
+  --font-family-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-family-sans: 'Plus Jakarta Sans', 'Figtree', sans-serif;
   --color-primary: #1B5E20;
   --color-primary-subtle: rgba(27, 94, 32, 0.10);
   --color-primary-gradient: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
   --color-secondary-gradient: linear-gradient(135deg, #B45309 0%, #D97706 100%);
   --color-accent-gold: #B45309;
+  --color-accent-gold-rich: #D97706;
+  --color-accent-gold-subtle: rgba(180, 83, 9, 0.12);
+  --color-accent-emerald: #1B5E20;
+  --color-accent-emerald-subtle: rgba(27, 94, 32, 0.10);
   --color-surface-bg: #FBF7EE;
   --color-surface-card: #F4EBD9;
   --color-surface-card-hover: #EFE4CE;

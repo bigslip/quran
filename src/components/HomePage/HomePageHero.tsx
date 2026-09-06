@@ -81,7 +81,7 @@ const HomePageHero: React.FC = () => {
         <div className={styles.innerContainer}>
           <div className={styles.greetingCapsule}>
             <span className={styles.greetingBadge}>
-              <span className={styles.greetingPulse} />
+              <span className={styles.greetingPulse} aria-hidden="true" />
               <span className={styles.greetingText}>
                 {t('greeting', { defaultValue: 'Assalamu Alaikum' })}
               </span>

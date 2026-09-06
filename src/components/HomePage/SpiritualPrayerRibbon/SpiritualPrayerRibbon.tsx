@@ -115,7 +115,11 @@ const SpiritualPrayerRibbon: React.FC = () => {
         <div className={styles.countdownBadge}>
           <span className={styles.countdownLabel}>
             {t('next-prayer-prefix', { defaultValue: 'Next' })}:{' '}
-            <strong>{spiritualData.nextPrayerName}</strong>
+            <strong>
+              {prayers.find((p) => p.isNext)
+                ? t(`prayer-${prayers.find((p) => p.isNext)?.id}`)
+                : spiritualData.nextPrayerName}
+            </strong>
           </span>
           <span className={styles.countdownTimer}>
             {t('in-time', {

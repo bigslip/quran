@@ -65,7 +65,7 @@ const HomePageApps: React.FC = () => {
           onClick={() => logButtonClick('home_apps_see_more')}
         >
           <span>{t('apps.see-more')}</span>
-          <ArrowIcon className={styles.linkArrow} />
+          <ArrowIcon className={styles.linkArrow} aria-hidden="true" />
         </Link>
       </div>
 
@@ -74,7 +74,7 @@ const HomePageApps: React.FC = () => {
         <div className={styles.sanctuaryContent}>
           <div className={styles.sanctuaryMeta}>
             <div className={styles.companionBadge}>
-              <MobileIcon className={styles.mobileBadgeIcon} />
+              <MobileIcon className={styles.mobileBadgeIcon} aria-hidden="true" />
               <span>{t('home:sanctuary-companion', { defaultValue: 'Mobile Companion' })}</span>
             </div>
             <h3 className={styles.sanctuaryTitle}>

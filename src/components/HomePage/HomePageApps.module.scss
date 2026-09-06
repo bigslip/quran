@@ -68,12 +68,21 @@
   &:hover {
     color: var(--color-primary);
     transform: translateX(2px);
+
+    [dir='rtl'] & {
+      transform: translateX(-2px);
+    }
   }
 }
 
 .linkArrow {
   inline-size: 12px;
   block-size: 12px;
+
+  [dir='rtl'] & {
+    transform: rotate(180deg);
+  }
+
   path {
     fill: currentColor;
   }
@@ -298,6 +307,10 @@
     .appCardArrow {
       transform: translateX(3px);
       opacity: 1;
+
+      [dir='rtl'] & {
+        transform: rotate(180deg) translateX(3px);
+      }
     }
   }
 }
@@ -347,6 +360,10 @@
   opacity: 0.5;
   transition: transform 0.2s ease, opacity 0.2s ease;
   flex-shrink: 0;
+
+  [dir='rtl'] & {
+    transform: rotate(180deg);
+  }
 
   path {
     fill: var(--color-text-default-new);

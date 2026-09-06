@@ -91,6 +91,10 @@
 
     .arrowIcon {
       transform: translateX(3px);
+
+      [dir='rtl'] & {
+        transform: rotate(180deg) translateX(3px);
+      }
     }
   }
 
@@ -146,6 +150,10 @@
   margin-inline-start: var(--spacing-xxsmall-px);
   transition: transform 0.2s ease;
   opacity: 0.65;
+
+  [dir='rtl'] & {
+    transform: rotate(180deg);
+  }
 
   path {
     fill: currentColor;

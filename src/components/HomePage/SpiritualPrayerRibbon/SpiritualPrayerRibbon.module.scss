@@ -37,7 +37,7 @@
     inset-inline-start: 0;
     inset-inline-end: 0;
     block-size: 2px;
-    background: linear-gradient(90deg, transparent 0%, #D97706 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, var(--color-accent-gold-rich, #D97706) 50%, transparent 100%);
     opacity: 0.85;
   }
 
@@ -63,10 +63,14 @@
   inline-size: 32px;
   block-size: 32px;
   border-radius: 50%;
-  background: rgba(217, 119, 6, 0.12);
-  color: #D97706;
+  background: var(--color-accent-gold-subtle, rgba(217, 119, 6, 0.12));
+  color: var(--color-accent-gold-rich, #D97706);
   font-size: 1rem;
-  border: 1px solid rgba(217, 119, 6, 0.25);
+  border: 1px solid var(--color-border-subtle);
+
+  @include theme.dark {
+    color: var(--color-accent-gold, #F59E0B);
+  }
 }
 
 .dateDetails {
@@ -104,8 +108,12 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #D97706;
+  color: var(--color-accent-gold-rich, #D97706);
   margin: 0;
+
+  @include theme.dark {
+    color: var(--color-accent-gold, #F59E0B);
+  }
 }
 
 .countdownBadge {
@@ -126,8 +134,12 @@
   color: var(--color-text-faded-new, #64748B);
 
   strong {
-    color: #D97706;
+    color: var(--color-accent-gold-rich, #D97706);
     font-weight: 700;
+
+    @include theme.dark {
+      color: var(--color-accent-gold, #F59E0B);
+    }
   }
 }
 
@@ -136,10 +148,14 @@
   font-weight: 600;
   padding-inline: 8px;
   padding-block: 2px;
-  background: rgba(217, 119, 6, 0.1);
-  color: #D97706;
+  background: var(--color-accent-gold-subtle, rgba(217, 119, 6, 0.1));
+  color: var(--color-accent-gold-rich, #D97706);
   border-radius: var(--border-radius-pill);
-  border: 1px solid rgba(217, 119, 6, 0.25);
+  border: 1px solid var(--color-border-subtle);
+
+  @include theme.dark {
+    color: var(--color-accent-gold, #F59E0B);
+  }
 }
 
 // 5-Arch Islamic Prayer Grid
@@ -156,8 +172,10 @@
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
     gap: var(--spacing-small, 12px);
-    padding-inline-end: var(--spacing-medium, 16px);
+    padding-inline: var(--spacing-medium, 16px);
+    padding-block-start: var(--spacing-medium, 16px);
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
@@ -195,7 +213,7 @@
     }
 
     .archPath {
-      stroke: #F59E0B;
+      stroke: var(--color-accent-gold, #F59E0B);
       stroke-width: 2px;
       filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.35));
     }
@@ -208,13 +226,13 @@
 
   &.isNextPrayer {
     .archPath {
-      stroke: #F59E0B;
+      stroke: var(--color-accent-gold, #F59E0B);
       stroke-width: 2.2px;
       filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.45));
     }
 
     .goldMedallion {
-      border-color: #F59E0B;
+      border-color: var(--color-accent-gold, #F59E0B);
       box-shadow: 0 0 22px rgba(245, 158, 11, 0.45);
     }
   }
@@ -265,10 +283,14 @@
 .topEmblem {
   font-family: var(--font-family-arabic, 'Amiri', serif);
   font-size: 22px;
-  color: #D97706;
+  color: var(--color-accent-gold-rich, #D97706);
   line-height: 1;
   margin-block-end: 4px;
   user-select: none;
+
+  @include theme.dark {
+    color: var(--color-accent-gold, #F59E0B);
+  }
 }
 
 .archHeader {
@@ -291,9 +313,13 @@
 .archSub {
   font-size: 10px;
   font-weight: 700;
-  color: #B45309;
+  color: var(--color-accent-gold, #B45309);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+
+  @include theme.dark {
+    color: var(--color-accent-gold, #F59E0B);
+  }
 }
 
 .archArabic {
@@ -315,7 +341,7 @@
   inline-size: 96px;
   block-size: 96px;
   border-radius: 50%;
-  border: 3px solid #D97706;
+  border: 3px solid var(--color-accent-gold-rich, #D97706);
   background: radial-gradient(circle at 50% 30%, #FFFBEB 0%, #FEF3C7 100%);
   display: flex;
   flex-direction: column;
@@ -326,6 +352,7 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   @include theme.dark {
+    border-color: var(--color-accent-gold, #F59E0B);
     background: radial-gradient(circle at 50% 30%, rgba(217, 119, 6, 0.25) 0%, rgba(14, 20, 32, 0.95) 100%);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(217, 119, 6, 0.4);
   }
@@ -337,8 +364,12 @@
 
 .medallionSparkle {
   font-size: 14px;
-  color: #D97706;
+  color: var(--color-accent-gold-rich, #D97706);
   line-height: 1;
+
+  @include theme.dark {
+    color: var(--color-accent-gold, #F59E0B);
+  }
 }
 
 .medallionTime {
@@ -356,7 +387,7 @@
 .nextPillBadge {
   position: absolute;
   inset-block-end: -8px;
-  background: #D97706;
+  background: #B45309;
   color: #ffffff;
   font-size: 9px;
   font-weight: 800;
@@ -365,8 +396,14 @@
   border-radius: var(--border-radius-pill);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.4);
+
+  @include theme.dark {
+    background: #D97706;
+    color: #070A13;
+    font-weight: 900;
+  }
 }
 
 .archFooter {

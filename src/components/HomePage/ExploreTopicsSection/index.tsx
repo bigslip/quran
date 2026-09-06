@@ -57,17 +57,22 @@ const TOPICS: TopicItem[] = [
 const renderTopicIcon = (type?: 'sparkle' | 'star' | 'book') => {
   switch (type) {
     case 'sparkle':
-      return <SparkleIcon className={styles.iconBadge} />;
+      return <SparkleIcon className={styles.iconBadge} aria-hidden="true" />;
     case 'star':
-      return <StarIcon className={styles.iconBadge} />;
+      return <StarIcon className={styles.iconBadge} aria-hidden="true" />;
     case 'book':
     default:
-      return <BookIcon className={styles.iconBadge} />;
+      return <BookIcon className={styles.iconBadge} aria-hidden="true" />;
   }
 };
 
 const ExploreTopicsSection: React.FC = () => {
   const { t } = useTranslation('quick-links');
+
+  const handleTopicClick = React.useCallback((logKey: string) => {
+    logButtonClick(`explore_topics_${logKey}`);
+  }, []);
+
   return (
     <section className={styles.section} aria-label={t('home:explore-topics')}>
       <div className={styles.header}>
@@ -85,9 +90,7 @@ const ExploreTopicsSection: React.FC = () => {
               type={ButtonType.Primary}
               variant={ButtonVariant.Compact}
               shape={ButtonShape.Pill}
-              onClick={() => {
-                logButtonClick(`explore_topics_${topic.logKey}`);
-              }}
+              onClick={() => handleTopicClick(topic.logKey)}
               isNewTab
               className={classNames(styles.topic, {
                 [styles.highlighted]: topic.isHighlighted,
@@ -96,7 +99,7 @@ const ExploreTopicsSection: React.FC = () => {
               <div className={styles.topicContent}>
                 <span className={styles.iconWrapper}>{renderTopicIcon(topic.iconType)}</span>
                 <span className={styles.topicText}>{t(topic.key)}</span>
-                <ArrowIcon className={styles.arrowIcon} />
+                <ArrowIcon className={styles.arrowIcon} aria-hidden="true" />
               </div>
             </Button>
           );

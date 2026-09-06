@@ -96,6 +96,10 @@
 
     .arrowIcon {
       transform: translateX(3px);
+
+      [dir='rtl'] & {
+        transform: rotate(180deg) translateX(3px);
+      }
     }
   }
 
@@ -353,6 +357,11 @@
 
 .arrowIcon {
   transition: transform 0.2s ease;
+
+  [dir='rtl'] & {
+    transform: rotate(180deg);
+  }
+
   svg {
     inline-size: 14px;
     block-size: 14px;

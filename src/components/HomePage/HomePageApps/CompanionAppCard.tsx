@@ -38,7 +38,7 @@ const CompanionAppCard: React.FC<CompanionAppCardProps> = ({ app, onClick }) => 
         <h4 className={styles.appName}>{app.name}</h4>
         <p className={styles.appDescription}>{app.description}</p>
       </div>
-      <ArrowIcon className={styles.appCardArrow} />
+      <ArrowIcon className={styles.appCardArrow} aria-hidden="true" />
     </Link>
   );
 };

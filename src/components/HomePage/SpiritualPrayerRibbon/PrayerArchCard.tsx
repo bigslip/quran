@@ -24,7 +24,8 @@ interface PrayerArchCardProps {
 }
 
 const PrayerArchCard: React.FC<PrayerArchCardProps> = ({ prayer, isStaggered }) => {
-  const { t } = useTranslation('home');
+  const { t, lang } = useTranslation('home');
+  const isArabic = lang === 'ar';
 
   return (
     <div
@@ -60,14 +61,16 @@ const PrayerArchCard: React.FC<PrayerArchCardProps> = ({ prayer, isStaggered }) 
           <h3 className={styles.archTitle}>
             {t(`prayer-${prayer.id}`, { defaultValue: prayer.nameKey })}
           </h3>
-          <span className={styles.archSub}>
-            (
-            {t(`prayer-${prayer.id}-sub`, {
-              defaultValue: prayer.defaultSub,
-            })}
-            )
-          </span>
-          <span className={styles.archArabic}>{prayer.arabicName}</span>
+          {!isArabic && (
+            <span className={styles.archSub}>
+              (
+              {t(`prayer-${prayer.id}-sub`, {
+                defaultValue: prayer.defaultSub,
+              })}
+              )
+            </span>
+          )}
+          {!isArabic && <span className={styles.archArabic}>{prayer.arabicName}</span>}
         </div>
 
         {/* Center: Golden Medallion from namaz.png */}
