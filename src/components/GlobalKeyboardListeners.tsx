@@ -35,7 +35,7 @@ const GlobalKeyboardListeners: React.FC = () => {
     'meta+k, ctrl+k, meta+p, ctrl+p',
     toggleShowCommandBar,
     { enableOnFormTags: ['INPUT'] },
-    [dispatch],
+    [toggleShowCommandBar],
   );
   return <></>;
 };

@@ -23,11 +23,11 @@ import useSearchWithVoice from '@/hooks/useSearchWithVoice';
 import { selectMicrophoneActive } from '@/redux/slices/microphone';
 import { selectNavbar, setIsSearchModalOpen, setLockVisibilityState } from '@/redux/slices/navbar';
 import { selectSelectedTranslations } from '@/redux/slices/QuranReader/translations';
-import SearchService from '@/types/Search/SearchService';
 import SearchQuerySource from '@/types/SearchQuerySource';
+import SearchService from '@/types/Search/SearchService';
 import { makeNewSearchResultsUrl } from '@/utils/apiPaths';
 import { areArraysEqual } from '@/utils/array';
-import { logButtonClick, logTextSearchQuery } from '@/utils/eventLogger';
+import { logButtonClick } from '@/utils/eventLogger';
 import { addToSearchHistory, getQuickSearchQuery } from '@/utils/search';
 import { useHandleMicError } from '@/utils/voice-search-errors';
 import { SearchResponse } from 'types/ApiResponses';
@@ -100,9 +100,9 @@ const SearchModal: React.FC = () => {
 
   // Log search query when debounced value changes
   useEffect(() => {
-    if (debouncedSearchQuery) {
-      addToSearchHistory(dispatch, debouncedSearchQuery, SearchQuerySource.SearchModal);
-      logTextSearchQuery(debouncedSearchQuery, SearchQuerySource.SearchModal);
+    const trimmedQuery = debouncedSearchQuery.trim();
+    if (trimmedQuery) {
+      addToSearchHistory(dispatch, trimmedQuery, SearchQuerySource.SearchModal);
     }
   }, [debouncedSearchQuery, dispatch]);
 
@@ -133,17 +133,19 @@ const SearchModal: React.FC = () => {
     [setSearchQuery, searchInputRef, focusInput],
   );
 
+  const trimmedSearchQuery = useMemo(() => debouncedSearchQuery.trim(), [debouncedSearchQuery]);
+
   const quickSearchQuery = useMemo(() => {
-    return getQuickSearchQuery(debouncedSearchQuery, 10, selectedTranslations);
-  }, [debouncedSearchQuery, selectedTranslations]);
+    return getQuickSearchQuery(trimmedSearchQuery, 10, selectedTranslations);
+  }, [trimmedSearchQuery, selectedTranslations]);
 
   const searchFetcher = useCallback(() => {
-    if (!debouncedSearchQuery) return null;
+    if (!trimmedSearchQuery) return null;
     return getNewSearchResults(quickSearchQuery).then((response) => ({
       ...response,
       service: SearchService.KALIMAT,
     }));
-  }, [debouncedSearchQuery, quickSearchQuery]);
+  }, [trimmedSearchQuery, quickSearchQuery]);
 
   const renderSearchResults = useCallback(
     (searchResult: SearchResponse) => {
@@ -214,7 +216,6 @@ const SearchModal: React.FC = () => {
           onInteractOutside={handleInteractOutside}
           onEscapeKeyDown={onClose}
           onOpenAutoFocus={handleOpenAutoFocus}
-          aria-describedby={undefined}
           data-testid="search-modal-container"
         >
           <VisuallyHidden>
@@ -240,7 +241,7 @@ const SearchModal: React.FC = () => {
           <div className={styles.bodyContainer}>
             {isOpen && (
               <DataFetcher
-                queryKey={debouncedSearchQuery ? makeNewSearchResultsUrl(quickSearchQuery) : null}
+                queryKey={trimmedSearchQuery ? makeNewSearchResultsUrl(quickSearchQuery) : null}
                 render={renderSearchResults}
                 fetcher={searchFetcher}
                 loading={renderLoading}
