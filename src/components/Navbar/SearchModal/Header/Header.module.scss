@@ -1,22 +1,23 @@
 @use 'src/styles/breakpoints';
 
 .headerContainer {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: center;
   inline-size: 100%;
-  padding-inline-start: var(--spacing-medium3-px);
-  padding-inline-end: var(--spacing-medium3-px);
-  padding-block: var(--spacing-medium-px);
+  padding-inline-start: var(--spacing-medium-px);
+  padding-inline-end: var(--spacing-medium-px);
+  padding-block: var(--spacing-small2-px);
   border-block-end: 1px solid var(--color-borders-hairline);
   background-color: var(--color-background-default);
-  gap: var(--spacing-medium-px);
+  gap: var(--spacing-small-px);
 
   @include breakpoints.smallerThanTablet {
-    padding-inline-start: var(--spacing-medium-plus-px);
-    padding-inline-end: var(--spacing-medium-plus-px);
+    padding-inline-start: var(--spacing-small-px);
+    padding-inline-end: var(--spacing-small-px);
     padding-block: var(--spacing-small-px);
-    gap: var(--spacing-small-px);
+    gap: var(--spacing-xsmall-px);
   }
 }
 

@@ -1,13 +1,14 @@
 @use 'src/styles/breakpoints';
 
 .footerContainer {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   inline-size: 100%;
-  padding-inline-start: var(--spacing-medium3-px);
-  padding-inline-end: var(--spacing-medium3-px);
+  padding-inline-start: var(--spacing-medium-px);
+  padding-inline-end: var(--spacing-medium-px);
   padding-block: var(--spacing-xsmall-px);
   border-block-start: 1px solid var(--color-borders-hairline);
   background-color: var(--color-background-alternative);
@@ -16,8 +17,8 @@
   flex-shrink: 0;
 
   @include breakpoints.smallerThanTablet {
-    padding-inline-start: var(--spacing-medium-plus-px);
-    padding-inline-end: var(--spacing-medium-plus-px);
+    padding-inline-start: var(--spacing-small-px);
+    padding-inline-end: var(--spacing-small-px);
     justify-content: flex-end;
   }
 }
