@@ -6,8 +6,9 @@
   align-items: center;
   justify-content: space-between;
   inline-size: 100%;
-  padding-inline: var(--spacing-medium);
-  padding-block: var(--spacing-xsmall);
+  padding-inline-start: var(--spacing-medium3-px);
+  padding-inline-end: var(--spacing-medium3-px);
+  padding-block: var(--spacing-xsmall-px);
   border-block-start: 1px solid var(--color-borders-hairline);
   background-color: var(--color-background-alternative);
   font-size: var(--font-size-xsmall);
@@ -15,7 +16,8 @@
   flex-shrink: 0;
 
   @include breakpoints.smallerThanTablet {
-    padding-inline: var(--spacing-small);
+    padding-inline-start: var(--spacing-medium-plus-px);
+    padding-inline-end: var(--spacing-medium-plus-px);
     justify-content: flex-end;
   }
 }

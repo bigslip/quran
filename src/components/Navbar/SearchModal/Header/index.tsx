@@ -6,7 +6,7 @@ import useTranslation from 'next-translate/useTranslation';
 import styles from './Header.module.scss';
 
 import VoiceSearch from '@/components/Search/VoiceSearch';
-import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
+import Button, { ButtonShape, ButtonSize, ButtonVariant } from '@/dls/Button/Button';
 import Separator from '@/dls/Separator/Separator';
 import CloseIcon from '@/icons/close.svg';
 import IconSearch from '@/icons/search.svg';
@@ -100,6 +100,7 @@ const SearchModalHeader: React.FC<Props> = ({
         )}
         <div className={styles.closeButton}>
           <Button
+            size={ButtonSize.Small}
             variant={ButtonVariant.Ghost}
             shape={ButtonShape.Circle}
             onClick={onClose}
