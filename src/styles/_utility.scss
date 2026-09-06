@@ -912,8 +912,55 @@ $page-container-max-width: 80rem;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   scrollbar-width: none;
+  -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@mixin customScrollbar($width: 6px) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+
+  &::-webkit-scrollbar {
+    inline-size: $width;
+    block-size: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: var(--border-radius-pill, 20rem);
+    transition: background-color var(--transition-fast, 0.16s);
+
+    &:hover {
+      background-color: var(--scrollbar-thumb-hover);
+    }
+
+    &:active {
+      background-color: var(--scrollbar-thumb-active);
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+}
+
+@mixin focusRing($offset: 2px) {
+  &:focus-visible {
+    outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring));
+    outline-offset: $offset;
+  }
+}
+
+@mixin focusRingShadow {
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-shadow);
   }
 }
 
@@ -934,3 +981,4 @@ $page-container-max-width: 80rem;
     font-family: inherit;
   }
 }
+

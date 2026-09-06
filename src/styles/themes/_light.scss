@@ -61,9 +61,10 @@
   --color-border-subtle: rgba(217, 119, 6, 0.18);
   --color-border-iridescent: rgba(217, 119, 6, 0.28);
   --color-glow-celestial: 0 0 24px rgba(217, 119, 6, 0.18);
+  --color-glow-gold: 0 0 20px rgba(217, 119, 6, 0.16);
   --color-glow-subtle: 0 8px 24px rgba(2, 132, 199, 0.10);
   --shadow-card: 0 6px 24px rgba(15, 23, 42, 0.06), 0 0 1px rgba(217, 119, 6, 0.2);
-  --shadow-card-hover: 0 16px 36px rgba(217, 119, 6, 0.16), 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-card-hover: 0 10px 25px -5px rgba(2, 132, 199, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
 
   --color-background-default: #F8FAFC;
   --color-background-elevated: #FFFFFF;
@@ -88,8 +89,17 @@
   --color-border-gray-lighter: #cccccc;
   --color-border-gray-faded: #ededed;
 
-  --color-highlight: #79ffe1;
-  --color-highlight-dark: #22a5ad;
+  // Text selection tokens (subtle sky/primary tint)
+  --color-selection-bg: rgba(2, 132, 199, 0.20);
+  --color-selection-fg: #0F172A;
+  --color-highlight: rgba(2, 132, 199, 0.22);
+  --color-highlight-dark: #0369A1;
+
+  // Focus ring tokens (WCAG 2.2 AA compliant, high contrast)
+  --color-focus-ring: #0284C7;
+  --color-focus-ring-subtle: rgba(2, 132, 199, 0.35);
+  --focus-ring-shadow: 0 0 0 2px var(--color-background-default), 0 0 0 4px var(--color-focus-ring);
+  --focus-ring-outline: 2px solid var(--color-focus-ring);
 
   --shadow-small: 0px 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-reading-word-three-dots: var(--shadow-small);
@@ -110,7 +120,6 @@
   --shadow-chapter-header-actions: 0px 0px 4px rgba(0, 0, 0, 0.1);
   --shadow-tajweed-trigger: 0px 2px 4px rgba(0, 0, 0, 0.1);
   --elevation-floating: 0 12px 32px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
-  --shadow-card-hover: 0 10px 25px -5px rgba(2, 132, 199, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
   --shadow-word-glow: 0 0 12px var(--color-primary-subtle);
   font-palette: --Light;
 

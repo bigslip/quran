@@ -2,9 +2,9 @@
   text-decoration: none;
   color: inherit;
   &:focus-visible {
-    outline: 2px solid var(--color-borders-hairline);
+    outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring));
     outline-offset: 2px;
-    border-radius: var(--border-radius-xs);
+    border-radius: var(--border-radius-default);
   }
 }
 // variants

@@ -98,6 +98,7 @@ const RevelationOrderView: React.FC<RevelationOrderViewProps> = ({
           key={chapter.id}
           onClick={() => onSurahClicked(chapter.id)}
           onKeyPress={() => onSurahClicked(chapter.id)}
+          aria-label={`${chapter.transliteratedName}`}
         >
           <SurahPreviewRow
             chapterId={Number(chapter.id)}
@@ -109,6 +110,7 @@ const RevelationOrderView: React.FC<RevelationOrderViewProps> = ({
                 : Number(revelationOrderIndex + 1)
             } // Show the number based on the revelation order instead of the surah number.
             translatedSurahName={getTranslatedSurahName(chapter, t, lang)}
+            revelationPlace={chapter.revelationPlace}
             isMinimalLayout={false}
             isLoading={isLoading && clickedSurahId === chapter.id}
           />

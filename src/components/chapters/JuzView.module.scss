@@ -1,7 +1,7 @@
 @use 'src/styles/breakpoints';
 
 .juzContainer + .juzContainer {
-  margin-block-start: var(--spacing-small);
+  margin-block-start: var(--spacing-medium-px);
   @include breakpoints.tablet {
     margin-block-start: 0;
   }
@@ -10,37 +10,55 @@
 .juzContainer {
   display: inline-block;
   inline-size: 100%;
-  margin-block-end: var(--spacing-small);
+  margin-block-end: var(--spacing-medium-px);
   box-sizing: border-box;
-  padding-block-start: var(--spacing-small);
-  padding-block-end: var(--spacing-small);
-  padding-inline-start: var(--spacing-small);
-  padding-inline-end: var(--spacing-small);
+  padding-block: var(--spacing-medium-px);
+  padding-inline: var(--spacing-medium-px);
   content-visibility: auto;
   contain-intrinsic-size: auto 300px;
-
-  background-color: var(--color-background-alternative-faint);
-  border-radius: var(--border-radius-default);
+  background-color: var(--color-surface-card);
+  backdrop-filter: var(--backdrop-filter-frosted, blur(16px));
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted, blur(16px));
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-rounded);
+  box-shadow: var(--shadow-small-new);
+  transition: border-color var(--transition-fast) ease, box-shadow var(--transition-fast) ease;
 
   .chapterContainer + .chapterContainer {
-    margin-block-start: var(--spacing-small);
+    margin-block-start: var(--spacing-small-px);
   }
 }
 
 .chapterContainer {
-  background-color: var(--color-background-default);
+  background-color: transparent;
 }
 
 .juzTitle {
-  margin-block-end: var(--spacing-xsmall);
+  margin-block-end: var(--spacing-small-px);
   display: flex;
   flex-direction: row;
-  align-content: space-between;
+  align-items: center;
   justify-content: space-between;
+  font-size: var(--font-size-small-px);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  padding-inline: var(--spacing-xxsmall-px);
 }
 
 .readJuz {
-  text-decoration: underline;
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall-px);
+  transition: color var(--transition-fast) ease, transform var(--transition-fast) ease;
+
+  &:hover {
+    color: var(--color-accent-gold);
+    text-decoration: underline;
+  }
 }
 
 .loadingContainer {

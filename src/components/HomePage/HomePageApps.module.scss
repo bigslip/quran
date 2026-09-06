@@ -73,6 +73,12 @@
       transform: translateX(-2px);
     }
   }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-pill);
+  }
 }
 
 .linkArrow {
@@ -225,6 +231,11 @@
     border-color: var(--color-border-iridescent);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
 }
 
 .storeIcon {
@@ -242,7 +253,7 @@
 }
 
 .storeSubtext {
-  font-size: 9px;
+  font-size: 9.5px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-text-faded-new);
@@ -312,6 +323,11 @@
         transform: rotate(180deg) translateX(3px);
       }
     }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 

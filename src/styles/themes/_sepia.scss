@@ -60,7 +60,9 @@
   --color-border-subtle: rgba(215, 201, 178, 0.7);
   --color-border-iridescent: rgba(215, 201, 178, 0.9);
   --color-glow-celestial: 0 0 16px rgba(27, 94, 32, 0.15);
+  --color-glow-gold: 0 0 20px rgba(180, 83, 9, 0.16);
   --color-glow-subtle: 0 8px 24px rgba(100, 80, 50, 0.08);
+  --shadow-card: 0 6px 24px rgba(100, 80, 50, 0.08), 0 0 1px rgba(180, 83, 9, 0.2);
 
   --color-background-default: #FBF7EE;
   --color-background-elevated: #F4EBD9;
@@ -81,7 +83,17 @@
 
   --color-borders-hairline: #dbccb3;
 
-  --color-highlight: #50e3c2;
+  // Text selection tokens (subtle warm amber/gold tint)
+  --color-selection-bg: rgba(180, 83, 9, 0.22);
+  --color-selection-fg: #2A241C;
+  --color-highlight: rgba(180, 83, 9, 0.22);
+  --color-highlight-dark: #9D5C01;
+
+  // Focus ring tokens (WCAG 2.2 AA compliant, rich emerald / gold)
+  --color-focus-ring: #1B5E20;
+  --color-focus-ring-subtle: rgba(27, 94, 32, 0.35);
+  --focus-ring-shadow: 0 0 0 2px var(--color-background-default), 0 0 0 4px var(--color-focus-ring);
+  --focus-ring-outline: 2px solid var(--color-focus-ring);
 
   --shadow-small: 0px 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-reading-word-three-dots: var(--shadow-small);
@@ -106,9 +118,9 @@
   font-palette: --Sepia;
 
   // scrollbar styles
-  --scrollbar-background: #72603f;
-  --scrollbar-thumb: #f0cd8c;
-  --scrollbar-thumb-hover: #d4b478;
+  --scrollbar-background: #efe2cd;
+  --scrollbar-thumb: #d4b478;
+  --scrollbar-thumb-hover: #b49b6c;
   --scrollbar-thumb-active: #8d774e;
 
   --color-grey-icons: #d8c6a5;

@@ -84,7 +84,17 @@
 
   --color-borders-hairline: rgb(70, 75, 80);
 
-  --color-highlight: #2ca4ab;
+  // Text selection tokens (celestial sky/cyan tint)
+  --color-selection-bg: rgba(0, 242, 254, 0.28);
+  --color-selection-fg: #F0F4FA;
+  --color-highlight: rgba(0, 242, 254, 0.30);
+  --color-highlight-dark: #4FACFE;
+
+  // Focus ring tokens (WCAG 2.2 AA compliant, celestial cyan glow)
+  --color-focus-ring: #00F2FE;
+  --color-focus-ring-subtle: rgba(0, 242, 254, 0.40);
+  --focus-ring-shadow: 0 0 0 2px var(--color-background-default), 0 0 0 4px var(--color-focus-ring);
+  --focus-ring-outline: 2px solid var(--color-focus-ring);
 
   --shadow-small: 0px 2px 4px var(--shade-9);
   --shadow-flat: 0px 0px 8px var(--shade-9);

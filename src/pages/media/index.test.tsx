@@ -52,6 +52,10 @@ vi.mock('next/router', () => ({
   }),
 }));
 
+vi.mock('@/hooks/useGetChaptersData', () => ({
+  default: () => ({}),
+}));
+
 vi.mock('next-translate/useTranslation', () => ({
   default: () => ({ t: (key) => key, lang: 'en' }),
 }));

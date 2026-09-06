@@ -70,6 +70,7 @@ const JuzView: React.FC<JuzViewProps> = ({ isDescending }: JuzViewProps) => {
                       surahName={chapter.transliteratedName}
                       surahNumber={Number(chapterId)}
                       translatedSurahName={chapter.translatedName as string}
+                      revelationPlace={chapter.revelationPlace}
                       isMinimalLayout={shouldUseMinimalLayout(lang)}
                     />
                   </Link>

@@ -64,7 +64,7 @@
   block-size: 32px;
   border-radius: 50%;
   background: var(--color-accent-gold-subtle);
-  color: var(--color-accent-gold-rich);
+  color: var(--color-accent-gold);
   font-size: 1rem;
   border: 1px solid var(--color-border-subtle);
 
@@ -108,7 +108,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-accent-gold-rich);
+  color: var(--color-accent-gold);
   margin: 0;
 
   @include theme.dark {
@@ -134,7 +134,7 @@
   color: var(--color-text-faded-new);
 
   strong {
-    color: var(--color-accent-gold-rich);
+    color: var(--color-accent-gold);
     font-weight: 700;
 
     @include theme.dark {
@@ -149,7 +149,7 @@
   padding-inline: 8px;
   padding-block: 2px;
   background: var(--color-accent-gold-subtle);
-  color: var(--color-accent-gold-rich);
+  color: var(--color-accent-gold);
   border-radius: var(--border-radius-pill);
   border: 1px solid var(--color-border-subtle);
 
@@ -298,13 +298,13 @@
 .topEmblem {
   font-family: var(--font-family-arabic, 'Amiri', serif);
   font-size: 22px;
-  color: var(--color-accent-gold-rich, #D97706);
+  color: var(--color-accent-gold);
   line-height: 1;
   margin-block-end: 4px;
   user-select: none;
 
   @include theme.dark {
-    color: var(--color-accent-gold, #F59E0B);
+    color: var(--color-accent-gold);
   }
 }
 
@@ -390,7 +390,7 @@
 
 .medallionSparkle {
   font-size: 13px;
-  color: var(--color-accent-gold-rich);
+  color: var(--color-accent-gold);
   line-height: 1;
 
   @include theme.dark {
@@ -418,7 +418,7 @@
 .nextPillBadge {
   position: absolute;
   inset-block-end: -8px;
-  background: var(--color-accent-gold-rich);
+  background: var(--color-accent-gold);
   color: #ffffff;
   font-size: 9px;
   font-weight: 800;
@@ -427,7 +427,7 @@
   border-radius: var(--border-radius-pill);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.5);
 
   @include theme.dark {

@@ -99,6 +99,12 @@ video {
   outline: 0;
 }
 
+:focus-visible {
+  outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring, #0284c7));
+  outline-offset: 2px;
+}
+
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -210,6 +216,11 @@ html {
 
 a:focus {
   outline: thin dotted;
+}
+
+a:focus-visible {
+  outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring, #0284c7));
+  outline-offset: 2px;
 }
 
 /**
@@ -412,9 +423,18 @@ input::-moz-focus-inner {
  * update default scrollbar style
 */
 
+html {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-background, transparent);
+  scrollbar-width: thin;
+}
+
+* {
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
 ::-webkit-scrollbar {
-  inline-size: 5px;
-  block-size: 5px;
+  inline-size: 6px;
+  block-size: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -423,7 +443,8 @@ input::-moz-focus-inner {
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb);
-  border-radius: 5px;
+  border-radius: var(--border-radius-pill, 20rem);
+  transition: background-color var(--transition-fast, 0.16s);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -432,6 +453,10 @@ input::-moz-focus-inner {
 
 ::-webkit-scrollbar-thumb:active {
   background-color: var(--scrollbar-thumb-active);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
 }
 
 /**
@@ -454,12 +479,14 @@ table {
 }
 
 ::-moz-selection {
-  background: #b3d4fc;
+  background-color: var(--color-selection-bg, var(--color-highlight, rgba(2, 132, 199, 0.2)));
+  color: var(--color-selection-fg, inherit);
   text-shadow: none;
 }
 
 ::selection {
-  background: #b3d4fc;
+  background-color: var(--color-selection-bg, var(--color-highlight, rgba(2, 132, 199, 0.2)));
+  color: var(--color-selection-fg, inherit);
   text-shadow: none;
 }
 

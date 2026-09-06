@@ -6,15 +6,16 @@
 .list {
   display: flex;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--color-border-subtle);
-  margin-bottom: 1rem;
+  border-block-end: 1px solid var(--color-border-subtle);
+  margin-block-end: 1rem;
   gap: var(--spacing-xxsmall);
 }
 
 .trigger {
   background-color: transparent;
-  padding: 0.75rem 1.25rem;
-  height: 45px;
+  padding-block: 0.75rem;
+  padding-inline: 1.25rem;
+  block-size: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,9 +23,12 @@
   color: var(--color-text-secondary);
   user-select: none;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-block-end: 2px solid transparent;
   cursor: pointer;
-  border-radius: var(--border-radius-small-px) var(--border-radius-small-px) 0 0;
+  border-start-start-radius: var(--border-radius-small-px);
+  border-start-end-radius: var(--border-radius-small-px);
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
   transition:
     color var(--transition-fast) ease,
     border-color var(--transition-fast) ease,
@@ -37,20 +41,21 @@
 
   &[data-state='active'] {
     color: var(--color-primary);
-    border-bottom: 2px solid var(--color-primary);
+    border-block-end: 2px solid var(--color-primary);
     font-weight: var(--font-weight-semibold);
     box-shadow: 0 4px 12px var(--color-primary-subtle);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring));
     outline-offset: -2px;
   }
 }
 
 .content {
   flex-grow: 1;
-  padding: 1rem 0;
+  padding-block: 1rem;
+  padding-inline: 0;
   color: var(--color-text-default);
   
   &[data-state='inactive'] {
@@ -61,3 +66,4 @@
     outline: none;
   }
 }
+
