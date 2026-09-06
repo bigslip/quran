@@ -566,5 +566,9 @@
   "word-tooltip": "مربع منبثق للكلمة",
   "yes": "نعم",
   "page-number": "صفحة {{page}}",
-  "pagination-navigation": "Pagination navigation"
+  "pagination-navigation": "Pagination navigation",
+  "search-languages": "البحث عن اللغات...",
+  "languages-count": "{{count}} من {{total}} لغة",
+  "no-languages-found": "لم يتم العثور على لغات",
+  "select-language-description": "اختر لغة العرض المفضلة لموقع Quran.com"
 }

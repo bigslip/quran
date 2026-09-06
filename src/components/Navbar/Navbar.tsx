@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import { useSelector, shallowEqual } from 'react-redux';
 
-import LanguageDrawer from './LanguageDrawer/LanguageDrawer';
 import MobileStickyItemsBar from './MobileStickyItemsBar';
 import styles from './Navbar.module.scss';
 import NavbarBody from './NavbarBody';
@@ -22,6 +21,10 @@ import {
 } from '@/redux/slices/navbar';
 
 const SearchModal = dynamic(() => import('./SearchModal/SearchModal'), {
+  ssr: false,
+});
+
+const LanguageModal = dynamic(() => import('./LanguageModal/LanguageModal'), {
   ssr: false,
 });
 
@@ -51,9 +54,9 @@ const Navbar = () => {
       </nav>
       {/* Modals and Drawers rendered outside nav to avoid transform containment issues */}
       <SearchModal />
+      <LanguageModal />
       <SettingsDrawer />
       <NavigationDrawer />
-      <LanguageDrawer />
     </>
   );
 };

@@ -44,6 +44,7 @@ const useNavbarDrawerActions = () => {
     openSearchModal: openSearchDrawer,
     openNavigationDrawer,
     openLanguageDrawer,
+    openLanguageModal: openLanguageDrawer,
   };
 };
 

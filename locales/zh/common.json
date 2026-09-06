@@ -564,5 +564,9 @@
   "word-tooltip": "鼠标悬停在单词上时弹出其译文",
   "yes": "是的",
   "page-number": "第 {{page}} 页",
-  "pagination-navigation": "Pagination navigation"
+  "pagination-navigation": "Pagination navigation",
+  "search-languages": "Search languages...",
+  "languages-count": "{{count}} of {{total}} languages",
+  "no-languages-found": "No languages found",
+  "select-language-description": "Select your preferred display language for Quran.com"
 }

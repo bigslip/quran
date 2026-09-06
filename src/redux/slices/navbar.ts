@@ -125,6 +125,23 @@ export const navbarSlice = createSlice({
         isLanguageDrawerOpen: action.payload,
       };
     },
+    setIsLanguageModalOpen: (state: Navbar, action: PayloadAction<boolean>) => {
+      if (state.isLanguageDrawerOpen === action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        isLanguageDrawerOpen: action.payload,
+      };
+    },
+    toggleLanguageDrawerIsOpen: (state: Navbar) => ({
+      ...state,
+      isLanguageDrawerOpen: !state.isLanguageDrawerOpen,
+    }),
+    toggleLanguageModalIsOpen: (state: Navbar) => ({
+      ...state,
+      isLanguageDrawerOpen: !state.isLanguageDrawerOpen,
+    }),
     setSettingsView: (state: Navbar, action: PayloadAction<SettingsView>) => {
       if (state.settingsView === action.payload) {
         return state;
@@ -166,9 +183,12 @@ export const {
   setIsSearchModalOpen,
   setIsSettingsDrawerOpen,
   setIsLanguageDrawerOpen,
+  setIsLanguageModalOpen,
   setSettingsView,
   toggleSearchDrawerIsOpen,
   toggleSearchModalIsOpen,
+  toggleLanguageDrawerIsOpen,
+  toggleLanguageModalIsOpen,
   setDisableSearchDrawerTransition,
   setLastSettingsTab,
 } = navbarSlice.actions;
@@ -180,5 +200,6 @@ export const selectIsNavigationDrawerOpen = (state: RootState) =>
   state.navbar.isNavigationDrawerOpen;
 export const selectIsSettingsDrawerOpen = (state: RootState) => state.navbar.isSettingsDrawerOpen;
 export const selectIsLanguageDrawerOpen = (state: RootState) => state.navbar.isLanguageDrawerOpen;
+export const selectIsLanguageModalOpen = (state: RootState) => state.navbar.isLanguageDrawerOpen;
 
 export default navbarSlice.reducer;

@@ -564,5 +564,9 @@
   "word-tooltip": "শব্দ টুলটিপ",
   "yes": "হ্যাঁ",
   "page-number": "পৃষ্ঠা {{page}}",
-  "pagination-navigation": "Pagination navigation"
+  "pagination-navigation": "Pagination navigation",
+  "search-languages": "Search languages...",
+  "languages-count": "{{count}} of {{total}} languages",
+  "no-languages-found": "No languages found",
+  "select-language-description": "Select your preferred display language for Quran.com"
 }

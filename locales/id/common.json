@@ -564,5 +564,9 @@
   "word-tooltip": "Tooltip Kata",
   "yes": "Ya",
   "page-number": "Halaman {{page}}",
-  "pagination-navigation": "Pagination navigation"
+  "pagination-navigation": "Pagination navigation",
+  "search-languages": "Search languages...",
+  "languages-count": "{{count}} of {{total}} languages",
+  "no-languages-found": "No languages found",
+  "select-language-description": "Select your preferred display language for Quran.com"
 }
