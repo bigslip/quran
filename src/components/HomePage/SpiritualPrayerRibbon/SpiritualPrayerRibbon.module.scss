@@ -313,6 +313,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1px;
+  max-inline-size: 100%;
 }
 
 .archTitle {
@@ -323,6 +324,10 @@
   letter-spacing: 0.08em;
   line-height: 1.1;
   margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  max-inline-size: 100%;
 }
 
 .archSub {
@@ -331,6 +336,9 @@
   color: var(--color-accent-gold, #B45309);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-inline-size: 100%;
 
   @include theme.dark {
     color: var(--color-accent-gold, #F59E0B);
@@ -438,6 +446,7 @@
   min-block-size: 60px;
   justify-content: flex-end;
   inline-size: 100%;
+  max-inline-size: 100%;
 }
 
 .archDesc {
@@ -448,6 +457,9 @@
   max-inline-size: 160px;
   margin: 0;
   transition: opacity 0.2s ease;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .virtueBox {
@@ -457,6 +469,9 @@
   gap: 2px;
   max-inline-size: 165px;
   animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .virtueText {
@@ -465,6 +480,9 @@
   line-height: 1.35;
   color: var(--color-accent-gold);
   margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 
   @include theme.dark {
     color: var(--color-accent-gold);
@@ -477,6 +495,8 @@
   color: var(--color-text-faded-new);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .footerActions {
@@ -509,11 +529,14 @@
 .virtueTrigger {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 3px;
   font-size: 9.5px;
   font-weight: 600;
-  padding-inline: 6px;
-  padding-block: 2px;
+  padding-inline: 8px;
+  padding-block: 4px;
+  min-block-size: 28px;
+  min-inline-size: 44px;
   border-radius: var(--border-radius-pill);
   background: transparent;
   color: var(--color-text-faded-new);
