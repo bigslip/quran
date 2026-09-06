@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -25,13 +25,20 @@ interface PrayerArchCardProps {
 
 const PrayerArchCard: React.FC<PrayerArchCardProps> = ({ prayer, isStaggered }) => {
   const { t, lang } = useTranslation('home');
+  const [showVirtue, setShowVirtue] = useState(false);
   const isArabic = lang === 'ar';
+
+  const toggleVirtue = useCallback((e: React.MouseEvent | React.KeyboardEvent) => {
+    e.stopPropagation();
+    setShowVirtue((prev) => !prev);
+  }, []);
 
   return (
     <div
       className={classNames(styles.archCardWrapper, {
         [styles.staggered]: isStaggered,
         [styles.isNextPrayer]: prayer.isNext,
+        [styles.showingVirtue]: showVirtue,
       })}
       role="listitem"
     >
@@ -90,19 +97,44 @@ const PrayerArchCard: React.FC<PrayerArchCardProps> = ({ prayer, isStaggered }) 
 
         {/* Bottom: Devotional Description & Countdown */}
         <div className={styles.archFooter}>
-          <p className={styles.archDesc}>
-            {t(`prayer-${prayer.id}-desc`, {
-              defaultValue: prayer.defaultDesc,
-            })}
-          </p>
-          {prayer.isNext && prayer.remaining && (
-            <span className={styles.activeCountdownBadge}>
-              {t('in-time', {
-                time: prayer.remaining,
-                defaultValue: `in ${prayer.remaining}`,
+          {showVirtue ? (
+            <div className={styles.virtueBox}>
+              <p className={styles.virtueText}>
+                &ldquo;{t(`prayer-virtue-${prayer.id}`)}&rdquo;
+              </p>
+              <span className={styles.virtueSource}>
+                [{t(`prayer-virtue-source-${prayer.id}`)}]
+              </span>
+            </div>
+          ) : (
+            <p className={styles.archDesc}>
+              {t(`prayer-${prayer.id}-desc`, {
+                defaultValue: prayer.defaultDesc,
               })}
-            </span>
+            </p>
           )}
+
+          <div className={styles.footerActions}>
+            {prayer.isNext && prayer.remaining && (
+              <span className={styles.activeCountdownBadge}>
+                {t('in-time', {
+                  time: prayer.remaining,
+                  defaultValue: `in ${prayer.remaining}`,
+                })}
+              </span>
+            )}
+
+            <button
+              type="button"
+              className={styles.virtueTrigger}
+              onClick={toggleVirtue}
+              aria-expanded={showVirtue}
+              aria-label={t('virtue-pill', { defaultValue: 'Virtue' })}
+            >
+              <span>✦</span>
+              <span>{showVirtue ? t('common:close', { defaultValue: 'Close' }) : t('virtue-pill', { defaultValue: 'Virtue' })}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

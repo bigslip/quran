@@ -411,8 +411,9 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  min-block-size: 48px;
+  min-block-size: 60px;
   justify-content: flex-end;
+  inline-size: 100%;
 }
 
 .archDesc {
@@ -421,6 +422,45 @@
   line-height: 1.35;
   max-inline-size: 160px;
   margin: 0;
+  transition: opacity 0.2s ease;
+}
+
+.virtueBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-inline-size: 165px;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.virtueText {
+  font-size: 10.5px;
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--color-accent-gold-rich, #B45309);
+  margin: 0;
+
+  @include theme.dark {
+    color: var(--color-accent-gold, #F59E0B);
+  }
+}
+
+.virtueSource {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-text-faded-new, #64748B);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footerActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-block-start: 2px;
+  flex-wrap: wrap;
 }
 
 .activeCountdownBadge {
@@ -437,5 +477,44 @@
   @include theme.dark {
     color: #FBBF24;
     background: rgba(217, 119, 6, 0.2);
+  }
+}
+
+.virtueTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9.5px;
+  font-weight: 600;
+  padding-inline: 6px;
+  padding-block: 2px;
+  border-radius: var(--border-radius-pill);
+  background: transparent;
+  color: var(--color-text-faded-new, #64748B);
+  border: 1px solid var(--color-border-subtle, rgba(217, 119, 6, 0.2));
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--color-accent-gold-rich, #D97706);
+    border-color: var(--color-accent-gold, #F59E0B);
+    background: var(--color-accent-gold-subtle, rgba(217, 119, 6, 0.08));
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
