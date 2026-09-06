@@ -21,10 +21,10 @@
   gap: var(--spacing-medium, 16px);
   padding-inline: var(--spacing-large, 24px);
   padding-block: var(--spacing-small, 12px);
-  background: var(--color-surface-card, rgba(255, 255, 255, 0.92));
+  background: var(--color-surface-card);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border-subtle, rgba(217, 119, 6, 0.22));
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--border-radius-rounded, 16px);
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
   position: relative;
@@ -37,7 +37,7 @@
     inset-inline-start: 0;
     inset-inline-end: 0;
     block-size: 2px;
-    background: linear-gradient(90deg, transparent 0%, var(--color-accent-gold-rich, #D97706) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, var(--color-accent-gold-rich) 50%, transparent 100%);
     opacity: 0.85;
   }
 
@@ -63,13 +63,13 @@
   inline-size: 32px;
   block-size: 32px;
   border-radius: 50%;
-  background: var(--color-accent-gold-subtle, rgba(217, 119, 6, 0.12));
-  color: var(--color-accent-gold-rich, #D97706);
+  background: var(--color-accent-gold-subtle);
+  color: var(--color-accent-gold-rich);
   font-size: 1rem;
   border: 1px solid var(--color-border-subtle);
 
   @include theme.dark {
-    color: var(--color-accent-gold, #F59E0B);
+    color: var(--color-accent-gold);
   }
 }
 
@@ -80,16 +80,16 @@
 }
 
 .hijriDate {
-  font-family: var(--font-family-display, 'Cinzel', serif);
+  font-family: var(--font-family-display);
   font-size: var(--font-size-base, 0.92rem);
   font-weight: 600;
-  color: var(--color-text-default-new, #0F172A);
+  color: var(--color-text-default-new);
   letter-spacing: 0.02em;
 }
 
 .gregorianDate {
   font-size: var(--font-size-xxsmall-px, 11px);
-  color: var(--color-text-faded-new, #64748B);
+  color: var(--color-text-faded-new);
 }
 
 .titleBlock {
@@ -103,16 +103,16 @@
 }
 
 .sanctuaryHeading {
-  font-family: var(--font-family-display, 'Cinzel', serif);
+  font-family: var(--font-family-display);
   font-size: var(--font-size-medium-px, 15px);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-accent-gold-rich, #D97706);
+  color: var(--color-accent-gold-rich);
   margin: 0;
 
   @include theme.dark {
-    color: var(--color-accent-gold, #F59E0B);
+    color: var(--color-accent-gold);
   }
 }
 
@@ -131,14 +131,14 @@
 
 .countdownLabel {
   font-size: 0.82rem;
-  color: var(--color-text-faded-new, #64748B);
+  color: var(--color-text-faded-new);
 
   strong {
-    color: var(--color-accent-gold-rich, #D97706);
+    color: var(--color-accent-gold-rich);
     font-weight: 700;
 
     @include theme.dark {
-      color: var(--color-accent-gold, #F59E0B);
+      color: var(--color-accent-gold);
     }
   }
 }
@@ -148,13 +148,13 @@
   font-weight: 600;
   padding-inline: 8px;
   padding-block: 2px;
-  background: var(--color-accent-gold-subtle, rgba(217, 119, 6, 0.1));
-  color: var(--color-accent-gold-rich, #D97706);
+  background: var(--color-accent-gold-subtle);
+  color: var(--color-accent-gold-rich);
   border-radius: var(--border-radius-pill);
   border: 1px solid var(--color-border-subtle);
 
   @include theme.dark {
-    color: var(--color-accent-gold, #F59E0B);
+    color: var(--color-accent-gold);
   }
 }
 
@@ -244,23 +244,27 @@
   inline-size: 100%;
   block-size: 100%;
   z-index: 0;
-  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.06));
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.05));
+
+  @include theme.dark {
+    filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.5));
+  }
 }
 
 .archPath {
-  fill: #FDF6E2;
-  stroke: rgba(217, 119, 6, 0.3);
+  fill: var(--color-surface-card);
+  stroke: var(--color-border-subtle);
   stroke-width: 1.5px;
   transition: all 0.3s ease;
 
   @include theme.dark {
-    fill: rgba(18, 24, 38, 0.92);
-    stroke: rgba(217, 119, 6, 0.35);
+    fill: var(--color-surface-card);
+    stroke: var(--color-border-subtle);
   }
 
   @include theme.sepia {
-    fill: rgba(244, 235, 217, 0.95);
-    stroke: rgba(180, 83, 9, 0.35);
+    fill: var(--color-surface-card);
+    stroke: var(--color-border-subtle);
   }
 }
 
@@ -341,53 +345,59 @@
   inline-size: 96px;
   block-size: 96px;
   border-radius: 50%;
-  border: 3px solid var(--color-accent-gold-rich, #D97706);
-  background: radial-gradient(circle at 50% 30%, #FFFBEB 0%, #FEF3C7 100%);
+  border: 2.5px solid var(--color-accent-gold-rich);
+  background: radial-gradient(circle at 50% 30%, #FFFDF5 0%, #FEF3C7 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.16), inset 0 2px 4px rgba(255, 255, 255, 0.8);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   @include theme.dark {
-    border-color: var(--color-accent-gold, #F59E0B);
-    background: radial-gradient(circle at 50% 30%, rgba(217, 119, 6, 0.25) 0%, rgba(14, 20, 32, 0.95) 100%);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(217, 119, 6, 0.4);
+    border-color: var(--color-accent-gold);
+    background: radial-gradient(circle at 50% 30%, rgba(251, 191, 36, 0.18) 0%, rgba(10, 16, 30, 0.95) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(251, 191, 36, 0.3);
   }
 
   @include theme.sepia {
-    background: radial-gradient(circle at 50% 30%, #FBF5E8 0%, #E8D8B8 100%);
+    border-color: var(--color-accent-gold-rich);
+    background: radial-gradient(circle at 50% 30%, #FAF5EA 0%, #E8D8B8 100%);
+    box-shadow: 0 4px 12px rgba(100, 80, 50, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.6);
   }
 }
 
 .medallionSparkle {
   font-size: 14px;
-  color: var(--color-accent-gold-rich, #D97706);
+  color: var(--color-accent-gold-rich);
   line-height: 1;
 
   @include theme.dark {
-    color: var(--color-accent-gold, #F59E0B);
+    color: var(--color-accent-gold);
   }
 }
 
 .medallionTime {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 800;
-  color: #92400E;
+  color: #78350F;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
 
   @include theme.dark {
-    color: #FDF6E2;
+    color: var(--color-text-primary);
+  }
+
+  @include theme.sepia {
+    color: var(--color-text-default-new);
   }
 }
 
 .nextPillBadge {
   position: absolute;
   inset-block-end: -8px;
-  background: #B45309;
+  background: var(--color-accent-gold);
   color: #ffffff;
   font-size: 9px;
   font-weight: 800;
@@ -400,9 +410,10 @@
   border: 1px solid rgba(255, 255, 255, 0.4);
 
   @include theme.dark {
-    background: #D97706;
+    background: var(--color-accent-gold-rich);
     color: #070A13;
     font-weight: 900;
+    box-shadow: 0 0 12px var(--color-accent-gold-subtle);
   }
 }
 
@@ -418,7 +429,8 @@
 
 .archDesc {
   font-size: 11px;
-  color: var(--color-text-default-new, #475569);
+  color: var(--color-text-default-new);
+  opacity: 0.85;
   line-height: 1.35;
   max-inline-size: 160px;
   margin: 0;
@@ -438,18 +450,18 @@
   font-size: 10.5px;
   font-style: italic;
   line-height: 1.35;
-  color: var(--color-accent-gold-rich, #B45309);
+  color: var(--color-accent-gold);
   margin: 0;
 
   @include theme.dark {
-    color: var(--color-accent-gold, #F59E0B);
+    color: var(--color-accent-gold);
   }
 }
 
 .virtueSource {
   font-size: 9px;
   font-weight: 700;
-  color: var(--color-text-faded-new, #64748B);
+  color: var(--color-text-faded-new);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -466,17 +478,18 @@
 .activeCountdownBadge {
   font-size: 10px;
   font-weight: 700;
-  color: #B45309;
-  background: rgba(217, 119, 6, 0.12);
+  color: var(--color-accent-gold);
+  background: var(--color-accent-gold-subtle);
   padding-inline: 8px;
   padding-block: 2px;
   border-radius: var(--border-radius-pill);
-  border: 1px solid rgba(217, 119, 6, 0.25);
+  border: 1px solid var(--color-border-subtle);
   display: inline-block;
 
   @include theme.dark {
-    color: #FBBF24;
-    background: rgba(217, 119, 6, 0.2);
+    color: var(--color-accent-gold);
+    background: var(--color-accent-gold-subtle);
+    border-color: var(--color-border-subtle);
   }
 }
 
@@ -490,15 +503,15 @@
   padding-block: 2px;
   border-radius: var(--border-radius-pill);
   background: transparent;
-  color: var(--color-text-faded-new, #64748B);
-  border: 1px solid var(--color-border-subtle, rgba(217, 119, 6, 0.2));
+  color: var(--color-text-faded-new);
+  border: 1px solid var(--color-border-subtle);
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    color: var(--color-accent-gold-rich, #D97706);
-    border-color: var(--color-accent-gold, #F59E0B);
-    background: var(--color-accent-gold-subtle, rgba(217, 119, 6, 0.08));
+    color: var(--color-accent-gold-rich);
+    border-color: var(--color-accent-gold);
+    background: var(--color-accent-gold-subtle);
     transform: translateY(-1px);
   }
 
