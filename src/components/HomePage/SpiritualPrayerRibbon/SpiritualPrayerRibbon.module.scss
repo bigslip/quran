@@ -213,27 +213,40 @@
     }
 
     .archPath {
-      stroke: var(--color-accent-gold, #F59E0B);
+      stroke: var(--color-accent-gold-rich);
       stroke-width: 2px;
-      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.35));
+      filter: drop-shadow(0 0 10px var(--color-accent-gold-subtle));
     }
 
     .goldMedallion {
-      transform: scale(1.04);
-      box-shadow: 0 0 20px rgba(217, 119, 6, 0.35);
+      transform: scale(1.05);
+      border-color: var(--color-accent-gold-rich);
+      box-shadow: 0 0 0 4px var(--color-accent-gold-subtle), 0 6px 18px rgba(15, 23, 42, 0.08);
     }
   }
 
   &.isNextPrayer {
     .archPath {
-      stroke: var(--color-accent-gold, #F59E0B);
-      stroke-width: 2.2px;
-      filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.45));
+      stroke: var(--color-accent-gold-rich);
+      stroke-width: 2px;
+      filter: drop-shadow(0 0 14px var(--color-accent-gold-subtle));
     }
 
     .goldMedallion {
-      border-color: var(--color-accent-gold, #F59E0B);
-      box-shadow: 0 0 22px rgba(245, 158, 11, 0.45);
+      border-color: var(--color-accent-gold-rich);
+      box-shadow: 0 0 0 4px var(--color-accent-gold-subtle), 0 6px 20px var(--color-accent-gold-subtle);
+      background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF8 100%);
+
+      @include theme.dark {
+        background: radial-gradient(circle at 50% 30%, rgba(30, 45, 80, 0.95) 0%, rgba(10, 16, 30, 0.98) 100%);
+        border-color: var(--color-accent-gold);
+        box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2), 0 0 20px rgba(251, 191, 36, 0.35);
+      }
+
+      @include theme.sepia {
+        background: linear-gradient(145deg, #FAF4E8 0%, #EFE4D0 100%);
+        border-color: var(--color-accent-gold-rich);
+      }
     }
   }
 }
@@ -342,34 +355,35 @@
 }
 
 .goldMedallion {
-  inline-size: 96px;
-  block-size: 96px;
+  inline-size: 92px;
+  block-size: 92px;
   border-radius: 50%;
-  border: 2.5px solid var(--color-accent-gold-rich);
-  background: radial-gradient(circle at 50% 30%, #FFFDF5 0%, #FEF3C7 100%);
+  border: 1.5px solid var(--color-border-subtle);
+  background: linear-gradient(145deg, #FFFFFF 0%, #FAF8F5 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.16), inset 0 2px 4px rgba(255, 255, 255, 0.8);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.05), 0 3px 10px rgba(15, 23, 42, 0.04);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 
   @include theme.dark {
-    border-color: var(--color-accent-gold);
-    background: radial-gradient(circle at 50% 30%, rgba(251, 191, 36, 0.18) 0%, rgba(10, 16, 30, 0.95) 100%);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(251, 191, 36, 0.3);
+    border-color: rgba(251, 191, 36, 0.25);
+    background: radial-gradient(circle at 50% 30%, rgba(22, 34, 60, 0.95) 0%, rgba(10, 16, 30, 0.98) 100%);
+    box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.06), 0 4px 20px rgba(0, 0, 0, 0.5);
   }
 
   @include theme.sepia {
-    border-color: var(--color-accent-gold-rich);
-    background: radial-gradient(circle at 50% 30%, #FAF5EA 0%, #E8D8B8 100%);
-    box-shadow: 0 4px 12px rgba(100, 80, 50, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+    border-color: var(--color-border-subtle);
+    background: linear-gradient(145deg, #FAF4E8 0%, #EFE4D0 100%);
+    box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.05), 0 3px 8px rgba(100, 80, 50, 0.08);
   }
 }
 
 .medallionSparkle {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--color-accent-gold-rich);
   line-height: 1;
 
@@ -379,11 +393,12 @@
 }
 
 .medallionTime {
-  font-size: 13.5px;
+  font-family: var(--font-family-display);
+  font-size: 14.5px;
   font-weight: 800;
-  color: #78350F;
+  color: var(--color-text-default-new);
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 
   @include theme.dark {
     color: var(--color-text-primary);
@@ -397,7 +412,7 @@
 .nextPillBadge {
   position: absolute;
   inset-block-end: -8px;
-  background: var(--color-accent-gold);
+  background: var(--color-accent-gold-rich);
   color: #ffffff;
   font-size: 9px;
   font-weight: 800;
@@ -406,8 +421,8 @@
   border-radius: var(--border-radius-pill);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 
   @include theme.dark {
     background: var(--color-accent-gold-rich);
