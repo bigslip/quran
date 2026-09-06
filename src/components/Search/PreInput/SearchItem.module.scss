@@ -4,9 +4,14 @@
   align-items: center;
   text-decoration: none;
   box-sizing: border-box;
-  padding-inline: var(--spacing-xxsmall);
+  padding-inline: var(--spacing-small);
   padding-block: var(--spacing-xsmall);
+  border-radius: var(--border-radius-rounded);
+  transition: background-color var(--transition-fast) ease;
+
   &:hover {
+    background-color: var(--color-background-alternative-faded);
+
     path {
       fill: var(--color-text-default);
     }

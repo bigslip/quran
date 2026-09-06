@@ -163,28 +163,30 @@ const LanguageModal: React.FC = () => {
 
           {/* Search Filter Bar */}
           <div className={styles.searchContainer}>
-            <div className={styles.searchIcon}>
-              <IconSearch />
+            <div className={styles.searchBox}>
+              <div className={styles.searchIcon}>
+                <IconSearch />
+              </div>
+              <input
+                ref={searchInputRef}
+                className={styles.searchInput}
+                type="search"
+                placeholder={t('search-languages', { defaultValue: 'Search languages...' })}
+                value={searchFilter}
+                onChange={(e) => setSearchFilter(e.target.value)}
+                aria-label={t('search-languages', { defaultValue: 'Search languages...' })}
+              />
+              {searchFilter && (
+                <button
+                  type="button"
+                  className={styles.clearButton}
+                  onClick={() => setSearchFilter('')}
+                  aria-label={t('input.clear')}
+                >
+                  {t('input.clear')}
+                </button>
+              )}
             </div>
-            <input
-              ref={searchInputRef}
-              className={styles.searchInput}
-              type="search"
-              placeholder={t('search-languages', { defaultValue: 'Search languages...' })}
-              value={searchFilter}
-              onChange={(e) => setSearchFilter(e.target.value)}
-              aria-label={t('search-languages', { defaultValue: 'Search languages...' })}
-            />
-            {searchFilter && (
-              <button
-                type="button"
-                className={styles.clearButton}
-                onClick={() => setSearchFilter('')}
-                aria-label={t('input.clear')}
-              >
-                {t('input.clear')}
-              </button>
-            )}
           </div>
 
           {/* Language Cards Body */}
