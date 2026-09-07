@@ -40,17 +40,17 @@ const PetalSurahCard: React.FC<PetalSurahCardProps> = ({ chapter, isPreload = fa
       data-testid={`surah-petal-card-${chapter.id}`}
     >
       <div className={styles.petalCard}>
-        {/* 8-Lobed Scalloped Petal SVG Silhouette */}
+        {/* Authentic Islamic Diamond 8-Scalloped Rosette SVG */}
         <svg className={styles.petalSvgBg} viewBox="0 0 200 200" aria-hidden="true">
           <defs>
             <linearGradient id={`petalGrad-${chapter.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#fffef5" />
-              <stop offset="55%" stopColor="#fef3c7" />
-              <stop offset="100%" stopColor="#fde68a" />
+              <stop offset="0%" stopColor="#fffef7" />
+              <stop offset="60%" stopColor="#fef9c3" />
+              <stop offset="100%" stopColor="#fef08a" />
             </linearGradient>
           </defs>
           <path
-            d="M 100,6 C 110,20 122,26 136,26 C 150,26 160,36 160,50 C 174,50 180,62 188,72 C 196,82 196,96 196,100 C 196,104 196,118 188,128 C 180,138 174,150 160,150 C 160,164 150,174 136,174 C 122,174 110,180 100,194 C 90,180 78,174 64,174 C 50,174 40,164 40,150 C 26,150 20,138 12,128 C 4,118 4,104 4,100 C 4,96 4,82 12,72 C 20,62 26,50 40,50 C 40,36 50,26 64,26 C 78,26 90,20 100,6 Z"
+            d="M 100,4 C 108,16 118,22 128,18 C 138,14 146,24 144,36 C 142,48 148,58 160,62 C 172,66 174,78 168,88 C 180,92 192,94 196,100 C 192,106 180,108 168,112 C 174,122 172,134 160,138 C 148,142 142,152 144,164 C 146,176 138,186 128,182 C 118,178 108,184 100,196 C 92,184 82,178 72,182 C 62,186 54,176 56,164 C 58,152 52,142 40,138 C 28,134 26,122 32,112 C 20,108 8,106 4,100 C 8,94 20,92 32,88 C 26,78 28,66 40,62 C 52,58 58,48 56,36 C 54,24 62,14 72,18 C 82,22 92,16 100,4 Z"
             fill={`url(#petalGrad-${chapter.id})`}
             className={styles.petalPath}
           />

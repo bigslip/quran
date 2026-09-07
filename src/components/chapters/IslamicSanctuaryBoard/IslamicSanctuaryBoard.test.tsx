@@ -52,7 +52,7 @@ describe('IslamicSanctuaryBoard', () => {
     expect(screen.getByTestId('sanctuary-bottom-crest')).toBeInTheDocument();
   });
 
-  it('renders chapters in honeycomb rows alternating 4 then 3', () => {
+  it('renders chapters in honeycomb rows alternating 3 then 4', () => {
     render(<IslamicSanctuaryBoard chapters={mockChapters} />);
     const row0 = screen.getByTestId('honeycomb-row-0');
     const row1 = screen.getByTestId('honeycomb-row-1');
@@ -60,9 +60,9 @@ describe('IslamicSanctuaryBoard', () => {
     expect(row0).toBeInTheDocument();
     expect(row1).toBeInTheDocument();
 
-    // Row 0 has 4 cards, Row 1 has 3 cards
-    expect(row0.querySelectorAll('[data-testid^="surah-petal-card-"]')).toHaveLength(4);
-    expect(row1.querySelectorAll('[data-testid^="surah-petal-card-"]')).toHaveLength(3);
+    // Row 0 has 3 cards, Row 1 has 4 cards
+    expect(row0.querySelectorAll('[data-testid^="surah-petal-card-"]')).toHaveLength(3);
+    expect(row1.querySelectorAll('[data-testid^="surah-petal-card-"]')).toHaveLength(4);
   });
 
   it('renders all petal cards for each chapter', () => {
