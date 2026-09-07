@@ -91,6 +91,13 @@
   flex-wrap: nowrap;
   content-visibility: auto;
   contain-intrinsic-size: auto 170px;
+  position: relative;
+  z-index: 1;
+
+  &:hover,
+  &:focus-within {
+    z-index: 10;
+  }
 
   &:first-child {
     margin-block-start: 0;

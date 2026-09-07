@@ -8,6 +8,13 @@
   outline: none;
   min-inline-size: 44px;
   min-block-size: 44px;
+  position: relative;
+  z-index: 1;
+
+  &:hover,
+  &:focus-visible {
+    z-index: 15;
+  }
 
   &:focus-visible {
     outline: 2.5px solid var(--color-accent-gold, #f59e0b);
@@ -38,14 +45,14 @@
 
   @media (hover: hover) {
     &:hover {
-      transform: translateY(-6px) scale(1.04);
-      filter: drop-shadow(0 20px 36px rgba(0, 0, 0, 0.5))
-        drop-shadow(0 4px 12px rgba(219, 158, 48, 0.35));
+      transform: scale(1.06);
+      filter: drop-shadow(0 20px 36px rgba(0, 0, 0, 0.55))
+        drop-shadow(0 0 20px rgba(219, 158, 48, 0.45));
     }
   }
 
   &:active {
-    transform: translateY(-1px) scale(0.98);
+    transform: scale(0.98);
     transition-duration: 80ms;
   }
 
