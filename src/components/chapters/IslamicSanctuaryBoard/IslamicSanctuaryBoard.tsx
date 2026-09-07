@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
+import classNames from 'classnames';
 
 import styles from './IslamicSanctuaryBoard.module.scss';
 import PetalSurahCard from '../PetalSurahCard/PetalSurahCard';
@@ -147,21 +148,28 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({
       {/* Main Sanctuary Body with Honeycomb Tapestry */}
       <div className={styles.boardBody}>
         <div className={styles.honeycombGrid}>
-          {rows.map((row, rowIndex) => (
-            <div
-              key={`row-${rowIndex}`}
-              className={styles.honeycombRow}
-              data-testid={`honeycomb-row-${rowIndex}`}
-            >
-              {row.map((chapter) => (
-                <PetalSurahCard
-                  key={chapter.id}
-                  chapter={chapter}
-                  isPreload={mostVisitedChapters[Number(chapter.id)] === true}
-                />
-              ))}
-            </div>
-          ))}
+          {rows.map((row, rowIndex) => {
+            const isAlignedWithPrevious =
+              rowIndex > 0 && row.length % 2 === rows[rowIndex - 1].length % 2;
+
+            return (
+              <div
+                key={`row-${rowIndex}`}
+                className={classNames(styles.honeycombRow, {
+                  [styles.alignedRow]: isAlignedWithPrevious,
+                })}
+                data-testid={`honeycomb-row-${rowIndex}`}
+              >
+                {row.map((chapter) => (
+                  <PetalSurahCard
+                    key={chapter.id}
+                    chapter={chapter}
+                    isPreload={mostVisitedChapters[Number(chapter.id)] === true}
+                  />
+                ))}
+              </div>
+            );
+          })}
         </div>
       </div>
 
