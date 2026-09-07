@@ -8,7 +8,8 @@
   align-items: center;
   margin-block-start: var(--spacing-medium-px);
   margin-block-end: var(--spacing-large-px);
-  filter: drop-shadow(0 24px 48px rgba(0, 75, 57, 0.35));
+  filter: drop-shadow(0 24px 48px var(--color-sanctuary-shadow, rgba(0, 75, 57, 0.25)));
+  transition: filter var(--transition-regular) ease;
 }
 
 .topShapeWrapper {
@@ -24,7 +25,8 @@
   max-inline-size: 90vw;
   block-size: 123px;
   display: block;
-  fill: #004b39;
+  fill: var(--color-sanctuary-arch-fill, #004b39);
+  transition: fill var(--transition-regular) ease;
 
   @include breakpoints.smallerThanTablet {
     inline-size: 280px;
@@ -34,7 +36,7 @@
 
 .boardBody {
   inline-size: 100%;
-  background-color: #004b39;
+  background-color: var(--color-sanctuary-bg, #004b39);
   background-image: url('/images/islamic-tapestry-bg.png');
   background-repeat: repeat;
   background-size: auto;
@@ -46,6 +48,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: background-color var(--transition-regular) ease;
 
   @include breakpoints.smallerThanTablet {
     border-radius: 40px;
@@ -66,7 +69,8 @@
   inline-size: 83px;
   block-size: 38px;
   display: block;
-  fill: #004b39;
+  fill: var(--color-sanctuary-arch-fill, #004b39);
+  transition: fill var(--transition-regular) ease;
 
   @include breakpoints.smallerThanTablet {
     inline-size: 50px;

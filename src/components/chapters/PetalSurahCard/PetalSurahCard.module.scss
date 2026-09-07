@@ -58,8 +58,8 @@
   inline-size: 100%;
   block-size: 100%;
   z-index: 1;
-  fill: #fff5d7;
-  transition: fill var(--transition-fast) ease;
+  fill: var(--color-sanctuary-petal-bg, #FFF9EA);
+  transition: fill var(--transition-regular) ease;
 }
 
 .petalSvgHover {
@@ -69,12 +69,13 @@
   inline-size: 100%;
   block-size: 100%;
   z-index: 1;
-  fill: #db9e30;
+  fill: var(--color-sanctuary-petal-hover-bg, #D97706);
   transform: scale(0.5);
   opacity: 0;
   pointer-events: none;
   transition: transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    opacity 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    fill var(--transition-regular) ease;
 }
 
 .petalCard:hover {
@@ -84,40 +85,39 @@
   }
 
   .surahNumberBadge {
-    background-color: #ffffff;
-    color: #004b39;
-    border-color: #ffffff;
+    background-color: var(--color-sanctuary-petal-hover-text, #ffffff);
+    color: var(--color-sanctuary-petal-num-bg, #004b39);
+    border-color: var(--color-sanctuary-petal-hover-text, #ffffff);
 
     .badgeNumberText {
-      color: #004b39;
+      color: var(--color-sanctuary-petal-num-bg, #004b39);
     }
   }
 
   .cardContent {
-    color: #ffffff;
+    color: var(--color-sanctuary-petal-hover-text, #ffffff);
   }
 
   .arabicTitle svg,
   .arabicTitle span {
-    color: #ffffff;
-    fill: #ffffff;
+    color: var(--color-sanctuary-petal-hover-text, #ffffff);
+    fill: var(--color-sanctuary-petal-hover-text, #ffffff);
   }
 
   .transliteratedTitle {
-    color: #ffffff;
+    color: var(--color-sanctuary-petal-hover-text, #ffffff);
   }
 
   .metaRow {
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--color-sanctuary-petal-hover-text, rgba(255, 255, 255, 0.95));
   }
 
   .ayahTag,
   .revelationTag {
     background: rgba(255, 255, 255, 0.22);
-    color: #ffffff;
+    color: var(--color-sanctuary-petal-hover-text, #ffffff);
   }
 }
-
 
 .cardContent {
   position: relative;
@@ -138,8 +138,8 @@
 .surahNumberBadge {
   inline-size: 26px;
   block-size: 26px;
-  background-color: #004b39;
-  color: #fef08a;
+  background-color: var(--color-sanctuary-petal-num-bg, #004b39);
+  color: var(--color-sanctuary-petal-num-text, #fef08a);
   font-size: 11px;
   font-weight: var(--font-weight-bold);
   border-radius: var(--border-radius-circle);
@@ -147,15 +147,18 @@
   align-items: center;
   justify-content: center;
   margin-block-end: 2px;
-  border: 1.5px solid #f59e0b;
+  border: 1.5px solid var(--color-sanctuary-petal-num-border, #f59e0b);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
   line-height: 1;
+  transition: background-color var(--transition-regular) ease,
+    border-color var(--transition-regular) ease;
 
   .badgeNumberText {
-    color: #fef08a;
+    color: var(--color-sanctuary-petal-num-text, #fef08a);
     font-size: 11px;
     font-weight: var(--font-weight-bold);
     line-height: 1;
+    transition: color var(--transition-regular) ease;
   }
 
   @include breakpoints.smallerThanTablet {
@@ -174,15 +177,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #004b39;
+  color: var(--color-sanctuary-petal-title-ar, #004b39);
   line-height: 1;
   margin-block: 2px;
 
   svg,
   span {
-    color: #004b39;
-    fill: #004b39;
-    transition: color var(--transition-fast) ease, fill var(--transition-fast) ease;
+    color: var(--color-sanctuary-petal-title-ar, #004b39);
+    fill: var(--color-sanctuary-petal-title-ar, #004b39);
+    transition: color var(--transition-regular) ease, fill var(--transition-regular) ease;
   }
 
   @include breakpoints.smallerThanTablet {
@@ -194,14 +197,14 @@
   font-family: var(--font-family-display, 'Cinzel', serif);
   font-size: 12px;
   font-weight: var(--font-weight-bold);
-  color: #1e293b;
+  color: var(--color-sanctuary-petal-title-en, #1e293b);
   letter-spacing: 0.04em;
   margin-block-start: 2px;
   white-space: nowrap;
   max-inline-size: 130px;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: color var(--transition-fast) ease;
+  transition: color var(--transition-regular) ease;
 
   @include breakpoints.smallerThanTablet {
     font-size: 10.5px;
@@ -213,12 +216,12 @@
 .metaRow {
   font-size: 10px;
   font-weight: var(--font-weight-semibold);
-  color: #78350f;
+  color: var(--color-sanctuary-petal-meta, #78350f);
   margin-block-start: 4px;
   display: flex;
   align-items: center;
   gap: 4px;
-  transition: color var(--transition-fast) ease;
+  transition: color var(--transition-regular) ease;
 
   @include breakpoints.smallerThanTablet {
     font-size: 8.5px;
@@ -229,12 +232,12 @@
 
 .ayahTag,
 .revelationTag {
-  background: rgba(217, 119, 6, 0.14);
+  background: var(--color-sanctuary-petal-tag-makkah-bg, rgba(217, 119, 6, 0.14));
   padding-inline: 5px;
   padding-block: 1px;
   border-radius: 4px;
   line-height: 1.2;
-  transition: background var(--transition-fast) ease, color var(--transition-fast) ease;
+  transition: background var(--transition-regular) ease, color var(--transition-regular) ease;
 
   @include breakpoints.smallerThanTablet {
     padding-inline: 4px;
@@ -243,11 +246,11 @@
 }
 
 .makkah {
-  color: #b45309;
+  color: var(--color-sanctuary-petal-tag-makkah, #b45309);
 }
 
 .madinah {
-  color: #047857;
-  background: rgba(4, 120, 87, 0.14);
+  color: var(--color-sanctuary-petal-tag-madinah, #047857);
+  background: var(--color-sanctuary-petal-tag-madinah-bg, rgba(4, 120, 87, 0.14));
 }
 
