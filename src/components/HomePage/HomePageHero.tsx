@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
 import useTranslation from 'next-translate/useTranslation';
 
 import NavigationButton from './HeroButtons/NavigationButton';
@@ -11,7 +10,6 @@ import styles from './HomePageHero.module.scss';
 
 import Link from '@/dls/Link/Link';
 import useHasMounted from '@/hooks/useHasMounted';
-import Background from '@/icons/background.svg';
 import Logo from '@/icons/logo_main.svg';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getTimeOfDayPeriod, isFriday, isNightTime } from '@/utils/spiritualTime';
@@ -71,7 +69,6 @@ const HomePageHero: React.FC = () => {
       return {
         title: t('greeting', { defaultValue: 'Assalamu Alaikum' }),
         subtitle: t('hero-tagline', { defaultValue: 'Read · Recite · Reflect' }),
-        auraClass: styles.morningAura,
       };
     }
     if (isFridayToday) {
@@ -80,7 +77,6 @@ const HomePageHero: React.FC = () => {
         subtitle: t('greeting-sub-friday', {
           defaultValue: 'Read Surah Al-Kahf for light between Fridays',
         }),
-        auraClass: styles.fridayAura,
       };
     }
     const period = getTimeOfDayPeriod();
@@ -91,7 +87,6 @@ const HomePageHero: React.FC = () => {
           subtitle: t('greeting-sub-morning', {
             defaultValue: 'Begin your day with the divine light of the Quran',
           }),
-          auraClass: styles.morningAura,
         };
       case 'afternoon':
         return {
@@ -99,7 +94,6 @@ const HomePageHero: React.FC = () => {
           subtitle: t('greeting-sub-afternoon', {
             defaultValue: 'A pause for remembrance amidst the day',
           }),
-          auraClass: styles.afternoonAura,
         };
       case 'evening':
         return {
@@ -107,7 +101,6 @@ const HomePageHero: React.FC = () => {
           subtitle: t('greeting-sub-evening', {
             defaultValue: 'Serenity and reflection as dusk settles',
           }),
-          auraClass: styles.eveningAura,
         };
       case 'night':
       default:
@@ -116,7 +109,6 @@ const HomePageHero: React.FC = () => {
           subtitle: t('greeting-sub-night', {
             defaultValue: 'Peace and stillness in the words of Allah',
           }),
-          auraClass: styles.nightAura,
         };
     }
   }, [hasMounted, isFridayToday, t]);
@@ -155,21 +147,14 @@ const HomePageHero: React.FC = () => {
   );
 
   return (
-    <div className={classNames(styles.outerContainer, greetingInfo.auraClass)}>
-      <Head>
-        <link rel="preload" as="image" href="/images/background.png" />
-      </Head>
-      <div className={styles.backgroundImage}>
-        <Background />
-      </div>
-      <div>
-        <div className={styles.innerContainer}>
-          <div className={styles.greetingCapsule}>
-            <span className={styles.greetingBadge}>
-              <span className={styles.greetingPulse} aria-hidden="true" />
-              <span className={styles.greetingText}>{greetingInfo.title}</span>
-            </span>
-          </div>
+    <div className={styles.outerContainer}>
+      <div className={styles.innerContainer}>
+        <div className={styles.greetingCapsule}>
+          <span className={styles.greetingBadge}>
+            <span className={styles.greetingPulse} aria-hidden="true" />
+            <span className={styles.greetingText}>{greetingInfo.title}</span>
+          </span>
+        </div>
           <div className={styles.logoContainer}>
             <Logo />
           </div>
@@ -214,7 +199,6 @@ const HomePageHero: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 export default React.memo(HomePageHero);
