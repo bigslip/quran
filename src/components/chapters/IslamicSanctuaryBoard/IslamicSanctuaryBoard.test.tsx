@@ -37,7 +37,7 @@ const createMockChapter = (id: number): Chapter => ({
   slug: `surah-${id}`,
 });
 
-const mockChapters: Chapter[] = Array.from({ length: 7 }, (_, i) => createMockChapter(i + 1));
+const mockChapters: Chapter[] = Array.from({ length: 13 }, (_, i) => createMockChapter(i + 1));
 
 describe('IslamicSanctuaryBoard', () => {
   afterEach(() => {
@@ -52,7 +52,8 @@ describe('IslamicSanctuaryBoard', () => {
     expect(screen.getByTestId('sanctuary-bottom-crest')).toBeInTheDocument();
   });
 
-  it('renders chapters in honeycomb rows alternating 3 then 4', () => {
+  it('renders chapters in honeycomb rows alternating 6 then 7 on desktop', () => {
+    window.innerWidth = 1440;
     render(<IslamicSanctuaryBoard chapters={mockChapters} />);
     const row0 = screen.getByTestId('honeycomb-row-0');
     const row1 = screen.getByTestId('honeycomb-row-1');
@@ -60,9 +61,9 @@ describe('IslamicSanctuaryBoard', () => {
     expect(row0).toBeInTheDocument();
     expect(row1).toBeInTheDocument();
 
-    // Row 0 has 3 cards, Row 1 has 4 cards
-    expect(row0.querySelectorAll('[data-testid^="surah-petal-card-"]')).toHaveLength(3);
-    expect(row1.querySelectorAll('[data-testid^="surah-petal-card-"]')).toHaveLength(4);
+    // Row 0 has 6 cards, Row 1 has 7 cards
+    expect(row0.querySelectorAll('[data-testid^="surah-petal-card-"]')).toHaveLength(6);
+    expect(row1.querySelectorAll('[data-testid^="surah-petal-card-"]')).toHaveLength(7);
   });
 
   it('renders all petal cards for each chapter', () => {

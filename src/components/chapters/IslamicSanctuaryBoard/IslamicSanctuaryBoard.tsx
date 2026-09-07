@@ -85,13 +85,14 @@ const BOTTOM_ARCH_NOTCH = (
   </div>
 );
 
-const SSR_DEFAULT_PATTERN = [3, 4];
+const SSR_DEFAULT_PATTERN = [6, 7];
 
 const getHoneycombPattern = (): number[] => {
   if (typeof window === 'undefined') return SSR_DEFAULT_PATTERN;
   if (window.innerWidth < 640) return [1, 2];
-  if (window.innerWidth < 1024) return [3, 2];
-  return [3, 4];
+  if (window.innerWidth < 1024) return [3, 4];
+  if (window.innerWidth < 1280) return [4, 5];
+  return [6, 7];
 };
 
 const IslamicSanctuaryBoard: React.FC<Props> = ({
@@ -100,7 +101,6 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({
 }) => {
   // Always initialize to SSR_DEFAULT_PATTERN to prevent SSR/client hydration mismatch (rendering-hydration-no-flicker)
   const [pattern, setPattern] = useState<number[]>(SSR_DEFAULT_PATTERN);
-
 
   // Use matchMedia queries when available, with passive resize listener fallback (client-event-listeners)
   useEffect(() => {
@@ -115,13 +115,19 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({
     if (typeof window.matchMedia === 'function') {
       const mediaMobile = window.matchMedia('(max-width: 639px)');
       const mediaTablet = window.matchMedia('(min-width: 640px) and (max-width: 1023px)');
+      const mediaDesktop = window.matchMedia('(min-width: 1024px) and (max-width: 1279px)');
+      const mediaWide = window.matchMedia('(min-width: 1280px)');
 
       mediaMobile.addEventListener?.('change', updatePattern);
       mediaTablet.addEventListener?.('change', updatePattern);
+      mediaDesktop.addEventListener?.('change', updatePattern);
+      mediaWide.addEventListener?.('change', updatePattern);
 
       return () => {
         mediaMobile.removeEventListener?.('change', updatePattern);
         mediaTablet.removeEventListener?.('change', updatePattern);
+        mediaDesktop.removeEventListener?.('change', updatePattern);
+        mediaWide.removeEventListener?.('change', updatePattern);
       };
     }
 

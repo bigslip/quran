@@ -86,26 +86,32 @@
 .honeycombRow {
   display: flex;
   justify-content: center;
-  gap: 48px;
-  margin-block-start: -20px;
+  gap: 20px;
+  margin-block-start: -16px;
   flex-wrap: nowrap;
   content-visibility: auto;
-  contain-intrinsic-size: auto 240px;
+  contain-intrinsic-size: auto 170px;
 
   &:first-child {
     margin-block-start: 0;
   }
 
+  @media (max-width: 1279px) and (min-width: 1024px) {
+    gap: 24px;
+    margin-block-start: -16px;
+    contain-intrinsic-size: auto 180px;
+  }
+
   @media (max-width: 1023px) and (min-width: 640px) {
-    gap: 32px;
-    margin-block-start: -12px;
-    contain-intrinsic-size: auto 200px;
+    gap: 20px;
+    margin-block-start: -14px;
+    contain-intrinsic-size: auto 175px;
   }
 
   @include breakpoints.smallerThanTablet {
     gap: 16px;
-    margin-block-start: -6px;
-    contain-intrinsic-size: auto 170px;
+    margin-block-start: -8px;
+    contain-intrinsic-size: auto 155px;
   }
 }
 
