@@ -10,12 +10,18 @@
   filter: drop-shadow(0 20px 45px rgba(10, 82, 64, 0.35));
 }
 
+.topShapeWrapper {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+  margin-block-end: -1px;
+}
+
 .topArchSvg {
   inline-size: 100%;
   block-size: 240px;
   display: block;
   fill: #0a5240;
-  margin-block-end: -1px;
 
   @include breakpoints.smallerThanTablet {
     block-size: 130px;
@@ -30,25 +36,31 @@
   background-size: 100% 100%, 28px 28px;
   padding-inline: var(--spacing-large-px);
   padding-block: 0 var(--spacing-large-px);
-  margin-block-start: -120px;
+  margin-block-start: -110px;
   position: relative;
   z-index: 2;
 
   @include breakpoints.smallerThanTablet {
     padding-inline: var(--spacing-xsmall-px);
-    margin-block-start: -65px;
+    margin-block-start: -60px;
   }
+}
+
+.bottomShapeWrapper {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+  margin-block-start: -1px;
 }
 
 .bottomArchSvg {
   inline-size: 100%;
-  block-size: 140px;
+  block-size: 120px;
   display: block;
   fill: #0a5240;
-  margin-block-start: -1px;
 
   @include breakpoints.smallerThanTablet {
-    block-size: 80px;
+    block-size: 65px;
   }
 }
 
