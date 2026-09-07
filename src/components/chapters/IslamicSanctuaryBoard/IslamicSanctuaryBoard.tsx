@@ -151,10 +151,11 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({
           {rows.map((row, rowIndex) => {
             const isAlignedWithPrevious =
               rowIndex > 0 && row.length % 2 === rows[rowIndex - 1].length % 2;
+            const rowKey = row[0] ? `row-${row[0].id}` : `row-${rowIndex}`;
 
             return (
               <div
-                key={`row-${rowIndex}`}
+                key={rowKey}
                 className={classNames(styles.honeycombRow, {
                   [styles.alignedRow]: isAlignedWithPrevious,
                 })}

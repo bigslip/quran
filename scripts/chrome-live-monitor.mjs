@@ -39,17 +39,15 @@ const KEY_ROUTES = [
   '/reading-goal',
 ];
 
+import os from 'os';
+import path from 'path';
+
 async function runAudit() {
   console.log(`\n======================================================`);
   console.log(`🚀 Starting Chrome Live Console & Network Audit`);
   console.log(`🌐 Base URL: ${BASE_URL}`);
   console.log(`🖥️  Browser: ${executablePath ? 'Google Chrome' : 'Playwright Chromium'}`);
   console.log(`======================================================\n`);
-
-  const browser = await chromium.launch({
-    headless: true,
-    executablePath,
-  });
 
   const totalFindings = {
     pageErrors: [],
@@ -62,10 +60,15 @@ async function runAudit() {
     console.log(`\n📱 Auditing Viewport: ${viewport.name}`);
     console.log(`------------------------------------------------------`);
 
-    const context = await browser.newContext({
+    const tmpDir = path.join(os.tmpdir(), `pw-audit-${viewportKey}-${Date.now()}`);
+    const context = await chromium.launchPersistentContext(tmpDir, {
+      executablePath,
+      headless: true,
       viewport: { width: viewport.width, height: viewport.height },
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--no-first-run'],
     });
-    const page = await context.newPage();
+
+    const page = context.pages()[0] || (await context.newPage());
 
     page.on('pageerror', (err) => {
       const msg = `[${viewportKey}] ${err.message}\n${err.stack || ''}`;
@@ -106,8 +109,8 @@ async function runAudit() {
     for (const route of KEY_ROUTES) {
       const url = `${BASE_URL}${route}`;
       try {
-        await page.goto(url, { waitUntil: 'load', timeout: 15000 });
-        await page.waitForTimeout(1000);
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 10000 });
+        await page.waitForTimeout(600);
         process.stdout.write(`  ✅ ${route.padEnd(24)} -> 200 OK\n`);
       } catch (err) {
         console.error(`  ❌ Failed to load ${url}: ${err.message}`);
@@ -116,8 +119,6 @@ async function runAudit() {
 
     await context.close();
   }
-
-  await browser.close();
 
   console.log(`\n======================================================`);
   console.log(`📊 Audit Summary Report`);

@@ -32,3 +32,5 @@ export const chunkToHoneycomb = <T>(items: T[], pattern: number[] = [4, 3]): T[]
 
   return rows;
 };
+
+export default chunkToHoneycomb;
