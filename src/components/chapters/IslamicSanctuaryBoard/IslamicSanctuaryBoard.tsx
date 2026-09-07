@@ -34,27 +34,29 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters 
 
   return (
     <div className={styles.sanctuaryBoard} data-testid="islamic-sanctuary-board">
-      {/* Top Islamic Arch Header (Continuous silhouette from surah.jpeg) */}
+      {/* Top Islamic Arch Header (Exact 1:1 silhouette from surah.jpeg) */}
       <svg
         className={styles.topArchSvg}
-        viewBox="0 0 1140 160"
+        viewBox="0 0 1200 240"
         preserveAspectRatio="none"
         aria-hidden="true"
         data-testid="sanctuary-top-crest"
       >
         <path
           d="
-            M 0,160
-            L 0,90
-            C 0,45 35,40 70,40
-            L 320,40
-            C 400,40 450,24 500,12
-            C 540,2 560,0 570,0
-            C 580,0 600,2 640,12
-            C 690,24 740,40 820,40
-            L 1070,40
-            C 1105,40 1140,45 1140,90
-            L 1140,160
+            M 0,240
+            L 0,195
+            C 0,140 45,120 92,120
+            L 488,120
+            C 498,120 508,112 516,99.5
+            C 526,82 541,61 562,43.4
+            C 582,25.5 597,5 600,0
+            C 603,5 618,25.5 638,43.4
+            C 659,61 674,82 684,99.5
+            C 692,112 702,120 712,120
+            L 1108,120
+            C 1155,120 1200,140 1200,195
+            L 1200,240
             Z
           "
         />
@@ -81,10 +83,10 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters 
         </div>
       </div>
 
-      {/* Bottom Islamic Arch Notch (From surah.jpeg) */}
+      {/* Bottom Islamic Arch Notch (Exact 1:1 silhouette from surah.jpeg) */}
       <svg
         className={styles.bottomArchSvg}
-        viewBox="0 0 1140 70"
+        viewBox="0 0 1200 180"
         preserveAspectRatio="none"
         aria-hidden="true"
         data-testid="sanctuary-bottom-crest"
@@ -92,14 +94,16 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters 
         <path
           d="
             M 0,0
-            L 0,25
-            C 0,55 35,60 70,60
-            L 490,60
-            C 530,60 555,68 570,70
-            C 585,68 610,60 650,60
-            L 1070,60
-            C 1105,60 1140,55 1140,25
-            L 1140,0
+            L 0,45
+            C 0,95 45,120 92,120
+            L 488,120
+            C 520,120 545,135 565,150
+            C 585,165 597,180 600,180
+            C 603,180 615,165 635,150
+            C 655,135 680,120 712,120
+            L 1108,120
+            C 1155,120 1200,95 1200,45
+            L 1200,0
             Z
           "
         />
