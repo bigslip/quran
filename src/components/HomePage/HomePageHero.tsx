@@ -11,6 +11,7 @@ import styles from './HomePageHero.module.scss';
 import Link from '@/dls/Link/Link';
 import useHasMounted from '@/hooks/useHasMounted';
 import Logo from '@/icons/logo_main.svg';
+import { GradualSpacing } from '@/components/ui/gradual-spacing';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getTimeOfDayPeriod, isFriday, isNightTime } from '@/utils/spiritualTime';
 
@@ -158,7 +159,14 @@ const HomePageHero: React.FC = () => {
           <div className={styles.logoContainer}>
             <Logo />
           </div>
-          <p className={styles.heroSubtitle}>{greetingInfo.subtitle}</p>
+          <GradualSpacing
+            key={greetingInfo.subtitle}
+            text={greetingInfo.subtitle}
+            as="p"
+            containerClassName={styles.heroSubtitle}
+            duration={0.45}
+            delayMultiple={0.02}
+          />
           <div className={styles.commandDeck}>
             <div className={styles.quickJumpContainer}>
               <div className={styles.quickJumpList}>

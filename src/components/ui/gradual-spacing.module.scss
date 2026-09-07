@@ -1,0 +1,43 @@
+@use 'src/styles/breakpoints';
+
+@keyframes gradual-fade-slide {
+  0% {
+    opacity: 0;
+    transform: translateX(-12px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+.gradualContainer {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.char {
+  display: inline-block;
+  opacity: 0;
+  animation-name: gradual-fade-slide;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+.space {
+  display: inline-block;
+  inline-size: 0.32em;
+}

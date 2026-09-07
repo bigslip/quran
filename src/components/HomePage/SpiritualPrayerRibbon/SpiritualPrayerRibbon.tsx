@@ -5,6 +5,7 @@ import useTranslation from 'next-translate/useTranslation';
 import PrayerArchCard, { PrayerArchData } from './PrayerArchCard';
 import styles from './SpiritualPrayerRibbon.module.scss';
 
+import { GradualSpacing } from '@/components/ui/gradual-spacing';
 import useHasMounted from '@/hooks/useHasMounted';
 import { getDailySpiritualData } from '@/utils/spiritualTime';
 
@@ -107,9 +108,13 @@ const SpiritualPrayerRibbon: React.FC = () => {
         </div>
 
         <div className={styles.titleBlock}>
-          <h2 className={styles.sanctuaryHeading}>
-            {t('prayer-sanctuary-title', { defaultValue: 'Daily Prayer Sanctuary' })}
-          </h2>
+          <GradualSpacing
+            text={t('prayer-sanctuary-title', { defaultValue: 'DAILY PRAYER SANCTUARY' })}
+            as="h2"
+            containerClassName={styles.sanctuaryHeading}
+            duration={0.4}
+            delayMultiple={0.02}
+          />
         </div>
 
         <div className={styles.countdownBadge}>
