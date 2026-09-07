@@ -61,6 +61,13 @@ $list-max-width: 80rem;
   }
 }
 
+.homepageRibbon {
+  padding-block: var(--spacing-xxsmall-px);
+  @include breakpoints.tablet {
+    padding-block: var(--spacing-xsmall-px);
+  }
+}
+
 .homepageCard:not(:first-child) {
   padding-block-start: var(--spacing-medium2);
   @include breakpoints.tablet {

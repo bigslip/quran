@@ -82,7 +82,7 @@ const Index: NextPage<IndexProps> = ({
           <HomePageHero />
           <SpiritualPrayerRibbon />
           <div className={styles.bodyContainer}>
-            <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
+            <div className={classNames(styles.flowItem, styles.homepageRibbon)}>
               <ReadingSection />
             </div>
             {isBannerVisible ? (
