@@ -79,19 +79,79 @@
   pointer-events: none;
 }
 
-:global([data-theme='light']) .dotMatrix {
-  background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.12) 1px, transparent 0);
-}
-
-:global([data-theme='sepia']) .dotMatrix {
-  background-image: radial-gradient(circle at 1px 1px, rgba(139, 92, 44, 0.2) 1px, transparent 0);
-}
-
 .radialHighlight {
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 50% 0%, var(--color-primary-subtle) 0%, transparent 70%);
   pointer-events: none;
+}
+
+// Light Mode Tone-on-Tone Whisper
+:global([data-theme='light']) {
+  .radialBase {
+    background: radial-gradient(100% 100% at 0% 0%, #ffffff 0%, #f1f5f9 100%);
+    -webkit-mask: none;
+    mask: none;
+    opacity: 1;
+  }
+
+  .streak {
+    background: linear-gradient(rgba(2, 132, 199, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+    opacity: 0.12;
+  }
+
+  .goldStreak {
+    background: linear-gradient(rgba(180, 83, 9, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+    opacity: 0.10;
+  }
+
+  .emeraldStreak {
+    background: linear-gradient(rgba(2, 132, 199, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+    opacity: 0.08;
+  }
+
+  .dotMatrix {
+    opacity: 0.08;
+    background-image: radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.25) 1px, transparent 0);
+  }
+
+  .radialHighlight {
+    background: radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.05) 0%, transparent 70%);
+  }
+}
+
+// Sepia Mode Tone-on-Tone Whisper
+:global([data-theme='sepia']) {
+  .radialBase {
+    background: radial-gradient(100% 100% at 0% 0%, #fdfbf7 0%, #fbf7ee 100%);
+    -webkit-mask: none;
+    mask: none;
+    opacity: 1;
+  }
+
+  .streak {
+    background: linear-gradient(rgba(180, 83, 9, 0.08) 0%, rgba(251, 247, 238, 0) 100%);
+    opacity: 0.12;
+  }
+
+  .goldStreak {
+    background: linear-gradient(rgba(217, 119, 6, 0.09) 0%, rgba(251, 247, 238, 0) 100%);
+    opacity: 0.12;
+  }
+
+  .emeraldStreak {
+    background: linear-gradient(rgba(180, 83, 9, 0.06) 0%, rgba(251, 247, 238, 0) 100%);
+    opacity: 0.10;
+  }
+
+  .dotMatrix {
+    opacity: 0.10;
+    background-image: radial-gradient(circle at 1px 1px, rgba(100, 80, 50, 0.35) 1px, transparent 0);
+  }
+
+  .radialHighlight {
+    background: radial-gradient(circle at 50% 0%, rgba(180, 83, 9, 0.05) 0%, transparent 70%);
+  }
 }
 
 .contentContainer {
