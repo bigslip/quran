@@ -151,9 +151,9 @@ const HomePageHero: React.FC = () => {
     <div className={styles.outerContainer}>
       <div className={styles.innerContainer}>
         <div className={styles.greetingCapsule}>
-          <span className={styles.greetingBadge}>
+          <span className={styles.greetingBadge} suppressHydrationWarning>
             <span className={styles.greetingPulse} aria-hidden="true" />
-            <span className={styles.greetingText}>{greetingInfo.title}</span>
+            <span className={styles.greetingText} suppressHydrationWarning>{greetingInfo.title}</span>
           </span>
         </div>
           <div className={styles.logoContainer}>

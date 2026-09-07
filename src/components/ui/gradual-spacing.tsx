@@ -27,6 +27,7 @@ export const GradualSpacing: React.FC<GradualSpacingProps> = ({
     <Component
       className={classNames(styles.gradualContainer, containerClassName)}
       aria-label={text}
+      suppressHydrationWarning
     >
       {characters.map((char, index) => {
         if (char === ' ') {
