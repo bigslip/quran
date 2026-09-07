@@ -60,22 +60,24 @@ describe('PetalSurahCard', () => {
     vi.clearAllMocks();
   });
 
-  it('renders Surah number, transliterated name, Ayah count, and revelation tag', () => {
+  it('renders Surah number, transliterated name with Makkah class, and Ayah count', () => {
     render(<PetalSurahCard chapter={mockChapter} />);
     expect(screen.getByText('1')).toBeInTheDocument();
-    expect(screen.getByText('Al-Fatihah')).toBeInTheDocument();
+    const title = screen.getByText('Al-Fatihah');
+    expect(title).toBeInTheDocument();
+    expect(title).toHaveClass(/makkahTitle/);
     expect(screen.getByText('001')).toBeInTheDocument();
-    expect(screen.getByText(/7 Ayahs/i)).toBeInTheDocument();
-    expect(screen.getByText(/Makki/i)).toBeInTheDocument();
+    expect(screen.getByText('7')).toBeInTheDocument();
   });
 
-  it('renders Madani revelation tag for Madani surahs', () => {
+  it('renders Madani class on title for Madani surahs', () => {
     render(<PetalSurahCard chapter={mockMadinahChapter} />);
     expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByText('Al-Baqarah')).toBeInTheDocument();
+    const title = screen.getByText('Al-Baqarah');
+    expect(title).toBeInTheDocument();
+    expect(title).toHaveClass(/madinahTitle/);
     expect(screen.getByText('002')).toBeInTheDocument();
-    expect(screen.getByText(/286 Ayahs/i)).toBeInTheDocument();
-    expect(screen.getByText(/Madani/i)).toBeInTheDocument();
+    expect(screen.getByText('286')).toBeInTheDocument();
   });
 
   it('links to /1 with prefetch when isPreload is true', () => {

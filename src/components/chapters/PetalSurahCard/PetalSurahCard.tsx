@@ -87,22 +87,18 @@ const PetalSurahCard: React.FC<PetalSurahCardProps> = ({ chapter, isPreload = fa
             />
           </div>
 
-          <div className={styles.transliteratedTitle} translate="no">
+          <div
+            className={classNames(
+              styles.transliteratedTitle,
+              isMakkah ? styles.makkahTitle : styles.madinahTitle,
+            )}
+            translate="no"
+          >
             {chapter.transliteratedName}
           </div>
 
-          <div className={styles.metaRow}>
-            <span className={styles.ayahTag}>
-              {localizedAyahCount} {t('common:ayahs', { defaultValue: 'Ayahs' })}
-            </span>
-            <span
-              className={classNames(
-                styles.revelationTag,
-                isMakkah ? styles.makkah : styles.madinah,
-              )}
-            >
-              {revelationPlaceLabel}
-            </span>
+          <div className={styles.ayahContainer}>
+            <span className={styles.ayahTag}>{localizedAyahCount}</span>
           </div>
         </div>
       </div>

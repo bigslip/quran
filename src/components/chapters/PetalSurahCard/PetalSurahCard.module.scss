@@ -104,16 +104,13 @@
     fill: var(--color-sanctuary-petal-hover-text, #ffffff);
   }
 
-  .transliteratedTitle {
+  .transliteratedTitle,
+  .makkahTitle,
+  .madinahTitle {
     color: var(--color-sanctuary-petal-hover-text, #ffffff);
   }
 
-  .metaRow {
-    color: var(--color-sanctuary-petal-hover-text, rgba(255, 255, 255, 0.95));
-  }
-
-  .ayahTag,
-  .revelationTag {
+  .ayahTag {
     background: rgba(255, 255, 255, 0.22);
     color: var(--color-sanctuary-petal-hover-text, #ffffff);
   }
@@ -213,44 +210,41 @@
   }
 }
 
-.metaRow {
-  font-size: 10px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-sanctuary-petal-meta, #78350f);
+.makkahTitle {
+  color: var(--color-sanctuary-petal-tag-makkah, #b45309);
+}
+
+.madinahTitle {
+  color: var(--color-sanctuary-petal-tag-madinah, #047857);
+}
+
+.ayahContainer {
   margin-block-start: 4px;
   display: flex;
   align-items: center;
-  gap: 4px;
-  transition: color var(--transition-regular) ease;
+  justify-content: center;
 
   @include breakpoints.smallerThanTablet {
-    font-size: 8.5px;
-    gap: 3px;
     margin-block-start: 2px;
   }
 }
 
-.ayahTag,
-.revelationTag {
+.ayahTag {
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-sanctuary-petal-meta, #78350f);
   background: var(--color-sanctuary-petal-tag-makkah-bg, rgba(217, 119, 6, 0.14));
-  padding-inline: 5px;
-  padding-block: 1px;
-  border-radius: 4px;
+  padding-inline: 8px;
+  padding-block: 1.5px;
+  border-radius: var(--border-radius-pill);
   line-height: 1.2;
+  letter-spacing: 0.02em;
   transition: background var(--transition-regular) ease, color var(--transition-regular) ease;
 
   @include breakpoints.smallerThanTablet {
-    padding-inline: 4px;
-    border-radius: 3px;
+    font-size: 9.5px;
+    padding-inline: 6px;
+    padding-block: 1px;
   }
-}
-
-.makkah {
-  color: var(--color-sanctuary-petal-tag-makkah, #b45309);
-}
-
-.madinah {
-  color: var(--color-sanctuary-petal-tag-madinah, #047857);
-  background: var(--color-sanctuary-petal-tag-madinah-bg, rgba(4, 120, 87, 0.14));
 }
 
