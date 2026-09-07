@@ -89,6 +89,8 @@
   gap: 48px;
   margin-block-start: -20px;
   flex-wrap: nowrap;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 240px;
 
   &:first-child {
     margin-block-start: 0;
@@ -97,11 +99,14 @@
   @media (max-width: 1023px) and (min-width: 640px) {
     gap: 32px;
     margin-block-start: -12px;
+    contain-intrinsic-size: auto 200px;
   }
 
   @include breakpoints.smallerThanTablet {
     gap: 16px;
     margin-block-start: -6px;
+    contain-intrinsic-size: auto 170px;
   }
 }
+
 
