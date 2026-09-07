@@ -5,9 +5,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin-block-start: var(--spacing-medium-px);
   margin-block-end: var(--spacing-large-px);
-  filter: drop-shadow(0 20px 45px rgba(10, 82, 64, 0.35));
+  filter: drop-shadow(0 24px 48px rgba(0, 75, 57, 0.35));
 }
 
 .topShapeWrapper {
@@ -15,34 +16,41 @@
   display: flex;
   justify-content: center;
   margin-block-end: -1px;
+  z-index: 1;
 }
 
 .topArchSvg {
-  inline-size: 100%;
-  block-size: 240px;
+  inline-size: 526px;
+  max-inline-size: 90vw;
+  block-size: 123px;
   display: block;
-  fill: #0a5240;
+  fill: #004b39;
 
   @include breakpoints.smallerThanTablet {
-    block-size: 130px;
+    inline-size: 280px;
+    block-size: 65px;
   }
 }
 
 .boardBody {
-  background-color: #0a5240;
-  background-image:
-    radial-gradient(circle at 50% 15%, rgba(254, 240, 138, 0.05) 0%, transparent 60%),
-    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 100% 100%, 28px 28px;
+  inline-size: 100%;
+  background-color: #004b39;
+  background-image: url('/images/islamic-tapestry-bg.png');
+  background-repeat: repeat;
+  background-size: auto;
+  border-radius: 100px;
   padding-inline: var(--spacing-large-px);
-  padding-block: 0 var(--spacing-large-px);
-  margin-block-start: -110px;
+  padding-block: 40px 60px;
   position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @include breakpoints.smallerThanTablet {
+    border-radius: 40px;
     padding-inline: var(--spacing-xsmall-px);
-    margin-block-start: -60px;
+    padding-block: 25px 35px;
   }
 }
 
@@ -51,16 +59,18 @@
   display: flex;
   justify-content: center;
   margin-block-start: -1px;
+  z-index: 1;
 }
 
 .bottomArchSvg {
-  inline-size: 100%;
-  block-size: 120px;
+  inline-size: 83px;
+  block-size: 38px;
   display: block;
-  fill: #0a5240;
+  fill: #004b39;
 
   @include breakpoints.smallerThanTablet {
-    block-size: 65px;
+    inline-size: 50px;
+    block-size: 23px;
   }
 }
 
@@ -69,7 +79,8 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  inline-size: 100%;
 }
 
 .honeycombRow {
@@ -93,3 +104,4 @@
     margin-block-start: -55px;
   }
 }
+

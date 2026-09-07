@@ -34,13 +34,12 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters 
 
   return (
     <div className={styles.sanctuaryBoard} data-testid="islamic-sanctuary-board">
-      {/* Top Islamic Arch Header (Exact Muezzin Theme Shape) */}
+      {/* Top Islamic Arch Header (Exact 1:1 Muezzin Theme Shape) */}
       <div className={styles.topShapeWrapper}>
         <svg
           className={styles.topArchSvg}
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 526.16 220"
-          preserveAspectRatio="none"
+          viewBox="0 0 526.16 123"
           aria-hidden="true"
           data-testid="sanctuary-top-crest"
         >
@@ -77,13 +76,12 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters 
         </div>
       </div>
 
-      {/* Bottom Islamic Arch Notch (Exact Muezzin Theme Shape) */}
+      {/* Bottom Islamic Arch Notch (Exact 1:1 Muezzin Theme Shape) */}
       <div className={styles.bottomShapeWrapper}>
         <svg
           className={styles.bottomArchSvg}
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="-222.73 -194.41 527.19 232.32"
-          preserveAspectRatio="none"
+          viewBox="0 0 83 38"
           aria-hidden="true"
           data-testid="sanctuary-bottom-crest"
         >
