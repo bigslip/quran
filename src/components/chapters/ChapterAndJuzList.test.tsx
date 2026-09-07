@@ -101,6 +101,8 @@ describe('ChapterAndJuzList', () => {
   it('renders quick search input and filter pills with correct counts', () => {
     render(<ChapterAndJuzList chapters={mockChapters} />);
 
+    expect(screen.getByTestId('islamic-sanctuary-board')).toBeInTheDocument();
+
     const searchInput = screen.getByTestId('surah-search-input');
     expect(searchInput).toBeInTheDocument();
     expect(searchInput).toHaveAttribute('placeholder', 'Search Surah (e.g. Kahf or 18)...');
@@ -121,9 +123,9 @@ describe('ChapterAndJuzList', () => {
     const searchInput = screen.getByTestId('surah-search-input');
     fireEvent.change(searchInput, { target: { value: 'Kahf' } });
 
-    expect(screen.getByTestId('chapter-18-container')).toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-1-container')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-2-container')).not.toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-18')).toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-1')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-2')).not.toBeInTheDocument();
   });
 
   it('filters chapters in real-time by Surah number (e.g. "18")', () => {
@@ -132,9 +134,9 @@ describe('ChapterAndJuzList', () => {
     const searchInput = screen.getByTestId('surah-search-input');
     fireEvent.change(searchInput, { target: { value: '18' } });
 
-    expect(screen.getByTestId('chapter-18-container')).toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-1-container')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-2-container')).not.toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-18')).toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-1')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-2')).not.toBeInTheDocument();
   });
 
   it('filters chapters by Makki and Madani filter pills', () => {
@@ -144,17 +146,17 @@ describe('ChapterAndJuzList', () => {
     fireEvent.click(pillMakki);
 
     expect(pillMakki).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByTestId('chapter-1-container')).toBeInTheDocument();
-    expect(screen.getByTestId('chapter-18-container')).toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-2-container')).not.toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-1')).toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-18')).toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-2')).not.toBeInTheDocument();
 
     const pillMadani = screen.getByTestId('filter-pill-madani');
     fireEvent.click(pillMadani);
 
     expect(pillMadani).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByTestId('chapter-2-container')).toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-1-container')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-18-container')).not.toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-2')).toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-1')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-18')).not.toBeInTheDocument();
   });
 
   it('shows clear button and clears search when tapped', () => {
@@ -169,9 +171,9 @@ describe('ChapterAndJuzList', () => {
     fireEvent.click(clearButton);
 
     expect(searchInput).toHaveValue('');
-    expect(screen.getByTestId('chapter-1-container')).toBeInTheDocument();
-    expect(screen.getByTestId('chapter-2-container')).toBeInTheDocument();
-    expect(screen.getByTestId('chapter-18-container')).toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-1')).toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-2')).toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-18')).toBeInTheDocument();
   });
 
   it('renders clean zero-result empty state when no Surah matches and allows reset', () => {
@@ -188,9 +190,9 @@ describe('ChapterAndJuzList', () => {
     fireEvent.click(resetButton);
 
     expect(searchInput).toHaveValue('');
-    expect(screen.getByTestId('chapter-1-container')).toBeInTheDocument();
-    expect(screen.getByTestId('chapter-2-container')).toBeInTheDocument();
-    expect(screen.getByTestId('chapter-18-container')).toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-1')).toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-2')).toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-18')).toBeInTheDocument();
   });
 
   it('maintains sort order toggle between ascending and descending', () => {
@@ -199,10 +201,10 @@ describe('ChapterAndJuzList', () => {
     const sorter = screen.getByRole('button', { name: /ascending/i });
     fireEvent.click(sorter);
 
-    const chapterContainers = screen.getAllByTestId(/chapter-\d+-container/);
-    expect(chapterContainers[0]).toHaveAttribute('data-testid', 'chapter-18-container');
-    expect(chapterContainers[1]).toHaveAttribute('data-testid', 'chapter-2-container');
-    expect(chapterContainers[2]).toHaveAttribute('data-testid', 'chapter-1-container');
+    const chapterContainers = screen.getAllByTestId(/surah-petal-card-\d+/);
+    expect(chapterContainers[0]).toHaveAttribute('data-testid', 'surah-petal-card-18');
+    expect(chapterContainers[1]).toHaveAttribute('data-testid', 'surah-petal-card-2');
+    expect(chapterContainers[2]).toHaveAttribute('data-testid', 'surah-petal-card-1');
   });
 
   it('filters chapters by translated name (e.g. "The Cow")', () => {
@@ -211,9 +213,9 @@ describe('ChapterAndJuzList', () => {
     const searchInput = screen.getByTestId('surah-search-input');
     fireEvent.change(searchInput, { target: { value: 'The Cow' } });
 
-    expect(screen.getByTestId('chapter-2-container')).toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-1-container')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-18-container')).not.toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-2')).toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-1')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-18')).not.toBeInTheDocument();
   });
 
   it('filters chapters with diacritics / accents normalized (e.g. "fatihah")', () => {
@@ -222,9 +224,9 @@ describe('ChapterAndJuzList', () => {
     const searchInput = screen.getByTestId('surah-search-input');
     fireEvent.change(searchInput, { target: { value: 'fatihah' } });
 
-    expect(screen.getByTestId('chapter-1-container')).toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-2-container')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('chapter-18-container')).not.toBeInTheDocument();
+    expect(screen.getByTestId('surah-petal-card-1')).toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-2')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('surah-petal-card-18')).not.toBeInTheDocument();
   });
 
   it('switches between Surah, Juz, and RevelationOrder tabs', () => {

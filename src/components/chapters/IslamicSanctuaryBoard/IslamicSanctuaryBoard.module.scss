@@ -1,0 +1,81 @@
+@use 'src/styles/breakpoints';
+
+.sanctuaryContainer {
+  background: radial-gradient(circle at 50% 20%, #065f46 0%, #04382c 60%, #02241c 100%);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--border-radius-rounded);
+  padding-inline: var(--spacing-medium-px);
+  padding-block: var(--spacing-large-px);
+  position: relative;
+  box-shadow: 0 20px 50px rgba(4, 56, 44, 0.38), inset 0 0 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  margin-block-start: var(--spacing-small-px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: var(--spacing-xsmall-px);
+    padding-block: var(--spacing-medium-px);
+    border-radius: 20px;
+  }
+}
+
+.sanctuaryCrest,
+.bottomCrest {
+  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.sanctuaryCrest {
+  margin-block-end: var(--spacing-medium-px);
+}
+
+.bottomCrest {
+  margin-block-start: var(--spacing-medium-px);
+}
+
+.crestSvg {
+  inline-size: 220px;
+  block-size: 32px;
+  fill: var(--color-accent-gold, #f59e0b);
+  opacity: 0.85;
+
+  @include breakpoints.smallerThanTablet {
+    inline-size: 160px;
+    block-size: 24px;
+  }
+}
+
+.honeycombGrid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.honeycombRow {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-block-start: -28px;
+  flex-wrap: wrap;
+
+  &:first-child {
+    margin-block-start: 0;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    gap: 8px;
+    margin-block-start: -18px;
+  }
+}

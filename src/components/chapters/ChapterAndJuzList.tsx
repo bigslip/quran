@@ -7,18 +7,17 @@ import dynamic from 'next/dynamic';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 
-import Link from '../dls/Link/Link';
-import SurahPreviewRow from '../dls/SurahPreview/SurahPreviewRow';
 import Tabs from '../dls/Tabs/Tabs';
 
 import styles from './ChapterAndJuzList.module.scss';
 import ChapterAndJuzListSkeleton from './ChapterAndJuzListSkeleton';
+import IslamicSanctuaryBoard from './IslamicSanctuaryBoard/IslamicSanctuaryBoard';
 
 import CaretDownIcon from '@/icons/caret-down.svg';
 import ClearIcon from '@/icons/close.svg';
 import SearchIcon from '@/icons/search.svg';
 import { logButtonClick, logValueChange } from '@/utils/eventLogger';
-import { shouldUseMinimalLayout, toLocalizedNumber } from '@/utils/locale';
+import { toLocalizedNumber } from '@/utils/locale';
 import Chapter from 'types/Chapter';
 
 enum View {
@@ -368,32 +367,10 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
       {view === View.Surah && (
         <>
           {filteredChapters.length > 0 ? (
-            <div data-testid="chapter-and-juz-list" className={styles.surahLayout}>
-              {filteredChapters.map((chapter) => (
-                <div
-                  className={styles.chapterContainer}
-                  key={chapter.id}
-                  data-testid={`chapter-${chapter.id}-container`}
-                >
-                  <Link
-                    href={`/${chapter.id}`}
-                    shouldPrefetch={MOST_VISITED_CHAPTERS[Number(chapter.id)] === true}
-                  >
-                    <SurahPreviewRow
-                      chapterId={Number(chapter.id)}
-                      description={`${toLocalizedNumber(chapter.versesCount, lang)} ${t(
-                        'common:ayahs',
-                      )}`}
-                      surahName={chapter.transliteratedName}
-                      surahNumber={Number(chapter.id)}
-                      translatedSurahName={chapter.translatedName as string}
-                      revelationPlace={chapter.revelationPlace}
-                      isMinimalLayout={shouldUseMinimalLayout(lang)}
-                    />
-                  </Link>
-                </div>
-              ))}
-            </div>
+            <IslamicSanctuaryBoard
+              chapters={filteredChapters}
+              mostVisitedChapters={MOST_VISITED_CHAPTERS}
+            />
           ) : (
             <div className={styles.emptyContainer} data-testid="no-surahs-found">
               <div className={styles.emptyIcon} aria-hidden="true">
