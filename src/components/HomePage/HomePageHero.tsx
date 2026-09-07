@@ -9,7 +9,6 @@ import NavigationButton from './HeroButtons/NavigationButton';
 import PopularButton from './HeroButtons/PopularButton';
 import styles from './HomePageHero.module.scss';
 
-import { ElegantDarkPattern } from '@/components/ui/elegant-dark-pattern';
 import Link from '@/dls/Link/Link';
 import useHasMounted from '@/hooks/useHasMounted';
 import Background from '@/icons/background.svg';
@@ -156,10 +155,7 @@ const HomePageHero: React.FC = () => {
   );
 
   return (
-    <ElegantDarkPattern
-      className={classNames(styles.outerContainer, greetingInfo.auraClass)}
-      contentClassName={styles.heroContent}
-    >
+    <div className={classNames(styles.outerContainer, greetingInfo.auraClass)}>
       <Head>
         <link rel="preload" as="image" href="/images/background.png" />
       </Head>
@@ -218,7 +214,7 @@ const HomePageHero: React.FC = () => {
           )}
         </div>
       </div>
-    </ElegantDarkPattern>
+    </div>
   );
 };
 export default React.memo(HomePageHero);

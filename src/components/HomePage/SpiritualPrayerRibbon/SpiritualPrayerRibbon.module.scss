@@ -21,14 +21,25 @@
   gap: var(--spacing-medium, 16px);
   padding-inline: var(--spacing-large, 24px);
   padding-block: var(--spacing-small, 12px);
-  background: var(--color-surface-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--border-radius-rounded, 16px);
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
   position: relative;
   overflow: hidden;
+
+  @include theme.dark {
+    background: rgba(14, 22, 40, 0.45);
+    border-color: rgba(251, 191, 36, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  @include theme.sepia {
+    background: rgba(248, 244, 230, 0.7);
+    border-color: var(--color-border-subtle);
+  }
 
   &::before {
     content: '';
@@ -258,23 +269,23 @@
   filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.05));
 
   @include theme.dark {
-    filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.4));
   }
 }
 
 .archPath {
-  fill: var(--color-surface-card);
+  fill: rgba(255, 255, 255, 0.65);
   stroke: var(--color-border-subtle);
   stroke-width: 1.5px;
   transition: all 0.3s ease;
 
   @include theme.dark {
-    fill: var(--color-surface-card);
-    stroke: var(--color-border-subtle);
+    fill: rgba(14, 22, 40, 0.40);
+    stroke: rgba(251, 191, 36, 0.22);
   }
 
   @include theme.sepia {
-    fill: var(--color-surface-card);
+    fill: rgba(248, 244, 230, 0.68);
     stroke: var(--color-border-subtle);
   }
 }
@@ -365,7 +376,9 @@
   block-size: 88px;
   border-radius: 50%;
   border: 1px solid var(--color-border-subtle);
-  background: var(--color-background-default);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -376,14 +389,14 @@
     border-color 0.25s ease, box-shadow 0.25s ease;
 
   @include theme.dark {
-    border-color: rgba(251, 191, 36, 0.2);
-    background: var(--color-background-default);
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+    border-color: rgba(251, 191, 36, 0.25);
+    background: rgba(7, 10, 19, 0.55);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 242, 254, 0.08);
   }
 
   @include theme.sepia {
     border-color: var(--color-border-subtle);
-    background: var(--color-background-default);
+    background: rgba(244, 238, 220, 0.85);
     box-shadow: inset 0 2px 4px rgba(100, 80, 50, 0.06);
   }
 }

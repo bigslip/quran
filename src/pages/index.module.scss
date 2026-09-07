@@ -8,6 +8,12 @@ $list-max-width: 80rem;
   padding-inline-end: 0;
 }
 
+.sanctuaryHeroStage {
+  position: relative;
+  inline-size: 100%;
+  padding-block-end: var(--spacing-small);
+}
+
 .loadingContainer {
   min-block-size: 70vh;
   display: flex;

@@ -16,6 +16,7 @@ import HomePageHero from '@/components/HomePage/HomePageHero';
 import ReadingSection from '@/components/HomePage/ReadingSection';
 import SpiritualPrayerRibbon from '@/components/HomePage/SpiritualPrayerRibbon/SpiritualPrayerRibbon';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
+import { ElegantDarkPattern } from '@/components/ui/elegant-dark-pattern';
 import useAuthData from '@/hooks/auth/useAuthData';
 import useIsMobile from '@/hooks/useIsMobile';
 import { selectIsHomepageBannerVisible } from '@/redux/slices/fundraisingBanner';
@@ -79,8 +80,10 @@ const Index: NextPage<IndexProps> = ({
       />
       <div className={styles.pageContainer}>
         <div className={styles.flow}>
-          <HomePageHero />
-          <SpiritualPrayerRibbon />
+          <ElegantDarkPattern className={styles.sanctuaryHeroStage}>
+            <HomePageHero />
+            <SpiritualPrayerRibbon />
+          </ElegantDarkPattern>
           <div className={styles.bodyContainer}>
             <div className={classNames(styles.flowItem, styles.homepageRibbon)}>
               <ReadingSection />
