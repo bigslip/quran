@@ -60,11 +60,11 @@ describe('PetalSurahCard', () => {
     vi.clearAllMocks();
   });
 
-  it('renders Surah number, transliterated name, Arabic name, Ayah count, and revelation tag', () => {
+  it('renders Surah number, transliterated name, Ayah count, and revelation tag', () => {
     render(<PetalSurahCard chapter={mockChapter} />);
     expect(screen.getByText('1')).toBeInTheDocument();
     expect(screen.getByText('Al-Fatihah')).toBeInTheDocument();
-    expect(screen.getByText('الفاتحة')).toBeInTheDocument();
+    expect(screen.getByText('001')).toBeInTheDocument();
     expect(screen.getByText(/7 Ayahs/i)).toBeInTheDocument();
     expect(screen.getByText(/Makki/i)).toBeInTheDocument();
   });
@@ -73,7 +73,7 @@ describe('PetalSurahCard', () => {
     render(<PetalSurahCard chapter={mockMadinahChapter} />);
     expect(screen.getByText('2')).toBeInTheDocument();
     expect(screen.getByText('Al-Baqarah')).toBeInTheDocument();
-    expect(screen.getByText('البقرة')).toBeInTheDocument();
+    expect(screen.getByText('002')).toBeInTheDocument();
     expect(screen.getByText(/286 Ayahs/i)).toBeInTheDocument();
     expect(screen.getByText(/Madani/i)).toBeInTheDocument();
   });

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
 import styles from './IslamicSanctuaryBoard.module.scss';
 import PetalSurahCard from '../PetalSurahCard/PetalSurahCard';
@@ -11,9 +11,26 @@ type Props = {
   mostVisitedChapters?: Record<number, boolean>;
 };
 
+const getHoneycombPattern = (): number[] => {
+  if (typeof window === 'undefined') return [4, 3];
+  if (window.innerWidth < 640) return [2, 1];
+  if (window.innerWidth < 1024) return [3, 2];
+  return [4, 3];
+};
+
 const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters = {} }) => {
-  // 4 then 3 desktop pattern
-  const rows = useMemo(() => chunkToHoneycomb(chapters, [4, 3]), [chapters]);
+  const [pattern, setPattern] = useState<number[]>([4, 3]);
+
+  useEffect(() => {
+    const updatePattern = () => {
+      setPattern(getHoneycombPattern());
+    };
+    updatePattern();
+    window.addEventListener('resize', updatePattern, { passive: true });
+    return () => window.removeEventListener('resize', updatePattern);
+  }, []);
+
+  const rows = useMemo(() => chunkToHoneycomb(chapters, pattern), [chapters, pattern]);
 
   return (
     <div className={styles.sanctuaryContainer} data-testid="islamic-sanctuary-board">

@@ -70,7 +70,7 @@ describe('IslamicSanctuaryBoard', () => {
     for (let i = 1; i <= 7; i += 1) {
       expect(screen.getByTestId(`surah-petal-card-${i}`)).toBeInTheDocument();
       expect(screen.getByText(`Surah-${i}`)).toBeInTheDocument();
-      expect(screen.getByText(`سورة ${i}`)).toBeInTheDocument();
+      expect(screen.getByText(`00${i}`)).toBeInTheDocument();
     }
   });
 

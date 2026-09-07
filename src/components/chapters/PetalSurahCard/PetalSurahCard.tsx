@@ -5,6 +5,9 @@ import useTranslation from 'next-translate/useTranslation';
 
 import styles from './PetalSurahCard.module.scss';
 
+import ChapterIconContainer, {
+  ChapterIconsSize,
+} from '@/components/chapters/ChapterIcon/ChapterIconContainer';
 import Link from '@/dls/Link/Link';
 import { logButtonClick } from '@/utils/eventLogger';
 import { toLocalizedNumber } from '@/utils/locale';
@@ -55,11 +58,15 @@ const PetalSurahCard: React.FC<PetalSurahCardProps> = ({ chapter, isPreload = fa
 
         <div className={styles.cardContent}>
           <div className={styles.surahNumberBadge}>
-            <span>{localizedSurahNumber}</span>
+            <span className={styles.badgeNumberText}>{localizedSurahNumber}</span>
           </div>
 
           <div className={styles.arabicTitle} translate="no">
-            {chapter.nameArabic}
+            <ChapterIconContainer
+              chapterId={chapter.id ? chapter.id.toString() : ''}
+              hasSurahPrefix={false}
+              size={ChapterIconsSize.Large}
+            />
           </div>
 
           <div className={styles.transliteratedTitle} translate="no">

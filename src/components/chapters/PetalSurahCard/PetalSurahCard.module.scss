@@ -80,7 +80,7 @@
 .surahNumberBadge {
   inline-size: 26px;
   block-size: 26px;
-  background: var(--color-primary-deep, #064e3b);
+  background-color: #064e3b;
   color: #fef08a;
   font-size: 11px;
   font-weight: var(--font-weight-bold);
@@ -89,26 +89,38 @@
   align-items: center;
   justify-content: center;
   margin-block-end: 2px;
-  border: 1px solid var(--color-accent-gold, #f59e0b);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: 1.5px solid #f59e0b;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
   line-height: 1;
+
+  .badgeNumberText {
+    color: #fef08a;
+    font-size: 11px;
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+  }
 
   @include breakpoints.smallerThanTablet {
     inline-size: 22px;
     block-size: 22px;
-    font-size: 10px;
+    .badgeNumberText {
+      font-size: 10px;
+    }
   }
 }
 
 .arabicTitle {
-  font-family: var(--font-family-arabic, 'Amiri', serif);
-  font-size: 20px;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary-deep, #064e3b);
-  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #064e3b;
+  line-height: 1;
+  margin-block: 2px;
 
-  @include breakpoints.smallerThanTablet {
-    font-size: 17px;
+  svg,
+  span {
+    color: #064e3b;
+    fill: #064e3b;
   }
 }
 
