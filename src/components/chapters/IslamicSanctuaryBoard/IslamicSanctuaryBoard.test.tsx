@@ -80,4 +80,15 @@ describe('IslamicSanctuaryBoard', () => {
     expect(screen.getByTestId('islamic-sanctuary-board')).toBeInTheDocument();
     expect(screen.queryByTestId('honeycomb-row-0')).not.toBeInTheDocument();
   });
+
+  it('preserves native flex direction for RTL layouts', () => {
+    const { container } = render(
+      <div dir="rtl">
+        <IslamicSanctuaryBoard chapters={mockChapters} />
+      </div>,
+    );
+    const row0 = screen.getByTestId('honeycomb-row-0');
+    expect(row0).toBeInTheDocument();
+    expect(container.querySelector('[dir="rtl"]')).toBeInTheDocument();
+  });
 });
