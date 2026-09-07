@@ -3,50 +3,57 @@
 .sanctuaryBoard {
   inline-size: 100%;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  margin-block-start: var(--spacing-small-px);
-  filter: drop-shadow(0 20px 45px rgba(4, 56, 44, 0.4));
-}
-
-.topArchSvg {
-  inline-size: 100%;
-  block-size: 140px;
-  display: block;
-  margin-block-end: -1px;
-
-  @include breakpoints.smallerThanTablet {
-    block-size: 80px;
-  }
-}
-
-.sanctuaryBody {
-  background-color: #064e3b;
+  background-color: #0b4d3c;
   background-image:
-    radial-gradient(circle at 50% 50%, rgba(254, 240, 138, 0.04) 0%, transparent 70%),
+    radial-gradient(circle at 50% 15%, rgba(254, 240, 138, 0.05) 0%, transparent 60%),
     radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 100% 100%, 24px 24px;
-  border-inline: 2.5px solid #d97706;
+  background-size: 100% 100%, 28px 28px;
+  border-radius: 60px;
   padding-inline: var(--spacing-medium-px);
-  padding-block: 0 var(--spacing-medium-px);
-  margin-block-start: -60px;
-  position: relative;
-  z-index: 2;
+  padding-block: 80px 60px;
+  margin-block-start: 50px;
+  margin-block-end: var(--spacing-large-px);
+  box-shadow: 0 25px 50px -12px rgba(11, 77, 60, 0.35);
 
   @include breakpoints.smallerThanTablet {
+    border-radius: 36px;
     padding-inline: var(--spacing-xsmall-px);
-    margin-block-start: -30px;
+    padding-block: 50px 40px;
+    margin-block-start: 35px;
   }
 }
 
-.bottomArchSvg {
-  inline-size: 100%;
-  block-size: 70px;
-  display: block;
-  margin-block-start: -1px;
+.topArchCrown {
+  position: absolute;
+  inset-block-start: -48px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  inline-size: 400px;
+  block-size: 52px;
+  fill: #0b4d3c;
+  pointer-events: none;
 
   @include breakpoints.smallerThanTablet {
-    block-size: 40px;
+    inset-block-start: -30px;
+    inline-size: 240px;
+    block-size: 34px;
+  }
+}
+
+.bottomArchNotch {
+  position: absolute;
+  inset-block-end: -20px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  inline-size: 200px;
+  block-size: 22px;
+  fill: #0b4d3c;
+  pointer-events: none;
+
+  @include breakpoints.smallerThanTablet {
+    inset-block-end: -14px;
+    inline-size: 130px;
+    block-size: 15px;
   }
 }
 
