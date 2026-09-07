@@ -25,6 +25,11 @@
   transition: background 0.8s ease;
 }
 
+.heroContent {
+  position: relative;
+  inline-size: 100%;
+}
+
 .morningAura {
   background: radial-gradient(circle at 50% -15%, rgba(245, 158, 11, 0.09) 0%, transparent 70%),
     radial-gradient(circle at 20% 30%, var(--color-primary-subtle) 0%, transparent 50%),
