@@ -61,12 +61,12 @@
   inline-size: 100%;
   block-size: 100%;
   z-index: 1;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.22));
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.32));
 }
 
 .petalPath {
-  stroke: var(--color-accent-gold, #f59e0b);
-  stroke-width: 2.2px;
+  stroke: #d4a338;
+  stroke-width: 1.5px;
   transition: stroke var(--transition-fast) ease, stroke-width var(--transition-fast) ease;
 }
 

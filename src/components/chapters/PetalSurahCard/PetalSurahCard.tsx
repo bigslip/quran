@@ -45,8 +45,8 @@ const PetalSurahCard: React.FC<PetalSurahCardProps> = ({ chapter, isPreload = fa
           <defs>
             <linearGradient id={`petalGrad-${chapter.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#fffef7" />
-              <stop offset="60%" stopColor="#fef9c3" />
-              <stop offset="100%" stopColor="#fef08a" />
+              <stop offset="55%" stopColor="#fef8dc" />
+              <stop offset="100%" stopColor="#fdf2b8" />
             </linearGradient>
           </defs>
           <path
