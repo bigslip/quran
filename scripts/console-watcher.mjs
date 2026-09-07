@@ -1,67 +1,91 @@
 #!/usr/bin/env node
 /**
- * Real-time Console and Error Watcher
- * Connects over CDP or launches browser to listen to all console events and runtime errors.
+ * Real-time Console & Error Watcher
+ * Connects directly via Chrome DevTools Protocol (CDP) WebSocket on port 9222
+ * to stream runtime errors, warnings, and console logs in real-time.
  */
-
-import { chromium } from 'playwright';
 
 const PORT = process.env.PORT || 4000;
 const BASE_URL = `http://localhost:${PORT}`;
 
 async function startWatcher() {
   console.log(`\n======================================================`);
-  console.log(`👀 Console Watcher Active on ${BASE_URL}`);
+  console.log(`👀 Chrome Real-Time Console & Error Watcher`);
+  console.log(`🌐 Target: ${BASE_URL}`);
   console.log(`======================================================\n`);
 
-  let browser;
+  let target;
   try {
-    browser = await chromium.connectOverCDP('http://localhost:9222');
-    console.log('🔗 Connected to Chrome CDP on port 9222');
-  } catch {
-    browser = await chromium.launch({
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--no-first-run'],
-    });
-    console.log('🚀 Launched Headless Chrome instance');
+    const res = await fetch('http://localhost:9222/json');
+    const tabs = await res.json();
+    target = tabs.find(t => t.url && t.url.includes(BASE_URL));
+    if (!target) {
+      console.log(`Creating new Chrome tab pointing to ${BASE_URL}...`);
+      target = await (await fetch(`http://localhost:9222/json/new?${BASE_URL}`, { method: 'PUT' })).json();
+    }
+  } catch (err) {
+    console.error(`⚠️  Could not connect to Chrome on port 9222 (${err.message}). Make sure Chrome is running with --remote-debugging-port=9222.`);
+    return;
   }
 
-  const context = browser.contexts()[0] || (await browser.newContext({ viewport: { width: 1440, height: 900 } }));
-  const page = context.pages()[0] || (await context.newPage());
+  if (!target || !target.webSocketDebuggerUrl) {
+    console.error('❌ Failed to retrieve WebSocket Debugger URL from Chrome target.');
+    return;
+  }
 
-  page.on('pageerror', (err) => {
-    console.error(`🚨 [PAGE_ERROR]: ${err.message}\n${err.stack || ''}`);
-  });
+  console.log(`🔗 Connected to Chrome Tab: "${target.title || BASE_URL}"`);
+  console.log(`📡 WebSocket: ${target.webSocketDebuggerUrl}\n`);
 
-  page.on('console', (msg) => {
-    const type = msg.type();
-    const text = msg.text();
-    if (text.includes('Download the React DevTools') || text.includes('[HMR] connected')) return;
+  const ws = new WebSocket(target.webSocketDebuggerUrl);
 
-    if (type === 'error') {
-      console.error(`🔴 [CONSOLE_ERROR]: ${text}`);
-    } else if (type === 'warning') {
-      console.warn(`⚠️  [CONSOLE_WARN]: ${text}`);
-    } else {
-      console.log(`ℹ️  [CONSOLE_${type.toUpperCase()}]: ${text}`);
+  ws.onopen = () => {
+    console.log('✅ DevTools Protocol connected! Listening for live console and page events...\n');
+    ws.send(JSON.stringify({ id: 1, method: 'Runtime.enable' }));
+    ws.send(JSON.stringify({ id: 2, method: 'Log.enable' }));
+    ws.send(JSON.stringify({ id: 3, method: 'Network.enable' }));
+  };
+
+  ws.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      if (data.method === 'Runtime.consoleAPICalled') {
+        const type = data.params.type;
+        const text = data.params.args.map(a => a.value !== undefined ? String(a.value) : (a.description || '')).join(' ');
+        if (text.includes('Download the React DevTools') || text.includes('[HMR] connected')) return;
+
+        if (type === 'error') {
+          console.error(`🔴 [CONSOLE_ERROR]: ${text}`);
+        } else if (type === 'warning') {
+          console.warn(`⚠️  [CONSOLE_WARN]: ${text}`);
+        } else {
+          console.log(`ℹ️  [CONSOLE_${type.toUpperCase()}]: ${text}`);
+        }
+      } else if (data.method === 'Runtime.exceptionThrown') {
+        const details = data.params.exceptionDetails;
+        console.error(`🚨 [PAGE_EXCEPTION]: ${details.text} - ${details.exception?.description || ''}`);
+      } else if (data.method === 'Log.entryAdded') {
+        const entry = data.params.entry;
+        if (entry.level === 'error') {
+          console.error(`🔴 [LOG_ERROR]: ${entry.text}`);
+        } else if (entry.level === 'warning') {
+          console.warn(`⚠️  [LOG_WARN]: ${entry.text}`);
+        }
+      }
+    } catch {
+      // Ignore JSON parse errors for non-standard frames
     }
-  });
+  };
 
-  page.on('response', (res) => {
-    if (res.status() >= 400 && !res.url().includes('/api/proxy/auth/courses')) {
-      console.error(`❌ [NETWORK_FAIL]: HTTP ${res.status()} -> ${res.url()}`);
-    }
-  });
+  ws.onerror = (err) => {
+    console.error(`❌ WebSocket error: ${err.message}`);
+  };
 
-  await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-  console.log(`✅ Loaded ${BASE_URL} (Page Title: "${await page.title()}")`);
-  console.log(`Listening for live console logs and network events...\n`);
+  ws.onclose = () => {
+    console.log('🔌 Chrome DevTools connection closed.');
+  };
 
   // Keep alive
   await new Promise(() => {});
 }
 
-startWatcher().catch((err) => {
-  console.error('Watcher failed:', err);
-});
+startWatcher().catch(console.error);
