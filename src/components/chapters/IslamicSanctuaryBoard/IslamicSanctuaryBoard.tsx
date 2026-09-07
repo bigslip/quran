@@ -85,8 +85,10 @@ const BOTTOM_ARCH_NOTCH = (
   </div>
 );
 
+const SSR_DEFAULT_PATTERN = [3, 4];
+
 const getHoneycombPattern = (): number[] => {
-  if (typeof window === 'undefined') return [3, 4];
+  if (typeof window === 'undefined') return SSR_DEFAULT_PATTERN;
   if (window.innerWidth < 640) return [1, 2];
   if (window.innerWidth < 1024) return [3, 2];
   return [3, 4];
@@ -96,7 +98,9 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({
   chapters,
   mostVisitedChapters = DEFAULT_MOST_VISITED,
 }) => {
-  const [pattern, setPattern] = useState<number[]>(getHoneycombPattern);
+  // Always initialize to SSR_DEFAULT_PATTERN to prevent SSR/client hydration mismatch (rendering-hydration-no-flicker)
+  const [pattern, setPattern] = useState<number[]>(SSR_DEFAULT_PATTERN);
+
 
   // Use matchMedia queries when available, with passive resize listener fallback (client-event-listeners)
   useEffect(() => {

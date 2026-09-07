@@ -10,8 +10,12 @@
   min-block-size: 44px;
 
   &:focus-visible {
+    outline: 2.5px solid var(--color-accent-gold, #f59e0b);
+    outline-offset: 4px;
+
     .petalCard {
-      filter: drop-shadow(0 0 16px var(--color-accent-gold));
+      filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6))
+        drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45));
     }
   }
 }
@@ -28,14 +32,21 @@
   justify-content: center;
   text-align: center;
   cursor: pointer;
-  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+  transform: translateZ(0);
+  transition: transform var(--transition-fast) cubic-bezier(0.175, 0.885, 0.32, 1.275),
     filter var(--transition-fast) ease;
 
   @media (hover: hover) {
     &:hover {
       transform: translateY(-6px) scale(1.04);
-      filter: drop-shadow(0 16px 32px rgba(253, 242, 184, 0.35)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+      filter: drop-shadow(0 20px 36px rgba(0, 0, 0, 0.5))
+        drop-shadow(0 4px 12px rgba(219, 158, 48, 0.35));
     }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
+    transition-duration: 80ms;
   }
 
   @media (max-width: 1023px) and (min-width: 640px) {
@@ -44,8 +55,8 @@
   }
 
   @include breakpoints.smallerThanTablet {
-    inline-size: 150px;
-    block-size: 150px;
+    inline-size: 146px;
+    block-size: 146px;
   }
 }
 
@@ -128,12 +139,16 @@
   padding: var(--spacing-small-px);
   inline-size: 100%;
   block-size: 100%;
+
+  @include breakpoints.smallerThanTablet {
+    padding: var(--spacing-xxsmall-px);
+  }
 }
 
 .surahNumberBadge {
   inline-size: 26px;
   block-size: 26px;
-  background-color: #064e3b;
+  background-color: #004b39;
   color: #fef08a;
   font-size: 11px;
   font-weight: var(--font-weight-bold);
@@ -154,10 +169,13 @@
   }
 
   @include breakpoints.smallerThanTablet {
-    inline-size: 22px;
-    block-size: 22px;
+    inline-size: 20px;
+    block-size: 20px;
+    border-width: 1px;
+    margin-block-end: 1px;
+
     .badgeNumberText {
-      font-size: 10px;
+      font-size: 9.5px;
     }
   }
 }
@@ -166,14 +184,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #064e3b;
+  color: #004b39;
   line-height: 1;
   margin-block: 2px;
 
   svg,
   span {
-    color: #064e3b;
-    fill: #064e3b;
+    color: #004b39;
+    fill: #004b39;
+    transition: color var(--transition-fast) ease, fill var(--transition-fast) ease;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    margin-block: 1px;
   }
 }
 
@@ -188,10 +211,12 @@
   max-inline-size: 130px;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color var(--transition-fast) ease;
 
   @include breakpoints.smallerThanTablet {
-    font-size: 11px;
-    max-inline-size: 110px;
+    font-size: 10.5px;
+    max-inline-size: 96px;
+    margin-block-start: 1px;
   }
 }
 
@@ -203,9 +228,12 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  transition: color var(--transition-fast) ease;
 
   @include breakpoints.smallerThanTablet {
-    font-size: 9px;
+    font-size: 8.5px;
+    gap: 3px;
+    margin-block-start: 2px;
   }
 }
 
@@ -216,6 +244,12 @@
   padding-block: 1px;
   border-radius: 4px;
   line-height: 1.2;
+  transition: background var(--transition-fast) ease, color var(--transition-fast) ease;
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: 4px;
+    border-radius: 3px;
+  }
 }
 
 .makkah {
@@ -226,3 +260,4 @@
   color: #047857;
   background: rgba(4, 120, 87, 0.14);
 }
+
