@@ -37,26 +37,26 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters 
       {/* Top Islamic Arch Header (Exact 1:1 silhouette from surah.jpeg) */}
       <svg
         className={styles.topArchSvg}
-        viewBox="0 0 1200 240"
+        viewBox="0 0 1200 220"
         preserveAspectRatio="none"
         aria-hidden="true"
         data-testid="sanctuary-top-crest"
       >
         <path
           d="
-            M 0,240
-            L 0,195
-            C 0,140 45,120 92,120
-            L 488,120
-            C 498,120 508,112 516,99.5
-            C 526,82 541,61 562,43.4
-            C 582,25.5 597,5 600,0
-            C 603,5 618,25.5 638,43.4
-            C 659,61 674,82 684,99.5
-            C 692,112 702,120 712,120
-            L 1108,120
-            C 1155,120 1200,140 1200,195
-            L 1200,240
+            M 0,220
+            L 0,165
+            C 0,115 45,90 95,90
+            L 380,90
+            C 415,90 435,78 450,60
+            C 475,30 520,18 565,8
+            C 585,3 597,0 600,0
+            C 603,0 615,3 635,8
+            C 680,18 725,30 750,60
+            C 765,78 785,90 820,90
+            L 1105,90
+            C 1155,90 1200,115 1200,165
+            L 1200,220
             Z
           "
         />
@@ -86,7 +86,7 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters 
       {/* Bottom Islamic Arch Notch (Exact 1:1 silhouette from surah.jpeg) */}
       <svg
         className={styles.bottomArchSvg}
-        viewBox="0 0 1200 180"
+        viewBox="0 0 1200 90"
         preserveAspectRatio="none"
         aria-hidden="true"
         data-testid="sanctuary-bottom-crest"
@@ -94,15 +94,15 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({ chapters, mostVisitedChapters 
         <path
           d="
             M 0,0
-            L 0,45
-            C 0,95 45,120 92,120
-            L 488,120
-            C 520,120 545,135 565,150
-            C 585,165 597,180 600,180
-            C 603,180 615,165 635,150
-            C 655,135 680,120 712,120
-            L 1108,120
-            C 1155,120 1200,95 1200,45
+            L 0,35
+            C 0,65 45,90 95,90
+            L 490,90
+            C 530,90 565,102 585,114
+            C 595,120 600,128 600,128
+            C 600,128 605,120 615,114
+            C 635,102 670,90 710,90
+            L 1105,90
+            C 1155,90 1200,65 1200,35
             L 1200,0
             Z
           "

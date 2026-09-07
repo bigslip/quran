@@ -17,8 +17,8 @@
 }
 
 .petalCard {
-  inline-size: 190px;
-  block-size: 190px;
+  inline-size: 210px;
+  block-size: 210px;
   min-inline-size: 44px;
   min-block-size: 44px;
   position: relative;
@@ -34,23 +34,18 @@
   @media (hover: hover) {
     &:hover {
       transform: translateY(-6px) scale(1.04);
-      filter: drop-shadow(0 12px 24px rgba(245, 158, 11, 0.42));
-
-      .petalPath {
-        stroke: var(--color-accent-gold-rich, #d97706);
-        stroke-width: 3px;
-      }
+      filter: drop-shadow(0 16px 32px rgba(253, 242, 184, 0.35)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
     }
   }
 
   @media (max-width: 1023px) and (min-width: 640px) {
-    inline-size: 168px;
-    block-size: 168px;
+    inline-size: 175px;
+    block-size: 175px;
   }
 
   @include breakpoints.smallerThanTablet {
-    inline-size: 152px;
-    block-size: 152px;
+    inline-size: 150px;
+    block-size: 150px;
   }
 }
 
@@ -61,13 +56,12 @@
   inline-size: 100%;
   block-size: 100%;
   z-index: 1;
-  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.32));
+  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.4));
 }
 
 .petalPath {
-  stroke: #d4a338;
-  stroke-width: 1.5px;
-  transition: stroke var(--transition-fast) ease, stroke-width var(--transition-fast) ease;
+  stroke: rgba(212, 163, 56, 0.2);
+  stroke-width: 0.75px;
 }
 
 .cardContent {
