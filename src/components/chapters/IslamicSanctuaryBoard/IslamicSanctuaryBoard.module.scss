@@ -86,8 +86,8 @@
 .honeycombRow {
   display: flex;
   justify-content: center;
-  gap: 22px;
-  margin-block-start: -85px;
+  gap: 48px;
+  margin-block-start: -20px;
   flex-wrap: nowrap;
 
   &:first-child {
@@ -95,13 +95,13 @@
   }
 
   @media (max-width: 1023px) and (min-width: 640px) {
-    gap: 14px;
-    margin-block-start: -68px;
+    gap: 32px;
+    margin-block-start: -12px;
   }
 
   @include breakpoints.smallerThanTablet {
-    gap: 8px;
-    margin-block-start: -55px;
+    gap: 16px;
+    margin-block-start: -6px;
   }
 }
 
