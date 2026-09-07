@@ -100,7 +100,7 @@ const Index: NextPage<IndexProps> = ({
             <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
               <ChapterAndJuzListWrapper chapters={chapters} />
             </div>
-            {isMobile ? (
+            {isMounted && isMobile ? (
               <MobileHomepageSections
                 isUserLoggedIn={isUserLoggedIn}
                 todayAyah={todayAyah}
