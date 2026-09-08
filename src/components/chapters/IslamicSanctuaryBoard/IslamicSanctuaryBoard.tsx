@@ -10,6 +10,8 @@ import Chapter from 'types/Chapter';
 type Props = {
   chapters: Chapter[];
   mostVisitedChapters?: Record<number, boolean>;
+  getOrderNumber?: (chapter: Chapter) => number;
+  onChapterClick?: (chapterId: string | number) => void;
 };
 
 // Hoist static non-primitive default prop to prevent breaking React.memo (rerender-memo-with-default-value)
@@ -99,6 +101,8 @@ const getHoneycombPattern = (): number[] => {
 const IslamicSanctuaryBoard: React.FC<Props> = ({
   chapters,
   mostVisitedChapters = DEFAULT_MOST_VISITED,
+  getOrderNumber,
+  onChapterClick,
 }) => {
   // Always initialize to SSR_DEFAULT_PATTERN to prevent SSR/client hydration mismatch (rendering-hydration-no-flicker)
   const [pattern, setPattern] = useState<number[]>(SSR_DEFAULT_PATTERN);
@@ -165,7 +169,9 @@ const IslamicSanctuaryBoard: React.FC<Props> = ({
                   <PetalSurahCard
                     key={chapter.id}
                     chapter={chapter}
+                    orderNumber={getOrderNumber ? getOrderNumber(chapter) : undefined}
                     isPreload={mostVisitedChapters[Number(chapter.id)] === true}
+                    onClick={onChapterClick}
                   />
                 ))}
               </div>

@@ -298,7 +298,7 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
         )}
       </div>
 
-      {view === View.Surah && (
+      {(view === View.Surah || view === View.RevelationOrder) && (
         <div className={styles.filterBar}>
           <div className={styles.searchInputWrapper}>
             <span className={styles.searchIcon} aria-hidden="true">
@@ -396,9 +396,29 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
         </div>
       )}
       {view === View.RevelationOrder && (
-        <div data-testid="chapter-and-juz-list" className={styles.surahLayout}>
-          <RevelationOrderView isDescending={sortBy === Sort.DESC} chapters={chapters} />
-        </div>
+        <>
+          {filteredChapters.length > 0 ? (
+            <RevelationOrderView
+              isDescending={sortBy === Sort.DESC}
+              chapters={filteredChapters}
+            />
+          ) : (
+            <div className={styles.emptyContainer} data-testid="no-surahs-found">
+              <div className={styles.emptyIcon} aria-hidden="true">
+                <SearchIcon />
+              </div>
+              <p className={styles.emptyTitle}>{t('home:no-surahs-found')}</p>
+              <button
+                type="button"
+                className={styles.resetButton}
+                onClick={handleResetFilters}
+                data-testid="reset-surah-filters"
+              >
+                {t('home:clear-filters')}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </>
   );

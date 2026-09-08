@@ -16,15 +16,24 @@ import Chapter from 'types/Chapter';
 type PetalSurahCardProps = {
   chapter: Chapter;
   isPreload?: boolean;
+  orderNumber?: number;
+  onClick?: (chapterId: string | number) => void;
 };
 
-const PetalSurahCard: React.FC<PetalSurahCardProps> = ({ chapter, isPreload = false }) => {
+const PetalSurahCard: React.FC<PetalSurahCardProps> = ({
+  chapter,
+  isPreload = false,
+  orderNumber,
+  onClick,
+}) => {
   const { t, lang } = useTranslation('common');
+
+  const displayOrderNumber = orderNumber ?? Number(chapter.id);
 
   // Derive localized strings efficiently with primitive dependencies (rerender-derived-state)
   const localizedSurahNumber = useMemo(
-    () => toLocalizedNumber(Number(chapter.id), lang),
-    [chapter.id, lang],
+    () => toLocalizedNumber(displayOrderNumber, lang),
+    [displayOrderNumber, lang],
   );
   const localizedAyahCount = useMemo(
     () => toLocalizedNumber(chapter.versesCount, lang),
@@ -34,9 +43,17 @@ const PetalSurahCard: React.FC<PetalSurahCardProps> = ({ chapter, isPreload = fa
   const isMakkah = chapter.revelationPlace === 'makkah';
 
   // Stabilize event handler callback to prevent unnecessary child re-renders (rerender-memo)
-  const handleCardClick = useCallback(() => {
-    logButtonClick(`homepage_surah_card_${chapter.id}`);
-  }, [chapter.id]);
+  const handleCardClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (onClick) {
+        e.preventDefault();
+        onClick(chapter.id);
+        return;
+      }
+      logButtonClick(`homepage_surah_card_${chapter.id}`);
+    },
+    [chapter.id, onClick],
+  );
 
   const revelationPlaceLabel = isMakkah
     ? t('common:makkah-short', { defaultValue: 'Makki' })
