@@ -6,17 +6,17 @@
     "auth-onboarding": {
       "data-sync": {
         "action": "Suivant",
-        "description": "Que vous utilisiez Quran.com sur votre téléphone ou votre PC, vos favoris, les dernières Ayahs que vous avez lues et vos préférences seront disponibles",
+        "description": "Que vous utilisiez Quran.ir sur votre téléphone ou votre PC, vos favoris, les dernières Ayahs que vous avez lues et vos préférences seront disponibles",
         "title": "Vos données seront synchronisées <br></br>sur tous les appareils"
       },
       "feedback": {
         "action": "Ok, j'ai compris",
-        "description": "Merci d'utiliser Quran.com. Nous serions heureux d'entendre vos avis sur <link>feedback.quran.com </link>",
+        "description": "Merci d'utiliser Quran.ir. Nous serions heureux d'entendre vos avis sur <link>feedback.quran.ir </link>",
         "title": "Nous serions ravis de recueillir vos avis"
       },
       "quran-foundation-link": {
         "action": "Suivant",
-        "description": "Utilisez votre connexion Quran.com pour accéder à QuranReflect.com - une communauté mondiale florissante engagée dans la réflexion Coranique.",
+        "description": "Utilisez votre connexion Quran.ir pour accéder à QuranReflect.com - une communauté mondiale florissante engagée dans la réflexion Coranique.",
         "title": "Utilisez votre compte sur toutes les applications Quran.Foundation !"
       },
       "quran-growth-journey": {
@@ -26,7 +26,7 @@
       },
       "welcome": {
         "action": "Nouvelles fonctionnalités",
-        "title": "Bienvenue sur Quran.com <br></br> Compte utilisateur"
+        "title": "Bienvenue sur Quran.ir <br></br> Compte utilisateur"
       }
     },
     "collections-announcement": {
@@ -257,7 +257,7 @@
   },
   "footer": {
     "apps-disclaimer": "Chaque application est la propriété de son développeur et est maintenue par celui-ci. Pour toute assistance, signalement de bug ou demande de fonctionnalité, veuillez contacter directement le créateur de l'application.",
-    "description": "Quran.com est une plateforme fiable utilisée par des millions de personnes dans le monde pour lire, rechercher, écouter et méditer sur le Coran en plusieurs langues. Elle propose des traductions, des tafsirs, des récitations, des traductions mot à mot et des outils pour une étude plus approfondie, rendant le Coran accessible à tous. <br/> <br/> En tant que Sadaqah Jariyah, Quran.com se consacre à aider les gens à se connecter profondément au Coran. Soutenu par <link> Quran.Foundation </link>, une organisation à but non lucratif 501(c)(3), Quran.com continue de se développer en tant que ressource gratuite et précieuse pour tous, Alhamdulillah.",
+    "description": "Quran.ir est une plateforme fiable utilisée par des millions de personnes dans le monde pour lire, rechercher, écouter et méditer sur le Coran en plusieurs langues. Elle propose des traductions, des tafsirs, des récitations, des traductions mot à mot et des outils pour une étude plus approfondie, rendant le Coran accessible à tous. <br/> <br/> En tant que Sadaqah Jariyah, Quran.ir se consacre à aider les gens à se connecter profondément au Coran. Soutenu par <link> Quran.Foundation </link>, une organisation à but non lucratif 501(c)(3), Quran.ir continue de se développer en tant que ressource gratuite et précieuse pour tous, Alhamdulillah.",
     "hiring": "Nous recrutons ! Rejoignez l'équipe de QuranFoundation et contribuez à notre mission. <link> Postulez maintenant ! </link>",
     "rights": "Tous droits réservés",
     "title": "Lire, Écouter, Rechercher et Méditer sur le Coran"
@@ -280,10 +280,10 @@
   "from": "De",
   "fundraising-card-v2": {
     "cta": "Faites un don maintenant",
-    "description": "Les donateurs mensuels nous aident à améliorer Quran.com et à assurer la pérennité de nos activités, ce qui nous permet de nous concentrer moins sur la collecte de fonds et plus sur la création d'impact.",
+    "description": "Les donateurs mensuels nous aident à améliorer Quran.ir et à assurer la pérennité de nos activités, ce qui nous permet de nous concentrer moins sur la collecte de fonds et plus sur la création d'impact.",
     "title": "Devenez donateur mensuel"
   },
-  "fundraising-share-title": "Partager la collecte de fonds de Quran.com",
+  "fundraising-share-title": "Partager la collecte de fonds de Quran.ir",
   "fundraising-sticky-banner-v2": {
     "cta": "Faire un don",
     "desktop-text": "Contribuez à notre mission",
@@ -295,7 +295,7 @@
     "title": "Donnez pendant les meilleurs jours !"
   },
   "fundraising": {
-    "description": "Les dons mensuels nous aident à améliorer Quran.com et à maintenir nos opérations afin que nous nous concentrions moins sur la collecte de fonds et davantage sur la création d'un impact.",
+    "description": "Les dons mensuels nous aident à améliorer Quran.ir et à maintenir nos opérations afin que nous nous concentrions moins sur la collecte de fonds et davantage sur la création d'un impact.",
     "donation-campaign": {
       "cta": "Faites un don aujourd'hui",
       "text": "Devenez un supporter"
@@ -387,7 +387,7 @@
   "projects-desc": "Projets à but non lucratif détenus, gérés ou sponsorisés par <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
   "quran-apps": "Quran Apps",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
   "quran-radio": "Quran Radio",
   "read": "Lire",
   "read-more": "En savoir plus",
@@ -568,5 +568,5 @@
   "search-languages": "Search languages...",
   "languages-count": "{{count}} of {{total}} languages",
   "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.com"
+  "select-language-description": "Select your preferred display language for Quran.ir"
 }

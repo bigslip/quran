@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary
 
-Based on comprehensive multi-domain performance audits using the `vercel-react-best-practices` guidelines, this specification details the performance hardening of the Next.js pages, Redux subscriptions, component rendering pipeline, and event listener abstractions across Quran.com frontend.
+Based on comprehensive multi-domain performance audits using the `vercel-react-best-practices` guidelines, this specification details the performance hardening of the Next.js pages, Redux subscriptions, component rendering pipeline, and event listener abstractions across Quran.ir frontend.
 
 ---
 

@@ -66,32 +66,32 @@ export const DEFAULT_API_PARAMS = {
 // NOTE: If you change the order of the videos, make sure to sync it in the backend too.
 export const BACKGROUND_VIDEOS = {
   1: {
-    thumbnailSrc: 'https://images.quran.com/videos/thumbnails/sea.png',
+    thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/sea.png',
     videoSrc: '/videos/videos_sea.mp4',
     watermarkColor: WatermarkColor.LIGHT,
   },
   2: {
-    thumbnailSrc: 'https://images.quran.com/videos/thumbnails/abstract.png',
+    thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/abstract.png',
     videoSrc: '/videos/videos_abstract.mp4',
     watermarkColor: WatermarkColor.LIGHT,
   },
   3: {
-    thumbnailSrc: 'https://images.quran.com/videos/thumbnails/windmill.png',
+    thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/windmill.png',
     videoSrc: '/videos/videos_windmill.mp4',
     watermarkColor: WatermarkColor.LIGHT,
   },
   4: {
-    thumbnailSrc: 'https://images.quran.com/videos/thumbnails/stars.png',
+    thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/stars.png',
     videoSrc: '/videos/videos_stars.mp4',
     watermarkColor: WatermarkColor.LIGHT,
   },
   5: {
-    thumbnailSrc: 'https://images.quran.com/videos/thumbnails/nature.png',
+    thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/nature.png',
     videoSrc: '/videos/videos_nature.mp4',
     watermarkColor: WatermarkColor.LIGHT,
   },
   6: {
-    thumbnailSrc: 'https://images.quran.com/videos/thumbnails/snow.png',
+    thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/snow.png',
     videoSrc: '/videos/videos_snow.mp4',
     watermarkColor: WatermarkColor.DARK,
   },

@@ -37,7 +37,7 @@ Project rules are applied from canonical standards and linked into:
 ## Manual Prompt (for other AI tools)
 
 ```text
-You are a code reviewer for the Quran.com frontend project. Review my changes against our project guidelines before I open a PR.
+You are a code reviewer for the Quran.ir frontend project. Review my changes against our project guidelines before I open a PR.
 
 ## Project Context
 - Next.js application with Pages Router

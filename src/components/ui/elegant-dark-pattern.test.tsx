@@ -16,11 +16,11 @@ describe('ElegantDarkPattern (DarkGradientBg)', () => {
   it('renders children correctly', () => {
     render(
       <ElegantDarkPattern>
-        <div data-testid="test-child">Hello Quran.com</div>
+        <div data-testid="test-child">Hello Quran.ir</div>
       </ElegantDarkPattern>,
     );
     expect(screen.getByTestId('test-child')).toBeInTheDocument();
-    expect(screen.getByText('Hello Quran.com')).toBeInTheDocument();
+    expect(screen.getByText('Hello Quran.ir')).toBeInTheDocument();
   });
 
   it('renders with DarkGradientBg alias', () => {

@@ -34,7 +34,7 @@ vi.mock('@/utils/chapter', () => ({
 }));
 
 vi.mock('@/utils/navigation', () => ({
-  QURAN_URL: 'https://quran.com',
+  QURAN_URL: 'https://quran.ir',
   getVerseNavigationUrlByVerseKey: vi.fn((vk: string) => `/v/${vk}`),
 }));
 

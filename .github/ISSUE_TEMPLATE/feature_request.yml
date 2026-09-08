@@ -1,12 +1,12 @@
 name: Feature request
-description: Suggest a feature to improve Quran.com
+description: Suggest a feature to improve Quran.ir
 title: "[feature]: "
 labels: [feature]
 body:
 - type: markdown
   attributes:
     value: |
-      Thank you for taking the time to suggest a new feature for quran.com
+      Thank you for taking the time to suggest a new feature for quran.ir
 - type: checkboxes
   attributes:
     label: Is there an existing issue for this feature?
@@ -17,7 +17,7 @@ body:
 - type: textarea
   attributes:
     label: Summary
-    description: A clear and concise description of this missing feature. How this feature will improve quran.com?
+    description: A clear and concise description of this missing feature. How this feature will improve quran.ir?
   validations:
     required: true
 - type: textarea

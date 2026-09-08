@@ -6,17 +6,17 @@
     "auth-onboarding": {
       "data-sync": {
         "action": "下一个",
-        "description": "无论您是在手机还是笔记本电脑上使用 Quran.com，您的书签、最后阅读的经文和您的偏好都将可用",
+        "description": "无论您是在手机还是笔记本电脑上使用 Quran.ir，您的书签、最后阅读的经文和您的偏好都将可用",
         "title": "您的数据将在设备间同步<br></br>"
       },
       "feedback": {
         "action": "好，知道了",
-        "description": "感谢您使用 Quran.com，我们很高兴听到您对<link> feedback.quran.com </link> 的反馈",
+        "description": "感谢您使用 Quran.ir，我们很高兴听到您对<link> feedback.quran.ir </link> 的反馈",
         "title": "我们想听听你的想法"
       },
       "quran-foundation-link": {
         "action": "下一个",
-        "description": "使用您的 Quran.com 登录名访问 QuranReflect.com — 一个致力于反思古兰经的蓬勃发展的全球社区。",
+        "description": "使用您的 Quran.ir 登录名访问 QuranReflect.com — 一个致力于反思古兰经的蓬勃发展的全球社区。",
         "title": "在 Quran.Foundation 应用程序中使用您的帐户！"
       },
       "quran-growth-journey": {
@@ -26,7 +26,7 @@
       },
       "welcome": {
         "action": "看看有什么新鲜事",
-        "title": "欢迎来到 Quran.com <br></br>用户帐户"
+        "title": "欢迎来到 Quran.ir <br></br>用户帐户"
       }
     },
     "collections-announcement": {
@@ -257,7 +257,7 @@
   },
   "footer": {
     "apps-disclaimer": "每个应用程序均由其开发者独立拥有和维护。如需支持、提交错误报告或提出功能请求，请直接联系应用程序创建者。",
-    "description": "Quran.com 是一个值得信赖的平台，全球数百万人使用它来阅读、搜索、聆听和思考多种语言的《古兰经》。它提供翻译、注释、诵读、逐字翻译以及深入研究的工具，让每个人都能接触到《古兰经》。 <br/> <br/>作为一家名为“施舍之家”（Sadaqah Jariyah）的机构，Quran.com 致力于帮助人们与《古兰经》建立更深层次的联系。在 501(c)(3) 非营利组织<link> Quran.Foundation </link>的支持下，Quran.com 不断发展壮大，成为所有人的免费宝贵资源。Alhamdulillah（真主安拉）",
+    "description": "Quran.ir 是一个值得信赖的平台，全球数百万人使用它来阅读、搜索、聆听和思考多种语言的《古兰经》。它提供翻译、注释、诵读、逐字翻译以及深入研究的工具，让每个人都能接触到《古兰经》。 <br/> <br/>作为一家名为“施舍之家”（Sadaqah Jariyah）的机构，Quran.ir 致力于帮助人们与《古兰经》建立更深层次的联系。在 501(c)(3) 非营利组织<link> Quran.Foundation </link>的支持下，Quran.ir 不断发展壮大，成为所有人的免费宝贵资源。Alhamdulillah（真主安拉）",
     "hiring": "我们正在招聘！加入古兰经基金会团队并为我们的使命做出贡献。 <link>立即申请！ </link>",
     "rights": "版权所有",
     "title": "阅读、聆听、探索并思考《古兰经》"
@@ -280,10 +280,10 @@
   "from": "从",
   "fundraising-card-v2": {
     "cta": "立即捐款",
-    "description": "每月捐款帮助我们改进 Quran.com 并维持运营，使我们能够减少对筹款的关注，更多地关注创造影响力。",
+    "description": "每月捐款帮助我们改进 Quran.ir 并维持运营，使我们能够减少对筹款的关注，更多地关注创造影响力。",
     "title": "成为月捐者"
   },
-  "fundraising-share-title": "分享 Quran.com 筹款活动",
+  "fundraising-share-title": "分享 Quran.ir 筹款活动",
   "fundraising-sticky-banner-v2": {
     "cta": "捐",
     "desktop-text": "为我们的使命做出贡献",
@@ -295,7 +295,7 @@
     "title": "在最好的日子里赠送！"
   },
   "fundraising": {
-    "description": "每月的捐款帮助我们改善 Quran.com 并维持运营，因此我们不再专注于筹款，而是更多地关注创造影响力。",
+    "description": "每月的捐款帮助我们改善 Quran.ir 并维持运营，因此我们不再专注于筹款，而是更多地关注创造影响力。",
     "donation-campaign": {
       "cta": "立即捐款",
       "text": "成为支持者"
@@ -387,7 +387,7 @@
   "projects-desc": "<link>Quran.Foundation</link> 拥有、管理或赞助的非营利项目",
   "q-reflect": "古兰经反射",
   "quran-apps": "古兰经应用程序",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
   "quran-radio": "在线听古兰经",
   "read": "读",
   "read-more": "阅读更多",
@@ -568,5 +568,5 @@
   "search-languages": "Search languages...",
   "languages-count": "{{count}} of {{total}} languages",
   "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.com"
+  "select-language-description": "Select your preferred display language for Quran.ir"
 }

@@ -2,7 +2,7 @@
   "api-docs": {
     "cta": "Xem tài liệu API",
     "header": "Tài liệu API",
-    "sub-header": "Tích hợp dữ liệu Quran.com vào ứng dụng bằng API toàn diện của chúng tôi.",
+    "sub-header": "Tích hợp dữ liệu Quran.ir vào ứng dụng bằng API toàn diện của chúng tôi.",
     "title": "Tài liệu API"
   },
   "app-portal": {
@@ -10,7 +10,7 @@
     "cta-oauth": "Xem hướng dẫn OAuth2.",
     "description": "Khám phá các ứng dụng đột phá cho nhiều nhóm người dùng khác nhau.",
     "heading": "Ứng dụng Kinh Qur'an kết nối",
-    "oauth-pitch": "Sử dụng OAuth2.0 do Quran.Foundation cung cấp để người dùng truy cập lại dữ liệu của họ và tiếp tục những phần còn dang dở trên Quran.com và các ứng dụng tích hợp.",
+    "oauth-pitch": "Sử dụng OAuth2.0 do Quran.Foundation cung cấp để người dùng truy cập lại dữ liệu của họ và tiếp tục những phần còn dang dở trên Quran.ir và các ứng dụng tích hợp.",
     "tagline": "Giới thiệu ứng dụng Qur'an của bạn"
   },
   "careers": {
@@ -18,11 +18,11 @@
     "cta": "Xem các vị trí tuyển dụng",
     "header": "Khám phá các vị trí đang tuyển"
   },
-  "footer": "- Team Quran.com",
+  "footer": "- Team Quran.ir",
   "header": "Hỗ trợ phát triển",
   "hero": {
     "subtitle": "Tài nguyên, công cụ và hướng dẫn cho lập trình viên tạo trải nghiệm Kinh Qur'an.",
-    "title": "Xây dựng với Quran.com"
+    "title": "Xây dựng với Quran.ir"
   },
   "issues-cta": "Nếu bạn có bất kỳ câu hỏi nào hoặc muốn liên hệ với người bảo trì, chỉ cần để lại câu hỏi đó. Chúng tôi sẽ phản hồi lại bạn sớm nhất có thể, Insha'Allah.",
   "issues-guide": "Thông thường, chúng tôi sử dụng <0>các dự án Github</0> làm nguồn thông tin về những việc cần làm tiếp theo, những dự án sắp tới và những lỗi cần được khắc phục. Ví dụ: <1>đường dẫn này</1> chứa danh sách các lỗi, những việc chúng tôi cần hỗ trợ và các tính năng sắp ra mắt.",
@@ -30,7 +30,7 @@
   "labs-cta": "Khám phá Labs",
   "labs-description": "Khám phá các tính năng thử nghiệm từ cộng đồng và những cải tiến sắp ra mắt.",
   "labs-pitch": "Chia sẻ ý tưởng của bạn và cùng định hình tương lai cho việc tiếp cận và trải nghiệm với Kinh Qur'an.",
-  "main-desc": "Khám phá các chương trình, công cụ và tài liệu được thiết kế để giúp bạn mở rộng hệ sinh thái của Quran.com.",
+  "main-desc": "Khám phá các chương trình, công cụ và tài liệu được thiết kế để giúp bạn mở rộng hệ sinh thái của Quran.ir.",
   "projects": {
     "all": "Chúng tôi có một số dự án, tất cả đều được lưu trữ trên Github. Bạn có thể tìm thấy tất cả chúng <0>tại đây</0>. Nhưng để tóm tắt chúng như sau:",
     "items": {
@@ -41,7 +41,7 @@
       },
       "q-api": {
         "description": "Ứng dụng Ruby on Rails làm hệ thống máy chủ (backend) cung cấp dữ liệu, tìm kiếm và dịch thuật Kinh Qur'an.",
-        "name": "API của Quran.com",
+        "name": "API của Quran.ir",
         "stack": "Rails, PostgreSQL"
       },
       "q-audio": {
@@ -56,19 +56,19 @@
       },
       "q-next": {
         "description": "Trải nghiệm web Next.js dành cho việc đọc, tìm kiếm và nghe Kinh Qur'an.",
-        "name": "Giao diện người dùng của Quran.com",
+        "name": "Giao diện người dùng của Quran.ir",
         "stack": "Lập trình bằng TypeScript và Next.js"
       }
     },
-    "lead": "Các dự án mã nguồn mở được duy trì bởi nhóm và cộng đồng của Quran.com.",
+    "lead": "Các dự án mã nguồn mở được duy trì bởi nhóm và cộng đồng của Quran.ir.",
     "q-android": "<0>Ứng dụng Kinh Qur'an cho Android</0> - được viết bằng Kotlin và Java.",
-    "q-api": "<0>API của Quran.com</0> - được viết bằng Ruby on Rails.",
-    "q-api-docs": "<0>Tài liệu API của Quran.com</0> - Cổng thông tin tài liệu API của chúng tôi.",
+    "q-api": "<0>API của Quran.ir</0> - được viết bằng Ruby on Rails.",
+    "q-api-docs": "<0>Tài liệu API của Quran.ir</0> - Cổng thông tin tài liệu API của chúng tôi.",
     "q-audio": "<0>Âm thanh Kinh Qur'an</0> và <1>Ứng dụng di động Âm thanh Kinh Qur'an</1>",
     "q-audio-segments": "<0>Các đoạn âm thanh Kinh Qur'an</0>",
     "q-ios": "<0>Ứng dụng Kinh Qur'an cho iOS</0> - được viết bằng Swift.",
-    "q-next": "<0>Giao diện người dùng của Quran.com</0> - được viết bằng Next.js.",
-    "q-v2": "<0>Quran.com</0> - được viết bằng Ruby on Rails."
+    "q-next": "<0>Giao diện người dùng của Quran.ir</0> - được viết bằng Next.js.",
+    "q-v2": "<0>Quran.ir</0> - được viết bằng Ruby on Rails."
   },
   "thanks": "Chúng tôi rất mong nhận được sự đóng góp của bạn!"
 }

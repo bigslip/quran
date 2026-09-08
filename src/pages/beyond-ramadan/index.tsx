@@ -129,7 +129,7 @@ const BeyondRamadanPage: NextPage = (): JSX.Element => {
             <p>
               Learn more:{' '}
               <Link href={getCourseNavigationUrl('avoiding-the-post-ramadan-slump')} isNewTab>
-                Maintaining Your Momentum: Avoiding the Post-Ramadan Slump - Quran.com
+                Maintaining Your Momentum: Avoiding the Post-Ramadan Slump - Quran.ir
               </Link>
             </p>
             <div className={styles.ctaContainer}>
@@ -149,7 +149,7 @@ const BeyondRamadanPage: NextPage = (): JSX.Element => {
             </p>
             <div>
               ⭐⭐⭐⭐⭐ "Another extremely enriching experience! An impactful nourishment to the
-              heart. May Allah SWT give barakah to the author, the entire Quran.com team, and help
+              heart. May Allah SWT give barakah to the author, the entire Quran.ir team, and help
               me to be steadfast in the path of Allah SWT! Ameen."
             </div>
             <div>

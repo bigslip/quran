@@ -14,8 +14,8 @@ afterEach(() => {
 
 describe('GradualSpacing', () => {
   it('renders text with accessible aria-label', () => {
-    render(<GradualSpacing text="Quran.com" />);
-    expect(screen.getByLabelText('Quran.com')).toBeInTheDocument();
+    render(<GradualSpacing text="Quran.ir" />);
+    expect(screen.getByLabelText('Quran.ir')).toBeInTheDocument();
   });
 
   it('renders as custom HTML element', () => {

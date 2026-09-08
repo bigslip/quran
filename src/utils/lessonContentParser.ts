@@ -17,7 +17,7 @@ function createVerseRef(match: RegExpMatchArray): VerseReference {
 }
 
 /**
- * Parse a quran.com URL into a verse reference.
+ * Parse a quran.ir URL into a verse reference.
  * Supports: /18/1-2, /37-98, /24:30
  *
  * @param {string} href - The URL to parse
@@ -30,7 +30,7 @@ export function parseQuranUrl(href: string): VerseReference | null {
   } catch {
     return null;
   }
-  if (url.hostname !== 'quran.com' && !url.hostname.endsWith('.quran.com')) return null;
+  if (url.hostname !== 'quran.ir' && !url.hostname.endsWith('.quran.ir')) return null;
 
   const path = url.pathname
     .replace(/^\//, '')
@@ -49,7 +49,7 @@ export function parseQuranUrl(href: string): VerseReference | null {
   return null;
 }
 
-const QURAN_LINK_REGEX = /href=["'](https?:\/\/(?:[a-z0-9-]+\.)*quran\.com\/[^"']+)["']/i;
+const QURAN_LINK_REGEX = /href=["'](https?:\/\/(?:[a-z0-9-]+\.)*quran\.ir\/[^"']+)["']/i;
 const ENDING_REFERENCE_REGEX =
   /(?:\(|\[)?\s*(\d{1,3})\s*:\s*(\d{1,3})(?:\s*[-–—]\s*(\d{1,3}))?\s*(?:\)|\])?\s*["'”’.,!?]*\s*$/;
 
@@ -105,7 +105,7 @@ const processBlockquote = (
 
 /**
  * Parse lesson HTML content into renderable chunks.
- * Extracts blockquotes containing quran.com links.
+ * Extracts blockquotes containing quran.ir links.
  *
  * @param {string} html - The HTML content to parse
  * @returns {ContentChunk[]} Array of chunks for rendering

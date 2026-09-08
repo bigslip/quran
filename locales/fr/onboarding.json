@@ -7,7 +7,7 @@
   },
   "finish": "Terminer",
   "onboarding-checklist": "Liste de contrôle d'intégration",
-  "onboarding-title": "Maximisez votre expérience avec Quran.com ! <br></br> Commencez votre visite maintenant :",
+  "onboarding-title": "Maximisez votre expérience avec Quran.ir ! <br></br> Commencez votre visite maintenant :",
   "previous": "Précédent",
   "skip": "Ignorer",
   "steps": {
@@ -52,7 +52,7 @@
       "title": "Radio du Coran"
     },
     "reading-sessions": {
-      "description": "Révisez facilement votre voyage Coranique en parcourant votre historique de lecture personnalisé, en gardant une trace des Ayahs que vous avez explorées sur Quran.com.",
+      "description": "Révisez facilement votre voyage Coranique en parcourant votre historique de lecture personnalisé, en gardant une trace des Ayahs que vous avez explorées sur Quran.ir.",
       "title": "Afficher l'historique de lecture"
     },
     "reading-view": {

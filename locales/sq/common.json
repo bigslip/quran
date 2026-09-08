@@ -6,17 +6,17 @@
     "auth-onboarding": {
       "data-sync": {
         "action": "Tjetra",
-        "description": "Pavarësisht nëse jeni duke përdorur Quran.com në telefonin ose laptopin tuaj, faqeshënuesit, vargjet e fundit të lexuara dhe preferencat tuaja do të jenë të disponueshme",
+        "description": "Pavarësisht nëse jeni duke përdorur Quran.ir në telefonin ose laptopin tuaj, faqeshënuesit, vargjet e fundit të lexuara dhe preferencat tuaja do të jenë të disponueshme",
         "title": "Të dhënat tuaja do të sinkronizohen <br></br> nëpër pajisje"
       },
       "feedback": {
         "action": "Mirë, e kuptova",
-        "description": "Faleminderit që përdorni Quran.com dhe do të ishim të lumtur të dëgjonim komentet tuaja në <link> feedback.quran.com </link>",
+        "description": "Faleminderit që përdorni Quran.ir dhe do të ishim të lumtur të dëgjonim komentet tuaja në <link> feedback.quran.ir </link>",
         "title": "Ne duam të dëgjojmë mendimet tuaja"
       },
       "quran-foundation-link": {
         "action": "Tjetra",
-        "description": "Përdorni hyrjen tuaj në Quran.com për të hyrë në QuranReflec.com - një komunitet i lulëzuar global i angazhuar në reflektimin Kur'anor.",
+        "description": "Përdorni hyrjen tuaj në Quran.ir për të hyrë në QuranReflec.com - një komunitet i lulëzuar global i angazhuar në reflektimin Kur'anor.",
         "title": "Përdorni llogarinë tuaj nëpër aplikacionet Quran.Foundation!"
       },
       "quran-growth-journey": {
@@ -26,7 +26,7 @@
       },
       "welcome": {
         "action": "Shihni çfarë ka të re",
-        "title": "Mirë se vini në llogarinë e përdoruesit <br></br> të Quran.com"
+        "title": "Mirë se vini në llogarinë e përdoruesit <br></br> të Quran.ir"
       }
     },
     "collections-announcement": {
@@ -257,7 +257,7 @@
   },
   "footer": {
     "apps-disclaimer": "Çdo aplikacion është në pronësi dhe mirëmbahet në mënyrë të pavarur nga zhvilluesi i tij. Për mbështetje, raportime gabimesh ose kërkesa për veçori, ju lutemi kontaktoni drejtpërdrejt krijuesin e aplikacionit.",
-    "description": "Quran.com është një platformë e besueshme e përdorur nga miliona njerëz në mbarë botën për të lexuar, kërkuar, dëgjuar dhe reflektuar mbi Kuranin në gjuhë të shumta. Ajo ofron përkthime, tefsir, recitime, përkthim fjalë për fjalë dhe mjete për studim më të thellë, duke e bërë Kuranin të arritshëm për të gjithë. <br/> <br/> Si një Sadaka Xhariyah, Quran.com është i përkushtuar për të ndihmuar njerëzit të lidhen thellë me Kuranin. I mbështetur nga <link> Quran.Foundation </link>, një organizatë jofitimprurëse 501(c)(3), Quran.com vazhdon të rritet si një burim falas dhe i vlefshëm për të gjithë, Elhamdulillah.",
+    "description": "Quran.ir është një platformë e besueshme e përdorur nga miliona njerëz në mbarë botën për të lexuar, kërkuar, dëgjuar dhe reflektuar mbi Kuranin në gjuhë të shumta. Ajo ofron përkthime, tefsir, recitime, përkthim fjalë për fjalë dhe mjete për studim më të thellë, duke e bërë Kuranin të arritshëm për të gjithë. <br/> <br/> Si një Sadaka Xhariyah, Quran.ir është i përkushtuar për të ndihmuar njerëzit të lidhen thellë me Kuranin. I mbështetur nga <link> Quran.Foundation </link>, një organizatë jofitimprurëse 501(c)(3), Quran.ir vazhdon të rritet si një burim falas dhe i vlefshëm për të gjithë, Elhamdulillah.",
     "hiring": "Ne po punësojmë! Bashkohuni me ekipin e QuranFoundation dhe kontribuoni në misionin tonë. <link> Apliko tani! </link>",
     "rights": "Të gjitha të drejtat e rezervuara",
     "title": "Lexoni, dëgjoni, kërkoni dhe reflektoni mbi Kuranin"
@@ -280,10 +280,10 @@
   "from": "Nga",
   "fundraising-card-v2": {
     "cta": "Dhuro tani",
-    "description": "Donatorët mujorë na ndihmojnë të përmirësojmë Quran.com dhe të mbështesim operacionet, kështu që ne përqendrohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
+    "description": "Donatorët mujorë na ndihmojnë të përmirësojmë Quran.ir dhe të mbështesim operacionet, kështu që ne përqendrohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
     "title": "Bëhuni një Donator Mujor"
   },
-  "fundraising-share-title": "Share Quran.com Mbledhja e fondeve",
+  "fundraising-share-title": "Share Quran.ir Mbledhja e fondeve",
   "fundraising-sticky-banner-v2": {
     "cta": "Dhuro",
     "desktop-text": "Kontribuoni në misionin tonë",
@@ -295,7 +295,7 @@
     "title": "Jepni në ditët më të mira!"
   },
   "fundraising": {
-    "description": "Donacionet mujore na ndihmojnë të përmirësojmë Quran.com dhe të mbajmë operacionet, kështu që ne fokusohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
+    "description": "Donacionet mujore na ndihmojnë të përmirësojmë Quran.ir dhe të mbajmë operacionet, kështu që ne fokusohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
     "donation-campaign": {
       "cta": "Dhuro sot",
       "text": "Bëhu një mbështetës"
@@ -387,7 +387,7 @@
   "projects-desc": "Projektet jofitimprurëse të zotëruara, të menaxhuara ose të sponsorizuara nga <link>Quran.Foundation</link>",
   "q-reflect": "Kurani Reflekto",
   "quran-apps": "Aplikacionet e Kuranit",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
   "quran-radio": "Kuran Radio",
   "read": "Lexo",
   "read-more": "Lexo më shumë",
@@ -568,5 +568,5 @@
   "search-languages": "Search languages...",
   "languages-count": "{{count}} of {{total}} languages",
   "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.com"
+  "select-language-description": "Select your preferred display language for Quran.ir"
 }

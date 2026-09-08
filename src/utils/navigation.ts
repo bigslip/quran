@@ -60,13 +60,13 @@ export const EXTERNAL_ROUTES = {
   QURAN_REFLECT: 'https://quranreflect.com',
   SUNNAH: 'https://sunnah.com',
   NUQAYAH: 'https://nuqayah.com',
-  LEGACY_QURAN_COM: 'https://legacy.quran.com',
-  CORPUS_QURAN_COM: 'https://corpus.quran.com',
+  LEGACY_QURAN_COM: 'https://legacy.quran.ir',
+  CORPUS_QURAN_COM: 'https://corpus.quran.ir',
   QURAN_ANDROID:
     'https://play.google.com/store/apps/details?id=com.quran.labs.androidquran&hl=en&pli=1',
   QURAN_IOS:
     'https://apps.apple.com/us/app/quran-by-quran-com-%D9%82%D8%B1%D8%A2%D9%86/id1118663303',
-  FEEDBACK: 'https://feedback.quran.com',
+  FEEDBACK: 'https://feedback.quran.ir',
   QURAN_FOUNDATION: 'https://quran.foundation',
   QURAN_REFLECT_ANDROID:
     'https://play.google.com/store/apps/details?id=com.quranreflect.quranreflect&hl=en',
@@ -75,7 +75,7 @@ export const EXTERNAL_ROUTES = {
   RAMADAN_CHALLENGE_TELEGRAM: 'https://t.me/+qzJBDj6_2R8xOTA5',
 };
 
-export const QURAN_URL = 'https://quran.com';
+export const QURAN_URL = 'https://quran.ir';
 export const MY_QURAN_URL = '/my-quran';
 export const LEARNING_PLANS_URL = '/learning-plans';
 export const RADIO_URL = '/radio';

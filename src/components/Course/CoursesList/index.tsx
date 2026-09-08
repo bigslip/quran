@@ -105,7 +105,7 @@ const CoursesList: React.FC<Props> = ({ initialResponse, isMyCourses, languages 
           return (
             <Card
               key={`coming-soon-${placeholderIndex}`}
-              imgSrc="https://images.quran.com/coming-soon.png"
+              imgSrc="https://images.quran.ir/coming-soon.png"
               size={CardSize.Large}
               className={classNames(styles.cardContainer, styles.comingSoonContainer)}
               title={t('coming-soon')}

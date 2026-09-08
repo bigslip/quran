@@ -1,5 +1,5 @@
 <!--
-*** Thanks for checking out this Quran.com repo. If you have a suggestion that would
+*** Thanks for checking out this Quran.ir repo. If you have a suggestion that would
 *** make this better, please fork the repo and create a pull request or simply open
 ***  an issue with the tag "enhancement".
 *** Thanks again! Now go create something AMAZING! :D
@@ -8,25 +8,25 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://quran.com">
+  <a href="https://quran.ir">
     <img src="public/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h1 align="center">The Noble Quran</h1>
 
   <p align="center">
-    The official source code repository for Quran.com
+    The official source code repository for Quran.ir
     <br />
-    <a href="https://discord.gg/SpEeJ5bWEQ"><strong>Join Quran.com community »</strong></a>
+    <a href="https://discord.gg/SpEeJ5bWEQ"><strong>Join Quran.ir community »</strong></a>
     <br />
     <br />
-    <a href="https://quran.com">Visit Quran.com</a>
+    <a href="https://quran.ir">Visit Quran.ir</a>
     ·
-    <a href="https://github.com/quran/quran.com-frontend-next/issues">Report Bug</a>
+    <a href="https://github.com/quran/quran.ir-frontend-next/issues">Report Bug</a>
     ·
-    <a href="https://github.com/quran/quran.com-frontend-next/issues">Request Feature</a>
+    <a href="https://github.com/quran/quran.ir-frontend-next/issues">Request Feature</a>
     •
-    <a href="https://quran.github.io/quran.com-frontend-next/storybook/master">Storybook</a>
+    <a href="https://quran.github.io/quran.ir-frontend-next/storybook/master">Storybook</a>
   </p>
 </p>
 
@@ -38,7 +38,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![MIT License][license-shield]][license-url]
 
-This project is the frontend for Quran.com. It is built on top of [Next.js](https://nextjs.org/docs/getting-started), a popular framework that takes the trouble and setup of setting up an isomorphic react app. We deploy it on now.sh automatically with automatic generation of builds for PRs.
+This project is the frontend for Quran.ir. It is built on top of [Next.js](https://nextjs.org/docs/getting-started), a popular framework that takes the trouble and setup of setting up an isomorphic react app. We deploy it on now.sh automatically with automatic generation of builds for PRs.
 
 ### How to Contribute
 
@@ -67,7 +67,7 @@ One mistake we made previously is treated each component as unique. This made ou
 
 Our components are built within Storybook.js. See files with name `.stories.tsx`. This helps engineers view their work outside of the product, making it super easy to test different configurations of the component.
 
-[We also display all our components here](https://quran.github.io/quran.com-frontend-next/storybook/master).
+[We also display all our components here](https://quran.github.io/quran.ir-frontend-next/storybook/master).
 
 ### Recommended Extensions
 
@@ -83,25 +83,25 @@ If you are interested to help out, please look at issues on the GitHub repo. Thi
 
 ### Filing Bugs
 
-Thank you for taking time to file a bug! We'd appreciate your help on fixing it 🙏. Please [open an issue](https://github.com/quran/quran.com-frontend-next/issues).
+Thank you for taking time to file a bug! We'd appreciate your help on fixing it 🙏. Please [open an issue](https://github.com/quran/quran.ir-frontend-next/issues).
 
 ### Community
 
-<a href="https://discord.gg/SpEeJ5bWEQ"><strong>Join Quran.com Discord community »</strong></a>
+<a href="https://discord.gg/SpEeJ5bWEQ"><strong>Join Quran.ir Discord community »</strong></a>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/quran/quran.com-frontend-next?style=for-the-badge
-[contributors-url]: https://github.com/quran/quran.com-frontend-next/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/quran/quran.com-frontend-next?style=for-the-badge
-[forks-url]: https://github.com/quran/quran.com-frontend-next/network/members
-[stars-shield]: https://img.shields.io/github/stars/quran/quran.com-frontend-next?style=for-the-badge
-[stars-url]: https://github.com/quran/quran.com-frontend-next/stargazers
-[issues-shield]: https://img.shields.io/github/issues/quran/quran.com-frontend-next?style=for-the-badge
-[issues-url]: https://github.com/quran/quran.com-frontend-next/issues
-[license-shield]: https://img.shields.io/github/license/quran/quran.com-frontend-next?style=for-the-badge
-[license-url]: https://github.com/quran/quran.com-frontend-next/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/quran/quran.ir-frontend-next?style=for-the-badge
+[contributors-url]: https://github.com/quran/quran.ir-frontend-next/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/quran/quran.ir-frontend-next?style=for-the-badge
+[forks-url]: https://github.com/quran/quran.ir-frontend-next/network/members
+[stars-shield]: https://img.shields.io/github/stars/quran/quran.ir-frontend-next?style=for-the-badge
+[stars-url]: https://github.com/quran/quran.ir-frontend-next/stargazers
+[issues-shield]: https://img.shields.io/github/issues/quran/quran.ir-frontend-next?style=for-the-badge
+[issues-url]: https://github.com/quran/quran.ir-frontend-next/issues
+[license-shield]: https://img.shields.io/github/license/quran/quran.ir-frontend-next?style=for-the-badge
+[license-url]: https://github.com/quran/quran.ir-frontend-next/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
 
 ### Credits

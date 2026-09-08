@@ -98,7 +98,7 @@ const MOCK_LOGIN_USER = {
   success: true,
   user: {
     id: 'ebd161f7-9301-4f78-baae-1100fba00e07',
-    email: 'osama+500@quran.com',
+    email: 'osama+500@quran.ir',
     firstName: 'Eleanor',
     lastName: 'Gilliam',
     photoUrl: null,
@@ -106,7 +106,7 @@ const MOCK_LOGIN_USER = {
     lastActiveAt: '2025-07-12T17:05:22.860Z',
     lastMutationAt: '2025-07-12T16:42:11.675Z',
     timezone: 'Africa/Cairo',
-    registrationSource: 'Quran.com_web',
+    registrationSource: 'Quran.ir_web',
     username: 'lomev',
     isAdmin: false,
     isBanned: false,

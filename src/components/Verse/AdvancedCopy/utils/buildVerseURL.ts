@@ -4,7 +4,7 @@ import { getChapterNumberFromKey } from '@/utils/verse';
 
 // Helper function to build URL for verse
 const buildVerseURL = (fromVerse: string, toVerse: string, lang: string) => {
-  const origin = getWindowOrigin(lang) || 'https://quran.com';
+  const origin = getWindowOrigin(lang) || 'https://quran.ir';
   const chapterNumber = getChapterNumberFromKey(fromVerse);
   if (fromVerse === toVerse) {
     const verseNumber = fromVerse.split(':')[1];

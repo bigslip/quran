@@ -1,6 +1,6 @@
 # Navbar Architecture Reference
 
-Technical documentation for the Quran.com navbar system, including all components, variants, state
+Technical documentation for the Quran.ir navbar system, including all components, variants, state
 management, and CSS variables.
 
 ---

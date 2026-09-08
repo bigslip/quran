@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "Konfigurasikan dan pratinjau widget sematan untuk berbagi Al-Quran, lalu salin cuplikan skrip yang siap digunakan.",
-    "title": "Pembuat Sisipan Ayat | Quran.com"
+    "title": "Pembuat Sisipan Ayat | Quran.ir"
   },
   "mushaf": {
     "indopak": "Indopak",
@@ -80,6 +80,6 @@
     "otherLanguage": "Lainnya"
   },
   "widget": {
-    "readOnQuran": "Baca di Quran.com"
+    "readOnQuran": "Baca di Quran.ir"
   }
 }

@@ -1,6 +1,6 @@
 import { logEvent } from './eventLogger';
 
-const PREVIOUS_WEBSITE_URL = 'https://previous.quran.com/';
+const PREVIOUS_WEBSITE_URL = 'https://previous.quran.ir/';
 
 /* eslint-disable import/prefer-default-export */
 export const logAndRedirectUnsupportedLogicalCSS = () => {

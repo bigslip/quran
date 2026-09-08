@@ -165,7 +165,7 @@
   }
 }
 
-// https://github.com/quran/quran.com-frontend-next/issues/560
+// https://github.com/quran/quran.ir-frontend-next/issues/560
 // our AudioPlayer is has "position: fixed", so its position is removed from the normal flow
 // we need to add an empty space placeholder, so the AudioPlayer doesn't cover the other elements in the page
 .emptySpacePlaceholder {

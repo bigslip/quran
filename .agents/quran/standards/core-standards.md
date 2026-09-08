@@ -1,11 +1,11 @@
 ---
-description: Comprehensive coding standards and review guidelines for Quran.com Frontend
+description: Comprehensive coding standards and review guidelines for Quran.ir Frontend
 ---
 
-# Quran.com Frontend Code Standards
+# Quran.ir Frontend Code Standards
 
 This file defines repository-wide coding standards for Antigravity. Follow these guidelines to
-ensure code quality, maintainability, and alignment with the Quran.com mission of helping millions
+ensure code quality, maintainability, and alignment with the Quran.ir mission of helping millions
 of Muslims engage with the Qur'an.
 
 ---

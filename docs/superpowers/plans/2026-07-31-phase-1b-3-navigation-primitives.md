@@ -959,9 +959,9 @@
 
   export const External: StoryObj<typeof Link> = {
     args: {
-      href: 'https://quran.com',
+      href: 'https://quran.ir',
       isExternal: true,
-      children: 'Quran.com',
+      children: 'Quran.ir',
     },
   };
 

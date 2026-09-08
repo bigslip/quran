@@ -191,7 +191,7 @@ const RamadanChallengePage: NextPage = (): JSX.Element => {
             <div className={pageStyles.learnMore}>
               To learn more about our Ramadan activities, visit{' '}
               <Link href={ROUTES.RAMADAN_2026} isNewTab>
-                Quran.com/Ramadan2026
+                Quran.ir/Ramadan2026
               </Link>
             </div>
           </div>

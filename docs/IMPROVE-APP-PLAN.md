@@ -1,6 +1,6 @@
 # UI Improvement Journey: Refactoring UI Overhaul
 
-**Target App:** Quran.com Frontend  
+**Target App:** Quran.ir Frontend  
 **Frameworks Used:** `improve-app`, `refactoring-ui`, `microinteractions`, `web-typography`  
 **Active Branch:** `feature/modern-spiritual-sanctuary-ui-ux`  
 

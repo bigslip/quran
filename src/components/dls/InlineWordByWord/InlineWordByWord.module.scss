@@ -5,7 +5,7 @@
         This is needed for when the translation/transliteration content
         is too big to be fit into one line on mobile
         or on desktop to be able to maintain the reading view's alignment without overflowing.
-        {@see https://quran.com/3:125?wbw_locale=ur}
+        {@see https://quran.ir/3:125?wbw_locale=ur}
     **/
   white-space: normal;
   overflow-wrap: break-word;
@@ -16,7 +16,7 @@
 /**
     We have 6 different font sizes for word by word. We will need to set max-width
     of the translation/transliteration content on Desktop so that we are able to maintain
-    the reading view's alignment without overflowing. {@see https://quran.com/3:125?wbw_locale=ur}
+    the reading view's alignment without overflowing. {@see https://quran.ir/3:125?wbw_locale=ur}
 **/
 .xs {
   font-size: var(--font-size-xsmall-dangerous);

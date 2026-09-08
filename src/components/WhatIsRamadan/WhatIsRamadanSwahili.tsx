@@ -127,7 +127,7 @@ const WhatIsRamadanSwahili = (): JSX.Element => {
       <div className={styles.subSection}>
         <h2>Mwaliko Wako</h2>
         <div>
-          Tunakualika kuchukua hatua ya kwanza katika safari hii. Chunguza Quran.com kupata uzoefu
+          Tunakualika kuchukua hatua ya kwanza katika safari hii. Chunguza Quran.ir kupata uzoefu
           wa Qur'ani mwenyewe. Sikiliza usomaji wake, soma maana yake, na ugundue jinsi mwongozo
           wake wa milele unavyoweza kuangazia njia yako.
         </div>

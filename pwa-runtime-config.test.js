@@ -11,9 +11,9 @@ describe('PWA Runtime Caching Configuration (Workbox)', () => {
   beforeEach(() => {
     // Ensure mock self.origin is set for function-based urlPattern tests
     if (typeof global.self === 'undefined') {
-      global.self = { origin: 'https://quran.com' };
+      global.self = { origin: 'https://quran.ir' };
     } else {
-      global.self.origin = 'https://quran.com';
+      global.self.origin = 'https://quran.ir';
     }
   });
 
@@ -92,7 +92,7 @@ describe('PWA Runtime Caching Configuration (Workbox)', () => {
       );
       expect(imageEntry).toBeDefined();
       expect(imageEntry.handler).toBe('StaleWhileRevalidate');
-      expect(imageEntry.urlPattern.test('https://quran.com/images/logo.png')).toBe(true);
+      expect(imageEntry.urlPattern.test('https://quran.ir/images/logo.png')).toBe(true);
       expect(imageEntry.urlPattern.test('/assets/bg.jpg')).toBe(true);
       expect(imageEntry.urlPattern.test('/icons/favicon.ico')).toBe(true);
       expect(imageEntry.urlPattern.test('/images/art.svg')).toBe(true);
@@ -199,8 +199,8 @@ describe('PWA Runtime Caching Configuration (Workbox)', () => {
       const upperMp3Url = new URL(
         'https://download.quranicaudio.com/qdc/saud_ash-shuraym/murattal/005.MP3',
       );
-      const regularCrossOriginUrl = new URL('https://api.quran.com/v4/chapters');
-      const sameOriginUrl = new URL('https://quran.com/about');
+      const regularCrossOriginUrl = new URL('https://api.quran.ir/v4/chapters');
+      const sameOriginUrl = new URL('https://quran.ir/about');
 
       // Cross-origin MP3 should NOT be matched (case-insensitive)
       expect(crossOriginEntry.urlPattern({ url: mp3Url })).toBe(false);
@@ -224,8 +224,8 @@ describe('PWA Runtime Caching Configuration (Workbox)', () => {
       expect(apiEntry.method).toBe('GET');
       expect(apiEntry.options.networkTimeoutSeconds).toBe(10);
 
-      const sameOriginApiUrl = new URL('https://quran.com/api/v4/search?q=rahman');
-      const sameOriginAuthCallbackUrl = new URL('https://quran.com/api/auth/callback/google');
+      const sameOriginApiUrl = new URL('https://quran.ir/api/v4/search?q=rahman');
+      const sameOriginAuthCallbackUrl = new URL('https://quran.ir/api/auth/callback/google');
       const crossOriginApiUrl = new URL('https://otherdomain.com/api/test');
 
       // Same origin API should match
@@ -246,9 +246,9 @@ describe('PWA Runtime Caching Configuration (Workbox)', () => {
       expect(othersEntry.handler).toBe('NetworkFirst');
       expect(othersEntry.options.networkTimeoutSeconds).toBe(10);
 
-      const homeUrl = new URL('https://quran.com/');
-      const surahUrl = new URL('https://quran.com/1');
-      const apiUrl = new URL('https://quran.com/api/chapters');
+      const homeUrl = new URL('https://quran.ir/');
+      const surahUrl = new URL('https://quran.ir/1');
+      const apiUrl = new URL('https://quran.ir/api/chapters');
       const crossOriginUrl = new URL('https://otherdomain.com/page');
 
       expect(othersEntry.urlPattern({ url: homeUrl })).toBe(true);

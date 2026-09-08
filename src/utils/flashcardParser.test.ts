@@ -74,10 +74,10 @@ describe('flashcardParser', () => {
     });
 
     it('splits before trailing blockquote sections', () => {
-      const html = `${makeSection()}<blockquote><a href="https://quran.com/2/1">2:1</a><p>Verse widget</p></blockquote>`;
+      const html = `${makeSection()}<blockquote><a href="https://quran.ir/2/1">2:1</a><p>Verse widget</p></blockquote>`;
       const result = parseFlashcardsFromHtml(html);
       expect(result?.afterHtml).toBe(
-        '<blockquote><a href="https://quran.com/2/1">2:1</a><p>Verse widget</p></blockquote>',
+        '<blockquote><a href="https://quran.ir/2/1">2:1</a><p>Verse widget</p></blockquote>',
       );
     });
 

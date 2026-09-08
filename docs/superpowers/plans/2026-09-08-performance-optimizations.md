@@ -1,8 +1,8 @@
-# Quran.com Performance Optimizations Implementation Plan
+# Quran.ir Performance Optimizations Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Implement high-impact React, Next.js, and DOM performance optimizations across Quran.com to eliminate audio-sync re-renders, reduce initial JS bundle size with dynamic chunk splitting, achieve 60 FPS scrolling on long surahs with CSS containment, and eliminate redundant network requests with SWR deduplication.
+**Goal:** Implement high-impact React, Next.js, and DOM performance optimizations across Quran.ir to eliminate audio-sync re-renders, reduce initial JS bundle size with dynamic chunk splitting, achieve 60 FPS scrolling on long surahs with CSS containment, and eliminate redundant network requests with SWR deduplication.
 
 **Architecture:** Following Vercel React Best Practices, we optimize the high-frequency Quran rendering pipeline (QuranWord, GlyphWord, VerseText), lazily load heavy modals and drawers with `next/dynamic`, apply `content-visibility: auto` to offscreen verses, and configure SWR with deduplicated caching for immutable Quranic content.
 

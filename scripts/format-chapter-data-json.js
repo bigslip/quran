@@ -1,5 +1,5 @@
 /**
- * A script that helps with reformatting the JSON data pulled from QDC's chapters API e.g. https://api.quran.com/api/v4/chapters?language=ar
+ * A script that helps with reformatting the JSON data pulled from QDC's chapters API e.g. https://api.quran.ir/api/v4/chapters?language=ar
  * to QDC's FE JSON structure. This will help us:
  *
  * 1. Camelize the keys.

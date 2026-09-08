@@ -474,7 +474,7 @@ describe('prepareGenerateMediaFileRequestData', () => {
       verseAlignment: Alignment.CENTRE,
       translationAlignment: Alignment.CENTRE,
       video: {
-        thumbnailSrc: 'https://images.quran.com/videos/thumbnails/stars.png',
+        thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/stars.png',
         videoSrc: '/videos/videos_stars.mp4',
         watermarkColor: WatermarkColor.LIGHT,
       },
@@ -849,7 +849,7 @@ describe('prepareGenerateMediaFileRequestData', () => {
       verseAlignment: Alignment.CENTRE,
       translationAlignment: Alignment.CENTRE,
       video: {
-        thumbnailSrc: 'https://images.quran.com/videos/thumbnails/stars.png',
+        thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/stars.png',
         videoSrc: '/videos/videos_stars.mp4',
         watermarkColor: WatermarkColor.LIGHT,
       },

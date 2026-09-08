@@ -67,7 +67,7 @@
     "BannedUserError": "عذرًا، تم حظر حسابك. يُرجى التواصل مع  Quran.Foundation",
     "TokenExpiredError": "لقد تم تسجيل خروجك، يرجى تسجيل الدخول مرة أخرى."
   },
-  "login-title": "تسجيل الدخول إلى Quran.com",
+  "login-title": "تسجيل الدخول إلى Quran.ir",
   "new-password-placeholder": "كلمة المرور الجديدة",
   "or": "أو",
   "other-options": "خيارات تسجيل الدخول الأخرى",
@@ -83,7 +83,7 @@
   },
   "privacy-policy": "حماية خصوصيتك هي أولويتنا – بالتسجيل فإنك توافق على <link>سياسة الخصوصية</link> و<link1>الشروط والأحكام</link1> الخاصة بنا.",
   "quran-text": "القرآن الكريم",
-  "quran-title": "Quran.com",
+  "quran-title": "Quran.ir",
   "reflect-feature-1": "تدبر في القرآن الكريم",
   "reflect-feature-2": "انضم إلى مجموعات",
   "reflect-feature-3": "تفاعل مع الآخرين",

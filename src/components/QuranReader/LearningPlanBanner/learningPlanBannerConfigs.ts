@@ -18,33 +18,33 @@ export const LEARNING_PLAN_BANNERS: Partial<
     67: {
       slug: 'the-rescuer-powerful-lessons-in-surah-al-mulk',
       imagePath:
-        'https://images.quran.com/the-rescuer-powerful-lessons-in-surah-al-mulk/Banner.png',
+        'https://images.quran.ir/the-rescuer-powerful-lessons-in-surah-al-mulk/Banner.png',
       translationKey: 'al-mulk',
     },
     18: {
       slug: '4-life-changing-stories-lessons-from-surah-al-kahf',
       imagePath:
-        'https://images.quran.com/4-life-changing-stories-lessons-from-surah-al-kahf/Banner.webp',
+        'https://images.quran.ir/4-life-changing-stories-lessons-from-surah-al-kahf/Banner.webp',
       translationKey: 'al-kahf',
     },
   },
   [Language.UR]: {
     67: {
       slug: 'surah-al-mulk-7-day-journey-ur',
-      imagePath: 'https://images.quran.com/surah-al-mulk-7-day-journey-ur-2/Banner.png',
+      imagePath: 'https://images.quran.ir/surah-al-mulk-7-day-journey-ur-2/Banner.png',
       translationKey: 'al-mulk',
     },
     18: {
       slug: '4-life-changing-stories-lessons-from-surah-kahf-ur',
       imagePath:
-        'https://images.quran.com/4-life-changing-stories-lessons-from-surah-al-kahf-ur/Banner.webp',
+        'https://images.quran.ir/4-life-changing-stories-lessons-from-surah-al-kahf-ur/Banner.webp',
       translationKey: 'al-kahf',
     },
   },
   [Language.SW]: {
     67: {
       slug: 'mwokozi-mafunzo-kutoka-surah-al-mulk',
-      imagePath: 'https://images.quran.com/surah-al-mulk-7-day-journey-sw/Banner.png',
+      imagePath: 'https://images.quran.ir/surah-al-mulk-7-day-journey-sw/Banner.png',
       translationKey: 'al-mulk',
     },
   },

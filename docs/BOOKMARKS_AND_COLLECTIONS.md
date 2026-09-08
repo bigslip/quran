@@ -1,7 +1,7 @@
 # Bookmarks and Collections System
 
 This document provides comprehensive documentation for the bookmarks and collections feature in
-quran.com-frontend-next.
+quran.ir-frontend-next.
 
 ## Table of Contents
 

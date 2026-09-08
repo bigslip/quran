@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Word-by-Word (WBW) Audio Downloader for Quran.com
+ * Word-by-Word (WBW) Audio Downloader for Quran.ir
  *
  * Downloads all Word-by-Word pronunciation MP3 audio files from QuranCDN
  * and saves them directly to `public/audio/wbw/` for fast, local, offline-capable playback.
@@ -53,7 +53,7 @@ async function fetchWithRetry(url, options = {}, retries = 3, backoff = 400) {
       const res = await fetch(url, {
         ...options,
         headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; QuranApp/1.0; +https://quran.com)',
+          'User-Agent': 'Mozilla/5.0 (compatible; QuranApp/1.0; +https://quran.ir)',
           ...(options.headers || {}),
         },
       });
@@ -204,7 +204,7 @@ async function runWorkerPool(tasks, concurrency, onProgress) {
  */
 async function main() {
   console.log('╔══════════════════════════════════════════════════════════════╗');
-  console.log('║        Quran.com Word-by-Word (WBW) Audio Downloader         ║');
+  console.log('║        Quran.ir Word-by-Word (WBW) Audio Downloader         ║');
   console.log('╚══════════════════════════════════════════════════════════════╝');
   console.log(`📁 Target Directory : ${OUTPUT_DIR}`);
   console.log(`⚡ Concurrency      : ${CONCURRENCY} parallel workers`);

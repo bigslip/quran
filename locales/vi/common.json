@@ -6,17 +6,17 @@
     "auth-onboarding": {
       "data-sync": {
         "action": "Kế tiếp",
-        "description": "Dù dùng Quran.com trên điện thoại hay máy tính, dấu trang, câu đã đọc gần đây và tùy chọn của bạn luôn sẵn có.",
+        "description": "Dù dùng Quran.ir trên điện thoại hay máy tính, dấu trang, câu đã đọc gần đây và tùy chọn của bạn luôn sẵn có.",
         "title": "Dữ liệu của bạn sẽ được đồng bộ hóa <br></br> trên các thiết bị"
       },
       "feedback": {
         "action": "Được rồi, tôi đã hiểu.",
-        "description": "Cảm ơn bạn đã sử dụng Quran.com và chúng tôi rất mong nhận được phản hồi của bạn <link>feedback.quran.com</link>",
+        "description": "Cảm ơn bạn đã sử dụng Quran.ir và chúng tôi rất mong nhận được phản hồi của bạn <link>feedback.quran.ir</link>",
         "title": "Chúng tôi muốn lắng nghe ý kiến của bạn."
       },
       "quran-foundation-link": {
         "action": "Kế tiếp",
-        "description": "Hãy sử dụng thông tin đăng nhập Quran.com của bạn để truy cập QuranReflect.com — một cộng đồng toàn cầu sôi nổi tham gia vào việc suy ngẫm về Kinh Qur'an.",
+        "description": "Hãy sử dụng thông tin đăng nhập Quran.ir của bạn để truy cập QuranReflect.com — một cộng đồng toàn cầu sôi nổi tham gia vào việc suy ngẫm về Kinh Qur'an.",
         "title": "Sử dụng tài khoản của bạn trên tất cả các ứng dụng của Quran.Foundation!"
       },
       "quran-growth-journey": {
@@ -26,7 +26,7 @@
       },
       "welcome": {
         "action": "Xem có gì mới nhé!",
-        "title": "Chào mừng bạn đến với Quran.com <br></br> Tài khoản người dùng"
+        "title": "Chào mừng bạn đến với Quran.ir <br></br> Tài khoản người dùng"
       }
     },
     "collections-announcement": {
@@ -257,7 +257,7 @@
   },
   "footer": {
     "apps-disclaimer": "Mỗi ứng dụng đều thuộc sở hữu và được duy trì độc lập bởi nhà phát triển của nó. Để được hỗ trợ, báo cáo lỗi hoặc yêu cầu tính năng, vui lòng liên hệ trực tiếp với nhà phát triển ứng dụng.",
-    "description": "Quran.com là nền tảng đáng tin cậy, được hàng triệu người dùng trên thế giới để đọc, tra cứu, lắng nghe và suy ngẫm Kinh Qur'an bằng nhiều ngôn ngữ, với bản dịch, tafsir, tụng đọc, dịch từng từ và các công cụ học sâu, giúp ai cũng có thể tiếp cận Kinh Qur'an. <br/> <br/> Là một Sadaqah Jariyah, Quran.com tận tâm giúp mọi người gắn bó sâu sắc hơn với Kinh Qur'an. Được hậu thuẫn bởi tổ chức phi lợi nhuận 501(c)(3) <link>Quran.Foundation</link>, Quran.com không ngừng phát triển như một nguồn tài nguyên miễn phí và hữu ích cho tất cả, Alhamdulillah.",
+    "description": "Quran.ir là nền tảng đáng tin cậy, được hàng triệu người dùng trên thế giới để đọc, tra cứu, lắng nghe và suy ngẫm Kinh Qur'an bằng nhiều ngôn ngữ, với bản dịch, tafsir, tụng đọc, dịch từng từ và các công cụ học sâu, giúp ai cũng có thể tiếp cận Kinh Qur'an. <br/> <br/> Là một Sadaqah Jariyah, Quran.ir tận tâm giúp mọi người gắn bó sâu sắc hơn với Kinh Qur'an. Được hậu thuẫn bởi tổ chức phi lợi nhuận 501(c)(3) <link>Quran.Foundation</link>, Quran.ir không ngừng phát triển như một nguồn tài nguyên miễn phí và hữu ích cho tất cả, Alhamdulillah.",
     "hiring": "Chúng tôi đang tuyển dụng! Hãy gia nhập đội ngũ của QuranFoundation và đóng góp vào sứ mệnh của chúng tôi. <link>Ứng tuyển ngay!</link>",
     "rights": "Bản quyền đã được bảo lưu.",
     "title": "Đọc, Lắng nghe, Tra cứu và Suy ngẫm về Kinh Qur'an"
@@ -280,10 +280,10 @@
   "from": "Từ",
   "fundraising-card-v2": {
     "cta": "Quyên góp ngay",
-    "description": "Các nhà tài trợ hàng tháng giúp chúng tôi cải thiện Quran.com và duy trì hoạt động để chúng tôi tập trung ít hơn vào việc gây quỹ và nhiều hơn vào việc tạo ra tác động.",
+    "description": "Các nhà tài trợ hàng tháng giúp chúng tôi cải thiện Quran.ir và duy trì hoạt động để chúng tôi tập trung ít hơn vào việc gây quỹ và nhiều hơn vào việc tạo ra tác động.",
     "title": "Trở thành nhà tài trợ hàng tháng"
   },
-  "fundraising-share-title": "Chia sẻ gây quỹ Quran.com",
+  "fundraising-share-title": "Chia sẻ gây quỹ Quran.ir",
   "fundraising-sticky-banner-v2": {
     "cta": "Quyên tặng",
     "desktop-text": "Hãy cùng chung tay thực hiện sứ mệnh của chúng tôi",
@@ -295,7 +295,7 @@
     "title": "Hãy cho đi vào những ngày tốt đẹp nhất!"
   },
   "fundraising": {
-    "description": "Các khoản ủng hộ định kỳ hàng tháng giúp chúng tôi cải thiện Quran.com, duy trì hoạt động và bớt lo gây quỹ để tập trung tạo ra nhiều giá trị hơn.",
+    "description": "Các khoản ủng hộ định kỳ hàng tháng giúp chúng tôi cải thiện Quran.ir, duy trì hoạt động và bớt lo gây quỹ để tập trung tạo ra nhiều giá trị hơn.",
     "donation-campaign": {
       "cta": "Quyên góp ngay hôm nay!",
       "text": "Trở thành người ủng hộ"
@@ -387,7 +387,7 @@
   "projects-desc": "Dự án phi lợi nhuận do <link>Quran.Foundation</link> sở hữu, quản lý hoặc tài trợ",
   "q-reflect": "QuranReflect",
   "quran-apps": "Ứng dụng Kinh Qur'an",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
   "quran-radio": "Đài Qur'an",
   "read": "Đọc",
   "read-more": "Đọc thêm",
@@ -568,5 +568,5 @@
   "search-languages": "Search languages...",
   "languages-count": "{{count}} of {{total}} languages",
   "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.com"
+  "select-language-description": "Select your preferred display language for Quran.ir"
 }

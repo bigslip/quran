@@ -12,7 +12,7 @@ description: Ensure Jira + Figma auth prerequisites are set
 ```bash
 mkdir -p ~/.jira.d
 echo 'endpoint: https://quranfoundation.atlassian.net
-login: osama@quran.com' > ~/.jira.d/config.yml
+login: osama@quran.ir' > ~/.jira.d/config.yml
 read -s -p "Enter Jira API token: " && echo "$REPLY" > ~/.jira.d/.api_token && chmod 600 ~/.jira.d/.api_token
 ```
 

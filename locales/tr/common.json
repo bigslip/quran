@@ -11,12 +11,12 @@
       },
       "feedback": {
         "action": "Tamam, anladım.",
-        "description": "Kuran.com'u kullandığınız için teşekkür ederiz ve <link> feedback.quran.com </link> ile ilgili görüşlerinizi duymaktan memnuniyet duyarız.",
+        "description": "Kuran.com'u kullandığınız için teşekkür ederiz ve <link> feedback.quran.ir </link> ile ilgili görüşlerinizi duymaktan memnuniyet duyarız.",
         "title": "Düşüncelerinizi duymak istiyoruz"
       },
       "quran-foundation-link": {
         "action": "Sonraki",
-        "description": "Kuran'ın yansımasıyla ilgilenen gelişen küresel bir topluluk olan Qur'anReflect.com'a erişim için Quran.com oturum açma bilgilerinizi kullanın.",
+        "description": "Kuran'ın yansımasıyla ilgilenen gelişen küresel bir topluluk olan Qur'anReflect.com'a erişim için Quran.ir oturum açma bilgilerinizi kullanın.",
         "title": "Hesabınızı Quran.Foundation uygulamalarında kullanın!"
       },
       "quran-growth-journey": {
@@ -26,7 +26,7 @@
       },
       "welcome": {
         "action": "Yeniliklere bakın",
-        "title": "Quran.com'a Hoş Geldiniz <br></br> Kullanıcı Hesabı"
+        "title": "Quran.ir'a Hoş Geldiniz <br></br> Kullanıcı Hesabı"
       }
     },
     "collections-announcement": {
@@ -257,7 +257,7 @@
   },
   "footer": {
     "apps-disclaimer": "Her uygulama, geliştiricisi tarafından bağımsız olarak sahiplenilir ve bakımı yapılır. Destek, hata bildirimleri veya özellik istekleri için lütfen doğrudan uygulama geliştiricisiyle iletişime geçin.",
-    "description": "Quran.com, dünya çapında milyonlarca kişinin Kur'an'ı birden fazla dilde okumak, aramak, dinlemek ve üzerinde düşünmek için kullandığı güvenilir bir platformdur. Çeviriler, tefsirler, kıraatler, kelime kelime çeviriler ve derinlemesine inceleme araçları sunarak Kur'an'ı herkes için erişilebilir hale getirir. <br/> <br/> Bir Sadaka-i Cariye olarak Quran.com, insanların Kur'an ile derin bir bağ kurmasına yardımcı olmaya kendini adamıştır. 501(c)(3) kar amacı gütmeyen bir kuruluş olan <link> Kur'an Vakfı </link> tarafından desteklenen Quran.com, Elhamdülillah herkes için ücretsiz ve değerli bir kaynak olarak büyümeye devam ediyor.",
+    "description": "Quran.ir, dünya çapında milyonlarca kişinin Kur'an'ı birden fazla dilde okumak, aramak, dinlemek ve üzerinde düşünmek için kullandığı güvenilir bir platformdur. Çeviriler, tefsirler, kıraatler, kelime kelime çeviriler ve derinlemesine inceleme araçları sunarak Kur'an'ı herkes için erişilebilir hale getirir. <br/> <br/> Bir Sadaka-i Cariye olarak Quran.ir, insanların Kur'an ile derin bir bağ kurmasına yardımcı olmaya kendini adamıştır. 501(c)(3) kar amacı gütmeyen bir kuruluş olan <link> Kur'an Vakfı </link> tarafından desteklenen Quran.ir, Elhamdülillah herkes için ücretsiz ve değerli bir kaynak olarak büyümeye devam ediyor.",
     "hiring": "İşe alıyoruz! Kuran Vakfı ekibine katılın ve misyonumuza katkıda bulunun. <link> Şimdi başvurun! </link>",
     "rights": "Her hakkı saklıdır",
     "title": "Kuran'ı Oku, Dinle, Araştır ve Üzerinde Düşün"
@@ -280,10 +280,10 @@
   "from": "İtibaren",
   "fundraising-card-v2": {
     "cta": "Şimdi bağış yapın",
-    "description": "Aylık bağışçılar, Quran.com'u geliştirmemize ve faaliyetlerimizi sürdürmemize yardımcı oluyor; böylece fon toplamaya daha az, etki yaratmaya daha çok odaklanabiliyoruz.",
+    "description": "Aylık bağışçılar, Quran.ir'u geliştirmemize ve faaliyetlerimizi sürdürmemize yardımcı oluyor; böylece fon toplamaya daha az, etki yaratmaya daha çok odaklanabiliyoruz.",
     "title": "Aylık Bağışçı Olun"
   },
-  "fundraising-share-title": "Quran.com bağış kampanyası'nı paylaşın",
+  "fundraising-share-title": "Quran.ir bağış kampanyası'nı paylaşın",
   "fundraising-sticky-banner-v2": {
     "cta": "Bağış yapmak",
     "desktop-text": "Misyonumuza katkıda bulunun",
@@ -295,7 +295,7 @@
     "title": "En makbul günlerde ver!"
   },
   "fundraising": {
-    "description": "Aylık bağışlar, Quran.com'u geliştirmemize ve operasyonlarımızı sürdürmemize yardımcı oluyor, böylece bağış toplamaya daha az, etki yaratmaya daha çok odaklanabiliyoruz.",
+    "description": "Aylık bağışlar, Quran.ir'u geliştirmemize ve operasyonlarımızı sürdürmemize yardımcı oluyor, böylece bağış toplamaya daha az, etki yaratmaya daha çok odaklanabiliyoruz.",
     "donation-campaign": {
       "cta": "Bugün bağış yapın",
       "text": "Destekçi olun"
@@ -387,7 +387,7 @@
   "projects-desc": "<link>Quran.Foundation</link> tarafından sahip olunan, yönetilen veya desteklenen kar amacı gütmeyen projeler",
   "q-reflect": "KuranYansıtmak",
   "quran-apps": "Kuran Uygulamaları",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
   "quran-radio": "Kuran Radyo",
   "read": "Okumak",
   "read-more": "Devamını oku",
@@ -568,5 +568,5 @@
   "search-languages": "Search languages...",
   "languages-count": "{{count}} of {{total}} languages",
   "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.com"
+  "select-language-description": "Select your preferred display language for Quran.ir"
 }

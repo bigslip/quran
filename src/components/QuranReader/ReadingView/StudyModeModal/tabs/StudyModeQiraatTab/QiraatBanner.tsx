@@ -8,7 +8,7 @@ import Link, { LinkVariant } from '@/dls/Link/Link';
 import HelpCircleIcon from '@/icons/help-circle.svg';
 import { logButtonClick } from '@/utils/eventLogger';
 
-const LEARN_MORE_URL = 'https://quran.com/learning-plans';
+const LEARN_MORE_URL = 'https://quran.ir/learning-plans';
 
 /**
  * Educational banner explaining what Qiraat are with a link to learn more.

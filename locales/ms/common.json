@@ -6,17 +6,17 @@
     "auth-onboarding": {
       "data-sync": {
         "action": "Seterusnya",
-        "description": "Sama ada anda menggunakan Quran.com pada telefon atau komputer riba anda, penanda halaman anda, ayat terakhir dibaca dan pilihan anda akan tersedia",
+        "description": "Sama ada anda menggunakan Quran.ir pada telefon atau komputer riba anda, penanda halaman anda, ayat terakhir dibaca dan pilihan anda akan tersedia",
         "title": "Data anda akan diselenggarakan <br></br> merentas peranti"
       },
       "feedback": {
         "action": "Okay, faham",
-        "description": "Terima kasih kerana menggunakan Quran.com dan sila beri maklum balas anda  <link> feedback.quran.com </link>",
+        "description": "Terima kasih kerana menggunakan Quran.ir dan sila beri maklum balas anda  <link> feedback.quran.ir </link>",
         "title": "Kami mengalukan pendapat anda"
       },
       "quran-foundation-link": {
         "action": "Seterusnya",
-        "description": "Gunakan log masuk Quran.com anda untuk akses kepada QuranReflect.com — komuniti global yang berkembang maju yang terlibat dalam refleksi al-Quran.",
+        "description": "Gunakan log masuk Quran.ir anda untuk akses kepada QuranReflect.com — komuniti global yang berkembang maju yang terlibat dalam refleksi al-Quran.",
         "title": "Gunakan akaun anda merentas aplikasi Quran.Foundation!"
       },
       "quran-growth-journey": {
@@ -26,7 +26,7 @@
       },
       "welcome": {
         "action": "Lihat apa yang baharu",
-        "title": "Selamat datang ke Akaun Pengguna Quran.com <br></br>"
+        "title": "Selamat datang ke Akaun Pengguna Quran.ir <br></br>"
       }
     },
     "collections-announcement": {
@@ -257,7 +257,7 @@
   },
   "footer": {
     "apps-disclaimer": "Setiap aplikasi dimiliki dan diselenggara secara bebas oleh pembangunnya. Untuk sokongan, laporan pepijat atau permintaan ciri, sila hubungi pencipta aplikasi secara langsung.",
-    "description": "Quran.com ialah platform dipercayai yang digunakan oleh berjuta-juta orang di seluruh dunia untuk membaca, mencari, mendengar dan merenung Al-Quran dalam pelbagai bahasa. Ia menyediakan terjemahan, tafsir, bacaan, terjemahan perkataan demi perkataan, dan alat untuk kajian yang lebih mendalam, menjadikan al-Quran boleh diakses oleh semua orang. <br/> <br/> Sebagai Sadaqah Jariyah, Quran.com berdedikasi untuk membantu orang ramai berhubung secara mendalam dengan al-Quran. Disokong oleh <link> Quran.Foundation </link>, sebuah organisasi bukan untung 501(c)(3), Quran.com terus berkembang sebagai sumber percuma dan berharga untuk semua, Alhamdulillah.",
+    "description": "Quran.ir ialah platform dipercayai yang digunakan oleh berjuta-juta orang di seluruh dunia untuk membaca, mencari, mendengar dan merenung Al-Quran dalam pelbagai bahasa. Ia menyediakan terjemahan, tafsir, bacaan, terjemahan perkataan demi perkataan, dan alat untuk kajian yang lebih mendalam, menjadikan al-Quran boleh diakses oleh semua orang. <br/> <br/> Sebagai Sadaqah Jariyah, Quran.ir berdedikasi untuk membantu orang ramai berhubung secara mendalam dengan al-Quran. Disokong oleh <link> Quran.Foundation </link>, sebuah organisasi bukan untung 501(c)(3), Quran.ir terus berkembang sebagai sumber percuma dan berharga untuk semua, Alhamdulillah.",
     "hiring": "Kami ada jawatan kosong untuk di penuhi! Sertai pasukan QuranFoundation dan menyumbang kepada misi kami. <link> Mohon sekarang! </link>",
     "rights": "Hak cipta terpelihara",
     "title": "Baca, Dengar, Cari, dan Renungkan Al-Quran"
@@ -280,10 +280,10 @@
   "from": "Dari",
   "fundraising-card-v2": {
     "cta": "Derma sekarang",
-    "description": "Penderma bulanan membantu kami menambah baik Quran.com dan mengekalkan operasi supaya kami kurang menumpukan pada pengumpulan dana dan lebih kepada mewujudkan impak.",
+    "description": "Penderma bulanan membantu kami menambah baik Quran.ir dan mengekalkan operasi supaya kami kurang menumpukan pada pengumpulan dana dan lebih kepada mewujudkan impak.",
     "title": "Jadilah Penderma Bulanan"
   },
-  "fundraising-share-title": "Kongsi Pengumpulan Dana Quran.com",
+  "fundraising-share-title": "Kongsi Pengumpulan Dana Quran.ir",
   "fundraising-sticky-banner-v2": {
     "cta": "Derma",
     "desktop-text": "Menyumbang kepada misi kami",
@@ -295,7 +295,7 @@
     "title": "Berikan pada hari-hari terbaik!"
   },
   "fundraising": {
-    "description": "Derma bulanan membantu kami menambah baik Quran.com dan mengekalkan operasi supaya kami kurang menumpukan pada pengumpulan dana dan lebih kepada mencipta impak.",
+    "description": "Derma bulanan membantu kami menambah baik Quran.ir dan mengekalkan operasi supaya kami kurang menumpukan pada pengumpulan dana dan lebih kepada mencipta impak.",
     "donation-campaign": {
       "cta": "Derma hari ini",
       "text": "Jadilah penyokong"
@@ -387,7 +387,7 @@
   "projects-desc": "Projek tanpa untung yang dimiliki, diurus atau ditaja oleh <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
   "quran-apps": "Aplikasi Al-Quran",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
   "quran-radio": "Radio Al-Quran",
   "read": "Baca",
   "read-more": "Baca Lagi",
@@ -568,5 +568,5 @@
   "search-languages": "Search languages...",
   "languages-count": "{{count}} of {{total}} languages",
   "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.com"
+  "select-language-description": "Select your preferred display language for Quran.ir"
 }

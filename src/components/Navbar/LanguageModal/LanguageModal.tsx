@@ -134,7 +134,7 @@ const LanguageModal: React.FC = () => {
             <DialogPrimitive.Title>{t('select-language')}</DialogPrimitive.Title>
             <DialogPrimitive.Description>
               {t('select-language-description', {
-                defaultValue: 'Select your preferred display language for Quran.com',
+                defaultValue: 'Select your preferred display language for Quran.ir',
               })}
             </DialogPrimitive.Description>
           </VisuallyHidden>

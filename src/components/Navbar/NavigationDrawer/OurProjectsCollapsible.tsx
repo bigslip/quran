@@ -30,7 +30,7 @@ interface OurProjectsCollapsibleProps {
 
 const PROJECTS: ProjectItem[] = [
   {
-    title: 'Quran.com',
+    title: 'Quran.ir',
     href: QURAN_URL,
     eventName: 'navigation_drawer_project_quran_com',
   },
@@ -60,12 +60,12 @@ const PROJECTS: ProjectItem[] = [
     eventName: 'navigation_drawer_project_nuqayah',
   },
   {
-    title: 'Legacy.quran.com',
+    title: 'Legacy.quran.ir',
     href: EXTERNAL_ROUTES.LEGACY_QURAN_COM,
     eventName: 'navigation_drawer_project_legacy',
   },
   {
-    title: 'Corpus.quran.com',
+    title: 'Corpus.quran.ir',
     href: EXTERNAL_ROUTES.CORPUS_QURAN_COM,
     eventName: 'navigation_drawer_project_corpus',
   },

@@ -22,11 +22,11 @@ const path = '/developers';
 const DevelopersPage: NextPage = () => {
   const { t, lang } = useTranslation('developers');
   const projects = [
-    { key: 'q-next', href: 'https://github.com/quran/quran.com-frontend-next' },
-    { key: 'q-api', href: 'https://github.com/quran/quran.com-api' },
+    { key: 'q-next', href: 'https://github.com/quran/quran.ir-frontend-next' },
+    { key: 'q-api', href: 'https://github.com/quran/quran.ir-api' },
     { key: 'q-android', href: 'https://github.com/quran/quran_android' },
     { key: 'q-ios', href: 'https://github.com/quran/quran-ios' },
-    { key: 'q-audio', href: 'https://github.com/quran/audio.quran.com' },
+    { key: 'q-audio', href: 'https://github.com/quran/audio.quran.ir' },
   ] as const;
   return (
     <>
@@ -112,13 +112,13 @@ const DevelopersPage: NextPage = () => {
                 components={[
                   <a
                     key={0}
-                    href="https://github.com/quran/quran.com-frontend-next/pulls"
+                    href="https://github.com/quran/quran.ir-frontend-next/pulls"
                     target="_blank"
                     rel="noreferrer"
                   />,
                   <a
                     key={1}
-                    href="https://github.com/quran/quran.com-frontend-next/pulls"
+                    href="https://github.com/quran/quran.ir-frontend-next/pulls"
                     target="_blank"
                     rel="noreferrer"
                   />,

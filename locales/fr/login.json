@@ -67,7 +67,7 @@
     "BannedUserError": "Désolé, votre compte est banni. Veuillez contacter Quran.Foundation.",
     "TokenExpiredError": "Vous avez été déconnecté(e), veuillez vous reconnecter."
   },
-  "login-title": "Se connecter à Quran.com",
+  "login-title": "Se connecter à Quran.ir",
   "new-password-placeholder": "Nouveau mot de passe",
   "or": "OU",
   "other-options": "Autres options de connexion",
@@ -83,7 +83,7 @@
   },
   "privacy-policy": "La protection de votre vie privée est notre priorité. En vous inscrivant, vous acceptez notre <link>Politique de confidentialité</link> et les <link1>Conditions générales d'utilisation</link1>.",
   "quran-text": "Coran",
-  "quran-title": "Quran.com",
+  "quran-title": "Quran.ir",
   "reflect-feature-1": "Méditer sur le Coran",
   "reflect-feature-2": "Rejoindre des groupes",
   "reflect-feature-3": "Interagir avec les autres",

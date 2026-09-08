@@ -69,10 +69,10 @@ const AboutTheQuranSwahili = (): JSX.Element => {
           <p className={pageStyles.translationName}>— Muhsen Alberwany</p>
         </div>
         <div>
-          Tunakukaribisha katika mtandao wetu wa Quran.com na tunakualika usome na usikilize Qur'ani
+          Tunakukaribisha katika mtandao wetu wa Quran.ir na tunakualika usome na usikilize Qur'ani
           kwa moyo ulio wazi, kutafakari kwa kina aya zake, kutafuta kwa ikhlasi elimu iliyo ndani
           yake, na kujifunza zaidi kwa kutumia rasilimali kwenye tovuti yetu. Tunatumai utapata
-          Quran.com kuwa na manufaa na tunaomba ujumbe wa Qur'ani uibariki safari ya maisha yako.
+          Quran.ir kuwa na manufaa na tunaomba ujumbe wa Qur'ani uibariki safari ya maisha yako.
         </div>
       </div>
       <div className={styles.section}>
@@ -215,9 +215,9 @@ const AboutTheQuranSwahili = (): JSX.Element => {
         </div>
       </div>
       <div className={styles.section}>
-        <h1>Quran.com inawezaje kunisaidia katika safari yangu na Qur'ani?</h1>
+        <h1>Quran.ir inawezaje kunisaidia katika safari yangu na Qur'ani?</h1>
         <div>
-          Quran.com ni jukwaa mtandaoni lililo kamili na linalotoa vipengele mbalimbali kusaidia
+          Quran.ir ni jukwaa mtandaoni lililo kamili na linalotoa vipengele mbalimbali kusaidia
           watu kuchunguza na kujihusisha na Qur'ani.
         </div>
         <div>
@@ -228,13 +228,13 @@ const AboutTheQuranSwahili = (): JSX.Element => {
           wasomaji.
         </div>
         <div>
-          Kipengele kingine cha Quran.com ni sehemu ya Tafakari, ambayo inatoa nafasi kwa wasomaji
+          Kipengele kingine cha Quran.ir ni sehemu ya Tafakari, ambayo inatoa nafasi kwa wasomaji
           kujihusisha na maandishi ya Qur'ani kwa kiwango cha kibinafsi zaidi. Kipengele hiki
           kinatoa tafakari ya kinadharia na ya kufikiri juu ya aya, ikiwapa wasomaji ufahamu wa kina
           wa mafundisho ya Qur'ani na umuhimu wake kwa masuala ya kisasa.
         </div>
         <div>
-          Kwa wale wanaopendelea kusikiliza usomaji wa Qur'ani, Quran.com inatoa maktaba mbalimbali
+          Kwa wale wanaopendelea kusikiliza usomaji wa Qur'ani, Quran.ir inatoa maktaba mbalimbali
           ya usomaji wa Qur'ani na{' '}
           <Link href="/reciters" isNewTab>
             wasomaji
@@ -244,14 +244,14 @@ const AboutTheQuranSwahili = (): JSX.Element => {
           kwa urahisi na kufanya mazoezi ya aya maalum.
         </div>
         <div>
-          Ili kuwasaidia zaidi watumiaji katika ufahamu wao wa maandishi ya Qur'ani, Quran.com hutoa
+          Ili kuwasaidia zaidi watumiaji katika ufahamu wao wa maandishi ya Qur'ani, Quran.ir hutoa
           tafsiri (tarjuma) za neno kwa neno pamoja na sauti zake maalum, pia hutoa kipengele cha
           vidokezo vya neno ambacho hutoa tafsiri (tarjuma) za maneno binafsi katika maandishi. Hii
           inafanya maandishi ya Qur'ani kufikiwa na kueleweka zaidi kwa wasomaji ambao bado
           wanajifunza lugha ya Kiarabu.
         </div>
         <div>
-          Aidha, Quran.com inatoa{' '}
+          Aidha, Quran.ir inatoa{' '}
           <Link href="/radio" isNewTab>
             QuranRadio
           </Link>

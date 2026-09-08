@@ -1,4 +1,4 @@
-Review my code changes against the Quran.com frontend project guidelines.
+Review my code changes against the Quran.ir frontend project guidelines.
 
 ## Context
 

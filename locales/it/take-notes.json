@@ -2,7 +2,7 @@
   "benefits": {
     "access-anywhere": {
       "bullet-points": [
-        "I tuoi appunti sono archiviati in modo sicuro nel tuo account Quran.com.",
+        "I tuoi appunti sono archiviati in modo sicuro nel tuo account Quran.ir.",
         "Sincronizzazione su più dispositivi: continua a studiare su dispositivi mobili, tablet o desktop."
       ],
       "description": "Una volta effettuato l'accesso, le tue note vengono sincronizzate su tutti i dispositivi, consentendoti di accedere alle tue riflessioni sia che tu utilizzi il telefono, il tablet o il computer.",
@@ -59,7 +59,7 @@
         "Puoi stabilire collegamenti con il contesto del versetto, altri versetti del Corano, hadith o eventi?"
       ],
       "description": "Prossimamente: la possibilità di condividere appunti selezionati con amici, familiari o gruppi di studio. Collabora alla comprensione e alla diffusione di conoscenze utili.",
-      "paragraph1": "Sebbene le note su Quran.com vengano salvate privatamente, hai anche la possibilità di condividere pubblicamente riflessioni selezionate su <0>QuranReflect.com</0>. Si tratta di una piattaforma comunitaria senza scopo di lucro progettata per incoraggiare un approccio consapevole al Corano, non attraverso il tafsir accademico (riservato a studiosi qualificati), ma attraverso riflessioni sincere e personali, riviste e guidate da un team di moderazione qualificato.",
+      "paragraph1": "Sebbene le note su Quran.ir vengano salvate privatamente, hai anche la possibilità di condividere pubblicamente riflessioni selezionate su <0>QuranReflect.com</0>. Si tratta di una piattaforma comunitaria senza scopo di lucro progettata per incoraggiare un approccio consapevole al Corano, non attraverso il tafsir accademico (riservato a studiosi qualificati), ma attraverso riflessioni sincere e personali, riviste e guidate da un team di moderazione qualificato.",
       "paragraph2": "Allah invita tutti i credenti, non solo gli studiosi, a praticare il tadabbur:",
       "quote": "Questo è un Libro benedetto che ti abbiamo rivelato, o Profeta, affinché ne meditino i versetti e le persone ragionevoli siano consapevoli. (Sura Sad 38:29)",
       "reflection-prompt": "Esempi di domande di riflessione personale che puoi utilizzare per riflettere:",
@@ -74,7 +74,7 @@
     },
     "title": "Vantaggi dell'utilizzo della funzione Note"
   },
-  "description": "Scopri 5 validi motivi per prendere appunti su Quran.com e come gli appunti possono svolgere un ruolo fondamentale nel tuo viaggio con il Corano.",
+  "description": "Scopri 5 validi motivi per prendere appunti su Quran.ir e come gli appunti possono svolgere un ruolo fondamentale nel tuo viaggio con il Corano.",
   "heading": "5 validi motivi per prendere appunti e come possono trasformare il tuo percorso con il Corano",
   "how-to-use": {
     "saved-note-explanation": "Dopo aver salvato una nota per un versetto, l'icona della nota diventerà blu, facilitando l'identificazione dei versetti che hai annotato in precedenza durante le letture future.",
@@ -96,10 +96,10 @@
       "caption": "La funzione note è disponibile accanto a ogni ayah"
     }
   },
-  "introduction": "La funzionalità Note su Quran.com è un modo significativo per approfondire il tuo coinvolgimento con il Corano. Che tu stia studiando, riflettendo o semplicemente cercando di comprendere meglio il messaggio, prendere appunti può aiutarti a entrare in connessione più profonda con i versetti e a ricordare intuizioni che altrimenti potrebbero essere dimenticate.",
+  "introduction": "La funzionalità Note su Quran.ir è un modo significativo per approfondire il tuo coinvolgimento con il Corano. Che tu stia studiando, riflettendo o semplicemente cercando di comprendere meglio il messaggio, prendere appunti può aiutarti a entrare in connessione più profonda con i versetti e a ricordare intuizioni che altrimenti potrebbero essere dimenticate.",
   "meta": {
-    "description": "Scopri come utilizzare la funzione note su Quran.com per migliorare la tua esperienza di studio del Corano.",
-    "title": "Prendi appunti - Quran.com"
+    "description": "Scopri come utilizzare la funzione note su Quran.ir per migliorare la tua esperienza di studio del Corano.",
+    "title": "Prendi appunti - Quran.ir"
   },
   "table-of-contents": {
     "items": [

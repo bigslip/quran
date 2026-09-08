@@ -1,4 +1,4 @@
-# Quran.com Frontend Agent Standards
+# Quran.ir Frontend Agent Standards
 
 This repository uses a single source of truth for AI agent standards and workflows.
 

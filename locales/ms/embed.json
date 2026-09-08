@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "Konfigurasikan dan pratonton widget benam untuk perkongsian Al-Quran, kemudian salin petikan skrip sedia untuk digunakan.",
-    "title": "Pembina Benaman Ayah | Quran.com"
+    "title": "Pembina Benaman Ayah | Quran.ir"
   },
   "mushaf": {
     "indopak": "Indopak",
@@ -80,6 +80,6 @@
     "otherLanguage": "Lain-lain"
   },
   "widget": {
-    "readOnQuran": "Baca di Quran.com"
+    "readOnQuran": "Baca di Quran.ir"
   }
 }

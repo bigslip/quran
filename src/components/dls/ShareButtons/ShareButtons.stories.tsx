@@ -28,7 +28,7 @@ const meta: Meta<typeof ShareButtons> = {
     ),
   ],
   args: {
-    url: 'https://quran.com/1',
+    url: 'https://quran.ir/1',
     title: 'Surah Al-Fatihah',
     analyticsContext: 'storybook',
   },

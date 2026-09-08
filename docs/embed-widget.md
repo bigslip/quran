@@ -127,7 +127,7 @@ grow beyond the configured limit.
 
 ```html
 <iframe
-  src="https://quran.com/embed/v1?verses=33:56"
+  src="https://quran.ir/embed/v1?verses=33:56"
   width="100%"
   data-quran-embed="true"
   data-quran-embed-max-height="350px"
@@ -136,7 +136,7 @@ grow beyond the configured limit.
   frameborder="0"
 >
 </iframe>
-<script defer src="https://quran.com/widget/embed-widget.js"></script>
+<script defer src="https://quran.ir/widget/embed-widget.js"></script>
 ```
 
 If you are using a custom embed domain, load the script from the same origin as the iframe `src`.
@@ -221,7 +221,7 @@ type WidgetTrimOptions = {
 Client-side interactions are handled by `src/hooks/widget/useWidgetInteractions.ts`:
 
 - **Copy**: Copies formatted text (Arabic + translation + URL) to clipboard
-- **Share**: Copies the quran.com URL to clipboard
+- **Share**: Copies the quran.ir URL to clipboard
 - **Audio**: Toggle play/pause with time clamping for verse segments
 - **Analytics**: Emits explicit interaction events: `embed_copy_text_clicked`,
   `embed_copy_link_clicked`, `embed_open_verse_clicked`, `embed_tafsirs_clicked`,
@@ -255,7 +255,7 @@ Notes:
 ## Localization
 
 Widget labels are localized via `next-translate` in the embed page. The builder locale list is
-derived from `i18n.json`. The header link text ("Read on Quran.com") uses
+derived from `i18n.json`. The header link text ("Read on Quran.ir") uses
 `embed:widget.readOnQuran`. Action labels include separate `reflections` and `lessons` keys.
 
 If you add new labels:

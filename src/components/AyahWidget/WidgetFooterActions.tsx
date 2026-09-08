@@ -50,7 +50,7 @@ const WidgetFooterActions = ({ verse, options, colors, children }: Props): JSX.E
   // Construct the base URL for the verse actions based on locale and verse reference.
   const locale = options.locale || 'en';
   const localePrefix = locale === 'en' ? '' : `/${locale}`;
-  const baseUrl = `https://quran.com${localePrefix}/${chapterNumber}:${startVerse}`;
+  const baseUrl = `https://quran.ir${localePrefix}/${chapterNumber}:${startVerse}`;
   const isRtl = isRTLLocale(locale);
 
   const actions = [

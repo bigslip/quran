@@ -2,7 +2,7 @@
   "benefits": {
     "access-anywhere": {
       "bullet-points": [
-        "Suas anotações são armazenadas com segurança na sua conta Quran.com.",
+        "Suas anotações são armazenadas com segurança na sua conta Quran.ir.",
         "Sincronize entre dispositivos — continue seus estudos no celular, tablet ou desktop."
       ],
       "description": "Suas anotações são sincronizadas em todos os dispositivos quando você está conectado, permitindo que você acesse suas reflexões esteja no seu telefone, tablet ou computador.",
@@ -59,7 +59,7 @@
         "Você consegue fazer conexões com o contexto do versículo, outros versículos do Alcorão, hadiths ou eventos?"
       ],
       "description": "Em breve: a possibilidade de compartilhar notas selecionadas com amigos, familiares ou grupos de estudo. Colabore na compreensão e dissemine conhecimentos úteis.",
-      "paragraph1": "Embora as notas no Quran.com sejam salvas de forma privada, você também tem a opção de compartilhar reflexões selecionadas publicamente no <0>QuranReflect.com</0>. Esta é uma plataforma comunitária sem fins lucrativos, criada para incentivar o envolvimento reflexivo com o Alcorão – não por meio de tafsir acadêmico (reservado para acadêmicos qualificados), mas por meio de reflexões sinceras e pessoais, revisadas e orientadas por uma equipe de moderação qualificada.",
+      "paragraph1": "Embora as notas no Quran.ir sejam salvas de forma privada, você também tem a opção de compartilhar reflexões selecionadas publicamente no <0>QuranReflect.com</0>. Esta é uma plataforma comunitária sem fins lucrativos, criada para incentivar o envolvimento reflexivo com o Alcorão – não por meio de tafsir acadêmico (reservado para acadêmicos qualificados), mas por meio de reflexões sinceras e pessoais, revisadas e orientadas por uma equipe de moderação qualificada.",
       "paragraph2": "Allah convida todos os crentes, não apenas os estudiosos, a praticarem o tadabbur:",
       "quote": "Este é um Livro abençoado que te revelamos, ó Profeta, para que os homens possam meditar nos seus versículos, e os sensatos possam meditar. (Sura Sad 38:29)",
       "reflection-prompt": "Exemplos de perguntas de reflexão pessoal que você pode usar para refletir:",
@@ -74,7 +74,7 @@
     },
     "title": "Benefícios de usar o recurso Notas"
   },
-  "description": "Descubra 5 motivos poderosos para fazer anotações no Quran.com e como as anotações podem desempenhar um papel essencial em sua jornada com o Alcorão.",
+  "description": "Descubra 5 motivos poderosos para fazer anotações no Quran.ir e como as anotações podem desempenhar um papel essencial em sua jornada com o Alcorão.",
   "heading": "5 razões poderosas para fazer anotações - e como elas podem transformar sua jornada com o Alcorão",
   "how-to-use": {
     "saved-note-explanation": "Depois de salvar uma nota para um versículo, o ícone da nota ficará azul, facilitando a identificação de versículos que você anotou anteriormente durante leituras futuras.",
@@ -96,10 +96,10 @@
       "caption": "O recurso de notas está disponível ao lado de cada versículo"
     }
   },
-  "introduction": "O recurso Notas do Quran.com é uma maneira significativa de aprofundar seu envolvimento com o Alcorão. Seja estudando, refletindo ou simplesmente tentando entender melhor a mensagem, fazer anotações pode ajudá-lo a se conectar mais profundamente com os versículos e reter insights que, de outra forma, poderiam ser esquecidos.",
+  "introduction": "O recurso Notas do Quran.ir é uma maneira significativa de aprofundar seu envolvimento com o Alcorão. Seja estudando, refletindo ou simplesmente tentando entender melhor a mensagem, fazer anotações pode ajudá-lo a se conectar mais profundamente com os versículos e reter insights que, de outra forma, poderiam ser esquecidos.",
   "meta": {
-    "description": "Aprenda a usar o recurso de notas no Quran.com para melhorar sua experiência de estudo do Alcorão.",
-    "title": "Tome notas - Quran.com"
+    "description": "Aprenda a usar o recurso de notas no Quran.ir para melhorar sua experiência de estudo do Alcorão.",
+    "title": "Tome notas - Quran.ir"
   },
   "table-of-contents": {
     "items": [

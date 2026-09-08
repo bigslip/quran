@@ -67,7 +67,7 @@
     "BannedUserError": "抱歉，您的帐户已被禁止。请联系 Quran.Foundation。",
     "TokenExpiredError": "您已登出，请重新登入。"
   },
-  "login-title": "登录 Quran.com",
+  "login-title": "登录 Quran.ir",
   "new-password-placeholder": "新密码",
   "or": "或者",
   "other-options": "其他登录选项",

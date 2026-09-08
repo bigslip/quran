@@ -253,7 +253,7 @@ import ShareButtons from './ShareButtons';
 
 describe('ShareButtons', () => {
   it('renders share buttons', () => {
-    render(<ShareButtons url="https://quran.com" title="Read Quran" />);
+    render(<ShareButtons url="https://quran.ir" title="Read Quran" />);
     // Check if at least one button exists (e.g. generic share or specific network)
     const buttons = screen.getAllByRole('button');
     expect(buttons.length).toBeGreaterThan(0);

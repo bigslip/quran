@@ -19,7 +19,7 @@ const shouldGenerateAdditionalPaths =
 
 const BASE_PATH =
   `${isDevelopment ? 'http' : 'https'}://${process.env.NEXT_PUBLIC_VERCEL_URL}` ||
-  'https://quran.com';
+  'https://quran.ir';
 
 const { API_GATEWAY_URL } = process.env;
 const API_CONTENT_URL = `${API_GATEWAY_URL}/content`;

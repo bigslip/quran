@@ -29,7 +29,7 @@ SPECS_DIR="docs/specs/${ROOT_TICKET}/images"
 mkdir -p "${SPECS_DIR}"
 
 # Get attachment list
-ATTACHMENTS=$(curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+ATTACHMENTS=$(curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
   "https://quranfoundation.atlassian.net/rest/api/3/issue/${TICKET_KEY}?fields=attachment" | \
   jq '.fields.attachment[] | {id, filename, mimeType}')
 
@@ -41,7 +41,7 @@ echo "$ATTACHMENTS" | jq -c '.' | while read attachment; do
   # Prefix with ticket key
   PREFIXED_FILENAME="${TICKET_KEY}-${FILENAME}"
 
-  curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+  curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
     -o "${SPECS_DIR}/${PREFIXED_FILENAME}" \
     "https://quranfoundation.atlassian.net/rest/api/3/attachment/content/${ATTACHMENT_ID}"
 
@@ -60,7 +60,7 @@ mkdir -p "${SPECS_DIR}"
 for TICKET_KEY in "${TICKET_KEYS[@]}"; do
   echo "Fetching attachments for ${TICKET_KEY}..."
 
-  curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+  curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
     "https://quranfoundation.atlassian.net/rest/api/3/issue/${TICKET_KEY}?fields=attachment" | \
     jq -c '.fields.attachment[]' 2>/dev/null | while read attachment; do
 
@@ -70,7 +70,7 @@ for TICKET_KEY in "${TICKET_KEYS[@]}"; do
     # Prefix with ticket key for traceability
     PREFIXED_FILENAME="${TICKET_KEY}-${FILENAME}"
 
-    curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+    curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
       -o "${SPECS_DIR}/${PREFIXED_FILENAME}" \
       "https://quranfoundation.atlassian.net/rest/api/3/attachment/content/${ATTACHMENT_ID}"
 

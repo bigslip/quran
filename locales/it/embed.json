@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "Configura e visualizza in anteprima i widget incorporati per la condivisione del Corano, quindi copia il frammento di script pronto all'uso.",
-    "title": "Generatore di incorporamenti di Ayah | Quran.com"
+    "title": "Generatore di incorporamenti di Ayah | Quran.ir"
   },
   "mushaf": {
     "indopak": "Indopak",
@@ -80,6 +80,6 @@
     "otherLanguage": "Altro"
   },
   "widget": {
-    "readOnQuran": "Leggi su Quran.com"
+    "readOnQuran": "Leggi su Quran.ir"
   }
 }

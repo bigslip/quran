@@ -35,7 +35,7 @@ export const dynamicDataSWRConfig: SWRConfiguration = {
   revalidateOnReconnect: false,
 };
 
-const STAGING_API_HOST = 'https://staging.quran.com';
+const STAGING_API_HOST = 'https://staging.quran.ir';
 const PRODUCTION_API_HOST = 'https://api.qurancdn.com';
 
 const API_ROOT_PATH = '/api/qdc';

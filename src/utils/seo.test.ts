@@ -14,7 +14,7 @@ describe('SEO Utilities', () => {
 
   describe('config constants', () => {
     it('contains valid site branding and social identifiers', () => {
-      expect(config.siteName).toBe('Quran.com');
+      expect(config.siteName).toBe('Quran.ir');
       expect(config.twitterHandle).toBe('@app_quran');
       expect(config.twitterCardType).toBe('summary_large_image');
       expect(config.facebookApp).toBe('342185219529773');
@@ -29,12 +29,12 @@ describe('SEO Utilities', () => {
       const seo = createSEOConfig();
 
       expect(seo.title).toBe('');
-      expect(seo.titleTemplate).toBe('%s - Quran.com');
-      expect(seo.defaultTitle).toBe('Quran.com');
+      expect(seo.titleTemplate).toBe('%s - Quran.ir');
+      expect(seo.defaultTitle).toBe('Quran.ir');
       expect(seo.canonical).toBeUndefined();
       expect(seo.description).toBeUndefined();
       expect(seo.openGraph?.type).toBe('website');
-      expect(seo.openGraph?.site_name).toBe('Quran.com');
+      expect(seo.openGraph?.site_name).toBe('Quran.ir');
       expect(seo.openGraph?.title).toBe('');
       expect(seo.openGraph?.description).toBeUndefined();
       expect(seo.openGraph?.locale).toBe('en_US');
@@ -43,7 +43,7 @@ describe('SEO Utilities', () => {
           url: 'https://og.qurancdn.com/api/og?lang=en',
           width: 1200,
           height: 630,
-          alt: 'Quran.com',
+          alt: 'Quran.ir',
         },
       ]);
       expect(seo.facebook?.appId).toBe('342185219529773');
@@ -66,16 +66,16 @@ describe('SEO Utilities', () => {
       const seo = createSEOConfig({
         title: 'Al-Fatihah',
         description: 'The Opener - Surah 1 of the Holy Quran',
-        canonicalUrl: 'https://quran.com/1',
+        canonicalUrl: 'https://quran.ir/1',
         locale: 'ar',
       });
 
       expect(seo.title).toBe('Al-Fatihah');
       expect(seo.description).toBe('The Opener - Surah 1 of the Holy Quran');
-      expect(seo.canonical).toBe('https://quran.com/1');
+      expect(seo.canonical).toBe('https://quran.ir/1');
       expect(seo.openGraph?.title).toBe('Al-Fatihah');
       expect(seo.openGraph?.description).toBe('The Opener - Surah 1 of the Holy Quran');
-      expect(seo.openGraph?.url).toBe('https://quran.com/1');
+      expect(seo.openGraph?.url).toBe('https://quran.ir/1');
       expect(seo.openGraph?.locale).toBe('ar_EG');
       expect(seo.openGraph?.images?.[0]?.url).toBe('https://og.qurancdn.com/api/og?lang=ar');
     });

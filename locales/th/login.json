@@ -67,7 +67,7 @@
     "BannedUserError": "ขออภัย บัญชีของคุณถูกระงับ โปรดติดต่อมูลนิธิอัลกุรอาน",
     "TokenExpiredError": "คุณออกจากระบบแล้ว กรุณาเข้าสู่ระบบใหม่อีกครั้ง"
   },
-  "login-title": "เข้าสู่ระบบ Quran.com",
+  "login-title": "เข้าสู่ระบบ Quran.ir",
   "new-password-placeholder": "รหัสผ่านใหม่",
   "or": "หรือ",
   "other-options": "ตัวเลือกการเข้าสู่ระบบอื่น ๆ",

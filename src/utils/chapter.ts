@@ -108,7 +108,7 @@ export const getAllJuzMappings = (): Promise<{ [juz: string]: ChapterAndVerseMap
  * @param {string} juzId
  * @returns {[chapter: string]: string}
  *
- * original data source: https://api.quran.com/api/v4/juzs
+ * original data source: https://api.quran.ir/api/v4/juzs
  *
  * Example:
  * getChapterAndVerseMappingForJuz("1") // { "1": "1-7", "2" : "1-141"}

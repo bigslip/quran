@@ -6,17 +6,17 @@
     "auth-onboarding": {
       "data-sync": {
         "action": "Inayofuata",
-        "description": "Iwe unatumia Quran.com kwenye simu yako au kompyuta yako ndogo, utaweza kupata alamisho zako, aya za mwisho ulizozisoma na mapendeleo yako.",
+        "description": "Iwe unatumia Quran.ir kwenye simu yako au kompyuta yako ndogo, utaweza kupata alamisho zako, aya za mwisho ulizozisoma na mapendeleo yako.",
         "title": "Data yako itasawazishwa <br></br> kwenye vifaa vyote"
       },
       "feedback": {
         "action": "Sawa, nimeipata",
-        "description": "Asante kwa kutumia Quran.com na tutafurahi kusikia maoni yako kwenye <link> feedback.quran.com </link>",
+        "description": "Asante kwa kutumia Quran.ir na tutafurahi kusikia maoni yako kwenye <link> feedback.quran.ir </link>",
         "title": "Tungependa kusikia mawazo yako"
       },
       "quran-foundation-link": {
         "action": "Inayofuata",
-        "description": "Tumia maelezo yale yale ya kuingia kwenye Quran.com kuweza kuingia kwenye QuranReflect.com - jumuiya ya kimataifa iliyostawi na inayojishughulisha na kutafakari Qur'ani.",
+        "description": "Tumia maelezo yale yale ya kuingia kwenye Quran.ir kuweza kuingia kwenye QuranReflect.com - jumuiya ya kimataifa iliyostawi na inayojishughulisha na kutafakari Qur'ani.",
         "title": "Tumia akaunti yako kwenye programu za Quran.Foundation!"
       },
       "quran-growth-journey": {
@@ -26,7 +26,7 @@
       },
       "welcome": {
         "action": "Tazama kilicho kipya",
-        "title": "Karibu kwenye Quran.com <br></br> Akaunti ya Mtumiaji"
+        "title": "Karibu kwenye Quran.ir <br></br> Akaunti ya Mtumiaji"
       }
     },
     "collections-announcement": {
@@ -257,7 +257,7 @@
   },
   "footer": {
     "apps-disclaimer": "Kila programu inamilikiwa na kutunzwa na msanidi programu wake. Kwa usaidizi, ripoti za hitilafu, au maombi ya vipengele, tafadhali wasiliana na muundaji wa programu moja kwa moja.",
-    "description": "Quran.com ni jukwaa linaloaminika na linalotumiwa na mamilioni duniani kote kusoma, kutafuta, kusikiliza na kutafakari kuhusu Qur'ani katika lugha tofauti. Inatoa huduma za tarjuma, tafsiri, vikariri, tarjuma ya neno kwa neno, na zana za ufahamu wa kina, kuifanya Qur'ani ipatikane na kila mtu. <br/> <br/> Kama mbinu ya Sadaqah Jariyah, Quran.com imejitolea kusaidia watu kuunganishwa kwa kina na Qur'ani. Ikiungwa mkono na <link> Quran.Foundation </link>, shirika lisilo la faida la 501(c)(3), Quran.com inaendelea kukua kama rasilimali ya bila malipo na yenye thamani kwa wote, Alhamdulillah.",
+    "description": "Quran.ir ni jukwaa linaloaminika na linalotumiwa na mamilioni duniani kote kusoma, kutafuta, kusikiliza na kutafakari kuhusu Qur'ani katika lugha tofauti. Inatoa huduma za tarjuma, tafsiri, vikariri, tarjuma ya neno kwa neno, na zana za ufahamu wa kina, kuifanya Qur'ani ipatikane na kila mtu. <br/> <br/> Kama mbinu ya Sadaqah Jariyah, Quran.ir imejitolea kusaidia watu kuunganishwa kwa kina na Qur'ani. Ikiungwa mkono na <link> Quran.Foundation </link>, shirika lisilo la faida la 501(c)(3), Quran.ir inaendelea kukua kama rasilimali ya bila malipo na yenye thamani kwa wote, Alhamdulillah.",
     "hiring": "Tunaajiri! Jiunge na timu ya QuranFoundation na uchangie katika dhamira yetu. <link> Tuma ombi sasa! </link>",
     "rights": "Haki Zote Zimehifadhiwa",
     "title": "Soma, Sikiliza, Tafuta, na Tafakari Qur'ani"
@@ -280,10 +280,10 @@
   "from": "Kutoka",
   "fundraising-card-v2": {
     "cta": "Toa mchango sasa",
-    "description": "Wafadhili wa kila mwezi hutusaidia kuboresha Quran.com na kudumisha shughuli ili tusizingatie sana ukusanyaji wa fedha na zaidi kuunda athari.",
+    "description": "Wafadhili wa kila mwezi hutusaidia kuboresha Quran.ir na kudumisha shughuli ili tusizingatie sana ukusanyaji wa fedha na zaidi kuunda athari.",
     "title": "Kuwa Mfadhili wa Kila Mwezi"
   },
-  "fundraising-share-title": "Shiriki Uchangishaji wa Quran.com",
+  "fundraising-share-title": "Shiriki Uchangishaji wa Quran.ir",
   "fundraising-sticky-banner-v2": {
     "cta": "Toa mchango",
     "desktop-text": "Changia katika dhamira yetu",
@@ -295,7 +295,7 @@
     "title": "Toa wakati wa siku bora!"
   },
   "fundraising": {
-    "description": "Michango ya kila mwezi hutusaidia kuboresha Quran.com na kuendeleza shughuli zetu, ili tuweke mkazo mdogo kwenye ukusanyaji wa fedha na zaidi kwenye kuleta athari chanya",
+    "description": "Michango ya kila mwezi hutusaidia kuboresha Quran.ir na kuendeleza shughuli zetu, ili tuweke mkazo mdogo kwenye ukusanyaji wa fedha na zaidi kwenye kuleta athari chanya",
     "donation-campaign": {
       "cta": "Toa mchango leo",
       "text": "Kuwa msaidizi"
@@ -387,7 +387,7 @@
   "projects-desc": "Miradi isiyo ya faida inayomilikiwa, kusimamiwa, au kufadhiliwa na <link>Quran.Foundation</link>",
   "q-reflect": "Quranreflect",
   "quran-apps": "Programu za Qur'ani",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
   "quran-radio": "Redio ya Qur'ani",
   "read": "Soma",
   "read-more": "Soma Zaidi",
@@ -568,5 +568,5 @@
   "search-languages": "Search languages...",
   "languages-count": "{{count}} of {{total}} languages",
   "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.com"
+  "select-language-description": "Select your preferred display language for Quran.ir"
 }

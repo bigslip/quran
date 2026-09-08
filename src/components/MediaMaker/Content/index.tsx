@@ -150,7 +150,7 @@ const MediaMakerContent: React.FC<Props> = ({
                         [styles.logoLandscape]: !isPortrait,
                       })}
                     >
-                      Quran.com
+                      Quran.ir
                     </span>
                   </div>
                   <div>

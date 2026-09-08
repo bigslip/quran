@@ -158,11 +158,11 @@ const drawerLinks = [
   // More
   { text: 'Developers', href: '/developers', target: '' },
   { text: 'Product Updates', href: '/product-updates', target: '' },
-  { text: 'Feedback', href: 'https://feedback.quran.com/', target: '_blank' },
+  { text: 'Feedback', href: 'https://feedback.quran.ir/', target: '_blank' },
   { text: 'Help', href: '/support', target: '' },
 
   // Our Projects
-  { text: 'Quran.com', href: 'https://quran.com', target: '_blank' },
+  { text: 'Quran.ir', href: 'https://quran.ir', target: '_blank' },
   {
     text: 'Quran For Android',
     href: '',
@@ -176,8 +176,8 @@ const drawerLinks = [
   { text: 'QuranReflect.com', href: 'https://quranreflect.com/', target: '_blank' },
   { text: 'Sunnah.com', href: 'https://sunnah.com/', target: '_blank' },
   { text: 'Nuqayah.com', href: 'https://nuqayah.com/', target: '_blank' },
-  { text: 'Legacy.quran.com', href: 'https://legacy.quran.com', target: '_blank' },
-  { text: 'Corpus.quran.com', href: 'https://corpus.quran.com', target: '_blank' },
+  { text: 'Legacy.quran.ir', href: 'https://legacy.quran.ir', target: '_blank' },
+  { text: 'Corpus.quran.ir', href: 'https://corpus.quran.ir', target: '_blank' },
 
   // Fundraising Banner Links
   {

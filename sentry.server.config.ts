@@ -8,7 +8,7 @@ import { nodeProfilingIntegration } from '@sentry/profiling-node';
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 const SENTRY_ENABLED = process.env.NEXT_PUBLIC_SERVER_SENTRY_ENABLED === 'true';
 const isDev = process.env.NODE_ENV === 'development';
-const version = `quran.com-frontend-next@${process.env.NEXT_PUBLIC_APP_VERSION}`;
+const version = `quran.ir-frontend-next@${process.env.NEXT_PUBLIC_APP_VERSION}`;
 
 Sentry.init({
   enabled: SENTRY_ENABLED,

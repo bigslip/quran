@@ -6,17 +6,17 @@
     "auth-onboarding": {
       "data-sync": {
         "action": "ቀጣይ",
-        "description": "በስልክዎ ወይም በላፕቶፕዎ ላይ Quran.comን የሚጠቀሙ ከሆነ፣ ዕልባቶችዎ (ቡክማርኮች)፣ የመጨረሻ የተነበቡ አንቀጾች(አያቶች) እና ምርጫዎችዎ ይገኛሉ።",
+        "description": "በስልክዎ ወይም በላፕቶፕዎ ላይ Quran.irን የሚጠቀሙ ከሆነ፣ ዕልባቶችዎ (ቡክማርኮች)፣ የመጨረሻ የተነበቡ አንቀጾች(አያቶች) እና ምርጫዎችዎ ይገኛሉ።",
         "title": "ውሂብዎ(መረጃዎ) <br></br> በተለያዩ መሳሪያዎች ላይ እንዲመሳሰል ይደረጋል"
       },
       "feedback": {
         "action": "እሺ፣ ገባኝ",
-        "description": "Quran.com ስለተጠቀሙ እናመሰግናለን፤ አስተያየትዎን በ <link>feedback.quran.com</link> ይስጡን በደስታ እንሰማለን",
+        "description": "Quran.ir ስለተጠቀሙ እናመሰግናለን፤ አስተያየትዎን በ <link>feedback.quran.ir</link> ይስጡን በደስታ እንሰማለን",
         "title": "ሀሳብዎን መስማት እንፈልጋለን"
       },
       "quran-foundation-link": {
         "action": "ቀጣይ",
-        "description": "QuranReflect.comን - በቁርአን ነጸብራቅ ላይ የተሰማራውን ዓለም አቀፍ ማህበረሰብ  ለመድረስ፣ የQuran.com መግቢያዎን ይጠቀሙ።",
+        "description": "QuranReflect.comን - በቁርአን ነጸብራቅ ላይ የተሰማራውን ዓለም አቀፍ ማህበረሰብ  ለመድረስ፣ የQuran.ir መግቢያዎን ይጠቀሙ።",
         "title": "መለያዎን በቁርአን ፋውንዴሽን መተግበሪያዎች ውስጥ ይጠቀሙ!"
       },
       "quran-growth-journey": {
@@ -26,7 +26,7 @@
       },
       "welcome": {
         "action": "ምን አዲስ ነገር እንዳለ ይመልከቱ",
-        "title": "ወደ Quran.com እንኳን በደህና መጡ <br></br> የተጠቃሚ መለያ"
+        "title": "ወደ Quran.ir እንኳን በደህና መጡ <br></br> የተጠቃሚ መለያ"
       }
     },
     "collections-announcement": {
@@ -257,7 +257,7 @@
   },
   "footer": {
     "apps-disclaimer": "እያንዳንዱ መተግበሪያ በገንቢው በራሱ ባለቤትነት የተያዘ እና የሚጠበቅ ነው። ለድጋፍ፣ የሳንካ ሪፖርቶች ወይም የባህሪ ጥያቄዎች፣ እባክዎ የመተግበሪያ ፈጣሪውን በቀጥታ ያነጋግሩ።",
-    "description": "Quran.com በዓለም ዙሪያ በሚሊዮኖች የሚቆጠሩ ቁርኣንን ለማንበብ፣ ለመፈለግ፣ ለማዳመጥ እና በተለያዩ ቋንቋዎች ለማሰላሰል የሚጠቀሙበት የታመነ መድረክ ነው። ትርጉሞችን፣ ተፍሲርን፣ ንባቦችን፣ የቃላት በቃል ትርጉም እና የጥልቅ ጥናት መሳሪያዎችን ያቀርባል፣ ይህም ቁርኣንን ለሁሉም ሰው ተደራሽ ያደርገዋል።<br/><br/>እንደ ሰደቃ ጃሪያህ (የማይቋረጥ ሰደቃ) በመሆኑ፣ Quran.com ሰዎች ከቁርኣን ጋር በጥልቅ እንዲገናኙ ለመርዳት የተሰራ ነው። Quran.com በ<link>Quran.Foundation</link>የተደገፈ በ 501(c)(3) መሰረት ለትርፍ ያልተቋቋመ ድርጅት ሲሆን  ለሁሉም ነፃ እና ጠቃሚ ምንጭ ሆኖ ማደጉን ቀጥሏል፣ አልሃምዱሊላህ።",
+    "description": "Quran.ir በዓለም ዙሪያ በሚሊዮኖች የሚቆጠሩ ቁርኣንን ለማንበብ፣ ለመፈለግ፣ ለማዳመጥ እና በተለያዩ ቋንቋዎች ለማሰላሰል የሚጠቀሙበት የታመነ መድረክ ነው። ትርጉሞችን፣ ተፍሲርን፣ ንባቦችን፣ የቃላት በቃል ትርጉም እና የጥልቅ ጥናት መሳሪያዎችን ያቀርባል፣ ይህም ቁርኣንን ለሁሉም ሰው ተደራሽ ያደርገዋል።<br/><br/>እንደ ሰደቃ ጃሪያህ (የማይቋረጥ ሰደቃ) በመሆኑ፣ Quran.ir ሰዎች ከቁርኣን ጋር በጥልቅ እንዲገናኙ ለመርዳት የተሰራ ነው። Quran.ir በ<link>Quran.Foundation</link>የተደገፈ በ 501(c)(3) መሰረት ለትርፍ ያልተቋቋመ ድርጅት ሲሆን  ለሁሉም ነፃ እና ጠቃሚ ምንጭ ሆኖ ማደጉን ቀጥሏል፣ አልሃምዱሊላህ።",
     "hiring": "እየቀጠርን ነው! የቁርዓን ፋውንዴሽን ቡድንን ይቀላቀሉ እና ለተልዕኮአችን አስተዋጽኦ ያድርጉ። <link>አሁኑኑ ያመልክቱ!</link>",
     "rights": "መብቱ በህግ የተጠበቀ ነው",
     "title": "ቁርአንን ያንብቡ ፣ ያዳምጡ ፣ ይፈልጉ እና ያሰላስሉ"
@@ -280,10 +280,10 @@
   "from": "ከ",
   "fundraising-card-v2": {
     "cta": "አሁን ይለግሱ",
-    "description": "ወርሃዊ ለጋሾች Quran.comን ለማሻሻል እና ስራዎችን ለማስቀጠል ይረዱናል፣ ስለዚህ በገንዘብ ማሰባሰብ ላይ ብዙም ትኩረት አንሰጥም እና ተጽዕኖ በመፍጠር ላይ የበለጠ እናተኩራለን።",
+    "description": "ወርሃዊ ለጋሾች Quran.irን ለማሻሻል እና ስራዎችን ለማስቀጠል ይረዱናል፣ ስለዚህ በገንዘብ ማሰባሰብ ላይ ብዙም ትኩረት አንሰጥም እና ተጽዕኖ በመፍጠር ላይ የበለጠ እናተኩራለን።",
     "title": "ወርሃዊ ለጋሽ ይሁኑ"
   },
-  "fundraising-share-title": "የ Quran.com የገንዘብ ማሰባሰብያ ያጋሩ",
+  "fundraising-share-title": "የ Quran.ir የገንዘብ ማሰባሰብያ ያጋሩ",
   "fundraising-sticky-banner-v2": {
     "cta": "ይለግሱ",
     "desktop-text": "ለተልዕኮአችን አስተዋጽኦ ያድርጉ",
@@ -295,7 +295,7 @@
     "title": "በጣም ጥሩ በሆኑት ቀናት ይስጡ!"
   },
   "fundraising": {
-    "description": "ወርሃዊ ልገሳዎች Quran.comን ለማሻሻል እና ስራዎችን ለማስቀጠል ይረዱናል፣ ስለዚህ በገንዘብ ማሰባሰብ ላይ ብዙም ትኩረት አንሰጥም እና ተጽዕኖ በመፍጠር ላይ የበለጠ እናተኩራለን።",
+    "description": "ወርሃዊ ልገሳዎች Quran.irን ለማሻሻል እና ስራዎችን ለማስቀጠል ይረዱናል፣ ስለዚህ በገንዘብ ማሰባሰብ ላይ ብዙም ትኩረት አንሰጥም እና ተጽዕኖ በመፍጠር ላይ የበለጠ እናተኩራለን።",
     "donation-campaign": {
       "cta": "ዛሬውኑ ይለግሱ",
       "text": "ደጋፊ ይሁኑ"
@@ -387,7 +387,7 @@
   "projects-desc": "በባለቤትነት የተያዙ፣ የሚተዳደሩ ወይም በውጤቶች የተደገፉ ለትርፍ ያልተቋቋሙ የ <link>Quran.Foundation</link> ፕሮጀክቶች",
   "q-reflect": "ቁርዓንሪፍሌክት",
   "quran-apps": "የቁርዓን መተግበሪያዎች",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
   "quran-radio": "የቁርአን ሬዲዮ",
   "read": "አንብብ",
   "read-more": "ተጨማሪ ያንብቡ",
@@ -568,5 +568,5 @@
   "search-languages": "Search languages...",
   "languages-count": "{{count}} of {{total}} languages",
   "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.com"
+  "select-language-description": "Select your preferred display language for Quran.ir"
 }

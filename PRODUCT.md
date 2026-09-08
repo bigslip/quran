@@ -21,7 +21,7 @@ To provide a serene, authentic, and technologically sublime digital reading and 
 
 ## Positioning
 
-**Modern Spiritual Sanctuary:** Unlike utilitarian or cluttered reference tools, Quran.com blends sacred manuscript authenticity (Uthmani/IndoPak typography, verified glyphs) with state-of-the-art web performance, synchronized word-by-word audio, frosted glass elevation, and personal reading reflection workflows.
+**Modern Spiritual Sanctuary:** Unlike utilitarian or cluttered reference tools, Quran.ir blends sacred manuscript authenticity (Uthmani/IndoPak typography, verified glyphs) with state-of-the-art web performance, synchronized word-by-word audio, frosted glass elevation, and personal reading reflection workflows.
 
 ## Operating Context
 

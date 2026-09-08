@@ -24,14 +24,14 @@ const Links = () => {
         { text: t('about'), url: '/about-us' },
         { text: t('developers'), url: '/developers' },
         { text: t('product-updates'), url: '/product-updates' },
-        { text: t('feedback'), url: 'https://feedback.quran.com/', isExternal: true },
+        { text: t('feedback'), url: 'https://feedback.quran.ir/', isExternal: true },
         { text: t('help'), url: '/support' },
       ],
     },
     {
       title: t('our-projects'),
       links: [
-        { text: 'Quran.com', url: 'https://quran.com', isExternal: true },
+        { text: 'Quran.ir', url: 'https://quran.ir', isExternal: true },
         {
           text: 'Quran For Android',
           url: 'https://play.google.com/store/apps/details?id=com.quran.labs.androidquran&hl=en&pli=1',
@@ -45,8 +45,8 @@ const Links = () => {
         { text: 'QuranReflect.com', url: 'https://quranreflect.com', isExternal: true },
         { text: 'Sunnah.com', url: 'https://sunnah.com', isExternal: true },
         { text: 'Nuqayah.com', url: 'https://nuqayah.com', isExternal: true },
-        { text: 'Legacy.Quran.com', url: 'https://legacy.quran.com', isExternal: true },
-        { text: 'Corpus.Quran.com', url: 'https://corpus.quran.com', isExternal: true },
+        { text: 'Legacy.Quran.ir', url: 'https://legacy.quran.ir', isExternal: true },
+        { text: 'Corpus.Quran.ir', url: 'https://corpus.quran.ir', isExternal: true },
       ],
       description: (
         <Trans

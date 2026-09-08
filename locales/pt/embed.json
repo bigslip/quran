@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "Configure e visualize widgets incorporados para compartilhar o Alcorão e, em seguida, copie o trecho de script pronto para uso.",
-    "title": "Construtor de Incorporação de Versículos | Quran.com"
+    "title": "Construtor de Incorporação de Versículos | Quran.ir"
   },
   "mushaf": {
     "indopak": "Indopak",
@@ -80,6 +80,6 @@
     "otherLanguage": "Outro"
   },
   "widget": {
-    "readOnQuran": "Leia em Quran.com"
+    "readOnQuran": "Leia em Quran.ir"
   }
 }

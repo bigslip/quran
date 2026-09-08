@@ -74,7 +74,7 @@ const ShareReflections: React.FC = () => {
               QuranReflect FAQ
             </a>,
             <a
-              href="https://quran.com/learning-plans/five-lenses-to-reflect-on-the-quran"
+              href="https://quran.ir/learning-plans/five-lenses-to-reflect-on-the-quran"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => onLinkClicked('five_lenses')}

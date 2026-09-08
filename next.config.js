@@ -46,8 +46,8 @@ const nextConfig = {
       'static.qurancdn.com',
       'vercel.com',
       'now.sh',
-      'quran.com',
-      'images.quran.com',
+      'quran.ir',
+      'images.quran.ir',
       // Google OAuth user avatars
       'lh3.googleusercontent.com',
       // S3-hosted avatars (generic domain required for OAuth providers)

@@ -1,6 +1,6 @@
 # Navbar Test Plan
 
-Comprehensive test plan for the Quran.com navbar system, including banner, context menu, drawers,
+Comprehensive test plan for the Quran.ir navbar system, including banner, context menu, drawers,
 and related components.
 
 **Related Documentation:** [NAVBAR-ARCHITECTURE.md](./NAVBAR-ARCHITECTURE.md)

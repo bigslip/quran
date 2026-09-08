@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report and help us improving quran.com
+        Thanks for taking the time to fill out this bug report and help us improving quran.ir
   - type: checkboxes
     attributes:
       label: Is there an existing issue for this?
@@ -58,8 +58,8 @@ body:
     attributes:
       label: Environment
       options:
-        - Production(quran.com)
-        - Beta(beta.quran.com)
-        - Staging(next.quran.com)
+        - Production(quran.ir)
+        - Beta(beta.quran.ir)
+        - Staging(next.quran.ir)
     validations:
       required: true

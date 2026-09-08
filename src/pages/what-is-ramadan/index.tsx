@@ -147,7 +147,7 @@ const WhatIsRamadanPage: NextPage = (): JSX.Element => {
         <div className={styles.subSection}>
           <h2>Your Invitation</h2>
           <div>
-            We invite you to take the first step on this journey. Explore Quran.com to experience
+            We invite you to take the first step on this journey. Explore Quran.ir to experience
             the Quran for yourself. Listen to its recitation, read its meaning, and discover how its
             timeless guidance can illuminate your path.
           </div>
