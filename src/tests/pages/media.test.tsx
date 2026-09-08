@@ -25,8 +25,14 @@ vi.mock('@/icons/download.svg', () => ({ default: () => <svg /> }));
 vi.mock('@/icons/copy.svg', () => ({ default: () => <svg /> }));
 vi.mock('@/icons/video.svg', () => ({ default: () => <svg /> }));
 vi.mock('/public/icons/retry.svg', () => ({ default: () => <svg /> }));
-
-
+vi.mock('remotion', () => ({
+  prefetch: () => ({ waitUntilDone: () => Promise.resolve(), free: vi.fn() }),
+  cancelRender: vi.fn(),
+  staticFile: (path: string) => path,
+}));
+vi.mock('swr', () => ({
+  default: () => ({ data: undefined, error: undefined, isValidating: false }),
+}));
 
 vi.mock('react-redux', () => ({
   useDispatch: () => vi.fn(),
