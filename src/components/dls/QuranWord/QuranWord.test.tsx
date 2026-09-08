@@ -115,4 +115,31 @@ describe('QuranWord', () => {
     );
     expect(container.querySelector('[role="button"]')).toBeNull();
   });
+
+  it('applies highlighted class when isHighlighted is true', () => {
+    const { container } = render(
+      <QuranWord 
+        word={mockWord as any} 
+        font={QuranFont.MadaniV1} 
+        isHighlighted={true} 
+      />,
+    );
+    const wordElement = container.querySelector('[data-word-location="1:1:1"]');
+    expect(wordElement).toBeTruthy();
+    expect(wordElement?.className).toContain('highlighted');
+  });
+
+  it('respects isAudioHighlightingAllowed=false prop', () => {
+    const { container } = render(
+      <QuranWord 
+        word={mockWord as any} 
+        font={QuranFont.MadaniV1} 
+        isAudioHighlightingAllowed={false}
+        isHighlighted={false}
+      />,
+    );
+    const wordElement = container.querySelector('[data-word-location="1:1:1"]');
+    expect(wordElement).toBeTruthy();
+    expect(wordElement?.className).not.toContain('highlighted');
+  });
 });

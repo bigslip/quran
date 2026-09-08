@@ -130,17 +130,17 @@ const VerseText = ({
                 word={word}
                 font={quranFont}
                 isFontLoaded={isFontLoaded}
-                isHighlighted={
-                  isHighlightedWord || isVerseSelected || isVerseHovered
-                }
+                isHighlighted={Boolean(
+                  isHighlightedWord || isVerseSelected || isVerseHovered,
+                )}
                 isStartingVerseHighlighted={word.verseKey === startingVerseHighlightVerseKey}
                 tooltipType={tooltipType}
                 isWordInteractionDisabled={isWordInteractionDisabled}
-                shouldForceShowTooltip={isHighlightedWord && !shouldDisableForceTooltip}
-                quranTextFontScaleOverride={quranTextFontScaleOverride}
-                mushafLinesOverride={mushafLinesOverride}
-                shouldShowWordByWordTranslation={shouldShowWordByWordTranslation}
-                shouldShowWordByWordTransliteration={shouldShowWordByWordTransliteration}
+                shouldForceShowTooltip={Boolean(isHighlightedWord && !shouldDisableForceTooltip)}
+                quranTextFontScaleOverride={quranTextFontScale}
+                mushafLinesOverride={mushafLines}
+                shouldShowWordByWordTranslation={showWordByWordTranslation}
+                shouldShowWordByWordTransliteration={showWordByWordTransliteration}
                 isStandaloneMode={isStandaloneMode}
               />
             );

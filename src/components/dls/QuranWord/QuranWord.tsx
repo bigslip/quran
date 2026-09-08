@@ -132,8 +132,9 @@ const QuranWord = ({
 
   // Determine if the audio player is currently playing the word
   const isAudioPlayingWord = useXstateSelector(audioService, (state) => {
-    // Don't highlight when audio player is closed
-    if (!selectIsAudioPlayerVisible(state)) return false;
+    // Don't highlight when audio player is closed or audio highlighting is disabled
+    if (!isAudioHighlightingAllowed) return false;
+    if (!audioService || !selectIsAudioPlayerVisible(state)) return false;
 
     const { surah, ayahNumber, wordLocation: wordPosition } = state.context;
     return `${surah}:${ayahNumber}:${wordPosition}` === wordLocation;
@@ -141,8 +142,9 @@ const QuranWord = ({
 
   const isWordByWordLayout = showWordByWordTranslation || showWordByWordTransliteration;
   let wordText = null;
-  const shouldBeHighLighted =
-    isHighlighted || isTooltipOpened || (isAudioHighlightingAllowed && isAudioPlayingWord);
+  const shouldBeHighLighted = Boolean(
+    isHighlighted || isTooltipOpened || (isAudioHighlightingAllowed && isAudioPlayingWord),
+  );
 
   // Check if the current word has IndoPak stop signs
   const isIndoPakFont = font === QuranFont.IndoPak;
