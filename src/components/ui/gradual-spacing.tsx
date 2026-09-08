@@ -13,7 +13,7 @@ export interface GradualSpacingProps {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span' | 'div';
 }
 
-export const GradualSpacing: React.FC<GradualSpacingProps> = ({
+export const GradualSpacing: React.FC<GradualSpacingProps> = React.memo(({
   text,
   duration = 0.5,
   delayMultiple = 0.035,
@@ -58,6 +58,6 @@ export const GradualSpacing: React.FC<GradualSpacingProps> = ({
       })}
     </Component>
   );
-};
+});
 
 export default GradualSpacing;

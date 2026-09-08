@@ -13,7 +13,7 @@ export interface ElegantDarkPatternProps {
   showRadialHighlight?: boolean;
 }
 
-export const ElegantDarkPattern: React.FC<ElegantDarkPatternProps> = ({
+export const ElegantDarkPattern: React.FC<ElegantDarkPatternProps> = React.memo(({
   children,
   className,
   contentClassName,
@@ -48,7 +48,7 @@ export const ElegantDarkPattern: React.FC<ElegantDarkPatternProps> = ({
       <div className={classNames(styles.contentContainer, contentClassName)}>{children}</div>
     </div>
   );
-};
+});
 
 // Aliases for 21st.dev compatibility
 export const DarkGradientBg = ElegantDarkPattern;
