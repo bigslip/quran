@@ -35,10 +35,10 @@ const NavigationDrawer = () => {
       id="navigation-drawer"
       data-testid="navigation-drawer"
       type={DrawerType.Navigation}
-      side={DrawerSide.Right}
+      side={DrawerSide.Left}
       header={
         <div className={styles.centerVertically}>
-          <div className={styles.leftCTA}>
+          <div className={styles.startCTA}>
             <NavbarLogoWrapper />
             {!isUserLoggedIn && <ProfileAvatarButton isPopoverPortalled={false} />}
           </div>

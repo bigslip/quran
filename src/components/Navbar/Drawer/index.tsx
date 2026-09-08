@@ -99,7 +99,7 @@ enum ActionSource {
 const Drawer: React.FC<Props> = ({
   id,
   type,
-  side = DrawerSide.Right,
+  side = DrawerSide.Left,
   header,
   children,
   hideCloseButton = false,
