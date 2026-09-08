@@ -7,7 +7,6 @@ import styles from './MobileStickyItemsBar.module.scss';
 import NavbarLogoWrapper from '@/components/Navbar/Logo/NavbarLogoWrapper';
 import ProfileAvatarButton from '@/components/Navbar/NavbarBody/ProfileAvatarButton';
 import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
-import useIsLoggedIn from '@/hooks/auth/useIsLoggedIn';
 import useNavbarDrawerActions from '@/hooks/useNavbarDrawerActions';
 import useShowOnScrollUp from '@/hooks/useShowOnScrollUp';
 import IconMenu from '@/icons/menu.svg';
@@ -16,7 +15,6 @@ import { selectIsNavigationDrawerOpen, selectIsSettingsDrawerOpen } from '@/redu
 
 const MobileStickyItemsBar = () => {
   const { t } = useTranslation('common');
-  const { isLoggedIn } = useIsLoggedIn();
   const isNavDrawerOpen = useSelector(selectIsNavigationDrawerOpen);
   const isSettingsDrawerOpen = useSelector(selectIsSettingsDrawerOpen);
   const isDrawerOpen = isNavDrawerOpen || isSettingsDrawerOpen;
@@ -36,13 +34,16 @@ const MobileStickyItemsBar = () => {
       inert={(isDrawerOpen ? '' : undefined) as unknown as boolean}
     >
       <div className={styles.centerVertically}>
-        <div className={styles.leftCTA}>
-          <NavbarLogoWrapper />
-        </div>
-      </div>
-      <div className={styles.centerVertically}>
-        <div className={styles.rightCTA}>
-          {!isLoggedIn && <ProfileAvatarButton isPopoverPortalled={false} />}
+        <div className={styles.startCTA}>
+          <Button
+            tooltip={t('menu')}
+            ariaLabel={t('aria.nav-drawer-open')}
+            variant={ButtonVariant.Ghost}
+            shape={ButtonShape.Circle}
+            onClick={openNavigationDrawer}
+          >
+            <IconMenu />
+          </Button>
           <Button
             tooltip={t('search.title')}
             ariaLabel={t('search.title')}
@@ -53,16 +54,12 @@ const MobileStickyItemsBar = () => {
           >
             <IconSearch />
           </Button>
-          {isLoggedIn && <ProfileAvatarButton isPopoverPortalled={false} />}
-          <Button
-            tooltip={t('menu')}
-            ariaLabel={t('aria.nav-drawer-open')}
-            variant={ButtonVariant.Ghost}
-            shape={ButtonShape.Circle}
-            onClick={openNavigationDrawer}
-          >
-            <IconMenu />
-          </Button>
+          <ProfileAvatarButton isPopoverPortalled={false} />
+        </div>
+      </div>
+      <div className={styles.centerVertically}>
+        <div className={styles.endCTA}>
+          <NavbarLogoWrapper />
         </div>
       </div>
     </div>

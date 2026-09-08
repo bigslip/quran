@@ -41,13 +41,24 @@
   @include utility.center-vertically;
 }
 
+.startCTA,
 .leftCTA {
   display: flex;
   margin-inline-start: var(--spacing-medium-px);
   align-items: center;
 
+  > button,
+  > div > button {
+    margin-inline-end: var(--spacing-micro);
+  }
+
   @include breakpoints.tablet {
     margin-inline-start: var(--spacing-mega);
+
+    > button,
+    > div > button {
+      margin-inline-end: var(--spacing-xsmall-px);
+    }
   }
 }
 
@@ -150,22 +161,13 @@
   }
 }
 
+.endCTA,
 .rightCTA {
   display: flex;
   margin-inline-end: var(--spacing-medium-px);
   align-items: center;
 
-  > button,
-  > div > button {
-    margin-inline-start: var(--spacing-micro);
-  }
-
   @include breakpoints.tablet {
     margin-inline-end: var(--spacing-mega);
-
-    > button,
-    > div > button {
-      margin-inline-start: var(--spacing-xsmall-px);
-    }
   }
 }

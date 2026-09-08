@@ -34,18 +34,21 @@
   @include utility.center-vertically;
 }
 
+.startCTA,
 .leftCTA {
   display: flex;
   margin-inline-start: var(--spacing-medium);
   align-items: center;
+
+  > button,
+  > div > button {
+    margin-inline-end: var(--spacing-micro);
+  }
 }
 
+.endCTA,
 .rightCTA {
   display: flex;
   margin-inline-end: var(--spacing-medium);
   align-items: center;
-
-  > button {
-    margin-inline-start: var(--spacing-micro);
-  }
 }

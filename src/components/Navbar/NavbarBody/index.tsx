@@ -14,7 +14,6 @@ import Banner, { BannerVariant } from '@/components/Banner/Banner';
 import NavbarLogoWrapper from '@/components/Navbar/Logo/NavbarLogoWrapper';
 import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
 import Spinner from '@/dls/Spinner/Spinner';
-import useIsLoggedIn from '@/hooks/auth/useIsLoggedIn';
 import useIsMobile from '@/hooks/useIsMobile';
 import useNavbarDrawerActions from '@/hooks/useNavbarDrawerActions';
 import IconGlobe from '@/icons/globe.svg';
@@ -54,7 +53,6 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
   const isNavigationDrawerOpen = useSelector(selectIsNavigationDrawerOpen);
   const isSettingsDrawerOpen = useSelector(selectIsSettingsDrawerOpen);
   const isLanguageDrawerOpen = useSelector(selectIsLanguageDrawerOpen);
-  const { isLoggedIn } = useIsLoggedIn();
   const router = useRouter();
   const isQuranReaderRoute = isQuranReaderRoutePathname(router.pathname);
   const normalizedPathname = router.asPath.split(/[?#]/)[0];
@@ -169,8 +167,47 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
         }
       >
         <div className={styles.centerVertically}>
-          <div className={styles.leftCTA}>
-            <NavbarLogoWrapper />
+          <div className={styles.startCTA}>
+            <Button
+              tooltip={t('menu')}
+              variant={ButtonVariant.Ghost}
+              shape={ButtonShape.Circle}
+              onClick={openNavigationDrawer}
+              ariaLabel={t('aria.nav-drawer-open')}
+              data-testid={TestId.OPEN_NAVIGATION_DRAWER}
+            >
+              <IconMenu />
+            </Button>
+
+            {shouldRenderSidebarNavigation && <SidebarNavigation />}
+
+            <Button
+              tooltip={t('languages')}
+              variant={ButtonVariant.Ghost}
+              onClick={openLanguageDrawer}
+              shape={ButtonShape.Circle}
+              shouldFlipOnRTL={false}
+              ariaLabel={t('languages')}
+              data-testid="open-language-drawer"
+            >
+              <IconGlobe />
+            </Button>
+
+            <div className={styles.mobileSearchButton}>
+              <Button
+                tooltip={t('search.title')}
+                variant={ButtonVariant.Ghost}
+                onClick={openSearchDrawer}
+                shape={ButtonShape.Circle}
+                shouldFlipOnRTL={false}
+                ariaLabel={t('search.title')}
+                data-testid={isMobile ? TestId.OPEN_SEARCH_DRAWER : 'open-search-drawer-mobile'}
+              >
+                <IconSearch />
+              </Button>
+            </div>
+
+            <ProfileAvatarButton />
           </div>
         </div>
 
@@ -195,46 +232,8 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
         </div>
 
         <div className={styles.centerVertically}>
-          <div className={styles.rightCTA}>
-            {!isLoggedIn && <ProfileAvatarButton />}
-            <Button
-              tooltip={t('languages')}
-              variant={ButtonVariant.Ghost}
-              onClick={openLanguageDrawer}
-              shape={ButtonShape.Circle}
-              shouldFlipOnRTL={false}
-              ariaLabel={t('languages')}
-              data-testid="open-language-drawer"
-            >
-              <IconGlobe />
-            </Button>
-            <div className={styles.mobileSearchButton}>
-              <Button
-                tooltip={t('search.title')}
-                variant={ButtonVariant.Ghost}
-                onClick={openSearchDrawer}
-                shape={ButtonShape.Circle}
-                shouldFlipOnRTL={false}
-                ariaLabel={t('search.title')}
-                data-testid={isMobile ? TestId.OPEN_SEARCH_DRAWER : 'open-search-drawer-mobile'}
-              >
-                <IconSearch />
-              </Button>
-            </div>
-
-            {shouldRenderSidebarNavigation && <SidebarNavigation />}
-            {isLoggedIn && <ProfileAvatarButton />}
-
-            <Button
-              tooltip={t('menu')}
-              variant={ButtonVariant.Ghost}
-              shape={ButtonShape.Circle}
-              onClick={openNavigationDrawer}
-              ariaLabel={t('aria.nav-drawer-open')}
-              data-testid={TestId.OPEN_NAVIGATION_DRAWER}
-            >
-              <IconMenu />
-            </Button>
+          <div className={styles.endCTA}>
+            <NavbarLogoWrapper />
           </div>
         </div>
       </div>
