@@ -12,8 +12,6 @@ import { useSelector } from 'react-redux';
 import styles from './index.module.scss';
 
 import ChapterAndJuzListWrapper from '@/components/chapters/ChapterAndJuzList';
-import HomePageHero from '@/components/HomePage/HomePageHero';
-import ReadingSection from '@/components/HomePage/ReadingSection';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import { ElegantDarkPattern } from '@/components/ui/elegant-dark-pattern';
 import useAuthData from '@/hooks/auth/useAuthData';
@@ -25,6 +23,14 @@ import { getCanonicalUrl } from '@/utils/navigation';
 import getCurrentDayAyah from '@/utils/quranInYearCalendar';
 import { ChaptersResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
+
+const HomePageHero = dynamic(() => import('@/components/HomePage/HomePageHero'), {
+  ssr: false,
+});
+
+const ReadingSection = dynamic(() => import('@/components/HomePage/ReadingSection'), {
+  ssr: false,
+});
 
 const SpiritualPrayerRibbon = dynamic(
   () => import('@/components/HomePage/SpiritualPrayerRibbon/SpiritualPrayerRibbon'),
