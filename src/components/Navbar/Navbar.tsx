@@ -7,8 +7,6 @@ import { useSelector, shallowEqual } from 'react-redux';
 import MobileStickyItemsBar from './MobileStickyItemsBar';
 import styles from './Navbar.module.scss';
 import NavbarBody from './NavbarBody';
-import NavigationDrawer from './NavigationDrawer/NavigationDrawer';
-import SettingsDrawer from './SettingsDrawer/SettingsDrawer';
 
 import { useOnboarding } from '@/components/Onboarding/OnboardingProvider';
 import useDebounceNavbarVisibility from '@/hooks/useDebounceNavbarVisibility';
@@ -25,6 +23,14 @@ const SearchModal = dynamic(() => import('./SearchModal/SearchModal'), {
 });
 
 const LanguageModal = dynamic(() => import('./LanguageModal/LanguageModal'), {
+  ssr: false,
+});
+
+const SettingsDrawer = dynamic(() => import('./SettingsDrawer/SettingsDrawer'), {
+  ssr: false,
+});
+
+const NavigationDrawer = dynamic(() => import('./NavigationDrawer/NavigationDrawer'), {
   ssr: false,
 });
 

@@ -89,6 +89,7 @@ const nextConfig = {
                   params: {
                     overrides: {
                       removeViewBox: false,
+                      convertShapeToPath: false,
                     },
                   },
                 },
