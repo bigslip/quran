@@ -35,7 +35,11 @@ const useOutsideClickDetector = (
       }
     };
 
-    document.addEventListener('click', handleClickOutside, true);
+    const options: AddEventListenerOptions = preventDefaultRef.current
+      ? { capture: true }
+      : { capture: true, passive: true };
+
+    document.addEventListener('click', handleClickOutside, options);
 
     return () => {
       document.removeEventListener('click', handleClickOutside, true);

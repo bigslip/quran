@@ -71,7 +71,7 @@ const useEmbedAutoResize = (targetRef: RefObject<HTMLElement>): void => {
 
     window.addEventListener('message', onMessage);
     window.addEventListener('load', onResize);
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', onResize, { passive: true });
 
     return () => {
       window.removeEventListener('message', onMessage);

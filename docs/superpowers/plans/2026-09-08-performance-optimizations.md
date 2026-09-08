@@ -70,10 +70,10 @@
 - Consumes: CSS containment tokens, `{ passive: true }` listener options.
 - Produces: Skipped layout/paint work for offscreen verses and unblocked main thread scrolling.
 
-- [ ] **Step 1: Apply `content-visibility: auto; contain-intrinsic-size: auto ...` to reading lines and list previews**
-- [ ] **Step 2: Add `{ passive: true }` to scroll and touch listeners in hooks**
-- [ ] **Step 3: Run TypeScript check and unit tests**
-- [ ] **Step 4: Commit changes**
+- [x] **Step 1: Apply `content-visibility: auto; contain-intrinsic-size: auto ...` to reading lines and list previews**
+- [x] **Step 2: Add `{ passive: true }` to scroll and touch listeners in hooks**
+- [x] **Step 3: Run TypeScript check and unit tests**
+- [x] **Step 4: Commit changes**
 
 ---
 

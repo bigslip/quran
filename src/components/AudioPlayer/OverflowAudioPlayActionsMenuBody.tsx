@@ -89,7 +89,7 @@ const OverflowAudioPlayActionsMenuBody = ({
     const handler = () => {
       setSelectedMenu(AudioPlayerOverflowMenu.Main);
     };
-    window.addEventListener('resize', handler);
+    window.addEventListener('resize', handler, { passive: true });
     return () => {
       window.removeEventListener('resize', handler);
     };
