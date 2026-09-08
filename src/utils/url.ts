@@ -63,13 +63,13 @@ export const navigateToExternalUrl = (url: string) => {
  * @returns {string}
  */
 export const getBasePath = (): string => {
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `${process.env.NEXT_PUBLIC_VERCEL_ENV === 'development' ? 'http' : 'https'}://${
       process.env.NEXT_PUBLIC_VERCEL_URL
     }`;
-  }
-  if (typeof window !== 'undefined') {
-    return window.location.origin;
   }
   const port = process.env.PORT || 4000;
   return `http://localhost:${port}`;
@@ -77,6 +77,9 @@ export const getBasePath = (): string => {
 
 export const getProxiedServiceUrl = (service: QuranFoundationService, path: string): string => {
   const PROXY_PATH = `/api/proxy/${service}`;
+  if (typeof window !== 'undefined') {
+    return `${PROXY_PATH}${path}`;
+  }
   const BASE_PATH = isStaticBuild && process.env.API_GATEWAY_URL
     ? `${process.env.API_GATEWAY_URL}/${service}`
     : `${getBasePath()}${PROXY_PATH}`;
