@@ -3,12 +3,16 @@
 import { useEffect, useRef, useState } from 'react';
 
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import styles from './SidebarNavigation.module.scss';
-import SidebarNavigationSelections from './SidebarNavigationSelections';
+
+const SidebarNavigationSelections = dynamic(() => import('./SidebarNavigationSelections'), {
+  ssr: false,
+});
 
 import RevelationOrderNavigationNotice, {
   RevelationOrderNavigationNoticeView,

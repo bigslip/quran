@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import dynamic from 'next/dynamic';
 import { useSelector } from 'react-redux';
 
 import PinVerseAction from '../PinVerseAction';
@@ -8,7 +9,9 @@ import VerseActionAdvancedCopy from '../VerseActionAdvancedCopy';
 import VerseActionEmbedWidget from '../VerseActionEmbedWidget';
 import VerseActionRepeatAudio from '../VerseActionRepeatAudio';
 
-import ShareVerseActionsMenu from './ShareVerseActionsMenu';
+const ShareVerseActionsMenu = dynamic(() => import('./ShareVerseActionsMenu'), {
+  ssr: false,
+});
 
 import VerseActionsMenuType from '@/components/QuranReader/ReadingView/WordActionsMenu/types';
 import WordByWordVerseAction from '@/components/QuranReader/ReadingView/WordByWordVerseAction';

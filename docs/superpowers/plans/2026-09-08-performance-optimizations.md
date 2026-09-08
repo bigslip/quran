@@ -49,11 +49,11 @@
 - Consumes: `next/dynamic` with `ssr: false` and fallback skeletons.
 - Produces: Dynamic chunk splitting for heavy non-critical overlays (`TafsirBody`, `NotesDrawer`, `ReflectionModal`, `ShareVerseModal`, `SurahInfoModal`, `ExploreTopicsSection`, `CommunitySection`).
 
-- [ ] **Step 1: Identify heavy overlays and write tests/checks**
-- [ ] **Step 2: Replace direct imports of heavy modals with next/dynamic**
-- [ ] **Step 3: Verify TypeScript types and build chunk generation**
-- [ ] **Step 4: Run unit tests to verify behavior**
-- [ ] **Step 5: Commit changes**
+- [x] **Step 1: Identify heavy overlays and write tests/checks**
+- [x] **Step 2: Replace direct imports of heavy modals with next/dynamic**
+- [x] **Step 3: Verify TypeScript types and build chunk generation**
+- [x] **Step 4: Run unit tests to verify behavior**
+- [x] **Step 5: Commit changes**
 
 ---
 

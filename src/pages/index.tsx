@@ -24,6 +24,8 @@ import getCurrentDayAyah from '@/utils/quranInYearCalendar';
 import { ChaptersResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
 
+import LearningPlansLoading from '@/components/HomePage/LearningPlansSection/Loading';
+
 const HomePageHero = dynamic(() => import('@/components/HomePage/HomePageHero'), {
   ssr: false,
 });
@@ -44,17 +46,29 @@ const HomepageFundraisingBanner = dynamic(
 
 const MobileHomepageSections = dynamic(
   () => import('@/components/HomePage/MobileHomepageSections'),
+  { ssr: false },
 );
 
-const LearningPlansSection = dynamic(() => import('@/components/HomePage/LearningPlansSection'));
+const LearningPlansSection = dynamic(() => import('@/components/HomePage/LearningPlansSection'), {
+  ssr: false,
+  loading: () => <LearningPlansLoading />,
+});
 
-const QuranInYearSection = dynamic(() => import('@/components/HomePage/QuranInYearSection'));
+const QuranInYearSection = dynamic(() => import('@/components/HomePage/QuranInYearSection'), {
+  ssr: false,
+});
 
-const ExploreTopicsSection = dynamic(() => import('@/components/HomePage/ExploreTopicsSection'));
+const ExploreTopicsSection = dynamic(() => import('@/components/HomePage/ExploreTopicsSection'), {
+  ssr: false,
+});
 
-const CommunitySection = dynamic(() => import('@/components/HomePage/CommunitySection'));
+const CommunitySection = dynamic(() => import('@/components/HomePage/CommunitySection'), {
+  ssr: false,
+});
 
-const HomePageApps = dynamic(() => import('@/components/HomePage/HomePageApps'));
+const HomePageApps = dynamic(() => import('@/components/HomePage/HomePageApps'), {
+  ssr: false,
+});
 
 type IndexProps = {
   chaptersResponse: ChaptersResponse;

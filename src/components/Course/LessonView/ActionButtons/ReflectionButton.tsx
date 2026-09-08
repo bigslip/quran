@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 
+import dynamic from 'next/dynamic';
 import useTranslation from 'next-translate/useTranslation';
 
 import styles from './ActionButtons.module.scss';
-import AddReflectionModal from './AddReflectionModal';
+
+const AddReflectionModal = dynamic(() => import('./AddReflectionModal'), {
+  ssr: false,
+});
 
 import Button, { ButtonSize, ButtonType } from '@/dls/Button/Button';
 import QuestionMarkIcon from '@/icons/question-mark.svg';

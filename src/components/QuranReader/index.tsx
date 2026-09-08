@@ -2,21 +2,25 @@ import { useContext } from 'react';
 
 import { useSelector as useXstateSelector } from '@xstate/react';
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import ContextMenu from './ContextMenu';
 import { VerseTrackerContextProvider } from './contexts/VerseTrackerContext';
-import DebuggingObserverWindow from './DebuggingObserverWindow';
 import {
   getReaderBannerAnalyticsParams,
   getReaderBannerAnalyticsSource,
 } from './fundraisingAnalytics';
 import useSyncChapterPage from './hooks/useSyncChapterPage';
-import Notes from './Notes/Notes';
 import styles from './QuranReader.module.scss';
 import QuranReaderView from './QuranReaderView';
 import ReaderTopActions from './ReaderTopActions';
+
+const DebuggingObserverWindow = dynamic(() => import('./DebuggingObserverWindow'), {
+  ssr: false,
+});
+const Notes = dynamic(() => import('./Notes/Notes'), { ssr: false });
 
 import FontPreLoader from '@/components/Fonts/FontPreLoader';
 import HomepageFundraisingBanner, {

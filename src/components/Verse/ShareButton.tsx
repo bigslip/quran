@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import useTranslation from 'next-translate/useTranslation';
 
 import styles from '../QuranReader/TranslationView/TranslationViewCell.module.scss';
 
-import ShareVerseActionsMenu from './OverflowVerseActionsMenuBody/ShareVerseActionsMenu';
+const ShareVerseActionsMenu = dynamic(
+  () => import('./OverflowVerseActionsMenuBody/ShareVerseActionsMenu'),
+  { ssr: false },
+);
 
 import PopoverMenu from '@/components/dls/PopoverMenu/PopoverMenu';
 import Button, { ButtonShape, ButtonSize, ButtonVariant } from '@/dls/Button/Button';
