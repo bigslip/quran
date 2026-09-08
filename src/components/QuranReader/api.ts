@@ -1,8 +1,10 @@
 /* eslint-disable max-lines */
 /* eslint-disable react-func/max-lines-per-function */
+import { SWRConfiguration } from 'swr';
+
 import QuranReaderStyles from '@/redux/types/QuranReaderStyles';
 import { QuranReaderDataType, ReadingPreference } from '@/types/QuranReader';
-import { getDefaultWordFields, getMushafId } from '@/utils/api';
+import { getDefaultWordFields, getMushafId, STATIC_DEDUPING_INTERVAL, staticDataSWRConfig } from '@/utils/api';
 import {
   makeHizbVersesUrl,
   makeJuzVersesUrl,
@@ -12,10 +14,20 @@ import {
   makeByRangeVersesUrl,
 } from '@/utils/apiPaths';
 import { fetcher } from 'src/api';
+
 import { PagesLookUpRequest } from 'types/ApiRequests';
 import { VersesResponse } from 'types/ApiResponses';
 import LookupRecord from 'types/LookupRecord';
 import Verse from 'types/Verse';
+
+/**
+ * Default SWR configuration for Quran reader requests (verses, lookups, translations).
+ * Uses 60s deduplication interval and disables automatic revalidation for immutable content.
+ */
+export const QURAN_READER_SWR_CONFIG: SWRConfiguration = {
+  ...staticDataSWRConfig,
+  dedupingInterval: STATIC_DEDUPING_INTERVAL,
+};
 
 interface TranslationViewRequestKeyInput {
   quranReaderDataType: QuranReaderDataType;

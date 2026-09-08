@@ -88,8 +88,8 @@
 - Consumes: SWR configuration options.
 - Produces: 60s deduplication interval and immutable caching for static Quranic content.
 
-- [ ] **Step 1: Configure SWR default caching options with dedupingInterval**
-- [ ] **Step 2: Verify API request deduplication behavior**
-- [ ] **Step 3: Run unit tests to verify no regression in data fetching**
-- [ ] **Step 4: Commit changes**
+- [x] **Step 1: Configure SWR default caching options with dedupingInterval**
+- [x] **Step 2: Verify API request deduplication behavior**
+- [x] **Step 3: Run unit tests to verify no regression in data fetching**
+- [x] **Step 4: Commit changes**
 

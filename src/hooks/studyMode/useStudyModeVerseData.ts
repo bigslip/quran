@@ -11,7 +11,7 @@ import { selectWordByWordLocale } from '@/redux/slices/QuranReader/readingPrefer
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import { selectSelectedTranslations } from '@/redux/slices/QuranReader/translations';
 import Verse from '@/types/Verse';
-import { getDefaultWordFields, getMushafId } from '@/utils/api';
+import { getDefaultWordFields, getMushafId, STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { makeByVerseKeyUrl } from '@/utils/apiPaths';
 import { makeBookmarksRangeUrl } from '@/utils/auth/apiPaths';
 import { isLoggedIn } from '@/utils/auth/login';
@@ -73,6 +73,7 @@ const useStudyModeVerseData = ({
 
   const { data, isValidating, error, mutate } = useSWRImmutable<VerseResponse>(queryKey, fetcher, {
     fallbackData: shouldUseInitialData ? { verse: initialVerse } : undefined,
+    dedupingInterval: STATIC_DEDUPING_INTERVAL,
   });
 
   const effectiveVerse = data?.verse || (shouldUseInitialData ? initialVerse : undefined);

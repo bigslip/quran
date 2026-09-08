@@ -17,7 +17,7 @@ import { selectValidatedReadingTranslation } from '@/redux/slices/QuranReader/re
 import { selectSelectedTranslations } from '@/redux/slices/QuranReader/translations';
 import QuranReaderStyles from '@/redux/types/QuranReaderStyles';
 import { ReadingPreference } from '@/types/QuranReader';
-import { getMushafId } from '@/utils/api';
+import { getMushafId, STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { areArraysEqual } from '@/utils/array';
 import { makeBookmarksRangeUrl } from '@/utils/auth/apiPaths';
 import { VersesResponse } from 'types/ApiResponses';
@@ -168,6 +168,7 @@ const PageContainer: React.FC<Props> = ({
     // This ensures verses render immediately server-side and during hydration
     fallbackData: shouldUseInitialData ? initialVerses : null,
     revalidateOnMount: !shouldUseInitialData,
+    dedupingInterval: STATIC_DEDUPING_INTERVAL,
   });
 
   // FALLBACK for SSR/hydration: If no verses from SWR but we have initialData, use it

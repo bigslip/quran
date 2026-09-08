@@ -11,7 +11,8 @@ import { selectIsPersistGateHydrationComplete } from '@/redux/slices/persistGate
 import QuranReaderStyles from '@/redux/types/QuranReaderStyles';
 import { VersesResponse } from '@/types/ApiResponses';
 import { Mushaf, QuranReaderDataType } from '@/types/QuranReader';
-import Verse from '@/types/Verse';
+import Verse from 'types/Verse';
+import { STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { makeBookmarksRangeUrl } from '@/utils/auth/apiPaths';
 import { isLoggedIn } from '@/utils/auth/login';
 import { getPageNumberFromIndexAndPerPage } from '@/utils/number';
@@ -140,6 +141,7 @@ const useDedupedFetchVerse = ({
     // CRITICAL: Always provide fallbackData for SSR compatibility
     // This ensures verses render immediately server-side and during hydration
     fallbackData: shouldUseInitialData ? initialData.verses : undefined,
+    dedupingInterval: STATIC_DEDUPING_INTERVAL,
   });
 
   // FALLBACK for SSR/hydration: If no verses from SWR but we have initialData, use it

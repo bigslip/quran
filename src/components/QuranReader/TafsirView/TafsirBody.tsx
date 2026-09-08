@@ -24,6 +24,7 @@ import Separator from '@/dls/Separator/Separator';
 import usePersistPreferenceGroup from '@/hooks/auth/usePersistPreferenceGroup';
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import { selectTafsirs, setSelectedTafsirs } from '@/redux/slices/QuranReader/tafsirs';
+import { STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { makeTafsirContentUrl, makeTafsirsUrl } from '@/utils/apiPaths';
 import { logButtonClick, logItemSelectionChange, logValueChange } from '@/utils/eventLogger';
 import { getLanguageDataById } from '@/utils/locale';
@@ -145,6 +146,9 @@ const TafsirBody = ({
   const { data: tafsirSelectionList } = useSWR<TafsirsResponse>(
     shouldRender ? makeTafsirsUrl(lang) : null,
     fetcher,
+    {
+      dedupingInterval: STATIC_DEDUPING_INTERVAL,
+    },
   );
 
   // selectedLanguage is based on selectedTafsir's language

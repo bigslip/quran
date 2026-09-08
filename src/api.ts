@@ -13,7 +13,13 @@ import { QiraatApiResponse } from '@/types/Qiraat';
 import { MushafLines, QuranFont } from '@/types/QuranReader';
 import { SearchRequestParams, SearchMode } from '@/types/Search/SearchRequestParams';
 import NewSearchResponse from '@/types/Search/SearchResponse';
-import { getMushafId } from '@/utils/api';
+import {
+  getMushafId,
+  STATIC_DEDUPING_INTERVAL,
+  DYNAMIC_DEDUPING_INTERVAL,
+  staticDataSWRConfig,
+  dynamicDataSWRConfig,
+} from '@/utils/api';
 import {
   makeAdvancedCopyUrl,
   makeTafsirsUrl,
@@ -70,6 +76,13 @@ import {
   WordByWordTranslationsResponse,
 } from 'types/ApiResponses';
 import AudioData from 'types/AudioData';
+
+export {
+  STATIC_DEDUPING_INTERVAL,
+  DYNAMIC_DEDUPING_INTERVAL,
+  staticDataSWRConfig,
+  dynamicDataSWRConfig,
+};
 
 export const OFFLINE_ERROR = 'OFFLINE';
 
