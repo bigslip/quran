@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import SearchPage from './search';
+import SearchPage from '@/pages/search';
 import { getNewSearchResults } from '@/api';
 
 // Mock dependencies

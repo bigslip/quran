@@ -1,7 +1,7 @@
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import ProfilePage from './index';
+import ProfilePage from '@/pages/profile';
 
 import { useToast } from '@/dls/Toast/Toast';
 import * as api from '@/utils/auth/api';

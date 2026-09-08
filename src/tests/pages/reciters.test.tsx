@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import * as matchers from '@testing-library/jest-dom/matchers';
-import RecitersListPage from './index';
+import RecitersListPage from '@/pages/reciters';
 import Reciter from 'types/Reciter';
 
 expect.extend(matchers);

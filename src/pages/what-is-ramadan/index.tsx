@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import { NextPage } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 
-import WhatIsRamadanArabic from './WhatIsRamadanArabic';
-import WhatIsRamadanSwahili from './WhatIsRamadanSwahili';
+import WhatIsRamadanArabic from '@/components/WhatIsRamadan/WhatIsRamadanArabic';
+import WhatIsRamadanSwahili from '@/components/WhatIsRamadan/WhatIsRamadanSwahili';
 
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import PageContainer from '@/components/PageContainer';

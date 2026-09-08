@@ -3,7 +3,7 @@
 /* eslint-disable i18next/no-literal-string */
 import classNames from 'classnames';
 
-import pageStyles from './about-the-quran.module.scss';
+import pageStyles from '@/pages/about-the-quran/about-the-quran.module.scss';
 import arabicStyles from './AboutTheQuranArabic.module.scss';
 
 import PlainVerseText from '@/components/Verse/PlainVerseText';

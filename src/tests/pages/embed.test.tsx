@@ -43,7 +43,7 @@ import '@testing-library/jest-dom/vitest';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import AyahWidgetBuilderPage from './index';
+import AyahWidgetBuilderPage from '@/pages/embed';
 
 // Mock Redux store
 

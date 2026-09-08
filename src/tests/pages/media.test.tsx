@@ -43,7 +43,7 @@ vi.mock('@/utils/media/utils', async (importOriginal) => {
 import '@testing-library/jest-dom/vitest';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import MediaMakerPage from './index';
+import MediaMakerPage from '@/pages/media';
 
 vi.mock('next/router', () => ({
   useRouter: () => ({

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable max-lines */
 /* eslint-disable i18next/no-literal-string */
-import pageStyles from './about-the-quran.module.scss';
+import pageStyles from '@/pages/about-the-quran/about-the-quran.module.scss';
 
 import PlainVerseText from '@/components/Verse/PlainVerseText';
 import Button, { ButtonVariant } from '@/dls/Button/Button';

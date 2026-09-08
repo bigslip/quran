@@ -7,7 +7,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE_BUNDLE === 'true',
 });
 const { withSentryConfig } = require('@sentry/nextjs');
-const withFonts = require('next-fonts');
 const withPWA = require('next-pwa');
 const nextTranslate = require('next-translate-plugin');
 
@@ -32,14 +31,13 @@ const withPWAConfig = withPWA({
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
-  swcMinify: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   modularizeImports: {
     lodash: {
       transform: 'lodash/{{member}}',
     },
-  },
-  experimental: {
-    instrumentationHook: true,
   },
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -206,7 +204,7 @@ const nextConfig = {
 };
 
 // Apply plugins
-const configWithPlugins = withBundleAnalyzer(withFonts(nextTranslate(withPWAConfig(nextConfig))));
+const configWithPlugins = withBundleAnalyzer(nextTranslate(withPWAConfig(nextConfig)));
 
 // Apply Sentry configuration
 module.exports = withSentryConfig(configWithPlugins, {

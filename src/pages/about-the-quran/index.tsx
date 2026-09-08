@@ -9,8 +9,8 @@ import useTranslation from 'next-translate/useTranslation';
 import styles from '../contentPage.module.scss';
 
 import pageStyles from './about-the-quran.module.scss';
-import AboutTheQuranArabic from './AboutTheQuranArabic';
-import AboutTheQuranSwahili from './AboutTheQuranSwahili';
+import AboutTheQuranArabic from '@/components/AboutTheQuran/AboutTheQuranArabic';
+import AboutTheQuranSwahili from '@/components/AboutTheQuran/AboutTheQuranSwahili';
 
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import PageContainer from '@/components/PageContainer';

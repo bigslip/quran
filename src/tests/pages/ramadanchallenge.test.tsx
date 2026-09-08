@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import RamadanChallengePage from './index';
+import RamadanChallengePage from '@/pages/ramadanchallenge';
 import { logButtonClick } from '@/utils/eventLogger';
 
 vi.mock('next/router', () => ({
