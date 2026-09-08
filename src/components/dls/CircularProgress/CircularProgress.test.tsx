@@ -49,10 +49,9 @@ describe('CircularProgressbar', () => {
     expect(textElement).toBeInTheDocument();
   });
 
-  it('should render background circle when background is true', () => {
+  it('should render background shape when background is true', () => {
     const { container } = render(<CircularProgressbar value={50} background={true} />);
-    const circles = container.querySelectorAll('circle');
-    // It should render 1 circle for the background (path is rendered using path elements)
-    expect(circles.length).toBe(1);
+    const bgElement = container.querySelector('path._background_679815, path[class*="background"]');
+    expect(bgElement).toBeInTheDocument();
   });
 });

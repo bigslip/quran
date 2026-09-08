@@ -19,6 +19,9 @@ interface Props {
 
 const ShareQuranModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const { t } = useTranslation('home');
+
+  if (!isOpen) return null;
+
   const shareURL = `${getBasePath()}${getFirstTimeReadingGuideNavigationUrl()}`;
 
   return (

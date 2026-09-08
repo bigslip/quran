@@ -116,11 +116,9 @@ const CircularProgressbar: React.FC<Partial<CircularProgressbarProps>> = ({ ...i
       {...svgProps}
     >
       {background ? (
-        <circle
+        <path
           className={classNames(classes?.background)}
-          cx={VIEWBOX_CENTER_X}
-          cy={VIEWBOX_CENTER_Y}
-          r={VIEWBOX_HEIGHT_HALF}
+          d={`M ${VIEWBOX_CENTER_X} ${VIEWBOX_CENTER_Y - VIEWBOX_HEIGHT_HALF} a ${VIEWBOX_HEIGHT_HALF} ${VIEWBOX_HEIGHT_HALF} 0 1 0 0.0001 0 Z`}
         />
       ) : null}
 

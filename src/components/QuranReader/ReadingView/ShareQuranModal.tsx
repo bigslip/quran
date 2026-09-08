@@ -24,6 +24,9 @@ interface Props {
 
 const ShareQuranModal: React.FC<Props> = ({ isOpen, onClose, verse }) => {
   const { t } = useTranslation('common');
+
+  if (!isOpen) return null;
+
   const shareURL = verse
     ? (() => {
         const [chapterId, verseNumber] = getVerseAndChapterNumbersFromKey(verse.verseKey);
