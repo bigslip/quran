@@ -9,7 +9,7 @@ export type BannerState = {
 };
 
 const initialState: BannerState = {
-  isBannerVisible: true,
+  isBannerVisible: false,
 };
 
 export const bannerSlice = createSlice({

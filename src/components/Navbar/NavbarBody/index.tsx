@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './NavbarBody.module.scss';
 import ProfileAvatarButton from './ProfileAvatarButton';
 
-import Banner, { BannerVariant } from '@/components/Banner/Banner';
 import NavbarLogoWrapper from '@/components/Navbar/Logo/NavbarLogoWrapper';
 import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
 import Spinner from '@/dls/Spinner/Spinner';
@@ -42,10 +41,10 @@ const SidebarNavigation = dynamic(
 );
 
 interface Props {
-  isBannerVisible: boolean;
+  isBannerVisible?: boolean;
 }
 
-const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
+const NavbarBody: React.FC<Props> = () => {
   const { t } = useTranslation('common');
   const dispatch = useDispatch();
   const isMobile = useIsMobile();
@@ -121,23 +120,6 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
 
   const { openSearchDrawer, openNavigationDrawer, openLanguageDrawer } = useNavbarDrawerActions();
 
-  const bannerCopy = {
-    mobileLineOne: t('fundraising-sticky-banner-v2.mobile-line-one'),
-    mobileLineTwo: t('fundraising-sticky-banner-v2.mobile-line-two'),
-  };
-
-  const standaloneDesktopText = `${bannerCopy.mobileLineOne} ${bannerCopy.mobileLineTwo}`;
-
-  const standaloneBannerProps = {
-    copy: {
-      desktop: standaloneDesktopText,
-      mobileLineOne: bannerCopy.mobileLineOne,
-      mobileLineTwo: bannerCopy.mobileLineTwo,
-    },
-    text: standaloneDesktopText,
-    ctaButtonText: t('fundraising-sticky-banner-v2.cta'),
-  };
-
   useEffect(() => {
     setIsMac(
       typeof window !== 'undefined' &&
@@ -147,15 +129,6 @@ const NavbarBody: React.FC<Props> = ({ isBannerVisible }) => {
 
   return (
     <>
-      {isBannerVisible && (
-        <div
-          className={classNames(styles.bannerContainerTop, {
-            [styles.dimmed]: isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen,
-          })}
-        >
-          <Banner {...standaloneBannerProps} variant={BannerVariant.Standalone} />
-        </div>
-      )}
       <div
         className={classNames(styles.itemsContainer, {
           [styles.dimmed]: isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen,
