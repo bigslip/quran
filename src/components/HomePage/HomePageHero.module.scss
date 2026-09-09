@@ -344,9 +344,11 @@
   border: 1px solid var(--color-border-iridescent);
   color: var(--color-text-primary);
   font-size: var(--font-size-small-px);
+  font-family: inherit;
   font-weight: var(--font-weight-medium);
   border-radius: var(--border-radius-pill);
   text-decoration: none;
+  cursor: pointer;
   backdrop-filter: var(--backdrop-filter-frosted);
   -webkit-backdrop-filter: var(--backdrop-filter-frosted);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);

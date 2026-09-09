@@ -9,6 +9,7 @@ import SanctuaryCommandBar from './SanctuaryCommandBar';
 import Link from '@/dls/Link/Link';
 import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import useHasMounted from '@/hooks/useHasMounted';
+import useNavbarDrawerActions from '@/hooks/useNavbarDrawerActions';
 import IconBookmarkFilled from '@/icons/bookmark_filled.svg';
 import IconBookOpen from '@/icons/book-open.svg';
 import Logo from '@/icons/logo_main.svg';
@@ -57,6 +58,7 @@ const HomePageHero: React.FC = () => {
   const { t } = useTranslation('home');
   const hasMounted = useHasMounted();
   const continueReadingUrl = useGetContinueReadingUrl();
+  const { openNavigationDrawer } = useNavbarDrawerActions();
 
   const isFridayToday = hasMounted && isFriday();
   const isNightNow = hasMounted && isNightTime();
@@ -90,16 +92,10 @@ const HomePageHero: React.FC = () => {
     logButtonClick('homepage_hero_continue_reading');
   }, []);
 
-  const onExploreSurahsClick = useCallback((e: React.MouseEvent) => {
+  const onExploreSurahsClick = useCallback(() => {
     logButtonClick('homepage_hero_explore_surahs');
-    if (typeof window !== 'undefined') {
-      const target = document.getElementById('chapter-and-juz-list');
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  }, []);
+    openNavigationDrawer();
+  }, [openNavigationDrawer]);
 
   const getPillBadge = useCallback(
     (key: string) => {
@@ -176,8 +172,8 @@ const HomePageHero: React.FC = () => {
             </span>
             <span>{t('continue-read', { defaultValue: 'Continue Reading' })}</span>
           </Link>
-          <Link
-            href="#chapter-and-juz-list"
+          <button
+            type="button"
             className={styles.exploreSurahsButton}
             onClick={onExploreSurahsClick}
             data-testid="hero-explore-surahs-btn"
@@ -186,7 +182,7 @@ const HomePageHero: React.FC = () => {
               <IconBookmarkFilled />
             </span>
             <span>{t('explore-surahs', { defaultValue: 'Explore 114 Surahs' })}</span>
-          </Link>
+          </button>
         </div>
       </div>
     </div>
