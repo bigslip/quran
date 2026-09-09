@@ -53,12 +53,7 @@ const NavigationDrawerBody = ({ isLanguageDrawerOpen }: NavigationDrawerBodyProp
         inert={(isLanguageDrawerOpen ? '' : undefined) as unknown as boolean}
       >
         <div className={styles.listItems}>
-          <NavigationDrawerList
-            accordionHeaderLeftClassName={styles.accordionHeaderLeft}
-            accordionContentClassName={styles.accordionContent}
-            accordionItemTitleClassName={styles.accordionItemTitle}
-            projectsDescClassName={styles.projectsDesc}
-          />
+          <NavigationDrawerList />
         </div>
         <div className={styles.ctaContainer}>
           <div className={styles.ctaTop}>

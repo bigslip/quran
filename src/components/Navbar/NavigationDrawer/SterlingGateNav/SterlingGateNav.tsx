@@ -10,8 +10,6 @@ import { useDispatch } from 'react-redux';
 
 import styles from './SterlingGateNav.module.scss';
 
-import MoreMenuCollapsible from '@/components/Navbar/NavigationDrawer/MoreMenuCollapsible';
-import OurProjectsCollapsible from '@/components/Navbar/NavigationDrawer/OurProjectsCollapsible';
 import ThemeSwitcher from '@/components/Navbar/NavigationDrawer/ThemeSwitcher';
 import NavbarLogoWrapper from '@/components/Navbar/Logo/NavbarLogoWrapper';
 import ProfileAvatarButton from '@/components/Navbar/NavbarBody/ProfileAvatarButton';
@@ -439,11 +437,6 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
                 );
               })}
             </ul>
-
-            <div className={styles.secondarySections}>
-              <MoreMenuCollapsible onItemClick={handleItemClick} />
-              <OurProjectsCollapsible onItemClick={handleItemClick} />
-            </div>
 
             <footer className={styles.footerCtaContainer}>
               <div className={styles.footerRow}>

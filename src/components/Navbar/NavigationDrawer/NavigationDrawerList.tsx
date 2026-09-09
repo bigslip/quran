@@ -3,9 +3,7 @@ import React, { useCallback } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { useDispatch } from 'react-redux';
 
-import MoreMenuCollapsible from './MoreMenuCollapsible';
 import NavigationDrawerItem from './NavigationDrawerItem';
-import OurProjectsCollapsible from './OurProjectsCollapsible';
 
 import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import IconApps from '@/icons/apps.svg';
@@ -28,21 +26,7 @@ import {
   ROUTES,
 } from '@/utils/navigation';
 
-interface NavigationDrawerListProps {
-  accordionHeaderClassName?: string;
-  accordionHeaderLeftClassName?: string;
-  accordionContentClassName?: string;
-  accordionItemTitleClassName?: string;
-  projectsDescClassName?: string;
-}
-
-const NavigationDrawerList: React.FC<NavigationDrawerListProps> = ({
-  accordionHeaderClassName,
-  accordionHeaderLeftClassName,
-  accordionContentClassName,
-  accordionItemTitleClassName,
-  projectsDescClassName,
-}) => {
+const NavigationDrawerList: React.FC = () => {
   const { lang, t } = useTranslation('common');
   const dispatch = useDispatch();
   const continueReadingUrl = useGetContinueReadingUrl();
@@ -125,21 +109,6 @@ const NavigationDrawerList: React.FC<NavigationDrawerListProps> = ({
           />
         );
       })}
-      <MoreMenuCollapsible
-        onItemClick={handleItemClick}
-        headerClassName={accordionHeaderClassName}
-        headerLeftClassName={accordionHeaderLeftClassName}
-        contentClassName={accordionContentClassName}
-        itemTitleClassName={accordionItemTitleClassName}
-      />
-      <OurProjectsCollapsible
-        onItemClick={handleItemClick}
-        headerClassName={accordionHeaderClassName}
-        headerLeftClassName={accordionHeaderLeftClassName}
-        descriptionClassName={projectsDescClassName}
-        contentClassName={accordionContentClassName}
-        itemTitleClassName={accordionItemTitleClassName}
-      />
     </>
   );
 };

@@ -82,12 +82,6 @@ vi.mock('@/icons/apps.svg', () => ({
 vi.mock('@/icons/code.svg', () => ({
   default: () => <svg data-testid="icon-code" />,
 }));
-vi.mock('@/icons/caret-down.svg', () => ({
-  default: () => <svg data-testid="icon-caret-down" />,
-}));
-vi.mock('@/icons/square-more.svg', () => ({
-  default: () => <svg data-testid="icon-square-more" />,
-}));
 
 const createTestStore = (initialOpen = true) =>
   configureStore({
