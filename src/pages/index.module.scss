@@ -114,4 +114,8 @@ $list-max-width: 80rem;
     border-start-start-radius: var(--border-radius-rounded);
     border-start-end-radius: var(--border-radius-rounded);
   }
+
+  :global(#chapter-and-juz-list) {
+    scroll-margin-top: calc(var(--spacing-medium) + 20px);
+  }
 }

@@ -90,8 +90,15 @@ const HomePageHero: React.FC = () => {
     logButtonClick('homepage_hero_continue_reading');
   }, []);
 
-  const onExploreSurahsClick = useCallback(() => {
+  const onExploreSurahsClick = useCallback((e: React.MouseEvent) => {
     logButtonClick('homepage_hero_explore_surahs');
+    if (typeof window !== 'undefined') {
+      const target = document.getElementById('chapter-and-juz-list');
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   }, []);
 
   const getPillBadge = useCallback(

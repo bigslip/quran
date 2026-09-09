@@ -124,7 +124,10 @@ const Index: NextPage<IndexProps> = ({
                 <HomepageFundraisingBanner />
               </div>
             ) : null}
-            <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
+            <div
+              id="chapter-and-juz-list"
+              className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}
+            >
               <ChapterAndJuzListWrapper chapters={chapters} />
             </div>
             {isMounted && isMobile ? (
