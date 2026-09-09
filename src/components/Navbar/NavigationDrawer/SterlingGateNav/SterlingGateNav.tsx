@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 
 import styles from './SterlingGateNav.module.scss';
 
-import FundraisingBanner from '@/components/Fundraising/FundraisingBanner';
 import MoreMenuCollapsible from '@/components/Navbar/NavigationDrawer/MoreMenuCollapsible';
 import OurProjectsCollapsible from '@/components/Navbar/NavigationDrawer/OurProjectsCollapsible';
 import ThemeSwitcher from '@/components/Navbar/NavigationDrawer/ThemeSwitcher';
@@ -413,8 +412,6 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
                 </div>
               </button>
             </header>
-
-            <FundraisingBanner />
 
             <ul className={styles.primaryMenuList}>
               {PRIMARY_ITEMS.map((item) => {

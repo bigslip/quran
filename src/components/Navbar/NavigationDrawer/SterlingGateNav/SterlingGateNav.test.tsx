@@ -51,9 +51,6 @@ vi.mock('@/components/Navbar/NavigationDrawer/ThemeSwitcher', () => ({
   default: () => <div data-testid="theme-switcher-mock" />,
 }));
 
-vi.mock('@/components/Fundraising/FundraisingBanner', () => ({
-  default: () => <div data-testid="fundraising-banner-mock" />,
-}));
 
 vi.mock('@/icons/close.svg', () => ({
   default: () => <svg data-testid="icon-close" />,
