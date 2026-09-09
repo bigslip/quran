@@ -47,8 +47,8 @@ vi.mock('@/utils/media/utils', async (importOriginal) => {
   };
 });
 import '@testing-library/jest-dom/vitest';
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { cleanup, render, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import MediaMakerPage from '@/pages/media';
 
 vi.mock('next/router', () => ({
@@ -95,6 +95,10 @@ vi.mock('@/dls/Toast/Toast', () => ({
 }));
 
 describe('MediaMaker Page', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it('renders correctly and accepts HTML attributes', () => {
     const props = {
       chaptersData: {},
@@ -104,12 +108,13 @@ describe('MediaMaker Page', () => {
       audio: { verseTimings: [] },
       translationsData: [],
     };
-    render(<MediaMakerPage {...props} data-testid="media-maker-page" />);
+    const { unmount } = render(<MediaMakerPage {...props} data-testid="media-maker-page" />);
     // Check for title or specific UI
     expect(screen.getByText('media:title')).toBeInTheDocument();
     
     // Test that data-testid is spread to the root container
     // To make this pass, we will have to spread props onto the main wrapper.
     expect(screen.getByTestId('media-maker-page')).toBeInTheDocument();
+    unmount();
   });
 });

@@ -236,8 +236,14 @@
   }
 }
 
-:global([dir='rtl']) .navLink:hover .navLinkArrow {
-  transform: translateX(-4px);
+:global([dir='rtl']) {
+  .navLinkArrow {
+    transform: scaleX(-1);
+  }
+
+  .navLink:hover .navLinkArrow {
+    transform: scaleX(-1) translateX(4px);
+  }
 }
 
 .navLinkHoverBg {
@@ -305,9 +311,9 @@
   padding-inline: var(--spacing-xsmall-px);
   padding-block: 2px;
   border-radius: var(--border-radius-pill);
-  background: var(--color-accent-faint, rgba(217, 119, 6, 0.15));
-  color: var(--color-accent, #d97706);
-  border: 1px solid var(--color-accent-subtle, rgba(217, 119, 6, 0.3));
+  background: var(--color-accent-gold-subtle);
+  color: var(--color-accent-gold);
+  border: 1px solid var(--color-border-subtle);
   margin-inline-start: var(--spacing-xsmall-px);
 }
 

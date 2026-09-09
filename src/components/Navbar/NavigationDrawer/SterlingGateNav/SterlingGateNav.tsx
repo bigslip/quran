@@ -1,5 +1,4 @@
-/* eslint-disable max-lines */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import classNames from 'classnames';
 import gsap from 'gsap';
@@ -15,7 +14,6 @@ import NavbarLogoWrapper from '@/components/Navbar/Logo/NavbarLogoWrapper';
 import ProfileAvatarButton from '@/components/Navbar/NavbarBody/ProfileAvatarButton';
 import Button, { ButtonShape, ButtonSize, ButtonVariant } from '@/dls/Button/Button';
 import Link from '@/dls/Link/Link';
-import useAuthData from '@/hooks/auth/useAuthData';
 import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import usePreventBodyScrolling from '@/hooks/usePreventBodyScrolling';
 import IconApps from '@/icons/apps.svg';
@@ -74,16 +72,8 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const continueReadingUrl = useGetContinueReadingUrl();
-  const { isAuthenticated } = useAuthData();
-  const [isMounted, setIsMounted] = useState(false);
 
   usePreventBodyScrolling(isOpen);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const isUserLoggedIn = isMounted && isAuthenticated;
 
   // Setup GSAP CustomEase and Shape hover listeners
   useEffect(() => {
@@ -164,42 +154,42 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
     const isRtl = document.documentElement.dir === 'rtl';
     const slideDirection = isRtl ? 100 : -100;
 
-    const ctx = gsap.context(() => {
-      const navWrap = containerRef.current!.querySelector(`.${styles.navOverlayWrapper}`);
-      const menu = containerRef.current!.querySelector(`.${styles.menuContent}`);
-      const overlay = containerRef.current!.querySelector(`.${styles.overlay}`);
-      const bgPanels = containerRef.current!.querySelectorAll(`.${styles.backdropLayer}`);
-      const menuLinks = containerRef.current!.querySelectorAll(`.${styles.navLink}`);
-      const closeIcon = containerRef.current!.querySelector(`.${styles.closeIconWrap}`);
+    const navWrap = containerRef.current.querySelector(`.${styles.navOverlayWrapper}`);
+    const menu = containerRef.current.querySelector(`.${styles.menuContent}`);
+    const overlay = containerRef.current.querySelector(`.${styles.overlay}`);
+    const bgPanels = containerRef.current.querySelectorAll(`.${styles.backdropLayer}`);
+    const menuLinks = containerRef.current.querySelectorAll(`.${styles.navLink}`);
+    const closeIcon = containerRef.current.querySelector(`.${styles.closeIconWrap}`);
 
-      const tl = gsap.timeline();
+    const tl = gsap.timeline();
 
-      if (isOpen) {
-        tl.set(navWrap, { display: 'block' })
-          .set(menu, { xPercent: 0 }, '<')
-          .fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35 }, '<')
-          .fromTo(
-            bgPanels,
-            { xPercent: slideDirection },
-            { xPercent: 0, stagger: 0.08, duration: 0.5, ease: 'power3.out' },
-            '<',
-          )
-          .fromTo(
-            menuLinks,
-            { yPercent: 60, opacity: 0 },
-            { yPercent: 0, opacity: 1, stagger: 0.03, duration: 0.4, ease: 'power2.out' },
-            '<+=0.2',
-          )
-          .fromTo(closeIcon, { rotate: 0 }, { rotate: 180, duration: 0.4 }, '<');
-      } else {
-        tl.to(overlay, { autoAlpha: 0, duration: 0.25 })
-          .to(bgPanels, { xPercent: slideDirection, stagger: 0.04, duration: 0.35, ease: 'power2.in' }, '<')
-          .to(closeIcon, { rotate: 0, duration: 0.25 }, '<')
-          .set(navWrap, { display: 'none' });
-      }
-    }, containerRef);
-
-    return () => ctx.revert();
+    if (isOpen) {
+      tl.set(navWrap, { display: 'block' })
+        .set(menu, { xPercent: 0 }, '<')
+        .fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, overwrite: 'auto' }, '<')
+        .fromTo(
+          bgPanels,
+          { xPercent: slideDirection },
+          { xPercent: 0, stagger: 0.08, duration: 0.5, ease: 'power3.out', overwrite: 'auto' },
+          '<',
+        )
+        .fromTo(
+          menuLinks,
+          { yPercent: 60, opacity: 0 },
+          { yPercent: 0, opacity: 1, stagger: 0.03, duration: 0.4, ease: 'power2.out', overwrite: 'auto' },
+          '<+=0.2',
+        )
+        .fromTo(closeIcon, { rotate: 0 }, { rotate: 180, duration: 0.4, overwrite: 'auto' }, '<');
+    } else {
+      tl.to(overlay, { autoAlpha: 0, duration: 0.25, overwrite: 'auto' })
+        .to(
+          bgPanels,
+          { xPercent: slideDirection, stagger: 0.04, duration: 0.35, ease: 'power2.in', overwrite: 'auto' },
+          '<',
+        )
+        .to(closeIcon, { rotate: 0, duration: 0.25, overwrite: 'auto' }, '<')
+        .set(navWrap, { display: 'none' });
+    }
   }, [isOpen]);
 
   // Close on Escape
@@ -303,9 +293,14 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
   ];
 
   return (
-    <div ref={containerRef} className={classNames(styles.fullscreenMenuContainer, { [styles.isOpen]: isOpen })}>
+    <div
+      ref={containerRef}
+      className={classNames(styles.fullscreenMenuContainer, { [styles.isOpen]: isOpen })}
+      aria-hidden={!isOpen}
+      inert={(!isOpen ? '' : undefined) as unknown as boolean}
+    >
       <div className={styles.navOverlayWrapper} data-nav={isOpen ? 'open' : 'closed'}>
-        <div className={styles.overlay} onClick={onClose} aria-label={t('close')} />
+        <div className={styles.overlay} onClick={onClose} aria-hidden="true" />
 
         <nav className={styles.menuContent} aria-label={t('menu')}>
           <div className={styles.menuBg}>
@@ -350,7 +345,7 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
                 <circle className={styles.shapeElement} cx="310" cy="160" r="10" fill="rgba(16, 185, 129, 0.2)" />
                 <circle className={styles.shapeElement} cx="60" cy="260" r="8" fill="rgba(217, 119, 6, 0.25)" />
                 <circle className={styles.shapeElement} cx="160" cy="260" r="8" fill="rgba(16, 185, 129, 0.25)" />
-                <circle className={styles.shapeElement} cx="260" cy="260" r="8" fill="rgba(217, 119, 6, 0.25)" />
+                <circle className={styles.shapeElement} cx="260" cy="260" r="8" fill="rgba(16, 185, 129, 0.25)" />
               </svg>
 
               {/* Shape 4: Sacred Geometry Crest */}
@@ -397,7 +392,7 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
             <header className={styles.headerRow}>
               <div className={styles.headerLeft}>
                 <NavbarLogoWrapper />
-                {!isUserLoggedIn && <ProfileAvatarButton isPopoverPortalled={false} />}
+                <ProfileAvatarButton />
               </div>
               <button
                 type="button"
@@ -428,7 +423,11 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
                       <div className={styles.navLinkLeft}>
                         <span className={styles.navLinkIcon}>{item.icon}</span>
                         <p className={styles.navLinkText}>{item.title}</p>
-                        {item.isEvent && <span className={styles.eventBadge}>2026</span>}
+                        {item.isEvent && (
+                          <span className={styles.eventBadge} aria-hidden="true">
+                            2026
+                          </span>
+                        )}
                       </div>
                       <span className={styles.navLinkArrow}>
                         <IconChevronRight />

@@ -28,12 +28,6 @@ vi.mock('next/router', () => ({
   }),
 }));
 
-vi.mock('@/hooks/auth/useAuthData', () => ({
-  default: () => ({
-    isAuthenticated: false,
-    userData: null,
-  }),
-}));
 
 vi.mock('@/hooks/useGetContinueReadingUrl', () => ({
   default: () => '/1',
