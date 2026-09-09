@@ -64,14 +64,20 @@ vi.mock('@/icons/diamond.svg', () => ({
 vi.mock('@/icons/chevron-right.svg', () => ({
   default: () => <svg data-testid="icon-chevron-right" />,
 }));
-vi.mock('@/icons/home.svg', () => ({
-  default: () => <svg data-testid="icon-home" />,
+vi.mock('@/icons/moon.svg', () => ({
+  default: () => <svg data-testid="icon-moon" />,
 }));
-vi.mock('@/icons/school.svg', () => ({
-  default: () => <svg data-testid="icon-school" />,
+vi.mock('@/icons/book-open.svg', () => ({
+  default: () => <svg data-testid="icon-book-open" />,
+}));
+vi.mock('@/icons/graduation-cap.svg', () => ({
+  default: () => <svg data-testid="icon-graduation-cap" />,
 }));
 vi.mock('@/icons/bookmark_filled.svg', () => ({
   default: () => <svg data-testid="icon-bookmark" />,
+}));
+vi.mock('@/icons/radio.svg', () => ({
+  default: () => <svg data-testid="icon-radio" />,
 }));
 vi.mock('@/icons/headphones-filled.svg', () => ({
   default: () => <svg data-testid="icon-headphones" />,

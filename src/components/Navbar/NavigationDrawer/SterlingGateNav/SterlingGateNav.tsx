@@ -20,14 +20,16 @@ import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import usePreventBodyScrolling from '@/hooks/usePreventBodyScrolling';
 import IconApps from '@/icons/apps.svg';
 import IconBookmarkFilled from '@/icons/bookmark_filled.svg';
+import IconBookOpen from '@/icons/book-open.svg';
 import IconChevronRight from '@/icons/chevron-right.svg';
 import IconClose from '@/icons/close.svg';
 import IconCode from '@/icons/code.svg';
 import IconDiamond from '@/icons/diamond.svg';
 import IconGlobe from '@/icons/globe.svg';
+import IconGraduationCap from '@/icons/graduation-cap.svg';
 import IconHeadphonesFilled from '@/icons/headphones-filled.svg';
-import IconHome from '@/icons/home.svg';
-import IconSchool from '@/icons/school.svg';
+import IconMoon from '@/icons/moon.svg';
+import IconRadio from '@/icons/radio.svg';
 import { setIsLanguageDrawerOpen, setIsNavigationDrawerOpen } from '@/redux/slices/navbar';
 import Language from '@/types/Language';
 import { makeDonatePageUrl } from '@/utils/apiPaths';
@@ -242,7 +244,7 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
   const PRIMARY_ITEMS = [
     {
       title: 'Ramadan 2026',
-      icon: <IconDiamond />,
+      icon: <IconMoon />,
       href: ROUTES.RAMADAN_2026,
       eventName: 'navigation_drawer_ramadan2026',
       isEvent: true,
@@ -251,14 +253,14 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
     },
     {
       title: t('read'),
-      icon: <IconHome />,
+      icon: <IconBookOpen />,
       href: continueReadingUrl,
       eventName: 'navigation_drawer_read',
       shape: '2',
     },
     {
       title: t('learn'),
-      icon: <IconSchool />,
+      icon: <IconGraduationCap />,
       href: LEARNING_PLANS_URL,
       eventName: 'navigation_drawer_learn',
       shape: '3',
@@ -272,7 +274,7 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
     },
     {
       title: t('quran-radio'),
-      icon: <IconHeadphonesFilled />,
+      icon: <IconRadio />,
       href: RADIO_URL,
       eventName: 'navigation_drawer_quran_radio',
       shape: '5',

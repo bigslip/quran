@@ -8,11 +8,12 @@ import NavigationDrawerItem from './NavigationDrawerItem';
 import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import IconApps from '@/icons/apps.svg';
 import IconBookmarkFilled from '@/icons/bookmark_filled.svg';
+import IconBookOpen from '@/icons/book-open.svg';
 import IconCode from '@/icons/code.svg';
-import DiamondIcon from '@/icons/diamond.svg';
+import IconGraduationCap from '@/icons/graduation-cap.svg';
 import IconHeadphonesFilled from '@/icons/headphones-filled.svg';
-import IconHome from '@/icons/home.svg';
-import IconSchool from '@/icons/school.svg';
+import IconMoon from '@/icons/moon.svg';
+import IconRadio from '@/icons/radio.svg';
 import { setIsNavigationDrawerOpen } from '@/redux/slices/navbar';
 import Language from '@/types/Language';
 import { logButtonClick } from '@/utils/eventLogger';
@@ -34,7 +35,7 @@ const NavigationDrawerList: React.FC = () => {
   const ITEMS = [
     {
       title: 'Ramadan 2026',
-      icon: <DiamondIcon />,
+      icon: <IconMoon />,
       href: ROUTES.RAMADAN_2026,
       eventName: 'navigation_drawer_ramadan2026',
       isEvent: true,
@@ -42,13 +43,13 @@ const NavigationDrawerList: React.FC = () => {
     },
     {
       title: t('read'),
-      icon: <IconHome />,
+      icon: <IconBookOpen />,
       href: continueReadingUrl,
       eventName: 'navigation_drawer_read',
     },
     {
       title: t('learn'),
-      icon: <IconSchool />,
+      icon: <IconGraduationCap />,
       href: LEARNING_PLANS_URL,
       eventName: 'navigation_drawer_learn',
     },
@@ -60,7 +61,7 @@ const NavigationDrawerList: React.FC = () => {
     },
     {
       title: t('quran-radio'),
-      icon: <IconHeadphonesFilled />,
+      icon: <IconRadio />,
       href: RADIO_URL,
       eventName: 'navigation_drawer_quran_radio',
     },
