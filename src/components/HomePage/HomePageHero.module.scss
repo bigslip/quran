@@ -92,6 +92,8 @@
   svg {
     max-inline-size: 100%;
     block-size: auto;
+    color: var(--color-text-primary);
+    fill: currentColor;
   }
 
   @include breakpoints.smallerThanTablet {

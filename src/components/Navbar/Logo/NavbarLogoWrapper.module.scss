@@ -9,9 +9,8 @@
   & > svg {
     margin-block-start: 1px;
     inline-size: auto;
-
-    & > path {
-      fill: var(--color-text-default);
-    }
+    block-size: 24px;
+    color: var(--color-text-default);
+    fill: currentColor;
   }
 }
