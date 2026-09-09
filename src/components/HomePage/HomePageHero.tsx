@@ -1,23 +1,20 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import classNames from 'classnames';
-import dynamic from 'next/dynamic';
 import useTranslation from 'next-translate/useTranslation';
 
-import NavigationButton from './HeroButtons/NavigationButton';
-import PopularButton from './HeroButtons/PopularButton';
 import styles from './HomePageHero.module.scss';
+import SanctuaryCommandBar from './SanctuaryCommandBar';
 
-import Link from '@/dls/Link/Link';
-import useHasMounted from '@/hooks/useHasMounted';
-import Logo from '@/icons/logo_main.svg';
 import { GradualSpacing } from '@/components/ui/gradual-spacing';
+import Link from '@/dls/Link/Link';
+import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
+import useHasMounted from '@/hooks/useHasMounted';
+import IconBookmarkFilled from '@/icons/bookmark_filled.svg';
+import IconBookOpen from '@/icons/book-open.svg';
+import Logo from '@/icons/logo_main.svg';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getTimeOfDayPeriod, isFriday, isNightTime } from '@/utils/spiritualTime';
-
-const PopularDropdown = dynamic(() => import('@/components/HomePage/PopularDropdown'), {
-  ssr: false,
-});
 
 const QUICK_JUMP_PILLS = [
   {
@@ -59,8 +56,8 @@ const QUICK_JUMP_PILLS = [
 
 const HomePageHero: React.FC = () => {
   const { t } = useTranslation('home');
-  const [isPopularDropdownOpen, setIsPopularDropdownOpen] = useState(false);
   const hasMounted = useHasMounted();
+  const continueReadingUrl = useGetContinueReadingUrl();
 
   const isFridayToday = hasMounted && isFriday();
   const isNightNow = hasMounted && isNightTime();
@@ -74,7 +71,7 @@ const HomePageHero: React.FC = () => {
     }
     if (isFridayToday) {
       return {
-        title: t('greeting-friday', { defaultValue: 'Jumu\'ah Mubarak · Blessed Friday' }),
+        title: t('greeting-friday', { defaultValue: "Jumu'ah Mubarak · Blessed Friday" }),
         subtitle: t('greeting-sub-friday', {
           defaultValue: 'Read Surah Al-Kahf for light between Fridays',
         }),
@@ -114,16 +111,16 @@ const HomePageHero: React.FC = () => {
     }
   }, [hasMounted, isFridayToday, t]);
 
-  const handlePopularClick = useCallback(() => {
-    setIsPopularDropdownOpen((prev) => !prev);
-  }, []);
-
-  const handleDropdownClose = useCallback(() => {
-    setIsPopularDropdownOpen(false);
-  }, []);
-
   const onQuickJumpClick = useCallback((itemKey: string) => {
     logButtonClick('homepage_hero_quick_jump', { surah: itemKey });
+  }, []);
+
+  const onContinueReadingClick = useCallback(() => {
+    logButtonClick('homepage_hero_continue_reading');
+  }, []);
+
+  const onExploreSurahsClick = useCallback(() => {
+    logButtonClick('homepage_hero_explore_surahs');
   }, []);
 
   const getPillBadge = useCallback(
@@ -153,60 +150,77 @@ const HomePageHero: React.FC = () => {
         <div className={styles.greetingCapsule}>
           <span className={styles.greetingBadge} suppressHydrationWarning>
             <span className={styles.greetingPulse} aria-hidden="true" />
-            <span className={styles.greetingText} suppressHydrationWarning>{greetingInfo.title}</span>
+            <span className={styles.greetingText} suppressHydrationWarning>
+              {greetingInfo.title}
+            </span>
           </span>
         </div>
-          <div className={styles.logoContainer}>
-            <Logo />
+        <div className={styles.logoContainer}>
+          <Logo />
+        </div>
+        <GradualSpacing
+          key={greetingInfo.subtitle}
+          text={greetingInfo.subtitle}
+          as="p"
+          containerClassName={styles.heroSubtitle}
+          duration={0.45}
+          delayMultiple={0.02}
+        />
+        <SanctuaryCommandBar />
+        <div className={styles.quickJumpContainer}>
+          <div className={styles.quickJumpList}>
+            {QUICK_JUMP_PILLS.map((pill) => {
+              const badgeInfo = getPillBadge(pill.key);
+              return (
+                <Link
+                  key={pill.href}
+                  href={pill.href}
+                  className={classNames(styles.quickJumpPill, {
+                    [badgeInfo?.pillClassName]: !!badgeInfo,
+                  })}
+                  onClick={() => onQuickJumpClick(pill.key)}
+                >
+                  <span className={styles.pillText}>{pill.label}</span>
+                  <span className={styles.pillSubText}>
+                    {t(pill.subKey, { defaultValue: pill.defaultSub })}
+                  </span>
+                  {badgeInfo && (
+                    <span className={classNames(styles.pillBadge, badgeInfo.className)}>
+                      {badgeInfo.badgeText}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </div>
-          <GradualSpacing
-            key={greetingInfo.subtitle}
-            text={greetingInfo.subtitle}
-            as="p"
-            containerClassName={styles.heroSubtitle}
-            duration={0.45}
-            delayMultiple={0.02}
-          />
-          <div className={styles.commandDeck}>
-            <div className={styles.quickJumpContainer}>
-              <div className={styles.quickJumpList}>
-                {QUICK_JUMP_PILLS.map((pill) => {
-                  const badgeInfo = getPillBadge(pill.key);
-                  return (
-                    <Link
-                      key={pill.href}
-                      href={pill.href}
-                      className={classNames(styles.quickJumpPill, {
-                        [badgeInfo?.pillClassName]: !!badgeInfo,
-                      })}
-                      onClick={() => onQuickJumpClick(pill.key)}
-                    >
-                      <span className={styles.pillText}>{pill.label}</span>
-                      <span className={styles.pillSubText}>
-                        {t(pill.subKey, { defaultValue: pill.defaultSub })}
-                      </span>
-                      {badgeInfo && (
-                        <span className={classNames(styles.pillBadge, badgeInfo.className)}>
-                          {badgeInfo.badgeText}
-                        </span>
-                      )}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-            {!isPopularDropdownOpen && (
-              <div className={styles.buttonsContainer}>
-                <NavigationButton />
-                <PopularButton onClick={handlePopularClick} />
-              </div>
-            )}
-          </div>
-          {isPopularDropdownOpen && (
-            <PopularDropdown isOpen={isPopularDropdownOpen} onClose={handleDropdownClose} />
-          )}
+        </div>
+        <div className={styles.heroActionDock}>
+          <Link
+            href={continueReadingUrl}
+            className={styles.continueReadingButton}
+            onClick={onContinueReadingClick}
+            data-testid="hero-continue-reading-btn"
+          >
+            <span className={styles.actionIcon} aria-hidden="true">
+              <IconBookOpen />
+            </span>
+            <span>{t('continue-read', { defaultValue: 'Continue Reading' })}</span>
+          </Link>
+          <Link
+            href="#chapter-and-juz-list"
+            className={styles.exploreSurahsButton}
+            onClick={onExploreSurahsClick}
+            data-testid="hero-explore-surahs-btn"
+          >
+            <span className={styles.actionIcon} aria-hidden="true">
+              <IconBookmarkFilled />
+            </span>
+            <span>{t('explore-surahs', { defaultValue: 'Explore 114 Surahs' })}</span>
+          </Link>
         </div>
       </div>
+    </div>
   );
 };
+
 export default React.memo(HomePageHero);

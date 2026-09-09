@@ -22,26 +22,21 @@
   background: transparent;
 }
 
-.heroContent {
-  position: relative;
-  inline-size: 100%;
-}
-
 .innerContainer {
   display: flex;
   flex-direction: column;
   block-size: 100%;
+  max-inline-size: 1040px;
   align-items: center;
   padding-inline: var(--spacing-medium-px);
   padding-block-start: var(--spacing-medium3-px);
   padding-block-end: var(--spacing-large-px);
+  margin-inline: auto;
 
   @include breakpoints.tablet {
     padding-block-start: var(--spacing-xlarge-px);
     padding-block-end: var(--spacing-xxlarge-px);
   }
-
-  margin-inline: auto;
 }
 
 .greetingCapsule {
@@ -281,29 +276,118 @@
   color: inherit;
 }
 
-.commandDeck {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-medium-px);
-  inline-size: 100%;
-  max-inline-size: 860px;
-  margin-block-start: var(--spacing-small-px);
-
-  @include breakpoints.smallerThanTablet {
-    gap: var(--spacing-small-px);
-  }
-}
-
-.buttonsContainer {
+.heroActionDock {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-medium-px);
-  margin-block-start: var(--spacing-xxsmall-px);
+  margin-block-start: var(--spacing-medium-px);
+  flex-wrap: wrap;
 
   @include breakpoints.smallerThanTablet {
     gap: var(--spacing-small-px);
-    margin-block-start: 0;
+    margin-block-start: var(--spacing-small-px);
+    inline-size: 100%;
+  }
+}
+
+.continueReadingButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall-px);
+  padding-inline: var(--spacing-large-px);
+  padding-block: var(--spacing-small-px);
+  background: var(--color-primary-gradient);
+  color: #fff;
+  font-size: var(--font-size-small-px);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--border-radius-pill);
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25), 0 0 12px var(--color-primary-subtle);
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(16, 185, 129, 0.4), 0 0 20px var(--color-accent-gold-subtle);
+      color: #fff;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: var(--spacing-medium-px);
+    padding-block: var(--spacing-xsmall-px);
+    font-size: var(--font-size-xsmall-px);
+    inline-size: 100%;
+    max-inline-size: 280px;
+  }
+}
+
+.exploreSurahsButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall-px);
+  padding-inline: var(--spacing-large-px);
+  padding-block: var(--spacing-small-px);
+  background: var(--color-surface-floating);
+  border: 1px solid var(--color-border-iridescent);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small-px);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius-pill);
+  text-decoration: none;
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+      background: var(--color-surface-card-hover);
+      border-color: var(--color-accent-gold);
+      color: var(--color-accent-gold);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15), 0 0 16px var(--color-accent-gold-subtle);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: var(--spacing-medium-px);
+    padding-block: var(--spacing-xsmall-px);
+    font-size: var(--font-size-xsmall-px);
+    inline-size: 100%;
+    max-inline-size: 280px;
+  }
+}
+
+.actionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    inline-size: 18px;
+    block-size: 18px;
   }
 }
