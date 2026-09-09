@@ -19,7 +19,6 @@ import Navbar from '@/components/Navbar/Navbar';
 import Footer from '@/dls/Footer/Footer';
 import useAuthData from '@/hooks/auth/useAuthData';
 import useShowNavbar from '@/hooks/useShowNavbar';
-import { selectIsBannerVisible } from '@/redux/slices/banner';
 import {
   selectIsLanguageDrawerOpen,
   selectIsNavigationDrawerOpen,
@@ -43,7 +42,6 @@ function AppContent({ Component, pageProps }: AppContentProps) {
   const isNavigationDrawerOpen = useSelector(selectIsNavigationDrawerOpen);
   const isSettingsDrawerOpen = useSelector(selectIsSettingsDrawerOpen);
   const isLanguageDrawerOpen = useSelector(selectIsLanguageDrawerOpen);
-  const isBannerVisible = useSelector(selectIsBannerVisible);
   const isEmbedPage = router.pathname === '/embed/v1';
 
   if (isEmbedPage) {
@@ -53,8 +51,6 @@ function AppContent({ Component, pageProps }: AppContentProps) {
   return (
     <div
       className={classNames({
-        bannerActive: isBannerVisible,
-        desktopStandaloneBannerActive: isBannerVisible,
         navbarVisible: showNavbar,
         navbarHidden: !showNavbar,
       })}
