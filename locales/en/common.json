@@ -439,6 +439,7 @@
     "results": "results",
     "show-all": "Show all results",
     "switch-mode": "Switch to Advanced Search",
+    "placeholder": "Search verses, surahs, topics, or jump to ayah...",
     "title": "Search"
   },
   "seconds": "Seconds",
