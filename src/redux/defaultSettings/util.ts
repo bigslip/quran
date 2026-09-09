@@ -1,7 +1,22 @@
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable global-require */
-
+import ar from './locales/ar';
+import bn from './locales/bn';
+import en from './locales/en';
+import es from './locales/es';
+import fa from './locales/fa';
+import fr from './locales/fr';
+import id from './locales/id';
+import it from './locales/it';
+import ms from './locales/ms';
+import nl from './locales/nl';
+import pt from './locales/pt';
+import ru from './locales/ru';
+import sq from './locales/sq';
+import sw from './locales/sw';
+import th from './locales/th';
+import tr from './locales/tr';
+import ur from './locales/ur';
+import vi from './locales/vi';
+import zh from './locales/zh';
 import { RootState } from '../RootState';
 import NotificationsState from '../types/NotificationsState';
 
@@ -13,6 +28,28 @@ import SliceName from '@/redux/types/SliceName';
 import TafsirsSettings from '@/redux/types/TafsirsSettings';
 import Theme from '@/redux/types/Theme';
 import TranslationsSettings from '@/redux/types/TranslationsSettings';
+
+const LOCALES_MAP: Record<string, DefaultSettings> = {
+  ar,
+  bn,
+  en,
+  es,
+  fa,
+  fr,
+  id,
+  it,
+  ms,
+  nl,
+  pt,
+  ru,
+  sq,
+  sw,
+  th,
+  tr,
+  ur,
+  vi,
+  zh,
+};
 
 /**
  * Get the initial state of the store.
@@ -37,13 +74,13 @@ export const getStoreInitialState = (locale: string): RootState => {
 const DEFAULT_LOCALE = 'en';
 
 /**
- * Dynamically load the default settings of the locale passed.
+ * Load the default settings of the locale passed.
  *
  * @param {string} locale
  * @returns {DefaultSettings}
  */
 const importLocaleFile = (locale: string): DefaultSettings =>
-  require(`./locales/${locale}`).default;
+  LOCALES_MAP[locale] || LOCALES_MAP[DEFAULT_LOCALE];
 
 /**
  * Get specific settings by its key for a locale.
