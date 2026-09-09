@@ -133,9 +133,8 @@ const HomePageHero: React.FC = () => {
             </span>
           </span>
         </div>
-        <div className={styles.logoContainer} role="img" aria-label="Quran.ir">
-          <Logo aria-hidden="true" />
-          <h1 className="sr-only">Quran.ir</h1>
+        <div className={styles.logoContainer}>
+          <Logo />
         </div>
         <SanctuaryCommandBar />
         <div className={styles.quickJumpContainer}>
