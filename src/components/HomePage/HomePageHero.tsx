@@ -155,8 +155,11 @@ const HomePageHero: React.FC = () => {
             </span>
           </span>
         </div>
-        <div className={styles.logoContainer}>
-          <Logo />
+        <div className={styles.logoContainer} role="img" aria-label="Quran.ir">
+          <Logo aria-hidden="true" />
+          <h1 className="sr-only">
+            {t('hero-tagline', { defaultValue: 'The Noble Quran · Read, Listen & Reflect' })}
+          </h1>
         </div>
         <GradualSpacing
           key={greetingInfo.subtitle}

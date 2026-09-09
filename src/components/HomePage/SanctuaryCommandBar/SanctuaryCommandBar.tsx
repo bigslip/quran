@@ -16,7 +16,11 @@ const SanctuaryCommandBar: React.FC = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setIsMac(navigator.platform.toUpperCase().indexOf('MAC') >= 0);
+      const isMacPlatform =
+        // @ts-ignore
+        navigator.userAgentData?.platform === 'macOS' ||
+        /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform);
+      setIsMac(isMacPlatform);
     }
   }, []);
 

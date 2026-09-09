@@ -192,7 +192,7 @@
 }
 
 .fridayPill {
-  border-color: rgba(217, 119, 6, 0.35);
+  border-color: var(--color-accent-gold-subtle);
   box-shadow: 0 0 16px var(--color-accent-gold-subtle), 0 4px 14px rgba(0, 0, 0, 0.15);
   background: var(--color-surface-floating);
 
@@ -205,7 +205,7 @@
 }
 
 .nightPill {
-  border-color: rgba(5, 255, 161, 0.35);
+  border-color: var(--color-accent-emerald-subtle);
   box-shadow: 0 0 16px var(--color-accent-emerald-subtle), 0 4px 14px rgba(0, 0, 0, 0.15);
   background: var(--color-surface-floating);
 
@@ -241,14 +241,14 @@
 .fridayBadge {
   background: var(--color-accent-gold-subtle);
   color: var(--color-accent-gold);
-  border: 1px solid rgba(217, 119, 6, 0.3);
+  border: 1px solid var(--color-accent-gold-subtle);
   box-shadow: 0 0 10px var(--color-accent-gold-subtle);
 }
 
 .nightBadge {
   background: var(--color-accent-emerald-subtle);
   color: var(--color-accent-emerald);
-  border: 1px solid rgba(5, 255, 161, 0.3);
+  border: 1px solid var(--color-accent-emerald-subtle);
   box-shadow: 0 0 10px var(--color-accent-emerald-subtle);
 }
 
@@ -304,13 +304,13 @@
   font-weight: var(--font-weight-semibold);
   border-radius: var(--border-radius-pill);
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25), 0 0 12px var(--color-primary-subtle);
+  box-shadow: 0 4px 20px var(--color-primary-subtle), 0 0 12px var(--color-primary-subtle);
   transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 
   @media (hover: hover) {
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(16, 185, 129, 0.4), 0 0 20px var(--color-accent-gold-subtle);
+      box-shadow: 0 6px 28px var(--color-primary-subtle), 0 0 20px var(--color-accent-gold-subtle);
       color: #fff;
     }
   }
