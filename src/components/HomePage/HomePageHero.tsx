@@ -3,16 +3,18 @@ import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
+import { useDispatch } from 'react-redux';
+
 import styles from './HomePageHero.module.scss';
 import SanctuaryCommandBar from './SanctuaryCommandBar';
 
 import Link from '@/dls/Link/Link';
 import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import useHasMounted from '@/hooks/useHasMounted';
-import useNavbarDrawerActions from '@/hooks/useNavbarDrawerActions';
 import IconBookmarkFilled from '@/icons/bookmark_filled.svg';
 import IconBookOpen from '@/icons/book-open.svg';
 import Logo from '@/icons/logo_main.svg';
+import { setIsSidebarNavigationVisible } from '@/redux/slices/QuranReader/sidebarNavigation';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getTimeOfDayPeriod, isFriday, isNightTime } from '@/utils/spiritualTime';
 
@@ -56,9 +58,9 @@ const QUICK_JUMP_PILLS = [
 
 const HomePageHero: React.FC = () => {
   const { t } = useTranslation('home');
+  const dispatch = useDispatch();
   const hasMounted = useHasMounted();
   const continueReadingUrl = useGetContinueReadingUrl();
-  const { openNavigationDrawer } = useNavbarDrawerActions();
 
   const isFridayToday = hasMounted && isFriday();
   const isNightNow = hasMounted && isNightTime();
@@ -94,8 +96,8 @@ const HomePageHero: React.FC = () => {
 
   const onExploreSurahsClick = useCallback(() => {
     logButtonClick('homepage_hero_explore_surahs');
-    openNavigationDrawer();
-  }, [openNavigationDrawer]);
+    dispatch(setIsSidebarNavigationVisible(true));
+  }, [dispatch]);
 
   const getPillBadge = useCallback(
     (key: string) => {
