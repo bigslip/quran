@@ -53,9 +53,15 @@ const ScrollableSelection = ({
   }, [selectedItem, scroll]);
 
   const navigateAndHandleAfterNavigation = (href: string, itemValue: string | number) => {
+    const itemType = isJuz ? NavigationItemType.JUZ : NavigationItemType.PAGE;
+    if (router.asPath === href || router.pathname === href) {
+      if (onAfterNavigationItemRouted) {
+        onAfterNavigationItemRouted(itemValue?.toString(), itemType);
+      }
+      return;
+    }
     router.push(href).then(() => {
       if (onAfterNavigationItemRouted) {
-        const itemType = isJuz ? NavigationItemType.JUZ : NavigationItemType.PAGE;
         onAfterNavigationItemRouted(itemValue?.toString(), itemType);
       }
     });

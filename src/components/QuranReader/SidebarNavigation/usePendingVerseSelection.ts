@@ -75,9 +75,11 @@ const usePendingVerseSelection = ({
     async (href: string) => {
       setIsNavigationPending(true);
       try {
-        await router.push(href, undefined, {
-          shallow: false, // Use shallow: false to ensure full page reload and proper state synchronization
-        });
+        if (router.asPath !== href && router.pathname !== href) {
+          await router.push(href, undefined, {
+            shallow: false, // Use shallow: false to ensure full page reload and proper state synchronization
+          });
+        }
         if (onAfterNavigationItemRouted) {
           onAfterNavigationItemRouted();
         }

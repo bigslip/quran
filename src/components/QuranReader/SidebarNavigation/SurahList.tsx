@@ -124,6 +124,12 @@ const SurahList: React.FC<Props> = ({
   }, [currentChapterId, scrollTo]);
 
   const navigateAndHandleAfterNavigation = (href: string, chapterId: string) => {
+    if (router.asPath === href || router.pathname === href) {
+      if (onAfterNavigationItemRouted) {
+        onAfterNavigationItemRouted(chapterId, NavigationItemType.CHAPTER);
+      }
+      return;
+    }
     router.push(href).then(() => {
       if (onAfterNavigationItemRouted) {
         onAfterNavigationItemRouted(chapterId, NavigationItemType.CHAPTER);

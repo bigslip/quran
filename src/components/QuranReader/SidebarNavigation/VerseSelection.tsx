@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
 
-import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -14,7 +13,6 @@ import {
   selectLastReadVerseKey,
   setLastReadVerse,
 } from '@/redux/slices/QuranReader/readingTracker';
-import { getChapterWithStartingVerseUrl } from '@/utils/navigation';
 
 type Props = {
   onAfterNavigationItemRouted?: (itemValue?: string, itemType?: string) => void;
@@ -24,7 +22,6 @@ const VerseSelection: React.FC<Props> = ({ onAfterNavigationItemRouted }) => {
   const { lang } = useTranslation('common');
   const dispatch = useDispatch();
   const chaptersData = useContext(DataContext);
-  const router = useRouter();
   const chapterIds = useChapterIdsByUrlPath(lang);
   const urlChapterId = chapterIds && chapterIds.length > 0 ? chapterIds[0] : null;
   const lastReadVerseKey = useSelector(selectLastReadVerseKey);
@@ -41,7 +38,7 @@ const VerseSelection: React.FC<Props> = ({ onAfterNavigationItemRouted }) => {
     }
   }, [urlChapterId]);
 
-  // Custom handler for chapter selection that doesn't navigate immediately
+  // Custom handler for chapter selection that updates the selected chapter for verse list without navigating immediately
   const handleChapterSelect = (chapterId: string) => {
     setSelectedChapterId(chapterId);
 
@@ -57,13 +54,6 @@ const VerseSelection: React.FC<Props> = ({ onAfterNavigationItemRouted }) => {
         chaptersData,
       }),
     );
-
-    // Navigate to the relevant verse (defaults to 1 when needed)
-    const href = getChapterWithStartingVerseUrl(verseKey);
-
-    router.push(href, undefined, { shallow: false }).catch(() => {
-      window.location.href = href;
-    });
   };
 
   return (
