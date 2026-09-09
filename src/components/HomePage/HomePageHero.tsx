@@ -6,7 +6,6 @@ import useTranslation from 'next-translate/useTranslation';
 import styles from './HomePageHero.module.scss';
 import SanctuaryCommandBar from './SanctuaryCommandBar';
 
-import { GradualSpacing } from '@/components/ui/gradual-spacing';
 import Link from '@/dls/Link/Link';
 import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import useHasMounted from '@/hooks/useHasMounted';
@@ -62,52 +61,24 @@ const HomePageHero: React.FC = () => {
   const isFridayToday = hasMounted && isFriday();
   const isNightNow = hasMounted && isNightTime();
 
-  const greetingInfo = useMemo(() => {
+  const greetingTitle = useMemo(() => {
     if (!hasMounted) {
-      return {
-        title: t('greeting', { defaultValue: 'Assalamu Alaikum' }),
-        subtitle: t('hero-tagline', { defaultValue: 'Read · Recite · Reflect' }),
-      };
+      return t('greeting', { defaultValue: 'Assalamu Alaikum' });
     }
     if (isFridayToday) {
-      return {
-        title: t('greeting-friday', { defaultValue: "Jumu'ah Mubarak · Blessed Friday" }),
-        subtitle: t('greeting-sub-friday', {
-          defaultValue: 'Read Surah Al-Kahf for light between Fridays',
-        }),
-      };
+      return t('greeting-friday', { defaultValue: "Jumu'ah Mubarak · Blessed Friday" });
     }
     const period = getTimeOfDayPeriod();
     switch (period) {
       case 'morning':
-        return {
-          title: t('greeting-morning', { defaultValue: 'Assalamu Alaikum · Blessed Morning' }),
-          subtitle: t('greeting-sub-morning', {
-            defaultValue: 'Begin your day with the divine light of the Quran',
-          }),
-        };
+        return t('greeting-morning', { defaultValue: 'Assalamu Alaikum · Blessed Morning' });
       case 'afternoon':
-        return {
-          title: t('greeting-afternoon', { defaultValue: 'Assalamu Alaikum · Blessed Afternoon' }),
-          subtitle: t('greeting-sub-afternoon', {
-            defaultValue: 'A pause for remembrance amidst the day',
-          }),
-        };
+        return t('greeting-afternoon', { defaultValue: 'Assalamu Alaikum · Blessed Afternoon' });
       case 'evening':
-        return {
-          title: t('greeting-evening', { defaultValue: 'Assalamu Alaikum · Serene Evening' }),
-          subtitle: t('greeting-sub-evening', {
-            defaultValue: 'Serenity and reflection as dusk settles',
-          }),
-        };
+        return t('greeting-evening', { defaultValue: 'Assalamu Alaikum · Serene Evening' });
       case 'night':
       default:
-        return {
-          title: t('greeting-night', { defaultValue: 'Assalamu Alaikum · Peaceful Night' }),
-          subtitle: t('greeting-sub-night', {
-            defaultValue: 'Peace and stillness in the words of Allah',
-          }),
-        };
+        return t('greeting-night', { defaultValue: 'Assalamu Alaikum · Peaceful Night' });
     }
   }, [hasMounted, isFridayToday, t]);
 
@@ -151,24 +122,14 @@ const HomePageHero: React.FC = () => {
           <span className={styles.greetingBadge} suppressHydrationWarning>
             <span className={styles.greetingPulse} aria-hidden="true" />
             <span className={styles.greetingText} suppressHydrationWarning>
-              {greetingInfo.title}
+              {greetingTitle}
             </span>
           </span>
         </div>
         <div className={styles.logoContainer} role="img" aria-label="Quran.ir">
           <Logo aria-hidden="true" />
-          <h1 className="sr-only">
-            {t('hero-tagline', { defaultValue: 'The Noble Quran · Read, Listen & Reflect' })}
-          </h1>
+          <h1 className="sr-only">Quran.ir</h1>
         </div>
-        <GradualSpacing
-          key={greetingInfo.subtitle}
-          text={greetingInfo.subtitle}
-          as="p"
-          containerClassName={styles.heroSubtitle}
-          duration={0.45}
-          delayMultiple={0.02}
-        />
         <SanctuaryCommandBar />
         <div className={styles.quickJumpContainer}>
           <div className={styles.quickJumpList}>
