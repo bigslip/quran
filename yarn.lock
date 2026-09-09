@@ -7087,6 +7087,13 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/gsap@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/gsap/-/gsap-3.0.0.tgz#28dc350ad89b6d19b13c8edbdf1dd74e8ee5c84f"
+  integrity sha512-BbWLi4WRHGze4C8NV7U7yRevuBFiPkPZZyGa0rryanvh/9HPUFXTNBXsGQxJZJq7Ix7j4RXMYodP3s+OsqCErg==
+  dependencies:
+    gsap "*"
+
 "@types/hast@^3.0.0":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@types/hast/-/hast-3.0.4.tgz#1d6b39993b82cea6ad783945b0508c25903e15aa"
@@ -11877,6 +11884,11 @@ groq@^3.4.0:
   version "3.32.0"
   resolved "https://registry.yarnpkg.com/groq/-/groq-3.32.0.tgz#ef33cf96d8dac664b715569bcc181d8e0b0b6f90"
   integrity sha512-yK3XQapMcXFP4QyVAF/ceRAwfkKbJJFaDt1y4GBxhJ6tDp/9I8bPkDPv/h016CvegOsaUDy68VKGF/LpGX7b+g==
+
+gsap@*, gsap@^3.15.0:
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/gsap/-/gsap-3.15.0.tgz#7851baaffc77642f2db3b1749d3634f9b5a19d14"
+  integrity sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==
 
 gzip-size@^6.0.0:
   version "6.0.0"
