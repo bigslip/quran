@@ -1,4 +1,4 @@
-const BASE_OG_URL = 'https://og.qurancdn.com';
+const BASE_OG_URL = '';
 
 interface BaseOgOptions {
   locale?: string;

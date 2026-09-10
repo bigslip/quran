@@ -690,15 +690,23 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     const reciterId = parts[2];
     const chapterId = Number(query.chapter) || 1;
 
+    const paddedChapter = String(chapterId).padStart(3, '0');
     try {
       const audioPath = await resolveDataFile(`audio/reciters/${reciterId}/${chapterId}.json`);
-      return JSON.parse(await fs.readFile(audioPath, 'utf-8'));
+      const data = JSON.parse(await fs.readFile(audioPath, 'utf-8'));
+      if (data.audio_files && data.audio_files[0]) {
+        data.audio_files[0].audio_url = `/audio/reciters/${reciterId}/${paddedChapter}.mp3`;
+      }
+      return data;
     } catch {
       try {
         const timestampPath = await resolveDataFile(`audio-timestamps/${chapterId}.json`);
-        return JSON.parse(await fs.readFile(timestampPath, 'utf-8'));
+        const data = JSON.parse(await fs.readFile(timestampPath, 'utf-8'));
+        if (data.audio_files && data.audio_files[0]) {
+          data.audio_files[0].audio_url = `/audio/reciters/${reciterId}/${paddedChapter}.mp3`;
+        }
+        return data;
       } catch {
-        const paddedChapter = String(chapterId).padStart(3, '0');
         return {
           audio_files: [
             {

@@ -40,7 +40,7 @@ describe('SEO Utilities', () => {
       expect(seo.openGraph?.locale).toBe('en_US');
       expect(seo.openGraph?.images).toEqual([
         {
-          url: 'https://og.qurancdn.com/api/og?lang=en',
+          url: '/api/og?lang=en',
           width: 1200,
           height: 630,
           alt: 'Quran.ir',
@@ -77,7 +77,7 @@ describe('SEO Utilities', () => {
       expect(seo.openGraph?.description).toBe('The Opener - Surah 1 of the Holy Quran');
       expect(seo.openGraph?.url).toBe('https://quran.ir/1');
       expect(seo.openGraph?.locale).toBe('ar_EG');
-      expect(seo.openGraph?.images?.[0]?.url).toBe('https://og.qurancdn.com/api/og?lang=ar');
+      expect(seo.openGraph?.images?.[0]?.url).toBe('/api/og?lang=ar');
     });
 
     it('maps various locales to their corresponding OpenGraph locale format', () => {
@@ -95,7 +95,7 @@ describe('SEO Utilities', () => {
         const seo = createSEOConfig({ locale });
         expect(seo.openGraph?.locale).toBe(expectedOgLocale);
         expect(seo.openGraph?.images?.[0]?.url).toBe(
-          `https://og.qurancdn.com/api/og?lang=${locale}`,
+          `/api/og?lang=${locale}`,
         );
       });
     });
@@ -103,12 +103,12 @@ describe('SEO Utilities', () => {
     it('falls back gracefully to en_US and lang=en when locale is undefined or empty', () => {
       const seoEmpty = createSEOConfig({ locale: '' });
       expect(seoEmpty.openGraph?.locale).toBe('en_US');
-      expect(seoEmpty.openGraph?.images?.[0]?.url).toBe('https://og.qurancdn.com/api/og?lang=en');
+      expect(seoEmpty.openGraph?.images?.[0]?.url).toBe('/api/og?lang=en');
 
       const seoUndefined = createSEOConfig({ locale: undefined });
       expect(seoUndefined.openGraph?.locale).toBe('en_US');
       expect(seoUndefined.openGraph?.images?.[0]?.url).toBe(
-        'https://og.qurancdn.com/api/og?lang=en',
+        '/api/og?lang=en',
       );
     });
 

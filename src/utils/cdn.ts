@@ -1,4 +1,4 @@
-export const CDN_HOST = 'https://static.qurancdn.com';
+export const CDN_HOST = '';
 export const CDN_ASSETS_VERSION = '1';
 
 /**
@@ -9,5 +9,9 @@ export const CDN_ASSETS_VERSION = '1';
  */
 
 export const makeCDNUrl = (path: string) => {
-  return `${CDN_HOST}/${path}?v=${CDN_ASSETS_VERSION}`;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  if (!CDN_HOST) {
+    return `${cleanPath}?v=${CDN_ASSETS_VERSION}`;
+  }
+  return `${CDN_HOST}${cleanPath}?v=${CDN_ASSETS_VERSION}`;
 };

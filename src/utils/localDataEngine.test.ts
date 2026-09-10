@@ -219,6 +219,7 @@ describe('Local Data Query Engine', () => {
       const res = await getLocalApiResponse('/audio/reciters/7/audio_files', { chapter: 1, segments: true });
       expect(res.audio_files).toBeDefined();
       expect(res.audio_files[0].chapter_id).toBe(1);
+      expect(res.audio_files[0].audio_url).toBe('/audio/reciters/7/001.mp3');
       expect(res.audio_files[0].verse_timings).toBeDefined();
     });
 

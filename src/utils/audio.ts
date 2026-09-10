@@ -8,7 +8,7 @@ export const getVerseTimingByVerseKey = (verseKey: string, verseTimings: VerseTi
 // e.g formatNumber(3) => '003'
 //     formatNumber(10) => '010'
 const formatNumber = (num: number) => num.toString().padStart(3, '0');
-export const QURANCDN_AUDIO_BASE_URL = 'https://audio.qurancdn.com/';
+export const QURANCDN_AUDIO_BASE_URL = '/audio/';
 export const LOCAL_WBW_AUDIO_BASE_URL = '/audio/wbw/';
 
 /**

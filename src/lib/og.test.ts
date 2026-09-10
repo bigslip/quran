@@ -18,7 +18,7 @@ import {
 } from './og';
 
 describe('OG Image Utilities', () => {
-  const BASE_URL = 'https://og.qurancdn.com';
+  const BASE_URL = '';
 
   describe('getDefaultOgImageUrl', () => {
     it('generates correct URL with default and custom locale', () => {
