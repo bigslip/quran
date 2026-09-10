@@ -260,6 +260,10 @@ $isNavbarVisible: var(--isNavbarVisible);
   contain: layout style;
   padding: var(--spacing-xsmall);
   border-radius: var(--border-radius-rounded);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
   &:hover {
     background-color: var(--color-background-alternative-faded);
   }
@@ -267,6 +271,10 @@ $isNavbarVisible: var(--isNavbarVisible);
 .selectedItem {
   font-weight: var(--font-weight-bold);
   background-color: var(--color-background-alternative-faint);
+}
+.loadingItem {
+  background-color: var(--color-background-alternative-faded);
+  border-inline-start: 3px solid var(--color-accent-gold);
 }
 
 .surahListContainer {

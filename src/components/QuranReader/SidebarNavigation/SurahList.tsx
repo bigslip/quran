@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import { useContext, useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
@@ -9,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 import styles from './SidebarNavigation.module.scss';
 
+import { LoadingState } from '@/components/ui';
 import Link from '@/dls/Link/Link';
 import useChapterIdsByUrlPath from '@/hooks/useChapterId';
 import { SCROLL_TO_NEAREST_ELEMENT, useScrollToElement } from '@/hooks/useScrollToElement';
@@ -66,7 +66,20 @@ const SurahList: React.FC<Props> = ({
 
   // Use external selectedChapterId if provided, otherwise use internal state
   const [internalCurrentChapterId, setInternalCurrentChapterId] = useState(urlChapterId);
+  const [loadingChapterId, setLoadingChapterId] = useState<string | null>(null);
   const currentChapterId = externalSelectedChapterId || internalCurrentChapterId;
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setLoadingChapterId(null);
+    };
+    router.events?.on('routeChangeComplete', handleRouteChange);
+    router.events?.on('routeChangeError', handleRouteChange);
+    return () => {
+      router.events?.off('routeChangeComplete', handleRouteChange);
+      router.events?.off('routeChangeError', handleRouteChange);
+    };
+  }, [router.events]);
 
   useEffect(() => {
     if (!externalSelectedChapterId) {
@@ -130,11 +143,18 @@ const SurahList: React.FC<Props> = ({
       }
       return;
     }
-    router.push(href).then(() => {
-      if (onAfterNavigationItemRouted) {
-        onAfterNavigationItemRouted(chapterId, NavigationItemType.CHAPTER);
-      }
-    });
+    setLoadingChapterId(chapterId);
+    router
+      .push(href)
+      .then(() => {
+        setLoadingChapterId(null);
+        if (onAfterNavigationItemRouted) {
+          onAfterNavigationItemRouted(chapterId, NavigationItemType.CHAPTER);
+        }
+      })
+      .catch(() => {
+        setLoadingChapterId(null);
+      });
   };
 
   // Handle when user press `Enter` in input box
@@ -174,6 +194,8 @@ const SurahList: React.FC<Props> = ({
         <div className={styles.list}>
           {filteredChapters.map((chapter) => {
             const href = getSurahNavigationUrl(chapter.id);
+            const isSelected = chapter.id.toString() === currentChapterId;
+            const isLoading = chapter.id.toString() === loadingChapterId;
             return (
               <Link
                 key={chapter.id}
@@ -182,13 +204,18 @@ const SurahList: React.FC<Props> = ({
                 onClick={(e) => handleChapterClick(e, href, chapter.id.toString())}
               >
                 <div
-                  ref={chapter.id.toString() === currentChapterId ? selectedChapterRef : null}
+                  ref={isSelected ? selectedChapterRef : null}
                   className={classNames(styles.listItem, {
-                    [styles.selectedItem]: chapter.id.toString() === currentChapterId,
+                    [styles.selectedItem]: isSelected,
+                    [styles.loadingItem]: isLoading,
                   })}
                 >
                   <span className={styles.chapterNumber}>{chapter.localizedId}</span>
-                  <span translate="no">{chapter.transliteratedName}</span>
+                  {isLoading ? (
+                    <LoadingState label={chapter.transliteratedName} variant="Drive" />
+                  ) : (
+                    <span translate="no">{chapter.transliteratedName}</span>
+                  )}
                 </div>
               </Link>
             );

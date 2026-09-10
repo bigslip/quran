@@ -150,6 +150,7 @@ const VerseList: React.FC<Props> = ({ onAfterNavigationItemRouted, selectedChapt
               verseKey={verseKey}
               key={verseKey}
               onVerseClick={(e) => handleVerseClick(e, verseKey)}
+              isLoading={pendingSelectedVerseKey === verseKey}
               isSelectedOverride={
                 pendingSelectedVerseKey ? pendingSelectedVerseKey === verseKey : undefined
               }

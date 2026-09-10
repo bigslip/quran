@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 import styles from './SidebarNavigation.module.scss';
 
+import { LoadingState } from '@/components/ui';
 import Link from '@/dls/Link/Link';
 import { SCROLL_TO_NEAREST_ELEMENT, useScrollToElement } from '@/hooks/useScrollToElement';
 import NavigationItemType from '@/types/NavigationItemType';
@@ -21,6 +22,7 @@ const ScrollableSelection = ({
   onAfterNavigationItemRouted,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [loadingItemValue, setLoadingItemValue] = useState<string | number | null>(null);
   const router = useRouter();
 
   const filteredItems = items.filter(
@@ -28,6 +30,18 @@ const ScrollableSelection = ({
       item.value.toString().startsWith(searchQuery) ||
       item.label.toString().startsWith(searchQuery),
   );
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setLoadingItemValue(null);
+    };
+    router.events?.on('routeChangeComplete', handleRouteChange);
+    router.events?.on('routeChangeError', handleRouteChange);
+    return () => {
+      router.events?.off('routeChangeComplete', handleRouteChange);
+      router.events?.off('routeChangeError', handleRouteChange);
+    };
+  }, [router.events]);
 
   useEffect(() => {
     if (!filteredItems.length) {
@@ -60,11 +74,18 @@ const ScrollableSelection = ({
       }
       return;
     }
-    router.push(href).then(() => {
-      if (onAfterNavigationItemRouted) {
-        onAfterNavigationItemRouted(itemValue?.toString(), itemType);
-      }
-    });
+    setLoadingItemValue(itemValue);
+    router
+      .push(href)
+      .then(() => {
+        setLoadingItemValue(null);
+        if (onAfterNavigationItemRouted) {
+          onAfterNavigationItemRouted(itemValue?.toString(), itemType);
+        }
+      })
+      .catch(() => {
+        setLoadingItemValue(null);
+      });
   };
 
   const handleInputSubmit = (e: React.FormEvent) => {
@@ -95,6 +116,7 @@ const ScrollableSelection = ({
         <div className={styles.list}>
           {filteredItems.map((item) => {
             const href = getHref(item.value);
+            const isLoading = loadingItemValue === item.value;
             return (
               <Link
                 href={href}
@@ -107,9 +129,14 @@ const ScrollableSelection = ({
                   className={classNames(
                     styles.listItem,
                     item.value === selectedItem && styles.selectedItem,
+                    isLoading && styles.loadingItem,
                   )}
                 >
-                  {renderItem(item)}
+                  {isLoading ? (
+                    <LoadingState label={renderItem(item)} variant="Drive" />
+                  ) : (
+                    renderItem(item)
+                  )}
                 </div>
               </Link>
             );
