@@ -476,11 +476,15 @@
   "show-arabic": "Show Arabic",
   "show-more": "Show more",
   "sidebar": {
+    "loading-juz": "Loading Juz...",
+    "loading-page": "Loading Page...",
+    "loading-surah": "Loading Surah...",
     "search-hizb": "Search Hizb",
     "search-juz": "Search Juz",
     "search-page": "Search Page",
     "search-surah": "Search Surah",
     "search-verse": "Search Verse",
+    "searching": "Searching Quran...",
     "try-navigating-with": "Tip: try navigating with"
   },
   "sign-in": "Sign in",
