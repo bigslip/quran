@@ -1,0 +1,20 @@
+{
+  "reciter": {
+    "id": 7,
+    "reciter_id": 6,
+    "name": "Mishari Rashid al-`Afasy",
+    "translated_name": {
+      "name": "Mishari Rashid al-`Afasy",
+      "language_name": "english"
+    },
+    "style": {
+      "name": "Murattal",
+      "language_name": "english",
+      "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
+    },
+    "qirat": {
+      "name": "Hafs",
+      "language_name": "english"
+    }
+  }
+}
