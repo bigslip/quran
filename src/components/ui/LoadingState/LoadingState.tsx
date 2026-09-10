@@ -50,6 +50,11 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
       aria-live="polite"
       className={classNames(styles.loadingContainer, className)}
     >
+      {label && (
+        <span className={classNames(styles.label, labelClassName)}>
+          {label}
+        </span>
+      )}
       {showGrid && (
         <span aria-hidden="true" className={styles.grid}>
           {pattern.delays.map((delay, index) => (
@@ -67,11 +72,6 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
               }}
             />
           ))}
-        </span>
-      )}
-      {label && (
-        <span className={classNames(styles.label, labelClassName)}>
-          {label}
         </span>
       )}
     </div>
