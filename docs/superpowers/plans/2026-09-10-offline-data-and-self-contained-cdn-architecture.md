@@ -132,7 +132,22 @@ git commit --no-verify -m "feat(offline): add canonical data download pipeline s
 **Interfaces:**
 - Produces: `getLocalApiResponse(pathname: string, query: Record<string, any>): Promise<any>`
 
-- [ ] **Step 1: Write failing unit test for localDataEngine**
+- [x] **Step 1: Create the data download and normalization script**
+...
+- [x] **Step 2: Run ingestion script**
+...
+- [x] **Step 3: Commit canonical ingestion script**
+...
+### Task 2: Local Data Query Engine (`src/utils/localDataEngine.ts`)
+
+**Files:**
+- Create: `src/utils/localDataEngine.ts`
+- Create: `src/utils/localDataEngine.test.ts`
+
+**Interfaces:**
+- Produces: `getLocalApiResponse(pathname: string, query: Record<string, any>): Promise<any>`
+
+- [x] **Step 1: Write failing unit test for localDataEngine**
 
 ```typescript
 // src/utils/localDataEngine.test.ts
@@ -164,12 +179,12 @@ describe('localDataEngine', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `yarn --ignore-engines test --run src/utils/localDataEngine.test.ts`
 Expected: FAIL with `getLocalApiResponse is not defined`
 
-- [ ] **Step 3: Implement localDataEngine**
+- [x] **Step 3: Implement localDataEngine**
 
 ```typescript
 // src/utils/localDataEngine.ts
@@ -227,12 +242,12 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
 }
 ```
 
-- [ ] **Step 4: Run unit tests to verify they pass**
+- [x] **Step 4: Run unit tests to verify they pass**
 
 Run: `yarn --ignore-engines test --run src/utils/localDataEngine.test.ts`
 Expected: PASS
 
-- [ ] **Step 5: Commit localDataEngine**
+- [x] **Step 5: Commit localDataEngine**
 
 ```bash
 git add src/utils/localDataEngine.ts src/utils/localDataEngine.test.ts
@@ -247,7 +262,7 @@ git commit --no-verify -m "feat(offline): implement local in-memory data query e
 - Modify: `src/pages/api/proxy/[...path].ts`
 - Test: `src/pages/api/proxy/proxy.test.ts`
 
-- [ ] **Step 1: Update API proxy to serve from local data engine**
+- [x] **Step 1: Update API proxy to serve from local data engine**
 
 ```typescript
 // src/pages/api/proxy/[...path].ts
@@ -269,12 +284,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 ```
 
-- [ ] **Step 2: Run dev tests to verify proxy responses**
+- [x] **Step 2: Run dev tests to verify proxy responses**
 
 Run: `curl -s "http://localhost:4000/api/proxy/content/api/qdc/chapters?language=en" | jq .chapters[0]`
 Expected: Chapter 1 Al-Fatihah object returned from local store.
 
-- [ ] **Step 3: Commit proxy update**
+- [x] **Step 3: Commit proxy update**
 
 ```bash
 git add src/pages/api/proxy/[...path].ts

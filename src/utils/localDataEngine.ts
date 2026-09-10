@@ -63,128 +63,170 @@ const state: DataEngineState = {
   chapterInfoCache: new Map(),
 };
 
+// Cold-start mutex promise to prevent concurrent initialization races
+let initPromise: Promise<void> | null = null;
+
 /**
- * Cleanly initialize canonical datasets into memory.
+ * Cleanly initialize canonical datasets into memory with mutex protection.
  */
 export async function initializeLocalDataEngine(): Promise<void> {
   if (state.isInitialized) return;
 
-  // 1. Load chapters
-  try {
-    const chaptersPath = await resolveDataFile('chapters.json');
-    const chaptersData = JSON.parse(await fs.readFile(chaptersPath, 'utf-8'));
-    state.chapters = chaptersData.chapters || [];
-    for (const chapter of state.chapters) {
-      state.chaptersMap.set(chapter.id, chapter);
-      if (chapter.slug?.slug) {
-        state.chaptersMap.set(chapter.slug.slug.toLowerCase(), chapter);
-      }
-      if (chapter.name_simple) {
-        state.chaptersMap.set(chapter.name_simple.toLowerCase(), chapter);
-      }
-    }
-  } catch (err) {
-    console.warn('[LocalDataEngine] Chapters not loaded:', err);
-  }
-
-  // 2. Load pages lookup
-  try {
-    const lookupV2Path = await resolveDataFile('pages-lookup-v2.json');
-    state.pagesLookupV2 = JSON.parse(await fs.readFile(lookupV2Path, 'utf-8'));
-  } catch (err) {
-    console.warn('[LocalDataEngine] Pages lookup v2 not loaded:', err);
-  }
-
-  try {
-    const lookupV1Path = await resolveDataFile('pages-lookup-v1.json');
-    state.pagesLookupV1 = JSON.parse(await fs.readFile(lookupV1Path, 'utf-8'));
-  } catch {
-    state.pagesLookupV1 = state.pagesLookupV2;
-  }
-
-  // 3. Load all 604 pages and build index of all 6,236 verses
-  const versesByKey = new Map<string, any>();
-  const versesByPage = new Map<number, any[]>();
-  const versesByChapter = new Map<number, any[]>();
-  const versesByJuz = new Map<number, any[]>();
-  const versesByHizb = new Map<number, any[]>();
-  const versesByRub = new Map<number, any[]>();
-  const allVerses: any[] = [];
-
-  for (let page = 1; page <= 604; page++) {
-    try {
-      const pagePath = await resolveDataFile(`pages/${page}.json`);
-      const pageData = JSON.parse(await fs.readFile(pagePath, 'utf-8'));
-      const verses = pageData.verses || [];
-      versesByPage.set(page, verses);
-
-      for (const verse of verses) {
-        if (!versesByKey.has(verse.verse_key)) {
-          versesByKey.set(verse.verse_key, verse);
-          allVerses.push(verse);
-
-          const [chapterStr] = verse.verse_key.split(':');
-          const chapterId = Number(chapterStr);
-          if (!versesByChapter.has(chapterId)) {
-            versesByChapter.set(chapterId, []);
+  if (!initPromise) {
+    initPromise = (async () => {
+      try {
+        // 1. Load chapters
+        try {
+          const chaptersPath = await resolveDataFile('chapters.json');
+          const chaptersData = JSON.parse(await fs.readFile(chaptersPath, 'utf-8'));
+          state.chapters = chaptersData.chapters || [];
+          for (const chapter of state.chapters) {
+            state.chaptersMap.set(chapter.id, chapter);
+            if (chapter.slug?.slug) {
+              state.chaptersMap.set(chapter.slug.slug.toLowerCase(), chapter);
+            }
+            if (chapter.name_simple) {
+              state.chaptersMap.set(chapter.name_simple.toLowerCase(), chapter);
+            }
           }
-          versesByChapter.get(chapterId)!.push(verse);
+        } catch (err) {
+          console.warn('[LocalDataEngine] Chapters not loaded:', err);
+        }
 
-          if (verse.juz_number) {
-            const juz = Number(verse.juz_number);
-            if (!versesByJuz.has(juz)) versesByJuz.set(juz, []);
-            versesByJuz.get(juz)!.push(verse);
-          }
+        // 2. Load pages lookup
+        try {
+          const lookupV2Path = await resolveDataFile('pages-lookup-v2.json');
+          state.pagesLookupV2 = JSON.parse(await fs.readFile(lookupV2Path, 'utf-8'));
+        } catch (err) {
+          console.warn('[LocalDataEngine] Pages lookup v2 not loaded:', err);
+        }
 
-          if (verse.hizb_number) {
-            const hizb = Number(verse.hizb_number);
-            if (!versesByHizb.has(hizb)) versesByHizb.set(hizb, []);
-            versesByHizb.get(hizb)!.push(verse);
-          }
+        try {
+          const lookupV1Path = await resolveDataFile('pages-lookup-v1.json');
+          state.pagesLookupV1 = JSON.parse(await fs.readFile(lookupV1Path, 'utf-8'));
+        } catch {
+          state.pagesLookupV1 = state.pagesLookupV2;
+        }
 
-          if (verse.rub_el_hizb_number) {
-            const rub = Number(verse.rub_el_hizb_number);
-            if (!versesByRub.has(rub)) versesByRub.set(rub, []);
-            versesByRub.get(rub)!.push(verse);
+        // 3. Load all 604 pages and build index of all 6,236 verses
+        const versesByKey = new Map<string, any>();
+        const versesByPage = new Map<number, any[]>();
+        const versesByChapter = new Map<number, any[]>();
+        const versesByJuz = new Map<number, any[]>();
+        const versesByHizb = new Map<number, any[]>();
+        const versesByRub = new Map<number, any[]>();
+        const allVerses: any[] = [];
+
+        for (let page = 1; page <= 604; page++) {
+          try {
+            const pagePath = await resolveDataFile(`pages/${page}.json`);
+            const pageData = JSON.parse(await fs.readFile(pagePath, 'utf-8'));
+            const verses = pageData.verses || [];
+            versesByPage.set(page, verses);
+
+            for (const verse of verses) {
+              if (!versesByKey.has(verse.verse_key)) {
+                versesByKey.set(verse.verse_key, verse);
+                allVerses.push(verse);
+
+                const [chapterStr] = verse.verse_key.split(':');
+                const chapterId = Number(chapterStr);
+                if (!versesByChapter.has(chapterId)) {
+                  versesByChapter.set(chapterId, []);
+                }
+                versesByChapter.get(chapterId)!.push(verse);
+
+                if (verse.juz_number) {
+                  const juz = Number(verse.juz_number);
+                  if (!versesByJuz.has(juz)) versesByJuz.set(juz, []);
+                  versesByJuz.get(juz)!.push(verse);
+                }
+
+                if (verse.hizb_number) {
+                  const hizb = Number(verse.hizb_number);
+                  if (!versesByHizb.has(hizb)) versesByHizb.set(hizb, []);
+                  versesByHizb.get(hizb)!.push(verse);
+                }
+
+                if (verse.rub_el_hizb_number) {
+                  const rub = Number(verse.rub_el_hizb_number);
+                  if (!versesByRub.has(rub)) versesByRub.set(rub, []);
+                  versesByRub.get(rub)!.push(verse);
+                }
+              }
+            }
+          } catch (err) {
+            // If some pages aren't found, continue
           }
         }
+
+        state.allVerses = allVerses;
+        state.versesByKey = versesByKey;
+        state.versesByPage = versesByPage;
+        state.versesByChapter = versesByChapter;
+        state.versesByJuz = versesByJuz;
+        state.versesByHizb = versesByHizb;
+        state.versesByRub = versesByRub;
+
+        // 4. Load resources
+        try {
+          const transListPath = await resolveDataFile('translations-list.json');
+          state.translationsList = JSON.parse(await fs.readFile(transListPath, 'utf-8'));
+        } catch {}
+
+        try {
+          const tafsirListPath = await resolveDataFile('tafsirs-list.json');
+          state.tafsirsList = JSON.parse(await fs.readFile(tafsirListPath, 'utf-8'));
+        } catch {}
+
+        try {
+          const langListPath = await resolveDataFile('languages.json');
+          state.languagesList = JSON.parse(await fs.readFile(langListPath, 'utf-8'));
+        } catch {}
+
+        try {
+          const recitersPath = await resolveDataFile('audio/reciters.json');
+          state.recitersList = JSON.parse(await fs.readFile(recitersPath, 'utf-8'));
+        } catch {}
+
+        state.isInitialized = true;
+      } catch (err) {
+        initPromise = null;
+        state.isInitialized = false;
+        throw err;
       }
-    } catch (err) {
-      // If some pages aren't found, continue
-    }
+    })();
   }
 
-  state.allVerses = allVerses;
-  state.versesByKey = versesByKey;
-  state.versesByPage = versesByPage;
-  state.versesByChapter = versesByChapter;
-  state.versesByJuz = versesByJuz;
-  state.versesByHizb = versesByHizb;
-  state.versesByRub = versesByRub;
-
-  // 4. Load resources
-  try {
-    const transListPath = await resolveDataFile('translations-list.json');
-    state.translationsList = JSON.parse(await fs.readFile(transListPath, 'utf-8'));
-  } catch {}
-
-  try {
-    const tafsirListPath = await resolveDataFile('tafsirs-list.json');
-    state.tafsirsList = JSON.parse(await fs.readFile(tafsirListPath, 'utf-8'));
-  } catch {}
-
-  try {
-    const langListPath = await resolveDataFile('languages.json');
-    state.languagesList = JSON.parse(await fs.readFile(langListPath, 'utf-8'));
-  } catch {}
-
-  try {
-    const recitersPath = await resolveDataFile('audio/reciters.json');
-    state.recitersList = JSON.parse(await fs.readFile(recitersPath, 'utf-8'));
-  } catch {}
-
-  state.isInitialized = true;
+  return initPromise;
 }
+
+/**
+ * Reset internal state for test environments.
+ */
+export function _resetStateForTesting(): void {
+  state.isInitialized = false;
+  initPromise = null;
+  state.chapters = [];
+  state.chaptersMap.clear();
+  state.pagesLookupV1 = null;
+  state.pagesLookupV2 = null;
+  state.allVerses = [];
+  state.versesByKey.clear();
+  state.versesByPage.clear();
+  state.versesByChapter.clear();
+  state.versesByJuz.clear();
+  state.versesByHizb.clear();
+  state.versesByRub.clear();
+  state.translationsMap.clear();
+  state.translationsList = null;
+  state.tafsirsList = null;
+  state.languagesList = null;
+  state.recitersList = null;
+  state.audioTimestampsByChapter.clear();
+  state.chapterInfoCache.clear();
+}
+
 
 /**
  * Load a translation dataset by ID into the memory map on-demand.
@@ -314,14 +356,27 @@ function sliceVerses(verses: any[], page: number, perPageParam: any): any[] {
 export async function getLocalApiResponse(pathname: string, query: Record<string, any> = {}): Promise<any> {
   await initializeLocalDataEngine();
 
-  // Normalize path by stripping prefix and leading/trailing slashes and query strings
+  // Normalize path by stripping host, query strings, and leading/trailing slashes
   let cleanPath = pathname
     .replace(/^https?:\/\/[^/]+/, '')
-    .replace(/^\/api\/proxy\/content\/api\/qdc\//, '')
-    .replace(/^\/api\/proxy\/[^/]+\/api\/qdc\//, '')
-    .replace(/^\/api\/qdc\//, '')
-    .replace(/^\//, '')
-    .split('?')[0];
+    .split('?')[0]
+    .replace(/^\/+/, '')
+    .replace(/\/+$/, '');
+
+  // Strip known proxy / service prefix variations
+  if (cleanPath.startsWith('api/proxy/')) {
+    cleanPath = cleanPath
+      .replace(/^api\/proxy\/[^/]+\/api\/qdc\//, '')
+      .replace(/^api\/proxy\/content\//, '')
+      .replace(/^api\/proxy\//, '');
+  }
+  if (cleanPath.startsWith('content/api/qdc/')) {
+    cleanPath = cleanPath.replace(/^content\/api\/qdc\//, '');
+  }
+  if (cleanPath.startsWith('api/qdc/')) {
+    cleanPath = cleanPath.replace(/^api\/qdc\//, '');
+  }
+  cleanPath = cleanPath.replace(/^\/+/, '');
 
   const includeWords = query.words !== false && query.words !== 'false';
   const translationIds = parseTranslationIds(query.translations);
