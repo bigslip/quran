@@ -16,7 +16,6 @@ const AudioPlayer = dynamic(() => import('@/components/AudioPlayer/AudioPlayer')
 import DeveloperUtility from '@/components/DeveloperUtility/DeveloperUtility';
 import GlobalListeners from '@/components/GlobalListeners';
 import Navbar from '@/components/Navbar/Navbar';
-import RouteLoadingIndicator from '@/components/RouteLoadingIndicator';
 import Footer from '@/dls/Footer/Footer';
 import useAuthData from '@/hooks/auth/useAuthData';
 import useShowNavbar from '@/hooks/useShowNavbar';
@@ -60,7 +59,6 @@ function AppContent({ Component, pageProps }: AppContentProps) {
       <UserAccountModal announcement={userData?.announcement} consents={userData?.consents} />
       <DefaultSeo {...createSEOConfig({ locale, description: t('default-description') })} />
       <GlobalListeners />
-      <RouteLoadingIndicator />
       {!isAuth && <Navbar />}
       <DeveloperUtility />
       <div
