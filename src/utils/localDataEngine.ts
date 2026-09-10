@@ -1,6 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+import { handleNavigateQuery, handleSearchQuery } from './search/localSearchEngine';
+
 // Primary and fallback directories for canonical data
 const DATA_DIR = path.join(process.cwd(), 'data/qdc');
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public/data/qdc');
@@ -827,5 +829,41 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     };
   }
 
+  // -------------------------------------------------------------
+  // 15. Offline Search & Navigation Endpoints
+  // -------------------------------------------------------------
+  if (cleanPath === 'navigate' || cleanPath.startsWith('navigate?')) {
+    const searchQuery = String(query.query || query.q || '');
+    const navResults = await handleNavigateQuery(searchQuery);
+    return {
+      result: {
+        navigation: navResults,
+        verses: [],
+      },
+      pagination: createPagination(navResults.length, 1, 10),
+    };
+  }
+
+  if (cleanPath === 'search' || cleanPath.startsWith('search?')) {
+    const searchQuery = String(query.query || query.q || '');
+    const page = Number(query.page) || 1;
+    const size = Number(query.size || query.per_page || query.perPage) || 10;
+    const highlight = query.highlight === '1' || query.highlight === 1 || query.highlight === 'true';
+    const translationIdsParam = query.translation_ids || query.translations || query.translationIds;
+
+    const searchResponse = await handleSearchQuery({
+      query: searchQuery,
+      page,
+      perPage: size,
+      size,
+      translationIds: translationIdsParam,
+      highlight,
+      mode: query.mode,
+    });
+
+    return searchResponse;
+  }
+
   throw new Error(`Endpoint not supported locally: ${cleanPath}`);
 }
+

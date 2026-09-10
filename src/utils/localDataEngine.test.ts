@@ -245,4 +245,22 @@ describe('Local Data Query Engine', () => {
       expect(res.foot_note.id).toBe(195932);
     });
   });
+
+  describe('Offline Search & Navigation Endpoints', () => {
+    it('serves instant navigation suggestions via /navigate', async () => {
+      const res = await getLocalApiResponse('/navigate', { query: '2:255' });
+      expect(res.result).toBeDefined();
+      expect(res.result.navigation).toBeDefined();
+      expect(res.result.navigation.some((n: any) => n.key === '2:255')).toBe(true);
+    });
+
+    it('serves full-text search results via /search', async () => {
+      const res = await getLocalApiResponse('/search', { query: 'praise be to Allah', page: 1, per_page: 5 });
+      expect(res.result).toBeDefined();
+      expect(res.result.verses).toBeDefined();
+      expect(res.result.verses.length).toBeGreaterThan(0);
+      expect(res.pagination.totalRecords || res.pagination.total_records).toBeGreaterThan(0);
+    });
+  });
 });
+
