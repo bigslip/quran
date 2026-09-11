@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import fsSync from 'fs';
 import path from 'path';
+import { AcousticAligner, generateAcousticWordSegments } from './acoustic-aligner';
 
 // CLI options
 const args = process.argv.slice(2);
@@ -393,6 +394,7 @@ async function processChapter(
   chapterId: number,
   verseCount: number,
   wordsMap: Record<string, string[]>,
+  aligner: AcousticAligner,
 ) {
   const paddedChapter = pad3(chapterId);
   const destAudioPadded = path.join(AUDIO_OUTPUT_DIR, `${paddedChapter}.mp3`);
@@ -422,6 +424,12 @@ async function processChapter(
     };
   });
 
+  const rawVersesForAcoustic = parsedVerses.map((pv) => ({
+    id: `${chapterId}:${pv.verseNumber}`,
+    buffer: pv.audioData,
+  }));
+  const acousticMap = await aligner.analyzeBatch(rawVersesForAcoustic);
+
   const ayahBuffers: Buffer[] = [];
   const verseTimings: any[] = [];
   let cumulativeMs = 0;
@@ -435,8 +443,13 @@ async function processChapter(
     const from = cumulativeMs;
     const to = cumulativeMs + pv.durationMs;
     const verseKey = `${chapterId}:${pv.verseNumber}`;
+    const words = wordsMap[verseKey] || [];
+    const acousticInfo = acousticMap[verseKey];
 
-    const segments = generateWordSegments(verseKey, from, pv.durationMs, wordsMap);
+    const segments =
+      acousticInfo && acousticInfo.durationMs > 0
+        ? generateAcousticWordSegments(words, from, acousticInfo)
+        : generateWordSegments(verseKey, from, pv.durationMs, wordsMap);
 
     verseTimings.push({
       verse_key: verseKey,
@@ -548,18 +561,24 @@ async function main() {
 
   const startTime = Date.now();
   let doneCount = 0;
+  const aligner = new AcousticAligner();
 
-  await runConcurrent(targetChapters, CHAPTER_CONCURRENCY, async (chap: any) => {
-    try {
-      await processChapter(chap.id, chap.verses_count, wordsMap);
-      doneCount++;
-      if (doneCount % 10 === 0 || doneCount === targetChapters.length) {
-        console.log(`  Progress: ${doneCount}/${targetChapters.length} chapters processed (finished Surah ${chap.id}: ${chap.name_simple})`);
+  try {
+    await aligner.init();
+    await runConcurrent(targetChapters, CHAPTER_CONCURRENCY, async (chap: any) => {
+      try {
+        await processChapter(chap.id, chap.verses_count, wordsMap, aligner);
+        doneCount++;
+        if (doneCount % 10 === 0 || doneCount === targetChapters.length) {
+          console.log(`  Progress: ${doneCount}/${targetChapters.length} chapters processed (finished Surah ${chap.id}: ${chap.name_simple})`);
+        }
+      } catch (err: any) {
+        console.error(`  ❌ Failed chapter ${chap.id} (${chap.name_simple}): ${err.message}`);
       }
-    } catch (err: any) {
-      console.error(`  ❌ Failed chapter ${chap.id} (${chap.name_simple}): ${err.message}`);
-    }
-  });
+    });
+  } finally {
+    await aligner.close();
+  }
 
   const durationSec = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`\n🎉 ✅ Tanzil Reciter Ingestion & Timing Segments complete in ${durationSec}s!`);
