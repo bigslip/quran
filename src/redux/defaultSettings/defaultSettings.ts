@@ -34,10 +34,10 @@ export interface DefaultSettings {
 export const DEFAULT_TAFSIRS = ['en-tafisr-ibn-kathir'];
 
 export const DEFAULT_RECITER = {
-  id: 7,
-  name: 'Mishari Rashid al-`Afasy',
-  recitationStyle: 'Warsh',
-  relativePath: 'mishaari_raashid_al_3afaasee',
+  id: 9,
+  name: 'Mohamed Siddiq al-Minshawi',
+  recitationStyle: 'Murattal',
+  relativePath: 'muhammad_siddeeq_al-minshaawee',
 } as Reciter;
 
 const TAFSIRS_INITIAL_STATE: TafsirsSettings = {

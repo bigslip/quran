@@ -341,10 +341,10 @@ async function downloadTranslations() {
 }
 
 /**
- * Download reciter metadata and chapter audio timestamp segments for Mishari Al-Afasy (reciter 7).
+ * Download reciter metadata and chapter audio timestamp segments for Mohamed Siddiq al-Minshawi (reciter 9).
  */
 async function downloadAudioMetadata() {
-  console.log('🎙️ Downloading audio metadata and timestamps for reciter 7 (Al-Afasy)...');
+  console.log('🎙️ Downloading audio metadata and timestamps for reciter 9 (Mohamed Siddiq al-Minshawi)...');
 
   // Reciters list
   const recitersPath = path.join(DATA_DIR, 'audio/reciters.json');
@@ -353,11 +353,13 @@ async function downloadAudioMetadata() {
     await fs.writeFile(recitersPath, JSON.stringify(reciters, null, 2));
   }
 
-  // Reciter 7 info
-  const reciter7InfoPath = path.join(DATA_DIR, 'audio/reciters/7/info.json');
-  if (!(await fileExistsAndValid(reciter7InfoPath))) {
-    const reciter7 = await fetchJsonWithRetry(`${BASE_URL}/audio/reciters/7?locale=en`);
-    await fs.writeFile(reciter7InfoPath, JSON.stringify(reciter7, null, 2));
+  // Reciter 9 info
+  const reciter9Dir = path.join(DATA_DIR, 'audio/reciters/9');
+  await fs.mkdir(reciter9Dir, { recursive: true });
+  const reciter9InfoPath = path.join(reciter9Dir, 'info.json');
+  if (!(await fileExistsAndValid(reciter9InfoPath))) {
+    const reciter9 = await fetchJsonWithRetry(`${BASE_URL}/audio/reciters/9?locale=en`);
+    await fs.writeFile(reciter9InfoPath, JSON.stringify(reciter9, null, 2));
   }
 
   // Download segment timings for all 114 chapters
@@ -365,12 +367,12 @@ async function downloadAudioMetadata() {
   let doneCount = 0;
 
   await runConcurrent(chapters, CONCURRENCY_LIMIT, async (chapterId) => {
-    const dest = path.join(DATA_DIR, `audio/reciters/7/${chapterId}.json`);
+    const dest = path.join(DATA_DIR, `audio/reciters/9/${chapterId}.json`);
     const timestampDest = path.join(DATA_DIR, `audio-timestamps/${chapterId}.json`);
 
     if (!(await fileExistsAndValid(dest))) {
       try {
-        const data = await fetchJsonWithRetry(`${BASE_URL}/audio/reciters/7/audio_files?chapter=${chapterId}&segments=true`);
+        const data = await fetchJsonWithRetry(`${BASE_URL}/audio/reciters/9/audio_files?chapter=${chapterId}&segments=true`);
         await fs.writeFile(dest, JSON.stringify(data, null, 2));
         await fs.writeFile(timestampDest, JSON.stringify(data, null, 2));
       } catch (err: any) {

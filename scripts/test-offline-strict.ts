@@ -96,8 +96,8 @@ async function runStrictOfflineVerification() {
     console.log(`  ✅ Search /search API returned ${searchJson.result.verses.length} verse results.`);
 
     // 6. Audio stream check
-    console.log('Testing 6: Audio Stream (/audio/reciters/7/001.mp3) ...');
-    const audioRes = await fetch(`${BASE_URL}/audio/reciters/7/001.mp3`);
+    console.log('Testing 6: Audio Stream (/audio/reciters/9/001.mp3) ...');
+    const audioRes = await fetch(`${BASE_URL}/audio/reciters/9/001.mp3`);
     if (!audioRes.ok) throw new Error(`Audio response status ${audioRes.status}`);
     const audioBuffer = await audioRes.arrayBuffer();
     if (audioBuffer.byteLength < 500000) {

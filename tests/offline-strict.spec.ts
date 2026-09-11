@@ -144,7 +144,7 @@ test.describe('Strict Offline Sovereign Architecture Gate', () => {
     expect(externalRequests).toEqual([]);
   });
 
-  test('6. Audio stream for /audio/reciters/7/001.mp3 is served locally with valid content', async ({
+  test('6. Audio stream for /audio/reciters/9/001.mp3 is served locally with valid content', async ({
     request,
     page,
   }) => {
@@ -152,14 +152,14 @@ test.describe('Strict Offline Sovereign Architecture Gate', () => {
     await setupStrictOfflineGate(page, externalRequests);
 
     // Direct HTTP request to the local audio endpoint
-    const response = await request.get(`${BASE_URL}/audio/reciters/7/001.mp3`);
+    const response = await request.get(`${BASE_URL}/audio/reciters/9/001.mp3`);
     expect(response.status()).toBe(200);
 
     const headers = response.headers();
     expect(headers['content-type']).toContain('audio/mpeg');
 
     const body = await response.body();
-    // Verify audio buffer size > 500KB (full Mishari Surah 1 recitation is ~793KB)
+    // Verify audio buffer size > 500KB (full Minshawi Surah 1 recitation is ~703KB)
     expect(body.length).toBeGreaterThan(500000);
 
     // Assert zero external network leaks

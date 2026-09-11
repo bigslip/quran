@@ -1,1016 +1,1011 @@
 {
   "audio_files": [
     {
-      "id": 1069,
+      "id": 1297,
       "chapter_id": 80,
-      "file_size": 3537024,
+      "file_size": 3788928,
       "format": "mp3",
-      "audio_url": "https://download.quranicaudio.com/qdc/mishari_al_afasy/murattal/80.mp3",
-      "duration": 202000,
+      "audio_url": "https://download.quranicaudio.com/qdc/siddiq_minshawi/murattal/80.mp3",
+      "duration": 232000,
       "verse_timings": [
         {
           "verse_key": "80:1",
           "timestamp_from": 0,
-          "timestamp_to": 2930,
-          "duration": 2930,
+          "timestamp_to": 3710,
+          "duration": 3660,
           "segments": [
             [
               1,
               0,
-              790
+              1400
             ],
             [
               2,
-              790,
-              2185
+              1400,
+              3005
             ]
           ]
         },
         {
           "verse_key": "80:2",
-          "timestamp_from": 2930,
-          "timestamp_to": 8310,
-          "duration": 5380,
+          "timestamp_from": 3710,
+          "timestamp_to": 9220,
+          "duration": 5470,
           "segments": [
             [
               1,
-              2185,
-              2815
+              3710,
+              5134
             ],
             [
               2,
-              2815,
-              5715
+              5134,
+              7220
             ],
             [
               3,
-              5715,
-              6760
+              7220,
+              8485
             ]
           ]
         },
         {
           "verse_key": "80:3",
-          "timestamp_from": 8310,
-          "timestamp_to": 13350,
-          "duration": 5040,
+          "timestamp_from": 9220,
+          "timestamp_to": 15410,
+          "duration": 6140,
           "segments": [
             [
               1,
-              7505,
-              8205
+              9220,
+              10200
             ],
             [
               2,
-              8205,
-              9275
+              10200,
+              11590
             ],
             [
               3,
-              9275,
-              10485
+              11590,
+              13080
             ],
             [
               4,
-              10485,
-              11970
+              13080,
+              14755
             ]
           ]
         },
         {
           "verse_key": "80:4",
-          "timestamp_from": 13350,
-          "timestamp_to": 18680,
-          "duration": 5330,
+          "timestamp_from": 15410,
+          "timestamp_to": 22280,
+          "duration": 6820,
           "segments": [
             [
               1,
-              12775,
-              13195
+              15410,
+              16380
             ],
             [
               2,
-              13195,
-              14445
+              16380,
+              17990
             ],
             [
               3,
-              14445,
-              16365
+              17990,
+              20220
             ],
             [
               4,
-              16365,
-              18040
+              20220,
+              21695
             ]
           ]
         },
         {
           "verse_key": "80:5",
-          "timestamp_from": 18680,
-          "timestamp_to": 22260,
-          "duration": 3580,
+          "timestamp_from": 22280,
+          "timestamp_to": 26830,
+          "duration": 4500,
           "segments": [
             [
               1,
-              18615,
-              20075
+              22280,
+              24280
             ],
             [
               2,
-              20075,
-              20465
+              24280,
+              24790
             ],
             [
               3,
-              20465,
-              21610
+              24790,
+              26215
             ]
           ]
         },
         {
           "verse_key": "80:6",
-          "timestamp_from": 22260,
-          "timestamp_to": 26130,
-          "duration": 3870,
+          "timestamp_from": 26830,
+          "timestamp_to": 31920,
+          "duration": 5050,
           "segments": [
             [
               1,
-              21675,
-              23175
+              26830,
+              28880
             ],
             [
               2,
-              23175,
-              23745
+              28880,
+              29670
             ],
             [
               3,
-              23745,
-              25060
+              29670,
+              31065
             ]
           ]
         },
         {
           "verse_key": "80:7",
-          "timestamp_from": 26130,
-          "timestamp_to": 30470,
-          "duration": 4340,
+          "timestamp_from": 31920,
+          "timestamp_to": 37670,
+          "duration": 5700,
           "segments": [
             [
               1,
-              25645,
-              26295
+              31920,
+              33080
             ],
             [
               2,
-              26295,
-              27195
+              33080,
+              34240
             ],
             [
               3,
-              27195,
-              28095
+              34240,
+              35310
             ],
             [
               4,
-              28095,
-              29530
+              35310,
+              36975
             ]
           ]
         },
         {
           "verse_key": "80:8",
-          "timestamp_from": 30470,
-          "timestamp_to": 36970,
-          "duration": 6510,
+          "timestamp_from": 37670,
+          "timestamp_to": 44830,
+          "duration": 7110,
           "segments": [
             [
               1,
-              30015,
-              31755
+              37670,
+              39780
             ],
             [
               2,
-              31755,
-              32875
+              39780,
+              40930
             ],
             [
               3,
-              32875,
-              35025
+              40930,
+              42890
             ],
             [
               4,
-              35025,
-              36100
+              42890,
+              44205
             ]
           ]
         },
         {
           "verse_key": "80:9",
-          "timestamp_from": 36970,
-          "timestamp_to": 39030,
-          "duration": 2060,
+          "timestamp_from": 44830,
+          "timestamp_to": 47600,
+          "duration": 2720,
           "segments": [
             [
               1,
-              36545,
-              37115
+              44830,
+              45910
             ],
             [
               2,
-              37115,
-              38180
+              45910,
+              47075
             ]
           ]
         },
         {
           "verse_key": "80:10",
-          "timestamp_from": 39030,
-          "timestamp_to": 42560,
-          "duration": 3530,
+          "timestamp_from": 47600,
+          "timestamp_to": 52460,
+          "duration": 4810,
           "segments": [
             [
               1,
-              38605,
-              39915
+              47600,
+              49450
             ],
             [
               2,
-              39915,
-              40545
+              49450,
+              50350
             ],
             [
               3,
-              40545,
-              41740
+              50350,
+              51805
             ]
           ]
         },
         {
           "verse_key": "80:11",
-          "timestamp_from": 42560,
-          "timestamp_to": 48440,
-          "duration": 5880,
+          "timestamp_from": 52460,
+          "timestamp_to": 58830,
+          "duration": 6330,
           "segments": [
             [
               1,
-              42165,
-              44864
+              52460,
+              55122
             ],
             [
               2,
-              44865,
-              46435
+              55122,
+              56920
             ],
             [
               3,
-              46435,
-              47970
+              56920,
+              58195
             ]
           ]
         },
         {
           "verse_key": "80:12",
-          "timestamp_from": 48440,
-          "timestamp_to": 53010,
-          "duration": 4570,
+          "timestamp_from": 58830,
+          "timestamp_to": 64130,
+          "duration": 5260,
           "segments": [
             [
               1,
-              48365,
-              49305
+              58830,
+              60394
             ],
             [
               2,
-              49305,
-              51735
+              60394,
+              62630
             ],
             [
               3,
-              51735,
-              52900
+              62630,
+              63565
             ]
           ]
         },
         {
           "verse_key": "80:13",
-          "timestamp_from": 53010,
-          "timestamp_to": 56480,
-          "duration": 3480,
+          "timestamp_from": 64130,
+          "timestamp_to": 68780,
+          "duration": 4600,
           "segments": [
             [
               1,
-              52975,
-              53405
+              64130,
+              64960
             ],
             [
               2,
-              53405,
-              54135
+              64960,
+              66550
             ],
             [
               3,
-              54135,
-              56400
+              66550,
+              68005
             ]
           ]
         },
         {
           "verse_key": "80:14",
-          "timestamp_from": 56480,
-          "timestamp_to": 60320,
-          "duration": 3840,
+          "timestamp_from": 68780,
+          "timestamp_to": 73740,
+          "duration": 4920,
           "segments": [
             [
               1,
-              56425,
-              57835
+              68780,
+              71557
             ],
             [
               2,
-              57835,
-              60220
+              71557,
+              73135
             ]
           ]
         },
         {
           "verse_key": "80:15",
-          "timestamp_from": 60320,
-          "timestamp_to": 62540,
-          "duration": 2220,
+          "timestamp_from": 73740,
+          "timestamp_to": 76800,
+          "duration": 3010,
           "segments": [
             [
               1,
-              60275,
-              61285
+              73740,
+              75410
             ],
             [
               2,
-              61285,
-              62400
+              75410,
+              76235
             ]
           ]
         },
         {
           "verse_key": "80:16",
-          "timestamp_from": 62540,
-          "timestamp_to": 65440,
-          "duration": 2900,
+          "timestamp_from": 76800,
+          "timestamp_to": 80400,
+          "duration": 3560,
           "segments": [
             [
               1,
-              62445,
-              63965
+              76800,
+              78960
             ],
             [
               2,
-              63965,
-              65230
+              78960,
+              79855
             ]
           ]
         },
         {
           "verse_key": "80:17",
-          "timestamp_from": 65440,
-          "timestamp_to": 71400,
-          "duration": 5960,
+          "timestamp_from": 80400,
+          "timestamp_to": 86880,
+          "duration": 6430,
           "segments": [
             [
               1,
-              65325,
-              65895
+              80400,
+              81490
             ],
             [
               2,
-              65895,
-              68095
+              81490,
+              83680
             ],
             [
               3,
-              68095,
-              69865
+              83680,
+              85249
             ],
             [
               4,
-              69865,
-              71230
+              85249,
+              86375
             ]
           ]
         },
         {
           "verse_key": "80:18",
-          "timestamp_from": 71400,
-          "timestamp_to": 74690,
-          "duration": 3290,
+          "timestamp_from": 86880,
+          "timestamp_to": 91110,
+          "duration": 4190,
           "segments": [
             [
               1,
-              71345,
-              71805
+              86880,
+              87720
             ],
             [
               2,
-              71805,
-              72415
+              87720,
+              88510
             ],
             [
               3,
-              72415,
-              73285
+              88510,
+              89610
             ],
             [
               4,
-              73285,
-              74570
+              89610,
+              90595
             ]
           ]
         },
         {
           "verse_key": "80:19",
-          "timestamp_from": 74690,
-          "timestamp_to": 80070,
-          "duration": 5380,
+          "timestamp_from": 91110,
+          "timestamp_to": 97590,
+          "duration": 6430,
           "segments": [
             [
               1,
-              74625,
-              74965
+              91110,
+              92463
             ],
             [
               2,
-              74965,
-              77125
+              92463,
+              93860
             ],
             [
               3,
-              77125,
-              78185
+              93860,
+              95410
             ],
             [
               4,
-              78185,
-              79950
+              95410,
+              96965
             ]
           ]
         },
         {
           "verse_key": "80:20",
-          "timestamp_from": 80070,
-          "timestamp_to": 84220,
-          "duration": 4150,
+          "timestamp_from": 97590,
+          "timestamp_to": 102400,
+          "duration": 4760,
           "segments": [
             [
               1,
-              80015,
-              81365
+              97590,
+              99120
             ],
             [
               2,
-              81365,
-              82545
+              99120,
+              100580
             ],
             [
               3,
-              82545,
-              84070
+              100580,
+              101875
             ]
           ]
         },
         {
           "verse_key": "80:21",
-          "timestamp_from": 84220,
-          "timestamp_to": 88710,
-          "duration": 4490,
+          "timestamp_from": 102400,
+          "timestamp_to": 108070,
+          "duration": 5620,
           "segments": [
             [
               1,
-              84125,
-              85365
+              102400,
+              104110
             ],
             [
               2,
-              85365,
-              86765
+              104110,
+              105780
             ],
             [
               3,
-              86765,
-              88560
+              105780,
+              107365
             ]
           ]
         },
         {
           "verse_key": "80:22",
-          "timestamp_from": 88710,
-          "timestamp_to": 95210,
-          "duration": 6510,
+          "timestamp_from": 108070,
+          "timestamp_to": 115070,
+          "duration": 6950,
           "segments": [
             [
               1,
-              88655,
-              90125
+              108070,
+              109710
             ],
             [
               2,
-              90125,
-              90725
+              109710,
+              110570
             ],
             [
               3,
-              90725,
-              92995
+              110570,
+              112730
             ],
             [
               4,
-              92995,
-              95090
+              112730,
+              114435
             ]
           ]
         },
         {
           "verse_key": "80:23",
-          "timestamp_from": 95210,
-          "timestamp_to": 101710,
-          "duration": 6510,
+          "timestamp_from": 115070,
+          "timestamp_to": 122150,
+          "duration": 7030,
           "segments": [
             [
               1,
-              95135,
-              96055
+              115070,
+              116490
             ],
             [
               2,
-              96055,
-              97545
+              116490,
+              117930
             ],
             [
               3,
-              97545,
-              98305
+              117930,
+              118960
             ],
             [
               4,
-              98305,
-              100235
+              118960,
+              120628
             ],
             [
               5,
-              100235,
-              101570
+              120628,
+              121395
             ]
           ]
         },
         {
           "verse_key": "80:24",
-          "timestamp_from": 101710,
-          "timestamp_to": 107980,
-          "duration": 6270,
+          "timestamp_from": 122150,
+          "timestamp_to": 129540,
+          "duration": 7350,
           "segments": [
             [
               1,
-              101635,
-              103625
+              122150,
+              124650
             ],
             [
               2,
-              103625,
-              105565
+              124650,
+              126880
             ],
             [
               3,
-              105565,
-              106145
+              126880,
+              127700
             ],
             [
               4,
-              106145,
-              107820
+              127700,
+              128935
             ]
           ]
         },
         {
           "verse_key": "80:25",
-          "timestamp_from": 107980,
-          "timestamp_to": 114380,
-          "duration": 6400,
+          "timestamp_from": 129540,
+          "timestamp_to": 136720,
+          "duration": 7140,
           "segments": [
             [
               1,
-              107895,
-              109515
+              129540,
+              131660
             ],
             [
               2,
-              109515,
-              110425
+              131660,
+              132800
             ],
             [
               3,
-              110425,
-              112745
+              132800,
+              134870
             ],
             [
               4,
-              112745,
-              113830
+              134870,
+              135965
             ]
           ]
         },
         {
           "verse_key": "80:26",
-          "timestamp_from": 114380,
-          "timestamp_to": 119130,
-          "duration": 4760,
+          "timestamp_from": 136720,
+          "timestamp_to": 142260,
+          "duration": 5490,
           "segments": [
             [
               1,
-              113915,
-              115545
+              136720,
+              138200
             ],
             [
               2,
-              115545,
-              116435
+              138200,
+              139320
             ],
             [
               3,
-              116435,
-              117325
+              139320,
+              140440
             ],
             [
               4,
-              117325,
-              118650
+              140440,
+              141655
             ]
           ]
         },
         {
           "verse_key": "80:27",
-          "timestamp_from": 119130,
-          "timestamp_to": 123780,
-          "duration": 4650,
+          "timestamp_from": 142260,
+          "timestamp_to": 147800,
+          "duration": 5490,
           "segments": [
             [
               1,
-              119105,
-              121395
+              142260,
+              144980
             ],
             [
               2,
-              121395,
-              122295
+              144980,
+              146130
             ],
             [
               3,
-              122295,
-              123350
+              146130,
+              147295
             ]
           ]
         },
         {
           "verse_key": "80:28",
-          "timestamp_from": 123780,
-          "timestamp_to": 127330,
-          "duration": 3550,
+          "timestamp_from": 147800,
+          "timestamp_to": 151850,
+          "duration": 4000,
           "segments": [
             [
               1,
-              123375,
-              124795
+              147800,
+              149935
             ],
             [
               2,
-              124795,
-              126500
+              149935,
+              151275
             ]
           ]
         },
         {
           "verse_key": "80:29",
-          "timestamp_from": 127330,
-          "timestamp_to": 131540,
-          "duration": 4210,
+          "timestamp_from": 151850,
+          "timestamp_to": 156260,
+          "duration": 4370,
           "segments": [
             [
               1,
-              126905,
-              128475
+              151850,
+              154593
             ],
             [
               2,
-              128475,
-              131060
+              154593,
+              155785
             ]
           ]
         },
         {
           "verse_key": "80:30",
-          "timestamp_from": 131540,
-          "timestamp_to": 135540,
-          "duration": 4000,
+          "timestamp_from": 156260,
+          "timestamp_to": 160940,
+          "duration": 4630,
           "segments": [
             [
               1,
-              131485,
-              134215
+              156260,
+              159340
             ],
             [
               2,
-              134215,
-              135150
+              159340,
+              160465
             ]
           ]
         },
         {
           "verse_key": "80:31",
-          "timestamp_from": 135540,
-          "timestamp_to": 139300,
-          "duration": 3760,
+          "timestamp_from": 160940,
+          "timestamp_to": 165900,
+          "duration": 4920,
           "segments": [
             [
               1,
-              135205,
-              136775
+              160940,
+              163060
             ],
             [
               2,
-              136775,
-              138550
+              163060,
+              165245
             ]
           ]
         },
         {
           "verse_key": "80:32",
-          "timestamp_from": 139300,
-          "timestamp_to": 143580,
-          "duration": 4290,
+          "timestamp_from": 165900,
+          "timestamp_to": 171620,
+          "duration": 5670,
           "segments": [
             [
               1,
-              138885,
-              139805
+              165900,
+              167530
             ],
             [
               2,
-              139805,
-              140745
+              167530,
+              168660
             ],
             [
               3,
-              140745,
-              143050
+              168660,
+              170995
             ]
           ]
         },
         {
           "verse_key": "80:33",
-          "timestamp_from": 143580,
-          "timestamp_to": 151130,
-          "duration": 7550,
+          "timestamp_from": 171620,
+          "timestamp_to": 179460,
+          "duration": 7790,
           "segments": [
             [
               1,
-              143455,
-              144125
+              171620,
+              172890
             ],
             [
               2,
-              144125,
-              146754
+              172890,
+              175380
             ],
             [
               3,
-              146755,
-              150840
+              175380,
+              178765
             ]
           ]
         },
         {
           "verse_key": "80:34",
-          "timestamp_from": 151130,
-          "timestamp_to": 156850,
-          "duration": 5720,
+          "timestamp_from": 179460,
+          "timestamp_to": 184790,
+          "duration": 5280,
           "segments": [
             [
               1,
-              150965,
-              151595
+              179460,
+              180650
             ],
             [
               2,
-              151595,
-              152535
+              180650,
+              181720
             ],
             [
               3,
-              152535,
-              153475
+              181720,
+              182800
             ],
             [
               4,
-              153475,
-              153765
+              182800,
+              183340
             ],
             [
               5,
-              153765,
-              156350
+              183340,
+              184295
             ]
           ]
         },
         {
           "verse_key": "80:35",
-          "timestamp_from": 156850,
-          "timestamp_to": 162390,
-          "duration": 5540,
+          "timestamp_from": 184790,
+          "timestamp_to": 189020,
+          "duration": 4190,
           "segments": [
             [
               1,
-              156515,
-              158805
+              184790,
+              187310
             ],
             [
               2,
-              158805,
-              161780
+              187310,
+              188505
             ]
           ]
         },
         {
           "verse_key": "80:36",
-          "timestamp_from": 162390,
-          "timestamp_to": 166780,
-          "duration": 4390,
+          "timestamp_from": 189020,
+          "timestamp_to": 193330,
+          "duration": 4260,
           "segments": [
             [
               1,
-              162115,
-              163865
+              189020,
+              191570
             ],
             [
               2,
-              163865,
-              166400
+              191570,
+              192785
             ]
           ]
         },
         {
           "verse_key": "80:37",
-          "timestamp_from": 166780,
-          "timestamp_to": 177360,
-          "duration": 10580,
+          "timestamp_from": 193330,
+          "timestamp_to": 203150,
+          "duration": 9780,
           "segments": [
             [
               1,
-              166675,
-              167625
+              193330,
+              194740
             ],
             [
               2,
-              167625,
-              168295
+              194740,
+              196391
             ],
             [
               3,
-              168295,
-              170495
+              196391,
+              197470
             ],
             [
               4,
-              170495,
-              171425
-            ],
-            [
-              4,
-              171425,
-              172495
+              197470,
+              199672
             ],
             [
               5,
-              172495,
-              173165
+              199672,
+              201266
             ],
             [
               6,
-              173165,
-              177180
+              201266,
+              202565
             ]
           ]
         },
         {
           "verse_key": "80:38",
-          "timestamp_from": 177360,
-          "timestamp_to": 182920,
-          "duration": 5570,
+          "timestamp_from": 203150,
+          "timestamp_to": 209920,
+          "duration": 6720,
           "segments": [
             [
               1,
-              177285,
-              178205
+              203150,
+              205768
             ],
             [
               2,
-              178205,
-              180375
+              205768,
+              207983
             ],
             [
               3,
-              180375,
-              182780
+              207983,
+              209185
             ]
           ]
         },
         {
           "verse_key": "80:39",
-          "timestamp_from": 182920,
-          "timestamp_to": 186890,
-          "duration": 3970,
+          "timestamp_from": 209920,
+          "timestamp_to": 215010,
+          "duration": 5050,
           "segments": [
             [
               1,
-              182845,
-              184125
+              209920,
+              212477
             ],
             [
               2,
-              184125,
-              186740
+              212477,
+              214215
             ]
           ]
         },
         {
           "verse_key": "80:40",
-          "timestamp_from": 186890,
-          "timestamp_to": 192850,
-          "duration": 5960,
+          "timestamp_from": 215010,
+          "timestamp_to": 222270,
+          "duration": 7220,
           "segments": [
             [
               1,
-              186815,
-              188065
+              215010,
+              217516
             ],
             [
               2,
-              188066,
-              190325
+              217516,
+              219190
             ],
             [
               3,
-              190325,
-              191505
+              219190,
+              220690
             ],
             [
               4,
-              191505,
-              192710
+              220690,
+              221665
             ]
           ]
         },
         {
           "verse_key": "80:41",
-          "timestamp_from": 192850,
-          "timestamp_to": 195490,
-          "duration": 2640,
+          "timestamp_from": 222270,
+          "timestamp_to": 225870,
+          "duration": 3560,
           "segments": [
             [
               1,
-              192785,
-              194115
+              222270,
+              224160
             ],
             [
               2,
-              194115,
-              195360
+              224160,
+              225235
             ]
           ]
         },
         {
           "verse_key": "80:42",
-          "timestamp_from": 195490,
-          "timestamp_to": 202520,
-          "duration": 7030,
+          "timestamp_from": 225870,
+          "timestamp_to": 232530,
+          "duration": 6620,
           "segments": [
             [
               1,
-              195425,
-              198095
+              225870,
+              228650
             ],
             [
               2,
-              198095,
-              198525
+              228650,
+              229230
             ],
             [
               3,
-              198525,
-              199715
+              229230,
+              230680
             ],
             [
               4,
-              199715,
-              202220
+              230680,
+              232275
             ]
           ]
         }

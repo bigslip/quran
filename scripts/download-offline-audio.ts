@@ -4,8 +4,6 @@ import path from 'path';
 import { pipeline } from 'stream/promises';
 import { Readable } from 'stream';
 
-const OUTPUT_DIR = path.join(process.cwd(), 'public/audio/reciters/7');
-
 // CLI options
 const args = process.argv.slice(2);
 const getArg = (name: string, defaultValue: string) => {
@@ -15,9 +13,12 @@ const getArg = (name: string, defaultValue: string) => {
 };
 const hasFlag = (name: string) => args.includes(`--${name}`);
 
+const RECITER_ID = parseInt(getArg('reciter', '9'), 10); // Default: Mohamed Siddiq al-Minshawi (9)
 const CHAPTERS_ARG = getArg('chapters', 'all');
 const CONCURRENCY_LIMIT = parseInt(getArg('concurrency', '6'), 10);
 const FORCE = hasFlag('force');
+
+const OUTPUT_DIR = path.join(process.cwd(), `public/audio/reciters/${RECITER_ID}`);
 
 /**
  * Format chapter number to 3-digit padded string (e.g. 1 -> "001")
@@ -60,6 +61,64 @@ async function fileExistsAndValid(filePath: string): Promise<boolean> {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
+ * Get candidate URLs for a given reciter and chapter
+ */
+function getReciterCandidateUrls(reciterId: number, chapterId: number): string[] {
+  const padded = formatChapter(chapterId);
+
+  if (reciterId === 9) {
+    // Mohamed Siddiq al-Minshawi (Murattal)
+    return [
+      `https://download.quranicaudio.com/qdc/siddiq_minshawi/murattal/${chapterId}.mp3`,
+      `https://download.quranicaudio.com/quran/muhammad_siddeeq_al-minshaawee/${padded}.mp3`,
+      `https://server10.mp3quran.net/minsh/${padded}.mp3`,
+    ];
+  }
+
+  if (reciterId === 7) {
+    // Mishari Rashid Al-Afasy
+    return [
+      `https://download.quranicaudio.com/qdc/mishari_al_afasy/murattal/${chapterId}.mp3`,
+      `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${padded}.mp3`,
+      `https://server8.mp3quran.net/afs/${padded}.mp3`,
+    ];
+  }
+
+  if (reciterId === 2) {
+    // AbdulBaset AbdulSamad (Murattal)
+    return [
+      `https://download.quranicaudio.com/qdc/abdul_baset/murattal/${chapterId}.mp3`,
+      `https://download.quranicaudio.com/quran/abdulbaset_mujawwad/${padded}.mp3`,
+      `https://server7.mp3quran.net/basit/${padded}.mp3`,
+    ];
+  }
+
+  if (reciterId === 6) {
+    // Mahmoud Khalil Al-Husary (Murattal)
+    return [
+      `https://download.quranicaudio.com/qdc/khalil_al_husary/murattal/${chapterId}.mp3`,
+      `https://download.quranicaudio.com/quran/mahmood_khaleel_al-husaree_iza3ah/${padded}.mp3`,
+      `https://server13.mp3quran.net/husr/${padded}.mp3`,
+    ];
+  }
+
+  if (reciterId === 3) {
+    // Abdur-Rahman as-Sudais
+    return [
+      `https://download.quranicaudio.com/qdc/abdurrahmaan_as_sudais/murattal/${chapterId}.mp3`,
+      `https://download.quranicaudio.com/quran/abdurrahmaan_as-sudays/${padded}.mp3`,
+      `https://server11.mp3quran.net/sds/${padded}.mp3`,
+    ];
+  }
+
+  // Generic fallback
+  return [
+    `https://download.quranicaudio.com/quran/${reciterId}/${padded}.mp3`,
+    `https://download.quranicaudio.com/qdc/${reciterId}/murattal/${chapterId}.mp3`,
+  ];
+}
+
+/**
  * Download an audio file with fallback sources and retry logic
  */
 async function downloadChapterAudio(chapterId: number, retries = 3): Promise<void> {
@@ -71,11 +130,7 @@ async function downloadChapterAudio(chapterId: number, retries = 3): Promise<voi
     return;
   }
 
-  const urls = [
-    `https://download.quranicaudio.com/qdc/mishari_al_afasy/murattal/${chapterId}.mp3`,
-    `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${padded}.mp3`,
-    `https://server8.mp3quran.net/afs/${padded}.mp3`,
-  ];
+  const urls = getReciterCandidateUrls(RECITER_ID, chapterId);
 
   let lastError: Error | null = null;
 
@@ -124,7 +179,7 @@ async function downloadChapterAudio(chapterId: number, retries = 3): Promise<voi
     }
   }
 
-  throw lastError || new Error(`Failed to download audio for chapter ${chapterId}`);
+  throw lastError || new Error(`Failed to download audio for reciter ${RECITER_ID} chapter ${chapterId}`);
 }
 
 /**
@@ -161,7 +216,7 @@ async function runConcurrent<T>(
  * Main function
  */
 async function main() {
-  console.log('🎙️ Starting Offline Chapter Audio Downloader for Reciter 7 (Mishari Rashid Al-Afasy)...');
+  console.log(`🎙️ Starting Offline Chapter Audio Downloader for Reciter ${RECITER_ID}...`);
   console.log(`Output Directory: ${OUTPUT_DIR}`);
 
   await fs.mkdir(OUTPUT_DIR, { recursive: true });

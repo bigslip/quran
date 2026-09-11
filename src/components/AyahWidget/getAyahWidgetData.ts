@@ -33,7 +33,7 @@ import type Translation from 'types/Translation';
 import type Verse from 'types/Verse';
 
 export const DEFAULT_VERSE: string = '33:56';
-export const DEFAULT_RECITER: string = '7'; // Mishary Alafasy
+export const DEFAULT_RECITER: string = '9'; // Mohamed Siddiq al-Minshawi
 export const MAX_RANGE_SPAN: number = 10;
 
 const INCORRECT_SUKUN_REGEX: RegExp = /[\u06DF\u06E1\u06E2\u06E3\u06E4]/g; // Needed because of a font issue

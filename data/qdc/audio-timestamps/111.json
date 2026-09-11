@@ -1,165 +1,165 @@
 {
   "audio_files": [
     {
-      "id": 1131,
+      "id": 1359,
       "chapter_id": 111,
-      "file_size": 673920,
+      "file_size": 587904,
       "format": "mp3",
-      "audio_url": "https://download.quranicaudio.com/qdc/mishari_al_afasy/murattal/111.mp3",
+      "audio_url": "https://download.quranicaudio.com/qdc/siddiq_minshawi/murattal/111.mp3",
       "duration": 31000,
       "verse_timings": [
         {
           "verse_key": "111:1",
           "timestamp_from": 0,
-          "timestamp_to": 7390,
-          "duration": 7390,
+          "timestamp_to": 7680,
+          "duration": 7630,
           "segments": [
             [
               1,
               0,
-              830
+              1350
             ],
             [
               2,
-              830,
-              3270
+              1350,
+              3785
             ],
             [
               3,
-              3270,
-              3910
+              3785,
+              4590
             ],
             [
               4,
-              3910,
-              5620
+              4590,
+              6161
             ],
             [
               5,
-              5620,
-              6805
+              6161,
+              7045
             ]
           ]
         },
         {
           "verse_key": "111:2",
-          "timestamp_from": 7390,
-          "timestamp_to": 14550,
-          "duration": 7160,
+          "timestamp_from": 7680,
+          "timestamp_to": 14920,
+          "duration": 7190,
           "segments": [
             [
               1,
-              6805,
-              9185
+              7680,
+              9701
             ],
             [
               2,
-              9185,
-              9845
+              9701,
+              10700
             ],
             [
               3,
-              9845,
-              10665
+              10700,
+              11440
             ],
             [
               4,
-              10665,
-              11815
+              11440,
+              12860
             ],
             [
               5,
-              11815,
-              12255
+              12860,
+              13540
             ],
             [
               6,
-              12255,
-              13110
+              13540,
+              14315
             ]
           ]
         },
         {
           "verse_key": "111:3",
-          "timestamp_from": 14550,
-          "timestamp_to": 19720,
-          "duration": 5170,
+          "timestamp_from": 14920,
+          "timestamp_to": 20220,
+          "duration": 5260,
           "segments": [
             [
               1,
-              13695,
-              14815
+              14920,
+              16500
             ],
             [
               2,
-              14815,
-              16455
+              16500,
+              18108
             ],
             [
               3,
-              16455,
-              17305
+              18108,
+              19010
             ],
             [
               4,
-              17305,
-              18580
+              19010,
+              19655
             ]
           ]
         },
         {
           "verse_key": "111:4",
-          "timestamp_from": 19720,
-          "timestamp_to": 25310,
-          "duration": 5590,
+          "timestamp_from": 20220,
+          "timestamp_to": 25710,
+          "duration": 5440,
           "segments": [
             [
               1,
-              19435,
-              20955
+              20220,
+              22290
             ],
             [
               2,
-              20955,
-              23315
+              22290,
+              24250
             ],
             [
               3,
-              23315,
-              24240
+              24250,
+              25225
             ]
           ]
         },
         {
           "verse_key": "111:5",
-          "timestamp_from": 25310,
-          "timestamp_to": 31760,
-          "duration": 6450,
+          "timestamp_from": 25710,
+          "timestamp_to": 31670,
+          "duration": 5910,
           "segments": [
             [
               1,
-              24525,
-              24995
+              25710,
+              26580
             ],
             [
               2,
-              24995,
-              26055
+              26580,
+              27800
             ],
             [
               3,
-              26055,
-              27635
+              27800,
+              29390
             ],
             [
               4,
-              27635,
-              28195
+              29390,
+              30320
             ],
             [
               5,
-              28195,
-              30810
+              30320,
+              30965
             ]
           ]
         }

@@ -14,7 +14,7 @@ import Verse from '@/types/Verse';
 
 export const DEFAULT_SURAH = 1;
 export const DEFAULT_VERSE = '1';
-export const DEFAULT_RECITER_ID = 7;
+export const DEFAULT_RECITER_ID = 9;
 export const DEFAULT_TRANSLATION = 131;
 export const VIDEO_PORTRAIT_HEIGHT = 1280;
 export const VIDEO_LANDSCAPE_HEIGHT = 720;

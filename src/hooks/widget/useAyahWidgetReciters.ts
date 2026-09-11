@@ -9,7 +9,7 @@ import useAbortableEffect from '@/hooks/useAbortableEffect';
 import type Reciter from 'types/Reciter';
 
 const DEFAULT_LOCALE = 'en';
-const DEFAULT_RECITER_ID = 7;
+const DEFAULT_RECITER_ID = 9;
 
 /**
  * Fetch available reciters for the Ayah widget builder and include a fallback when the API fails.

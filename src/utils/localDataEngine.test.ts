@@ -209,25 +209,25 @@ describe('Local Data Query Engine', () => {
     });
 
     it('serves single reciter details', async () => {
-      const res = await getLocalApiResponse('/audio/reciters/7');
+      const res = await getLocalApiResponse('/audio/reciters/9');
       expect(res.reciter).toBeDefined();
-      expect(res.reciter.id).toBe(7);
-      expect(res.reciter.name).toContain('Mishari');
+      expect(res.reciter.id).toBe(9);
+      expect(res.reciter.name).toContain('Minshawi');
     });
 
     it('serves chapter audio files with timing segments', async () => {
-      const res = await getLocalApiResponse('/audio/reciters/7/audio_files', { chapter: 1, segments: true });
+      const res = await getLocalApiResponse('/audio/reciters/9/audio_files', { chapter: 1, segments: true });
       expect(res.audio_files).toBeDefined();
       expect(res.audio_files[0].chapter_id).toBe(1);
-      expect(res.audio_files[0].audio_url).toBe('/audio/reciters/7/001.mp3');
+      expect(res.audio_files[0].audio_url).toBe('/audio/reciters/9/001.mp3');
       expect(res.audio_files[0].verse_timings).toBeDefined();
     });
 
     it('serves verse timestamp lookup', async () => {
-      const res = await getLocalApiResponse('/audio/reciters/7/timestamp', { verse_key: '1:1' });
+      const res = await getLocalApiResponse('/audio/reciters/9/timestamp', { verse_key: '1:1' });
       expect(res.result).toBeDefined();
       expect(res.result.timestamp_from).toBe(0);
-      expect(res.result.timestamp_to).toBe(6090);
+      expect(res.result.timestamp_to).toBe(5040);
     });
   });
 
