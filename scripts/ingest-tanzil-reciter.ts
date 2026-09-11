@@ -221,9 +221,9 @@ async function fetchAyahBuffer(chapterId: number, verseNumber: number, retries =
 /**
  * Cache of verse words loaded from data/qdc/pages
  */
-let verseWordsMap: Record<string, number> | null = null;
+let verseWordsMap: Record<string, string[]> | null = null;
 
-function loadVerseWordsCountMap(): Record<string, number> {
+function loadVerseWordsMap(): Record<string, string[]> {
   if (verseWordsMap) return verseWordsMap;
   verseWordsMap = {};
 
@@ -236,7 +236,7 @@ function loadVerseWordsCountMap(): Record<string, number> {
         if (data.verses) {
           for (const v of data.verses) {
             const spokenWords = (v.words || []).filter((w: any) => w.char_type_name === 'word');
-            verseWordsMap[v.verse_key] = spokenWords.length;
+            verseWordsMap[v.verse_key] = spokenWords.map((w: any) => w.text_uthmani || w.text || '');
           }
         }
       } catch {}
@@ -244,6 +244,40 @@ function loadVerseWordsCountMap(): Record<string, number> {
   }
 
   return verseWordsMap;
+}
+
+/**
+ * Calculate phonetic Tajweed weight for a Quranic word
+ */
+function calculateWordWeight(wordText: string, isLastWord: boolean): number {
+  if (!wordText) return 1;
+
+  // Base letter count (Arabic letters only)
+  const baseLetters = wordText.replace(/[^\u0621-\u064A\u0671]/g, '').length;
+  let weight = Math.max(1.5, baseLetters);
+
+  // Extra weight for Shaddah (doubled consonant)
+  const shaddahs = (wordText.match(/\u0651/g) || []).length;
+  weight += shaddahs * 1.0;
+
+  // Extra weight for Dagger Alif (ـٰ / ٰ) or Alif with Madd (آ)
+  const daggerAlifs = (wordText.match(/[\u0670\u0622]/g) || []).length;
+  weight += daggerAlifs * 1.5;
+
+  // Extra weight for Long Madd signs (Madd Lazim, Muttasil, Munfasil ~ ۤ)
+  const longMadds = (wordText.match(/[\u0653\u06E6\u06E7]/g) || []).length;
+  weight += longMadds * 4.0;
+
+  // Extra weight for Tanween (Ghunnah nasalization)
+  const tanweens = (wordText.match(/[\u064B\u064C\u064D]/g) || []).length;
+  weight += tanweens * 0.8;
+
+  // Last word of an Ayah in Murattal recitation has Waqf, Madd 'Arid lis-Sukoon, and breath decay pause
+  if (isLastWord) {
+    weight += 3.0;
+  }
+
+  return weight;
 }
 
 /**
@@ -321,26 +355,30 @@ function trimSurah1Taawwudh(buffer: Buffer): Buffer {
 }
 
 /**
- * Generate word-by-word segment boundaries for an Ayah with absolute chapter offsets
+ * Generate word-by-word segment boundaries for an Ayah using phonetic Tajweed weighting
  */
 function generateWordSegments(
   verseKey: string,
   baseTimestampFrom: number,
   ayahDurationMs: number,
-  wordsCountMap: Record<string, number>,
+  wordsMap: Record<string, string[]>,
 ): Array<[number, number, number]> {
-  const numWords = wordsCountMap[verseKey] || 4;
+  const words = wordsMap[verseKey] || [];
+  const numWords = words.length;
   if (numWords <= 1) {
     return [[1, baseTimestampFrom, baseTimestampFrom + ayahDurationMs]];
   }
 
-  const segments: Array<[number, number, number]> = [];
-  const wordDuration = Math.floor(ayahDurationMs / numWords);
+  const weights = words.map((w, idx) => calculateWordWeight(w, idx === numWords - 1));
+  const totalWeight = weights.reduce((a, b) => a + b, 0) || numWords;
 
+  const segments: Array<[number, number, number]> = [];
   let currentStart = baseTimestampFrom;
+
   for (let w = 1; w <= numWords; w++) {
     const isLast = w === numWords;
-    const end = isLast ? baseTimestampFrom + ayahDurationMs : currentStart + wordDuration;
+    const wordDur = Math.round((weights[w - 1] / totalWeight) * ayahDurationMs);
+    const end = isLast ? baseTimestampFrom + ayahDurationMs : currentStart + wordDur;
     segments.push([w, currentStart, end]);
     currentStart = end;
   }
@@ -354,7 +392,7 @@ function generateWordSegments(
 async function processChapter(
   chapterId: number,
   verseCount: number,
-  wordsCountMap: Record<string, number>,
+  wordsMap: Record<string, string[]>,
 ) {
   const paddedChapter = pad3(chapterId);
   const destAudioPadded = path.join(AUDIO_OUTPUT_DIR, `${paddedChapter}.mp3`);
@@ -398,7 +436,7 @@ async function processChapter(
     const to = cumulativeMs + pv.durationMs;
     const verseKey = `${chapterId}:${pv.verseNumber}`;
 
-    const segments = generateWordSegments(verseKey, from, pv.durationMs, wordsCountMap);
+    const segments = generateWordSegments(verseKey, from, pv.durationMs, wordsMap);
 
     verseTimings.push({
       verse_key: verseKey,
@@ -493,7 +531,7 @@ async function main() {
   const chaptersData = JSON.parse(await fs.readFile(chaptersJsonPath, 'utf8'));
   const chaptersList = chaptersData.chapters || [];
 
-  const wordsCountMap = loadVerseWordsCountMap();
+  const wordsMap = loadVerseWordsMap();
 
   let targetChapters = chaptersList;
   if (CHAPTERS_ARG !== 'all') {
@@ -513,7 +551,7 @@ async function main() {
 
   await runConcurrent(targetChapters, CHAPTER_CONCURRENCY, async (chap: any) => {
     try {
-      await processChapter(chap.id, chap.verses_count, wordsCountMap);
+      await processChapter(chap.id, chap.verses_count, wordsMap);
       doneCount++;
       if (doneCount % 10 === 0 || doneCount === targetChapters.length) {
         console.log(`  Progress: ${doneCount}/${targetChapters.length} chapters processed (finished Surah ${chap.id}: ${chap.name_simple})`);
