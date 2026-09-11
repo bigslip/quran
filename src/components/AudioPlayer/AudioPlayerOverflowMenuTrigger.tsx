@@ -11,7 +11,10 @@ import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
 import OverflowMenuIcon from '@/icons/menu_more_horiz.svg';
 import { AudioPlayerMachineContext } from 'src/xstate/AudioPlayerMachineContext';
 
-const AudioPlayerOverflowMenuTrigger: React.FC = () => {
+const AudioPlayerOverflowMenuTrigger = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<typeof Button>
+>((props, ref) => {
   const { t } = useTranslation('common');
   const audioService = useContext(AudioPlayerMachineContext);
   const repeatActor = useSelector(audioService, (state) => state.context.repeatActor);
@@ -32,6 +35,8 @@ const AudioPlayerOverflowMenuTrigger: React.FC = () => {
       )}
     >
       <Button
+        ref={ref}
+        {...props}
         tooltip={t('more')}
         ariaLabel={t('more')}
         variant={ButtonVariant.Ghost}
@@ -42,6 +47,8 @@ const AudioPlayerOverflowMenuTrigger: React.FC = () => {
       </Button>
     </Wrapper>
   );
-};
+});
+
+AudioPlayerOverflowMenuTrigger.displayName = 'AudioPlayerOverflowMenuTrigger';
 
 export default AudioPlayerOverflowMenuTrigger;

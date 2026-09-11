@@ -127,12 +127,16 @@ export async function initializeLocalDataEngine(): Promise<void> {
             versesByPage.set(page, verses);
 
             for (const verse of verses) {
+              if (!verse.chapter_id) {
+                const [chapterStr] = verse.verse_key.split(':');
+                verse.chapter_id = Number(chapterStr);
+              }
+
               if (!versesByKey.has(verse.verse_key)) {
                 versesByKey.set(verse.verse_key, verse);
                 allVerses.push(verse);
 
-                const [chapterStr] = verse.verse_key.split(':');
-                const chapterId = Number(chapterStr);
+                const chapterId = Number(verse.chapter_id);
                 if (!versesByChapter.has(chapterId)) {
                   versesByChapter.set(chapterId, []);
                 }
@@ -862,6 +866,13 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     });
 
     return searchResponse;
+  }
+
+  // -------------------------------------------------------------
+  // 16. Count within Range (Graceful Fallback for Matrix/Qiraat/Questions)
+  // -------------------------------------------------------------
+  if (cleanPath.endsWith('count_within_range') || cleanPath.endsWith('count-within-range')) {
+    return { total: 0 };
   }
 
   throw new Error(`Endpoint not supported locally: ${cleanPath}`);
