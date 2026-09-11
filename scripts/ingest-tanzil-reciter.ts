@@ -247,25 +247,100 @@ function loadVerseWordsCountMap(): Record<string, number> {
 }
 
 /**
- * Generate word-by-word segment boundaries for an Ayah
+ * Trim leading Ta'awwudh (Isti'adha) in Surah 1 Ayah 1 if present (>6500ms).
+ */
+function trimSurah1Taawwudh(buffer: Buffer): Buffer {
+  const parsed = parseMp3Frames(buffer);
+  if (parsed.durationMs > 6500) {
+    let offset = 0;
+    if (buffer.length > 10 && buffer.toString('ascii', 0, 3) === 'ID3') {
+      const size =
+        ((buffer[6] & 0x7f) << 21) |
+        ((buffer[7] & 0x7f) << 14) |
+        ((buffer[8] & 0x7f) << 7) |
+        (buffer[9] & 0x7f);
+      offset = 10 + size;
+    }
+
+    let totalMs = 0;
+    let targetOffset = 0;
+
+    const bitrateMap: Record<string, number[]> = {
+      '1': [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320],
+      '2': [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160],
+    };
+    const sampleRateMap: Record<string, number[]> = {
+      '1': [44100, 48000, 32000],
+      '2': [22050, 24000, 16000],
+      '2.5': [11025, 12000, 8000],
+    };
+
+    while (offset < buffer.length - 4) {
+      if (buffer[offset] === 0xff && (buffer[offset + 1] & 0xe0) === 0xe0) {
+        const b2 = buffer[offset + 1];
+        const b3 = buffer[offset + 2];
+        const versionBits = (b2 >> 3) & 0x03;
+        const layerBits = (b2 >> 1) & 0x03;
+        const bitrateIdx = (b3 >> 4) & 0x0f;
+        const sampleRateIdx = (b3 >> 2) & 0x03;
+        const padding = (b3 >> 1) & 0x01;
+
+        if (versionBits === 1 || layerBits === 0 || bitrateIdx === 0 || bitrateIdx === 15 || sampleRateIdx === 3) {
+          offset++;
+          continue;
+        }
+
+        const version = versionBits === 3 ? '1' : versionBits === 2 ? '2' : '2.5';
+        const sampleRate = sampleRateMap[version]?.[sampleRateIdx] || 16000;
+        const bitrate = bitrateMap[version === '1' ? '1' : '2']?.[bitrateIdx] || 48;
+        const frameLength =
+          version === '1'
+            ? Math.floor((144 * bitrate * 1000) / sampleRate) + padding
+            : Math.floor((72 * bitrate * 1000) / sampleRate) + padding;
+
+        const samplesPerFrame = version === '1' ? 1152 : 576;
+        const frameDurationMs = (samplesPerFrame / sampleRate) * 1000;
+
+        if (totalMs >= 5350 && !targetOffset) {
+          targetOffset = offset;
+          break;
+        }
+
+        totalMs += frameDurationMs;
+        offset += frameLength;
+      } else {
+        offset++;
+      }
+    }
+
+    if (targetOffset > 0) {
+      return buffer.subarray(targetOffset);
+    }
+  }
+  return buffer;
+}
+
+/**
+ * Generate word-by-word segment boundaries for an Ayah with absolute chapter offsets
  */
 function generateWordSegments(
   verseKey: string,
+  baseTimestampFrom: number,
   ayahDurationMs: number,
   wordsCountMap: Record<string, number>,
 ): Array<[number, number, number]> {
   const numWords = wordsCountMap[verseKey] || 4;
   if (numWords <= 1) {
-    return [[1, 0, ayahDurationMs]];
+    return [[1, baseTimestampFrom, baseTimestampFrom + ayahDurationMs]];
   }
 
   const segments: Array<[number, number, number]> = [];
   const wordDuration = Math.floor(ayahDurationMs / numWords);
 
-  let currentStart = 0;
+  let currentStart = baseTimestampFrom;
   for (let w = 1; w <= numWords; w++) {
     const isLast = w === numWords;
-    const end = isLast ? ayahDurationMs : currentStart + wordDuration;
+    const end = isLast ? baseTimestampFrom + ayahDurationMs : currentStart + wordDuration;
     segments.push([w, currentStart, end]);
     currentStart = end;
   }
@@ -297,7 +372,10 @@ async function processChapter(
 
   // Concurrently fetch all verses for this chapter
   await runConcurrent(verses, AYAH_CONCURRENCY, async (verseNumber) => {
-    const ayahBuf = await fetchAyahBuffer(chapterId, verseNumber);
+    let ayahBuf = await fetchAyahBuffer(chapterId, verseNumber);
+    if (chapterId === 1 && verseNumber === 1) {
+      ayahBuf = trimSurah1Taawwudh(ayahBuf);
+    }
     const parsed = parseMp3Frames(ayahBuf);
     parsedVerses[verseNumber - 1] = {
       verseNumber,
@@ -320,7 +398,7 @@ async function processChapter(
     const to = cumulativeMs + pv.durationMs;
     const verseKey = `${chapterId}:${pv.verseNumber}`;
 
-    const segments = generateWordSegments(verseKey, pv.durationMs, wordsCountMap);
+    const segments = generateWordSegments(verseKey, from, pv.durationMs, wordsCountMap);
 
     verseTimings.push({
       verse_key: verseKey,
