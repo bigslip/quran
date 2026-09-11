@@ -69,8 +69,8 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
         {/* Chapter title section */}
         <ChapterTitle
           chapterId={chapterId}
-          transliteratedName={chapterData.transliteratedName}
-          translatedName={chapterData.translatedName}
+          transliteratedName={chapterData?.transliteratedName}
+          translatedName={chapterData?.translatedName}
           showTranslatedName={!isArabicOrUrdu}
         />
 

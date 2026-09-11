@@ -104,7 +104,9 @@ const PlayChapterAudioButton: React.FC<Props> = ({ chapterId }) => {
           onClick={play}
           hasSidePadding={false}
           shouldFlipOnRTL={false}
-          ariaLabel={t('aria.play-surah', { surahName: chapterData.transliteratedName })}
+          ariaLabel={t('aria.play-surah', {
+            surahName: chapterData?.transliteratedName || '',
+          })}
           data-testid="listen-button"
         >
           {t('listen')}
