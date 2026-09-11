@@ -1,0 +1,537 @@
+{
+  "audio_files": [
+    {
+      "id": 201,
+      "chapter_id": 92,
+      "file_size": 565813,
+      "format": "mp3",
+      "audio_url": "/audio/reciters/201/092.mp3",
+      "duration": 94304,
+      "verse_timings": [
+        {
+          "verse_key": "92:1",
+          "timestamp_from": 0,
+          "timestamp_to": 7367,
+          "duration": 7367,
+          "segments": [
+            [
+              1,
+              0,
+              2455
+            ],
+            [
+              2,
+              2455,
+              4910
+            ],
+            [
+              3,
+              4910,
+              7367
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:2",
+          "timestamp_from": 7367,
+          "timestamp_to": 11233,
+          "duration": 3866,
+          "segments": [
+            [
+              1,
+              0,
+              1288
+            ],
+            [
+              2,
+              1288,
+              2576
+            ],
+            [
+              3,
+              2576,
+              3866
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:3",
+          "timestamp_from": 11233,
+          "timestamp_to": 15543,
+          "duration": 4310,
+          "segments": [
+            [
+              1,
+              0,
+              1077
+            ],
+            [
+              2,
+              1077,
+              2154
+            ],
+            [
+              3,
+              2154,
+              3231
+            ],
+            [
+              4,
+              3231,
+              4310
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:4",
+          "timestamp_from": 15543,
+          "timestamp_to": 20114,
+          "duration": 4571,
+          "segments": [
+            [
+              1,
+              0,
+              1523
+            ],
+            [
+              2,
+              1523,
+              3046
+            ],
+            [
+              3,
+              3046,
+              4571
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:5",
+          "timestamp_from": 20114,
+          "timestamp_to": 24529,
+          "duration": 4415,
+          "segments": [
+            [
+              1,
+              0,
+              1103
+            ],
+            [
+              2,
+              1103,
+              2206
+            ],
+            [
+              3,
+              2206,
+              3309
+            ],
+            [
+              4,
+              3309,
+              4415
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:6",
+          "timestamp_from": 24529,
+          "timestamp_to": 27429,
+          "duration": 2900,
+          "segments": [
+            [
+              1,
+              0,
+              1450
+            ],
+            [
+              2,
+              1450,
+              2900
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:7",
+          "timestamp_from": 27429,
+          "timestamp_to": 30799,
+          "duration": 3370,
+          "segments": [
+            [
+              1,
+              0,
+              1685
+            ],
+            [
+              2,
+              1685,
+              3370
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:8",
+          "timestamp_from": 30799,
+          "timestamp_to": 35553,
+          "duration": 4754,
+          "segments": [
+            [
+              1,
+              0,
+              1188
+            ],
+            [
+              2,
+              1188,
+              2376
+            ],
+            [
+              3,
+              2376,
+              3564
+            ],
+            [
+              4,
+              3564,
+              4754
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:9",
+          "timestamp_from": 35553,
+          "timestamp_to": 38635,
+          "duration": 3082,
+          "segments": [
+            [
+              1,
+              0,
+              1541
+            ],
+            [
+              2,
+              1541,
+              3082
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:10",
+          "timestamp_from": 38635,
+          "timestamp_to": 41979,
+          "duration": 3344,
+          "segments": [
+            [
+              1,
+              0,
+              1672
+            ],
+            [
+              2,
+              1672,
+              3344
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:11",
+          "timestamp_from": 41979,
+          "timestamp_to": 47360,
+          "duration": 5381,
+          "segments": [
+            [
+              1,
+              0,
+              896
+            ],
+            [
+              2,
+              896,
+              1792
+            ],
+            [
+              3,
+              1792,
+              2688
+            ],
+            [
+              4,
+              2688,
+              3584
+            ],
+            [
+              5,
+              3584,
+              4480
+            ],
+            [
+              6,
+              4480,
+              5381
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:12",
+          "timestamp_from": 47360,
+          "timestamp_to": 51096,
+          "duration": 3736,
+          "segments": [
+            [
+              1,
+              0,
+              1245
+            ],
+            [
+              2,
+              1245,
+              2490
+            ],
+            [
+              3,
+              2490,
+              3736
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:13",
+          "timestamp_from": 51096,
+          "timestamp_to": 56373,
+          "duration": 5277,
+          "segments": [
+            [
+              1,
+              0,
+              1319
+            ],
+            [
+              2,
+              1319,
+              2638
+            ],
+            [
+              3,
+              2638,
+              3957
+            ],
+            [
+              4,
+              3957,
+              5277
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:14",
+          "timestamp_from": 56373,
+          "timestamp_to": 61624,
+          "duration": 5251,
+          "segments": [
+            [
+              1,
+              0,
+              1750
+            ],
+            [
+              2,
+              1750,
+              3500
+            ],
+            [
+              3,
+              3500,
+              5251
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:15",
+          "timestamp_from": 61624,
+          "timestamp_to": 66039,
+          "duration": 4415,
+          "segments": [
+            [
+              1,
+              0,
+              1103
+            ],
+            [
+              2,
+              1103,
+              2206
+            ],
+            [
+              3,
+              2206,
+              3309
+            ],
+            [
+              4,
+              3309,
+              4415
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:16",
+          "timestamp_from": 66039,
+          "timestamp_to": 69748,
+          "duration": 3709,
+          "segments": [
+            [
+              1,
+              0,
+              1236
+            ],
+            [
+              2,
+              1236,
+              2472
+            ],
+            [
+              3,
+              2472,
+              3709
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:17",
+          "timestamp_from": 69748,
+          "timestamp_to": 73484,
+          "duration": 3736,
+          "segments": [
+            [
+              1,
+              0,
+              1868
+            ],
+            [
+              2,
+              1868,
+              3736
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:18",
+          "timestamp_from": 73484,
+          "timestamp_to": 78134,
+          "duration": 4650,
+          "segments": [
+            [
+              1,
+              0,
+              1162
+            ],
+            [
+              2,
+              1162,
+              2324
+            ],
+            [
+              3,
+              2324,
+              3486
+            ],
+            [
+              4,
+              3486,
+              4650
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:19",
+          "timestamp_from": 78134,
+          "timestamp_to": 85318,
+          "duration": 7184,
+          "segments": [
+            [
+              1,
+              0,
+              1197
+            ],
+            [
+              2,
+              1197,
+              2394
+            ],
+            [
+              3,
+              2394,
+              3591
+            ],
+            [
+              4,
+              3591,
+              4788
+            ],
+            [
+              5,
+              4788,
+              5985
+            ],
+            [
+              6,
+              5985,
+              7184
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:20",
+          "timestamp_from": 85318,
+          "timestamp_to": 91666,
+          "duration": 6348,
+          "segments": [
+            [
+              1,
+              0,
+              1269
+            ],
+            [
+              2,
+              1269,
+              2538
+            ],
+            [
+              3,
+              2538,
+              3807
+            ],
+            [
+              4,
+              3807,
+              5076
+            ],
+            [
+              5,
+              5076,
+              6348
+            ]
+          ]
+        },
+        {
+          "verse_key": "92:21",
+          "timestamp_from": 91666,
+          "timestamp_to": 94304,
+          "duration": 2638,
+          "segments": [
+            [
+              1,
+              0,
+              1319
+            ],
+            [
+              2,
+              1319,
+              2638
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

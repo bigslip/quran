@@ -1,0 +1,131 @@
+{
+  "audio_files": [
+    {
+      "id": 201,
+      "chapter_id": 106,
+      "file_size": 172252,
+      "format": "mp3",
+      "audio_url": "/audio/reciters/201/106.mp3",
+      "duration": 28709,
+      "verse_timings": [
+        {
+          "verse_key": "106:1",
+          "timestamp_from": 0,
+          "timestamp_to": 7419,
+          "duration": 7419,
+          "segments": [
+            [
+              1,
+              0,
+              3709
+            ],
+            [
+              2,
+              3709,
+              7419
+            ]
+          ]
+        },
+        {
+          "verse_key": "106:2",
+          "timestamp_from": 7419,
+          "timestamp_to": 14237,
+          "duration": 6818,
+          "segments": [
+            [
+              1,
+              0,
+              1704
+            ],
+            [
+              2,
+              1704,
+              3408
+            ],
+            [
+              3,
+              3408,
+              5112
+            ],
+            [
+              4,
+              5112,
+              6818
+            ]
+          ]
+        },
+        {
+          "verse_key": "106:3",
+          "timestamp_from": 14237,
+          "timestamp_to": 19044,
+          "duration": 4807,
+          "segments": [
+            [
+              1,
+              0,
+              1201
+            ],
+            [
+              2,
+              1201,
+              2402
+            ],
+            [
+              3,
+              2402,
+              3603
+            ],
+            [
+              4,
+              3603,
+              4807
+            ]
+          ]
+        },
+        {
+          "verse_key": "106:4",
+          "timestamp_from": 19044,
+          "timestamp_to": 28709,
+          "duration": 9665,
+          "segments": [
+            [
+              1,
+              0,
+              1380
+            ],
+            [
+              2,
+              1380,
+              2760
+            ],
+            [
+              3,
+              2760,
+              4140
+            ],
+            [
+              4,
+              4140,
+              5520
+            ],
+            [
+              5,
+              5520,
+              6900
+            ],
+            [
+              6,
+              6900,
+              8280
+            ],
+            [
+              7,
+              8280,
+              9665
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

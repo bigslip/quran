@@ -1,0 +1,121 @@
+{
+  "audio_files": [
+    {
+      "id": 201,
+      "chapter_id": 112,
+      "file_size": 45751,
+      "format": "mp3",
+      "audio_url": "/audio/reciters/201/112.mp3",
+      "duration": 20323,
+      "verse_timings": [
+        {
+          "verse_key": "112:1",
+          "timestamp_from": 0,
+          "timestamp_to": 9247,
+          "duration": 9247,
+          "segments": [
+            [
+              1,
+              0,
+              2311
+            ],
+            [
+              2,
+              2311,
+              4622
+            ],
+            [
+              3,
+              4622,
+              6933
+            ],
+            [
+              4,
+              6933,
+              9247
+            ]
+          ]
+        },
+        {
+          "verse_key": "112:2",
+          "timestamp_from": 9247,
+          "timestamp_to": 11755,
+          "duration": 2508,
+          "segments": [
+            [
+              1,
+              0,
+              1254
+            ],
+            [
+              2,
+              1254,
+              2508
+            ]
+          ]
+        },
+        {
+          "verse_key": "112:3",
+          "timestamp_from": 11755,
+          "timestamp_to": 14942,
+          "duration": 3187,
+          "segments": [
+            [
+              1,
+              0,
+              796
+            ],
+            [
+              2,
+              796,
+              1592
+            ],
+            [
+              3,
+              1592,
+              2388
+            ],
+            [
+              4,
+              2388,
+              3187
+            ]
+          ]
+        },
+        {
+          "verse_key": "112:4",
+          "timestamp_from": 14942,
+          "timestamp_to": 20323,
+          "duration": 5381,
+          "segments": [
+            [
+              1,
+              0,
+              1076
+            ],
+            [
+              2,
+              1076,
+              2152
+            ],
+            [
+              3,
+              2152,
+              3228
+            ],
+            [
+              4,
+              3228,
+              4304
+            ],
+            [
+              5,
+              4304,
+              5381
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "audio_files": [
+    {
+      "id": 201,
+      "chapter_id": 102,
+      "file_size": 254538,
+      "format": "mp3",
+      "audio_url": "/audio/reciters/201/102.mp3",
+      "duration": 42422,
+      "verse_timings": [
+        {
+          "verse_key": "102:1",
+          "timestamp_from": 0,
+          "timestamp_to": 7523,
+          "duration": 7523,
+          "segments": [
+            [
+              1,
+              0,
+              3761
+            ],
+            [
+              2,
+              3761,
+              7523
+            ]
+          ]
+        },
+        {
+          "verse_key": "102:2",
+          "timestamp_from": 7523,
+          "timestamp_to": 11441,
+          "duration": 3918,
+          "segments": [
+            [
+              1,
+              0,
+              1306
+            ],
+            [
+              2,
+              1306,
+              2612
+            ],
+            [
+              3,
+              2612,
+              3918
+            ]
+          ]
+        },
+        {
+          "verse_key": "102:3",
+          "timestamp_from": 11441,
+          "timestamp_to": 15412,
+          "duration": 3971,
+          "segments": [
+            [
+              1,
+              0,
+              1323
+            ],
+            [
+              2,
+              1323,
+              2646
+            ],
+            [
+              3,
+              2646,
+              3971
+            ]
+          ]
+        },
+        {
+          "verse_key": "102:4",
+          "timestamp_from": 15412,
+          "timestamp_to": 20323,
+          "duration": 4911,
+          "segments": [
+            [
+              1,
+              0,
+              1227
+            ],
+            [
+              2,
+              1227,
+              2454
+            ],
+            [
+              3,
+              2454,
+              3681
+            ],
+            [
+              4,
+              3681,
+              4911
+            ]
+          ]
+        },
+        {
+          "verse_key": "102:5",
+          "timestamp_from": 20323,
+          "timestamp_to": 25391,
+          "duration": 5068,
+          "segments": [
+            [
+              1,
+              0,
+              1013
+            ],
+            [
+              2,
+              1013,
+              2026
+            ],
+            [
+              3,
+              2026,
+              3039
+            ],
+            [
+              4,
+              3039,
+              4052
+            ],
+            [
+              5,
+              4052,
+              5068
+            ]
+          ]
+        },
+        {
+          "verse_key": "102:6",
+          "timestamp_from": 25391,
+          "timestamp_to": 29048,
+          "duration": 3657,
+          "segments": [
+            [
+              1,
+              0,
+              1828
+            ],
+            [
+              2,
+              1828,
+              3657
+            ]
+          ]
+        },
+        {
+          "verse_key": "102:7",
+          "timestamp_from": 29048,
+          "timestamp_to": 35317,
+          "duration": 6269,
+          "segments": [
+            [
+              1,
+              0,
+              1567
+            ],
+            [
+              2,
+              1567,
+              3134
+            ],
+            [
+              3,
+              3134,
+              4701
+            ],
+            [
+              4,
+              4701,
+              6269
+            ]
+          ]
+        },
+        {
+          "verse_key": "102:8",
+          "timestamp_from": 35317,
+          "timestamp_to": 42422,
+          "duration": 7105,
+          "segments": [
+            [
+              1,
+              0,
+              1421
+            ],
+            [
+              2,
+              1421,
+              2842
+            ],
+            [
+              3,
+              2842,
+              4263
+            ],
+            [
+              4,
+              4263,
+              5684
+            ],
+            [
+              5,
+              5684,
+              7105
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

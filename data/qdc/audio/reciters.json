@@ -251,6 +251,24 @@
         "name": "Hafs",
         "language_name": "english"
       }
+    },
+    {
+      "id": 201,
+      "reciter_id": 201,
+      "name": "Shahriar Parhizgar",
+      "translated_name": {
+        "name": "Shahriar Parhizgar",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
     }
   ]
 }

@@ -1,0 +1,195 @@
+{
+  "audio_files": [
+    {
+      "id": 201,
+      "chapter_id": 107,
+      "file_size": 232908,
+      "format": "mp3",
+      "audio_url": "/audio/reciters/201/107.mp3",
+      "duration": 38819,
+      "verse_timings": [
+        {
+          "verse_key": "107:1",
+          "timestamp_from": 0,
+          "timestamp_to": 9665,
+          "duration": 9665,
+          "segments": [
+            [
+              1,
+              0,
+              2416
+            ],
+            [
+              2,
+              2416,
+              4832
+            ],
+            [
+              3,
+              4832,
+              7248
+            ],
+            [
+              4,
+              7248,
+              9665
+            ]
+          ]
+        },
+        {
+          "verse_key": "107:2",
+          "timestamp_from": 9665,
+          "timestamp_to": 14576,
+          "duration": 4911,
+          "segments": [
+            [
+              1,
+              0,
+              1227
+            ],
+            [
+              2,
+              1227,
+              2454
+            ],
+            [
+              3,
+              2454,
+              3681
+            ],
+            [
+              4,
+              3681,
+              4911
+            ]
+          ]
+        },
+        {
+          "verse_key": "107:3",
+          "timestamp_from": 14576,
+          "timestamp_to": 19592,
+          "duration": 5016,
+          "segments": [
+            [
+              1,
+              0,
+              1003
+            ],
+            [
+              2,
+              1003,
+              2006
+            ],
+            [
+              3,
+              2006,
+              3009
+            ],
+            [
+              4,
+              3009,
+              4012
+            ],
+            [
+              5,
+              4012,
+              5016
+            ]
+          ]
+        },
+        {
+          "verse_key": "107:4",
+          "timestamp_from": 19592,
+          "timestamp_to": 23171,
+          "duration": 3579,
+          "segments": [
+            [
+              1,
+              0,
+              1789
+            ],
+            [
+              2,
+              1789,
+              3579
+            ]
+          ]
+        },
+        {
+          "verse_key": "107:5",
+          "timestamp_from": 23171,
+          "timestamp_to": 28944,
+          "duration": 5773,
+          "segments": [
+            [
+              1,
+              0,
+              1154
+            ],
+            [
+              2,
+              1154,
+              2308
+            ],
+            [
+              3,
+              2308,
+              3462
+            ],
+            [
+              4,
+              3462,
+              4616
+            ],
+            [
+              5,
+              4616,
+              5773
+            ]
+          ]
+        },
+        {
+          "verse_key": "107:6",
+          "timestamp_from": 28944,
+          "timestamp_to": 34848,
+          "duration": 5904,
+          "segments": [
+            [
+              1,
+              0,
+              1968
+            ],
+            [
+              2,
+              1968,
+              3936
+            ],
+            [
+              3,
+              3936,
+              5904
+            ]
+          ]
+        },
+        {
+          "verse_key": "107:7",
+          "timestamp_from": 34848,
+          "timestamp_to": 38819,
+          "duration": 3971,
+          "segments": [
+            [
+              1,
+              0,
+              1985
+            ],
+            [
+              2,
+              1985,
+              3971
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

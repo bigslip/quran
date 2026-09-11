@@ -1,0 +1,88 @@
+{
+  "audio_files": [
+    {
+      "id": 201,
+      "chapter_id": 108,
+      "file_size": 100780,
+      "format": "mp3",
+      "audio_url": "/audio/reciters/201/108.mp3",
+      "duration": 16797,
+      "verse_timings": [
+        {
+          "verse_key": "108:1",
+          "timestamp_from": 0,
+          "timestamp_to": 9221,
+          "duration": 9221,
+          "segments": [
+            [
+              1,
+              0,
+              3073
+            ],
+            [
+              2,
+              3073,
+              6146
+            ],
+            [
+              3,
+              6146,
+              9221
+            ]
+          ]
+        },
+        {
+          "verse_key": "108:2",
+          "timestamp_from": 9221,
+          "timestamp_to": 12382,
+          "duration": 3161,
+          "segments": [
+            [
+              1,
+              0,
+              1053
+            ],
+            [
+              2,
+              1053,
+              2106
+            ],
+            [
+              3,
+              2106,
+              3161
+            ]
+          ]
+        },
+        {
+          "verse_key": "108:3",
+          "timestamp_from": 12382,
+          "timestamp_to": 16797,
+          "duration": 4415,
+          "segments": [
+            [
+              1,
+              0,
+              1103
+            ],
+            [
+              2,
+              1103,
+              2206
+            ],
+            [
+              3,
+              2206,
+              3309
+            ],
+            [
+              4,
+              3309,
+              4415
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}
