@@ -114,14 +114,6 @@ const useDedupedFetchVerse = ({
   const hasInitialVerses = initialData?.verses && initialData.verses.length > 0;
   const shouldUseInitialData = pageNumber === 1 && isUsingDefaultSettings && hasInitialVerses;
 
-  /**
-   * CRITICAL: Only generate request key after hydration completes.
-   * Before hydration: requestKey = null → no SWR request → no cache inconsistency
-   * After hydration: requestKey = stable value → consistent caching → verses load properly
-   *
-   * SSR PRESERVATION: For SSR/initial render, we rely on fallbackData from initialData
-   * to ensure verses are still rendered server-side for SEO and performance.
-   */
   const requestKey = isPersistGateHydrationComplete
     ? getTranslationViewRequestKey({
         quranReaderDataType,
@@ -138,8 +130,6 @@ const useDedupedFetchVerse = ({
     : null;
 
   const { data: verses } = useSWRImmutable(requestKey, verseFetcher, {
-    // CRITICAL: Always provide fallbackData for SSR compatibility
-    // This ensures verses render immediately server-side and during hydration
     fallbackData: shouldUseInitialData ? initialData.verses : undefined,
     dedupingInterval: STATIC_DEDUPING_INTERVAL,
   });

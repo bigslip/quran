@@ -63,10 +63,21 @@ describe('Local Data Query Engine', () => {
       expect(res.pages['604']).toBeDefined();
     });
 
-    it('filters lookup pages by chapter_number', async () => {
+    it('filters lookup pages and scopes lookupRange by chapter_number', async () => {
       const res = await getLocalApiResponse('/pages/lookup', { chapter_number: 1, mushaf: 2 });
       expect(res).toBeDefined();
       expect(Object.keys(res.pages)).toEqual(['1']);
+      expect(res.lookupRange).toEqual({ from: '1:1', to: '1:7' });
+
+      const resChapter3 = await getLocalApiResponse('/pages/lookup', { chapter_number: 3, mushaf: 2 });
+      expect(resChapter3.lookupRange).toEqual({ from: '3:1', to: '3:200' });
+      expect(Object.keys(resChapter3.pages)).toContain('50');
+      expect(Object.keys(resChapter3.pages)).toContain('76');
+    });
+
+    it('scopes lookupRange for juz_number', async () => {
+      const resJuz1 = await getLocalApiResponse('/pages/lookup', { juz_number: 1, mushaf: 2 });
+      expect(resJuz1.lookupRange).toEqual({ from: '1:1', to: '2:141' });
     });
   });
 

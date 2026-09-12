@@ -458,10 +458,37 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     if (lookup) {
       let filteredPages = lookup.pages;
       let lookupRange = lookup.lookupRange;
-      if (query.chapter_number) {
-        const ch = state.chaptersMap.get(Number(query.chapter_number));
-        if (ch && ch.pages) {
-          const [startPage, endPage] = ch.pages;
+
+      const chapterNum = Number(query.chapter_number || query.chapterNumber);
+      const juzNum = Number(query.juz_number || query.juzNumber);
+      const hizbNum = Number(query.hizb_number || query.hizbNumber);
+      const rubNum = Number(query.rub_el_hizb_number || query.rubElHizbNumber || query.rub_number || query.rubNumber);
+      const pageNum = Number(query.page_number || query.pageNumber);
+
+      if (chapterNum) {
+        const ch = state.chaptersMap.get(chapterNum);
+        if (ch) {
+          const versesCount = ch.verses_count || ch.versesCount || (state.versesByChapter.get(chapterNum) || []).length;
+          lookupRange = { from: `${chapterNum}:1`, to: `${chapterNum}:${versesCount}` };
+          if (ch.pages) {
+            const [startPage, endPage] = ch.pages;
+            filteredPages = {};
+            for (let p = startPage; p <= endPage; p++) {
+              if (lookup.pages[String(p)]) {
+                filteredPages[String(p)] = lookup.pages[String(p)];
+              }
+            }
+          }
+        }
+      } else if (juzNum) {
+        const juzVerses = state.versesByJuz.get(juzNum) || [];
+        if (juzVerses.length > 0) {
+          lookupRange = {
+            from: juzVerses[0].verse_key,
+            to: juzVerses[juzVerses.length - 1].verse_key,
+          };
+          const startPage = juzVerses[0].page_number;
+          const endPage = juzVerses[juzVerses.length - 1].page_number;
           filteredPages = {};
           for (let p = startPage; p <= endPage; p++) {
             if (lookup.pages[String(p)]) {
@@ -469,10 +496,52 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
             }
           }
         }
+      } else if (hizbNum) {
+        const hizbVerses = state.versesByHizb.get(hizbNum) || [];
+        if (hizbVerses.length > 0) {
+          lookupRange = {
+            from: hizbVerses[0].verse_key,
+            to: hizbVerses[hizbVerses.length - 1].verse_key,
+          };
+          const startPage = hizbVerses[0].page_number;
+          const endPage = hizbVerses[hizbVerses.length - 1].page_number;
+          filteredPages = {};
+          for (let p = startPage; p <= endPage; p++) {
+            if (lookup.pages[String(p)]) {
+              filteredPages[String(p)] = lookup.pages[String(p)];
+            }
+          }
+        }
+      } else if (rubNum) {
+        const rubVerses = state.versesByRub.get(rubNum) || [];
+        if (rubVerses.length > 0) {
+          lookupRange = {
+            from: rubVerses[0].verse_key,
+            to: rubVerses[rubVerses.length - 1].verse_key,
+          };
+          const startPage = rubVerses[0].page_number;
+          const endPage = rubVerses[rubVerses.length - 1].page_number;
+          filteredPages = {};
+          for (let p = startPage; p <= endPage; p++) {
+            if (lookup.pages[String(p)]) {
+              filteredPages[String(p)] = lookup.pages[String(p)];
+            }
+          }
+        }
+      } else if (pageNum) {
+        if (lookup.pages[String(pageNum)]) {
+          filteredPages = { [String(pageNum)]: lookup.pages[String(pageNum)] };
+          lookupRange = {
+            from: lookup.pages[String(pageNum)].from,
+            to: lookup.pages[String(pageNum)].to,
+          };
+        }
       }
+
       if (query.from && query.to) {
         lookupRange = { from: String(query.from), to: String(query.to) };
       }
+
       return {
         ...lookup,
         lookupRange,
