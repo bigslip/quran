@@ -63,7 +63,6 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
       notFound: true,
     };
   }
-  const chaptersData = await getAllChaptersData(locale);
   juzId = formatStringNumber(juzId);
 
   const defaultMushafId = getMushafId(
@@ -71,10 +70,13 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     getQuranReaderStylesInitialState(locale).mushafLines,
   ).mushaf;
   try {
-    const pagesLookupResponse = await getPagesLookup({
-      juzNumber: Number(juzId),
-      mushaf: defaultMushafId,
-    });
+    const [chaptersData, pagesLookupResponse] = await Promise.all([
+      getAllChaptersData(locale),
+      getPagesLookup({
+        juzNumber: Number(juzId),
+        mushaf: defaultMushafId,
+      }),
+    ]);
     const firstPageOfJuz = Object.keys(pagesLookupResponse.pages)[0];
     const firstPageOfJuzLookup = pagesLookupResponse.pages[firstPageOfJuz];
     const numberOfVerses = generateVerseKeysBetweenTwoVerseKeys(

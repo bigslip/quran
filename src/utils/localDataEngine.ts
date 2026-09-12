@@ -39,7 +39,7 @@ interface DataEngineState {
   tafsirsList: any;
   languagesList: any;
   recitersList: any;
-  audioTimestampsByChapter: Map<number, any>;
+  audioTimestampsByChapter: Map<string, any>;
   chapterInfoCache: Map<string, any>;
 }
 
@@ -119,50 +119,56 @@ export async function initializeLocalDataEngine(): Promise<void> {
         const versesByRub = new Map<number, any[]>();
         const allVerses: any[] = [];
 
-        for (let page = 1; page <= 604; page++) {
-          try {
-            const pagePath = await resolveDataFile(`pages/${page}.json`);
-            const pageData = JSON.parse(await fs.readFile(pagePath, 'utf-8'));
-            const verses = pageData.verses || [];
-            versesByPage.set(page, verses);
+        const pageNumbers = Array.from({ length: 604 }, (_, i) => i + 1);
+        const pageResults = await Promise.all(
+          pageNumbers.map(async (page) => {
+            try {
+              const pagePath = await resolveDataFile(`pages/${page}.json`);
+              const pageData = JSON.parse(await fs.readFile(pagePath, 'utf-8'));
+              return { page, verses: pageData.verses || [] };
+            } catch {
+              return { page, verses: [] };
+            }
+          }),
+        );
 
-            for (const verse of verses) {
-              if (!verse.chapter_id) {
-                const [chapterStr] = verse.verse_key.split(':');
-                verse.chapter_id = Number(chapterStr);
+        for (const { page, verses } of pageResults) {
+          versesByPage.set(page, verses);
+
+          for (const verse of verses) {
+            if (!verse.chapter_id) {
+              const [chapterStr] = verse.verse_key.split(':');
+              verse.chapter_id = Number(chapterStr);
+            }
+
+            if (!versesByKey.has(verse.verse_key)) {
+              versesByKey.set(verse.verse_key, verse);
+              allVerses.push(verse);
+
+              const chapterId = Number(verse.chapter_id);
+              if (!versesByChapter.has(chapterId)) {
+                versesByChapter.set(chapterId, []);
+              }
+              versesByChapter.get(chapterId)!.push(verse);
+
+              if (verse.juz_number) {
+                const juz = Number(verse.juz_number);
+                if (!versesByJuz.has(juz)) versesByJuz.set(juz, []);
+                versesByJuz.get(juz)!.push(verse);
               }
 
-              if (!versesByKey.has(verse.verse_key)) {
-                versesByKey.set(verse.verse_key, verse);
-                allVerses.push(verse);
+              if (verse.hizb_number) {
+                const hizb = Number(verse.hizb_number);
+                if (!versesByHizb.has(hizb)) versesByHizb.set(hizb, []);
+                versesByHizb.get(hizb)!.push(verse);
+              }
 
-                const chapterId = Number(verse.chapter_id);
-                if (!versesByChapter.has(chapterId)) {
-                  versesByChapter.set(chapterId, []);
-                }
-                versesByChapter.get(chapterId)!.push(verse);
-
-                if (verse.juz_number) {
-                  const juz = Number(verse.juz_number);
-                  if (!versesByJuz.has(juz)) versesByJuz.set(juz, []);
-                  versesByJuz.get(juz)!.push(verse);
-                }
-
-                if (verse.hizb_number) {
-                  const hizb = Number(verse.hizb_number);
-                  if (!versesByHizb.has(hizb)) versesByHizb.set(hizb, []);
-                  versesByHizb.get(hizb)!.push(verse);
-                }
-
-                if (verse.rub_el_hizb_number) {
-                  const rub = Number(verse.rub_el_hizb_number);
-                  if (!versesByRub.has(rub)) versesByRub.set(rub, []);
-                  versesByRub.get(rub)!.push(verse);
-                }
+              if (verse.rub_el_hizb_number) {
+                const rub = Number(verse.rub_el_hizb_number);
+                if (!versesByRub.has(rub)) versesByRub.set(rub, []);
+                versesByRub.get(rub)!.push(verse);
               }
             }
-          } catch (err) {
-            // If some pages aren't found, continue
           }
         }
 
@@ -747,15 +753,21 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     const [chStr] = verseKey.split(':');
     const chapterId = Number(chStr) || 1;
 
-    let timingsData: any = null;
-    try {
-      const audioPath = await resolveDataFile(`audio/reciters/${reciterId}/${chapterId}.json`);
-      timingsData = JSON.parse(await fs.readFile(audioPath, 'utf-8'));
-    } catch {
+    const cacheKey = `${reciterId}_${chapterId}`;
+    let timingsData = state.audioTimestampsByChapter.get(cacheKey);
+    if (!timingsData) {
       try {
-        const timestampPath = await resolveDataFile(`audio-timestamps/${chapterId}.json`);
-        timingsData = JSON.parse(await fs.readFile(timestampPath, 'utf-8'));
-      } catch {}
+        const audioPath = await resolveDataFile(`audio/reciters/${reciterId}/${chapterId}.json`);
+        timingsData = JSON.parse(await fs.readFile(audioPath, 'utf-8'));
+      } catch {
+        try {
+          const timestampPath = await resolveDataFile(`audio-timestamps/${chapterId}.json`);
+          timingsData = JSON.parse(await fs.readFile(timestampPath, 'utf-8'));
+        } catch {}
+      }
+      if (timingsData) {
+        state.audioTimestampsByChapter.set(cacheKey, timingsData);
+      }
     }
 
     const audioFile = timingsData?.audio_files?.[0];

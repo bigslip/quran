@@ -24,11 +24,8 @@ import getCurrentDayAyah from '@/utils/quranInYearCalendar';
 import { ChaptersResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
 
+import HomePageHero from '@/components/HomePage/HomePageHero';
 import LearningPlansLoading from '@/components/HomePage/LearningPlansSection/Loading';
-
-const HomePageHero = dynamic(() => import('@/components/HomePage/HomePageHero'), {
-  ssr: false,
-});
 
 const ReadingSection = dynamic(() => import('@/components/HomePage/ReadingSection'), {
   ssr: false,
