@@ -86,6 +86,10 @@ const PlayVerseAudioButton: React.FC<PlayVerseAudioProps> = ({
   ]);
 
   useEffect(() => {
+    if (!isActive || activeStepGroup !== OnboardingGroup.READING_EXPERIENCE) {
+      return undefined;
+    }
+
     const handlePlayAudioStep = () => {
       onPlayClicked();
     };
@@ -95,7 +99,7 @@ const PlayVerseAudioButton: React.FC<PlayVerseAudioProps> = ({
     return () => {
       window.removeEventListener(OnboardingEvent.STEP_AFTER_PLAY_AUDIO_CLICK, handlePlayAudioStep);
     };
-  }, [nextStep, onPlayClicked]);
+  }, [isActive, activeStepGroup, onPlayClicked]);
 
   if (isVerseLoading) {
     return (

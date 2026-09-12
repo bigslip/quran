@@ -17,12 +17,18 @@ export const download = (url: string, onDone: () => void) => {
   const xhr = new XMLHttpRequest();
   xhr.responseType = 'blob';
   xhr.onload = () => {
+    const objectUrl = window.URL.createObjectURL(xhr.response);
     const a = document.createElement('a');
-    a.href = window.URL.createObjectURL(xhr.response);
+    a.href = objectUrl;
     a.download = filename;
     a.style.display = 'none';
     document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(objectUrl);
+    onDone();
+  };
+  xhr.onerror = () => {
     onDone();
   };
   xhr.open('GET', url);
@@ -32,11 +38,15 @@ export const download = (url: string, onDone: () => void) => {
 const DownloadAudioButton = () => {
   const { t } = useTranslation('common');
   const audioService = useContext(AudioPlayerMachineContext);
-  const audioDataUrl = useXstateSelector(audioService, (state) => state.context.audioData.audioUrl);
+  const audioDataUrl = useXstateSelector(
+    audioService,
+    (state) => state.context.audioData?.audioUrl,
+  );
   const loading = useSelector(selectIsDownloadingAudio);
   const dispatch = useDispatch();
 
   const onClick = () => {
+    if (!audioDataUrl) return;
     logButtonClick('audio_player_download');
     dispatch(setIsDownloadingAudio(true));
     download(audioDataUrl, () => {
@@ -47,6 +57,7 @@ const DownloadAudioButton = () => {
   return (
     <PopoverMenu.Item
       onClick={onClick}
+      isDisabled={!audioDataUrl || loading}
       icon={loading ? <Spinner size={SpinnerSize.Large} /> : <DownloadIcon />}
     >
       {t('audio.player.download')}

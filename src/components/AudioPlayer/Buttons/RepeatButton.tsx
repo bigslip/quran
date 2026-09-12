@@ -65,7 +65,7 @@ const RepeatAudioButton = () => {
       {!isLoading && (
         <RepeatAudioModal
           defaultRepetitionMode={RepetitionMode.Range}
-          chapterId={currentSurah.toString()}
+          chapterId={currentSurah ? currentSurah.toString() : ''}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />

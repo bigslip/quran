@@ -1,5 +1,6 @@
 const AUDIO_PLAYER_LOCAL_STORAGE_KEY = 'audio-player-state';
 export const persistXstateToLocalStorage = (newState: Record<string, any>) => {
+  if (typeof window === 'undefined' || !window.localStorage) return;
   try {
     const previousState = JSON.parse(localStorage.getItem(AUDIO_PLAYER_LOCAL_STORAGE_KEY)) || {};
     const nextState = { ...previousState, ...newState };
@@ -10,6 +11,7 @@ export const persistXstateToLocalStorage = (newState: Record<string, any>) => {
 };
 
 export const getXstateStateFromLocalStorage = () => {
+  if (typeof window === 'undefined' || !window.localStorage) return {};
   try {
     const stateString = localStorage.getItem(AUDIO_PLAYER_LOCAL_STORAGE_KEY);
     if (stateString) {
