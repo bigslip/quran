@@ -120,68 +120,84 @@ const BottomActions = ({
   };
 
   // Define tab configurations
-  const tabs = [
-    {
-      id: TabId.TAFSIR,
-      label: t('quran-reader:tafsirs'),
-      icon: <BookIcon />,
-      onClick: createTabHandler(TabId.TAFSIR, () =>
-        getVerseSelectedTafsirNavigationUrl(chapterId, Number(verseNumber), tafsirs[0]),
-      ),
-      condition: true,
-    },
-    {
-      id: TabId.LAYERS,
-      label: t('quran-reader:layers.title'),
-      icon: <LayerIcon color="var(--color-blue-buttons-and-icons)" />,
-      onClick: createTabHandler(TabId.LAYERS, () => getVerseLayersNavigationUrl(verseKey)),
-      condition: hasLayersData,
-    },
-    {
-      id: TabId.LESSONS,
-      label: t('lessons'),
-      icon: <GraduationCapIcon />,
-      onClick: createTabHandler(TabId.LESSONS, () => getVerseLessonNavigationUrl(verseKey)),
-      condition: true,
-    },
-    {
-      id: TabId.REFLECTIONS,
-      label: t('reflections'),
-      icon: <ChatIcon />,
-      onClick: createTabHandler(TabId.REFLECTIONS, () => getVerseReflectionNavigationUrl(verseKey)),
-      condition: true,
-    },
-    {
-      id: TabId.ANSWERS,
-      label: t('answers'),
-      icon: isClarificationQuestion ? <LightbulbOnIcon /> : <LightbulbIcon />,
-      onClick: createTabHandler(TabId.ANSWERS, () => getVerseAnswersNavigationUrl(verseKey)),
-      condition: hasQuestions,
-    },
-    {
-      id: TabId.QIRAAT,
-      label: t('quran-reader:qiraat.title'),
-      icon: <QiraatIcon color="var(--color-blue-buttons-and-icons)" />,
-      onClick: createTabHandler(TabId.QIRAAT, () => getVerseQiraatNavigationUrl(verseKey)),
-      condition: hasQiraatData,
-    },
-    {
-      id: TabId.HADITH,
-      label: t('quran-reader:hadith.title'),
-      icon: <HadithIcon color="var(--color-blue-buttons-and-icons)" />,
-      onClick: createTabHandler(TabId.HADITH, () => getVerseHadithsNavigationUrl(verseKey)),
-      condition: hasHadiths,
-    },
-    {
-      id: TabId.RELATED_VERSES,
-      label: t('related-verses'),
-      icon: <RelatedVersesIcon />,
-      onClick: createTabHandler(TabId.RELATED_VERSES, () =>
-        getVerseRelatedVersesNavigationUrl(verseKey),
-      ),
-      condition: hasRelatedVerses,
-    },
-  ];
+  const tabs = React.useMemo(
+    () => [
+      {
+        id: TabId.TAFSIR,
+        label: t('quran-reader:tafsirs'),
+        icon: <BookIcon />,
+        onClick: createTabHandler(TabId.TAFSIR, () =>
+          getVerseSelectedTafsirNavigationUrl(chapterId, Number(verseNumber), tafsirs[0]),
+        ),
+        condition: true,
+      },
+      {
+        id: TabId.LAYERS,
+        label: t('quran-reader:layers.title'),
+        icon: <LayerIcon color="var(--color-blue-buttons-and-icons)" />,
+        onClick: createTabHandler(TabId.LAYERS, () => getVerseLayersNavigationUrl(verseKey)),
+        condition: hasLayersData,
+      },
+      {
+        id: TabId.LESSONS,
+        label: t('lessons'),
+        icon: <GraduationCapIcon />,
+        onClick: createTabHandler(TabId.LESSONS, () => getVerseLessonNavigationUrl(verseKey)),
+        condition: true,
+      },
+      {
+        id: TabId.REFLECTIONS,
+        label: t('reflections'),
+        icon: <ChatIcon />,
+        onClick: createTabHandler(TabId.REFLECTIONS, () => getVerseReflectionNavigationUrl(verseKey)),
+        condition: true,
+      },
+      {
+        id: TabId.ANSWERS,
+        label: t('answers'),
+        icon: isClarificationQuestion ? <LightbulbOnIcon /> : <LightbulbIcon />,
+        onClick: createTabHandler(TabId.ANSWERS, () => getVerseAnswersNavigationUrl(verseKey)),
+        condition: hasQuestions,
+      },
+      {
+        id: TabId.QIRAAT,
+        label: t('quran-reader:qiraat.title'),
+        icon: <QiraatIcon color="var(--color-blue-buttons-and-icons)" />,
+        onClick: createTabHandler(TabId.QIRAAT, () => getVerseQiraatNavigationUrl(verseKey)),
+        condition: hasQiraatData,
+      },
+      {
+        id: TabId.HADITH,
+        label: t('quran-reader:hadith.title'),
+        icon: <HadithIcon color="var(--color-blue-buttons-and-icons)" />,
+        onClick: createTabHandler(TabId.HADITH, () => getVerseHadithsNavigationUrl(verseKey)),
+        condition: hasHadiths,
+      },
+      {
+        id: TabId.RELATED_VERSES,
+        label: t('related-verses'),
+        icon: <RelatedVersesIcon />,
+        onClick: createTabHandler(TabId.RELATED_VERSES, () =>
+          getVerseRelatedVersesNavigationUrl(verseKey),
+        ),
+        condition: hasRelatedVerses,
+      },
+    ],
+    [
+      t,
+      createTabHandler,
+      chapterId,
+      verseNumber,
+      tafsirs,
+      hasLayersData,
+      verseKey,
+      isClarificationQuestion,
+      hasQuestions,
+      hasQiraatData,
+      hasHadiths,
+      hasRelatedVerses,
+    ],
+  );
 
   return (
     <BottomActionsTabs tabs={tabs} isTranslationView={isTranslationView} className={className} />

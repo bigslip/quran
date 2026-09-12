@@ -1,7 +1,6 @@
-import { useMemo } from 'react';
-
 import { useSelector } from 'react-redux';
 
+import { RootState } from '@/redux/RootState';
 import { selectLoadedFontFaces } from '@/redux/slices/QuranReader/font-faces';
 import { getFontFaceNameForPage, isQCFFont } from '@/utils/fontFaceHelper';
 import { QuranFont } from 'types/QuranReader';
@@ -15,13 +14,13 @@ import { QuranFont } from 'types/QuranReader';
  * @returns {boolean}
  */
 const useIsFontLoaded = (pageNumber: number, quranFont: QuranFont): boolean => {
-  const loadedFonts = useSelector(selectLoadedFontFaces);
-  const isFontLoaded = useMemo(() => {
+  const isFontLoaded = useSelector((state: RootState) => {
     if (!isQCFFont(quranFont)) {
       return true;
     }
-    return loadedFonts.includes(getFontFaceNameForPage(quranFont, pageNumber));
-  }, [loadedFonts, pageNumber, quranFont]);
+    return selectLoadedFontFaces(state).includes(getFontFaceNameForPage(quranFont, pageNumber));
+  });
+
   return isFontLoaded;
 };
 

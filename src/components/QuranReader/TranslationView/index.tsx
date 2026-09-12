@@ -88,6 +88,10 @@ const TranslationView = ({
   const verses = useMemo(() => Object.values(apiPageToVersesMap).flat(), [apiPageToVersesMap]);
   useQcfFont(quranReaderStyles.quranFont, verses);
 
+  const lastVerse = verses[verses.length - 1];
+  const lastVerseRef = useRef<Verse>(lastVerse);
+  lastVerseRef.current = lastVerse;
+
   // Simplified: just render the item without passing questions data down
   // Each TranslationViewVerse will fetch its own questions data via context
   const itemContentRenderer = useCallback(
@@ -96,7 +100,7 @@ const TranslationView = ({
         return (
           <EndOfScrollingControls
             quranReaderDataType={quranReaderDataType}
-            lastVerse={verses[verses.length - 1]}
+            lastVerse={lastVerseRef.current}
             initialData={initialData}
           />
         );
@@ -120,7 +124,6 @@ const TranslationView = ({
     [
       versesCount,
       quranReaderDataType,
-      verses,
       initialData,
       quranReaderStyles,
       setApiPageToVersesMap,

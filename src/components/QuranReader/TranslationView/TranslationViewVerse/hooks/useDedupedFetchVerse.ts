@@ -151,10 +151,15 @@ const useDedupedFetchVerse = ({
   useEffect(() => {
     if (effectiveVerses) {
       // @ts-ignore
-      setApiPageToVersesMap((prevMushafPageToVersesMap: Record<number, Verse[]>) => ({
-        ...prevMushafPageToVersesMap,
-        [pageNumber]: effectiveVerses,
-      }));
+      setApiPageToVersesMap((prevMushafPageToVersesMap: Record<number, Verse[]>) => {
+        if (prevMushafPageToVersesMap[pageNumber] === effectiveVerses) {
+          return prevMushafPageToVersesMap;
+        }
+        return {
+          ...prevMushafPageToVersesMap,
+          [pageNumber]: effectiveVerses,
+        };
+      });
     }
   }, [pageNumber, setApiPageToVersesMap, effectiveVerses]);
 
