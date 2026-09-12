@@ -28,6 +28,8 @@ const useNavbarAutoHide = (
 ) => {
   const dispatch = useDispatch();
   const hideNavbarTimeoutRef = useRef<number | undefined>(undefined);
+  const scrollCallbackRef = useRef(scrollCallback);
+  scrollCallbackRef.current = scrollCallback;
 
   useEffect(() => {
     if (shouldTrigger) {
@@ -36,7 +38,7 @@ const useNavbarAutoHide = (
       dispatch(setLockVisibilityState(true));
 
       // Execute the scroll callback
-      scrollCallback();
+      scrollCallbackRef.current();
 
       // Clear any existing timeout
       if (hideNavbarTimeoutRef.current) {
@@ -57,7 +59,8 @@ const useNavbarAutoHide = (
         dispatch(setLockVisibilityState(false));
       }
     };
-  }, [dispatch, shouldTrigger, scrollCallback, timeout, dependencies]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, shouldTrigger, timeout, ...dependencies]);
 
   return hideNavbarTimeoutRef;
 };

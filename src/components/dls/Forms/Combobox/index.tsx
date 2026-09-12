@@ -154,7 +154,7 @@ const Combobox: React.FC<Props> = ({
 
   // if there are any changes in the initialInputValue, we should update the inputValue.
   useEffect(() => {
-    setInputValue(initialInputValue);
+    setInputValue(initialInputValue ?? '');
   }, [initialInputValue]);
 
   const tags = useMemo(() => {
@@ -412,7 +412,6 @@ const Combobox: React.FC<Props> = ({
                     value={inputValue}
                     disabled={disabled}
                     readOnly={false}
-                    unselectable="on"
                     {...(!isMultiSelect && { placeholder })}
                   />
                 </div>

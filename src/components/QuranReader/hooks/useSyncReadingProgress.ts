@@ -199,6 +199,7 @@ const useSyncReadingProgress = ({ isReadingPreference }: UseSyncReadingProgressP
     handleFocus();
 
     return () => {
+      if (interval) clearInterval(interval);
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('blur', handleBlur);
     };

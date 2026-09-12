@@ -1,6 +1,5 @@
-/* eslint-disable max-lines */
 import type { IMessage } from '@novu/shared';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { getNotificationsInitialState } from '../defaultSettings/util';
 import NotificationsState from '../types/NotificationsState';
@@ -156,10 +155,10 @@ export const selectLastLoadedNotificationsPage = (state: RootState) => {
   const { paginatedNotifications } = state.notifications;
   return Math.max(...(Object.keys(paginatedNotifications) as unknown as number[]));
 };
-export const selectLoadedNotificationsPages = (state: RootState) => {
-  const { paginatedNotifications } = state.notifications;
-  return Object.keys(paginatedNotifications) as unknown as number[];
-};
+export const selectLoadedNotificationsPages = createSelector(
+  [(state: RootState) => state.notifications.paginatedNotifications],
+  (paginatedNotifications) => Object.keys(paginatedNotifications).map(Number),
+);
 export const selectNotificationsIsLoading = (state: RootState) =>
   state.notifications.isLoadingNotifications;
 export const selectNotificationsIsFetching = (state: RootState) =>

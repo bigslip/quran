@@ -69,7 +69,12 @@ const ReciterInfo = ({ selectedReciter, ...props }: ReciterInfoProps) => {
               className={styles.moreLessButton}
               role="button"
               tabIndex={0}
-              onKeyPress={() => setIsBioTruncated((isTruncated) => !isTruncated)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsBioTruncated((isTruncated) => !isTruncated);
+                }
+              }}
               onClick={() => setIsBioTruncated((isTruncated) => !isTruncated)}
             >
               {isBioTruncated ? t('common:more') : t('common:less')}

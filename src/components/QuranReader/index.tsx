@@ -109,6 +109,7 @@ const QuranReader = ({
           <VerseTrackerContextProvider>
             <ReaderTopActions initialData={initialData} quranReaderDataType={quranReaderDataType} />
             <QuranReaderView
+              key={`${quranReaderDataType}-${id}`}
               isReadingPreference={isReadingPreference}
               readingPreference={readingPreference}
               quranReaderStyles={quranReaderStyles}

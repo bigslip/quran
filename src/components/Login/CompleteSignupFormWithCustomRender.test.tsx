@@ -6,9 +6,10 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('./AuthInput', () => ({
-  default: (props: any) => (
+  default: ({ htmlType, ...props }: any) => (
     <input 
       data-testid="auth-input" 
+      type={htmlType}
       {...props} 
     />
   )

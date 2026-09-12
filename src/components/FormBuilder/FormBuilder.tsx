@@ -195,7 +195,7 @@ const FormBuilder = <T,>({
                   }
                 },
                 ...(isFieldTextInput(formField.type) && {
-                  htmlType: formField.type,
+                  htmlType: formField.type === FormFieldType.Phone ? 'tel' : formField.type,
                   fixedWidth: false,
                 }),
                 ...(error && {

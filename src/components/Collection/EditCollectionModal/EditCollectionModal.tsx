@@ -60,7 +60,7 @@ const EditCollectionModal: React.FC<EditCollectionModalProps> = ({
     <Modal isOpen={isOpen} onClickOutside={onClose} onEscapeKeyDown={onClose}>
       <Modal.Body>
         <div className={styles.header}>
-          <div className={styles.title}>{t('edit-collection')}</div>
+          <Modal.Title>{t('edit-collection')}</Modal.Title>
           <button
             type="button"
             className={styles.closeButton}

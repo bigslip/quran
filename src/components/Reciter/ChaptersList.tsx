@@ -94,7 +94,12 @@ const ChaptersList = ({ filteredChapters, selectedReciter, ...props }: ChaptersL
             className={styles.chapterListItem}
             role="button"
             tabIndex={0}
-            onKeyPress={onClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick();
+              }
+            }}
             onClick={onClick}
             aria-label={
               isAudioPlayingThisChapter

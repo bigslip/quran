@@ -10,13 +10,15 @@ const useAbortableEffect = (
   effect: (signal: AbortSignal) => void | Promise<void>,
   deps: DependencyList,
 ): void => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const controller = new AbortController();
     Promise.resolve(effect(controller.signal)).catch(() => {
       // Effect aborted or failed, ignore
     });
     return () => controller.abort();
-  }, [effect, deps]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 };
 
 export default useAbortableEffect;

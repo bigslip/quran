@@ -64,10 +64,9 @@ const SurahList: React.FC<Props> = ({
   const chapterIds = useChapterIdsByUrlPath(lang);
   const urlChapterId = chapterIds && chapterIds.length > 0 ? chapterIds[0] : null;
 
-  // Use external selectedChapterId if provided, otherwise use internal state
-  const [internalCurrentChapterId, setInternalCurrentChapterId] = useState(urlChapterId);
   const [loadingChapterId, setLoadingChapterId] = useState<string | null>(null);
-  const currentChapterId = externalSelectedChapterId || internalCurrentChapterId;
+  const currentChapterId =
+    externalSelectedChapterId || lastReadVerseKey?.chapterId || urlChapterId;
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -80,19 +79,6 @@ const SurahList: React.FC<Props> = ({
       router.events?.off('routeChangeError', handleRouteChange);
     };
   }, [router.events]);
-
-  useEffect(() => {
-    if (!externalSelectedChapterId) {
-      setInternalCurrentChapterId(lastReadVerseKey.chapterId);
-    }
-  }, [lastReadVerseKey, externalSelectedChapterId]);
-
-  useEffect(() => {
-    // when the user navigates to a new chapter, update the current chapter id
-    if (!externalSelectedChapterId) {
-      setInternalCurrentChapterId(urlChapterId);
-    }
-  }, [urlChapterId, externalSelectedChapterId]);
 
   const [searchQuery, setSearchQuery] = useState('');
 

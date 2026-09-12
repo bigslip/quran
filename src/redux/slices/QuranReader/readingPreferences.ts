@@ -175,10 +175,12 @@ export const selectIsTooltipContentEnabled = (state: RootState): boolean => {
   );
 };
 
+const EMPTY_TOOLTIP_CONTENT_TYPE: WordByWordType[] = [];
+
 export const selectReadingPreferences = (state: RootState) => state.readingPreferences;
 export const selectTooltipContentType = (state: RootState): WordByWordType[] => {
   const { wordByWordDisplay: d, wordByWordTooltipContentType: t } = state.readingPreferences;
-  return d?.includes(WordByWordDisplay.TOOLTIP) && t?.length ? t : [];
+  return d?.includes(WordByWordDisplay.TOOLTIP) && t?.length ? t : EMPTY_TOOLTIP_CONTENT_TYPE;
 };
 export const selectReadingPreference = (state: RootState) =>
   state.readingPreferences.readingPreference;

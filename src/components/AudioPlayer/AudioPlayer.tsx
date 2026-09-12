@@ -61,6 +61,10 @@ const AudioPlayer = ({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   useEffect(() => {
     window.audioPlayerEl = audioPlayerRef.current;
     audioService.send({ type: 'SET_AUDIO_REF', audioPlayerRef: audioPlayerRef.current });
+    return () => {
+      window.audioPlayerEl = undefined;
+      audioService.send({ type: 'SET_AUDIO_REF', audioPlayerRef: null });
+    };
   }, [audioService]);
 
   const onCanPlay = () => {

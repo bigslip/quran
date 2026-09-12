@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useRef } from 'react';
 
 import useBrowserLayoutEffect from '@/hooks/useBrowserLayoutEffect';
 
@@ -16,16 +16,8 @@ const useGlobalIntersectionObserver = (
   onElementVisible: (element: Element) => void,
   observerId: string,
 ) => {
-  const updateEntry = useCallback(
-    (entries: IntersectionObserverEntry[]): void => {
-      entries
-        .filter((entry) => entry.isIntersecting)
-        .forEach((visibleEntry) => {
-          onElementVisible(visibleEntry.target);
-        });
-    },
-    [onElementVisible],
-  );
+  const onElementVisibleRef = useRef(onElementVisible);
+  onElementVisibleRef.current = onElementVisible;
 
   /**
    * We need to assign to window before render is done since we want to the observer to be available by the time rendering is done so that the elements to be observed can use it.
@@ -37,17 +29,28 @@ const useGlobalIntersectionObserver = (
 
     // no need to create a new observer if it already exists.
     if (!window[observerId]) {
-      window[observerId] = new IntersectionObserver(updateEntry, {
-        threshold,
-        root,
-        rootMargin,
-      });
+      window[observerId] = new IntersectionObserver(
+        (entries: IntersectionObserverEntry[]) => {
+          entries
+            .filter((entry) => entry.isIntersecting)
+            .forEach((visibleEntry) => {
+              onElementVisibleRef.current(visibleEntry.target);
+            });
+        },
+        {
+          threshold,
+          root,
+          rootMargin,
+        },
+      );
     }
     return () => {
-      window[observerId].disconnect();
-      window[observerId] = undefined;
+      if (window[observerId]) {
+        window[observerId].disconnect();
+        window[observerId] = undefined;
+      }
     };
-  }, [root, rootMargin, threshold, updateEntry, observerId]);
+  }, [root, rootMargin, threshold, observerId]);
 };
 
 export default useGlobalIntersectionObserver;
