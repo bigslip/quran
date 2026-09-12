@@ -14,6 +14,7 @@ import useChapterIdsByUrlPath from '@/hooks/useChapterId';
 import { SCROLL_TO_NEAREST_ELEMENT, useScrollToElement } from '@/hooks/useScrollToElement';
 import { selectLastReadVerseKey } from '@/redux/slices/QuranReader/readingTracker';
 import { selectIsReadingByRevelationOrder } from '@/redux/slices/revelationOrder';
+import { RootState } from '@/redux/RootState';
 import NavigationItemType from '@/types/NavigationItemType';
 import SearchQuerySource from '@/types/SearchQuerySource';
 import { logEmptySearchResults, logTextSearchQuery } from '@/utils/eventLogger';
@@ -56,7 +57,9 @@ const SurahList: React.FC<Props> = ({
   selectedChapterId: externalSelectedChapterId,
 }) => {
   const { t, lang } = useTranslation('common');
-  const lastReadVerseKey = useSelector(selectLastReadVerseKey);
+  const lastReadChapterId = useSelector(
+    (state: RootState) => selectLastReadVerseKey(state)?.chapterId,
+  );
   const isReadingByRevelationOrder = useSelector(selectIsReadingByRevelationOrder);
   const router = useRouter();
   const chaptersData = useContext(DataContext);
@@ -66,7 +69,7 @@ const SurahList: React.FC<Props> = ({
 
   const [loadingChapterId, setLoadingChapterId] = useState<string | null>(null);
   const currentChapterId =
-    externalSelectedChapterId || lastReadVerseKey?.chapterId || urlChapterId;
+    externalSelectedChapterId || lastReadChapterId || urlChapterId;
 
   useEffect(() => {
     const handleRouteChange = () => {

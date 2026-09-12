@@ -91,33 +91,36 @@ const BottomActions = ({
   const { data: hadithCount } = useBatchedCountRangeHadiths(verseKey);
   const hasHadiths = (hadithCount ?? 0) > 0;
 
-  const createTabHandler = (tabType: TabId, navigationFn: () => string) => {
-    return () => {
-      const tabIdMap: Record<TabId, StudyModeTabId> = {
-        [TabId.TAFSIR]: StudyModeTabId.TAFSIR,
-        [TabId.LAYERS]: StudyModeTabId.LAYERS,
-        [TabId.REFLECTIONS]: StudyModeTabId.REFLECTIONS,
-        [TabId.LESSONS]: StudyModeTabId.LESSONS,
-        [TabId.RELATED_VERSES]: StudyModeTabId.RELATED_VERSES,
-        [TabId.ANSWERS]: StudyModeTabId.ANSWERS,
-        [TabId.QIRAAT]: StudyModeTabId.QIRAAT,
-        [TabId.HADITH]: StudyModeTabId.HADITH,
+  const createTabHandler = React.useCallback(
+    (tabType: TabId, navigationFn: () => string) => {
+      return () => {
+        const tabIdMap: Record<TabId, StudyModeTabId> = {
+          [TabId.TAFSIR]: StudyModeTabId.TAFSIR,
+          [TabId.LAYERS]: StudyModeTabId.LAYERS,
+          [TabId.REFLECTIONS]: StudyModeTabId.REFLECTIONS,
+          [TabId.LESSONS]: StudyModeTabId.LESSONS,
+          [TabId.RELATED_VERSES]: StudyModeTabId.RELATED_VERSES,
+          [TabId.ANSWERS]: StudyModeTabId.ANSWERS,
+          [TabId.QIRAAT]: StudyModeTabId.QIRAAT,
+          [TabId.HADITH]: StudyModeTabId.HADITH,
+        };
+
+        const studyModeTab = tabIdMap[tabType];
+        if (studyModeTab) {
+          dispatch(openStudyMode({ verseKey, activeTab: studyModeTab }));
+        }
+
+        logButtonClick(
+          `${
+            isTranslationView ? 'translation_view' : 'reading_view'
+          }_verse_bottom_actions_${tabType}`,
+        );
+
+        fakeNavigate(navigationFn(), lang);
       };
-
-      const studyModeTab = tabIdMap[tabType];
-      if (studyModeTab) {
-        dispatch(openStudyMode({ verseKey, activeTab: studyModeTab }));
-      }
-
-      logButtonClick(
-        `${
-          isTranslationView ? 'translation_view' : 'reading_view'
-        }_verse_bottom_actions_${tabType}`,
-      );
-
-      fakeNavigate(navigationFn(), lang);
-    };
-  };
+    },
+    [dispatch, isTranslationView, lang, verseKey],
+  );
 
   // Define tab configurations
   const tabs = React.useMemo(

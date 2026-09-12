@@ -4,7 +4,7 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable max-lines */
 
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -54,7 +54,16 @@ const TranslationText: React.FC<Props> = ({
     dl: t('footnote-dl'),
   };
 
+  const isMountedRef = useRef(true);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const resetFootnote = () => {
+    if (!isMountedRef.current) return;
     setFootnote(null);
     setSubFootnote(null);
     setIsLoading(false);
@@ -122,12 +131,14 @@ const TranslationText: React.FC<Props> = ({
           setIsLoading(true);
           getFootnote(footNoteId)
             .then((res) => {
-              if (res.status !== 500) {
+              if (isMountedRef.current && res.status !== 500) {
                 setFootnote(res.footNote);
               }
             })
             .finally(() => {
-              setIsLoading(false);
+              if (isMountedRef.current) {
+                setIsLoading(false);
+              }
             });
         }
       } else if (footnote && footnote.id === footnoteText) {

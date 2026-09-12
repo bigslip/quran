@@ -95,20 +95,7 @@ const Chapter: NextPage<ChapterProps> = ({
     return getVerseNavigationUrl(chapterResponse.chapter.slug, verseNumber.toString());
   };
   const path = getPath();
-  const getCanonicalUrlValue = () => {
-    if (isRange) {
-      return getCanonicalUrl(lang, path);
-    }
-    if (isChapter) {
-      return getCanonicalUrl(lang, path);
-    }
-    const { verseNumber } = versesResponse.verses[0];
-    // if it's Ayatul Kursi
-    if (isAyatulKursi(chapterResponse.chapter.id as string, verseNumber)) {
-      return getCanonicalUrl(lang, path);
-    }
-    return getCanonicalUrl(lang, path);
-  };
+  const canonicalUrl = getCanonicalUrl(lang, path);
 
   const getSEOTitle = () => {
     if (isRange) {
@@ -140,7 +127,7 @@ const Chapter: NextPage<ChapterProps> = ({
       });
     }
     return !isChapter
-      ? versesResponse.verses[0].textImlaeiSimple
+      ? versesResponse.verses[0]?.textImlaeiSimple
       : t('chapter:meta-description', {
           transliteratedName: chapterResponse.chapter.transliteratedName,
           translatedName: chapterResponse.chapter.translatedName as string,
@@ -155,7 +142,7 @@ const Chapter: NextPage<ChapterProps> = ({
     <>
       <NextSeoWrapper
         title={getSEOTitle()}
-        canonical={getCanonicalUrlValue()}
+        canonical={canonicalUrl}
         image={getOGImage()}
         imageWidth={1200}
         imageHeight={630}
@@ -164,7 +151,11 @@ const Chapter: NextPage<ChapterProps> = ({
       />
       <QuranReader
         initialData={versesResponse}
-        id={isRange ? null : chapterResponse.chapter.id}
+        id={
+          isRange
+            ? `${versesResponse.pagesLookup?.lookupRange?.from}-${versesResponse.pagesLookup?.lookupRange?.to}`
+            : chapterResponse.chapter.id
+        }
         quranReaderDataType={quranReaderDataType}
       />
     </>
@@ -176,8 +167,16 @@ const AYAH_KURSI_SLUGS = ['ayatul-kursi', 'آیت الکرسی'];
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   let chapterIdOrVerseKeyOrSlug = String(params.chapterId);
+  const isAyahKursiSlug = AYAH_KURSI_SLUGS.includes(chapterIdOrVerseKeyOrSlug.toLowerCase());
+
+  const [sluggedChapterId, chaptersData] = await Promise.all([
+    isValidChapterId(chapterIdOrVerseKeyOrSlug) || isAyahKursiSlug
+      ? Promise.resolve(null)
+      : getChapterIdBySlug(chapterIdOrVerseKeyOrSlug, locale),
+    getAllChaptersData(locale),
+  ]);
+
   let isValidChapter = isValidChapterId(chapterIdOrVerseKeyOrSlug);
-  const chaptersData = await getAllChaptersData(locale);
   const isValidRanges = isRangesStringValid(chaptersData, chapterIdOrVerseKeyOrSlug);
   // initialize the value as if it's chapter
   let chapterId = chapterIdOrVerseKeyOrSlug;
@@ -187,10 +186,9 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     !isValidVerseKey(chaptersData, chapterIdOrVerseKeyOrSlug)
   ) {
     // if the value is a slug of Ayatul Kursi
-    if (AYAH_KURSI_SLUGS.includes(chapterIdOrVerseKeyOrSlug.toLowerCase())) {
+    if (isAyahKursiSlug) {
       chapterIdOrVerseKeyOrSlug = '2:255';
     } else {
-      const sluggedChapterId = await getChapterIdBySlug(chapterIdOrVerseKeyOrSlug, locale);
       // if it's not a valid slug
       if (!sluggedChapterId) {
         return { notFound: true };

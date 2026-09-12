@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import useGlobalReadingBookmark from '@/hooks/auth/useGlobalReadingBookmark';
 import useSurahBookmarks from '@/hooks/auth/useSurahBookmarks';
+import { RootState } from '@/redux/RootState';
 import { selectGuestReadingBookmark } from '@/redux/slices/guestBookmark';
-import { selectBookmarks } from '@/redux/slices/QuranReader/bookmarks';
-import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import BookmarkType from '@/types/BookmarkType';
 import Verse from '@/types/Verse';
 import { getMushafId } from '@/utils/api';
@@ -31,9 +30,12 @@ interface UseBookmarkStateResult {
  * @returns {UseBookmarkStateResult} Bookmark state and loading status
  */
 const useBookmarkState = (verse: Verse): UseBookmarkStateResult => {
-  const bookmarkedVerses = useSelector(selectBookmarks, shallowEqual);
-  const quranReaderStyles = useSelector(selectQuranReaderStyles, shallowEqual);
-  const mushafId = getMushafId(quranReaderStyles.quranFont, quranReaderStyles.mushafLines).mushaf;
+  const isGuestBookmarked = useSelector((state: RootState) =>
+    Boolean(state.bookmarks?.bookmarkedVerses?.[verse.verseKey]),
+  );
+  const quranFont = useSelector((state: RootState) => state.quranReaderStyles.quranFont);
+  const mushafLines = useSelector((state: RootState) => state.quranReaderStyles.mushafLines);
+  const mushafId = getMushafId(quranFont, mushafLines).mushaf;
   const guestReadingBookmark = useSelector(selectGuestReadingBookmark);
   const isGuest = !isLoggedIn();
 
@@ -80,11 +82,11 @@ const useBookmarkState = (verse: Verse): UseBookmarkStateResult => {
   // Check if verse is bookmarked (in default collection or any collection)
   const isVerseBookmarked = useMemo(() => {
     if (isGuest) {
-      return !!bookmarkedVerses[verse.verseKey];
+      return isGuestBookmarked;
     }
     const count = bookmark?.collectionsCount;
     return count > 0;
-  }, [bookmarkedVerses, bookmark, isGuest, verse.verseKey]);
+  }, [isGuestBookmarked, bookmark, isGuest]);
 
   const isVerseMultipleBookmarked = useMemo(() => {
     if (isGuest) {

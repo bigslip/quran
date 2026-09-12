@@ -218,4 +218,4 @@ const PageContainer: React.FC<Props> = ({
   );
 };
 
-export default PageContainer;
+export default React.memo(PageContainer);

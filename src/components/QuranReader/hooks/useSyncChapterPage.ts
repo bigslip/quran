@@ -44,7 +44,14 @@ const useSyncChapterPage = (initialData: VersesResponse): void => {
         chaptersData,
       }),
     );
-  }, [firstVerseKey, chaptersData, dispatch, firstVerse]);
+  }, [
+    firstVerseKey,
+    firstVerse?.chapterId,
+    firstVerse?.pageNumber,
+    firstVerse?.hizbNumber,
+    chaptersData,
+    dispatch,
+  ]);
 };
 
 export default useSyncChapterPage;

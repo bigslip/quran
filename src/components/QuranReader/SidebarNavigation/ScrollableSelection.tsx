@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
@@ -25,10 +25,14 @@ const ScrollableSelection = ({
   const [loadingItemValue, setLoadingItemValue] = useState<string | number | null>(null);
   const router = useRouter();
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.value.toString().startsWith(searchQuery) ||
-      item.label.toString().startsWith(searchQuery),
+  const filteredItems = useMemo(
+    () =>
+      items.filter(
+        (item) =>
+          item.value.toString().startsWith(searchQuery) ||
+          item.label.toString().startsWith(searchQuery),
+      ),
+    [items, searchQuery],
   );
 
   useEffect(() => {
@@ -44,6 +48,7 @@ const ScrollableSelection = ({
   }, [router.events]);
 
   useEffect(() => {
+    if (!searchQuery.trim()) return;
     if (!filteredItems.length) {
       logEmptySearchResults({
         query: searchQuery,
@@ -59,7 +64,7 @@ const ScrollableSelection = ({
           : SearchQuerySource.SidebarNavigationPagesList,
       );
     }
-  }, [searchQuery, filteredItems, isJuz]);
+  }, [searchQuery, filteredItems.length, isJuz]);
 
   const [scroll, selectedItemRef] = useScrollToElement<HTMLDivElement>(SCROLL_TO_NEAREST_ELEMENT);
   useEffect(() => {

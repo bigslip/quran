@@ -72,16 +72,21 @@ const VerseList: React.FC<Props> = ({ onAfterNavigationItemRouted, selectedChapt
     [chaptersData, currentChapterId],
   );
 
-  const filteredVerseKeys = verseKeys.filter((verseKey) => {
-    const verseNumber = getVerseNumberFromKey(verseKey);
-    const localizedVerseNumber = toLocalizedNumber(verseNumber, lang);
-    return (
-      localizedVerseNumber.toString().startsWith(searchQuery) ||
-      verseNumber.toString().startsWith(searchQuery)
-    );
-  });
+  const filteredVerseKeys = useMemo(
+    () =>
+      verseKeys.filter((verseKey) => {
+        const verseNumber = getVerseNumberFromKey(verseKey);
+        const localizedVerseNumber = toLocalizedNumber(verseNumber, lang);
+        return (
+          localizedVerseNumber.toString().startsWith(searchQuery) ||
+          verseNumber.toString().startsWith(searchQuery)
+        );
+      }),
+    [lang, searchQuery, verseKeys],
+  );
 
   useEffect(() => {
+    if (!searchQuery.trim()) return;
     if (!filteredVerseKeys.length) {
       logEmptySearchResults({
         query: searchQuery,
@@ -90,7 +95,7 @@ const VerseList: React.FC<Props> = ({ onAfterNavigationItemRouted, selectedChapt
     } else {
       logTextSearchQuery(searchQuery, SearchQuerySource.SidebarNavigationVersesList);
     }
-  }, [searchQuery, filteredVerseKeys]);
+  }, [searchQuery, filteredVerseKeys.length]);
 
   // Handle when user press `Enter` in input box
   const handleVerseInputSubmit = (e: React.FormEvent<HTMLFormElement>) => {

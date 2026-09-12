@@ -41,21 +41,26 @@ type VerseProps = {
 
 const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse }) => {
   const { t, lang } = useTranslation('common');
-  const {
-    query: { verseId },
-  } = useRouter();
-  const path = getVerseNavigationUrl(chapterResponse.chapter.slug, verseId as string);
+  const router = useRouter();
+  const verseIdFromQuery = router.query.verseId;
+  const currentVerseId =
+    (typeof verseIdFromQuery === 'string' ? verseIdFromQuery : null) ||
+    (isVerse
+      ? versesResponse?.verses?.[0]?.verseNumber?.toString()
+      : `${versesResponse?.verses?.[0]?.verseNumber}-${versesResponse?.verses?.[versesResponse?.verses?.length - 1]?.verseNumber}`) ||
+    '';
+  const path = getVerseNavigationUrl(chapterResponse.chapter.slug, currentVerseId);
   return (
     <>
       <NextSeoWrapper
         title={`${t('surah')} ${chapterResponse.chapter.transliteratedName} - ${
           isVerse
-            ? toLocalizedNumber(Number(verseId), lang)
-            : toLocalizedVersesRange(verseId as string, lang)
+            ? toLocalizedNumber(Number(currentVerseId), lang)
+            : toLocalizedVersesRange(currentVerseId, lang)
         }`}
         image={getChapterOgImageUrl({
           chapterId: chapterResponse.chapter.id,
-          verseNumber: isVerse ? Number(verseId) : undefined,
+          verseNumber: isVerse ? Number(currentVerseId) : undefined,
           locale: lang,
         })}
         imageWidth={1200}
@@ -66,7 +71,7 @@ const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse 
       />
       <QuranReader
         initialData={versesResponse}
-        id={chapterResponse.chapter.id}
+        id={isVerse ? `${chapterResponse.chapter.id}:${currentVerseId}` : chapterResponse.chapter.id}
         quranReaderDataType={
           isVerse ? QuranReaderDataType.Verse : QuranReaderDataType.ChapterVerseRanges
         }
