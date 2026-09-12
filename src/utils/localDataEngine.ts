@@ -450,23 +450,28 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     const mushaf = Number(query.mushaf) || 2;
     const lookup = mushaf === 1 && state.pagesLookupV1 ? state.pagesLookupV1 : state.pagesLookupV2;
     if (lookup) {
+      let filteredPages = lookup.pages;
+      let lookupRange = lookup.lookupRange;
       if (query.chapter_number) {
         const ch = state.chaptersMap.get(Number(query.chapter_number));
         if (ch && ch.pages) {
           const [startPage, endPage] = ch.pages;
-          const filteredPages: Record<string, any> = {};
+          filteredPages = {};
           for (let p = startPage; p <= endPage; p++) {
             if (lookup.pages[String(p)]) {
               filteredPages[String(p)] = lookup.pages[String(p)];
             }
           }
-          return {
-            ...lookup,
-            pages: filteredPages,
-          };
         }
       }
-      return lookup;
+      if (query.from && query.to) {
+        lookupRange = { from: String(query.from), to: String(query.to) };
+      }
+      return {
+        ...lookup,
+        lookupRange,
+        pages: filteredPages,
+      };
     }
     throw new Error('Pages lookup not available');
   }
