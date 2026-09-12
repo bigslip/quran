@@ -12,9 +12,10 @@ import Spinner from '@/dls/Spinner/Spinner';
 import usePersistPreferenceGroup from '@/hooks/auth/usePersistPreferenceGroup';
 import ChevronLeftIcon from '@/icons/chevron-left.svg';
 import {
+  selectEnableAutoScrolling,
+  selectShowTooltipWhenPlayingAudio,
   setEnableAutoScrolling,
   setShowTooltipWhenPlayingAudio,
-  selectAudioPlayerState,
 } from '@/redux/slices/AudioPlayer/state';
 import { selectTooltipContentType } from '@/redux/slices/QuranReader/readingPreferences';
 import { logValueChange } from '@/utils/eventLogger';
@@ -27,32 +28,38 @@ const AudioExperienceMenu = ({ onBack }) => {
     actions: { onSettingsChange },
   } = usePersistPreferenceGroup();
 
-  const audioPlayerState = useSelector(selectAudioPlayerState);
-  const { enableAutoScrolling, showTooltipWhenPlayingAudio } = audioPlayerState;
+  const enableAutoScrolling = useSelector(selectEnableAutoScrolling);
+  const showTooltipWhenPlayingAudio = useSelector(selectShowTooltipWhenPlayingAudio);
   const showTooltipFor = useSelector(selectTooltipContentType);
 
   const onAudioSettingsChange = (
     key: string,
     value: number | boolean,
     actionCreator: ActionCreatorWithOptionalPayload<number | boolean>,
+    previousValue: number | boolean,
   ) => {
     onSettingsChange(
       key,
       value,
       actionCreator(value),
-      actionCreator(audioPlayerState[key]),
+      actionCreator(previousValue),
       PreferenceGroup.AUDIO,
     );
   };
 
   const onEnableAutoScrollingChange = (newValue: boolean) => {
     logValueChange('audio_settings_auto_scrolling_enabled', !newValue, newValue);
-    onAudioSettingsChange('enableAutoScrolling', newValue, setEnableAutoScrolling);
+    onAudioSettingsChange('enableAutoScrolling', newValue, setEnableAutoScrolling, enableAutoScrolling);
   };
 
   const onShowTooltipWhenPlayingAudioChange = (newValue: boolean) => {
     logValueChange('audio_settings_show_tooltip_when_playing_audio', !newValue, newValue);
-    onAudioSettingsChange('showTooltipWhenPlayingAudio', newValue, setShowTooltipWhenPlayingAudio);
+    onAudioSettingsChange(
+      'showTooltipWhenPlayingAudio',
+      newValue,
+      setShowTooltipWhenPlayingAudio,
+      showTooltipWhenPlayingAudio,
+    );
   };
 
   return (
