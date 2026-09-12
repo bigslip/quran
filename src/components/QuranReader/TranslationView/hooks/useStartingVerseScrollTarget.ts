@@ -123,7 +123,8 @@ const useStartingVerseScrollTarget = ({
     startingVerse,
     targetVerseIndex,
     targetVerseKey,
-    shouldSkipInitialScroll: isValidChapterStartingVerse && targetVerseIndex === 0, // Skip when requested verse is already the first rendered item.
+    shouldSkipInitialScroll:
+      (isValidChapterStartingVerse || isValidLookupStartingVerseKey) && targetVerseIndex === 0, // Skip when requested verse is already the first rendered item.
   };
 };
 

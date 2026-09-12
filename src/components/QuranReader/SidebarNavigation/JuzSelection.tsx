@@ -1,10 +1,11 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 import { useSelector } from 'react-redux';
 
 import ScrollableSelection from './ScrollableSelection';
 
+import { RootState } from '@/redux/RootState';
 import { selectLastReadVerseKey } from '@/redux/slices/QuranReader/readingTracker';
 import { getJuzIds, getJuzNumberByHizb } from '@/utils/juz';
 import { getJuzNavigationUrl } from '@/utils/navigation';
@@ -15,11 +16,11 @@ type Props = {
 
 const JuzSelection: React.FC<Props> = ({ onAfterNavigationItemRouted }) => {
   const { t, lang } = useTranslation('common');
-  const juzIds = getJuzIds(lang);
-  const lastReadVerseKey = useSelector(selectLastReadVerseKey);
+  const juzIds = useMemo(() => getJuzIds(lang), [lang]);
+  const hizb = useSelector((state: RootState) => selectLastReadVerseKey(state)?.hizb);
   const selectedJuz = useMemo(
-    () => getJuzNumberByHizb(Number(lastReadVerseKey.hizb)),
-    [lastReadVerseKey.hizb],
+    () => (hizb ? getJuzNumberByHizb(Number(hizb)) : 1),
+    [hizb],
   );
 
   return (
@@ -33,4 +34,4 @@ const JuzSelection: React.FC<Props> = ({ onAfterNavigationItemRouted }) => {
     />
   );
 };
-export default JuzSelection;
+export default React.memo(JuzSelection);

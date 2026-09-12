@@ -28,19 +28,25 @@ import ChaptersData from 'types/ChaptersData';
 interface JuzPageProps {
   juzVerses?: VersesResponse;
   chaptersData: ChaptersData;
+  juzId?: string;
 }
 
-const JuzPage: NextPage<JuzPageProps> = ({ juzVerses }) => {
+const JuzPage: NextPage<JuzPageProps> = ({ juzVerses, juzId: initialJuzId }) => {
   const { t, lang } = useTranslation('common');
-  const {
-    query: { juzId },
-  } = useRouter();
+  const router = useRouter();
+  const juzIdFromQuery = router.query.juzId;
+  const juzId =
+    (typeof juzIdFromQuery === 'string' ? juzIdFromQuery : null) ||
+    initialJuzId ||
+    juzVerses?.verses?.[0]?.juzNumber?.toString() ||
+    '1';
+  const juzNumber = Number(juzId);
 
-  const path = getJuzNavigationUrl(Number(juzId));
+  const path = getJuzNavigationUrl(juzNumber);
   return (
     <>
       <NextSeoWrapper
-        title={`${t('juz')} ${toLocalizedNumber(Number(juzId), lang)}`}
+        title={`${t('juz')} ${toLocalizedNumber(juzNumber, lang)}`}
         description={getPageOrJuzMetaDescription(juzVerses)}
         canonical={getCanonicalUrl(lang, path)}
         languageAlternates={getLanguageAlternates(path)}
@@ -98,6 +104,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
       props: {
         chaptersData,
         juzVerses: juzVersesResponse,
+        juzId,
       },
       revalidate: ONE_WEEK_REVALIDATION_PERIOD_SECONDS, // verses will be generated at runtime if not found in the cache, then cached for subsequent requests for 7 days.
     };

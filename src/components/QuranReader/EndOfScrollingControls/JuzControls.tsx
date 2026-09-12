@@ -18,7 +18,23 @@ interface Props {
 const JuzControls: React.FC<Props> = ({ lastVerse }) => {
   const { t } = useTranslation('quran-reader');
   const scrollToTop = useScrollToTop();
-  const { juzNumber } = lastVerse;
+  const juzNumber = lastVerse?.juzNumber;
+
+  const onPrevClicked = React.useCallback(() => {
+    logButtonClick('juz_control_prev_juz');
+  }, []);
+
+  const onBeginningClicked = React.useCallback(() => {
+    logButtonClick('juz_control_scroll_to_beginning');
+    scrollToTop();
+  }, [scrollToTop]);
+
+  const onNextClicked = React.useCallback(() => {
+    logButtonClick('juz_control_next_juz');
+  }, []);
+
+  if (!juzNumber) return null;
+
   return (
     <>
       {!isFirstJuz(juzNumber) && (
@@ -26,19 +42,14 @@ const JuzControls: React.FC<Props> = ({ lastVerse }) => {
           type={ButtonType.Secondary}
           prefix={<ChevronLeftIcon />}
           href={getJuzNavigationUrl(juzNumber - 1)}
-          onClick={() => {
-            logButtonClick('juz_control_prev_juz');
-          }}
+          onClick={onPrevClicked}
         >
           {t('prev-juz')}
         </Button>
       )}
       <Button
         type={ButtonType.Secondary}
-        onClick={() => {
-          logButtonClick('juz_control_scroll_to_beginning');
-          scrollToTop();
-        }}
+        onClick={onBeginningClicked}
       >
         {t('juz-beginning')}
       </Button>
@@ -48,9 +59,7 @@ const JuzControls: React.FC<Props> = ({ lastVerse }) => {
           type={ButtonType.Secondary}
           suffix={<ChevronRightIcon />}
           href={getJuzNavigationUrl(juzNumber + 1)}
-          onClick={() => {
-            logButtonClick('juz_control_next_juz');
-          }}
+          onClick={onNextClicked}
         >
           {t('next-juz')}
         </Button>
@@ -59,4 +68,4 @@ const JuzControls: React.FC<Props> = ({ lastVerse }) => {
   );
 };
 
-export default JuzControls;
+export default React.memo(JuzControls);

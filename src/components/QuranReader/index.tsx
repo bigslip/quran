@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { useSelector as useXstateSelector } from '@xstate/react';
 import classNames from 'classnames';
@@ -82,6 +82,16 @@ const QuranReader = ({
 
   useSyncChapterPage(initialData);
 
+  const bannerAnalyticsSource = useMemo(
+    () => getReaderBannerAnalyticsSource(quranReaderDataType),
+    [quranReaderDataType],
+  );
+
+  const bannerAnalyticsParams = useMemo(
+    () => getReaderBannerAnalyticsParams(quranReaderDataType, id, initialData?.verses?.[0]),
+    [quranReaderDataType, id, initialData?.verses],
+  );
+
   return (
     <>
       <FontPreLoader isQuranReader locale={lang} />
@@ -129,12 +139,8 @@ const QuranReader = ({
           <HomepageFundraisingBanner
             context={FundraisingBannerContext.QuranReader}
             layout={FundraisingBannerLayout.Floating}
-            analyticsSource={getReaderBannerAnalyticsSource(quranReaderDataType)}
-            analyticsParams={getReaderBannerAnalyticsParams(
-              quranReaderDataType,
-              id,
-              initialData?.verses?.[0],
-            )}
+            analyticsSource={bannerAnalyticsSource}
+            analyticsParams={bannerAnalyticsParams}
           />
         </div>
       )}
