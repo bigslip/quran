@@ -269,6 +269,24 @@
         "name": "Hafs",
         "language_name": "english"
       }
+    },
+    {
+      "id": 202,
+      "reciter_id": 202,
+      "name": "Mahmoud Khalil Al-Husary",
+      "translated_name": {
+        "name": "Mahmoud Khalil Al-Husary",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
     }
   ]
 }

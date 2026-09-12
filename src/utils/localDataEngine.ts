@@ -688,7 +688,12 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
   // 12. Audio Endpoints
   // -------------------------------------------------------------
   if (cleanPath === 'audio/reciters') {
-    return state.recitersList || { reciters: [] };
+    try {
+      const recitersPath = await resolveDataFile('audio/reciters.json');
+      return JSON.parse(await fs.readFile(recitersPath, 'utf-8'));
+    } catch {
+      return state.recitersList || { reciters: [] };
+    }
   }
 
   if (cleanPath.startsWith('audio/reciters/') && cleanPath.endsWith('/audio_files')) {
