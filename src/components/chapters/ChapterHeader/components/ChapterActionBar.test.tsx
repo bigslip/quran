@@ -27,6 +27,10 @@ vi.mock('@/icons/search.svg', () => ({
   default: (props: React.SVGProps<SVGSVGElement>) => <svg data-testid="search-icon" {...props} />,
 }));
 
+vi.mock('@/icons/info.svg', () => ({
+  default: (props: React.SVGProps<SVGSVGElement>) => <svg data-testid="info-icon" {...props} />,
+}));
+
 afterEach(() => {
   cleanup();
 });

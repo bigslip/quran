@@ -1,5 +1,5 @@
 /* eslint-disable i18next/no-literal-string */
-import React, { useContext } from 'react';
+import React from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import styles from './ChapterHeader.module.scss';
 import BismillahSection from './components/BismillahSection';
 import ChapterEvent from './components/ChapterEvent';
-import ChapterTitle from './components/ChapterTitle';
+import SanctuaryHeaderCard from './components/SanctuaryHeaderCard';
 import TranslationSettingsButton from './components/TranslationSettingsButton';
 import ReadingModeActions from './ReadingModeActions';
 
@@ -17,9 +17,7 @@ import useChapterEvent from '@/hooks/useChapterEvent';
 import useDirection from '@/hooks/useDirection';
 import { selectReadingPreference } from '@/redux/slices/QuranReader/readingPreferences';
 import Language from '@/types/Language';
-import { getChapterData } from '@/utils/chapter';
 import isInReadingMode from '@/utils/readingPreference';
-import DataContext from 'src/contexts/DataContext';
 
 interface ChapterHeaderProps {
   chapterId: string;
@@ -29,7 +27,7 @@ interface ChapterHeaderProps {
 
 /**
  * The ChapterHeader component that is shown at the top of the chapter page.
- * It shows the chapter name, number, and bismillah.
+ * It shows the chapter sanctuary hero card and bismillah.
  *
  * @param {ChapterHeaderProps} props
  * @returns {JSX.Element}
@@ -40,8 +38,6 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
   className,
 }) => {
   const { lang } = useTranslation('quran-reader');
-  const chaptersData = useContext(DataContext);
-  const chapterData = getChapterData(chaptersData, chapterId);
   const isArabicOrUrdu =
     lang === Language.AR || lang === Language.UR || lang === Language.FA;
   const direction = useDirection();
@@ -67,13 +63,8 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
       )}
 
       <div className={classNames(styles.container, className)}>
-        {/* Chapter title section */}
-        <ChapterTitle
-          chapterId={chapterId}
-          transliteratedName={chapterData?.transliteratedName}
-          translatedName={chapterData?.translatedName}
-          showTranslatedName={!isArabicOrUrdu}
-        />
+        {/* Sanctuary Hero Card section */}
+        <SanctuaryHeaderCard chapterId={chapterId} />
 
         {/* Bismillah section */}
         <BismillahSection

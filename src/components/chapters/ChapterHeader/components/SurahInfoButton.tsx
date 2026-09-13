@@ -11,6 +11,7 @@ import styles from '../ChapterHeader.module.scss';
 import surahInfoStyles from '@/components/chapters/Info/SurahInfoModal.module.scss';
 import { ContentModalSize } from '@/components/dls/ContentModal/ContentModal';
 import DataContext from '@/contexts/DataContext';
+import InfoIcon from '@/icons/info.svg';
 import { getChapterData } from '@/utils/chapter';
 import { logButtonClick } from '@/utils/eventLogger';
 import { fakeNavigate, getSurahInfoNavigationUrl, getSurahNavigationUrl } from '@/utils/navigation';
@@ -70,13 +71,14 @@ const SurahInfoButton: React.FC<SurahInfoButtonProps> = ({ chapterId, className 
   return (
     <>
       <button
-        className={classNames(styles.infoIconButton, className)}
+        className={classNames(styles.actionPillButton, className)}
         onClick={handleClick}
         aria-label={t('surah-info')}
         type="button"
         data-testid="surah-info-button"
       >
-        {t('info')}
+        <InfoIcon className={styles.actionIcon} aria-hidden="true" />
+        <span>{t('info')}</span>
       </button>
       {chapterId && chapter && (
         <ContentModal
