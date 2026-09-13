@@ -10,6 +10,8 @@ import { PagesLookUpResponse, VersesResponse } from 'types/ApiResponses';
 import LookupRange from 'types/LookupRange';
 import LookupRecord from 'types/LookupRecord';
 
+const EMPTY_PAGES_MAP: Record<number, LookupRecord> = {};
+
 /**
  * This hooks fetches the total number of pages of a specific Mushaf of
  * a resource e.g. a page/juz/verse/range/hiz etc.
@@ -55,7 +57,7 @@ const useFetchPagesLookup = (
   return {
     data,
     pagesCount: data?.totalPage ?? 0,
-    pagesVersesRange: data?.pages ?? {},
+    pagesVersesRange: data?.pages ?? EMPTY_PAGES_MAP,
     lookupRange: data?.lookupRange,
     hasError: !!error,
     isLoading: isValidating && !data,

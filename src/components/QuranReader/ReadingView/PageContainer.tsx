@@ -108,9 +108,10 @@ const PageContainer: React.FC<Props> = ({
   const isPersistGateHydrationComplete = useSelector(selectIsPersistGateHydrationComplete);
   const { isLoggedIn } = useIsLoggedIn();
 
+  const fallbackPageNumber = initialData?.verses?.[0]?.pageNumber ?? 1;
   const pageNumber = useMemo(
-    () => getPageNumberByPageIndex(pageIndex, pagesVersesRange),
-    [pageIndex, pagesVersesRange],
+    () => getPageNumberByPageIndex(pageIndex, pagesVersesRange, fallbackPageNumber),
+    [pageIndex, pagesVersesRange, fallbackPageNumber],
   );
   const initialVerses = useMemo(
     () => (pageIndex === 0 ? getInitialVerses(pageNumber, initialData.verses) : initialData.verses),
@@ -176,12 +177,17 @@ const PageContainer: React.FC<Props> = ({
   const effectiveVerses = verses || (shouldUseInitialData ? initialVerses : null);
 
   useEffect(() => {
-    if (effectiveVerses) {
+    if (effectiveVerses && !Number.isNaN(pageNumber)) {
       // @ts-ignore
-      setMushafPageToVersesMap((prevMushafPageToVersesMap: Record<number, Verse[]>) => ({
-        ...prevMushafPageToVersesMap,
-        [pageNumber]: effectiveVerses,
-      }));
+      setMushafPageToVersesMap((prevMushafPageToVersesMap: Record<number, Verse[]>) => {
+        if (prevMushafPageToVersesMap?.[pageNumber] === effectiveVerses) {
+          return prevMushafPageToVersesMap;
+        }
+        return {
+          ...prevMushafPageToVersesMap,
+          [pageNumber]: effectiveVerses,
+        };
+      });
     }
   }, [pageNumber, setMushafPageToVersesMap, effectiveVerses]);
 

@@ -119,13 +119,22 @@ const useStartingVerseScrollTarget = ({
     ],
   );
 
-  return {
-    startingVerse,
-    targetVerseIndex,
-    targetVerseKey,
-    shouldSkipInitialScroll:
-      (isValidChapterStartingVerse || isValidLookupStartingVerseKey) && targetVerseIndex === 0, // Skip when requested verse is already the first rendered item.
-  };
+  return useMemo(
+    () => ({
+      startingVerse,
+      targetVerseIndex,
+      targetVerseKey,
+      shouldSkipInitialScroll:
+        (isValidChapterStartingVerse || isValidLookupStartingVerseKey) && targetVerseIndex === 0, // Skip when requested verse is already the first rendered item.
+    }),
+    [
+      startingVerse,
+      targetVerseIndex,
+      targetVerseKey,
+      isValidChapterStartingVerse,
+      isValidLookupStartingVerseKey,
+    ],
+  );
 };
 
 export default useStartingVerseScrollTarget;

@@ -7,7 +7,7 @@ const getQuranReaderData = (
   return {
     ...pageVersesData,
     pagesLookup: pagesLookupData,
-    metaData: { numberOfVerses: pageVersesData.verses.length },
+    metaData: { numberOfVerses: pageVersesData?.verses?.length ?? 0 },
   };
 };
 

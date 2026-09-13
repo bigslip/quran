@@ -161,16 +161,23 @@ export const getReaderViewRequestKey = ({
     return {};
   };
 
-  return makePageVersesUrl(pageNumber, locale, {
-    ...getDefaultWordFields(quranReaderStyles.quranFont),
-    ...getMushafId(quranReaderStyles.quranFont, quranReaderStyles.mushafLines),
-    reciter,
-    perPage: 'all',
-    wordTranslationLanguage: wordByWordLocale,
-    filterPageWords: true,
-    ...getTranslationsParam(),
-    ...(pageVersesRange && { ...pageVersesRange }), // add the from and to verse range of the current page
-  });
+  const isReadingTranslationMode = readingPreference === ReadingPreference.ReadingTranslation;
+
+  return makePageVersesUrl(
+    pageNumber,
+    locale,
+    {
+      ...getDefaultWordFields(quranReaderStyles.quranFont),
+      ...getMushafId(quranReaderStyles.quranFont, quranReaderStyles.mushafLines),
+      reciter,
+      perPage: 'all',
+      wordTranslationLanguage: wordByWordLocale,
+      filterPageWords: true,
+      ...getTranslationsParam(),
+      ...(pageVersesRange && { ...pageVersesRange }), // add the from and to verse range of the current page
+    },
+    isReadingTranslationMode,
+  );
 };
 
 export const getPagesLookupParams = (

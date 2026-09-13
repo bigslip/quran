@@ -63,6 +63,8 @@ const getMushafTotalPageNumber = (quranFont?: QuranFont, mushafLines?: MushafLin
   return mushafTotalPages;
 };
 
+const pageIdsCache: Record<string, { value: number; label: string }[]> = {};
+
 /**
  * Return array of page id
  *
@@ -72,11 +74,18 @@ export const getPageIdsByMushaf = (
   lang: string,
   quranFont?: QuranFont,
   mushafLines?: MushafLines,
-): { value: number; label: string }[] =>
-  [...Array(getMushafTotalPageNumber(quranFont, mushafLines))].map((n, index) => {
-    const page = index + 1;
-    return { value: page, label: toLocalizedNumber(page, lang) };
-  });
+): { value: number; label: string }[] => {
+  const cacheKey = `${lang}_${quranFont || ''}_${mushafLines || ''}`;
+  if (!pageIdsCache[cacheKey]) {
+    pageIdsCache[cacheKey] = [...Array(getMushafTotalPageNumber(quranFont, mushafLines))].map(
+      (n, index) => {
+        const page = index + 1;
+        return { value: page, label: toLocalizedNumber(page, lang) };
+      },
+    );
+  }
+  return pageIdsCache[cacheKey];
+};
 
 /**
  * Get the number of lines in a Mushaf page based on the Mushaf.

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import Button, { ButtonType } from '@/dls/Button/Button';
 import ChevronLeftIcon from '@/icons/chevron-left.svg';
@@ -24,9 +24,21 @@ const PageControls: React.FC<Props> = ({ lastVerse }) => {
    * Mushaf can point to the next page instead of the current one when
    * the verse spans across 2 pages e.g. /ur/page/30 (verse 16).
    */
-  const { pageNumber } = lastVerse.words[lastVerse.words.length - 1];
-  const { quranFont, mushafLines } = useSelector(selectQuranReaderStyles);
+  const lastWord = lastVerse?.words?.[lastVerse.words?.length - 1];
+  const pageNumber = lastWord?.pageNumber ?? lastVerse?.pageNumber;
   const page = Number(pageNumber);
+  const { quranFont, mushafLines } = useSelector(selectQuranReaderStyles, shallowEqual);
+
+  const onPrevClicked = useCallback(() => {
+    logButtonClick('page_control_prev_page');
+  }, []);
+
+  const onNextClicked = useCallback(() => {
+    logButtonClick('page_control_next_page');
+  }, []);
+
+  if (!page || Number.isNaN(page)) return null;
+
   return (
     <>
       {!isFirstPage(page) && (
@@ -34,9 +46,7 @@ const PageControls: React.FC<Props> = ({ lastVerse }) => {
           type={ButtonType.Secondary}
           prefix={<ChevronLeftIcon />}
           href={getPageNavigationUrl(page - 1)}
-          onClick={() => {
-            logButtonClick('page_control_prev_page');
-          }}
+          onClick={onPrevClicked}
         >
           {t('prev-page')}
         </Button>
@@ -46,9 +56,7 @@ const PageControls: React.FC<Props> = ({ lastVerse }) => {
           type={ButtonType.Secondary}
           suffix={<ChevronRightIcon />}
           href={getPageNavigationUrl(page + 1)}
-          onClick={() => {
-            logButtonClick('page_control_next_page');
-          }}
+          onClick={onNextClicked}
         >
           {t('next-page')}
         </Button>
@@ -57,4 +65,4 @@ const PageControls: React.FC<Props> = ({ lastVerse }) => {
   );
 };
 
-export default PageControls;
+export default React.memo(PageControls);
