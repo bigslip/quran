@@ -47,3 +47,15 @@ export const getWordByWordCdnAudioUrl = (
 ) => {
   return getWordByWordAudioUrl(chapter, verse, wordLocation, false);
 };
+
+/**
+ * Given a chapter ID and reciter ID, get the chapter-level mp3 audio URL.
+ *
+ * @param {number} chapter the chapter ID
+ * @param {number} reciterId the reciter ID (defaults to 7 - Mishari Rashid al-Afasy)
+ * @returns {string} full audio URL
+ */
+export const getChapterAudioUrl = (chapter: number, reciterId: number = 7): string => {
+  const formattedChapter = formatNumber(chapter);
+  return `https://quran.ir/audio/reciters/${reciterId}/${formattedChapter}.mp3`;
+};

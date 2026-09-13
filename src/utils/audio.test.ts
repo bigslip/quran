@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  getChapterAudioUrl,
   getWordByWordAudioUrl,
   getWordByWordCdnAudioUrl,
   LOCAL_WBW_AUDIO_BASE_URL,
@@ -25,5 +26,10 @@ describe('Word-by-word Audio Utils', () => {
   it('generates CDN URLs via getWordByWordCdnAudioUrl helper', () => {
     const url = getWordByWordCdnAudioUrl(36, 1, 1);
     expect(url).toBe(`${QURANCDN_AUDIO_BASE_URL}wbw/036_001_001.mp3`);
+  });
+
+  it('generates chapter audio URLs for default and custom reciter', () => {
+    expect(getChapterAudioUrl(2)).toBe('https://quran.ir/audio/reciters/7/002.mp3');
+    expect(getChapterAudioUrl(114, 2)).toBe('https://quran.ir/audio/reciters/2/114.mp3');
   });
 });

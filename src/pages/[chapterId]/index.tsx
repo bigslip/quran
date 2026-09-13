@@ -8,6 +8,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { getChapterIdBySlug, getChapterVerses, getPagesLookup, getRangeVerses } from '@/api';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import QuranReader from '@/components/QuranReader';
+import ChapterJsonLd from '@/components/seo/ChapterJsonLd';
 import { getChapterOgImageUrl } from '@/lib/og';
 import { logErrorToSentry } from '@/lib/sentry';
 import { getQuranReaderStylesInitialState } from '@/redux/defaultSettings/util';
@@ -154,6 +155,9 @@ const Chapter: NextPage<ChapterProps> = ({
         description={getDescription()}
         languageAlternates={getLanguageAlternates(path)}
       />
+      {chapterResponse?.chapter && (
+        <ChapterJsonLd chapter={chapterResponse.chapter} lang={lang} currentPath={path} />
+      )}
       <QuranReader
         initialData={versesResponse}
         id={
