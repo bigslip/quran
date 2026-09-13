@@ -77,7 +77,7 @@ const AyahLessonPage: NextPage<AyahLessonProp> = ({
         canonical={getCanonicalUrl(lang, navigationUrl)}
         languageAlternates={getLanguageAlternates(navigationUrl)}
         description={t('lessons-desc', {
-          ayahNumber: verseNumber,
+          ayahNumber: toLocalizedNumber(Number(verseNumber), lang),
           surahName: chapter.chapter.transliteratedName,
         })}
       />

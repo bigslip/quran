@@ -46,7 +46,11 @@
     "select-lng": "Zgjidh gjuhen",
     "sidebar-nav-close": "Mbyllni shiritin anësor të navigimit",
     "tooltip-action": "Veprimi i këshillës së mjetit",
-    "translation-info": "Shiko informacionin e përkthimit"
+    "translation-info": "Shiko informacionin e përkthimit",
+    "play-verse": "Dëgjo Ajetin {{verseKey}}",
+    "pause-surah": "Pusho Suren {{surahName}}",
+    "pause-verse": "Pusho Ajetin {{verseKey}}",
+    "surah-filter": "Filtri i sureve"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "Kodi i verifikimit"
   },
   "from": "Nga",
-  "fundraising-card-v2": {
-    "cta": "Dhuro tani",
-    "description": "Donatorët mujorë na ndihmojnë të përmirësojmë Quran.ir dhe të mbështesim operacionet, kështu që ne përqendrohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
-    "title": "Bëhuni një Donator Mujor"
-  },
-  "fundraising-share-title": "Share Quran.ir Mbledhja e fondeve",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Dhuro",
-    "desktop-text": "Kontribuoni në misionin tonë",
-    "mobile-line-one": "Është muaji i Kuranit.",
-    "mobile-line-two": "Na ndihmoni të përhapim dritën e saj."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Dhuroni",
-    "title": "Jepni në ditët më të mira!"
-  },
   "fundraising": {
     "description": "Donacionet mujore na ndihmojnë të përmirësojmë Quran.ir dhe të mbajmë operacionet, kështu që ne fokusohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "Bëhu një mbështetës"
     },
     "title": "Bëhuni një donator mujor"
+  },
+  "fundraising-card-v2": {
+    "cta": "Dhuro tani",
+    "description": "Donatorët mujorë na ndihmojnë të përmirësojmë Quran.ir dhe të mbështesim operacionet, kështu që ne përqendrohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
+    "title": "Bëhuni një Donator Mujor"
+  },
+  "fundraising-share-title": "Share Quran.ir Mbledhja e fondeve",
+  "fundraising-sticky-banner": {
+    "cta": "Dhuroni",
+    "title": "Jepni në ditët më të mira!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Dhuro",
+    "desktop-text": "Kontribuoni në misionin tonë",
+    "mobile-line-one": "Është muaji i Kuranit.",
+    "mobile-line-two": "Na ndihmoni të përhapim dritën e saj."
   },
   "get-started": "Filloni",
   "go-to-verse": "Shko te Vargu",
@@ -318,6 +322,7 @@
   "juz": "Xhuz",
   "language": "Gjuhë",
   "languages": "Gjuhët",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Mëso",
   "learn-more": "Mëso më shumë",
   "learning-plans": "Planet mësimore",
@@ -332,6 +337,7 @@
   "menu": "Menu",
   "minutes": "Minutat",
   "mobile-apps": "Aplikacionet celulare",
+  "modal": "Dritare",
   "mode": "Modaliteti",
   "more": "Më shumë",
   "my-learning-plans": "Planet e mia të mësimit",
@@ -343,6 +349,7 @@
   "next": "Tjetra",
   "next-ayah": "Ajeti tjetër",
   "no": "Jo",
+  "no-languages-found": "No languages found",
   "no-notifications": "Nuk ka ende njoftime",
   "no-verses-available": "Nuk ka vargje të disponueshme",
   "none": "Asnjëra",
@@ -351,18 +358,20 @@
     "label": "Shënime",
     "title": "Shënimet dhe Reflektimet e Mia"
   },
-  "notification-settings": "Cilësimet e njoftimit",
   "notification": {
     "mark-all-as-read": "Shënoni të gjitha si të lexuara",
     "mark-as-read": "Shënoni si të lexuar"
   },
+  "notification-settings": "Cilësimet e njoftimit",
   "notifications": "Njoftimet",
   "off": "Joaktiv",
   "oldest": "Më e vjetra",
   "on": "Aktiv",
   "our-projects": "Projektet tona",
   "page": "Faqe",
+  "page-number": "Faqe {{page}}",
   "pages": "Faqet",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} nga {{totalNumberOfResults}} rezultate kërkimi",
   "pbuh": "Bekimet e Allahut qofshin mbi të",
   "popular-links": "Kërkimet e preferuara",
@@ -386,9 +395,12 @@
   "profile": "Profili",
   "projects-desc": "Projektet jofitimprurëse të zotëruara, të menaxhuara ose të sponsorizuara nga <link>Quran.Foundation</link>",
   "q-reflect": "Kurani Reflekto",
+  "quran-android": "Kurani për Android",
   "quran-apps": "Aplikacionet e Kuranit",
   "quran-com": "Quran.ir",
+  "quran-ios": "Kurani për iOS",
   "quran-radio": "Kuran Radio",
+  "ramadan-2026": "Ramazan 2026",
   "read": "Lexo",
   "read-more": "Lexo më shumë",
   "reading-history": "Leximi i historisë",
@@ -419,9 +431,6 @@
   "rub": "Rub el Hizb",
   "save": "Ruaj",
   "save-to-collection": "Ruaje në Koleksion",
-  "search-for": "Kërko për \"{{searchQuery}}\"",
-  "search-results": "{{count}} rezultatet e  kërkimit",
-  "search-results-no-count": "Rezultatet e Kërkimit",
   "search": {
     "filters": "Filtrat",
     "hint": "Provoni të kërkoni për",
@@ -436,10 +445,15 @@
     "switch-mode": "Kalo te Kërkimi i Avancuar",
     "title": "Kërko"
   },
+  "search-for": "Kërko për \"{{searchQuery}}\"",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} rezultatet e  kërkimit",
+  "search-results-no-count": "Rezultatet e Kërkimit",
   "seconds": "Sekonda",
   "see-less": "Shiko më pak",
   "see-new": "Shihni çfarë ka të re",
   "select-language": "Zgjidh Gjuhën",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "Nuk është zgjedhur asnjë tefsir",
     "no-translation-selected": "Nuk u zgjodh asnjë përkthim",
@@ -562,11 +576,5 @@
     "title": "Klikoni në fjalë"
   },
   "word-tooltip": "Mesazh sugjerues për fjalët",
-  "yes": "Po",
-  "page-number": "Faqe {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "Po"
 }

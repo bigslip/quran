@@ -1,6 +1,6 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable i18next/no-literal-string */
 import { useState } from 'react';
+
+import useTranslation from 'next-translate/useTranslation';
 
 import styles from './EnrollButton.module.scss';
 
@@ -29,6 +29,7 @@ const EnrollButton = ({
   mutate,
   ...rest
 }: Props) => {
+  const { t } = useTranslation('ramadan-activities');
   const [isEnrollLoading, setIsEnrollLoading] = useState(false);
   const toast = useToast();
 
@@ -40,15 +41,25 @@ const EnrollButton = ({
     try {
       await addReadingGoal({ category: GoalCategory.RAMADAN_CHALLENGE });
       await mutate();
-      toast('Enrolled successfully! You may see a welcome email in your inbox.', {
-        status: ToastStatus.Success,
-      });
+      toast(
+        t('enroll-success-email', {
+          defaultValue: 'Enrolled successfully! You may see a welcome email in your inbox.',
+        }),
+        {
+          status: ToastStatus.Success,
+        },
+      );
     } catch (error) {
       logErrorToSentry(error, {
         transactionName: 'ramadan_challenge_enroll',
         metadata: { section },
       });
-      toast('Failed to enroll, please try again later.', { status: ToastStatus.Error });
+      toast(
+        t('enroll-failed', {
+          defaultValue: 'Failed to enroll, please try again later.',
+        }),
+        { status: ToastStatus.Error },
+      );
     } finally {
       setIsEnrollLoading(false);
     }

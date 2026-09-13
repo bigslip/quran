@@ -6,6 +6,7 @@ import useTranslation from 'next-translate/useTranslation';
 import styles from './FlashCardCarousel.module.scss';
 
 import { FlashCardData } from '@/components/Course/FlashCards/types';
+import { toLocalizedNumber } from '@/utils/locale';
 
 type FlashCardCarouselProps = {
   cards: FlashCardData[];
@@ -13,7 +14,7 @@ type FlashCardCarouselProps = {
 };
 
 const FlashCardCarousel: React.FC<FlashCardCarouselProps> = ({ cards, className }) => {
-  const { t } = useTranslation('learn');
+  const { t, lang } = useTranslation('learn');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideDir, setSlideDir] = useState<'next' | 'prev' | null>(null);
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
@@ -128,7 +129,7 @@ const FlashCardCarousel: React.FC<FlashCardCarouselProps> = ({ cards, className 
       </div>
 
       <div className={styles.counter}>
-        {currentIndex + 1} / {cards.length}
+        {toLocalizedNumber(currentIndex + 1, lang)} / {toLocalizedNumber(cards.length, lang)}
       </div>
     </div>
   );

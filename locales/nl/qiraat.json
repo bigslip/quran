@@ -1,4 +1,5 @@
 {
   "description": "Ontdek de verschillende Qiraat (variantlezingen) van Ayah {{ayahNumber}} van Soera {{surahName}}",
+  "juncture-selection": "Knooppuntselectie",
   "title": "Qiraat {{surahName}} - {{ayahNumber}}"
 }

@@ -46,7 +46,11 @@
     "select-lng": "Dil Seçin",
     "sidebar-nav-close": "Gezinme Kenar Çubuğunu Kapat",
     "tooltip-action": "İpucu eylemi",
-    "translation-info": "Çeviri bilgilerini görüntüle"
+    "translation-info": "Çeviri bilgilerini görüntüle",
+    "play-verse": "{{verseKey}} Ayetini Çal",
+    "pause-surah": "{{surahName}} Suresini Duraklat",
+    "pause-verse": "{{verseKey}} Ayetini Duraklat",
+    "surah-filter": "Sure filtresi"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "Doğrulama Kodu"
   },
   "from": "İtibaren",
-  "fundraising-card-v2": {
-    "cta": "Şimdi bağış yapın",
-    "description": "Aylık bağışçılar, Quran.ir'u geliştirmemize ve faaliyetlerimizi sürdürmemize yardımcı oluyor; böylece fon toplamaya daha az, etki yaratmaya daha çok odaklanabiliyoruz.",
-    "title": "Aylık Bağışçı Olun"
-  },
-  "fundraising-share-title": "Quran.ir bağış kampanyası'nı paylaşın",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Bağış yapmak",
-    "desktop-text": "Misyonumuza katkıda bulunun",
-    "mobile-line-one": "Bu ay Kur'an ayıdır.",
-    "mobile-line-two": "Işığını yaymamıza yardımcı olun."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Bağış yapmak",
-    "title": "En makbul günlerde ver!"
-  },
   "fundraising": {
     "description": "Aylık bağışlar, Quran.ir'u geliştirmemize ve operasyonlarımızı sürdürmemize yardımcı oluyor, böylece bağış toplamaya daha az, etki yaratmaya daha çok odaklanabiliyoruz.",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "Destekçi olun"
     },
     "title": "Aylık Bağışçımız Olun"
+  },
+  "fundraising-card-v2": {
+    "cta": "Şimdi bağış yapın",
+    "description": "Aylık bağışçılar, Quran.ir'u geliştirmemize ve faaliyetlerimizi sürdürmemize yardımcı oluyor; böylece fon toplamaya daha az, etki yaratmaya daha çok odaklanabiliyoruz.",
+    "title": "Aylık Bağışçı Olun"
+  },
+  "fundraising-share-title": "Quran.ir bağış kampanyası'nı paylaşın",
+  "fundraising-sticky-banner": {
+    "cta": "Bağış yapmak",
+    "title": "En makbul günlerde ver!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Bağış yapmak",
+    "desktop-text": "Misyonumuza katkıda bulunun",
+    "mobile-line-one": "Bu ay Kur'an ayıdır.",
+    "mobile-line-two": "Işığını yaymamıza yardımcı olun."
   },
   "get-started": "Başla",
   "go-to-verse": "Ayette Git",
@@ -318,6 +322,7 @@
   "juz": "Cüz",
   "language": "Dil",
   "languages": "Diller",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Öğrenmek",
   "learn-more": "Daha fazla bilgi edinin",
   "learning-plans": "Öğrenme Planları",
@@ -332,6 +337,7 @@
   "menu": "Menü",
   "minutes": "dakika",
   "mobile-apps": "Mobil Uygulamalar",
+  "modal": "Pencere",
   "mode": "Mod",
   "more": "Daha fazla",
   "my-learning-plans": "Öğrenme Planlarım",
@@ -343,6 +349,7 @@
   "next": "Sonraki",
   "next-ayah": "Sonraki Ayah",
   "no": "Numara",
+  "no-languages-found": "No languages found",
   "no-notifications": "Henüz bildirim yok",
   "no-verses-available": "Mevcut ayet yok",
   "none": "Hiçbiri",
@@ -351,18 +358,20 @@
     "label": "Notlar",
     "title": "Notlarım ve Düşüncelerim"
   },
-  "notification-settings": "Bildirim ayarları",
   "notification": {
     "mark-all-as-read": "Tümünü okundu olarak işaretle",
     "mark-as-read": "Okundu olarak işaretle"
   },
+  "notification-settings": "Bildirim ayarları",
   "notifications": "Bildirimler",
   "off": "Kapalı",
   "oldest": "En eski",
   "on": "Açık",
   "our-projects": "Projelerimiz",
   "page": "Sayfa",
+  "page-number": "Sayfa {{page}}",
   "pages": "Sayfalar",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} / {{totalNumberOfResults}} arama sonucu",
   "pbuh": "Allah'ın selamı onun üzerine olsun",
   "popular-links": "Popüler Bağlantılar",
@@ -386,9 +395,12 @@
   "profile": "Profil",
   "projects-desc": "<link>Quran.Foundation</link> tarafından sahip olunan, yönetilen veya desteklenen kar amacı gütmeyen projeler",
   "q-reflect": "KuranYansıtmak",
+  "quran-android": "Android için Kuran",
   "quran-apps": "Kuran Uygulamaları",
   "quran-com": "Quran.ir",
+  "quran-ios": "iOS için Kuran",
   "quran-radio": "Kuran Radyo",
+  "ramadan-2026": "Ramazan 2026",
   "read": "Okumak",
   "read-more": "Devamını oku",
   "reading-history": "tarih okuma",
@@ -419,9 +431,6 @@
   "rub": "El Hizb'i ovmak",
   "save": "Kaydetmek",
   "save-to-collection": "Koleksiyona Kaydet",
-  "search-for": "'{{searchQuery}}' için arama yapın",
-  "search-results": "{{count}} arama sonucu",
-  "search-results-no-count": "Arama Sonuçları",
   "search": {
     "filters": "Filtreler",
     "hint": "Aramayı deneyin",
@@ -436,10 +445,15 @@
     "switch-mode": "Gelişmiş Aramaya Geç",
     "title": "Ara"
   },
+  "search-for": "'{{searchQuery}}' için arama yapın",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} arama sonucu",
+  "search-results-no-count": "Arama Sonuçları",
   "seconds": "Saniye",
   "see-less": "Daha az göster",
   "see-new": "Yenilikleri görün",
   "select-language": "Dil Seçin",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "Tefsir seçilmedi",
     "no-translation-selected": "Çeviri seçilmedi",
@@ -562,11 +576,5 @@
     "title": "Kelime Tıklaması"
   },
   "word-tooltip": "Kelime İpucu",
-  "yes": "Evet",
-  "page-number": "Sayfa {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "Evet"
 }

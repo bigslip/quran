@@ -1,4 +1,8 @@
 {
+  "enroll-failed": "注册失败，请稍后再试。",
+  "enroll-success-email": "注册成功！您可能会在收件箱中收到一封欢迎邮件。",
+  "join-surah-mulk-challenge": "加入国权章挑战",
   "ramadan-activities": "斋月活动",
-  "ramadan-activities-desc": "通过我们精心策划的计划和功能提升您的斋月体验，与《古兰经》有更深入的联系。今天就在 Quran.ir 上探索我们的斋月活动！"
+  "ramadan-activities-desc": "通过我们精心策划的计划和功能提升您的斋月体验，与《古兰经》有更深入的联系。今天就在 Quran.ir 上探索我们的斋月活动！",
+  "subscribed": "已订阅！"
 }

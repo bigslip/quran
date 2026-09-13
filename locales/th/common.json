@@ -46,7 +46,11 @@
     "select-lng": "เลือกภาษา",
     "sidebar-nav-close": "ปิดแถบนำทางด้านข้าง",
     "tooltip-action": "การดำเนินการคำแนะนำเครื่องมือ",
-    "translation-info": "ดูข้อมูลการแปล"
+    "translation-info": "ดูข้อมูลการแปล",
+    "play-verse": "เล่นอายะฮ์ {{verseKey}}",
+    "pause-surah": "หยุดซูเราะฮ์ {{surahName}} ชั่วคราว",
+    "pause-verse": "หยุดอายะฮ์ {{verseKey}} ชั่วคราว",
+    "surah-filter": "ตัวกรองซูเราะฮ์"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "รหัสตรวจสอบ"
   },
   "from": "จาก",
-  "fundraising-card-v2": {
-    "cta": "บริจาคตอนนี้",
-    "description": "ผู้บริจาครายเดือนช่วยให้เราพัฒนา Quran.ir และดำเนินงานได้อย่างต่อเนื่อง ทำให้เราลดการระดมทุนและหันมามุ่งเน้นการสร้างผลกระทบมากขึ้น",
-    "title": "ร่วมเป็นผู้บริจาครายเดือน"
-  },
-  "fundraising-share-title": "แบ่งปันการระดมทุนผ่าน Quran.ir",
-  "fundraising-sticky-banner-v2": {
-    "cta": "บริจาค",
-    "desktop-text": "ร่วมสนับสนุนภารกิจของเรา",
-    "mobile-line-one": "นี่คือเดือนแห่งคัมภีร์อัลกุรอาน",
-    "mobile-line-two": "ช่วยเราเผยแพร่แสงสว่างนี้ออกไป"
-  },
-  "fundraising-sticky-banner": {
-    "cta": "บริจาค",
-    "title": "ให้ในช่วงวันที่ดีที่สุด!"
-  },
   "fundraising": {
     "description": "การบริจาครายเดือนช่วยให้เราปรับปรุง Quran.ir และรักษาการดำเนินงานไว้ได้ ดังนั้นเราจึงเน้นน้อยลงที่การระดมทุน และเน้นมากขึ้นที่การสร้างผลกระทบ",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "ร่วมเป็นผู้สนับสนุน"
     },
     "title": "ร่วมเป็นผู้บริจาครายเดือน"
+  },
+  "fundraising-card-v2": {
+    "cta": "บริจาคตอนนี้",
+    "description": "ผู้บริจาครายเดือนช่วยให้เราพัฒนา Quran.ir และดำเนินงานได้อย่างต่อเนื่อง ทำให้เราลดการระดมทุนและหันมามุ่งเน้นการสร้างผลกระทบมากขึ้น",
+    "title": "ร่วมเป็นผู้บริจาครายเดือน"
+  },
+  "fundraising-share-title": "แบ่งปันการระดมทุนผ่าน Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "บริจาค",
+    "title": "ให้ในช่วงวันที่ดีที่สุด!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "บริจาค",
+    "desktop-text": "ร่วมสนับสนุนภารกิจของเรา",
+    "mobile-line-one": "นี่คือเดือนแห่งคัมภีร์อัลกุรอาน",
+    "mobile-line-two": "ช่วยเราเผยแพร่แสงสว่างนี้ออกไป"
   },
   "get-started": "เริ่มต้นใช้งาน",
   "go-to-verse": "ไปที่บท",
@@ -318,6 +322,7 @@
   "juz": "ญุซ",
   "language": "ภาษา",
   "languages": "ภาษา",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "เรียนรู้",
   "learn-more": "เรียนรู้เพิ่มเติม",
   "learning-plans": "แผนการเรียนรู้",
@@ -332,6 +337,7 @@
   "menu": "เมนู",
   "minutes": "นาที",
   "mobile-apps": "แอพลิเคชัน",
+  "modal": "หน้าต่างป็อปอัป",
   "mode": "โหมด",
   "more": "เพิ่มเติม",
   "my-learning-plans": "แผนการเรียนของฉัน",
@@ -343,6 +349,7 @@
   "next": "ต่อไป",
   "next-ayah": "อายะห์ต่อไป",
   "no": "ไม่",
+  "no-languages-found": "No languages found",
   "no-notifications": "ยังไม่มีการแจ้งเตือน",
   "no-verses-available": "ไม่มีบทกวีที่มีอยู่",
   "none": "ไม่มี",
@@ -351,18 +358,20 @@
     "label": "หมายเหตุ",
     "title": "บันทึกและภาพสะท้อนของฉัน"
   },
-  "notification-settings": "การตั้งค่าการแจ้งเตือน",
   "notification": {
     "mark-all-as-read": "ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว",
     "mark-as-read": "ทำเครื่องหมายว่าอ่านแล้ว"
   },
+  "notification-settings": "การตั้งค่าการแจ้งเตือน",
   "notifications": "การแจ้งเตือน",
   "off": "ปิด",
   "oldest": "เก่าแก่ที่สุด",
   "on": "เปิด",
   "our-projects": "โครงการของเรา",
   "page": "หน้า",
+  "page-number": "หน้า {{page}}",
   "pages": "หน้า",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} จาก {{totalNumberOfResults}} ผลการค้นหา",
   "pbuh": "ความจำเริญจากอัลลอฮฺจงมีแด่เขา",
   "popular-links": "ลิงค์ยอดนิยม",
@@ -386,9 +395,12 @@
   "profile": "โปรไฟล์",
   "projects-desc": "โครงการไม่แสวงหากำไรที่เป็นเจ้าของ บริหารจัดการ หรือได้รับการสนับสนุนโดย <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
+  "quran-android": "อัลกุรอานสำหรับ Android",
   "quran-apps": "แอปอัลกุรอาน",
   "quran-com": "Quran.ir",
+  "quran-ios": "อัลกุรอานสำหรับ iOS",
   "quran-radio": "วิทยุอัลกุรอาน",
+  "ramadan-2026": "รอมฎอน 2026",
   "read": "อ่าน",
   "read-more": "อ่านเพิ่มเติม",
   "reading-history": "ประวัติการอ่าน",
@@ -419,9 +431,6 @@
   "rub": "รุบอุลฮิซบ์",
   "save": "บันทึก",
   "save-to-collection": "บันทึกลงในคอลเล็กชัน",
-  "search-for": "ค้นหา '{{searchQuery}}'",
-  "search-results": "{{count}} ผลการค้นหา",
-  "search-results-no-count": "ผลการค้นหา",
   "search": {
     "filters": "ตัวกรอง",
     "hint": "ลองค้นหา",
@@ -436,10 +445,15 @@
     "switch-mode": "เปลี่ยนไปใช้การค้นหาขั้นสูง",
     "title": "ค้นหา"
   },
+  "search-for": "ค้นหา '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} ผลการค้นหา",
+  "search-results-no-count": "ผลการค้นหา",
   "seconds": "วินาที",
   "see-less": "ดูน้อยลง",
   "see-new": "ดูว่ามีอะไรใหม่",
   "select-language": "เลือกภาษา",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "ไม่มีตัฟซีรที่เลือกไว้",
     "no-translation-selected": "ไม่ได้เลือกคำแปลไว้",
@@ -562,11 +576,5 @@
     "title": "คลิกคำ"
   },
   "word-tooltip": "แสดงคำแนะนำต่อคำ",
-  "yes": "ใช่",
-  "page-number": "หน้า {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "ใช่"
 }

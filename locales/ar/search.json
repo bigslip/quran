@@ -1,6 +1,8 @@
 {
   "default-translations": "الترجمات الافتراضية",
-  "filter": "تصفية البحث",
+  "filter": {
+    "languages-placeholder": "اختر لغة"
+  },
   "language-filter-label": "ابحث في جميع الترجمات الخاصة بلغة معينة",
   "language-select": "اختر لغة",
   "reset": "إعادة تعيين",

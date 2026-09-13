@@ -1,4 +1,8 @@
 {
+  "enroll-failed": "Gagal mendaftar, sila cuba sebentar lagi.",
+  "enroll-success-email": "Berjaya mendaftar! Anda mungkin menerima emel alu-aluan dalam peti masuk anda.",
+  "join-surah-mulk-challenge": "Sertai Cabaran Surah Al-Mulk",
   "ramadan-activities": "Aktiviti Ramadhan",
-  "ramadan-activities-desc": "Tingkatkan pengalaman Ramadan anda melalui program kami untuk berinteraksi dengan al-Quran dengan lebih bermakna. Terokai Aktiviti Ramadan kami di Quran.ir hari ini!"
+  "ramadan-activities-desc": "Tingkatkan pengalaman Ramadan anda melalui program kami untuk berinteraksi dengan al-Quran dengan lebih bermakna. Terokai Aktiviti Ramadan kami di Quran.ir hari ini!",
+  "subscribed": "Dilanggan!"
 }

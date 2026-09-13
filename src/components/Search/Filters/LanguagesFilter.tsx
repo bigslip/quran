@@ -54,7 +54,7 @@ const LanguagesFilter: React.FC<Props> = memo(
           value={matchedLanguages}
           items={languagesItems}
           onChange={(newValues: string[]) => onLanguageChange(newValues)}
-          placeholder={t('filter.languages-placeholder')}
+          placeholder={t('language-select')}
         />
       </div>
     );

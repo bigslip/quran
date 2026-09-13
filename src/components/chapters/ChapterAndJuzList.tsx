@@ -326,7 +326,11 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
               </button>
             ) : null}
           </div>
-          <div className={styles.pillsContainer} role="group" aria-label="Surah filter">
+          <div
+            className={styles.pillsContainer}
+            role="group"
+            aria-label={t('common:aria.surah-filter', { defaultValue: 'Surah filter' })}
+          >
             <button
               type="button"
               className={classNames(styles.filterPill, {

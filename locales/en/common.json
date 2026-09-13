@@ -1,12 +1,8 @@
 {
   "about": "About Us",
   "all": "All",
-  "featured": "Featured",
   "allow": "Allow",
   "and": "and",
-  "topics": "Topics",
-  "makkah-short": "Makki",
-  "madinah-short": "Madani",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
@@ -51,7 +47,11 @@
     "select-lng": "Select Language",
     "sidebar-nav-close": "Close Navigation Sidebar",
     "tooltip-action": "Tooltip action",
-    "translation-info": "View translation information"
+    "translation-info": "View translation information",
+    "play-verse": "Play Ayah {{verseKey}}",
+    "pause-surah": "Pause Surah {{surahName}}",
+    "pause-verse": "Pause Ayah {{verseKey}}",
+    "surah-filter": "Surah filter"
   },
   "audio": {
     "auto-scroll": {
@@ -240,6 +240,7 @@
   },
   "exciting-updates": "Exciting Updates",
   "favorites": "Favorites",
+  "featured": "Featured",
   "feedback": "Feedback",
   "fonts": {
     "15_lines": "15 Lines",
@@ -283,22 +284,6 @@
     "verification-code": "Verification Code"
   },
   "from": "From",
-  "fundraising-card-v2": {
-    "cta": "Donate now",
-    "description": "Monthly donors help us improve Quran.ir and sustain operations so we focus less on fundraising and more on creating impact.",
-    "title": "Become a Monthly Donor"
-  },
-  "fundraising-share-title": "Share Quran.ir Fundraising",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Donate",
-    "desktop-text": "Contribute to our mission",
-    "mobile-line-one": "It's the month of the Quran.",
-    "mobile-line-two": "Help us spread its light."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Donate",
-    "title": "Give during the best days!"
-  },
   "fundraising": {
     "description": "Monthly donations help us improve Quran.ir and sustain operations so we focus less on fundraising and more on creating impact.",
     "donation-campaign": {
@@ -306,6 +291,22 @@
       "text": "Become a supporter"
     },
     "title": "Become A Monthly Donor"
+  },
+  "fundraising-card-v2": {
+    "cta": "Donate now",
+    "description": "Monthly donors help us improve Quran.ir and sustain operations so we focus less on fundraising and more on creating impact.",
+    "title": "Become a Monthly Donor"
+  },
+  "fundraising-share-title": "Share Quran.ir Fundraising",
+  "fundraising-sticky-banner": {
+    "cta": "Donate",
+    "title": "Give during the best days!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Donate",
+    "desktop-text": "Contribute to our mission",
+    "mobile-line-one": "It's the month of the Quran.",
+    "mobile-line-two": "Help us spread its light."
   },
   "get-started": "Get Started",
   "go-to-verse": "Go To Verse",
@@ -323,6 +324,7 @@
   "juz": "Juz",
   "language": "Language",
   "languages": "Languages",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Learn",
   "learn-more": "Learn more",
   "learning-plans": "Learning Plans",
@@ -332,11 +334,16 @@
   "loading": "Loading",
   "login": "Login",
   "logout": "Logout",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "Meccan",
   "medinan": "Medinan",
   "menu": "Menu",
   "minutes": "Minutes",
   "mobile-apps": "Mobile Apps",
+  "modal": "Modal",
   "mode": "Mode",
   "more": "More",
   "my-learning-plans": "My Learning Plans",
@@ -348,6 +355,7 @@
   "next": "Next",
   "next-ayah": "Next Ayah",
   "no": "No",
+  "no-languages-found": "No languages found",
   "no-notifications": "No notifications yet",
   "no-verses-available": "No verses available",
   "none": "None",
@@ -356,18 +364,20 @@
     "label": "Notes",
     "title": "My Notes & Reflections"
   },
-  "notification-settings": "Notification Settings",
   "notification": {
     "mark-all-as-read": "Mark all as read",
     "mark-as-read": "Mark as read"
   },
+  "notification-settings": "Notification Settings",
   "notifications": "Notifications",
   "off": "Off",
   "oldest": "Oldest",
   "on": "On",
   "our-projects": "Our Projects",
   "page": "Page",
+  "page-number": "Page {{page}}",
   "pages": "Pages",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}}-{{endOfResultNumber}} of {{totalNumberOfResults}} search results",
   "pbuh": "Blessings of Allah be upon him",
   "popular-links": "Popular Links",
@@ -391,9 +401,12 @@
   "profile": "Profile",
   "projects-desc": "Non-profit projects owned, managed, or sponsored by <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
+  "quran-android": "Quran for Android",
   "quran-apps": "Quran Apps",
   "quran-com": "Quran.ir",
+  "quran-ios": "Quran for iOS",
   "quran-radio": "Quran Radio",
+  "ramadan-2026": "Ramadan 2026",
   "read": "Read",
   "read-more": "Read More",
   "reading-history": "Reading history",
@@ -424,9 +437,6 @@
   "rub": "Rub el Hizb",
   "save": "Save",
   "save-to-collection": "Save to Collection",
-  "search-for": "Search for '{{searchQuery}}'",
-  "search-results": "{{count}} search results",
-  "search-results-no-count": "Search Results",
   "search": {
     "filters": "Filters",
     "hint": "Try searching for",
@@ -442,10 +452,15 @@
     "placeholder": "Search verses, surahs, topics, or jump to ayah...",
     "title": "Search"
   },
+  "search-for": "Search for '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} search results",
+  "search-results-no-count": "Search Results",
   "seconds": "Seconds",
   "see-less": "See less",
   "see-new": "See What's New",
   "select-language": "Select Language",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "No tafsir selected",
     "no-translation-selected": "No translation selected",
@@ -497,8 +512,6 @@
   },
   "stay-on-track": "🎯 Stay on track!",
   "style": "Style",
-  "madinah": "Madinan",
-  "makkah": "Meccan",
   "submit": "Submit",
   "subscribe": "Subscribe",
   "subscribed": "Subscribed",
@@ -528,6 +541,7 @@
   "to": "To",
   "tooltip": "Tooltip",
   "tooltip-trans-lang": "Tooltip Language",
+  "topics": "Topics",
   "trans-lang": "Translation Language",
   "translation": "Translation",
   "translations": "Translations",
@@ -575,11 +589,5 @@
     "title": "Word Click"
   },
   "word-tooltip": "Word Tooltip",
-  "yes": "Yes",
-  "page-number": "Page {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "Yes"
 }

@@ -1,4 +1,6 @@
 {
   "description": "Temukan hadits dan riwayat otentik yang berkaitan dengan Ayat {{ayahNumber}} dari Surah {{surahName}}Akses tradisi ilmiah yang terkait dengan ayat Al-Quran ini.",
+  "sahih-bukhari": "Shahih Bukhari",
+  "sahih-muslim": "Shahih Muslim",
   "title": "Hadits {{surahName}} - {{ayahNumber}}"
 }

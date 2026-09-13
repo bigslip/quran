@@ -56,6 +56,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           [styles.markAsCompletedButton]: !isCompleted,
           [styles.completedButton]: isCompleted,
         })}
+        ariaLabel={!isCompleted ? t('mark-as-completed') : t('week-completed')}
       >
         {isMobileBrowser ? '✔' : !isCompleted ? t('mark-as-completed') : t('week-completed')}
       </Button>

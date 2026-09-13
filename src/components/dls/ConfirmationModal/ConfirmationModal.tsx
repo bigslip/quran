@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 
 import styles from './ConfirmationModal.module.scss';
 
+import useTranslation from 'next-translate/useTranslation';
+
 import Button, { ButtonType, ButtonVariant } from '@/components/dls/Button/Button';
 import { useConfirmModal } from '@/components/dls/ConfirmationModal/hooks';
 import ContentModal from '@/components/dls/ContentModal/ContentModal';
@@ -30,14 +32,20 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   isConfirmDanger = false,
   zIndexVariant,
 }) => {
+  const { t } = useTranslation('common');
   const { state: modalState, onCancel: onHookCancel, onConfirm: onHookConfirm } = useConfirmModal();
 
   const isHookMode = propsIsOpen === undefined;
   const isOpen = isHookMode ? modalState.open : propsIsOpen;
-  const title = propsTitle ?? modalState.title ?? 'Confirm';
+  const rawTitle = t('confirm');
+  const title = propsTitle ?? modalState.title ?? (rawTitle === 'confirm' ? 'Confirm' : rawTitle);
   const body = propsBody ?? modalState.subtitle ?? modalState.description;
-  const confirmText = propsConfirmText ?? modalState.confirmText ?? 'Confirm';
-  const cancelText = propsCancelText ?? modalState.cancelText ?? 'Cancel';
+  const rawConfirmText = t('confirm');
+  const confirmText =
+    propsConfirmText ?? modalState.confirmText ?? (rawConfirmText === 'confirm' ? 'Confirm' : rawConfirmText);
+  const rawCancelText = t('cancel');
+  const cancelText =
+    propsCancelText ?? modalState.cancelText ?? (rawCancelText === 'cancel' ? 'Cancel' : rawCancelText);
   const onConfirm = propsOnConfirm ?? (isHookMode ? onHookConfirm : undefined);
   const onCancel = propsOnCancel ?? (isHookMode ? onHookCancel : undefined);
 

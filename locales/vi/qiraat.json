@@ -1,4 +1,5 @@
 {
   "description": "Khám phá các Qiraat khác nhau (các cách đọc biến thể) của Ayah {{ayahNumber}} của Surah {{surahName}}",
+  "juncture-selection": "Lựa chọn điểm nối",
   "title": "Qiraat {{surahName}} - {{ayahNumber}}"
 }

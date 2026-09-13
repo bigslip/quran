@@ -1,6 +1,8 @@
 {
   "default-translations": "ڈیفالٹ ترجمے",
-  "filter": "فلٹر",
+  "filter": {
+    "languages-placeholder": "ایک زبان منتخب کریں"
+  },
   "language-filter-label": "زبان کے تمام ترجمے سرچ کریں۔",
   "language-select": "زبان منتخب کریں۔",
   "reset": "ری سیٹ",

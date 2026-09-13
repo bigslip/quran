@@ -1,6 +1,8 @@
 {
   "default-translations": "ترجمه های پیش فرض",
-  "filter": "فیلتر",
+  "filter": {
+    "languages-placeholder": "یک زبان انتخاب کنید"
+  },
   "language-filter-label": "جستجوی همه ترجمه های یک زبان",
   "language-select": "یک زبان را انتخاب کنید",
   "reset": "تنظیم مجدد",

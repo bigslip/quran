@@ -1,4 +1,5 @@
 {
   "description": "探索 Ayah 的不同 Qiraat（不同读法） {{ayahNumber}} 古兰经 {{surahName}}",
+  "juncture-selection": "连读选择",
   "title": "基拉特 {{surahName}} - {{ayahNumber}}"
 }

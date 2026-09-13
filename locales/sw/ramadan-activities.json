@@ -1,4 +1,8 @@
 {
+  "enroll-failed": "Imeshindwa kujiandikisha, tafadhali jaribu tena baadaye.",
+  "enroll-success-email": "Umejiandikisha kwa mafanikio! Unaweza kuona barua pepe ya kukaribisha kwenye kikasha chako.",
+  "join-surah-mulk-challenge": "Jiunge na Changamoto ya Sura Al-Mulk",
   "ramadan-activities": "Shughuli za Ramadhani",
-  "ramadan-activities-desc": "Ongeza matumizi yako ya Ramadhani kwa programu na vipengele vyetu vilivyoratibiwa ili kupata muunganisho wa kina wa Qur'ani. Gundua Shughuli zetu za Ramadhani kwenye Quran.ir leo!"
+  "ramadan-activities-desc": "Ongeza matumizi yako ya Ramadhani kwa programu na vipengele vyetu vilivyoratibiwa ili kupata muunganisho wa kina wa Qur'ani. Gundua Shughuli zetu za Ramadhani kwenye Quran.ir leo!",
+  "subscribed": "Umejisajili!"
 }

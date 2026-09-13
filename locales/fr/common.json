@@ -46,7 +46,11 @@
     "select-lng": "Choisir la langue",
     "sidebar-nav-close": "Fermer la barre latérale de navigation",
     "tooltip-action": "Action de l'infobulle",
-    "translation-info": "Afficher les informations de traduction"
+    "translation-info": "Afficher les informations de traduction",
+    "play-verse": "Lire le verset {{verseKey}}",
+    "pause-surah": "Mettre en pause la sourate {{surahName}}",
+    "pause-verse": "Mettre en pause le verset {{verseKey}}",
+    "surah-filter": "Filtre des sourates"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "Code de vérification"
   },
   "from": "De",
-  "fundraising-card-v2": {
-    "cta": "Faites un don maintenant",
-    "description": "Les donateurs mensuels nous aident à améliorer Quran.ir et à assurer la pérennité de nos activités, ce qui nous permet de nous concentrer moins sur la collecte de fonds et plus sur la création d'impact.",
-    "title": "Devenez donateur mensuel"
-  },
-  "fundraising-share-title": "Partager la collecte de fonds de Quran.ir",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Faire un don",
-    "desktop-text": "Contribuez à notre mission",
-    "mobile-line-one": "C'est le mois du Coran.",
-    "mobile-line-two": "Aidez-nous à répandre sa lumière."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Faire un don",
-    "title": "Donnez pendant les meilleurs jours !"
-  },
   "fundraising": {
     "description": "Les dons mensuels nous aident à améliorer Quran.ir et à maintenir nos opérations afin que nous nous concentrions moins sur la collecte de fonds et davantage sur la création d'un impact.",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "Devenez un supporter"
     },
     "title": "Devenir un donateur mensuel"
+  },
+  "fundraising-card-v2": {
+    "cta": "Faites un don maintenant",
+    "description": "Les donateurs mensuels nous aident à améliorer Quran.ir et à assurer la pérennité de nos activités, ce qui nous permet de nous concentrer moins sur la collecte de fonds et plus sur la création d'impact.",
+    "title": "Devenez donateur mensuel"
+  },
+  "fundraising-share-title": "Partager la collecte de fonds de Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "Faire un don",
+    "title": "Donnez pendant les meilleurs jours !"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Faire un don",
+    "desktop-text": "Contribuez à notre mission",
+    "mobile-line-one": "C'est le mois du Coran.",
+    "mobile-line-two": "Aidez-nous à répandre sa lumière."
   },
   "get-started": "Commencer",
   "go-to-verse": "Aller à l'Ayah",
@@ -318,6 +322,7 @@
   "juz": "Juz",
   "language": "Langue",
   "languages": "Langues",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Apprendre",
   "learn-more": "En savoir plus",
   "learning-plans": "Plans d'Apprentissage",
@@ -332,6 +337,7 @@
   "menu": "Menu",
   "minutes": "Minutes",
   "mobile-apps": "Application mobile",
+  "modal": "Modale",
   "mode": "Mode",
   "more": "Plus",
   "my-learning-plans": "Mes Plans d'Apprentissage",
@@ -343,6 +349,7 @@
   "next": "Suivant",
   "next-ayah": "Ayah Suivante",
   "no": "Non",
+  "no-languages-found": "No languages found",
   "no-notifications": "Aucune notification pour l'instant",
   "no-verses-available": "Aucune Ayah disponible",
   "none": "Aucun",
@@ -351,18 +358,20 @@
     "label": "Notes",
     "title": "Mes notes et réflexions"
   },
-  "notification-settings": "Paramètres de Notification",
   "notification": {
     "mark-all-as-read": "Tout marquer comme lu",
     "mark-as-read": "Marquer comme lu"
   },
+  "notification-settings": "Paramètres de Notification",
   "notifications": "Notifications",
   "off": "Désactivé",
   "oldest": "Le plus ancien",
   "on": "Activé",
   "our-projects": "Nos projets",
   "page": "Page",
+  "page-number": "Page {{page}}",
   "pages": "Pages",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}}-{{endOfResultNumber}} sur {{totalNumberOfResults}} résultats de recherche",
   "pbuh": "Que les bénédictions d'Allah soient sur lui",
   "popular-links": "Liens populaires",
@@ -386,9 +395,12 @@
   "profile": "Profil",
   "projects-desc": "Projets à but non lucratif détenus, gérés ou sponsorisés par <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
+  "quran-android": "Coran pour Android",
   "quran-apps": "Quran Apps",
   "quran-com": "Quran.ir",
+  "quran-ios": "Coran pour iOS",
   "quran-radio": "Quran Radio",
+  "ramadan-2026": "Ramadan 2026",
   "read": "Lire",
   "read-more": "En savoir plus",
   "reading-history": "Historique de lecture",
@@ -419,9 +431,6 @@
   "rub": "Rub el Hizb",
   "save": "Sauvegarder",
   "save-to-collection": "Enregistrer dans la collection",
-  "search-for": "Rechercher '{{searchQuery}}'",
-  "search-results": "{{count}} résultats de recherche",
-  "search-results-no-count": "Résultats de la recherche",
   "search": {
     "filters": "Filtres",
     "hint": "Essayez de rechercher",
@@ -436,10 +445,15 @@
     "switch-mode": "Passer à la recherche avancée",
     "title": "Rechercher"
   },
+  "search-for": "Rechercher '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} résultats de recherche",
+  "search-results-no-count": "Résultats de la recherche",
   "seconds": "Secondes",
   "see-less": "Voir moins",
   "see-new": "Voir les nouveautés",
   "select-language": "Sélectionner la langue",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "Aucun tafsir sélectionné",
     "no-translation-selected": "Aucune traduction sélectionnée",
@@ -562,11 +576,5 @@
     "title": "Clic sur le mot"
   },
   "word-tooltip": "Info-bulle du mot",
-  "yes": "Oui",
-  "page-number": "Page {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "Oui"
 }

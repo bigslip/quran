@@ -141,7 +141,7 @@ const ContentModal = ({
             ) : (
               <Title asChild>
                 <VisuallyHidden>
-                  <h2>Modal</h2>
+                  <h2>{t('common:modal', { defaultValue: 'Modal' })}</h2>
                 </VisuallyHidden>
               </Title>
             )}

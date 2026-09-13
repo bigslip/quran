@@ -20,37 +20,42 @@ import { getTimeOfDayPeriod, isFriday, isNightTime } from '@/utils/spiritualTime
 
 const QUICK_JUMP_PILLS = [
   {
-    label: 'Surah Yaseen (36)',
     href: '/36',
     key: 'yaseen',
+    labelKey: 'quick-jump-label-yaseen',
+    defaultLabel: 'Surah Yaseen (36)',
     subKey: 'quick-jump-yaseen',
     defaultSub: 'Heart of the Quran',
   },
   {
-    label: 'Surah Al-Mulk (67)',
     href: '/67',
     key: 'mulk',
+    labelKey: 'quick-jump-label-mulk',
+    defaultLabel: 'Surah Al-Mulk (67)',
     subKey: 'quick-jump-mulk',
     defaultSub: 'Protection',
   },
   {
-    label: 'Surah Al-Kahf (18)',
     href: '/18',
     key: 'kahf',
+    labelKey: 'quick-jump-label-kahf',
+    defaultLabel: 'Surah Al-Kahf (18)',
     subKey: 'quick-jump-kahf',
     defaultSub: 'Friday Sunnah',
   },
   {
-    label: 'Ayah Al-Kursi (2:255)',
     href: '/2/255',
     key: 'kursi',
+    labelKey: 'quick-jump-label-kursi',
+    defaultLabel: 'Ayah Al-Kursi (2:255)',
     subKey: 'quick-jump-kursi',
     defaultSub: 'Greatest Ayah',
   },
   {
-    label: 'Juz 30 (Amma)',
     href: '/juz/30',
     key: 'juz30',
+    labelKey: 'quick-jump-label-juz30',
+    defaultLabel: 'Juz 30 (Amma)',
     subKey: 'quick-jump-juz30',
     defaultSub: '37 Surahs',
   },
@@ -148,7 +153,9 @@ const HomePageHero: React.FC = () => {
                   })}
                   onClick={() => onQuickJumpClick(pill.key)}
                 >
-                  <span className={styles.pillText}>{pill.label}</span>
+                  <span className={styles.pillText}>
+                    {t(pill.labelKey, { defaultValue: pill.defaultLabel })}
+                  </span>
                   <span className={styles.pillSubText}>
                     {t(pill.subKey, { defaultValue: pill.defaultSub })}
                   </span>

@@ -91,9 +91,13 @@ const PlayChapterAudioButton: React.FC<Props> = ({ chapterId }) => {
           hasSidePadding={false}
           shouldFlipOnRTL={false}
           isSelected
+          ariaLabel={t('aria.pause-surah', {
+            surahName: chapterData?.transliteratedName || '',
+            defaultValue: `Pause Surah ${chapterData?.transliteratedName || ''}`,
+          })}
           data-testid="pause-button"
         >
-          {t('listen')}
+          {t('audio.player.pause', { defaultValue: 'Pause' })}
         </Button>
       ) : (
         <Button

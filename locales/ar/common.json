@@ -2,8 +2,6 @@
   "about": "معلومات عنا",
   "allow": "السماح",
   "and": "و",
-  "makkah-short": "مكية",
-  "madinah-short": "مدنية",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
@@ -48,7 +46,11 @@
     "select-lng": "اختر اللغة",
     "sidebar-nav-close": "اغلق القائمة الجانبية",
     "tooltip-action": "إجراء التلميح",
-    "translation-info": "عرض معلومات الترجمة"
+    "translation-info": "عرض معلومات الترجمة",
+    "play-verse": "تشغيل الآية {{verseKey}}",
+    "pause-surah": "إيقاف سورة {{surahName}} مؤقتًا",
+    "pause-verse": "إيقاف الآية {{verseKey}} مؤقتًا",
+    "surah-filter": "تصفية السور"
   },
   "audio": {
     "auto-scroll": {
@@ -280,22 +282,6 @@
     "verification-code": "رمز التحقق"
   },
   "from": "من",
-  "fundraising-card-v2": {
-    "cta": "تبرع الآن",
-    "description": "يساعدنا المتبرعون شهرياً على تحسين موقع Quran.ir واستدامة عملياتنا، لذا نركز بشكل أقل على جمع التبرعات وأكثر على إحداث التأثير.",
-    "title": "كن متبرعًا شهريًا"
-  },
-  "fundraising-share-title": "شارك في جمع التبرعات لصالح  Quran.ir",
-  "fundraising-sticky-banner-v2": {
-    "cta": "يتبرع",
-    "desktop-text": "ساهم في مهمتنا",
-    "mobile-line-one": "إنه شهر القرآن.",
-    "mobile-line-two": "ساعدنا في نشر نوره."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "تبرع",
-    "title": "تبرع في أفضل الأيام!"
-  },
   "fundraising": {
     "description": "التبرعات الشهرية تساعدنا على تحسين Quran.ir وضمان استمراريته، لنتمكّن من التركيز أقل على جمع التبرعات وأكثر على تحقيق الأثر.",
     "donation-campaign": {
@@ -303,6 +289,22 @@
       "text": "انضم إلى الداعمين"
     },
     "title": "كن متبرعا شهريا"
+  },
+  "fundraising-card-v2": {
+    "cta": "تبرع الآن",
+    "description": "يساعدنا المتبرعون شهرياً على تحسين موقع Quran.ir واستدامة عملياتنا، لذا نركز بشكل أقل على جمع التبرعات وأكثر على إحداث التأثير.",
+    "title": "كن متبرعًا شهريًا"
+  },
+  "fundraising-share-title": "شارك في جمع التبرعات لصالح  Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "تبرع",
+    "title": "تبرع في أفضل الأيام!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "يتبرع",
+    "desktop-text": "ساهم في مهمتنا",
+    "mobile-line-one": "إنه شهر القرآن.",
+    "mobile-line-two": "ساعدنا في نشر نوره."
   },
   "get-started": "ابدأ الآن",
   "go-to-verse": "انتقل إلى الآية",
@@ -320,6 +322,7 @@
   "juz": "جزء",
   "language": "لغة",
   "languages": "اللغات",
+  "languages-count": "{{count}} من {{total}} لغة",
   "learn": "تعلم",
   "learn-more": "تعرف على المزيد",
   "learning-plans": "الخطط التعليمية",
@@ -329,11 +332,14 @@
   "loading": "جارٍ التحميل",
   "login": "تسجيل الدخول",
   "logout": "تسجيل الخروج",
+  "madinah-short": "مدنية",
+  "makkah-short": "مكية",
   "meccan": "مكية",
   "medinan": "مدنِية",
   "menu": "القائمة",
   "minutes": "دقائق",
   "mobile-apps": "تطبيقات المحمول",
+  "modal": "نافذة",
   "mode": "الوضع",
   "more": "المزيد",
   "my-learning-plans": "خططي التعليمية",
@@ -345,6 +351,7 @@
   "next": "التالي",
   "next-ayah": "الآية التالية",
   "no": "لا",
+  "no-languages-found": "لم يتم العثور على لغات",
   "no-notifications": "لا توجد إشعارات حتى الآن",
   "no-verses-available": "لا توجد آيات متاحة",
   "none": "لا شيء",
@@ -353,18 +360,20 @@
     "label": "ملاحظات",
     "title": "ملاحظاتي وتدبراتي"
   },
-  "notification-settings": "إعدادات الإشعارات",
   "notification": {
     "mark-all-as-read": "تحديد الكل كمقروء",
     "mark-as-read": "وضع علامة كمقروء"
   },
+  "notification-settings": "إعدادات الإشعارات",
   "notifications": "إشعارات",
   "off": "إيقاف",
   "oldest": "الأقدم",
   "on": "تشغيل",
   "our-projects": "مشاريعنا",
   "page": "صفحة",
+  "page-number": "صفحة {{page}}",
   "pages": "الصفحات",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} من {{totalNumberOfResults}} نتائج البحث",
   "pbuh": "صلى الله عليه وسلم",
   "popular-links": "الروابط الأكثر شيوعًا",
@@ -388,9 +397,12 @@
   "profile": "الملف الشخصي",
   "projects-desc": "المشاريع غير الربحية التي تملكها أو تديرها أو ترعاها  <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
+  "quran-android": "القرآن للأندرويد",
   "quran-apps": "تطبيقات القرآن الكريم",
   "quran-com": "Quran.ir",
+  "quran-ios": "القرآن لـ iOS",
   "quran-radio": "راديو القرآن الكريم",
+  "ramadan-2026": "رمضان ٢٠٢٦",
   "read": "اقرأ",
   "read-more": "اقرأ المزيد",
   "reading-history": "سجل القراءة",
@@ -421,9 +433,6 @@
   "rub": "ربع الحزب",
   "save": "إحفظ",
   "save-to-collection": "حفظ في المجموعة",
-  "search-for": "ابحث عن '{{searchQuery}}'",
-  "search-results": "نتائج البحث: {{count}}",
-  "search-results-no-count": "نتائج البحث",
   "search": {
     "filters": "تصفية البحث",
     "hint": "حاول البحث عن",
@@ -438,10 +447,15 @@
     "switch-mode": "انتقل إلى البحث المتقدم",
     "title": "بحث"
   },
+  "search-for": "ابحث عن '{{searchQuery}}'",
+  "search-languages": "البحث عن اللغات...",
+  "search-results": "نتائج البحث: {{count}}",
+  "search-results-no-count": "نتائج البحث",
   "seconds": "ثواني",
   "see-less": "عرض أقل",
   "see-new": "اطلع على الجديد",
   "select-language": "اختر اللغة",
+  "select-language-description": "اختر لغة العرض المفضلة لموقع Quran.ir",
   "settings": {
     "no-tafsir-selected": "لم يتم اختيار أي تفسير",
     "no-translation-selected": "لم يتم اختيار ترجمة",
@@ -564,11 +578,5 @@
     "title": "نطق الكلمة عند الضغط عليها"
   },
   "word-tooltip": "مربع منبثق للكلمة",
-  "yes": "نعم",
-  "page-number": "صفحة {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "البحث عن اللغات...",
-  "languages-count": "{{count}} من {{total}} لغة",
-  "no-languages-found": "لم يتم العثور على لغات",
-  "select-language-description": "اختر لغة العرض المفضلة لموقع Quran.ir"
+  "yes": "نعم"
 }

@@ -1,6 +1,8 @@
 {
   "default-translations": "Tarjuma Chaguomsingi",
-  "filter": "Chuja",
+  "filter": {
+    "languages-placeholder": "Chagua lugha"
+  },
   "language-filter-label": "Tafuta tarjuma zote za lugha",
   "language-select": "Chagua lugha",
   "reset": "weka upya",

@@ -1,6 +1,8 @@
 {
   "default-translations": "Terjemahan bawaan",
-  "filter": "Saring",
+  "filter": {
+    "languages-placeholder": "Pilih bahasa"
+  },
   "language-filter-label": "Cari semua terjemahan bahasa",
   "language-select": "Pilih bahasa",
   "reset": "mengatur ulang",

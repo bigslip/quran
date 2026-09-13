@@ -1,4 +1,5 @@
 {
   "description": "สำรวจ Qiraat ที่แตกต่างกัน (การอ่านแบบต่างๆ) ของ Ayah {{ayahNumber}} ของซูเราะห์ {{surahName}}",
+  "juncture-selection": "การเลือกจุดเชื่อมต่อ",
   "title": "กิรอต {{surahName}} - {{ayahNumber}}"
 }

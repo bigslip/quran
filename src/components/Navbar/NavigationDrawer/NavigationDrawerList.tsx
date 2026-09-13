@@ -34,7 +34,7 @@ const NavigationDrawerList: React.FC = () => {
 
   const ITEMS = [
     {
-      title: 'Ramadan 2026',
+      title: t('ramadan-2026', { defaultValue: 'Ramadan 2026' }),
       icon: <IconMoon />,
       href: ROUTES.RAMADAN_2026,
       eventName: 'navigation_drawer_ramadan2026',

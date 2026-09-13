@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import useTranslation from 'next-translate/useTranslation';
 import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
@@ -21,6 +22,7 @@ import { GuestReadingBookmark } from '@/utils/bookmark';
 import { getPageFirstVerseKey } from '@/utils/verse';
 
 const ReadingSection: React.FC = () => {
+  const { t } = useTranslation('home');
   const { isGuest } = useSelector(selectUserState);
   const quranReaderStyles = useSelector(selectQuranReaderStyles);
   const guestReadingBookmark = useSelector(selectGuestReadingBookmark);
@@ -104,7 +106,7 @@ const ReadingSection: React.FC = () => {
   });
 
   return (
-    <section className={styles.ribbonWrapper} aria-label="Reading ribbon" data-testid="reading-ribbon-section">
+    <section className={styles.ribbonWrapper} aria-label={t('reading-ribbon', { defaultValue: 'Reading ribbon' })} data-testid="reading-ribbon-section">
       <div className={styles.sanctuaryRibbon}>
         <SanctuaryResumeCard
           surahNumber={surahNumber}

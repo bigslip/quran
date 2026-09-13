@@ -22,38 +22,11 @@ import {
 } from '@/types/Search/SearchNavigationResult';
 import { makeNewSearchResultsUrl } from '@/utils/apiPaths';
 import { areArraysEqual } from '@/utils/array';
+import { toLocalizedNumber } from '@/utils/locale';
 import { getQuickSearchQuery, getSearchNavigationResult } from '@/utils/search';
 import { SearchResponse } from 'types/ApiResponses';
 
 import Fuse from 'fuse.js';
-
-const NAVIGATE_TO = [
-  {
-    name: 'Juz 1',
-    key: '1',
-    resultType: SearchNavigationType.JUZ,
-  },
-  {
-    name: 'Page 1',
-    key: '1',
-    resultType: SearchNavigationType.PAGE,
-  },
-  {
-    name: 'Surah Yaseen',
-    key: '36',
-    resultType: SearchNavigationType.SURAH,
-  },
-  {
-    name: 'Surah Al-Mulk',
-    key: '67',
-    resultType: SearchNavigationType.SURAH,
-  },
-  {
-    name: 'Ayatul Kursi',
-    key: '2:255',
-    resultType: SearchNavigationType.AYAH,
-  },
-];
 
 interface Props {
   searchQuery?: string;
@@ -70,6 +43,37 @@ const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
   ) as SearchNavigationResult[];
   const chaptersData = useContext(DataContext);
   const debouncedSearchQuery = useDebounce<string>(searchQuery, DEBOUNCE_SEARCH_MS);
+
+  const navigateToItems = React.useMemo(
+    () => [
+      {
+        name: `${t('juz')} ${toLocalizedNumber(1, lang)}`,
+        key: '1',
+        resultType: SearchNavigationType.JUZ,
+      },
+      {
+        name: `${t('page')} ${toLocalizedNumber(1, lang)}`,
+        key: '1',
+        resultType: SearchNavigationType.PAGE,
+      },
+      {
+        name: `${t('surah')} ${chaptersData?.['36']?.transliteratedName || 'Yaseen'}`,
+        key: '36',
+        resultType: SearchNavigationType.SURAH,
+      },
+      {
+        name: `${t('surah')} ${chaptersData?.['67']?.transliteratedName || 'Al-Mulk'}`,
+        key: '67',
+        resultType: SearchNavigationType.SURAH,
+      },
+      {
+        name: t('quick-links:ayat-ul-kursi', { defaultValue: 'Ayatul Kursi' }),
+        key: '2:255',
+        resultType: SearchNavigationType.AYAH,
+      },
+    ],
+    [t, lang, chaptersData],
+  );
 
   // Convert chaptersData to array for Fuse
   const chaptersArray = React.useMemo(
@@ -95,7 +99,7 @@ const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
 
   /**
    * Generate an array of commands that will show in the pre-input view.
-   * The function takes the original recentNavigations + NAVIGATE_TO and appends
+   * The function takes the original recentNavigations + navigateToItems and appends
    * to each the group name + which command is clearable and which is not. The group
    * will be used by {@see groupBy} to compose the list of commands for each group.
    *
@@ -111,13 +115,13 @@ const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
           isClearable: true,
         }))
         .concat(
-          NAVIGATE_TO.map((navigateToItem) => ({
+          navigateToItems.map((navigateToItem) => ({
             ...navigateToItem,
             group: t('command-bar.try-navigating'),
             isClearable: false,
           })),
         ),
-    [recentNavigations, t],
+    [recentNavigations, t, navigateToItems],
   );
 
   const quickSearchFetcher = useCallback(() => {
@@ -148,7 +152,7 @@ const ExpandedSearchInputSection: React.FC<Props> = ({ searchQuery }) => {
       // if it's pre-input
       if (!searchQuery) {
         toBeGroupedCommands = getPreInputCommands();
-        numberOfCommands = recentNavigations.length + NAVIGATE_TO.length;
+        numberOfCommands = recentNavigations.length + navigateToItems.length;
       } else if (hasFuseMatches) {
         toBeGroupedCommands = fuseMatches.map((match) => ({
           key: match.id,

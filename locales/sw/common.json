@@ -46,7 +46,11 @@
     "select-lng": "Chagua Lugha",
     "sidebar-nav-close": "Funga Upau wa pembeni wa Uchunguzi",
     "tooltip-action": "Kitendo cha vidokezo",
-    "translation-info": "Tazama maelezo ya tarjuma"
+    "translation-info": "Tazama maelezo ya tarjuma",
+    "play-verse": "Cheza Aya {{verseKey}}",
+    "pause-surah": "Simamisha Sura {{surahName}}",
+    "pause-verse": "Simamisha Aya {{verseKey}}",
+    "surah-filter": "Chuja Sura"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "Nambari ya Uthibitishaji"
   },
   "from": "Kutoka",
-  "fundraising-card-v2": {
-    "cta": "Toa mchango sasa",
-    "description": "Wafadhili wa kila mwezi hutusaidia kuboresha Quran.ir na kudumisha shughuli ili tusizingatie sana ukusanyaji wa fedha na zaidi kuunda athari.",
-    "title": "Kuwa Mfadhili wa Kila Mwezi"
-  },
-  "fundraising-share-title": "Shiriki Uchangishaji wa Quran.ir",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Toa mchango",
-    "desktop-text": "Changia katika dhamira yetu",
-    "mobile-line-one": "Ni mwezi wa Quran.",
-    "mobile-line-two": "Tusaidie kueneza mwanga wake."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Changia",
-    "title": "Toa wakati wa siku bora!"
-  },
   "fundraising": {
     "description": "Michango ya kila mwezi hutusaidia kuboresha Quran.ir na kuendeleza shughuli zetu, ili tuweke mkazo mdogo kwenye ukusanyaji wa fedha na zaidi kwenye kuleta athari chanya",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "Kuwa msaidizi"
     },
     "title": "Kuwa Mfadhili wa Kila Mwezi"
+  },
+  "fundraising-card-v2": {
+    "cta": "Toa mchango sasa",
+    "description": "Wafadhili wa kila mwezi hutusaidia kuboresha Quran.ir na kudumisha shughuli ili tusizingatie sana ukusanyaji wa fedha na zaidi kuunda athari.",
+    "title": "Kuwa Mfadhili wa Kila Mwezi"
+  },
+  "fundraising-share-title": "Shiriki Uchangishaji wa Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "Changia",
+    "title": "Toa wakati wa siku bora!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Toa mchango",
+    "desktop-text": "Changia katika dhamira yetu",
+    "mobile-line-one": "Ni mwezi wa Quran.",
+    "mobile-line-two": "Tusaidie kueneza mwanga wake."
   },
   "get-started": "Anza",
   "go-to-verse": "Nenda kwenye Aya",
@@ -318,6 +322,7 @@
   "juz": "Juzuu",
   "language": "Lugha",
   "languages": "Lugha",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Jifunze",
   "learn-more": "Jifunze zaidi",
   "learning-plans": "Mipango ya Kujifunza",
@@ -332,6 +337,7 @@
   "menu": "Menyu",
   "minutes": "Dakika",
   "mobile-apps": "Programu za Simu",
+  "modal": "Modali",
   "mode": "Hali",
   "more": "Zaidi",
   "my-learning-plans": "Mipango Yangu ya Kujifunza",
@@ -343,6 +349,7 @@
   "next": "Inayofuata",
   "next-ayah": "Aya Inayofuata",
   "no": "Hapana",
+  "no-languages-found": "No languages found",
   "no-notifications": "Hakuna arifa Bado",
   "no-verses-available": "Hakuna Aya zinazopatikana",
   "none": "Hakuna",
@@ -351,18 +358,20 @@
     "label": "Maelezo",
     "title": "Maelezo na Tafakari Zangu"
   },
-  "notification-settings": "Mipangilio ya Arifa",
   "notification": {
     "mark-all-as-read": "Weka alama kama zote zimesomwa",
     "mark-as-read": "Weka alama kama imesomwa"
   },
+  "notification-settings": "Mipangilio ya Arifa",
   "notifications": "Arifa",
   "off": "Zima",
   "oldest": "Zee zaidi",
   "on": "Washa",
   "our-projects": "Miradi Yetu",
   "page": "Ukurasa",
+  "page-number": "Ukurasa {{page}}",
   "pages": "Kurasa",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} kati ya {{totalNumberOfResults}} matokeo ya utafutaji",
   "pbuh": "Baraka za Mwenyezi Mungu ziwe juu yake",
   "popular-links": "Viungo Maarufu",
@@ -386,9 +395,12 @@
   "profile": "Wasifu",
   "projects-desc": "Miradi isiyo ya faida inayomilikiwa, kusimamiwa, au kufadhiliwa na <link>Quran.Foundation</link>",
   "q-reflect": "Quranreflect",
+  "quran-android": "Quran ya Android",
   "quran-apps": "Programu za Qur'ani",
   "quran-com": "Quran.ir",
+  "quran-ios": "Quran ya iOS",
   "quran-radio": "Redio ya Qur'ani",
+  "ramadan-2026": "Ramadhani 2026",
   "read": "Soma",
   "read-more": "Soma Zaidi",
   "reading-history": "Historia ya kusoma",
@@ -419,9 +431,6 @@
   "rub": "Rub el Hizb",
   "save": "Hifadhi",
   "save-to-collection": "Hifadhi kwenye Mkusanyiko",
-  "search-for": "Tafuta ' {{searchQuery}} '",
-  "search-results": "{{count}} matokeo ya utafutaji",
-  "search-results-no-count": "Matokeo ya Utafutaji",
   "search": {
     "filters": "Vichujio",
     "hint": "Jaribu kutafuta",
@@ -436,10 +445,15 @@
     "switch-mode": "Hamia kwenye Utafutaji wa Kina",
     "title": "Tafuta"
   },
+  "search-for": "Tafuta ' {{searchQuery}} '",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} matokeo ya utafutaji",
+  "search-results-no-count": "Matokeo ya Utafutaji",
   "seconds": "Sekunde",
   "see-less": "Tazama kidogo",
   "see-new": "Tazama Nini Kipya",
   "select-language": "Chagua Lugha",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "Hakuna tafsir iliyochaguliwa",
     "no-translation-selected": "Hakuna tarjuma iliyochaguliwa",
@@ -562,11 +576,5 @@
     "title": "Bonyeza Neno"
   },
   "word-tooltip": "Tooltip ya Neno",
-  "yes": "Ndiyo",
-  "page-number": "Ukurasa {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "Ndiyo"
 }

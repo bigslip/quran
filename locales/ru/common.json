@@ -46,7 +46,11 @@
     "select-lng": "Выбрать язык",
     "sidebar-nav-close": "Закрыть боковую панель навигации",
     "tooltip-action": "Действие всплывающей подсказки",
-    "translation-info": "Просмотреть информацию о переводе"
+    "translation-info": "Просмотреть информацию о переводе",
+    "play-verse": "Воспроизвести аят {{verseKey}}",
+    "pause-surah": "Приостановить суру {{surahName}}",
+    "pause-verse": "Приостановить аят {{verseKey}}",
+    "surah-filter": "Фильтр сур"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "Проверочный код"
   },
   "from": "Из",
-  "fundraising-card-v2": {
-    "cta": "Пожертвовать сейчас",
-    "description": "Благодаря ежемесячным пожертвованиям мы улучшаем Quran.ir и поддерживаем его работу, поэтому мы меньше сосредотачиваемся на сборе средств и больше — на достижении значимых результатов.",
-    "title": "Станьте ежемесячным донором"
-  },
-  "fundraising-share-title": "Поделиться Quran.ir Сбор средств",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Пожертвовать",
-    "desktop-text": "Внесите свой вклад в нашу миссию.",
-    "mobile-line-one": "Это месяц Корана.",
-    "mobile-line-two": "Помогите нам распространить его свет."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Пожертвовать",
-    "title": "Дарите в лучшие дни!"
-  },
   "fundraising": {
     "description": "Ежемесячные пожертвования помогают нам улучшить Quran.ir и поддерживать работу, поэтому мы меньше концентрируемся на сборе средств и больше на создании влияния.",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "Станьте сторонником"
     },
     "title": "Стать ежемесячным донором"
+  },
+  "fundraising-card-v2": {
+    "cta": "Пожертвовать сейчас",
+    "description": "Благодаря ежемесячным пожертвованиям мы улучшаем Quran.ir и поддерживаем его работу, поэтому мы меньше сосредотачиваемся на сборе средств и больше — на достижении значимых результатов.",
+    "title": "Станьте ежемесячным донором"
+  },
+  "fundraising-share-title": "Поделиться Quran.ir Сбор средств",
+  "fundraising-sticky-banner": {
+    "cta": "Пожертвовать",
+    "title": "Дарите в лучшие дни!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Пожертвовать",
+    "desktop-text": "Внесите свой вклад в нашу миссию.",
+    "mobile-line-one": "Это месяц Корана.",
+    "mobile-line-two": "Помогите нам распространить его свет."
   },
   "get-started": "Начать",
   "go-to-verse": "Перейти к стиху",
@@ -318,6 +322,7 @@
   "juz": "Джуз",
   "language": "Язык",
   "languages": "Языки",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Учиться",
   "learn-more": "Учить больше",
   "learning-plans": "Планы обучения",
@@ -332,6 +337,7 @@
   "menu": "Меню",
   "minutes": "Минуты",
   "mobile-apps": "Мобильные приложения",
+  "modal": "Модальное окно",
   "mode": "Режим",
   "more": "Более",
   "my-learning-plans": "Мои планы обучения",
@@ -343,6 +349,7 @@
   "next": "Следующий",
   "next-ayah": "Следующий ая",
   "no": "Нет",
+  "no-languages-found": "No languages found",
   "no-notifications": "Уведомлений пока нет",
   "no-verses-available": "Нет доступных аятов",
   "none": "Никто",
@@ -351,18 +358,20 @@
     "label": "Примечания",
     "title": "Мои заметки и размышления"
   },
-  "notification-settings": "Настройки уведомлений",
   "notification": {
     "mark-all-as-read": "Отметить все как прочитанное",
     "mark-as-read": "Пометить, как прочитанное"
   },
+  "notification-settings": "Настройки уведомлений",
   "notifications": "Уведомления",
   "off": "Выключенный",
   "oldest": "Самый старый",
   "on": "На",
   "our-projects": "Наши проекты",
   "page": "Страница",
+  "page-number": "Страница {{page}}",
   "pages": "Страницы",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} из {{totalNumberOfResults}} результатов поиска",
   "pbuh": "Да благословит его Аллах",
   "popular-links": "Популярные ссылки",
@@ -386,9 +395,12 @@
   "profile": "Профиль",
   "projects-desc": "Некоммерческие проекты, принадлежащие, управляемые или спонсируемые <link>Quran.Foundation</link>",
   "q-reflect": "Коран",
+  "quran-android": "Коран для Android",
   "quran-apps": "Приложения для чтения Корана",
   "quran-com": "Quran.ir",
+  "quran-ios": "Коран для iOS",
   "quran-radio": "Коран Радио",
+  "ramadan-2026": "Рамадан 2026",
   "read": "Читать",
   "read-more": "Читать далее",
   "reading-history": "Чтение истории",
@@ -419,9 +431,6 @@
   "rub": "Руб эль Хизб",
   "save": "Сохранить",
   "save-to-collection": "Сохранить в коллекцию",
-  "search-for": "Найдите '{{searchQuery}}'",
-  "search-results": "{{count}} результатов поиска",
-  "search-results-no-count": "Результаты поиска",
   "search": {
     "filters": "Фильтры",
     "hint": "Попробуйте поискать",
@@ -436,10 +445,15 @@
     "switch-mode": "Перейти к расширенному поиску",
     "title": "Поиск"
   },
+  "search-for": "Найдите '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} результатов поиска",
+  "search-results-no-count": "Результаты поиска",
   "seconds": "Секунды",
   "see-less": "Скрыть",
   "see-new": "Посмотрите, что нового",
   "select-language": "Выберите язык",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "Тафсир не выбран",
     "no-translation-selected": "Перевод не выбран",
@@ -562,11 +576,5 @@
     "title": "Слово нажмите"
   },
   "word-tooltip": "Подсказка к слову",
-  "yes": "да",
-  "page-number": "Страница {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "да"
 }

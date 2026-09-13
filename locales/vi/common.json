@@ -46,7 +46,11 @@
     "select-lng": "Chọn ngôn ngữ",
     "sidebar-nav-close": "Đóng thanh điều hướng",
     "tooltip-action": "Hành động chú thích",
-    "translation-info": "Xem thông tin dịch thuật"
+    "translation-info": "Xem thông tin dịch thuật",
+    "play-verse": "Phát câu {{verseKey}}",
+    "pause-surah": "Tạm dừng chương {{surahName}}",
+    "pause-verse": "Tạm dừng câu {{verseKey}}",
+    "surah-filter": "Bộ lọc chương"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "Mã xác minh"
   },
   "from": "Từ",
-  "fundraising-card-v2": {
-    "cta": "Quyên góp ngay",
-    "description": "Các nhà tài trợ hàng tháng giúp chúng tôi cải thiện Quran.ir và duy trì hoạt động để chúng tôi tập trung ít hơn vào việc gây quỹ và nhiều hơn vào việc tạo ra tác động.",
-    "title": "Trở thành nhà tài trợ hàng tháng"
-  },
-  "fundraising-share-title": "Chia sẻ gây quỹ Quran.ir",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Quyên tặng",
-    "desktop-text": "Hãy cùng chung tay thực hiện sứ mệnh của chúng tôi",
-    "mobile-line-one": "Đây là tháng của kinh Quran.",
-    "mobile-line-two": "Hãy giúp chúng tôi lan tỏa ánh sáng này."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Quyên góp",
-    "title": "Hãy cho đi vào những ngày tốt đẹp nhất!"
-  },
   "fundraising": {
     "description": "Các khoản ủng hộ định kỳ hàng tháng giúp chúng tôi cải thiện Quran.ir, duy trì hoạt động và bớt lo gây quỹ để tập trung tạo ra nhiều giá trị hơn.",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "Trở thành người ủng hộ"
     },
     "title": "Trở thành nhà tài trợ hàng tháng"
+  },
+  "fundraising-card-v2": {
+    "cta": "Quyên góp ngay",
+    "description": "Các nhà tài trợ hàng tháng giúp chúng tôi cải thiện Quran.ir và duy trì hoạt động để chúng tôi tập trung ít hơn vào việc gây quỹ và nhiều hơn vào việc tạo ra tác động.",
+    "title": "Trở thành nhà tài trợ hàng tháng"
+  },
+  "fundraising-share-title": "Chia sẻ gây quỹ Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "Quyên góp",
+    "title": "Hãy cho đi vào những ngày tốt đẹp nhất!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Quyên tặng",
+    "desktop-text": "Hãy cùng chung tay thực hiện sứ mệnh của chúng tôi",
+    "mobile-line-one": "Đây là tháng của kinh Quran.",
+    "mobile-line-two": "Hãy giúp chúng tôi lan tỏa ánh sáng này."
   },
   "get-started": "Bắt đầu",
   "go-to-verse": "Đi đến câu thơ",
@@ -318,6 +322,7 @@
   "juz": "Juz",
   "language": "Ngôn ngữ",
   "languages": "Ngôn ngữ",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Học tập",
   "learn-more": "Tìm hiểu thêm",
   "learning-plans": "Kế hoạch học tập",
@@ -332,6 +337,7 @@
   "menu": "Menu",
   "minutes": "Phút",
   "mobile-apps": "Ứng dụng di động",
+  "modal": "Hộp thoại",
   "mode": "Chế độ",
   "more": "Thêm",
   "my-learning-plans": "Kế hoạch học tập của tôi",
@@ -343,6 +349,7 @@
   "next": "Kế tiếp",
   "next-ayah": "Ayah tiếp theo",
   "no": "Không",
+  "no-languages-found": "No languages found",
   "no-notifications": "Chưa có thông báo nào",
   "no-verses-available": "Không có câu nào",
   "none": "Không có",
@@ -351,18 +358,20 @@
     "label": "Ghi chú",
     "title": "Ghi chú & Suy ngẫm của tôi"
   },
-  "notification-settings": "Cài đặt thông báo",
   "notification": {
     "mark-all-as-read": "Đánh dấu tất cả là đã đọc",
     "mark-as-read": "Đánh dấu là đã đọc"
   },
+  "notification-settings": "Cài đặt thông báo",
   "notifications": "Thông báo",
   "off": "Tắt",
   "oldest": "Cũ nhất",
   "on": "Mở",
   "our-projects": "Dự án của chúng tôi",
   "page": "Trang",
+  "page-number": "Trang {{page}}",
   "pages": "Trang",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}}-{{endOfResultNumber}} của {{totalNumberOfResults}} kết quả tìm kiếm",
   "pbuh": "Cầu mong phước lành của Allah đến với ông ấy.",
   "popular-links": "Liên kết phổ biến",
@@ -386,9 +395,12 @@
   "profile": "Hồ sơ",
   "projects-desc": "Dự án phi lợi nhuận do <link>Quran.Foundation</link> sở hữu, quản lý hoặc tài trợ",
   "q-reflect": "QuranReflect",
+  "quran-android": "Kinh Quran cho Android",
   "quran-apps": "Ứng dụng Kinh Qur'an",
   "quran-com": "Quran.ir",
+  "quran-ios": "Kinh Quran cho iOS",
   "quran-radio": "Đài Qur'an",
+  "ramadan-2026": "Ramadan 2026",
   "read": "Đọc",
   "read-more": "Đọc thêm",
   "reading-history": "Lịch sử đọc",
@@ -419,9 +431,6 @@
   "rub": "Rub el Hizb",
   "save": "Lưu",
   "save-to-collection": "Lưu vào bộ sưu tập",
-  "search-for": "Tìm kiếm '{{searchQuery}}'",
-  "search-results": "{{count}} kết quả tìm kiếm",
-  "search-results-no-count": "Kết quả tìm kiếm",
   "search": {
     "filters": "Bộ lọc",
     "hint": "Hãy thử tìm kiếm",
@@ -436,10 +445,15 @@
     "switch-mode": "Chuyển sang Tìm kiếm nâng cao",
     "title": "Tìm kiếm"
   },
+  "search-for": "Tìm kiếm '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} kết quả tìm kiếm",
+  "search-results-no-count": "Kết quả tìm kiếm",
   "seconds": "Giây",
   "see-less": "Xem ít hơn",
   "see-new": "Xem có gì mới",
   "select-language": "Chọn ngôn ngữ",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "Không có tafsir nào được chọn.",
     "no-translation-selected": "Chưa có bản dịch nào được chọn.",
@@ -562,11 +576,5 @@
     "title": "Nhấp chuột"
   },
   "word-tooltip": "Chú thích công cụ Word",
-  "yes": "Có",
-  "page-number": "Trang {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "Có"
 }

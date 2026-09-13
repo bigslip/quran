@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 import { HeadlessServiceProvider } from '../Notifications/hooks/useHeadlessService';
@@ -15,13 +16,20 @@ interface Props extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'typ
   section: string;
 }
 
-const SUBSCRIBED_TEXT = 'Subscribed!';
-const ENROLL_TEXT = 'Join the Surah Al-Mulk Challenge';
-
 const UnauthEnrollButton = ({ section, ...rest }: Props) => {
+  const { t } = useTranslation('ramadan-activities');
   const router = useRouter();
   const { isLoggedIn } = useIsLoggedIn();
   const { isLoading, isEnrolled, mutate } = useRamadanChallengeStatus();
+
+  const rawSubscribedText = t('subscribed');
+  const subscribedText =
+    rawSubscribedText === 'subscribed' ? 'Subscribed!' : rawSubscribedText;
+  const rawEnrollText = t('join-surah-mulk-challenge');
+  const enrollText =
+    rawEnrollText === 'join-surah-mulk-challenge'
+      ? 'Join the Surah Al-Mulk Challenge'
+      : rawEnrollText;
 
   const onButtonClicked = () => {
     logButtonClick(`guest_ramadan_challenge_${section}`);
@@ -37,8 +45,8 @@ const UnauthEnrollButton = ({ section, ...rest }: Props) => {
           isLoading={isLoading}
           mutate={mutate}
           section={section}
-          subscribedText={SUBSCRIBED_TEXT}
-          enrollText={ENROLL_TEXT}
+          subscribedText={subscribedText}
+          enrollText={enrollText}
           {...rest}
         />
       </HeadlessServiceProvider>
@@ -54,7 +62,7 @@ const UnauthEnrollButton = ({ section, ...rest }: Props) => {
       className={styles.button}
       {...rest}
     >
-      {ENROLL_TEXT}
+      {enrollText}
     </Button>
   );
 };

@@ -1,6 +1,8 @@
 {
   "default-translations": "Переводы по умолчанию",
-  "filter": "фильтр",
+  "filter": {
+    "languages-placeholder": "Выберите язык"
+  },
   "language-filter-label": "Искать все переводы языка",
   "language-select": "Выберите язык",
   "reset": "сброс настроек",

@@ -46,7 +46,11 @@
     "select-lng": "Selecteer taal",
     "sidebar-nav-close": "Navigatie zijbalk sluiten",
     "tooltip-action": "Tooltip-actie",
-    "translation-info": "Bekijk vertaal informatie"
+    "translation-info": "Bekijk vertaal informatie",
+    "play-verse": "Speel vers {{verseKey}} af",
+    "pause-surah": "Pauzeer soera {{surahName}}",
+    "pause-verse": "Pauzeer vers {{verseKey}}",
+    "surah-filter": "Soera filter"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "Verificatie code"
   },
   "from": "Van",
-  "fundraising-card-v2": {
-    "cta": "Doneer nu",
-    "description": "Maandelijkse donaties helpen ons Quran.ir te verbeteren en de bedrijfsvoering te financieren, waardoor we ons minder hoeven te richten op fondsenwerving en meer op het creëren van impact.",
-    "title": "Word een maandelijkse donateur"
-  },
-  "fundraising-share-title": "Deel Quran.ir Fondsenwerving",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Doneer",
-    "desktop-text": "Draag bij aan onze missie.",
-    "mobile-line-one": "Het is de maand van de Koran.",
-    "mobile-line-two": "Help ons het licht ervan te verspreiden."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Doneer",
-    "title": "Geef tijdens de beste dagen!"
-  },
   "fundraising": {
     "description": "Met maandelijkse donaties kunnen we Quran.ir verbeteren en onze activiteiten voortzetten. Zo hoeven we ons minder op fondsenwerving te richten en meer op het creëren van impact.",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "Word steunpilaar"
     },
     "title": "Word een maandelijkse donateur"
+  },
+  "fundraising-card-v2": {
+    "cta": "Doneer nu",
+    "description": "Maandelijkse donaties helpen ons Quran.ir te verbeteren en de bedrijfsvoering te financieren, waardoor we ons minder hoeven te richten op fondsenwerving en meer op het creëren van impact.",
+    "title": "Word een maandelijkse donateur"
+  },
+  "fundraising-share-title": "Deel Quran.ir Fondsenwerving",
+  "fundraising-sticky-banner": {
+    "cta": "Doneer",
+    "title": "Geef tijdens de beste dagen!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Doneer",
+    "desktop-text": "Draag bij aan onze missie.",
+    "mobile-line-one": "Het is de maand van de Koran.",
+    "mobile-line-two": "Help ons het licht ervan te verspreiden."
   },
   "get-started": "Aan de slag",
   "go-to-verse": "Ga naar vers",
@@ -318,6 +322,7 @@
   "juz": "Juz",
   "language": "Taal",
   "languages": "Talen",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Leren",
   "learn-more": "Leer meer",
   "learning-plans": "Leerplannen",
@@ -332,6 +337,7 @@
   "menu": "Menu",
   "minutes": "Minuten",
   "mobile-apps": "Mobiele apps",
+  "modal": "Venster",
   "mode": "Modus",
   "more": "Meer",
   "my-learning-plans": "Mijn leerplannen",
@@ -343,6 +349,7 @@
   "next": "Volgende",
   "next-ayah": "Volgende Ayah",
   "no": "Nee",
+  "no-languages-found": "No languages found",
   "no-notifications": "Nog geen meldingen",
   "no-verses-available": "Geen vers beschikbaar",
   "none": "Geen",
@@ -351,18 +358,20 @@
     "label": "Aantekeningen",
     "title": "Mijn aantekeningen en reflecties"
   },
-  "notification-settings": "Notificatie instellingen",
   "notification": {
     "mark-all-as-read": "Alles als gelezen markeren",
     "mark-as-read": "Markeer als gelezen"
   },
+  "notification-settings": "Notificatie instellingen",
   "notifications": "Meldingen",
   "off": "Uit",
   "oldest": "Oudste",
   "on": "Aan",
   "our-projects": "Onze projecten",
   "page": "Bladzijde",
+  "page-number": "Pagina {{page}}",
   "pages": "Pagina's",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} van {{totalNumberOfResults}} zoek resultaten",
   "pbuh": "De zegeningen van Allah zij met hem",
   "popular-links": "Populaire links",
@@ -386,9 +395,12 @@
   "profile": "Profiel",
   "projects-desc": "Non-profitprojecten die eigendom zijn van, beheerd worden door of gesponsord worden door <link>Quran.Foundation</link>.",
   "q-reflect": "QuranReflect",
+  "quran-android": "Koran voor Android",
   "quran-apps": "Koran-apps",
   "quran-com": "Quran.ir",
+  "quran-ios": "Koran voor iOS",
   "quran-radio": "Koran Radio",
+  "ramadan-2026": "Ramadan 2026",
   "read": "Lezen",
   "read-more": "Lees meer",
   "reading-history": "Geschiedenis lezen",
@@ -419,9 +431,6 @@
   "rub": "Rub el Hizb",
   "save": "Bewaren",
   "save-to-collection": "Opslaan in collectie",
-  "search-for": "Zoeken naar '{{searchQuery}}'",
-  "search-results": "{{count}} zoek resultaten",
-  "search-results-no-count": "Zoekresultaten",
   "search": {
     "filters": "Filters",
     "hint": "Probeer te zoeken naar",
@@ -436,10 +445,15 @@
     "switch-mode": "Overschakelen naar Geavanceerd zoeken",
     "title": "Zoeken"
   },
+  "search-for": "Zoeken naar '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} zoek resultaten",
+  "search-results-no-count": "Zoekresultaten",
   "seconds": "Seconden",
   "see-less": "Minder weergeven",
   "see-new": "Bekijk wat er nieuw is",
   "select-language": "Taal selecteren",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "Geen tafsir geselecteerd",
     "no-translation-selected": "Geen vertaling geselecteerd",
@@ -562,11 +576,5 @@
     "title": "Woord klik"
   },
   "word-tooltip": "woord info knop",
-  "yes": "Ja",
-  "page-number": "Pagina {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "Ja"
 }

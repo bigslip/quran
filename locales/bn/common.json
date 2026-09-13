@@ -46,7 +46,11 @@
     "select-lng": "ভাষা নির্বাচন কর",
     "sidebar-nav-close": "নেভিগেশন সাইডবার বন্ধ করুন",
     "tooltip-action": "টুলটিপ অ্যাকশন",
-    "translation-info": "অনুবাদ তথ্য দেখুন"
+    "translation-info": "অনুবাদ তথ্য দেখুন",
+    "play-verse": "আয়াত {{verseKey}} শুনুন",
+    "pause-surah": "সূরা {{surahName}} থামান",
+    "pause-verse": "আয়াত {{verseKey}} থামান",
+    "surah-filter": "সূরা ফিল্টার"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "যাচাইকরণ কোড"
   },
   "from": "থেকে",
-  "fundraising-card-v2": {
-    "cta": "এখনই দান করুন",
-    "description": "মাসিক দাতারা আমাদের Quran.ir উন্নত করতে এবং কার্যক্রম পরিচালনা করতে সাহায্য করে, তাই আমরা তহবিল সংগ্রহের উপর কম এবং প্রভাব তৈরিতে বেশি মনোযোগ দিই।",
-    "title": "মাসিক দাতা হন"
-  },
-  "fundraising-share-title": "Quran.ir তহবিল সংগ্রহ শেয়ার করুন",
-  "fundraising-sticky-banner-v2": {
-    "cta": "দান করুন",
-    "desktop-text": "আমাদের লক্ষ্যে অবদান রাখুন",
-    "mobile-line-one": "এটা কুরআনের মাস।",
-    "mobile-line-two": "এর আলো ছড়িয়ে দিতে আমাদের সাহায্য করুন।"
-  },
-  "fundraising-sticky-banner": {
-    "cta": "দান করুন",
-    "title": "সেরা দিন সময় দিন!"
-  },
   "fundraising": {
     "description": "মাসিক অনুদান আমাদের Quran.ir-এর উন্নতি এবং কার্যক্রম টিকিয়ে রাখতে সাহায্য করে, তাই আমরা তহবিল সংগ্রহের উপর কম এবং প্রভাব তৈরির উপর বেশি মনোযোগ দিই।",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "সমর্থক হন।"
     },
     "title": "একজন মাসিক দাতা হন"
+  },
+  "fundraising-card-v2": {
+    "cta": "এখনই দান করুন",
+    "description": "মাসিক দাতারা আমাদের Quran.ir উন্নত করতে এবং কার্যক্রম পরিচালনা করতে সাহায্য করে, তাই আমরা তহবিল সংগ্রহের উপর কম এবং প্রভাব তৈরিতে বেশি মনোযোগ দিই।",
+    "title": "মাসিক দাতা হন"
+  },
+  "fundraising-share-title": "Quran.ir তহবিল সংগ্রহ শেয়ার করুন",
+  "fundraising-sticky-banner": {
+    "cta": "দান করুন",
+    "title": "সেরা দিন সময় দিন!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "দান করুন",
+    "desktop-text": "আমাদের লক্ষ্যে অবদান রাখুন",
+    "mobile-line-one": "এটা কুরআনের মাস।",
+    "mobile-line-two": "এর আলো ছড়িয়ে দিতে আমাদের সাহায্য করুন।"
   },
   "get-started": "শুরু করুন",
   "go-to-verse": "পদ্যে যান",
@@ -318,6 +322,7 @@
   "juz": "জুজ",
   "language": "ভাষা",
   "languages": "ভাষা",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "শেখা",
   "learn-more": "আরও জানুন",
   "learning-plans": "শেখার পরিকল্পনা",
@@ -332,6 +337,7 @@
   "menu": "তালিকা",
   "minutes": "মিনিট",
   "mobile-apps": "মোবাইল অ্যাপস",
+  "modal": "মডাল",
   "mode": "মোড",
   "more": "আরও",
   "my-learning-plans": "আমার শেখার পরিকল্পনা",
@@ -343,6 +349,7 @@
   "next": "পরবর্তী",
   "next-ayah": "পরবর্তী আয়াত",
   "no": "না",
+  "no-languages-found": "No languages found",
   "no-notifications": "এখনও কোন বিজ্ঞপ্তি নেই",
   "no-verses-available": "কোন পদ পাওয়া যায় না",
   "none": "কোনোটিই নয়",
@@ -351,18 +358,20 @@
     "label": "মন্তব্য",
     "title": "আমার নোট এবং প্রতিফলন"
   },
-  "notification-settings": "বিজ্ঞপ্তি সেটিংস",
   "notification": {
     "mark-all-as-read": "সবগুলো পঠিত বলে সনাক্ত কর",
     "mark-as-read": "পঠিত হিসেবে চিহ্নিত করুন"
   },
+  "notification-settings": "বিজ্ঞপ্তি সেটিংস",
   "notifications": "বিজ্ঞপ্তি",
   "off": "বন্ধ",
   "oldest": "প্রবীণতম",
   "on": "চালু",
   "our-projects": "আমাদের প্রকল্পগুলি",
   "page": "পাতা",
+  "page-number": "পৃষ্ঠা {{page}}",
   "pages": "পাতা",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} totalNumberOfResults}}টি ফলাফলের মধ্যে {{totalNumberOfResults}} - {{endOfResultNumber}}",
   "pbuh": "তার উপর আল্লাহর রহমত বর্ষিত হোক",
   "popular-links": "জনপ্রিয় লিঙ্ক",
@@ -386,9 +395,12 @@
   "profile": "প্রোফাইল",
   "projects-desc": "<link>Quran.Foundation</link> এর মালিকানাধীন, পরিচালিত, অথবা স্পন্সরকৃত অলাভজনক প্রকল্প।",
   "q-reflect": "কুরআন প্রতিফলন",
+  "quran-android": "অ্যান্ড্রয়েডের জন্য কুরআন",
   "quran-apps": "কুরআন অ্যাপস",
   "quran-com": "কুরআন ডট কম",
+  "quran-ios": "আইওএসের জন্য কুরআন",
   "quran-radio": "কোরআন রেডিও",
+  "ramadan-2026": "রমজান ২০২৬",
   "read": "পড়ুন",
   "read-more": "আরও বিস্তারিত!",
   "reading-history": "ইতিহাস পড়া",
@@ -419,9 +431,6 @@
   "rub": "রুব এল হিযব",
   "save": "সংরক্ষণ",
   "save-to-collection": "সংগ্রহে সংরক্ষণ করুন",
-  "search-for": "'{{searchQuery}}' অনুসন্ধান করুন",
-  "search-results": "{{count}} সার্চ ফলাফল",
-  "search-results-no-count": "অনুসন্ধান ফলাফল",
   "search": {
     "filters": "ফিল্টার",
     "hint": "খোঁজার চেষ্টা করুন",
@@ -436,10 +445,15 @@
     "switch-mode": "উন্নত অনুসন্ধানে স্যুইচ করুন",
     "title": "অনুসন্ধান করুন"
   },
+  "search-for": "'{{searchQuery}}' অনুসন্ধান করুন",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} সার্চ ফলাফল",
+  "search-results-no-count": "অনুসন্ধান ফলাফল",
   "seconds": "সেকেন্ড",
   "see-less": "কম দেখুন",
   "see-new": "নতুন কি দেখুন",
   "select-language": "ভাষা নির্বাচন কর",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "কোন তাফসির নির্বাচিত নয়",
     "no-translation-selected": "কোনো অনুবাদ নির্বাচন করা হয়নি",
@@ -562,11 +576,5 @@
     "title": "শব্দ ক্লিক"
   },
   "word-tooltip": "শব্দ টুলটিপ",
-  "yes": "হ্যাঁ",
-  "page-number": "পৃষ্ঠা {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "হ্যাঁ"
 }

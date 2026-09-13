@@ -77,7 +77,7 @@ const ReflectionsPage: NextPage<AyahReflectionProp> = ({
         canonical={getCanonicalUrl(lang, navigationUrl)}
         languageAlternates={getLanguageAlternates(navigationUrl)}
         description={t('reflections-desc', {
-          ayahNumber: verseNumber,
+          ayahNumber: toLocalizedNumber(Number(verseNumber), lang),
           surahName: chapter.chapter.transliteratedName,
         })}
       />

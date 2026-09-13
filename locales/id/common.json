@@ -46,7 +46,11 @@
     "select-lng": "Pilih Bahasa",
     "sidebar-nav-close": "Tutup Sidebar Navigasi",
     "tooltip-action": "Aksi tooltip",
-    "translation-info": "Lihat informasi terjemahan"
+    "translation-info": "Lihat informasi terjemahan",
+    "play-verse": "Putar Ayat {{verseKey}}",
+    "pause-surah": "Jeda Surah {{surahName}}",
+    "pause-verse": "Jeda Ayat {{verseKey}}",
+    "surah-filter": "Filter Surah"
   },
   "audio": {
     "auto-scroll": {
@@ -278,22 +282,6 @@
     "verification-code": "Kode Verifikasi"
   },
   "from": "Dari",
-  "fundraising-card-v2": {
-    "cta": "Donasi sekarang",
-    "description": "Donatur bulanan membantu kami meningkatkan Quran.ir dan mempertahankan operasional sehingga kami dapat lebih fokus pada menciptakan dampak daripada penggalangan dana.",
-    "title": "Menjadi Donatur Bulanan"
-  },
-  "fundraising-share-title": "Sebarkan Penggalangan Dana Quran.ir",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Menyumbangkan",
-    "desktop-text": "Berkontribusilah pada misi kami",
-    "mobile-line-one": "Ini adalah bulan Al-Quran.",
-    "mobile-line-two": "Bantu kami menyebarkan cahayanya."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Menyumbang",
-    "title": "Menyumbang di hari-hari terbaik!"
-  },
   "fundraising": {
     "description": "Donasi bulanan membantu kami mengembangkan dan mempertahankan operasional Quran.ir sehingga kami dapat lebih fokus menciptakan dampak daripada menggalang dana.",
     "donation-campaign": {
@@ -301,6 +289,22 @@
       "text": "Jadilah pendukung"
     },
     "title": "Menjadi Donatur Bulanan"
+  },
+  "fundraising-card-v2": {
+    "cta": "Donasi sekarang",
+    "description": "Donatur bulanan membantu kami meningkatkan Quran.ir dan mempertahankan operasional sehingga kami dapat lebih fokus pada menciptakan dampak daripada penggalangan dana.",
+    "title": "Menjadi Donatur Bulanan"
+  },
+  "fundraising-share-title": "Sebarkan Penggalangan Dana Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "Menyumbang",
+    "title": "Menyumbang di hari-hari terbaik!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Menyumbangkan",
+    "desktop-text": "Berkontribusilah pada misi kami",
+    "mobile-line-one": "Ini adalah bulan Al-Quran.",
+    "mobile-line-two": "Bantu kami menyebarkan cahayanya."
   },
   "get-started": "Memulai",
   "go-to-verse": "Buka Ayat",
@@ -318,6 +322,7 @@
   "juz": "Juz",
   "language": "Bahasa",
   "languages": "Bahasa",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Mempelajari",
   "learn-more": "Pelajari lebih lanjut",
   "learning-plans": "Rencana Pembelajaran",
@@ -332,6 +337,7 @@
   "menu": "Menu",
   "minutes": "Menit",
   "mobile-apps": "Aplikasi",
+  "modal": "Modal",
   "mode": "Mode",
   "more": "Lagi",
   "my-learning-plans": "Rencana Pembelajaran Saya",
@@ -343,6 +349,7 @@
   "next": "Lanjut",
   "next-ayah": "Ayat Berikutnya",
   "no": "Tidak",
+  "no-languages-found": "No languages found",
   "no-notifications": "Belum ada notifikasi",
   "no-verses-available": "Tidak ada ayat yang tersedia",
   "none": "Tidak ada",
@@ -351,18 +358,20 @@
     "label": "Catatan",
     "title": "Catatan & Refleksi Saya"
   },
-  "notification-settings": "Pengaturan Notifikasi",
   "notification": {
     "mark-all-as-read": "Tandai semua telah dibaca",
     "mark-as-read": "Tandai telah dibaca"
   },
+  "notification-settings": "Pengaturan Notifikasi",
   "notifications": "Notifikasi",
   "off": "Mati",
   "oldest": "Paling Lama",
   "on": "Hidup",
   "our-projects": "Proyek Kami",
   "page": "Halaman",
+  "page-number": "Halaman {{page}}",
   "pages": "halaman-halaman",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} dari {{totalNumberOfResults}} hasil pencarian",
   "pbuh": "Berkah Allah atasnya",
   "popular-links": "Link populer",
@@ -386,9 +395,12 @@
   "profile": "Profil",
   "projects-desc": "Proyek nirlaba yang dimiliki, dikelola, atau disponsori oleh <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
+  "quran-android": "Quran untuk Android",
   "quran-apps": "Aplikasi Al-Quran",
   "quran-com": "Quran.ir",
+  "quran-ios": "Quran untuk iOS",
   "quran-radio": "Radio Qur'an",
+  "ramadan-2026": "Ramadhan 2026",
   "read": "Membaca",
   "read-more": "Baca selengkapnya",
   "reading-history": "Riwayat membaca",
@@ -419,9 +431,6 @@
   "rub": "Rub el Hizb",
   "save": "Simpan",
   "save-to-collection": "Simpan ke Koleksi",
-  "search-for": "Cari '{{searchQuery}}'",
-  "search-results": "{{count}} hasil penelusuran",
-  "search-results-no-count": "Hasil Pencarian",
   "search": {
     "filters": "Filter",
     "hint": "Coba cari",
@@ -436,10 +445,15 @@
     "switch-mode": "Beralih ke Pencarian Lanjutan",
     "title": "Mencari"
   },
+  "search-for": "Cari '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} hasil penelusuran",
+  "search-results-no-count": "Hasil Pencarian",
   "seconds": "Detik",
   "see-less": "Lihat lebih sedikit",
   "see-new": "Lihat Apa yang Baru",
   "select-language": "Pilih Bahasa",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "Tidak ada tafsir yang dipilih",
     "no-translation-selected": "Tidak ada terjemahan yang dipilih",
@@ -562,11 +576,5 @@
     "title": "Klik Kata"
   },
   "word-tooltip": "Tooltip Kata",
-  "yes": "Ya",
-  "page-number": "Halaman {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "Ya"
 }

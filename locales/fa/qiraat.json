@@ -1,4 +1,5 @@
 {
   "description": "قیرات (قرائت های مختلف) آیه را کاوش کنید {{ayahNumber}} سوره {{surahName}}",
+  "juncture-selection": "انتخاب موضع",
   "title": "قیراط {{surahName}} - {{ayahNumber}}"
 }

@@ -1,4 +1,5 @@
 {
   "description": "استكشاف القراءات المختلفة للآية {{ayahNumber}} من سورة {{surahName}}",
+  "juncture-selection": "اختيار الموضع",
   "title": "قراءات {{surahName}} - {{ayahNumber}}"
 }

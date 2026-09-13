@@ -1,4 +1,6 @@
 {
   "description": "Descubra hadiths e narrações autênticas relacionadas ao versículo. {{ayahNumber}} da Surata {{surahName}}Acesse as tradições acadêmicas relacionadas a este versículo do Alcorão.",
+  "sahih-bukhari": "Sahih al-Bukhari",
+  "sahih-muslim": "Sahih Muslim",
   "title": "Hadiths {{surahName}} - {{ayahNumber}}"
 }

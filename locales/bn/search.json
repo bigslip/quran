@@ -1,6 +1,8 @@
 {
   "default-translations": "ডিফল্ট অনুবাদ",
-  "filter": "ছাঁকনি",
+  "filter": {
+    "languages-placeholder": "একটি ভাষা নির্বাচন করুন"
+  },
   "language-filter-label": "একটি ভাষার সমস্ত অনুবাদ অনুসন্ধান করুন",
   "language-select": "একটি ভাষা নির্বাচন করুন",
   "reset": "রিসেট",

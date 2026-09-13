@@ -1,4 +1,6 @@
 {
   "description": "Gundua Hadithi na riwaya sahihi zinazohusiana na Aya {{ayahNumber}} ya Sura {{surahName}}. Pata mila za kitaaluma zinazohusiana na aya hii ya Qur'ani.",
+  "sahih-bukhari": "Sahih al-Bukhari",
+  "sahih-muslim": "Sahih Muslim",
   "title": "Hadithi {{surahName}} - {{ayahNumber}}"
 }
