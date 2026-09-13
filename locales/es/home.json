@@ -105,5 +105,16 @@
   },
   "welcome": {
     "title": "¡Es el mes del Corán! Ayuda a millones de usuarios a acceder a la guía del Corán."
-  }
+  },
+  "sanctuary-companion": "Compañero Móvil",
+  "companion-title": "Lleva el Corán a todas partes",
+  "companion-desc": "Lee sin conexión, escucha a más de 30 recitadores, establece metas y sincroniza tus dispositivos.",
+  "featured-reflections": "Reflexión Diaria",
+  "qr-community-name": "Comunidad QuranReflect",
+  "qr-community-subtitle": "Reflexiones Coránicas Globales",
+  "quick-jump-yaseen": "El Corazón del Corán",
+  "quick-jump-mulk": "Protección",
+  "quick-jump-kahf": "Sunnah del Viernes",
+  "quick-jump-kursi": "La Aleya Más Grandiosa",
+  "quick-jump-juz30": "37 Suras"
 }

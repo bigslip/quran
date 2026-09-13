@@ -105,5 +105,16 @@
   },
   "welcome": {
     "title": "C'est le Mois du Coran ! Aidez des millions d'utilisateurs à accéder aux conseils du Coran."
-  }
+  },
+  "sanctuary-companion": "Compagnon Mobile",
+  "companion-title": "Emportez le Coran partout",
+  "companion-desc": "Lisez hors ligne, écoutez plus de 30 récitateurs, fixez des objectifs et synchronisez vos appareils.",
+  "featured-reflections": "Méditation du jour",
+  "qr-community-name": "Communauté QuranReflect",
+  "qr-community-subtitle": "Réflexions coraniques mondiales",
+  "quick-jump-yaseen": "Cœur du Coran",
+  "quick-jump-mulk": "Protection",
+  "quick-jump-kahf": "Sunnah du vendredi",
+  "quick-jump-kursi": "Le plus grand verset",
+  "quick-jump-juz30": "37 Sourates"
 }

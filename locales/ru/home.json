@@ -105,5 +105,16 @@
   },
   "welcome": {
     "title": "Это месяц Корана! Помогите миллионам пользователей получить доступ к руководству Корана."
-  }
+  },
+  "sanctuary-companion": "Мобильный спутник",
+  "companion-title": "Коран всегда с вами",
+  "companion-desc": "Читайте офлайн, слушайте 30+ чтецов, ставьте цели и синхронизируйте на всех устройствах.",
+  "featured-reflections": "Размышление дня",
+  "qr-community-name": "Сообщество QuranReflect",
+  "qr-community-subtitle": "Мировые размышления над Кораном",
+  "quick-jump-yaseen": "Сердце Корана",
+  "quick-jump-mulk": "Защита",
+  "quick-jump-kahf": "Сунна пятницы",
+  "quick-jump-kursi": "Величайший аят",
+  "quick-jump-juz30": "37 сур"
 }

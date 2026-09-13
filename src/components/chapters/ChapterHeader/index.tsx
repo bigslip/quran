@@ -42,7 +42,8 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
   const { lang } = useTranslation('quran-reader');
   const chaptersData = useContext(DataContext);
   const chapterData = getChapterData(chaptersData, chapterId);
-  const isArabicOrUrdu = lang === Language.AR || lang === Language.UR;
+  const isArabicOrUrdu =
+    lang === Language.AR || lang === Language.UR || lang === Language.FA;
   const direction = useDirection();
   const readingPreference = useSelector(selectReadingPreference);
   const { showEvent, title, description, ctaText, ctaLink } = useChapterEvent(chapterId);

@@ -39,7 +39,7 @@ const QuranReflectCard: React.FC<QuranReflectCardProps> = ({ onClick }) => {
           </div>
           <span className={styles.verseRefPill}>
             <DiamondIcon className={styles.pillIcon} aria-hidden="true" />
-            {t('home:featured-reflections', { defaultValue: 'Daily Reflection' })}
+            {t('featured-reflections', { defaultValue: 'Daily Reflection' })}
           </span>
         </div>
 
@@ -52,10 +52,10 @@ const QuranReflectCard: React.FC<QuranReflectCardProps> = ({ onClick }) => {
             <div className={styles.authorAvatar}>QR</div>
             <div className={styles.authorMeta}>
               <span className={styles.authorName}>
-                {t('home:qr-community-name', { defaultValue: 'QuranReflect Community' })}
+                {t('qr-community-name', { defaultValue: 'QuranReflect Community' })}
               </span>
               <span className={styles.authorStatus}>
-                {t('home:qr-community-subtitle', {
+                {t('qr-community-subtitle', {
                   defaultValue: 'Global Quran Reflections',
                 })}
               </span>

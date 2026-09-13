@@ -13,17 +13,22 @@ const SUPPORTED_CHAPTER_LOCALES = [
   'en',
   'ar',
   'bn',
+  'fa',
   'fr',
   'id',
-  'ms',
   'it',
   'nl',
+  'pt',
   'ru',
+  'sq',
+  'th',
   'tr',
   'ur',
   'zh',
+  'ms',
   'es',
   'sw',
+  'vi',
 ];
 
 const chaptersCache = new Map<string, Record<string, Chapter>>();

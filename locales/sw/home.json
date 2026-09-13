@@ -105,5 +105,16 @@
   },
   "welcome": {
     "title": "Ni Mwezi wa Qur'ani! Saidia mamilioni ya watumiaji kupata mwongozo wa Qur'ani."
-  }
+  },
+  "sanctuary-companion": "Mwandani wa Simu",
+  "companion-title": "Beba Quran Kila Mahali",
+  "companion-desc": "Soma nje ya mtandao, sikiliza wasomaji 30+, weka malengo na usawazishe kwenye vifaa vyako vyote.",
+  "featured-reflections": "Tafakuri ya Kila Siku",
+  "qr-community-name": "Jumuiya ya QuranReflect",
+  "qr-community-subtitle": "Tafakuri za Quran Ulimwenguni",
+  "quick-jump-yaseen": "Moyo wa Quran",
+  "quick-jump-mulk": "Ulinzi",
+  "quick-jump-kahf": "Sunnah ya Ijumaa",
+  "quick-jump-kursi": "Aya Tukufu Zaidi",
+  "quick-jump-juz30": "Sura 37"
 }

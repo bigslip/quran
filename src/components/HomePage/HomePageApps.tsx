@@ -75,13 +75,13 @@ const HomePageApps: React.FC = () => {
           <div className={styles.sanctuaryMeta}>
             <div className={styles.companionBadge}>
               <MobileIcon className={styles.mobileBadgeIcon} aria-hidden="true" />
-              <span>{t('home:sanctuary-companion', { defaultValue: 'Mobile Companion' })}</span>
+              <span>{t('sanctuary-companion', { defaultValue: 'Mobile Companion' })}</span>
             </div>
             <h3 className={styles.sanctuaryTitle}>
-              {t('home:companion-title', { defaultValue: 'Carry the Quran Everywhere' })}
+              {t('companion-title', { defaultValue: 'Carry the Quran Everywhere' })}
             </h3>
             <p className={styles.sanctuaryDescription}>
-              {t('home:companion-desc', {
+              {t('companion-desc', {
                 defaultValue:
                   'Read offline, listen to 30+ reciters, set custom goals, and sync your reading seamlessly across all your devices.',
               })}
