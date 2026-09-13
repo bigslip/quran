@@ -429,6 +429,15 @@ $bismillahSvgInlineSizeMobile: 148px;
   }
 }
 
+.actionBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall-px);
+  margin-block-start: var(--spacing-small-px);
+}
+
 .actionIcon {
   display: inline-flex;
   inline-size: var(--spacing-medium-px);
