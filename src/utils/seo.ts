@@ -1,9 +1,9 @@
 /* eslint-disable react-func/max-lines-per-function */
 import { NextSeoProps } from 'next-seo';
 
-import { getOpenGraphLocale } from './locale';
-
 import { getDefaultOgImageUrl } from '@/lib/og';
+import Language from '@/types/Language';
+import { getOpenGraphLocale, toLocalizedNumber } from '@/utils/locale';
 import { VersesResponse } from 'types/ApiResponses';
 
 export const config = {
@@ -81,34 +81,6 @@ export function createSEOConfig({
         property: 'fb:pages',
         content: config.facebookPage,
       },
-      // {
-      //   name: 'al:ios:url',
-      //   content: config.appleAppUrl,
-      // },
-      // {
-      //   name: 'al:ios:app_name',
-      //   content: config.appleAppName,
-      // },
-      // {
-      //   name: 'al:ios:app_store_id',
-      //   content: config.appleAppId,
-      // },
-      // {
-      //   name: 'al:android:url',
-      //   content: config.androidAppUrl,
-      // },
-      // {
-      //   name: 'al:android:app_name',
-      //   content: config.androidAppName,
-      // },
-      // {
-      //   name: 'al:android:package',
-      //   content: config.androidPackage,
-      // },
-      // {
-      //   name: 'apple-itunes-app',
-      //   content: `app-id=${config.appleAppId}`,
-      // },
       {
         name: 'Charset',
         content: 'UTF-8',
@@ -129,7 +101,6 @@ export function createSEOConfig({
         name: 'viewport',
         content: 'width=device-width, initial-scale=1, shrink-to-fit=no',
       },
-      // ...getOpenGraphAlternateLocales(locale),
     ],
   };
 }
@@ -148,4 +119,70 @@ export const getPageOrJuzMetaDescription = (response?: VersesResponse): string =
       .filter(Boolean)
       .join(' - ') || ''
   );
+};
+
+export interface SurahSeoTitleOptions {
+  chapter: {
+    id?: number | string;
+    transliteratedName?: string;
+    translatedName?: string;
+    nameArabic?: string;
+    versesCount?: number;
+  };
+  lang: string;
+  isChapter: boolean;
+  verseNumber?: number;
+  isAyatulKursi?: boolean;
+}
+
+export const isAyatulKursi = (
+  chapterId: string | number,
+  verseNumber: string | number,
+): boolean => String(chapterId) === '2' && Number(verseNumber) === 255;
+
+export const getSurahSeoTitle = ({
+  chapter,
+  lang,
+  isChapter,
+  verseNumber,
+  isAyatulKursi: isAyatulKursiParam,
+}: SurahSeoTitleOptions): string => {
+  const transliterated = chapter?.transliteratedName || '';
+  const translated = chapter?.translatedName || '';
+  const arabic = chapter?.nameArabic || '';
+
+  if (!isChapter && isAyatulKursiParam) {
+    if (lang === Language.FA) {
+      return 'آیت الکرسی (آیه ۲۵۵ سوره بقره) - متن، ترجمه و صوت | قرآن کریم';
+    }
+    if (lang === Language.AR) {
+      return 'آية الكرسي (سورة البقرة آية ۲۵۵) - قراءة وتفسير | القرآن الكريم';
+    }
+    return 'Ayatul Kursi (Surah Al-Baqarah - Verse 255) - Translation & Audio | Quran.ir';
+  }
+
+  if (!isChapter && verseNumber) {
+    const localizedVerseNum = toLocalizedNumber(verseNumber, lang);
+    if (lang === Language.FA) {
+      const cleanFaName = translated.split('(')[0].trim() || transliterated;
+      return `آیه ${localizedVerseNum} سوره ${cleanFaName} (${transliterated}) - متن و ترجمه | قرآن کریم`;
+    }
+    if (lang === Language.AR) {
+      return `سورة ${arabic || transliterated} آية ${localizedVerseNum} - قراءة وتفسير | القرآن الكريم`;
+    }
+    return `Surah ${transliterated} - Verse ${verseNumber} - Translation & Tafsir | Quran.ir`;
+  }
+
+  // Full Surah view
+  if (lang === Language.FA) {
+    const cleanFaName = translated.split('(')[0].trim() || transliterated;
+    return `سوره ${cleanFaName} (${transliterated}) - متن، ترجمه و صوت | قرآن کریم`;
+  }
+
+  if (lang === Language.AR) {
+    return `سورة ${arabic || transliterated} - قراءة واستماع وتفسير | القرآن الكريم`;
+  }
+
+  const englishSubtitle = translated ? ` (${translated})` : '';
+  return `Surah ${transliterated}${englishSubtitle} - Read, Translation & Audio | Quran.ir`;
 };

@@ -16,6 +16,7 @@ import { getAllChaptersData, getChapterData } from '@/utils/chapter';
 import { getLanguageAlternates, toLocalizedNumber, toLocalizedVersesRange } from '@/utils/locale';
 import { getCanonicalUrl, getVerseNavigationUrl } from '@/utils/navigation';
 import getPlainTranslationText from '@/utils/plainTranslationText';
+import { getSurahSeoTitle, isAyatulKursi } from '@/utils/seo';
 import {
   REVALIDATION_PERIOD_ON_ERROR_SECONDS,
   ONE_WEEK_REVALIDATION_PERIOD_SECONDS,
@@ -50,14 +51,25 @@ const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse 
       : `${versesResponse?.verses?.[0]?.verseNumber}-${versesResponse?.verses?.[versesResponse?.verses?.length - 1]?.verseNumber}`) ||
     '';
   const path = getVerseNavigationUrl(chapterResponse.chapter.slug, currentVerseId);
+
+  const getSEOTitle = () => {
+    if (!isVerse) {
+      return `${t('surah')} ${chapterResponse.chapter.transliteratedName} - ${toLocalizedVersesRange(currentVerseId, lang)}`;
+    }
+    const verseNumber = Number(currentVerseId);
+    return getSurahSeoTitle({
+      chapter: chapterResponse.chapter,
+      lang,
+      isChapter: false,
+      verseNumber,
+      isAyatulKursi: isAyatulKursi(chapterResponse.chapter.id as string, verseNumber),
+    });
+  };
+
   return (
     <>
       <NextSeoWrapper
-        title={`${t('surah')} ${chapterResponse.chapter.transliteratedName} - ${
-          isVerse
-            ? toLocalizedNumber(Number(currentVerseId), lang)
-            : toLocalizedVersesRange(currentVerseId, lang)
-        }`}
+        title={getSEOTitle()}
         image={getChapterOgImageUrl({
           chapterId: chapterResponse.chapter.id,
           verseNumber: isVerse ? Number(currentVerseId) : undefined,

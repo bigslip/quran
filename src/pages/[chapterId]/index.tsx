@@ -31,6 +31,7 @@ import {
   REVALIDATION_PERIOD_ON_ERROR_SECONDS,
   ONE_WEEK_REVALIDATION_PERIOD_SECONDS,
 } from '@/utils/staticPageGeneration';
+import { getSurahSeoTitle, isAyatulKursi } from '@/utils/seo';
 import { isRangesStringValid, isValidChapterId, isValidVerseKey } from '@/utils/validator';
 import { getVerseAndChapterNumbersFromKey } from '@/utils/verse';
 import { parseVerseRange, generateVerseKeysBetweenTwoVerseKeys } from '@/utils/verseKeys';
@@ -43,9 +44,6 @@ type ChapterProps = {
   quranReaderDataType: QuranReaderDataType;
   chaptersData: ChaptersData;
 };
-
-const isAyatulKursi = (chapterId: string, verseNumber: number): boolean =>
-  chapterId === '2' && verseNumber === 255;
 
 const Chapter: NextPage<ChapterProps> = ({
   chapterResponse,
@@ -98,10 +96,17 @@ const Chapter: NextPage<ChapterProps> = ({
   const canonicalUrl = getCanonicalUrl(lang, path);
 
   const getSEOTitle = () => {
-    if (isRange) {
-      return getTitle();
-    }
-    return `${t('surah')} ${chapterResponse.chapter.transliteratedName} - ${getTitle()}`;
+    if (isRange) return getTitle();
+    return getSurahSeoTitle({
+      chapter: chapterResponse.chapter,
+      lang,
+      isChapter,
+      verseNumber: !isChapter ? versesResponse?.verses?.[0]?.verseNumber : undefined,
+      isAyatulKursi: isAyatulKursi(
+        chapterResponse.chapter.id as string,
+        versesResponse?.verses?.[0]?.verseNumber,
+      ),
+    });
   };
 
   const getOGImage = () => {
