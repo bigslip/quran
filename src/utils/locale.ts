@@ -273,16 +273,21 @@ export const findLanguageIdByLocale = (locale: Language): number => {
  * @returns {LinkLanguageAlternate[]}
  */
 export const getLanguageAlternates = (path: string): LinkLanguageAlternate[] => {
-  const { locales } = i18nConfig;
+  const { locales, defaultLocale } = i18nConfig;
   const basePath = getBasePath();
+  const normalizedPath = path === '/' ? '' : path;
+
   return locales
     .map((locale) => ({
       hrefLang: locale,
-      href: `${basePath}/${locale}${path === '/' ? '' : path}`,
+      href:
+        locale === defaultLocale
+          ? `${basePath}${normalizedPath}`
+          : `${basePath}/${locale}${normalizedPath}`,
     }))
     .concat({
       hrefLang: 'x-default', // used when no other language/region matches the user's browser setting @see https://developers.google.com/search/docs/advanced/crawling/localized-versions#xdefault
-      href: `${basePath}${path}`,
+      href: `${basePath}${normalizedPath}`,
     });
 };
 

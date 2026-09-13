@@ -1,11 +1,13 @@
-import { it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import {
   toLocalizedNumber,
   toLocalizedMonthName,
   toLocalizedVerseKeyRTL,
   toLocalizedVerseKeyAuto,
+  getLanguageAlternates,
 } from './locale';
+import { getBasePath } from './url';
 
 it('toLocalizedNumber works as expected', () => {
   expect(toLocalizedNumber(9, 'en', true)).toBe('09');
@@ -100,3 +102,35 @@ it('toLocalizedVerseKeyAuto handles edge cases', () => {
   expect(toLocalizedVerseKeyAuto('2:286', 'en')).toBe('2:286'); // LTR
   expect(toLocalizedVerseKeyAuto('2:286', 'ur')).toBe('2:286'); // Urdu special case
 });
+
+describe('getLanguageAlternates', () => {
+  it('generates default English alternate without /en prefix and localized alternates for others', () => {
+    const basePath = getBasePath();
+    const alternates = getLanguageAlternates('/al-baqarah');
+    const enAlternate = alternates.find((a) => a.hrefLang === 'en');
+    expect(enAlternate?.href).toBe(`${basePath}/al-baqarah`);
+
+    const faAlternate = alternates.find((a) => a.hrefLang === 'fa');
+    expect(faAlternate?.href).toBe(`${basePath}/fa/al-baqarah`);
+
+    const arAlternate = alternates.find((a) => a.hrefLang === 'ar');
+    expect(arAlternate?.href).toBe(`${basePath}/ar/al-baqarah`);
+
+    const xDefault = alternates.find((a) => a.hrefLang === 'x-default');
+    expect(xDefault?.href).toBe(`${basePath}/al-baqarah`);
+  });
+
+  it('handles root path correctly without trailing slashes', () => {
+    const basePath = getBasePath();
+    const alternates = getLanguageAlternates('/');
+    const enAlternate = alternates.find((a) => a.hrefLang === 'en');
+    expect(enAlternate?.href).toBe(basePath);
+
+    const faAlternate = alternates.find((a) => a.hrefLang === 'fa');
+    expect(faAlternate?.href).toBe(`${basePath}/fa`);
+
+    const xDefault = alternates.find((a) => a.hrefLang === 'x-default');
+    expect(xDefault?.href).toBe(basePath);
+  });
+});
+
