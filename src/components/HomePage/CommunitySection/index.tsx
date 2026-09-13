@@ -27,7 +27,7 @@ const CommunitySection: React.FC = () => {
         <div className={styles.titleWrapper}>
           <h2 className={styles.title}>{t('common:community.title')}</h2>
           <span className={styles.headerSubtitle}>
-            {t('home:community-subtitle', {
+            {t('community-subtitle', {
               defaultValue: 'Connect, reflect, and share insights with the global Ummah',
             })}
           </span>
