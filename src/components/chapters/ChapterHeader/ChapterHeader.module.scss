@@ -395,3 +395,45 @@ $bismillahSvgInlineSizeMobile: 148px;
   border-color: var(--color-sanctuary-petal-tag-madinah, #047857);
   color: var(--color-text-default-new);
 }
+
+.actionPillButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall-px);
+  padding-block: var(--spacing-xxsmall-px);
+  padding-inline: var(--spacing-small-px);
+  border-radius: var(--border-radius-pill);
+  background-color: var(--color-background-elevated-new);
+  border: 1px solid var(--color-borders-hairline);
+  color: var(--color-text-default-new);
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast) ease-in-out;
+
+  &:hover {
+    background-color: var(--color-background-hover, rgba(0, 0, 0, 0.04));
+    border-color: var(--color-borders-prominent, var(--color-borders-hairline));
+    color: var(--color-text-default-new);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:focus-visible {
+    outline: var(--spacing-hairline-px) solid var(--color-primary-medium);
+    outline-offset: var(--spacing-hairline-px);
+  }
+}
+
+.actionIcon {
+  display: inline-flex;
+  inline-size: var(--spacing-medium-px);
+  block-size: var(--spacing-medium-px);
+  flex-shrink: 0;
+  color: currentColor;
+}
+
