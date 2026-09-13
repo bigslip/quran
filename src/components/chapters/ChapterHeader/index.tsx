@@ -47,8 +47,7 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
   const { t: tCommon } = useTranslation('common');
   const chaptersData = useContext(DataContext);
   const chapterData = getChapterData(chaptersData, chapterId);
-  const isArabicOrUrdu =
-    lang === Language.AR || lang === Language.UR || lang === Language.FA;
+  const isArabic = lang === Language.AR;
   const direction = useDirection();
   const isMobile = useIsMobile();
   const readingPreference = useSelector(selectReadingPreference);
@@ -78,7 +77,7 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
                   {localizedChapterNumber}. {tCommon('surah')} {transliteratedName}
                 </h1>
                 <h2 className={styles.translatedName}>
-                  {isArabicOrUrdu ? arabicName : translatedName}
+                  {isArabic ? arabicName : translatedName}
                 </h2>
               </div>
               <p className={styles.seoIntro}>
@@ -123,7 +122,7 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
         {/* Bismillah section */}
         <BismillahSection
           chapterId={chapterId}
-          showTranslatedName={isArabicOrUrdu}
+          showTranslation={!isArabic}
           isTranslationView={isTranslationView}
         />
       </div>
