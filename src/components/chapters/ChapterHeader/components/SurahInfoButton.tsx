@@ -71,13 +71,13 @@ const SurahInfoButton: React.FC<SurahInfoButtonProps> = ({ chapterId, className 
   return (
     <>
       <button
-        className={classNames(styles.actionPillButton, className)}
+        className={classNames(styles.infoIconButton, className)}
         onClick={handleClick}
         aria-label={t('surah-info')}
         type="button"
         data-testid="surah-info-button"
       >
-        <InfoIcon className={styles.actionIcon} aria-hidden="true" />
+        <InfoIcon className={styles.infoIcon} aria-hidden="true" />
         <span>{t('info')}</span>
       </button>
       {chapterId && chapter && (

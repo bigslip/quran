@@ -265,5 +265,6 @@
   "verses-range": "Gamma di versi",
   "view-on-quran-reflect": "Visualizza su QuranReflect",
   "wbw-helper-text": "Seleziona le opzioni per mostrare la traduzione, la traslitterazione e/o la recitazione di ogni parola.",
-  "page-number": "Pagina {{page}}"
+  "page-number": "Pagina {{page}}",
+  "chapter-header-intro": "Leggi e ascolta la Sura {{chapterName}} con traduzione, tafsir, recitazione audio, significato parola per parola e traslitterazione."
 }

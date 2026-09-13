@@ -265,5 +265,6 @@
   "verses-range": "آیات کی حد",
   "view-on-quran-reflect": "QuranReflect پر دیکھیں",
   "wbw-helper-text": "ہر لفظ کے لیے ترجمہ، ٹرانسلیٹریشن اور تلاوت دیکھنے کے آپشنز منتخب کریں۔",
-  "page-number": "صفحہ {{page}}"
+  "page-number": "صفحہ {{page}}",
+  "chapter-header-intro": "سورۃ {{chapterName}} کا ترجمہ، تفسیر، صوتی تلاوت، لفظ بہ لفظ معنی اور تلفظ پڑھیں اور سنیں۔"
 }

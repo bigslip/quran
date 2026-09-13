@@ -265,5 +265,6 @@
   "verses-range": "Plage d'Ayahs",
   "view-on-quran-reflect": "Voir sur QuranReflect",
   "wbw-helper-text": "Sélectionnez les options permettant d'afficher la traduction, la translittération et/ou la récitation de chaque mot.",
-  "page-number": "Page {{page}}"
+  "page-number": "Page {{page}}",
+  "chapter-header-intro": "Lisez et écoutez la sourate {{chapterName}} avec traduction, tafsir, récitation audio, signification mot à mot et translittération."
 }

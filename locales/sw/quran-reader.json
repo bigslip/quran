@@ -265,5 +265,6 @@
   "verses-range": "Msururu wa aya",
   "view-on-quran-reflect": "Tazama kwenye QuranReflect",
   "wbw-helper-text": "Chagua chaguo ili kuonyesha tarjuma, unukuzi, na/au usomaji kwa kila neno.",
-  "page-number": "Ukurasa {{page}}"
+  "page-number": "Ukurasa {{page}}",
+  "chapter-header-intro": "Soma na usikilize Surah {{chapterName}} yenye tafsiri, tafsiri ya aya, usomaji wa sauti, maana ya neno kwa neno, na unukuzi."
 }

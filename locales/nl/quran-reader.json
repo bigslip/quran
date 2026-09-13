@@ -265,5 +265,6 @@
   "verses-range": "Bereik van verzen",
   "view-on-quran-reflect": "Bekijk op KoranReflect",
   "wbw-helper-text": "Selecteer de opties om voor elk woord een vertaling, transliteratie en/of voordracht weer te geven.",
-  "page-number": "Pagina {{page}}"
+  "page-number": "Pagina {{page}}",
+  "chapter-header-intro": "Lees en beluister Soera {{chapterName}} met vertaling, tafsir, audiorecitatie, woord-voor-woord betekenis en transcriptie."
 }

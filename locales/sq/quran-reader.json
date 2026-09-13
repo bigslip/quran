@@ -265,5 +265,6 @@
   "verses-range": "Gama e vargjeve",
   "view-on-quran-reflect": "Shiko në QuranReflect",
   "wbw-helper-text": "Zgjidh opsionet për të shfaqur përkthimin, transliterimin dhe/ose recitimin për secilën fjalë.",
-  "page-number": "Faqe {{page}}"
+  "page-number": "Faqe {{page}}",
+  "chapter-header-intro": "Lexoni dhe dëgjoni suren {{chapterName}} me përkthim, tefsir, recitim audio, kuptim fjalë për fjalë dhe transliterim."
 }

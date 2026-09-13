@@ -265,5 +265,6 @@
   "verses-range": "Jangkauan ayat",
   "view-on-quran-reflect": "Lihat di QuranReflect",
   "wbw-helper-text": "Pilih opsi untuk menampilkan terjemahan, transliterasi, dan/atau pembacaan untuk setiap kata.",
-  "page-number": "Halaman {{page}}"
+  "page-number": "Halaman {{page}}",
+  "chapter-header-intro": "Baca dan dengarkan Surah {{chapterName}} dengan terjemahan, tafsir, lantunan audio, makna kata demi kata, dan transliterasi."
 }

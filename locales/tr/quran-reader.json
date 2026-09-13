@@ -265,5 +265,6 @@
   "verses-range": "Ayet aralığı",
   "view-on-quran-reflect": "Kuran'da görüntüle",
   "wbw-helper-text": "Her kelime için çeviri, transkripsiyon ve/veya sesli okuma seçeneklerini belirleyin.",
-  "page-number": "Sayfa {{page}}"
+  "page-number": "Sayfa {{page}}",
+  "chapter-header-intro": "Çeviri, tefsir, sesli tilavet, kelime kelime anlam ve transliterasyon ile {{chapterName}} Suresi'ni okuyun ve dinleyin."
 }

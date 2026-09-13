@@ -265,5 +265,6 @@
   "verses-range": "Variedade de versos",
   "view-on-quran-reflect": "Veja no QuranReflect",
   "wbw-helper-text": "Selecione as opções para exibir a tradução, a transliteração e/ou a recitação de cada palavra.",
-  "page-number": "Página {{page}}"
+  "page-number": "Página {{page}}",
+  "chapter-header-intro": "Leia e ouça a Surata {{chapterName}} com tradução, tafsir, recitação de áudio, significado palavra por palavra e transliteração."
 }
