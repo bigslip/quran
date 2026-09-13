@@ -72,17 +72,6 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
         {/* Main Header Card inspired by Quran.com */}
         <div className={styles.headerCard} data-testid="chapter-header-card">
           <div className={styles.titleContainer} data-testid="chapter-title">
-            <div aria-hidden="true" className={styles.arabicSurahNameContainer}>
-              <div className={styles.header}>
-                <div className={styles.chapterIconContainer}>
-                  <ChapterIcon
-                    chapterId={chapterId}
-                    size={isMobile ? ChapterIconsSize.XMega : ChapterIconsSize.Massive}
-                  />
-                </div>
-              </div>
-            </div>
-
             <div className={styles.titleTextContainer}>
               <div className={styles.titleRow}>
                 <h1 className={styles.transliteratedName}>
@@ -98,6 +87,17 @@ const ChapterHeader: React.FC<ChapterHeaderProps> = ({
                   defaultValue: `Read and listen to Surah ${transliteratedName} with translation, tafsir, audio recitation, word-by-word meaning, and transliteration.`,
                 })}
               </p>
+            </div>
+
+            <div aria-hidden="true" className={styles.arabicSurahNameContainer}>
+              <div className={styles.header}>
+                <div className={styles.chapterIconContainer}>
+                  <ChapterIcon
+                    chapterId={chapterId}
+                    size={isMobile ? ChapterIconsSize.XMega : ChapterIconsSize.Massive}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
