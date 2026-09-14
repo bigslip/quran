@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -38,5 +40,6 @@ const TitleAndDescription = () => {
   );
 };
 
-export default TitleAndDescription;
+export default React.memo(TitleAndDescription);
+
 

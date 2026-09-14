@@ -109,7 +109,10 @@ const RecitationPage = ({ selectedReciter, selectedChapter }: ShareRecitationPag
         })}
         canonical={getCanonicalUrl(
           lang,
-          getReciterChapterNavigationUrl(selectedReciter.id.toString(), selectedChapter.slug),
+          getReciterChapterNavigationUrl(
+            selectedReciter.id.toString(),
+            selectedChapter.slug || String(selectedChapter.id),
+          ),
         )}
       />
       <div className={classNames(layoutStyle.flow, styles.flow)}>
