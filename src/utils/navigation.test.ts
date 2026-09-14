@@ -11,6 +11,7 @@ import {
   getCanonicalUrl,
   getPreviousSurahNavigationUrl,
   getNextSurahNavigationUrl,
+  getReciterChapterNavigationUrl,
 } from './navigation';
 import { getBasePath } from './url';
 
@@ -51,6 +52,11 @@ describe('Navigation SEO Utilities', () => {
   it('generates previous and next surah navigation URLs', () => {
     expect(getPreviousSurahNavigationUrl(2)).toBe('/1');
     expect(getNextSurahNavigationUrl(2)).toBe('/3');
+  });
+
+  it('generates reciter chapter navigation URLs', () => {
+    expect(getReciterChapterNavigationUrl('7', 'al-fatihah')).toBe('/reciters/7/al-fatihah');
+    expect(getReciterChapterNavigationUrl('7', '1')).toBe('/reciters/7/1');
   });
 });
 

@@ -56,10 +56,13 @@ const ChaptersList = ({ filteredChapters, selectedReciter, ...props }: ChaptersL
     });
   };
 
-  const onCopyUrlClicked = (chapterId) => {
+  const onCopyUrlClicked = (chapter: Chapter) => {
     logButtonClick('reciter_page_chapter_url_copy');
     const origin = getWindowOrigin(lang);
-    const path = getReciterChapterNavigationUrl(selectedReciter.id.toString(), chapterId);
+    const path = getReciterChapterNavigationUrl(
+      selectedReciter.id.toString(),
+      chapter.slug || chapter.id.toString(),
+    );
     clipboardCopy(origin + path).then(() => {
       toast(t('common:shared'), { status: ToastStatus.Success });
     });
@@ -136,7 +139,7 @@ const ChaptersList = ({ filteredChapters, selectedReciter, ...props }: ChaptersL
                 shape={ButtonShape.Circle}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onCopyUrlClicked(chapter.id);
+                  onCopyUrlClicked(chapter);
                 }}
                 tooltip={t('reciter:copy-link')}
                 ariaLabel={t('reciter:copy-link')}

@@ -208,6 +208,15 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
       return { notFound: true };
     }
 
+    if (isValidId && chapterData?.slug) {
+      return {
+        redirect: {
+          destination: getReciterChapterNavigationUrl(reciterId, chapterData.slug),
+          permanent: true,
+        },
+      };
+    }
+
     return {
       props: {
         chaptersData,
