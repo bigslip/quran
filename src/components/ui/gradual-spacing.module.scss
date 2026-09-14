@@ -29,6 +29,11 @@
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity, filter;
 
+  &:dir(rtl),
+  [dir='rtl'] & {
+    letter-spacing: normal !important;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     animation: none !important;
     opacity: 1 !important;
@@ -37,7 +42,13 @@
   }
 }
 
+.word {
+  display: inline-block;
+  white-space: nowrap;
+  letter-spacing: normal !important;
+}
+
 .space {
   display: inline-block;
-  inline-size: 0.32em;
+  white-space: pre;
 }

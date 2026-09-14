@@ -122,6 +122,13 @@
   color: var(--color-accent-gold);
   margin: 0;
 
+  &:dir(rtl),
+  [dir='rtl'] & {
+    font-family: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
   @include theme.dark {
     color: var(--color-accent-gold);
   }
@@ -339,6 +346,12 @@
   word-break: break-word;
   hyphens: auto;
   max-inline-size: 100%;
+
+  &:dir(rtl),
+  [dir='rtl'] & {
+    font-family: inherit;
+    letter-spacing: normal;
+  }
 }
 
 .archSub {
