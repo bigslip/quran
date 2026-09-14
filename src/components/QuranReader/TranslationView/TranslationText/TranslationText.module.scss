@@ -46,16 +46,36 @@ $translation-line-height: 1.75;
   font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
+.arabic {
+  font-family: 'Kitab', 'NotoNaskhArabic', 'Noto Naskh Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.thai {
+  font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+.chinese {
+  font-family: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif !important;
+}
+
+.bengali {
+  font-family: 'NotoSerifBengali', 'Noto Serif Bengali', 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+}
+
 .urdu {
   font-family: 'MehrNastaliq', 'Mehr Nastaliq Web', 'Helvetica Neue', Helvetica, Arial, serif !important; // important is needed to over-ride the language specific font-family
 }
 
 .kurdish {
-  font-family: 'DroidArabicNaskh', 'Noto Nastaliq Arabic', 'MehrNastaliq' !important; // important is needed to over-ride the language specific font-family
+  font-family: 'DroidArabicNaskh', 'NotoNaskhArabic', 'Kitab', 'MehrNastaliq' !important; // important is needed to over-ride the language specific font-family
 }
 
 .divehi {
   font-family: 'divehi' !important; // important is needed to over-ride the language specific font-family
+}
+
+.vietnamese {
+  font-family: 'BeVietnamPro', 'Be Vietnam Pro', 'Figtree', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 .translationName {

@@ -65,13 +65,50 @@
 }
 
 @font-face {
-  font-family: 'NotoNastaliq';
-  src: local('Noto Naskh Arabic'), local('Nafees Regular'),
-    url('/fonts/lang/arabic/NotoNaskhArabic-Regular.woff2'),
+  font-family: 'NotoNaskhArabic';
+  src: local('Noto Naskh Arabic'),
+    url('/fonts/lang/arabic/NotoNaskhArabic-Regular.woff2') format('woff2'),
     url('/fonts/lang/arabic/NotoNaskhArabic-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+/* Thai Prompt Font */
+@font-face {
+  font-family: 'Prompt';
+  src: url('/fonts/lang/thai/Prompt-Regular-thai.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Prompt';
+  src: url('/fonts/lang/thai/Prompt-Medium-thai.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Prompt';
+  src: url('/fonts/lang/thai/Prompt-SemiBold-thai.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Prompt';
+  src: url('/fonts/lang/thai/Prompt-Bold-thai.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
 }
 
 @font-face {

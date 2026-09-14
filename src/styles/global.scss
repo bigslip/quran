@@ -24,13 +24,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  // Note: Reciter and translation names have full locale names e.g. "urdu" instead of "ur"
-  // and these names are coming from BE. It is easier to add another selector in css instead of changing BE
+  // Language-specific typography rules
   :lang(fa),
   :lang(persian),
   .fa,
   .persian {
     font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  :lang(ar),
+  :lang(arabic),
+  .ar,
+  .arabic {
+    font-family: 'Kitab', 'NotoNaskhArabic', 'Noto Naskh Arabic', -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, sans-serif;
   }
 
   :lang(ur),
@@ -40,29 +47,61 @@ body {
     font-family: 'MehrNastaliq', 'Mehr Nastaliq Web', 'Helvetica Neue', Helvetica, Arial, serif;
   }
 
-  :lang(ar),
-  :lang(arabic) .ar {
-    font-family: 'Noto Nastaliq Arabic', 'NotoNastaliq', 'Figtree', 'Helvetica Neue', Helvetica,
-      Arial;
+  :lang(th),
+  :lang(thai),
+  .th,
+  .thai {
+    font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  :lang(zh),
+  :lang(chinese),
+  .zh,
+  .chinese {
+    font-family: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC',
+      sans-serif;
   }
 
   :lang(bn),
-  :lang(bengali) {
-    font-family: 'NotoSerifBengali', 'Figtree', 'Helvetica Neue', Helvetica, Arial;
+  :lang(bengali),
+  .bn,
+  .bengali {
+    font-family: 'NotoSerifBengali', 'Noto Serif Bengali', 'Hind Siliguri', 'Noto Sans Bengali',
+      sans-serif;
   }
 
-  :lang(ku) {
-    font-family: 'DroidArabicNaskh', 'Noto Nastaliq Arabic', 'NotoNastaliq', 'Figtree', Helvetica,
+  :lang(ru),
+  :lang(russian),
+  .ru,
+  .russian {
+    font-family: 'Plus Jakarta Sans', 'Figtree', 'Inter', -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, sans-serif;
+  }
+
+  :lang(ku),
+  :lang(kurdish),
+  .ku,
+  .kurdish {
+    font-family: 'DroidArabicNaskh', 'NotoNaskhArabic', 'Kitab', 'Noto Naskh Arabic', Helvetica,
       Arial;
   }
 
   :lang(vi),
-  :lang(vietnamese) {
+  :lang(vietnamese),
+  .vi,
+  .vietnamese {
     font-family: 'BeVietnamPro', 'Be Vietnam Pro', 'Figtree', 'Helvetica Neue', Helvetica, Arial;
+  }
+
+  :lang(dv),
+  :lang(dhivehi),
+  .dv,
+  .dhivehi {
+    font-family: 'divehi', 'Dhivehi Akuru', sans-serif;
   }
 }
 
-// Persian root typography enforcement
+// Locale-specific root typography enforcement
 html[lang='fa'] {
   body,
   button,
@@ -71,6 +110,64 @@ html[lang='fa'] {
   select,
   textarea {
     font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+}
+
+html[lang='ar'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'Kitab', 'NotoNaskhArabic', 'Noto Naskh Arabic', -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, sans-serif !important;
+  }
+}
+
+html[lang='th'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  }
+}
+
+html[lang='zh'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC',
+      sans-serif !important;
+  }
+}
+
+html[lang='ur'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'MehrNastaliq', 'Mehr Nastaliq Web', 'Helvetica Neue', Helvetica, Arial, serif !important;
+  }
+}
+
+html[lang='bn'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'NotoSerifBengali', 'Noto Serif Bengali', 'Hind Siliguri', 'Noto Sans Bengali',
+      sans-serif !important;
   }
 }
 
