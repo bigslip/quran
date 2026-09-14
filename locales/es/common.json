@@ -1,5 +1,6 @@
 {
   "about": "Sobre nosotros",
+  "all": "Todo",
   "allow": "Permitir",
   "and": "y",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Actualizaciones emocionantes",
   "favorites": "Favoritos",
+  "featured": "Destacado",
   "feedback": "Retroalimentación",
   "fonts": {
     "15_lines": "15 líneas",
@@ -332,6 +334,10 @@
   "loading": "Cargando",
   "login": "Acceso",
   "logout": "Cerrar sesión",
+  "madinah": "Medina",
+  "madinah-short": "Madani",
+  "makkah": "La Meca",
+  "makkah-short": "Makki",
   "meccan": "Meca",
   "medinan": "Medina",
   "menu": "Menú",
@@ -506,6 +512,7 @@
   "subscribe": "Suscribirse.",
   "subscribed": "Suscrito.",
   "surah": "Sura",
+  "surahs": "Suras",
   "tab-see-less": "Ver menos...",
   "tab-see-more": "Ver más...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "A",
   "tooltip": "Herramientas emergentes",
   "tooltip-trans-lang": "Idioma de la información sobre herramientas",
+  "topics": "Temas",
   "trans-lang": "Idioma de traducción",
   "translation": "Traducción",
   "translations": "Traducciones",

@@ -1,5 +1,6 @@
 {
   "about": "Về chúng tôi",
+  "all": "All",
   "allow": "Cho phép",
   "and": "và",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Cập nhật thú vị",
   "favorites": "Mục yêu thích",
+  "featured": "Featured",
   "feedback": "Phản hồi",
   "fonts": {
     "15_lines": "15 dòng",
@@ -332,6 +334,10 @@
   "loading": "Đang tải",
   "login": "Đăng nhập",
   "logout": "Đăng xuất",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "Meccan",
   "medinan": "Medinan",
   "menu": "Menu",
@@ -506,6 +512,7 @@
   "subscribe": "Đăng ký",
   "subscribed": "Đã đăng ký",
   "surah": "Surah",
+  "surahs": "Surahs",
   "tab-see-less": "Thu gọn...",
   "tab-see-more": "Xem thêm...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "Đến",
   "tooltip": "Chú thích công cụ",
   "tooltip-trans-lang": "Ngôn ngữ chú thích",
+  "topics": "Topics",
   "trans-lang": "Ngôn ngữ bản dịch",
   "translation": "Bản dịch",
   "translations": "Bản dịch",

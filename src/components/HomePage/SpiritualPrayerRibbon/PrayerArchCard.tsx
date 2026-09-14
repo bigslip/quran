@@ -41,6 +41,7 @@ const PrayerArchCard: React.FC<PrayerArchCardProps> = ({ prayer, isStaggered }) 
         [styles.showingVirtue]: showVirtue,
       })}
       role="listitem"
+      data-testid="prayer-arch-card"
     >
       {/* Authentic Islamic Multi-foil Arch SVG Silhouette */}
       <svg
@@ -89,8 +90,9 @@ const PrayerArchCard: React.FC<PrayerArchCardProps> = ({ prayer, isStaggered }) 
             <span className={styles.medallionTime}>{prayer.time}</span>
           </div>
           {prayer.isNext && (
-            <span className={styles.nextPillBadge}>
-              {t('next-prayer-prefix', { defaultValue: 'NEXT' })}
+            <span className={styles.nextPillBadge} data-testid="next-prayer-badge">
+              <span className={styles.nextPillIcon} aria-hidden="true">✦</span>
+              <span>{t('next-prayer-prefix', { defaultValue: 'NEXT' })}</span>
             </span>
           )}
         </div>

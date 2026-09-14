@@ -1,5 +1,6 @@
 {
   "about": "معلومات عنا",
+  "all": "الكل",
   "allow": "السماح",
   "and": "و",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "تحديثات رائعة",
   "favorites": "المفضلة",
+  "featured": "المميزة",
   "feedback": "الملاحظات",
   "fonts": {
     "15_lines": "15 سطرًا",
@@ -336,7 +338,9 @@
   "loading": "جارٍ التحميل",
   "login": "تسجيل الدخول",
   "logout": "تسجيل الخروج",
+  "madinah": "المدينة المنورة",
   "madinah-short": "مدنية",
+  "makkah": "مكة المكرمة",
   "makkah-short": "مكية",
   "meccan": "مكية",
   "medinan": "مدنِية",
@@ -512,6 +516,7 @@
   "subscribe": "اشترك",
   "subscribed": "مشترك",
   "surah": "سورة",
+  "surahs": "السور",
   "tab-see-less": "عرض أقل...",
   "tab-see-more": "عرض المزيد...",
   "tafsir": {
@@ -536,6 +541,7 @@
   "to": "إلى",
   "tooltip": "مربع منبثق (التلميح)",
   "tooltip-trans-lang": "لغة التلميح (المربعات المنبثقة)",
+  "topics": "الموضوعات",
   "trans-lang": "لغة الترجمة",
   "translation": "الترجمة",
   "translations": "الترجمات",

@@ -1,5 +1,6 @@
 {
   "about": "À propos de nous",
+  "all": "Tous",
   "allow": "Autoriser",
   "and": "et",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Mises à jour importantes",
   "favorites": "Favoris",
+  "featured": "En vedette",
   "feedback": "Avis",
   "fonts": {
     "15_lines": "15 lignes",
@@ -332,6 +334,10 @@
   "loading": "Chargement",
   "login": "Se connecter",
   "logout": "Se déconnecter",
+  "madinah": "Médine",
+  "madinah-short": "Médinoise",
+  "makkah": "La Mecque",
+  "makkah-short": "Mecquoise",
   "meccan": "Mecquois",
   "medinan": "Médinois",
   "menu": "Menu",
@@ -506,6 +512,7 @@
   "subscribe": "S'abonner",
   "subscribed": "Abonné(e)",
   "surah": "Sourate",
+  "surahs": "Sourates",
   "tab-see-less": "Voir moins...",
   "tab-see-more": "Voir plus...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "À",
   "tooltip": "Info-bulle",
   "tooltip-trans-lang": "Langue de l'info-bulle",
+  "topics": "Thèmes",
   "trans-lang": "Langue de traduction",
   "translation": "Traduction",
   "translations": "Traductions",

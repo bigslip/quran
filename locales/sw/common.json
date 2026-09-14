@@ -1,5 +1,6 @@
 {
   "about": "Kutuhusu",
+  "all": "All",
   "allow": "Ruhusu",
   "and": "na",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Sasisho za Kusisimua",
   "favorites": "Vipendwa",
+  "featured": "Featured",
   "feedback": "Maoni",
   "fonts": {
     "15_lines": "Mistari 15",
@@ -332,6 +334,10 @@
   "loading": "Inapakia",
   "login": "Ingia",
   "logout": "Ondoka",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "Imeteremshwa Makka",
   "medinan": "Imeteremshwa Madina",
   "menu": "Menyu",
@@ -506,6 +512,7 @@
   "subscribe": "Jisajili",
   "subscribed": "Umejisajili",
   "surah": "Sura",
+  "surahs": "Surahs",
   "tab-see-less": "Tazama kidogo...",
   "tab-see-more": "Tazama zaidi...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "Hadi",
   "tooltip": "Tooltip",
   "tooltip-trans-lang": "Lugha ya Tooltip",
+  "topics": "Topics",
   "trans-lang": "Lugha ya Tarjuma",
   "translation": "Tarjuma",
   "translations": "Tarjuma",

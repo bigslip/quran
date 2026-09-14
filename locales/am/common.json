@@ -1,5 +1,6 @@
 {
   "about": "ስለ እኛ",
+  "all": "All",
   "allow": "ፍቀድ",
   "and": "እና",
   "announcements": {
@@ -235,6 +236,7 @@
   },
   "exciting-updates": "አስደሳች ዝመናዎች",
   "favorites": "ተወዳጆች",
+  "featured": "Featured",
   "feedback": "ግብረመልስ",
   "fonts": {
     "15_lines": "15 መስመሮች",
@@ -278,22 +280,6 @@
     "verification-code": "የማረጋገጫ ኮድ"
   },
   "from": "ከ",
-  "fundraising-card-v2": {
-    "cta": "አሁን ይለግሱ",
-    "description": "ወርሃዊ ለጋሾች Quran.irን ለማሻሻል እና ስራዎችን ለማስቀጠል ይረዱናል፣ ስለዚህ በገንዘብ ማሰባሰብ ላይ ብዙም ትኩረት አንሰጥም እና ተጽዕኖ በመፍጠር ላይ የበለጠ እናተኩራለን።",
-    "title": "ወርሃዊ ለጋሽ ይሁኑ"
-  },
-  "fundraising-share-title": "የ Quran.ir የገንዘብ ማሰባሰብያ ያጋሩ",
-  "fundraising-sticky-banner-v2": {
-    "cta": "ይለግሱ",
-    "desktop-text": "ለተልዕኮአችን አስተዋጽኦ ያድርጉ",
-    "mobile-line-one": "የቁርዓን ወር ነው።",
-    "mobile-line-two": "ብርሃኑን እንድናሰራጭ እርዳን።"
-  },
-  "fundraising-sticky-banner": {
-    "cta": "ይለግሱ",
-    "title": "በጣም ጥሩ በሆኑት ቀናት ይስጡ!"
-  },
   "fundraising": {
     "description": "ወርሃዊ ልገሳዎች Quran.irን ለማሻሻል እና ስራዎችን ለማስቀጠል ይረዱናል፣ ስለዚህ በገንዘብ ማሰባሰብ ላይ ብዙም ትኩረት አንሰጥም እና ተጽዕኖ በመፍጠር ላይ የበለጠ እናተኩራለን።",
     "donation-campaign": {
@@ -301,6 +287,22 @@
       "text": "ደጋፊ ይሁኑ"
     },
     "title": "ወርሃዊ ለጋሽ ይሁኑ"
+  },
+  "fundraising-card-v2": {
+    "cta": "አሁን ይለግሱ",
+    "description": "ወርሃዊ ለጋሾች Quran.irን ለማሻሻል እና ስራዎችን ለማስቀጠል ይረዱናል፣ ስለዚህ በገንዘብ ማሰባሰብ ላይ ብዙም ትኩረት አንሰጥም እና ተጽዕኖ በመፍጠር ላይ የበለጠ እናተኩራለን።",
+    "title": "ወርሃዊ ለጋሽ ይሁኑ"
+  },
+  "fundraising-share-title": "የ Quran.ir የገንዘብ ማሰባሰብያ ያጋሩ",
+  "fundraising-sticky-banner": {
+    "cta": "ይለግሱ",
+    "title": "በጣም ጥሩ በሆኑት ቀናት ይስጡ!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "ይለግሱ",
+    "desktop-text": "ለተልዕኮአችን አስተዋጽኦ ያድርጉ",
+    "mobile-line-one": "የቁርዓን ወር ነው።",
+    "mobile-line-two": "ብርሃኑን እንድናሰራጭ እርዳን።"
   },
   "get-started": "እንጀምር",
   "go-to-verse": "ወደ አንቀፅ ሂድ",
@@ -318,6 +320,7 @@
   "juz": "ጁዝ",
   "language": "ቋንቋ",
   "languages": "ቋንቋዎች",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "ተማር",
   "learn-more": "ተጨማሪ ይወቁ",
   "learning-plans": "የመማሪያ ዕቅዶች",
@@ -327,11 +330,16 @@
   "loading": "በመጫን ላይ",
   "login": "ግባ",
   "logout": "ውጣ",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "መክይ",
   "medinan": "መደኒ",
   "menu": "ሜኑ",
   "minutes": "ደቂቃዎች",
   "mobile-apps": "የሞባይል መተግበሪያዎች",
+  "modal": "Modal",
   "mode": "ሁነታ",
   "more": "ተጨማሪ",
   "my-learning-plans": "የእኔ የመማር ዕቅዶች",
@@ -343,6 +351,7 @@
   "next": "ቀጣይ",
   "next-ayah": "ቀጣይ አያህ",
   "no": "አይ",
+  "no-languages-found": "No languages found",
   "no-notifications": "እስካሁን ምንም ማሳወቂያዎች የሉም",
   "no-verses-available": "ምንም አያዎች የሉም",
   "none": "ምንም",
@@ -351,18 +360,20 @@
     "label": "ማስታወሻዎች",
     "title": "የእኔ ማስታወሻዎች እና አስተያየቶች"
   },
-  "notification-settings": "የማሳወቂያ ቅንብሮች(ሴቲንግ)",
   "notification": {
     "mark-all-as-read": "ሁሉንም እንደተነበቡ ምልክት አድርግባቸው",
     "mark-as-read": "እንደተነበበ ምልክት አድርግበት"
   },
+  "notification-settings": "የማሳወቂያ ቅንብሮች(ሴቲንግ)",
   "notifications": "ማሳወቂያዎች",
   "off": "ጠፍቷል",
   "oldest": "በጣም ጥንታዊው",
   "on": "በርቷል",
   "our-projects": "የእኛ ፕሮጀክቶች",
   "page": "ገጽ",
+  "page-number": "ገጽ {{page}}",
   "pages": "ገጾች",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}}-{{endOfResultNumber}} የ {{totalNumberOfResults}} የፍለጋ ውጤቶች",
   "pbuh": "የአላህ እዝነት በእርሳቸው ላይ ይሁን",
   "popular-links": "ታዋቂ አገናኞች(ሊንኮች)",
@@ -386,9 +397,12 @@
   "profile": "መገለጫ",
   "projects-desc": "በባለቤትነት የተያዙ፣ የሚተዳደሩ ወይም በውጤቶች የተደገፉ ለትርፍ ያልተቋቋሙ የ <link>Quran.Foundation</link> ፕሮጀክቶች",
   "q-reflect": "ቁርዓንሪፍሌክት",
+  "quran-android": "Quran for Android",
   "quran-apps": "የቁርዓን መተግበሪያዎች",
   "quran-com": "Quran.ir",
+  "quran-ios": "Quran for iOS",
   "quran-radio": "የቁርአን ሬዲዮ",
+  "ramadan-2026": "Ramadan 2026",
   "read": "አንብብ",
   "read-more": "ተጨማሪ ያንብቡ",
   "reading-history": "የንባብ ታሪክ",
@@ -419,9 +433,6 @@
   "rub": "ሩብ ሂዝብ",
   "save": "አስቀምጥ",
   "save-to-collection": "ወደ ስብስብ ያስቀምጡ",
-  "search-for": "ፈልግ '{{searchQuery}}'",
-  "search-results": "{{count}} የፍለጋ ውጤቶች",
-  "search-results-no-count": "የፍለጋ ውጤቶች",
   "search": {
     "filters": "ማጣሪያዎች",
     "hint": "ለመፈለግ ይሞክሩ",
@@ -436,10 +447,15 @@
     "switch-mode": "ወደ የላቀ ፍለጋ ቀይር",
     "title": "ፈልግ"
   },
+  "search-for": "ፈልግ '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} የፍለጋ ውጤቶች",
+  "search-results-no-count": "የፍለጋ ውጤቶች",
   "seconds": "ሰከንዶች",
   "see-less": "ያነሰ ይመልከቱ",
   "see-new": "ምን አዲስ ነገር እንዳለ ይመልከቱ",
   "select-language": "ቋንቋ ይምረጡ",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "ምንም ተፍሲር አልተመረጠም",
     "no-translation-selected": "ምንም ትርጉም አልተመረጠም",
@@ -491,6 +507,7 @@
   "subscribe": "ሰብስክራይብ ያድርጉ",
   "subscribed": "ተመዝግቧል",
   "surah": "ሱራህ",
+  "surahs": "Surahs",
   "tab-see-less": "ያነሰ ይመልከቱ...",
   "tab-see-more": "ተጨማሪ ይመልከቱ...",
   "tafsir": {
@@ -515,6 +532,7 @@
   "to": "ወደ",
   "tooltip": "የመሳሪያ ጠቃሚ ምክር",
   "tooltip-trans-lang": "የመሳሪያ ጠቃሚ ምክር ቋንቋ",
+  "topics": "Topics",
   "trans-lang": "የትርጉም ቋንቋ",
   "translation": "ትርጉም",
   "translations": "ትርጉሞች",
@@ -562,11 +580,5 @@
     "title": "የቃላት ክሊክ"
   },
   "word-tooltip": "የቃል Tooltip",
-  "yes": "አዎ",
-  "page-number": "ገጽ {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "አዎ"
 }

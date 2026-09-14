@@ -1,5 +1,6 @@
 {
   "about": "Over ons",
+  "all": "All",
   "allow": "Toestaan",
   "and": "en",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Spannende updates",
   "favorites": "Favorieten",
+  "featured": "Featured",
   "feedback": "Feedback",
   "fonts": {
     "15_lines": "15 lijnen",
@@ -332,6 +334,10 @@
   "loading": "Bezig met laden",
   "login": "Log in",
   "logout": "Uitloggen",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "Mekkaans",
   "medinan": "Medina",
   "menu": "Menu",
@@ -506,6 +512,7 @@
   "subscribe": "Abonneren",
   "subscribed": "Geabonneerd",
   "surah": "Surah",
+  "surahs": "Surahs",
   "tab-see-less": "Minder weergeven...",
   "tab-see-more": "Bekijk meer...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "Tot",
   "tooltip": "Knop info",
   "tooltip-trans-lang": "knopinfo voor Taal",
+  "topics": "Topics",
   "trans-lang": "Vertaling Taal",
   "translation": "Vertaling",
   "translations": "Vertalingen",

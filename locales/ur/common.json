@@ -1,5 +1,6 @@
 {
   "about": "ہمارے بارے میں",
+  "all": "تمام",
   "allow": "اجازت دیں۔",
   "and": "اور",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "دلچسپ اپڈیٹس",
   "favorites": "پسندیدہ",
+  "featured": "نمایاں",
   "feedback": "رائے",
   "fonts": {
     "15_lines": "15 ستری",
@@ -332,6 +334,10 @@
   "loading": "لوڈ ہو رہا ہے۔",
   "login": "لاگ ان",
   "logout": "لاگ آوٹ",
+  "madinah": "مدینہ منورہ",
+  "madinah-short": "مدنی",
+  "makkah": "مکہ مکرمہ",
+  "makkah-short": "مکی",
   "meccan": "مکی",
   "medinan": "مدنی",
   "menu": "مینو",
@@ -506,6 +512,7 @@
   "subscribe": "سبسکرائب",
   "subscribed": "سبسکرائبڈ",
   "surah": "سورہ",
+  "surahs": "سورتیں",
   "tab-see-less": "کم دکھائیں...",
   "tab-see-more": "مزیددکھائیں...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "تک",
   "tooltip": "ٹول ٹِپ",
   "tooltip-trans-lang": "ٹول ٹپ زبان",
+  "topics": "موضوعات",
   "trans-lang": "ترجمہ کی زبان",
   "translation": "ترجمہ",
   "translations": "ترجمے",

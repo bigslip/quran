@@ -1,5 +1,6 @@
 {
   "about": "درباره ما",
+  "all": "همه",
   "allow": "اجازه",
   "and": "و",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "به روز رسانی های هیجان انگیز",
   "favorites": "موارد دلخواه",
+  "featured": "برگزیده",
   "feedback": "بازخورد",
   "fonts": {
     "15_lines": "15 خط",
@@ -336,6 +338,10 @@
   "loading": "بارگذاری",
   "login": "وارد شدن",
   "logout": "خروج",
+  "madinah": "مدینه منوره",
+  "madinah-short": "مدنی",
+  "makkah": "مکه مکرمه",
+  "makkah-short": "مکی",
   "meccan": "مکه",
   "medinan": "مدینه",
   "menu": "منو",
@@ -510,6 +516,7 @@
   "subscribe": "اشتراک در",
   "subscribed": "مشترک شد",
   "surah": "سوره",
+  "surahs": "سوره‌ها",
   "tab-see-less": "کمتر ببین...",
   "tab-see-more": "ادامه مطلب را ببینید...",
   "tafsir": {
@@ -534,6 +541,7 @@
   "to": "به",
   "tooltip": "راهنمای ابزار",
   "tooltip-trans-lang": "زبان راهنمای ابزار",
+  "topics": "موضوعات",
   "trans-lang": "زبان ترجمه",
   "translation": "ترجمه",
   "translations": "ترجمه ها",

@@ -1,5 +1,6 @@
 {
   "about": "Tentang Kami",
+  "all": "Semua",
   "allow": "Ijinkan",
   "and": "dan",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Pengkinian menarik",
   "favorites": "Favorit",
+  "featured": "Pilihan",
   "feedback": "Beri Masukan",
   "fonts": {
     "15_lines": "15 Baris",
@@ -332,6 +334,10 @@
   "loading": "Memuat",
   "login": "Login",
   "logout": "Logout",
+  "madinah": "Madinah",
+  "madinah-short": "Madaniyah",
+  "makkah": "Makkah",
+  "makkah-short": "Makkiyah",
   "meccan": "Mekah",
   "medinan": "Madinah",
   "menu": "Menu",
@@ -506,6 +512,7 @@
   "subscribe": "Mendaftar",
   "subscribed": "Terdaftar",
   "surah": "Surah",
+  "surahs": "Surah",
   "tab-see-less": "Lihat lebih sedikit...",
   "tab-see-more": "Lihat selengkapnya...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "Ke",
   "tooltip": "Dalam gelembung tooltip",
   "tooltip-trans-lang": "Bahasa Tooltip",
+  "topics": "Topik",
   "trans-lang": "Bahasa Terjemahan",
   "translation": "Terjemahan",
   "translations": "Terjemahan",

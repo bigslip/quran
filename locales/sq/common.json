@@ -1,5 +1,6 @@
 {
   "about": "Rreth Nesh",
+  "all": "All",
   "allow": "Lejo",
   "and": "dhe",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Përditësime emocionuese",
   "favorites": "Të preferuarat",
+  "featured": "Featured",
   "feedback": "Feedback",
   "fonts": {
     "15_lines": "15 rreshta",
@@ -332,6 +334,10 @@
   "loading": "Po ngarkohet",
   "login": "Identifikohu",
   "logout": "Shkyç",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "mekas",
   "medinan": "Medinas",
   "menu": "Menu",
@@ -506,6 +512,7 @@
   "subscribe": "Abonohu",
   "subscribed": "Abonuar",
   "surah": "Surja",
+  "surahs": "Surahs",
   "tab-see-less": "Shiko më pak...",
   "tab-see-more": "Shiko më shumë...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "tek",
   "tooltip": "Mesazh sugjerues",
   "tooltip-trans-lang": "Gjuha e mesazheve sugjeruese",
+  "topics": "Topics",
   "trans-lang": "Gjuha e përkthimit",
   "translation": "Përkthimi",
   "translations": "Përkthime",

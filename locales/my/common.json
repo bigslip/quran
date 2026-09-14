@@ -1,5 +1,6 @@
 {
   "about": "ကြှနျုပျတို့အကွောငျး",
+  "all": "All",
   "allow": "ခွင့်ပြုပါ",
   "and": "နှင့်",
   "announcements": {
@@ -235,6 +236,7 @@
   },
   "exciting-updates": "စိတ်လှုပ်ရှားဖွယ်ကောင်းသော အပ်ဒိတ်များ",
   "favorites": "အကြိုက်ဆုံးများ",
+  "featured": "Featured",
   "feedback": "တုံ့ပြန်ချက်",
   "fonts": {
     "15_lines": "၁၅ လိုင်း",
@@ -278,22 +280,6 @@
     "verification-code": "အတည်ပြုရန်ကုတ်"
   },
   "from": "မှ",
-  "fundraising-card-v2": {
-    "cta": "ယခုလှူဒါန်းပါ",
-    "description": "လစဉ်အလှူရှင်များသည် Quran.ir ကို တိုးတက်ကောင်းမွန်အောင် ကူညီပေးပြီး လုပ်ငန်းလည်ပတ်မှုကို ထိန်းသိမ်းပေးသောကြောင့် ကျွန်ုပ်တို့သည် ရန်ပုံငွေရှာဖွေခြင်းကို လျှော့ချပြီး အကျိုးသက်ရောက်မှုဖန်တီးခြင်းကို ပိုမိုအာရုံစိုက်ပါသည်။",
-    "title": "လစဉ်အလှူရှင်ဖြစ်လာပါ"
-  },
-  "fundraising-share-title": "Quran.ir ရန်ပုံငွေရှာဖွေခြင်းကို မျှဝေပါ",
-  "fundraising-sticky-banner-v2": {
-    "cta": "လှူဒါန်းပါ",
-    "desktop-text": "ကျွန်ုပ်တို့၏ ရည်မှန်းချက်အတွက် ပါဝင်ကူညီပါ",
-    "mobile-line-one": "ဒါဟာ ကုရ်အာန်ရဲ့လပါ။",
-    "mobile-line-two": "၎င်း၏အလင်းကို ဖြန့်ဝေရန် ကျွန်ုပ်တို့ကို ကူညီပါ။"
-  },
-  "fundraising-sticky-banner": {
-    "cta": "လှူဒါန်းပါ",
-    "title": "အကောင်းဆုံးနေ့ရက်တွေမှာ ပေးကမ်းပါ။"
-  },
   "fundraising": {
     "description": "လစဉ်လှူဒါန်းမှုများသည် Quran.ir ကို တိုးတက်ကောင်းမွန်စေပြီး လုပ်ငန်းလည်ပတ်မှုကို ထိန်းသိမ်းရန် ကျွန်ုပ်တို့အား ကူညီပေးသောကြောင့် ရန်ပုံငွေရှာဖွေခြင်းကို လျှော့ချပြီး အကျိုးသက်ရောက်မှုဖန်တီးခြင်းကို ပိုမိုအာရုံစိုက်ပါသည်။",
     "donation-campaign": {
@@ -301,6 +287,22 @@
       "text": "ပံ့ပိုးသူဖြစ်လာပါ"
     },
     "title": "လစဉ်အလှူရှင်ဖြစ်လာပါ"
+  },
+  "fundraising-card-v2": {
+    "cta": "ယခုလှူဒါန်းပါ",
+    "description": "လစဉ်အလှူရှင်များသည် Quran.ir ကို တိုးတက်ကောင်းမွန်အောင် ကူညီပေးပြီး လုပ်ငန်းလည်ပတ်မှုကို ထိန်းသိမ်းပေးသောကြောင့် ကျွန်ုပ်တို့သည် ရန်ပုံငွေရှာဖွေခြင်းကို လျှော့ချပြီး အကျိုးသက်ရောက်မှုဖန်တီးခြင်းကို ပိုမိုအာရုံစိုက်ပါသည်။",
+    "title": "လစဉ်အလှူရှင်ဖြစ်လာပါ"
+  },
+  "fundraising-share-title": "Quran.ir ရန်ပုံငွေရှာဖွေခြင်းကို မျှဝေပါ",
+  "fundraising-sticky-banner": {
+    "cta": "လှူဒါန်းပါ",
+    "title": "အကောင်းဆုံးနေ့ရက်တွေမှာ ပေးကမ်းပါ။"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "လှူဒါန်းပါ",
+    "desktop-text": "ကျွန်ုပ်တို့၏ ရည်မှန်းချက်အတွက် ပါဝင်ကူညီပါ",
+    "mobile-line-one": "ဒါဟာ ကုရ်အာန်ရဲ့လပါ။",
+    "mobile-line-two": "၎င်း၏အလင်းကို ဖြန့်ဝေရန် ကျွန်ုပ်တို့ကို ကူညီပါ။"
   },
   "get-started": "စတင်လိုက်ပါ",
   "go-to-verse": "ကျမ်းပိုဒ်သို့သွားပါ",
@@ -318,6 +320,7 @@
   "juz": "ဂျူဇ်",
   "language": "ဘာသာစကား",
   "languages": "ဘာသာစကားများ",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "လေ့လာပါ",
   "learn-more": "ပိုမိုသိရှိရန်",
   "learning-plans": "သင်ယူမှုအစီအစဉ်များ",
@@ -327,11 +330,16 @@
   "loading": "တင်နေသည်",
   "login": "လော့ဂ်အင်",
   "logout": "လော့ဂ်အောက်",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "မက္ကာ",
   "medinan": "မီဒီနန်",
   "menu": "မီနူး",
   "minutes": "မိနစ်များ",
   "mobile-apps": "မိုဘိုင်းအက်ပ်များ",
+  "modal": "Modal",
   "mode": "မုဒ်",
   "more": "နောက်ထပ်",
   "my-learning-plans": "ကျွန်တော့်ရဲ့ သင်ယူမှု အစီအစဉ်တွေ",
@@ -343,6 +351,7 @@
   "next": "နောက်တစ်ခု",
   "next-ayah": "နောက် အာယာ",
   "no": "မဟုတ်ပါ",
+  "no-languages-found": "No languages found",
   "no-notifications": "အကြောင်းကြားချက်များ မရှိသေးပါ",
   "no-verses-available": "ကဗျာများ မရှိပါ",
   "none": "မရှိပါ",
@@ -351,18 +360,20 @@
     "label": "မှတ်စုများ",
     "title": "ကျွန်ုပ်၏မှတ်စုများနှင့် ဆင်ခြင်သုံးသပ်ချက်များ"
   },
-  "notification-settings": "အကြောင်းကြားချက်ဆက်တင်များ",
   "notification": {
     "mark-all-as-read": "အားလုံးကို ဖတ်ပြီးအဖြစ် မှတ်သားပါ",
     "mark-as-read": "ဖတ်ပြီးဟု မှတ်သားပါ"
   },
+  "notification-settings": "အကြောင်းကြားချက်ဆက်တင်များ",
   "notifications": "အကြောင်းကြားချက်များ",
   "off": "ပိတ်သည်",
   "oldest": "အเก่าแก่ဆုံး",
   "on": "ဖွင့်ထားသည်",
   "our-projects": "ကျွန်ုပ်တို့၏ ပရောဂျက်များ",
   "page": "စာမျက်နှာ",
+  "page-number": "စာမျက်နှာ {{page}}",
   "pages": "စာမျက်နှာများ",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}}-{{endOfResultNumber}} ၏ {{totalNumberOfResults}} ရှာဖွေမှုရလဒ်များ",
   "pbuh": "အလ္လာဟ်အရှင်မြတ်၏ ကောင်းချီးမင်္ဂလာများ သူ့အပေါ်သို့ ကျရောက်ပါစေ",
   "popular-links": "လူကြိုက်များသောလင့်ခ်များ",
@@ -386,9 +397,12 @@
   "profile": "ပရိုဖိုင်",
   "projects-desc": "ပိုင်ဆိုင်သော၊ စီမံခန့်ခွဲသော သို့မဟုတ် ပံ့ပိုးသော အကျိုးအမြတ်မယူသော ပရောဂျက်များ <link>ကုရ်အာန်ဖောင်ဒေးရှင်း</link>",
   "q-reflect": "ကုရ်အာန်ကို ဆင်ခြင်သုံးသပ်ခြင်း",
+  "quran-android": "Quran for Android",
   "quran-apps": "ကုရ်အာန်အက်ပ်များ",
   "quran-com": "ကုရ်အာန်.com",
+  "quran-ios": "Quran for iOS",
   "quran-radio": "ကုရ်အာန်ရေဒီယို",
+  "ramadan-2026": "Ramadan 2026",
   "read": "ဖတ်ရန်",
   "read-more": "ပိုပြီးဖတ်ပါ",
   "reading-history": "သမိုင်းဖတ်ခြင်း",
@@ -419,9 +433,6 @@
   "rub": "ရပ်ဘ် အယ်လ် ဟစ်ဇ်ဘ်",
   "save": "သိမ်းဆည်းပါ",
   "save-to-collection": "စုစည်းမှုသို့ သိမ်းဆည်းပါ",
-  "search-for": "အားရှာဖွေခြင်း '{{searchQuery}}'",
-  "search-results": "{{count}} ရှာဖွေမှုရလဒ်များ",
-  "search-results-no-count": "ရှာဖွေမှုရလဒ်များ",
   "search": {
     "filters": "စစ်ထုတ်ကိရိယာများ",
     "hint": "ရှာဖွေကြည့်ပါ",
@@ -436,10 +447,15 @@
     "switch-mode": "အဆင့်မြင့်ရှာဖွေမှုသို့ ပြောင်းပါ",
     "title": "ရှာဖွေရန်"
   },
+  "search-for": "အားရှာဖွေခြင်း '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} ရှာဖွေမှုရလဒ်များ",
+  "search-results-no-count": "ရှာဖွေမှုရလဒ်များ",
   "seconds": "စက္ကန့်များ",
   "see-less": "လျော့နည်းစွာကြည့်ရှုပါ",
   "see-new": "အသစ်အဆန်းတွေကို ကြည့်ပါ",
   "select-language": "ဘာသာစကား ရွေးချယ်ပါ",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "တဖ်စီရ် မရွေးချယ်ထား",
     "no-translation-selected": "ဘာသာပြန်ဆိုချက် ရွေးချယ်မထားပါ",
@@ -491,6 +507,7 @@
   "subscribe": "စာရင်းသွင်းပါ",
   "subscribed": "စာရင်းသွင်းပြီး",
   "surah": "စူရာဟ်",
+  "surahs": "Surahs",
   "tab-see-less": "လျော့ကြည့်...",
   "tab-see-more": "ပိုမိုကြည့်ရှုရန်...",
   "tafsir": {
@@ -515,6 +532,7 @@
   "to": "သို့",
   "tooltip": "အကြံပြုချက်",
   "tooltip-trans-lang": "အကြံပြုချက်ဘာသာစကား",
+  "topics": "Topics",
   "trans-lang": "ဘာသာပြန်ဘာသာစကား",
   "translation": "ဘာသာပြန်ဆိုချက်",
   "translations": "ဘာသာပြန်ဆိုချက်များ",
@@ -562,11 +580,5 @@
     "title": "စကားလုံးကလစ်နှိပ်ခြင်း"
   },
   "word-tooltip": "စကားလုံး ကိရိယာ အကြံပြုချက်",
-  "yes": "ဟုတ်ကဲ့",
-  "page-number": "စာမျက်နှာ {{page}}",
-  "pagination-navigation": "Pagination navigation",
-  "search-languages": "Search languages...",
-  "languages-count": "{{count}} of {{total}} languages",
-  "no-languages-found": "No languages found",
-  "select-language-description": "Select your preferred display language for Quran.ir"
+  "yes": "ဟုတ်ကဲ့"
 }

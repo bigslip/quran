@@ -1,5 +1,6 @@
 {
   "about": "আমাদের সম্পর্কে",
+  "all": "সকল",
   "allow": "অনুমতি দিন",
   "and": "এবং",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "উত্তেজনাপূর্ণ আপডেট",
   "favorites": "প্রিয়",
+  "featured": "বাছাইকৃত",
   "feedback": "প্রতিক্রিয়া",
   "fonts": {
     "15_lines": "15 লাইন",
@@ -332,6 +334,10 @@
   "loading": "লোড হচ্ছে",
   "login": "প্রবেশ করুন",
   "logout": "প্রস্থান",
+  "madinah": "মদিনা",
+  "madinah-short": "মাদানী",
+  "makkah": "মক্কা",
+  "makkah-short": "মাক্কী",
   "meccan": "মক্কান",
   "medinan": "মেদিনান",
   "menu": "তালিকা",
@@ -506,6 +512,7 @@
   "subscribe": "সাবস্ক্রাইব",
   "subscribed": "সদস্যতা",
   "surah": "সূরা",
+  "surahs": "সূরা",
   "tab-see-less": "কম দেখুন...",
   "tab-see-more": "আরও দেখুন...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "প্রতি",
   "tooltip": "টুলটিপ",
   "tooltip-trans-lang": "টুলটিপ ভাষা",
+  "topics": "বিষয়সমূহ",
   "trans-lang": "অনুবাদের ভাষা",
   "translation": "অনুবাদ",
   "translations": "অনুবাদ",

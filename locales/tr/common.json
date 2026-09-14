@@ -1,5 +1,6 @@
 {
   "about": "Hakkımızda",
+  "all": "Tümü",
   "allow": "İzin ver",
   "and": "ve",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Heyecan Verici Güncellemeler",
   "favorites": "Favoriler",
+  "featured": "Öne Çıkanlar",
   "feedback": "Geri Bildirim",
   "fonts": {
     "15_lines": "15 satır",
@@ -332,6 +334,10 @@
   "loading": "Yükleniyor",
   "login": "Oturum aç",
   "logout": "Çıkış Yap",
+  "madinah": "Medine",
+  "madinah-short": "Medeni",
+  "makkah": "Mekke",
+  "makkah-short": "Mekki",
   "meccan": "Mekkeli",
   "medinan": "Medine",
   "menu": "Menü",
@@ -506,6 +512,7 @@
   "subscribe": "Abone ol",
   "subscribed": "Abone olundu",
   "surah": "Sure",
+  "surahs": "Sureler",
   "tab-see-less": "Daha az göster...",
   "tab-see-more": "Daha fazlasını görün...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "NS",
   "tooltip": "Araç ipucu",
   "tooltip-trans-lang": "Araç İpucu Dili",
+  "topics": "Konular",
   "trans-lang": "Çeviri Dili",
   "translation": "Meal",
   "translations": "Çeviriler",

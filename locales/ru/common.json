@@ -1,5 +1,6 @@
 {
   "about": "О нас",
+  "all": "Все",
   "allow": "Разрешить",
   "and": "и",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Захватывающие обновления",
   "favorites": "Избранное",
+  "featured": "Избранное",
   "feedback": "Обратная связь",
   "fonts": {
     "15_lines": "15 линий",
@@ -332,6 +334,10 @@
   "loading": "Загрузка",
   "login": "Авторизоваться",
   "logout": "Выйти",
+  "madinah": "Медина",
+  "madinah-short": "Мединские",
+  "makkah": "Мекка",
+  "makkah-short": "Мекканские",
   "meccan": "мекканец",
   "medinan": "Медиан",
   "menu": "Меню",
@@ -506,6 +512,7 @@
   "subscribe": "Подписаться",
   "subscribed": "Подписан",
   "surah": "Сура",
+  "surahs": "Суры",
   "tab-see-less": "Скрыть...",
   "tab-see-more": "Подробнее...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "К",
   "tooltip": "Подсказка",
   "tooltip-trans-lang": "Язык подсказок",
+  "topics": "Темы",
   "trans-lang": "Язык перевода",
   "translation": "Перевод",
   "translations": "Переводы",

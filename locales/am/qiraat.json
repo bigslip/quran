@@ -1,4 +1,5 @@
 {
   "description": "የአያህን የተለያዩ ቂራት (ተለዋጭ ንባቦችን) ያስሱ {{ayahNumber}} የሱራህ {{surahName}}",
-  "title": "ቂራት {{surahName}} - {{ayahNumber}}"
+  "title": "ቂራት {{surahName}} - {{ayahNumber}}",
+  "juncture-selection": "Juncture selection"
 }

@@ -1,5 +1,6 @@
 {
   "about": "关于我们",
+  "all": "All",
   "allow": "允许",
   "and": "和",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "令人兴奋的更新",
   "favorites": "收藏夹",
+  "featured": "Featured",
   "feedback": "反馈问题",
   "fonts": {
     "15_lines": "15行",
@@ -332,6 +334,10 @@
   "loading": "加载中",
   "login": "登录",
   "logout": "登出",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "麦加",
   "medinan": "麦地那",
   "menu": "菜单",
@@ -506,6 +512,7 @@
   "subscribe": "订阅",
   "subscribed": "已订阅",
   "surah": "章",
+  "surahs": "Surahs",
   "tab-see-less": "收起...",
   "tab-see-more": "查看更多…",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "到",
   "tooltip": "工具提示",
   "tooltip-trans-lang": "翻译成：",
+  "topics": "Topics",
   "trans-lang": "翻译语言",
   "translation": "意译",
   "translations": "翻译",

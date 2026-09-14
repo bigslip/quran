@@ -68,5 +68,7 @@
     "main": "ዋና ዝርዝሮች",
     "syllabus": "የትምህርት መርሃ ግብር"
   },
-  "what-happens-when-you-click-add-reflection": "\"እይታዎን ያክሉ\" የሚለውን ጠቅ ሲያደርጉ ምን ይከሰታል?"
+  "what-happens-when-you-click-add-reflection": "\"እይታዎን ያክሉ\" የሚለውን ጠቅ ሲያደርጉ ምን ይከሰታል?",
+  "loading-plans": "Loading plans",
+  "previous-lesson": "Previous lesson"
 }

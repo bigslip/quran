@@ -1,5 +1,6 @@
 {
   "about": "เกี่ยวกับเรา",
+  "all": "All",
   "allow": "อนุญาต",
   "and": "และ",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "การอัปเดตที่น่าตื่นเต้น",
   "favorites": "รายการโปรด",
+  "featured": "Featured",
   "feedback": "แนะนำติชม",
   "fonts": {
     "15_lines": "15 บรรทัด",
@@ -332,6 +334,10 @@
   "loading": "กำลังโหลด",
   "login": "เข้าสู่ระบบ",
   "logout": "ออกจากระบบ",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "มักกียะห์",
   "medinan": "มะดะนียะห์",
   "menu": "เมนู",
@@ -506,6 +512,7 @@
   "subscribe": "ติดตาม",
   "subscribed": "สมัครสมาชิกแล้ว",
   "surah": "ซูเราะห์",
+  "surahs": "Surahs",
   "tab-see-less": "ดูน้อยลง...",
   "tab-see-more": "ดูเพิ่มเติม...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "ถึง",
   "tooltip": "คำแนะนำ",
   "tooltip-trans-lang": "ภาษาของคำแนะนำ",
+  "topics": "Topics",
   "trans-lang": "ภาษาแปล",
   "translation": "การแปล",
   "translations": "คำแปล",

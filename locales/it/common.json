@@ -1,5 +1,6 @@
 {
   "about": "Chi siamo",
+  "all": "All",
   "allow": "Permettere",
   "and": "e",
   "announcements": {
@@ -239,6 +240,7 @@
   },
   "exciting-updates": "Aggiornamenti entusiasmanti",
   "favorites": "Preferiti",
+  "featured": "Featured",
   "feedback": "Feedback",
   "fonts": {
     "15_lines": "15 linee",
@@ -332,6 +334,10 @@
   "loading": "Caricamento in corso",
   "login": "Login",
   "logout": "Disconnettersi",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "Meccanico",
   "medinan": "Medinan",
   "menu": "Menù",
@@ -506,6 +512,7 @@
   "subscribe": "sottoscrivi",
   "subscribed": "Sottoscritto",
   "surah": "sura",
+  "surahs": "Surahs",
   "tab-see-less": "Vedi meno...",
   "tab-see-more": "Scopri di più...",
   "tafsir": {
@@ -530,6 +537,7 @@
   "to": "Per",
   "tooltip": "Descrizione comando",
   "tooltip-trans-lang": "Lingua dei suggerimenti",
+  "topics": "Topics",
   "trans-lang": "Lingua di traduzione",
   "translation": "Traduzione",
   "translations": "Traduzioni",
