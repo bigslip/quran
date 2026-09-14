@@ -8,6 +8,7 @@ import styles from './ChapterBlock.module.scss';
 import ChapterIconContainer from './ChapterIcon/ChapterIconContainer';
 
 import { toLocalizedNumber } from '@/utils/locale';
+import { getSurahNavigationUrl } from '@/utils/navigation';
 import Chapter from 'types/Chapter';
 
 type Props = {
@@ -23,7 +24,7 @@ const ChapterBlock: React.FC<Props> = ({ chapter }: Props) => {
 
   return (
     <div key={chapter.id} className={styles.item}>
-      <Link as={`/${chapter.id}`} href="/[chapterId]" passHref className={styles.link}>
+      <Link href={getSurahNavigationUrl(chapter.slug || chapter.id)} passHref className={styles.link}>
         <div className={styles.container}>
           <div className={classNames(styles.leftContainer, styles.sectionContainer)}>
             <div

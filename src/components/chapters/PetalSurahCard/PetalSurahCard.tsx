@@ -11,6 +11,7 @@ import ChapterIconContainer, {
 import Link from '@/dls/Link/Link';
 import { logButtonClick } from '@/utils/eventLogger';
 import { toLocalizedNumber } from '@/utils/locale';
+import { getSurahNavigationUrl } from '@/utils/navigation';
 import Chapter from 'types/Chapter';
 
 type PetalSurahCardProps = {
@@ -47,12 +48,12 @@ const PetalSurahCard: React.FC<PetalSurahCardProps> = ({
     (e: React.MouseEvent) => {
       if (onClick) {
         e.preventDefault();
-        onClick(chapter.id);
+        onClick(chapter.slug || chapter.id);
         return;
       }
       logButtonClick(`homepage_surah_card_${chapter.id}`);
     },
-    [chapter.id, onClick],
+    [chapter.id, chapter.slug, onClick],
   );
 
   const revelationPlaceLabel = isMakkah
@@ -63,7 +64,7 @@ const PetalSurahCard: React.FC<PetalSurahCardProps> = ({
 
   return (
     <Link
-      href={`/${chapter.id}`}
+      href={getSurahNavigationUrl(chapter.slug || chapter.id)}
       shouldPrefetch={isPreload}
       className={styles.cardLink}
       onClick={handleCardClick}

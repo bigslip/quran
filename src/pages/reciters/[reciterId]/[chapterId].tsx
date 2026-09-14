@@ -83,7 +83,7 @@ const RecitationPage = ({ selectedReciter, selectedChapter }: ShareRecitationPag
 
   const onReadClicked = () => {
     logButtonClick('share-recitation-read');
-    router.push(getSurahNavigationUrl(selectedChapter.id));
+    router.push(getSurahNavigationUrl(selectedChapter.slug || selectedChapter.id));
   };
 
   const onDownloadClicked = async () => {

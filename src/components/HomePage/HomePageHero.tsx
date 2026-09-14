@@ -20,7 +20,7 @@ import { getTimeOfDayPeriod, isFriday, isNightTime } from '@/utils/spiritualTime
 
 const QUICK_JUMP_PILLS = [
   {
-    href: '/36',
+    href: '/ya-sin',
     key: 'yaseen',
     labelKey: 'quick-jump-label-yaseen',
     defaultLabel: 'Surah Yaseen (36)',
@@ -28,7 +28,7 @@ const QUICK_JUMP_PILLS = [
     defaultSub: 'Heart of the Quran',
   },
   {
-    href: '/67',
+    href: '/al-mulk',
     key: 'mulk',
     labelKey: 'quick-jump-label-mulk',
     defaultLabel: 'Surah Al-Mulk (67)',
@@ -36,7 +36,7 @@ const QUICK_JUMP_PILLS = [
     defaultSub: 'Protection',
   },
   {
-    href: '/18',
+    href: '/al-kahf',
     key: 'kahf',
     labelKey: 'quick-jump-label-kahf',
     defaultLabel: 'Surah Al-Kahf (18)',
@@ -44,7 +44,7 @@ const QUICK_JUMP_PILLS = [
     defaultSub: 'Friday Sunnah',
   },
   {
-    href: '/2/255',
+    href: '/al-baqarah/255',
     key: 'kursi',
     labelKey: 'quick-jump-label-kursi',
     defaultLabel: 'Ayah Al-Kursi (2:255)',

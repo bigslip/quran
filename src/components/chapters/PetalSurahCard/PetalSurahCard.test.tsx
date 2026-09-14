@@ -80,10 +80,10 @@ describe('PetalSurahCard', () => {
     expect(screen.getByText('286')).toBeInTheDocument();
   });
 
-  it('links to /1 with prefetch when isPreload is true', () => {
+  it('links to /al-fatihah with prefetch when isPreload is true', () => {
     render(<PetalSurahCard chapter={mockChapter} isPreload />);
     const link = screen.getByRole('link');
-    expect(link).toHaveAttribute('href', '/1');
+    expect(link).toHaveAttribute('href', '/al-fatihah');
   });
 
   it('logs button click on card click', () => {
