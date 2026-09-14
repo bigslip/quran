@@ -53,12 +53,19 @@ describe('translationInfo', () => {
 
   describe('getTranslationNativeName', () => {
     it('returns native translator name for Persian', () => {
-      const translation: AvailableTranslation = {
+      const makarem: AvailableTranslation = {
+        id: 841,
+        name: 'Naser Makarem Shirazi',
+        languageName: 'persian',
+      };
+      expect(getTranslationNativeName(makarem)).toBe('ناصر مکارم شیرازی');
+
+      const taji: AvailableTranslation = {
         id: 29,
         name: 'Hussein Taji Kal Dari',
         languageName: 'persian',
       };
-      expect(getTranslationNativeName(translation)).toBe('حسین تاجی کله‌داری');
+      expect(getTranslationNativeName(taji)).toBe('حسین تاجی کله‌داری');
     });
 
     it('returns native translator name for Russian', () => {

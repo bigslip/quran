@@ -166,6 +166,7 @@ export const TRANSLATION_NATIVE_MAP: Record<number, { name: string; authorName?:
   203: { name: 'Al-Hilali & Khan', authorName: 'Muhammad Taqi-ud-Din al-Hilali & Muhammad Muhsin Khan' },
 
   // Persian
+  841: { name: 'ناصر مکارم شیرازی', authorName: 'ناصر مکارم شیرازی' },
   29: { name: 'حسین تاجی کله‌داری', authorName: 'حسین تاجی کله‌داری' },
   135: { name: 'مرکز اسلام هاوس', authorName: 'IslamHouse.com' },
 

@@ -1,6 +1,6 @@
 import DEFAULT_SETTINGS, { DefaultSettings } from '../defaultSettings';
 
-const DEFAULT_TRANSLATION = 29; // Hussein Taji
+const DEFAULT_TRANSLATION = 841; // Naser Makarem Shirazi
 
 export default {
   ...DEFAULT_SETTINGS,

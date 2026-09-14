@@ -1385,6 +1385,17 @@
         "name": "The Rwanda Muslims Association team",
         "language_name": "english"
       }
+    },
+    {
+      "id": 841,
+      "name": "Naser Makarem Shirazi",
+      "author_name": "Naser Makarem Shirazi",
+      "slug": "fa-makarem",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "ناصر مکارم شیرازی",
+        "language_name": "persian"
+      }
     }
   ]
 }
