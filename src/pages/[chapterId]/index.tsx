@@ -34,7 +34,11 @@ import {
 } from '@/utils/staticPageGeneration';
 import { getSurahSeoTitle, isAyatulKursi } from '@/utils/seo';
 import { isRangesStringValid, isValidChapterId, isValidVerseKey } from '@/utils/validator';
-import { getVerseAndChapterNumbersFromKey } from '@/utils/verse';
+import {
+  getChapterNumberFromKey,
+  getVerseNumberFromKey,
+  getVerseAndChapterNumbersFromKey,
+} from '@/utils/verse';
 import { parseVerseRange, generateVerseKeysBetweenTwoVerseKeys } from '@/utils/verseKeys';
 import { ChapterResponse, VersesResponse, PagesLookUpResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
@@ -324,15 +328,32 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
 
       const firstPageOfChapter = Object.keys(pagesLookupResponse.pages)[0];
       const firstPageOfChapterLookup = pagesLookupResponse.pages[firstPageOfChapter];
+
+      const fromVerseNumber =
+        getChapterNumberFromKey(firstPageOfChapterLookup.from) === Number(chapterId)
+          ? getVerseNumberFromKey(firstPageOfChapterLookup.from)
+          : getVerseNumberFromKey(pagesLookupResponse.lookupRange.from);
+
+      const toVerseNumber =
+        getChapterNumberFromKey(firstPageOfChapterLookup.to) === Number(chapterId)
+          ? getVerseNumberFromKey(firstPageOfChapterLookup.to)
+          : getVerseNumberFromKey(pagesLookupResponse.lookupRange.to);
+
       apiParams = {
         ...apiParams,
         ...{
           perPage: 'all',
-          from: firstPageOfChapterLookup.from,
-          to: firstPageOfChapterLookup.to,
+          from: fromVerseNumber,
+          to: toVerseNumber,
         },
       };
       versesResponse = await getChapterVerses(formatStringNumber(chapterId), locale, apiParams);
+    }
+    if (!versesResponse?.verses || !versesResponse.verses.length) {
+      return {
+        notFound: true,
+        revalidate: REVALIDATION_PERIOD_ON_ERROR_SECONDS,
+      };
     }
     const metaData = { numberOfVerses };
 
