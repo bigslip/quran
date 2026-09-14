@@ -15,7 +15,7 @@ import Language from '@/types/Language';
 import { QuranReaderDataType } from '@/types/QuranReader';
 import { getMushafId } from '@/utils/api';
 import { makeChapterInfoUrl } from '@/utils/apiPaths';
-import { getAllChaptersData, getChapterData } from '@/utils/chapter';
+import { getAllChaptersData, getChapterData, getChapterIdBySlugOrId } from '@/utils/chapter';
 import { toLocalizedNumber, getLanguageAlternates } from '@/utils/locale';
 import { getCanonicalUrl, getSurahInfoNavigationUrl } from '@/utils/navigation';
 import {
@@ -125,11 +125,14 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   if (infoArray[0] !== 'info') return { notFound: true };
 
   const resourceId = infoArray.length > 1 ? infoArray[1] : undefined;
+  const chaptersData = await getAllChaptersData(locale);
 
   if (!isValidChapterId(chapterId)) {
-    const sluggedChapterId = await getChapterIdBySlug(chapterId, locale);
-    if (!sluggedChapterId) return { notFound: true };
-    chapterId = sluggedChapterId;
+    const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterId);
+    const resolvedChapterId =
+      localChapterId || (await getChapterIdBySlug(chapterId, locale));
+    if (!resolvedChapterId) return { notFound: true };
+    chapterId = resolvedChapterId;
   }
 
   try {

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { getChapterIdsForJuz, getChapterIdsForPage } from '@/utils/chapter';
+import { getChapterIdsForJuz, getChapterIdsForPage, getChapterIdBySlugOrId } from '@/utils/chapter';
 import { getChapterIdsForHizb } from '@/utils/hizb';
 import { formatStringNumber } from '@/utils/number';
 import { getChapterIdsForRub } from '@/utils/rub';
@@ -44,11 +44,9 @@ const useChapterIdsByUrlPath = (lang?: string): string[] => {
         return ['2'];
       }
       if (chaptersData) {
-        const match = Object.entries(chaptersData).find(
-          ([, ch]) => ch.slug?.toLowerCase() === param || ch.slugs?.some((s) => s.slug?.toLowerCase() === param),
-        );
-        if (match) {
-          return [match[0]];
+        const localId = getChapterIdBySlugOrId(chaptersData, chapterIdOrVerseKeyOrSlug);
+        if (localId) {
+          return [localId];
         }
       }
     }
@@ -74,15 +72,11 @@ const useChapterIdsByUrlPath = (lang?: string): string[] => {
           // if it's Ayatul Kursi
           if (isMounted) setChapterIds(['2']);
         } else {
-          // In-memory synchronous lookup in DataContext (chaptersData) matching chapter.slug === param.toLowerCase()
+          // In-memory synchronous lookup in DataContext (chaptersData)
           if (chaptersData) {
-            const match = Object.entries(chaptersData).find(
-              ([, ch]) =>
-                ch.slug?.toLowerCase() === param ||
-                ch.slugs?.some((s) => s.slug?.toLowerCase() === param),
-            );
-            if (match) {
-              if (isMounted) setChapterIds([match[0]]);
+            const localId = getChapterIdBySlugOrId(chaptersData, chapterIdOrVerseKeyOrSlug);
+            if (localId) {
+              if (isMounted) setChapterIds([localId]);
               return;
             }
           }

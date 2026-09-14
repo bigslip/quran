@@ -86,6 +86,9 @@ export {
 
 export const OFFLINE_ERROR = 'OFFLINE';
 
+const serverApiCache = new Map<string, { data: any; expiry: number }>();
+const SERVER_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache for SSR / dev static requests
+
 export const fetcher = async function fetcher<T>(
   input: RequestInfo,
   init: RequestInit = {},
@@ -95,8 +98,20 @@ export const fetcher = async function fetcher<T>(
   if (typeof window !== 'undefined' && !window.navigator.onLine) {
     throw new Error(OFFLINE_ERROR);
   }
+
+  const url = typeof input === 'string' ? input : input.url;
+  const isGet = !init.method || init.method.toUpperCase() === 'GET';
+
+  // In Node.js SSR / dev server, serve repeated GET requests from memory cache to avoid network round-trips
+  if (typeof window === 'undefined' && isGet && !fullResponse) {
+    const cached = serverApiCache.get(url);
+    if (cached && cached.expiry > Date.now()) {
+      return cached.data as T;
+    }
+  }
+
   const req: NextApiRequest = {
-    url: typeof input === 'string' ? input : input.url,
+    url,
     method: init.method || 'GET',
     body: init.body,
     headers: init.headers,
@@ -122,7 +137,16 @@ export const fetcher = async function fetcher<T>(
     throw error;
   }
   const json = await res.json();
-  return camelizeKeys(json);
+  const camelized = camelizeKeys(json) as T;
+
+  if (typeof window === 'undefined' && isGet && !fullResponse) {
+    if (serverApiCache.size > 500) {
+      serverApiCache.clear();
+    }
+    serverApiCache.set(url, { data: camelized, expiry: Date.now() + SERVER_CACHE_TTL_MS });
+  }
+
+  return camelized;
 };
 
 /**

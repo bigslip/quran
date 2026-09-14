@@ -14,7 +14,7 @@ import { logErrorToSentry } from '@/lib/sentry';
 import { getQuranReaderStylesInitialState } from '@/redux/defaultSettings/util';
 import { QuranReaderDataType } from '@/types/QuranReader';
 import { getDefaultWordFields, getMushafId } from '@/utils/api';
-import { getAllChaptersData, getChapterData } from '@/utils/chapter';
+import { getAllChaptersData, getChapterData, getChapterIdBySlugOrId } from '@/utils/chapter';
 import {
   toLocalizedNumber,
   getLocaleName,
@@ -178,13 +178,7 @@ const AYAH_KURSI_SLUGS = ['ayatul-kursi', 'آیت الکرسی'];
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   let chapterIdOrVerseKeyOrSlug = String(params.chapterId);
   const isAyahKursiSlug = AYAH_KURSI_SLUGS.includes(chapterIdOrVerseKeyOrSlug.toLowerCase());
-
-  const [sluggedChapterId, chaptersData] = await Promise.all([
-    isValidChapterId(chapterIdOrVerseKeyOrSlug) || isAyahKursiSlug
-      ? Promise.resolve(null)
-      : getChapterIdBySlug(chapterIdOrVerseKeyOrSlug, locale),
-    getAllChaptersData(locale),
-  ]);
+  const chaptersData = await getAllChaptersData(locale);
 
   let isValidChapter = isValidChapterId(chapterIdOrVerseKeyOrSlug);
   const isValidRanges = isRangesStringValid(chaptersData, chapterIdOrVerseKeyOrSlug);
@@ -236,11 +230,15 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     if (isAyahKursiSlug) {
       chapterIdOrVerseKeyOrSlug = '2:255';
     } else {
-      // if it's not a valid slug
-      if (!sluggedChapterId) {
+      // In-memory synchronous slug lookup first before network call
+      const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterIdOrVerseKeyOrSlug);
+      const resolvedChapterId =
+        localChapterId || (await getChapterIdBySlug(chapterIdOrVerseKeyOrSlug, locale));
+
+      if (!resolvedChapterId) {
         return { notFound: true };
       }
-      chapterId = sluggedChapterId;
+      chapterId = resolvedChapterId;
       isValidChapter = true;
     }
   }

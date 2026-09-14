@@ -12,7 +12,7 @@ import { logErrorToSentry } from '@/lib/sentry';
 import { getQuranReaderStylesInitialState } from '@/redux/defaultSettings/util';
 import { QuranReaderDataType } from '@/types/QuranReader';
 import { getDefaultWordFields, getMushafId } from '@/utils/api';
-import { getAllChaptersData, getChapterData } from '@/utils/chapter';
+import { getAllChaptersData, getChapterData, getChapterIdBySlugOrId } from '@/utils/chapter';
 import { getLanguageAlternates, toLocalizedNumber, toLocalizedVersesRange } from '@/utils/locale';
 import { getCanonicalUrl, getVerseNavigationUrl } from '@/utils/navigation';
 import getPlainTranslationText from '@/utils/plainTranslationText';
@@ -96,13 +96,7 @@ const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   let chapterIdOrSlug = String(params.chapterId);
   const verseIdOrRange = String(params.verseId);
-  // 1. make sure the chapter Id/slug is valid using BE since slugs are stored in BE first
-  const [sluggedChapterId, chaptersData] = await Promise.all([
-    isValidChapterId(chapterIdOrSlug)
-      ? Promise.resolve(null)
-      : getChapterIdBySlug(chapterIdOrSlug, locale),
-    getAllChaptersData(locale),
-  ]);
+  const chaptersData = await getAllChaptersData(locale);
 
   // If chapterId is numeric (e.g. /2/255, /1/1-5), redirect permanently to its canonical slug URL
   if (isValidChapterId(chapterIdOrSlug)) {
@@ -117,8 +111,13 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     }
   }
 
-  if (sluggedChapterId) {
-    chapterIdOrSlug = sluggedChapterId;
+  // In-memory synchronous slug resolution first before network call
+  const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterIdOrSlug);
+  const resolvedChapterId =
+    localChapterId || (await getChapterIdBySlug(chapterIdOrSlug, locale));
+
+  if (resolvedChapterId) {
+    chapterIdOrSlug = resolvedChapterId;
   }
   // 2. make sure that verse id/range are valid before calling BE to get the verses.
   if (

@@ -4,6 +4,7 @@ import random from 'lodash/random';
 
 import { formatStringNumber } from './number';
 import REVELATION_ORDER from './revelationOrder';
+import { isValidChapterId } from './validator';
 
 import Chapter from 'types/Chapter';
 import ChaptersData from 'types/ChaptersData';
@@ -64,6 +65,30 @@ export const getAllChaptersData = async (
  */
 export const getChapterData = (chapters: ChaptersData, id: string): Chapter | undefined =>
   (chapters || {})[formatStringNumber(id)];
+
+/**
+ * Resolves a chapter ID or slug to chapter ID synchronously from chaptersData.
+ *
+ * @param {ChaptersData} chapters
+ * @param {string} slugOrId
+ * @returns {string | undefined}
+ */
+export const getChapterIdBySlugOrId = (
+  chapters: ChaptersData,
+  slugOrId: string,
+): string | undefined => {
+  if (!slugOrId || !chapters) return undefined;
+  if (isValidChapterId(slugOrId)) {
+    return formatStringNumber(slugOrId);
+  }
+  const param = slugOrId.toLowerCase();
+  const match = Object.entries(chapters).find(
+    ([, ch]) =>
+      ch.slug?.toLowerCase() === param ||
+      ch.slugs?.some((s) => s.slug?.toLowerCase() === param),
+  );
+  return match ? match[0] : undefined;
+};
 
 /**
  * Given a pageId, get chapter ids from a json file
