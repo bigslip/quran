@@ -148,6 +148,7 @@ const Chapter: NextPage<ChapterProps> = ({
     <>
       <NextSeoWrapper
         title={getSEOTitle()}
+        titleTemplate="%s"
         canonical={canonicalUrl}
         image={getOGImage()}
         imageWidth={1200}

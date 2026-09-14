@@ -70,6 +70,7 @@ const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse 
     <>
       <NextSeoWrapper
         title={getSEOTitle()}
+        titleTemplate="%s"
         image={getChapterOgImageUrl({
           chapterId: chapterResponse.chapter.id,
           verseNumber: isVerse ? Number(currentVerseId) : undefined,
