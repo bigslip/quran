@@ -151,7 +151,7 @@ const SurahList: React.FC<Props> = ({
     e.preventDefault();
     const firstFilteredChapter = filteredChapters[0];
     if (firstFilteredChapter) {
-      const href = getSurahNavigationUrl(firstFilteredChapter.id);
+      const href = getSurahNavigationUrl(firstFilteredChapter.slug || firstFilteredChapter.id);
       navigateAndHandleAfterNavigation(href, firstFilteredChapter.id.toString());
     }
   };
@@ -182,7 +182,7 @@ const SurahList: React.FC<Props> = ({
       <div className={styles.listContainer}>
         <div className={styles.list}>
           {filteredChapters.map((chapter) => {
-            const href = getSurahNavigationUrl(chapter.id);
+            const href = getSurahNavigationUrl(chapter.slug || chapter.id);
             const isSelected = chapter.id.toString() === currentChapterId;
             const isLoading = chapter.id.toString() === loadingChapterId;
             return (

@@ -56,17 +56,17 @@ const SurahInfoButton: React.FC<SurahInfoButtonProps> = ({ chapterId, className 
     if (!router.pathname.includes('/surah/[chapterId]/[...info]')) {
       fakeNavigate(router.asPath, router.locale);
     } else {
-      fakeNavigate(getSurahNavigationUrl(chapterId), router.locale);
+      fakeNavigate(getSurahNavigationUrl(chapter?.slug || chapterId), router.locale);
     }
-  }, [router, chapterId]);
+  }, [router, chapterId, chapter?.slug]);
 
   const handleClick = useCallback(() => {
     if (chapterId) {
       logButtonClick('surah_info_button_click');
       setIsOpen(true);
-      fakeNavigate(getSurahInfoNavigationUrl(chapterId), router.locale);
+      fakeNavigate(getSurahInfoNavigationUrl(chapter?.slug || chapterId), router.locale);
     }
-  }, [chapterId, router.locale]);
+  }, [chapterId, chapter?.slug, router.locale]);
 
   return (
     <>

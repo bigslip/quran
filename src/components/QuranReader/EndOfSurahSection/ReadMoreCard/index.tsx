@@ -109,7 +109,9 @@ const ReadMoreCard: React.FC<ReadMoreCardProps> = ({
           <ChapterLink
             chapter={nextChapter!}
             chapterNumber={nextDisplayNumber!}
-            navigationUrl={getSurahNavigationUrl(nextChapterNumber as number)}
+            navigationUrl={getSurahNavigationUrl(
+              nextChapter?.slug || (nextChapterNumber as number),
+            )}
             summary={nextSummary}
             isNext
             shouldShowArabicName={shouldShowArabicName}
@@ -125,7 +127,9 @@ const ReadMoreCard: React.FC<ReadMoreCardProps> = ({
           <ChapterLink
             chapter={prevChapter!}
             chapterNumber={prevDisplayNumber!}
-            navigationUrl={getSurahNavigationUrl(prevChapterNumber as number)}
+            navigationUrl={getSurahNavigationUrl(
+              prevChapter?.slug || (prevChapterNumber as number),
+            )}
             summary={prevSummary}
             isNext={false}
             shouldShowArabicName={shouldShowArabicName}
