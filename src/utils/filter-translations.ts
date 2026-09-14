@@ -11,8 +11,9 @@ import AvailableTranslation from 'types/AvailableTranslation';
  * @returns {AvailableTranslation[]}
  */
 export const getTranslations = (translations: AvailableTranslation[]): AvailableTranslation[] => {
-  return translations.map((translation) => {
-    const languageName = (translation.languageName || '').toLowerCase();
+  if (!translations) return [];
+  return translations.map((translation: any) => {
+    const languageName = (translation.languageName || translation.language_name || '').toLowerCase();
     const nativeName = getTranslationNativeName(translation);
     const nativeLanguageName = getLanguageNativeName(languageName);
     return {

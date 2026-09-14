@@ -6,6 +6,7 @@ import {
   toLocalizedVerseKeyRTL,
   toLocalizedVerseKeyAuto,
   getLanguageAlternates,
+  getLanguageNameByLocale,
 } from './locale';
 import { getBasePath } from './url';
 
@@ -131,6 +132,20 @@ describe('getLanguageAlternates', () => {
 
     const xDefault = alternates.find((a) => a.hrefLang === 'x-default');
     expect(xDefault?.href).toBe(basePath);
+  });
+});
+
+describe('getLanguageNameByLocale', () => {
+  it('returns canonical English language name for locales', () => {
+    expect(getLanguageNameByLocale('fa')).toBe('persian');
+    expect(getLanguageNameByLocale('en')).toBe('english');
+    expect(getLanguageNameByLocale('ar')).toBe('arabic');
+    expect(getLanguageNameByLocale('ur')).toBe('urdu');
+    expect(getLanguageNameByLocale('tr')).toBe('turkish');
+    expect(getLanguageNameByLocale('fr')).toBe('french');
+    expect(getLanguageNameByLocale('ru')).toBe('russian');
+    expect(getLanguageNameByLocale('bn')).toBe('bengali');
+    expect(getLanguageNameByLocale('unknown')).toBe('unknown');
   });
 });
 

@@ -34,7 +34,7 @@ import {
   logEmptySearchResults,
 } from '@/utils/eventLogger';
 import filterTranslations, { getTranslations } from '@/utils/filter-translations';
-import { getLocaleName } from '@/utils/locale';
+import { getLanguageNameByLocale } from '@/utils/locale';
 import {
   getLanguageFlag,
   getLanguageNativeName,
@@ -207,7 +207,7 @@ const TranslationSelectionBody = () => {
             getTranslations(filteredTranslations),
             'languageName',
           );
-          const selectedTranslationLanguage = getLocaleName(lang).toLowerCase();
+          const selectedTranslationLanguage = getLanguageNameByLocale(lang).toLowerCase();
           const selectedTranslationGroup = translationByLanguages[selectedTranslationLanguage];
           const translationByLanguagesWithoutSelectedLanguage = omit(translationByLanguages, [
             selectedTranslationLanguage,

@@ -41,12 +41,59 @@ const LOCALE_NAME = {
   [Language.VI]: 'Tiếng Việt',
 };
 
-const LOCALE_NAME_TO_CODE = {
+export const LOCALE_TO_LANGUAGE_NAME: Record<string, string> = {
+  [Language.EN]: 'english',
+  [Language.AR]: 'arabic',
+  [Language.BN]: 'bengali',
+  [Language.FA]: 'persian',
+  [Language.FR]: 'french',
+  [Language.ID]: 'indonesian',
+  [Language.IT]: 'italian',
+  [Language.NL]: 'dutch',
+  [Language.PT]: 'portuguese',
+  [Language.RU]: 'russian',
+  [Language.SQ]: 'albanian',
+  [Language.TH]: 'thai',
+  [Language.TR]: 'turkish',
+  [Language.UR]: 'urdu',
+  [Language.ZH]: 'chinese',
+  [Language.MS]: 'malay',
+  [Language.ML]: 'malayalam',
+  [Language.DV]: 'divehi',
+  [Language.HE]: 'hebrew',
+  [Language.KU]: 'kurdish',
+  [Language.UY]: 'uyghur',
+  [Language.INH]: 'ingush',
+  [Language.TA]: 'tamil',
+  [Language.HI]: 'hindi',
+  [Language.UZ]: 'uzbek',
+  [Language.DE]: 'german',
+  [Language.ES]: 'spanish',
+  [Language.SW]: 'swahili',
+  [Language.SD]: 'sindhi',
+  [Language.VI]: 'vietnamese',
+};
+
+const LOCALE_NAME_TO_CODE: Record<string, Language> = {
   bengali: Language.BN,
   english: Language.EN,
   arabic: Language.AR,
+  persian: Language.FA,
+  farsi: Language.FA,
+  french: Language.FR,
+  german: Language.DE,
+  indonesian: Language.ID,
+  italian: Language.IT,
+  dutch: Language.NL,
+  portuguese: Language.PT,
   russian: Language.RU,
+  albanian: Language.SQ,
+  thai: Language.TH,
+  turkish: Language.TR,
   urdu: Language.UR,
+  chinese: Language.ZH,
+  malay: Language.MS,
+  kurdish: Language.KU,
   Kurdish: Language.KU,
   swahili: Language.SW,
   vietnamese: Language.VI,
@@ -307,6 +354,15 @@ export const getLocaleName = (locale: string): string => LOCALE_NAME[locale];
  */
 export const getLocaleNameByFullName = (fullName: string): string =>
   LOCALE_NAME[LOCALE_NAME_TO_CODE[fullName]];
+
+/**
+ * Converts a locale code (e.g. 'fa', 'en', 'ar') to its canonical English language name (e.g. 'persian', 'english', 'arabic').
+ *
+ * @param {string} locale
+ * @returns {string}
+ */
+export const getLanguageNameByLocale = (locale: string): string =>
+  LOCALE_TO_LANGUAGE_NAME[locale] || locale.toLowerCase();
 
 /**
  * Takes a number and returns a localized string based on the provided locale.
