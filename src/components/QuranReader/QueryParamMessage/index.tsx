@@ -54,25 +54,33 @@ const QueryParamMessage: React.FC<Props> = ({
    * picks and applies them.
    */
   const onResetToReduxStateClicked = () => {
+    const nextQuery = { ...router.query };
     if (translationsQueryParamDifferent) {
-      router.query[QueryParam.TRANSLATIONS] = selectedTranslations.join(',');
+      nextQuery[QueryParam.TRANSLATIONS] = selectedTranslations.join(',');
     }
     if (reciterQueryParamDifferent) {
-      router.query[QueryParam.RECITER] = String(selectedReciterId);
+      nextQuery[QueryParam.RECITER] = String(selectedReciterId);
     }
     if (wordByWordLocaleQueryParamDifferent) {
-      router.query[QueryParam.WBW_LOCALE] = selectedWordByWordLocale;
+      nextQuery[QueryParam.WBW_LOCALE] = selectedWordByWordLocale;
     }
     // if is in Quranic Calendar flow, remove the flow query param
-    if (router.query[QueryParam.FLOW] === QuranReaderFlow.QURANIC_CALENDER) {
-      delete router.query[QueryParam.FLOW];
+    if (nextQuery[QueryParam.FLOW] === QuranReaderFlow.QURANIC_CALENDER) {
+      delete nextQuery[QueryParam.FLOW];
       // if hide arabic is true, remove it so that the arabic text get shown again
-      if (router.query[QueryParam.HIDE_ARABIC] === 'true') {
-        delete router.query[QueryParam.HIDE_ARABIC];
+      if (nextQuery[QueryParam.HIDE_ARABIC] === 'true') {
+        delete nextQuery[QueryParam.HIDE_ARABIC];
       }
     }
 
-    router.push(router, undefined, { shallow: true });
+    router.push(
+      {
+        pathname: router.pathname,
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
   };
 
   /**

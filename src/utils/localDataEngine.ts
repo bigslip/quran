@@ -286,16 +286,66 @@ function parseTranslationIds(translationsParam: any): number[] {
     .filter(Boolean);
 }
 
+const LANGUAGE_NAME_TO_ID: Record<string, number> = {
+  arabic: 9,
+  bengali: 20,
+  divehi: 34,
+  english: 38,
+  spanish: 40,
+  persian: 43,
+  farsi: 43,
+  french: 49,
+  hebrew: 59,
+  indonesian: 67,
+  italian: 74,
+  kurdish: 89,
+  dutch: 118,
+  portuguese: 133,
+  russian: 138,
+  albanian: 151,
+  swahili: 157,
+  thai: 161,
+  uyghur: 172,
+  urdu: 174,
+  vietnamese: 177,
+  chinese: 185,
+};
+
 /**
  * Stitch translations into cloned verse objects.
  */
 async function stitchTranslations(verses: any[], translationIds: number[], includeWords = true): Promise<any[]> {
   if (verses.length === 0) return [];
 
-  const translationMaps: { id: number; map: Map<string, any> }[] = [];
+  const translationMaps: {
+    id: number;
+    map: Map<string, any>;
+    languageId: number;
+    languageName: string;
+    resourceName: string;
+  }[] = [];
+
   for (const id of translationIds) {
     const map = await getTranslationMap(id);
-    translationMaps.push({ id, map });
+    const meta = state.translationsList?.translations?.find((t: any) => t.id === id);
+    const languageName = meta?.language_name || 'english';
+    const languageId =
+      meta?.language_id ||
+      LANGUAGE_NAME_TO_ID[languageName?.toLowerCase()] ||
+      38;
+    const resourceName =
+      meta?.translated_name?.name ||
+      meta?.name ||
+      meta?.author_name ||
+      '';
+
+    translationMaps.push({
+      id,
+      map,
+      languageId,
+      languageName,
+      resourceName,
+    });
   }
 
   return verses.map((verse) => {
@@ -307,14 +357,24 @@ async function stitchTranslations(verses: any[], translationIds: number[], inclu
 
     if (translationMaps.length > 0) {
       const verseTranslations: any[] = [];
-      for (const { id, map } of translationMaps) {
+      for (const { id, map, languageId, languageName, resourceName } of translationMaps) {
         const trans = map.get(verse.verse_key);
         if (trans) {
-          verseTranslations.push(trans);
+          verseTranslations.push({
+            id: trans.id || id * 10000 + (verse.verse_number || 1),
+            resource_id: id,
+            resource_name: resourceName,
+            language_id: languageId,
+            language_name: languageName,
+            text: trans.text || '',
+          });
         } else {
           verseTranslations.push({
             id: 0,
             resource_id: id,
+            resource_name: resourceName,
+            language_id: languageId,
+            language_name: languageName,
             text: '',
           });
         }

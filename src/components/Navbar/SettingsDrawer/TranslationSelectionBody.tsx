@@ -106,8 +106,18 @@ const TranslationSelectionBody = () => {
           setSelectedTranslations({ translations: selectedTranslations, locale: lang }),
         );
         if (nextTranslations.length) {
-          router.query[QueryParam.TRANSLATIONS] = nextTranslations.join(',');
-          router.push(router, undefined, { shallow: true });
+          const nextQuery = {
+            ...router.query,
+            [QueryParam.TRANSLATIONS]: nextTranslations.join(','),
+          };
+          router.push(
+            {
+              pathname: router.pathname,
+              query: nextQuery,
+            },
+            undefined,
+            { shallow: true },
+          );
         }
       };
     },

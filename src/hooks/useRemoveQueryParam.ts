@@ -7,20 +7,25 @@ import QueryParam from '@/types/QueryParam';
 
 const useRemoveQueryParam = () => {
   const router = useRouter();
-  const { pathname, query } = router;
 
   return useCallback(
     (queryParam: QueryParam | QueryParam[]) => {
-      // @ts-ignore
-      const params = new URLSearchParams(query);
+      const nextQuery = { ...router.query };
       if (isArray(queryParam)) {
-        queryParam.forEach((param) => params.delete(param));
+        queryParam.forEach((param) => delete nextQuery[param]);
       } else {
-        params.delete(queryParam);
+        delete nextQuery[queryParam];
       }
-      router.replace({ pathname, query: params.toString() }, undefined, { shallow: true });
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: nextQuery,
+        },
+        undefined,
+        { shallow: true },
+      );
     },
-    [pathname, query, router],
+    [router],
   );
 };
 

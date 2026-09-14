@@ -37,8 +37,16 @@ const ResetButton = () => {
     ];
     const shouldUpdateUrl = queryParams.some((param) => router.query[param]);
     if (shouldUpdateUrl) {
-      queryParams.forEach((param) => delete router.query[param]);
-      router.push(router, undefined, { shallow: true });
+      const nextQuery = { ...router.query };
+      queryParams.forEach((param) => delete nextQuery[param]);
+      router.push(
+        {
+          pathname: router.pathname,
+          query: nextQuery,
+        },
+        undefined,
+        { shallow: true },
+      );
     }
     toast(t('settings.reset-notif'), { status: ToastStatus.Success });
   };

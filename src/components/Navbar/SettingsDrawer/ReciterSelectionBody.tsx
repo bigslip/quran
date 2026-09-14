@@ -58,8 +58,18 @@ const SettingsReciter = () => {
     const reciter = reciters.find((r) => r.id === Number(reciterId));
     logEvent(`reciter_selected_${reciter.id}`);
     logItemSelectionChange('selected_reciter', reciter.id);
-    router.query[QueryParam.RECITER] = String(reciter.id);
-    router.push(router, undefined, { shallow: true });
+    const nextQuery = {
+      ...router.query,
+      [QueryParam.RECITER]: String(reciter.id),
+    };
+    router.push(
+      {
+        pathname: router.pathname,
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
 
     const previousReciterId = selectedReciterId;
     onXstateSettingsChange(
