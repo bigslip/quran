@@ -183,25 +183,25 @@
   align-items: center;
   inline-size: 100%;
   min-block-size: 44px;
-  block-size: 48px;
+  block-size: 44px;
   padding-inline-start: var(--spacing-medium-px);
-  padding-inline-end: var(--spacing-xxsmall-px);
-  border-radius: var(--border-radius-rounded);
+  padding-inline-end: var(--spacing-xsmall-px);
+  border-radius: var(--border-radius-pill);
   background-color: var(--color-surface-floating);
   backdrop-filter: var(--backdrop-filter-frosted, blur(16px));
   -webkit-backdrop-filter: var(--backdrop-filter-frosted, blur(16px));
-  border: 1px solid var(--color-border-subtle);
-  box-shadow: var(--shadow-small-new);
-  transition: border-color var(--transition-fast) ease, box-shadow var(--transition-fast) ease,
-    background-color var(--transition-fast) ease;
+  border: 1px solid var(--color-border-iridescent);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), var(--color-glow-celestial);
+  transition: all var(--transition-regular) ease;
 
   &:hover {
-    border-color: var(--color-border-iridescent);
+    border-color: var(--color-primary);
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.14), var(--color-glow-celestial);
   }
 
   &:focus-within {
     border-color: var(--color-primary);
-    box-shadow: var(--color-glow-subtle), 0 0 0 1px var(--color-primary-subtle);
+    box-shadow: 0 0 0 2px var(--color-primary-subtle), var(--color-glow-celestial);
     background-color: var(--color-surface-card-hover);
   }
 
@@ -214,7 +214,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
+  color: var(--color-primary);
   margin-inline-end: var(--spacing-small-px);
   flex-shrink: 0;
   transition: color var(--transition-fast) ease;
@@ -239,6 +239,7 @@
   inline-size: 100%;
   min-inline-size: 0;
   font-family: inherit;
+  line-height: 1.5;
 
   &::placeholder {
     color: var(--color-text-secondary);

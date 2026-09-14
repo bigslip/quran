@@ -308,18 +308,10 @@ const ChapterAndJuzList: React.FC<ChapterAndJuzListProps> = ({
               ref={searchInputRef}
               type="search"
               className={styles.searchInput}
-              placeholder={
-                t('home:search-surah') === 'home:search-surah' || t('home:search-surah') === 'search-surah'
-                  ? 'Search Surah (e.g. Kahf or 18)...'
-                  : t('home:search-surah')
-              }
+              placeholder={t('home:search-surah', { defaultValue: 'Search Surah (e.g. Kahf or 18)...' })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label={
-                t('home:search-surah') === 'home:search-surah' || t('home:search-surah') === 'search-surah'
-                  ? 'Search Surah (e.g. Kahf or 18)...'
-                  : t('home:search-surah')
-              }
+              aria-label={t('home:search-surah', { defaultValue: 'Search Surah (e.g. Kahf or 18)...' })}
               data-testid="surah-search-input"
             />
             {searchQuery ? (
