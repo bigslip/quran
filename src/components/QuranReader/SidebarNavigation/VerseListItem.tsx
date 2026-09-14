@@ -16,6 +16,7 @@ import { getVerseNumberFromKey } from '@/utils/verse';
 
 interface VerseListItemProps {
   verseKey: string;
+  chapterSlug?: string;
   onVerseClick?: (e: React.MouseEvent) => void;
   isSelectedOverride?: boolean; // Optional override for selection state
   isLoading?: boolean;
@@ -23,6 +24,7 @@ interface VerseListItemProps {
 
 const VerseListItem: React.FC<VerseListItemProps> = ({
   verseKey,
+  chapterSlug,
   onVerseClick,
   isSelectedOverride,
   isLoading = false,
@@ -45,7 +47,7 @@ const VerseListItem: React.FC<VerseListItemProps> = ({
 
   return (
     <Link
-      href={getChapterWithStartingVerseUrl(verseKey)}
+      href={getChapterWithStartingVerseUrl(verseKey, chapterSlug)}
       key={verseKey}
       isShallow
       shouldPrefetch={false}

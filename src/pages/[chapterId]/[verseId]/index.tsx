@@ -103,6 +103,20 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
       : getChapterIdBySlug(chapterIdOrSlug, locale),
     getAllChaptersData(locale),
   ]);
+
+  // If chapterId is numeric (e.g. /2/255, /1/1-5), redirect permanently to its canonical slug URL
+  if (isValidChapterId(chapterIdOrSlug)) {
+    const chapterData = getChapterData(chaptersData, chapterIdOrSlug);
+    if (chapterData?.slug) {
+      return {
+        redirect: {
+          destination: getVerseNavigationUrl(chapterData.slug, verseIdOrRange),
+          permanent: true,
+        },
+      };
+    }
+  }
+
   if (sluggedChapterId) {
     chapterIdOrSlug = sluggedChapterId;
   }

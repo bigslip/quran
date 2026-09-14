@@ -13,6 +13,7 @@ import {
   setLastReadVerse,
 } from '@/redux/slices/QuranReader/readingTracker';
 import SearchQuerySource from '@/types/SearchQuerySource';
+import { getChapterData } from '@/utils/chapter';
 import { logButtonClick, logEmptySearchResults, logTextSearchQuery } from '@/utils/eventLogger';
 import { toLocalizedNumber } from '@/utils/locale';
 import { getChapterWithStartingVerseUrl } from '@/utils/navigation';
@@ -103,7 +104,8 @@ const VerseList: React.FC<Props> = ({ onAfterNavigationItemRouted, selectedChapt
     const firstFilteredVerseKey = filteredVerseKeys[0];
     if (firstFilteredVerseKey) {
       setPendingSelectedVerseKey(firstFilteredVerseKey);
-      const href = getChapterWithStartingVerseUrl(firstFilteredVerseKey);
+      const chapterData = getChapterData(chaptersData, currentChapterId);
+      const href = getChapterWithStartingVerseUrl(firstFilteredVerseKey, chapterData?.slug);
       navigateAndHandleAfterNavigation(href);
     }
   };
@@ -127,7 +129,8 @@ const VerseList: React.FC<Props> = ({ onAfterNavigationItemRouted, selectedChapt
       }),
     );
     setPendingSelectedVerseKey(verseKey);
-    const href = getChapterWithStartingVerseUrl(verseKey);
+    const chapterData = getChapterData(chaptersData, currentChapterId);
+    const href = getChapterWithStartingVerseUrl(verseKey, chapterData?.slug);
     navigateAndHandleAfterNavigation(href);
     logButtonClick(`navigation_list_verse`, {
       verseKey,
@@ -137,6 +140,11 @@ const VerseList: React.FC<Props> = ({ onAfterNavigationItemRouted, selectedChapt
   const onSearchQueryChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
+  const currentChapterSlug = useMemo(
+    () => getChapterData(chaptersData, currentChapterId)?.slug,
+    [chaptersData, currentChapterId],
+  );
 
   return (
     <div className={styles.verseListContainer}>
@@ -153,6 +161,7 @@ const VerseList: React.FC<Props> = ({ onAfterNavigationItemRouted, selectedChapt
           {filteredVerseKeys.map((verseKey) => (
             <VerseListItem
               verseKey={verseKey}
+              chapterSlug={currentChapterSlug}
               key={verseKey}
               onVerseClick={(e) => handleVerseClick(e, verseKey)}
               isLoading={pendingSelectedVerseKey === verseKey}

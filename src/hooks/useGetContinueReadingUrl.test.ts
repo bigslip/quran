@@ -48,7 +48,7 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/2:5');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('2:5');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('2:5', undefined);
     expect(getChapterWithStartingVerseUrl).toHaveBeenCalledTimes(1);
   });
 
@@ -77,7 +77,7 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/3:15');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('3:15');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('3:15', undefined);
     expect(getChapterWithStartingVerseUrl).toHaveBeenCalledTimes(1);
   });
 
@@ -99,7 +99,7 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/1:1');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1', 'al-fatihah');
     expect(getChapterWithStartingVerseUrl).toHaveBeenCalledTimes(1);
   });
 
@@ -131,7 +131,7 @@ describe('useGetContinueReadingUrl', () => {
 
     // Should use most recent reading session, not Redux value
     expect(result.current).toBe('/mocked-url/5:20');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('5:20');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('5:20', undefined);
     expect(getChapterWithStartingVerseUrl).not.toHaveBeenCalledWith('4:10');
   });
 
@@ -153,7 +153,7 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/1:1');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1', 'al-fatihah');
   });
 
   it('should handle undefined recentlyReadVerseKeys', () => {
@@ -174,6 +174,6 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/1:1');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1', 'al-fatihah');
   });
 });

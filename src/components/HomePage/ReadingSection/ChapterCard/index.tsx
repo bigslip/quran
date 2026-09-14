@@ -42,7 +42,7 @@ const ChapterCard: React.FC<Props> = ({
 
   const link = pageNumber
     ? getPageNavigationUrl(pageNumber)
-    : getChapterWithStartingVerseUrl(`${surahNumber}:${verseNumber}`);
+    : getChapterWithStartingVerseUrl(`${surahNumber}:${verseNumber}`, chapterData?.slug);
 
   return (
     <Card

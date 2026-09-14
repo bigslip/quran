@@ -99,33 +99,45 @@ export const getMyQuranNavigationUrl = (tab?: MyQuranTab): string =>
  * Get the href link to a verse.
  *
  * @param {string} verseKey
+ * @param {string} chapterSlug
  * @returns {string}
  */
-export const getVerseNavigationUrlByVerseKey = (verseKey: string): string => {
+export const getVerseNavigationUrlByVerseKey = (
+  verseKey: string,
+  chapterSlug?: string,
+): string => {
   const [chapterId, verseNumber] = getVerseAndChapterNumbersFromKey(verseKey);
-  return `/${chapterId}/${verseNumber}`;
+  return `/${chapterSlug || chapterId}/${verseNumber}`;
 };
 
 /**
  * Get the href link to a verse range e.g. 3:5-7.
  *
  * @param {string} key
+ * @param {string} chapterSlug
  * @returns {string}
  */
-export const getSurahRangeNavigationUrlByVerseKey = (key: string): string => {
+export const getSurahRangeNavigationUrlByVerseKey = (
+  key: string,
+  chapterSlug?: string,
+): string => {
   const { surah, from, to } = getVerseNumberRangeFromKey(key);
-  return `/${surah}/${from}-${to}`;
+  return `/${chapterSlug || surah}/${from}-${to}`;
 };
 
 /**
  * Get the scroll to link of a verseKey.
  *
  * @param {string} verseKey
+ * @param {string} chapterSlug
  * @returns {string}
  */
-export const getChapterWithStartingVerseUrl = (verseKey: string): string => {
+export const getChapterWithStartingVerseUrl = (
+  verseKey: string,
+  chapterSlug?: string,
+): string => {
   const [chapterId, verseNumber] = getVerseAndChapterNumbersFromKey(verseKey);
-  return `/${chapterId}?${QueryParam.STARTING_VERSE}=${verseNumber}`;
+  return `/${chapterSlug || chapterId}?${QueryParam.STARTING_VERSE}=${verseNumber}`;
 };
 
 /**

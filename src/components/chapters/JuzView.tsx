@@ -10,6 +10,7 @@ import styles from './JuzView.module.scss';
 import DataContext from '@/contexts/DataContext';
 import { getAllJuzMappings, getChapterData } from '@/utils/chapter';
 import { shouldUseMinimalLayout, toLocalizedNumber } from '@/utils/locale';
+import { getVerseNavigationUrl } from '@/utils/navigation';
 
 type JuzViewProps = {
   isDescending: boolean;
@@ -59,7 +60,10 @@ const JuzView: React.FC<JuzViewProps> = ({ isDescending }: JuzViewProps) => {
               return (
                 <div className={styles.chapterContainer} key={chapterId}>
                   <Link
-                    href={`/${chapterId}/${chapterAndVerseMappings[chapterId]}`}
+                    href={getVerseNavigationUrl(
+                      chapter?.slug || chapterId,
+                      chapterAndVerseMappings[chapterId],
+                    )}
                     shouldPrefetch={false}
                   >
                     <SurahPreviewRow

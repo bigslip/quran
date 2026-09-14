@@ -3,6 +3,9 @@ import { describe, it, expect } from 'vitest';
 import {
   getSurahNavigationUrl,
   getVerseNavigationUrl,
+  getVerseNavigationUrlByVerseKey,
+  getSurahRangeNavigationUrlByVerseKey,
+  getChapterWithStartingVerseUrl,
   getCanonicalUrl,
   getPreviousSurahNavigationUrl,
   getNextSurahNavigationUrl,
@@ -19,6 +22,11 @@ describe('Navigation SEO Utilities', () => {
   it('generates slug-based verse URLs', () => {
     expect(getVerseNavigationUrl('al-baqarah', '255')).toBe('/al-baqarah/255');
     expect(getVerseNavigationUrl('2', '255')).toBe('/2/255');
+    expect(getVerseNavigationUrlByVerseKey('2:255', 'al-baqarah')).toBe('/al-baqarah/255');
+    expect(getVerseNavigationUrlByVerseKey('2:255')).toBe('/2/255');
+    expect(getSurahRangeNavigationUrlByVerseKey('2:255-256', 'al-baqarah')).toBe('/al-baqarah/255-256');
+    expect(getChapterWithStartingVerseUrl('2:255', 'al-baqarah')).toBe('/al-baqarah?startingVerse=255');
+    expect(getChapterWithStartingVerseUrl('2:255')).toBe('/2?startingVerse=255');
   });
 
   it('generates canonical URLs correctly', () => {

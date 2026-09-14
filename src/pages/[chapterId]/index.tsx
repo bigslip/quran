@@ -188,6 +188,43 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
 
   let isValidChapter = isValidChapterId(chapterIdOrVerseKeyOrSlug);
   const isValidRanges = isRangesStringValid(chaptersData, chapterIdOrVerseKeyOrSlug);
+
+  // If a numeric chapter ID is passed directly (e.g. /1, /2), redirect permanently to its canonical slug
+  if (isValidChapter) {
+    const chapterData = getChapterData(chaptersData, chapterIdOrVerseKeyOrSlug);
+    if (chapterData?.slug) {
+      return {
+        redirect: {
+          destination: getSurahNavigationUrl(chapterData.slug),
+          permanent: true,
+        },
+      };
+    }
+  }
+
+  // If a single verse key is passed directly at root level (e.g. /2:255), redirect to its canonical URL
+  if (isValidVerseKey(chaptersData, chapterIdOrVerseKeyOrSlug)) {
+    const [extractedChapterId, verseNumber] =
+      getVerseAndChapterNumbersFromKey(chapterIdOrVerseKeyOrSlug);
+    const chapterData = getChapterData(chaptersData, extractedChapterId);
+    if (chapterData?.slug) {
+      if (isAyatulKursi(extractedChapterId, Number(verseNumber))) {
+        return {
+          redirect: {
+            destination: '/ayatul-kursi',
+            permanent: true,
+          },
+        };
+      }
+      return {
+        redirect: {
+          destination: getVerseNavigationUrl(chapterData.slug, verseNumber),
+          permanent: true,
+        },
+      };
+    }
+  }
+
   // initialize the value as if it's chapter
   let chapterId = chapterIdOrVerseKeyOrSlug;
   if (

@@ -32,7 +32,7 @@ const SanctuaryResumeCard: React.FC<Props> = ({
 
   const link = pageNumber
     ? getPageNavigationUrl(pageNumber)
-    : getChapterWithStartingVerseUrl(`${surahNumber}:${verseNumber}`);
+    : getChapterWithStartingVerseUrl(`${surahNumber}:${verseNumber}`, chapterData?.slug);
 
   const handleClick = useCallback(() => {
     logButtonClick(isContinueReading ? 'resume_reading_ribbon_click' : 'begin_reading_ribbon_click');
