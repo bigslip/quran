@@ -66,7 +66,7 @@ const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = tru
           )}
         >
           {selectedTranslations.map((translation) => (
-            <span key={translation}>
+            <div key={translation} className={cellStyles.verseTranslationContainer}>
               <div>
                 <Skeleton className={classNames(skeletonStyles.translationText)}>
                   {TRANSLATION_TEXT_SAMPLE}
@@ -77,7 +77,7 @@ const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = tru
                   {TRANSLATION_AUTHOR_SAMPLE}
                 </Skeleton>
               </div>
-            </span>
+            </div>
           ))}
         </div>
       </div>
