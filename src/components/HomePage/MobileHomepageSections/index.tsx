@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import styles from '@/pages/index.module.scss';
 import ChaptersData from 'types/ChaptersData';
 
-const CommunitySection = dynamic(() => import('../CommunitySection'));
 const ExploreTopicsSection = dynamic(() => import('../ExploreTopicsSection'));
 const LearningPlansSection = dynamic(() => import('../LearningPlansSection'));
 const QuranGrowthJourneySection = dynamic(() => import('../QuranGrowthJourneySection'));
@@ -32,9 +31,6 @@ const MobileHomepageSections: React.FC<Props> = ({ isUserLoggedIn, todayAyah, ch
       <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
         <ExploreTopicsSection />
       </div>
-      <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
-        <CommunitySection />
-      </div>
     </>
   ) : (
     <>
@@ -51,9 +47,6 @@ const MobileHomepageSections: React.FC<Props> = ({ isUserLoggedIn, todayAyah, ch
       ) : null}
       <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
         <LearningPlansSection />
-      </div>
-      <div className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}>
-        <CommunitySection />
       </div>
     </>
   );

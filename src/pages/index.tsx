@@ -59,13 +59,6 @@ const ExploreTopicsSection = dynamic(() => import('@/components/HomePage/Explore
   ssr: false,
 });
 
-const CommunitySection = dynamic(() => import('@/components/HomePage/CommunitySection'), {
-  ssr: false,
-});
-
-const HomePageApps = dynamic(() => import('@/components/HomePage/HomePageApps'), {
-  ssr: false,
-});
 
 type IndexProps = {
   chaptersResponse: ChaptersResponse;
@@ -158,11 +151,6 @@ const Index: NextPage<IndexProps> = ({
                     >
                       <ExploreTopicsSection />
                     </div>
-                    <div
-                      className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}
-                    >
-                      <CommunitySection />
-                    </div>
                   </>
                 ) : (
                   <>
@@ -187,26 +175,10 @@ const Index: NextPage<IndexProps> = ({
                         <QuranInYearSection chaptersData={chaptersData} />
                       </div>
                     ) : null}
-                    <div
-                      className={classNames(styles.flowItem, styles.fullWidth, styles.homepageCard)}
-                    >
-                      <CommunitySection />
-                    </div>
                   </>
                 )}
               </>
             )}
-
-            <div
-              className={classNames(
-                styles.flowItem,
-                styles.fullWidth,
-                styles.homepageCard,
-                styles.appsSection,
-              )}
-            >
-              <HomePageApps />
-            </div>
           </div>
         </div>
       </div>

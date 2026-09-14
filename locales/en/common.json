@@ -262,8 +262,12 @@
     "translation-font-size": "Translation font size"
   },
   "footer": {
+    "app-store": "App Store",
     "apps-disclaimer": "Each application is independently owned and maintained by its developer. For support, bug reports, or feature requests, please contact the app creator directly.",
     "description": "Quran.ir is a trusted platform used by millions worldwide to read, search, listen to, and reflect on the Quran in multiple languages. It provides translations, tafsir, recitations, word-by-word translation, and tools for deeper study, making the Quran accessible to everyone. <br/> <br/> As a Sadaqah Jariyah, Quran.ir is dedicated to helping people connect deeply with the Quran. Supported by <link>Quran.Foundation</link>, a 501(c)(3) non-profit organization, Quran.ir continues to grow as a free and valuable resource for all, Alhamdulillah.",
+    "download-on": "Download on the",
+    "get-it-on": "Get it on",
+    "google-play": "Google Play",
     "hiring": "We're hiring! Join the QuranFoundation team and contribute to our mission. <link>Apply now!</link>",
     "rights": "All Rights Reserved",
     "title": "Read, Listen, Search, and Reflect on the Quran"
