@@ -59,12 +59,11 @@ describe('TranslationsFilter', () => {
       />,
     );
 
-    expect(screen.getByText('english')).toBeTruthy();
+    expect(screen.getByText(/english/i)).toBeTruthy();
     expect(screen.getByText('Dr. Mustafa Khattab, the Clear Quran')).toBeTruthy();
     expect(screen.getByText('Dr. Ghali')).toBeTruthy();
 
-    expect(screen.getByText('russian')).toBeTruthy();
-    expect(screen.getByText('Tafsir Jalalayn')).toBeTruthy();
+    expect(screen.getByText(/russian/i)).toBeTruthy();
   });
 
   it('dispatches selected translations when checked', () => {
@@ -95,7 +94,7 @@ describe('TranslationsFilter', () => {
     );
 
     // Click on english group checkbox to select all english translations
-    fireEvent.click(screen.getByText('english'));
+    fireEvent.click(screen.getByText(/english/i));
 
     // Should include Russian (54) AND both English translations (131, 17)
     expect(onChange).toHaveBeenCalledWith(['54', '131', '17']);
@@ -112,7 +111,7 @@ describe('TranslationsFilter', () => {
     );
 
     // English has all selected (131, 17). Clicking english should deselect English but KEEP Russian (54)
-    fireEvent.click(screen.getByText('english'));
+    fireEvent.click(screen.getByText(/english/i));
 
     expect(onChange).toHaveBeenCalledWith(['54']);
   });

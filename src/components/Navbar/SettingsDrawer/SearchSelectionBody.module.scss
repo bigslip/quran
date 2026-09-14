@@ -19,11 +19,51 @@
   font-weight: var(--font-weight-semibold);
 }
 
+.languageHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall-px);
+  margin-block-end: var(--spacing-small-px);
+  padding-block: var(--spacing-xxsmall-px);
+  border-block-end: 1px solid var(--color-borders-hairline);
+}
+
+.languageFlag {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+.languageName {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--spacing-xxsmall-px);
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-default);
+}
+
+.languageNative {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-faded);
+}
+
 .item {
   margin-block-end: var(--spacing-xsmall);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--spacing-xxsmall-px);
+  padding: var(--spacing-xxsmall-px) var(--spacing-xsmall-px);
+  border-radius: var(--border-radius-default);
+  transition: background-color var(--transition-fast);
+
+  &:hover {
+    background-color: var(--color-background-hover);
+  }
 }
 
 .infoIcon {
@@ -31,6 +71,12 @@
   block-size: var(--spacing-medium-px);
   cursor: pointer;
   flex-shrink: 0;
+  color: var(--color-text-faded);
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-text-default);
+  }
 }
 
 .group {
@@ -44,6 +90,14 @@
 .label {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  line-height: var(--line-height-tight);
+}
+
+.nativeName {
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-default);
 }
 
 .author {
@@ -59,3 +113,4 @@
 div.popoverContent.popoverContent {
   z-index: var(--z-index-high);
 }
+

@@ -35,6 +35,12 @@ import {
 } from '@/utils/eventLogger';
 import filterTranslations, { getTranslations } from '@/utils/filter-translations';
 import { getLocaleName } from '@/utils/locale';
+import {
+  getLanguageFlag,
+  getLanguageNativeName,
+  getTranslationNativeName,
+  getTranslationSecondaryName,
+} from '@/utils/translationInfo';
 import { TranslationsResponse } from 'types/ApiResponses';
 import PreferenceGroup from 'types/auth/PreferenceGroup';
 import AvailableTranslation from 'types/AvailableTranslation';
@@ -110,34 +116,58 @@ const TranslationSelectionBody = () => {
 
   const renderTranslationGroup = useCallback(
     (language: string, translations: AvailableTranslation[]) => {
-      if (!translations) {
+      if (!translations || !translations.length) {
         return <></>;
       }
+      const flag = getLanguageFlag(language);
+      const nativeLang = getLanguageNativeName(language);
+      const capitalizedLang = language.charAt(0).toUpperCase() + language.slice(1);
+
       return (
         <div className={styles.group} key={language}>
-          <div className={styles.language}>{language}</div>
-          {translations.map((translation: AvailableTranslation) => (
-            <div key={translation.id} className={styles.item}>
-              <Checkbox
-                id={translation.id.toString()}
-                checked={selectedTranslations.includes(translation.id)}
-                label={translation.translatedName.name}
-                onChange={onTranslationsChange(translation.id)}
-              />
-              {translation.shortDescription?.description && (
-                <HoverablePopover
-                  content={translation.shortDescription.description}
-                  tooltipType={TooltipType.INFO}
-                  contentSide={ContentSide.TOP}
-                  contentStyles={styles.popoverContent}
-                >
-                  <span aria-label={t('aria.translation-info')}>
-                    <IconInfo className={styles.infoIcon} />
-                  </span>
-                </HoverablePopover>
+          <div className={styles.languageHeader}>
+            <span className={styles.languageFlag} aria-hidden="true">
+              {flag}
+            </span>
+            <span className={styles.languageName}>
+              <span>{capitalizedLang}</span>
+              {nativeLang && nativeLang.toLowerCase() !== capitalizedLang.toLowerCase() && (
+                <span className={styles.languageNative}>({nativeLang})</span>
               )}
-            </div>
-          ))}
+            </span>
+          </div>
+          {translations.map((translation: AvailableTranslation) => {
+            const nativeName = getTranslationNativeName(translation);
+            const secondaryName = getTranslationSecondaryName(translation);
+
+            return (
+              <div key={translation.id} className={styles.item}>
+                <Checkbox
+                  id={translation.id.toString()}
+                  checked={selectedTranslations.includes(translation.id)}
+                  label={
+                    <span className={styles.label}>
+                      <span className={styles.nativeName}>{nativeName}</span>
+                      {secondaryName && <span className={styles.author}>{secondaryName}</span>}
+                    </span>
+                  }
+                  onChange={onTranslationsChange(translation.id)}
+                />
+                {translation.shortDescription?.description && (
+                  <HoverablePopover
+                    content={translation.shortDescription.description}
+                    tooltipType={TooltipType.INFO}
+                    contentSide={ContentSide.TOP}
+                    contentStyles={styles.popoverContent}
+                  >
+                    <span aria-label={t('aria.translation-info')}>
+                      <IconInfo className={styles.infoIcon} />
+                    </span>
+                  </HoverablePopover>
+                )}
+              </div>
+            );
+          })}
         </div>
       );
     },

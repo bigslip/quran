@@ -13,6 +13,7 @@ import {
   setSelectedReadingTranslation,
 } from '@/redux/slices/QuranReader/readingPreferences';
 import { logValueChange } from '@/utils/eventLogger';
+import { getTranslationNativeName } from '@/utils/translationInfo';
 import PreferenceGroup from 'types/auth/PreferenceGroup';
 import AvailableTranslation from 'types/AvailableTranslation';
 
@@ -86,7 +87,7 @@ const TranslationDropdownContent: React.FC<TranslationDropdownContentProps> = ({
               onClick={() => handleTranslationSelect(translation.id)}
             >
               <span className={styles.translationName}>
-                {translation.translatedName?.name || translation.name}
+                {getTranslationNativeName(translation)}
               </span>
             </button>
           );

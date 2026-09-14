@@ -30,6 +30,8 @@ import { toLocalizedNumber } from '@/utils/locale';
 import { TranslationsResponse } from 'types/ApiResponses';
 import PreferenceGroup from 'types/auth/PreferenceGroup';
 
+import { getTranslationNativeName } from '@/utils/translationInfo';
+
 const TranslationSection = () => {
   const {
     actions: { onSettingsChange },
@@ -76,17 +78,21 @@ const TranslationSection = () => {
         (translation) => translation.id === availableTranslations[0],
       );
 
+      const firstTranslationName = firstSelectedTranslation
+        ? getTranslationNativeName(firstSelectedTranslation)
+        : '';
+
       let selectedValueString = t('settings.no-translation-selected');
-      if (availableTranslations.length === 1) selectedValueString = firstSelectedTranslation?.name;
+      if (availableTranslations.length === 1) selectedValueString = firstTranslationName;
       if (availableTranslations.length === 2) {
         selectedValueString = t('settings.value-and-other', {
-          value: firstSelectedTranslation?.name,
+          value: firstTranslationName,
           othersCount: localizedSelectedTranslations,
         });
       }
       if (availableTranslations.length > 2) {
         selectedValueString = t('settings.value-and-others', {
-          value: firstSelectedTranslation?.name,
+          value: firstTranslationName,
           othersCount: localizedSelectedTranslations,
         });
       }
