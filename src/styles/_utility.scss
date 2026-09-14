@@ -982,3 +982,23 @@ $page-container-max-width: 80rem;
   }
 }
 
+@mixin vazirmatnFontLang {
+  &[lang='fa'],
+  &[lang='persian'] {
+    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  &[lang='fa'] *,
+  &[lang='persian'] * {
+    font-family: inherit;
+  }
+}
+
+@mixin vazirmatnFontHtmlLang {
+  :global(html[lang='fa']) & {
+    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  :global(html[lang='fa']) & * {
+    font-family: inherit;
+  }
+}
+

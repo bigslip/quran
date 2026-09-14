@@ -26,6 +26,13 @@ body {
 
   // Note: Reciter and translation names have full locale names e.g. "urdu" instead of "ur"
   // and these names are coming from BE. It is easier to add another selector in css instead of changing BE
+  :lang(fa),
+  :lang(persian),
+  .fa,
+  .persian {
+    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
   :lang(ur),
   :lang(urdu),
   .ur,
@@ -54,6 +61,19 @@ body {
     font-family: 'BeVietnamPro', 'Be Vietnam Pro', 'Figtree', 'Helvetica Neue', Helvetica, Arial;
   }
 }
+
+// Persian root typography enforcement
+html[lang='fa'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+}
+
 
 // Global focus-visible styling for interactive elements (WCAG 2.2 AA compliant)
 a:focus-visible,
