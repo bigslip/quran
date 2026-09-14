@@ -1396,6 +1396,138 @@
         "name": "ناصر مکارم شیرازی",
         "language_name": "persian"
       }
+    },
+    {
+      "id": 842,
+      "name": "Hussain Ansarian",
+      "author_name": "Hussain Ansarian",
+      "slug": "fa-ansarian",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "حسین انصاریان",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 843,
+      "name": "Mohammad Mahdi Fooladvand",
+      "author_name": "Mohammad Mahdi Fooladvand",
+      "slug": "fa-fooladvand",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "محمدمهدی فولادوند",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 844,
+      "name": "Mahdi Elahi Ghomshei",
+      "author_name": "Mahdi Elahi Ghomshei",
+      "slug": "fa-ghomshei",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "مهدی الهی قمشه‌ای",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 845,
+      "name": "Baha'oddin Khorramshahi",
+      "author_name": "Baha'oddin Khorramshahi",
+      "slug": "fa-khorramshahi",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "بهاءالدین خرمشاهی",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 846,
+      "name": "Mohsen Gharaati",
+      "author_name": "Mohsen Gharaati",
+      "slug": "fa-gharaati",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "محسن قرائتی",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 847,
+      "name": "AbdolMohammad Ayati",
+      "author_name": "AbdolMohammad Ayati",
+      "slug": "fa-ayati",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "عبدالمحمد آیتی",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 848,
+      "name": "Abolfazl Bahrampour",
+      "author_name": "Abolfazl Bahrampour",
+      "slug": "fa-bahrampour",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "ابوالفضل بهرام‌پور",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 849,
+      "name": "Mostafa Khorramdel",
+      "author_name": "Mostafa Khorramdel",
+      "slug": "fa-khorramdel",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "مصطفی خرمدل",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 850,
+      "name": "Sayyed Mohammad Reza Safavi",
+      "author_name": "Sayyed Mohammad Reza Safavi",
+      "slug": "fa-safavi",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "سید محمدرضا صفوی",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 851,
+      "name": "Mohammad Sadeqi Tehrani",
+      "author_name": "Mohammad Sadeqi Tehrani",
+      "slug": "fa-sadeqi",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "محمد صادقی تهرانی",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 852,
+      "name": "Sayyed Jalaloddin Mojtabavi",
+      "author_name": "Sayyed Jalaloddin Mojtabavi",
+      "slug": "fa-mojtabavi",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "سید جلال‌الدین مجتبوی",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 853,
+      "name": "Mohammad Kazem Moezzi",
+      "author_name": "Mohammad Kazem Moezzi",
+      "slug": "fa-moezzi",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "محمدکاظم معزی",
+        "language_name": "persian"
+      }
     }
   ]
 }

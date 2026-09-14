@@ -167,6 +167,18 @@ export const TRANSLATION_NATIVE_MAP: Record<number, { name: string; authorName?:
 
   // Persian
   841: { name: 'ناصر مکارم شیرازی', authorName: 'ناصر مکارم شیرازی' },
+  842: { name: 'حسین انصاریان', authorName: 'حسین انصاریان' },
+  843: { name: 'محمدمهدی فولادوند', authorName: 'محمدمهدی فولادوند' },
+  844: { name: 'مهدی الهی قمشه‌ای', authorName: 'مهدی الهی قمشه‌ای' },
+  845: { name: 'بهاءالدین خرمشاهی', authorName: 'بهاءالدین خرمشاهی' },
+  846: { name: 'محسن قرائتی', authorName: 'محسن قرائتی' },
+  847: { name: 'عبدالمحمد آیتی', authorName: 'عبدالمحمد آیتی' },
+  848: { name: 'ابوالفضل بهرام‌پور', authorName: 'ابوالفضل بهرام‌پور' },
+  849: { name: 'مصطفی خرمدل', authorName: 'مصطفی خرمدل' },
+  850: { name: 'سید محمدرضا صفوی', authorName: 'سید محمدرضا صفوی' },
+  851: { name: 'محمد صادقی تهرانی', authorName: 'محمد صادقی تهرانی' },
+  852: { name: 'سید جلال‌الدین مجتبوی', authorName: 'سید جلال‌الدین مجتبوی' },
+  853: { name: 'محمدکاظم معزی', authorName: 'محمدکاظم معزی' },
   29: { name: 'حسین تاجی کله‌داری', authorName: 'حسین تاجی کله‌داری' },
   135: { name: 'مرکز اسلام هاوس', authorName: 'IslamHouse.com' },
 

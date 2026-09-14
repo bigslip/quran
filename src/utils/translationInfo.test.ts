@@ -60,6 +60,27 @@ describe('translationInfo', () => {
       };
       expect(getTranslationNativeName(makarem)).toBe('ناصر مکارم شیرازی');
 
+      const ansarian: AvailableTranslation = {
+        id: 842,
+        name: 'Hussain Ansarian',
+        languageName: 'persian',
+      };
+      expect(getTranslationNativeName(ansarian)).toBe('حسین انصاریان');
+
+      const fooladvand: AvailableTranslation = {
+        id: 843,
+        name: 'Mohammad Mahdi Fooladvand',
+        languageName: 'persian',
+      };
+      expect(getTranslationNativeName(fooladvand)).toBe('محمدمهدی فولادوند');
+
+      const ghomshei: AvailableTranslation = {
+        id: 844,
+        name: 'Mahdi Elahi Ghomshei',
+        languageName: 'persian',
+      };
+      expect(getTranslationNativeName(ghomshei)).toBe('مهدی الهی قمشه‌ای');
+
       const taji: AvailableTranslation = {
         id: 29,
         name: 'Hussein Taji Kal Dari',
