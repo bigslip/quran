@@ -57,6 +57,7 @@ const JuzView: React.FC<JuzViewProps> = ({ isDescending }: JuzViewProps) => {
             </Link>
             {chapterIds.map((chapterId) => {
               const chapter = getChapterData(chaptersData, chapterId);
+              if (!chapter) return null;
               return (
                 <div className={styles.chapterContainer} key={chapterId}>
                   <Link

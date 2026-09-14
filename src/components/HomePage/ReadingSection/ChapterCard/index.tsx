@@ -63,10 +63,10 @@ const ChapterCard: React.FC<Props> = ({
         <div className={styles.surahInfo}>
           <div className={styles.nameContainer}>
             <span className={styles.transliteratedName} translate="no">
-              {chapterData.transliteratedName}
+              {chapterData?.transliteratedName || ''}
             </span>
             <span className={styles.translatedName} translate="no">
-              {chapterData.translatedName}
+              {chapterData?.translatedName || ''}
             </span>
           </div>
           {isContinueReading ? (
