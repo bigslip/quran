@@ -10,6 +10,7 @@ import { RootState } from '@/redux/RootState';
 import {
   setLessonLanguages,
   setReflectionLanguages,
+  setSelectedWordByWordLocale,
 } from '@/redux/slices/QuranReader/readingPreferences';
 import { setSelectedTafsirs } from '@/redux/slices/QuranReader/tafsirs';
 import { setSelectedTranslations } from '@/redux/slices/QuranReader/translations';
@@ -141,6 +142,24 @@ const syncReflectionAndLessonLanguagesIfNotCustomized = (
   );
 };
 
+const syncWordByWordLocaleIfUsingDefaults = (
+  state: RootState,
+  dispatch: Dispatch<AnyAction>,
+  nextLocale: string,
+) => {
+  if (!state.readingPreferences?.isUsingDefaultWordByWordLocale) return;
+
+  const defaultWordByWordLocale =
+    getReadingPreferencesInitialState(nextLocale).selectedWordByWordLocale;
+  const currentWordByWordLocale = state.readingPreferences?.selectedWordByWordLocale;
+  if (currentWordByWordLocale === defaultWordByWordLocale) return;
+
+  dispatch({
+    ...setSelectedWordByWordLocale({ value: defaultWordByWordLocale, locale: nextLocale }),
+    meta: { skipDefaultSettings: true },
+  });
+};
+
 /**
  * Keep locale-dependent content preferences (e.g. default tafsir/translation and
  * reflections/lessons languages) aligned with the site locale when the user
@@ -157,6 +176,7 @@ const syncLocaleDependentSettings =
 
     syncTranslationsIfUsingDefaults(state, dispatch, nextLocale);
     syncTafsirsIfUsingDefaults(state, dispatch, nextLocale);
+    syncWordByWordLocaleIfUsingDefaults(state, dispatch, nextLocale);
     syncReflectionAndLessonLanguagesIfNotCustomized(state, dispatch, prevLocale, nextLocale);
   };
 
