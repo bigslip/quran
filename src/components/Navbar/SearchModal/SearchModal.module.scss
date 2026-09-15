@@ -82,8 +82,8 @@
 .content {
   box-sizing: border-box;
   position: fixed;
-  left: 50%;
-  top: 10vh;
+  inset-inline-start: 50%;
+  inset-block-start: 10vh;
   transform: translateX(-50%);
   inline-size: calc(100% - 32px);
   max-inline-size: 720px;
@@ -117,7 +117,7 @@
 
   @include breakpoints.smallerThanTablet {
     inset: 0;
-    top: 0;
+    inset-block-start: 0;
     inset-inline-start: 0;
     transform: none;
     inline-size: 100vw;

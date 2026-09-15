@@ -104,8 +104,8 @@
 }
 
 .button {
-  background: var(--color-primary-gradient, linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%));
-  color: #070A13;
+  background: var(--color-primary-gradient, linear-gradient(135deg, #00f2fe 0%, #4facfe 100%));
+  color: #070a13;
   border: none;
   font-weight: var(--font-weight-bold);
   border-radius: var(--border-radius-pill);
@@ -119,7 +119,7 @@
     filter: brightness(1.15);
     box-shadow: 0 0 24px var(--color-primary, rgba(0, 242, 254, 0.4));
     transform: translateY(-1px);
-    color: #070A13;
+    color: #070a13;
   }
 
   @include breakpoints.smallerThanTablet {
@@ -141,7 +141,7 @@
   margin-inline-end: var(--spacing-xsmall);
 
   path {
-    fill: #070A13;
+    fill: #070a13;
   }
 
   @include breakpoints.smallerThanTablet {

@@ -110,8 +110,8 @@
   --button-size: calc(2 * var(--spacing-medium));
   min-inline-size: 44px;
   min-block-size: 44px;
-  min-width: 44px;
-  min-height: 44px;
+  min-inline-size: 44px;
+  min-block-size: 44px;
 }
 .xsmall {
   font-size: var(--font-size-small);
@@ -129,8 +129,8 @@
   padding: 0;
   min-inline-size: 44px;
   min-block-size: 44px;
-  min-width: 44px;
-  min-height: 44px;
+  min-inline-size: 44px;
+  min-block-size: 44px;
 }
 .circle {
   border-radius: var(--border-radius-circle);
@@ -138,8 +138,8 @@
   padding: 0;
   min-inline-size: 44px;
   min-block-size: 44px;
-  min-width: 44px;
-  min-height: 44px;
+  min-inline-size: 44px;
+  min-block-size: 44px;
 }
 .pill {
   border-radius: var(--border-radius-pill);

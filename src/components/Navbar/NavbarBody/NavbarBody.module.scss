@@ -20,7 +20,6 @@
   }
 }
 
-
 .centerVertically {
   @include utility.center-vertically;
 }
@@ -63,7 +62,7 @@
   display: flex;
   align-items: center;
   inline-size: 100%;
-  min-height: 44px;
+  min-block-size: 44px;
   min-block-size: 44px;
   block-size: 44px;
   padding-inline: var(--spacing-medium-px);

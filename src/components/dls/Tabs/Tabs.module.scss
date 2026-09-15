@@ -29,9 +29,7 @@
   border-start-end-radius: var(--border-radius-small-px);
   border-end-start-radius: 0;
   border-end-end-radius: 0;
-  transition:
-    color var(--transition-fast) ease,
-    border-color var(--transition-fast) ease,
+  transition: color var(--transition-fast) ease, border-color var(--transition-fast) ease,
     background-color var(--transition-fast) ease;
 
   &:hover {
@@ -57,7 +55,7 @@
   padding-block: 1rem;
   padding-inline: 0;
   color: var(--color-text-default);
-  
+
   &[data-state='inactive'] {
     display: none;
   }
@@ -66,4 +64,3 @@
     outline: none;
   }
 }
-

@@ -165,7 +165,7 @@
     transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 
     &:hover {
-      border-color: var(--color-primary, #00F2FE);
+      border-color: var(--color-primary, #00f2fe);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0, 242, 254, 0.12);
     }
@@ -174,7 +174,7 @@
       margin-block-end: var(--spacing-medium);
       inline-size: calc(var(--spacing-mega) * 1.2);
       block-size: calc(var(--spacing-mega) * 1.2);
-      color: var(--color-primary, #00F2FE);
+      color: var(--color-primary, #00f2fe);
       filter: drop-shadow(0 0 8px var(--color-primary-subtle, rgba(0, 242, 254, 0.3)));
     }
   }

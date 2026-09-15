@@ -26,10 +26,8 @@
   padding-inline: var(--spacing-medium-px);
   padding-block: var(--spacing-small-px);
   box-shadow: var(--shadow-card);
-  transition:
-    transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
-    border-color var(--transition-fast) ease,
-    background-color var(--transition-fast) ease,
+  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    border-color var(--transition-fast) ease, background-color var(--transition-fast) ease,
     box-shadow var(--transition-fast) ease;
 
   @media (hover: hover) {
@@ -74,4 +72,3 @@
     justify-content: space-between;
   }
 }
-

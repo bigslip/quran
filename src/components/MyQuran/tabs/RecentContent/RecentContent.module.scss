@@ -23,13 +23,13 @@
 
   &:hover {
     background: var(--color-surface-card-hover, var(--color-background-alternative));
-    border-color: var(--color-primary, #00F2FE);
+    border-color: var(--color-primary, #00f2fe);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0, 242, 254, 0.12);
 
     .recentContentItemTitle svg {
       transform: translateX(4px);
-      color: var(--color-primary, #00F2FE);
+      color: var(--color-primary, #00f2fe);
 
       [dir='rtl'] & {
         transform: translateX(-4px);

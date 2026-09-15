@@ -11,7 +11,7 @@
   transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
-    border-color: var(--color-primary, #00F2FE);
+    border-color: var(--color-primary, #00f2fe);
     background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
     transform: translateY(-1px);
     box-shadow: 0 2px 8px var(--color-primary-subtle, rgba(0, 242, 254, 0.15));

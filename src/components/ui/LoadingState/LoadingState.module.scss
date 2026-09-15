@@ -49,7 +49,8 @@
 }
 
 @keyframes pixelOn {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.18;
     transform: scale(0.85);
     background-color: var(--color-text-faded);

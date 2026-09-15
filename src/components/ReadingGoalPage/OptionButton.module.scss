@@ -7,7 +7,7 @@
   block-size: $size;
   margin-inline-end: var(--spacing-large);
   flex-shrink: 0;
-  color: var(--color-primary, #00F2FE);
+  color: var(--color-primary, #00f2fe);
   transition: transform var(--transition-fast) ease;
 }
 
@@ -35,7 +35,7 @@
   @media (hover: hover) {
     &:hover {
       background: var(--color-surface-card-hover, var(--color-background-alternative-faded));
-      border-color: var(--color-primary, #00F2FE);
+      border-color: var(--color-primary, #00f2fe);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0, 242, 254, 0.12);
 
@@ -76,12 +76,12 @@
 
 .selected {
   background: var(--color-surface-card-hover, var(--color-background-alternative-faded));
-  border-color: var(--color-primary, #00F2FE);
+  border-color: var(--color-primary, #00f2fe);
   color: var(--color-primary, var(--color-success-medium));
   box-shadow: 0 0 20px var(--color-primary-subtle, rgba(0, 242, 254, 0.25));
 
   .title {
-    color: var(--color-primary, #00F2FE);
+    color: var(--color-primary, #00f2fe);
   }
 
   @include theme.light {
@@ -105,8 +105,8 @@
 }
 
 .recommended {
-  background: var(--color-primary-gradient, linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%));
-  color: #070A13;
+  background: var(--color-primary-gradient, linear-gradient(135deg, #00f2fe 0%, #4facfe 100%));
+  color: #070a13;
   font-weight: var(--font-weight-bold);
   border-radius: var(--border-radius-pill);
   padding-inline: var(--spacing-small);

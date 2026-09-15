@@ -120,7 +120,6 @@
   cursor: not-allowed;
 }
 
-
 .bottomSectionContainer {
   display: flex;
   flex-direction: column-reverse;
@@ -215,8 +214,7 @@
   text-decoration: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow var(--transition-fast) ease,
-    border-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease,
     background-color var(--transition-fast) ease;
   cursor: pointer;
   user-select: none;

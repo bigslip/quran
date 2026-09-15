@@ -54,7 +54,8 @@ body {
   :lang(thai),
   .th,
   .thai {
-    font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont,
+      sans-serif;
   }
 
   :lang(zh),
@@ -135,7 +136,8 @@ html[lang='th'] {
   optgroup,
   select,
   textarea {
-    font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont,
+      sans-serif !important;
   }
 }
 
@@ -173,7 +175,6 @@ html[lang='bn'] {
       sans-serif !important;
   }
 }
-
 
 // Global focus-visible styling for interactive elements (WCAG 2.2 AA compliant)
 a:focus-visible,

@@ -1,5 +1,6 @@
 .closeButton {
-  transition: transform var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast) !important;
+  transition: transform var(--transition-fast), background-color var(--transition-fast),
+    color var(--transition-fast) !important;
   color: var(--color-text-secondary, var(--color-text-faded)) !important;
 
   &:hover:not(:disabled) {

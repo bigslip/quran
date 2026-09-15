@@ -38,7 +38,9 @@
 
   @include breakpoints.tablet {
     max-inline-size: min(92%, 56.25rem);
-    inset-block-end: calc(constants.$audio-player-default-desktop-height + var(--spacing-medium-px));
+    inset-block-end: calc(
+      constants.$audio-player-default-desktop-height + var(--spacing-medium-px)
+    );
     border-radius: 20px 20px 0 0;
     overflow: hidden;
   }
@@ -64,4 +66,3 @@
   transition: color var(--transition-fast);
   user-select: none;
 }
-

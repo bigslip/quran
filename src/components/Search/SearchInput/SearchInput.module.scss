@@ -12,9 +12,7 @@
   inline-size: 100%;
   margin: 0 auto;
   z-index: 1;
-  transition:
-    box-shadow var(--transition-fast) ease,
-    border-color var(--transition-fast) ease,
+  transition: box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease,
     background-color var(--transition-fast) ease;
 
   @media (hover: hover) {
@@ -128,4 +126,3 @@
     block-size: 7px;
   }
 }
-

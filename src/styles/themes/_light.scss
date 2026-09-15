@@ -43,33 +43,33 @@
   // Modern Spiritual Sanctuary Tokens - Light Palette (Muezzin Islamic Architecture Inspired)
   --font-family-display: 'Cinzel', 'Playfair Display', Georgia, serif;
   --font-family-sans: 'Plus Jakarta Sans', 'Figtree', sans-serif;
-  --color-primary: #0284C7;
-  --color-primary-subtle: rgba(2, 132, 199, 0.10);
-  --color-primary-gradient: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
-  --color-secondary-gradient: linear-gradient(135deg, #0D9488 0%, #0284C7 100%);
-  --color-accent-gold: #B45309;
-  --color-accent-gold-rich: #D97706;
+  --color-primary: #0284c7;
+  --color-primary-subtle: rgba(2, 132, 199, 0.1);
+  --color-primary-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  --color-secondary-gradient: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+  --color-accent-gold: #b45309;
+  --color-accent-gold-rich: #d97706;
   --color-accent-gold-subtle: rgba(217, 119, 6, 0.12);
-  --color-accent-emerald: #065F46;
-  --color-accent-emerald-subtle: rgba(6, 95, 70, 0.10);
-  --color-surface-bg: #F8FAFC;
+  --color-accent-emerald: #065f46;
+  --color-accent-emerald-subtle: rgba(6, 95, 70, 0.1);
+  --color-surface-bg: #f8fafc;
   --color-surface-card: rgba(255, 255, 255, 0.94);
-  --color-surface-card-hover: #FFFFFF;
+  --color-surface-card-hover: #ffffff;
   --color-surface-floating: rgba(255, 255, 255, 0.92);
-  --color-text-primary: #0F172A;
+  --color-text-primary: #0f172a;
   --color-text-secondary: #475569;
   --color-border-subtle: rgba(217, 119, 6, 0.18);
   --color-border-iridescent: rgba(217, 119, 6, 0.28);
   --color-glow-celestial: 0 0 24px rgba(217, 119, 6, 0.18);
   --color-glow-gold: 0 0 20px rgba(217, 119, 6, 0.16);
-  --color-glow-subtle: 0 8px 24px rgba(2, 132, 199, 0.10);
+  --color-glow-subtle: 0 8px 24px rgba(2, 132, 199, 0.1);
   --shadow-card: 0 6px 24px rgba(15, 23, 42, 0.06), 0 0 1px rgba(217, 119, 6, 0.2);
   --shadow-card-hover: 0 10px 25px -5px rgba(2, 132, 199, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
 
-  --color-background-default: #F8FAFC;
-  --color-background-elevated: #FFFFFF;
-  --color-background-elevated-new: #FFFFFF;
-  --color-background-gradient: #FFFFFF;
+  --color-background-default: #f8fafc;
+  --color-background-elevated: #ffffff;
+  --color-background-elevated-new: #ffffff;
+  --color-background-gradient: #ffffff;
 
   --color-background-alternative-faded: var(--shade-0);
   --color-background-alternative-faint: var(--shade-1);
@@ -90,13 +90,13 @@
   --color-border-gray-faded: #ededed;
 
   // Text selection tokens (subtle sky/primary tint)
-  --color-selection-bg: rgba(2, 132, 199, 0.20);
-  --color-selection-fg: #0F172A;
+  --color-selection-bg: rgba(2, 132, 199, 0.2);
+  --color-selection-fg: #0f172a;
   --color-highlight: rgba(2, 132, 199, 0.22);
-  --color-highlight-dark: #0369A1;
+  --color-highlight-dark: #0369a1;
 
   // Focus ring tokens (WCAG 2.2 AA compliant, high contrast)
-  --color-focus-ring: #0284C7;
+  --color-focus-ring: #0284c7;
   --color-focus-ring-subtle: rgba(2, 132, 199, 0.35);
   --focus-ring-shadow: 0 0 0 2px var(--color-background-default), 0 0 0 4px var(--color-focus-ring);
   --focus-ring-outline: 2px solid var(--color-focus-ring);
@@ -145,7 +145,7 @@
   --color-qdc-faded-blue: #ebf9fa;
   --color-qdc-faint-blue: #c2edef;
   --color-qdc-deep-blue: #258c91;
-  --color-streaks-dark: #0D7A5F;
+  --color-streaks-dark: #0d7a5f;
   --color-streaks-light: #e4f4e9;
   --color-calligraphy: #e2e7eb;
   --color-scholars-say-background: #fff8e4;
@@ -156,19 +156,19 @@
   --color-bookmark-icon: #22a5ad;
 
   // Islamic Sanctuary Board & Petal Surah Cards (Light Theme)
-  --color-sanctuary-bg: #004B39;
-  --color-sanctuary-arch-fill: #004B39;
+  --color-sanctuary-bg: #004b39;
+  --color-sanctuary-arch-fill: #004b39;
   --color-sanctuary-shadow: rgba(0, 75, 57, 0.25);
-  --color-sanctuary-petal-bg: #FFF9EA;
-  --color-sanctuary-petal-hover-bg: #B45309;
-  --color-sanctuary-petal-hover-text: #FFFFFF;
-  --color-sanctuary-petal-num-bg: #004B39;
-  --color-sanctuary-petal-num-text: #FEF08A;
-  --color-sanctuary-petal-num-border: #F59E0B;
-  --color-sanctuary-petal-title-ar: #004B39;
-  --color-sanctuary-petal-title-en: #1E293B;
-  --color-sanctuary-petal-meta: #78350F;
-  --color-sanctuary-petal-tag-makkah: #B45309;
+  --color-sanctuary-petal-bg: #fff9ea;
+  --color-sanctuary-petal-hover-bg: #b45309;
+  --color-sanctuary-petal-hover-text: #ffffff;
+  --color-sanctuary-petal-num-bg: #004b39;
+  --color-sanctuary-petal-num-text: #fef08a;
+  --color-sanctuary-petal-num-border: #f59e0b;
+  --color-sanctuary-petal-title-ar: #004b39;
+  --color-sanctuary-petal-title-en: #1e293b;
+  --color-sanctuary-petal-meta: #78350f;
+  --color-sanctuary-petal-tag-makkah: #b45309;
   --color-sanctuary-petal-tag-makkah-bg: rgba(217, 119, 6, 0.14);
   --color-sanctuary-petal-tag-madinah: #047857;
   --color-sanctuary-petal-tag-madinah-bg: rgba(4, 120, 87, 0.14);

@@ -13,7 +13,8 @@
 
 // Smooth transition for search/filter section
 .searchSection {
-  transition: opacity var(--transition-moderate) ease-out, transform var(--transition-moderate) ease-out;
+  transition: opacity var(--transition-moderate) ease-out,
+    transform var(--transition-moderate) ease-out;
 
   &.hidden {
     opacity: 0;
