@@ -149,6 +149,7 @@ const ReciterStationList: React.FC<ReciterStationListProps> = ({ reciters, class
                   <Link
                     href={getReciterNavigationUrl(reciter.id.toString())}
                     className={styles.reciterLink}
+                    onClick={(e) => e.stopPropagation()}
                   >
                     {reciterName}
                   </Link>
