@@ -25,9 +25,10 @@ const TextWord: React.FC<MadaniWordTextProps> = ({ text, font, charType, classNa
   <span
     className={classNames(className, styles.word, {
       [styles[DEFAULT_FONT_FAMILY]]:
-        charType === CharType.End ||
-        !UTHMANI_HAFS_FONTS[font] ||
-        UTHMANI_HAFS_FONTS[font] === DEFAULT_FONT_FAMILY,
+        UTHMANI_HAFS_FONTS[font] !== INDO_PAK &&
+        (charType === CharType.End ||
+          !UTHMANI_HAFS_FONTS[font] ||
+          UTHMANI_HAFS_FONTS[font] === DEFAULT_FONT_FAMILY),
       [styles[INDO_PAK]]: UTHMANI_HAFS_FONTS[font] === INDO_PAK,
     })}
     {...props}

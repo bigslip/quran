@@ -42,6 +42,7 @@ interface DataEngineState {
   audioTimestampsByChapter: Map<string, any>;
   chapterInfoCache: Map<string, any>;
   wbwTranslationsMap: Map<string, Map<string, string>>;
+  indopakMap: Map<string, string>;
 }
 
 const state: DataEngineState = {
@@ -65,6 +66,7 @@ const state: DataEngineState = {
   audioTimestampsByChapter: new Map(),
   chapterInfoCache: new Map(),
   wbwTranslationsMap: new Map(),
+  indopakMap: new Map(),
 };
 
 // Cold-start mutex promise to prevent concurrent initialization races
@@ -240,6 +242,7 @@ export function _resetStateForTesting(): void {
   state.audioTimestampsByChapter.clear();
   state.chapterInfoCache.clear();
   state.wbwTranslationsMap.clear();
+  state.indopakMap.clear();
 }
 
 
@@ -393,6 +396,55 @@ async function getWbwMapForLanguage(isoCode: string, chapterId?: number): Promis
 }
 
 /**
+ * Fetch IndoPak script text dataset on-demand with caching.
+ */
+async function getIndoPakMap(chapterId?: number): Promise<Map<string, string>> {
+  if (chapterId && state.indopakMap.has(`${chapterId}:1:1`)) {
+    return state.indopakMap;
+  }
+
+  if (chapterId) {
+    try {
+      const chapterPath = await resolveDataFile(`indopak/${chapterId}.json`);
+      const chapterData = JSON.parse(await fs.readFile(chapterPath, 'utf-8'));
+      const words = chapterData.words || {};
+      for (const [loc, text] of Object.entries(words)) {
+        state.indopakMap.set(loc, text as string);
+      }
+      return state.indopakMap;
+    } catch {
+      // Fall through to unified file lookup
+    }
+  }
+
+  if (state.indopakMap.size === 0) {
+    try {
+      const unifiedPath = await resolveDataFile('indopak.json');
+      const unifiedData = JSON.parse(await fs.readFile(unifiedPath, 'utf-8'));
+      for (const [loc, text] of Object.entries(unifiedData)) {
+        state.indopakMap.set(loc, text as string);
+      }
+    } catch {
+      try {
+        await Promise.all(
+          Array.from({ length: 114 }, (_, i) => i + 1).map(async (ch) => {
+            try {
+              const shardPath = await resolveDataFile(`indopak/${ch}.json`);
+              const shardData = JSON.parse(await fs.readFile(shardPath, 'utf-8'));
+              for (const [loc, text] of Object.entries(shardData.words || {})) {
+                state.indopakMap.set(loc, text as string);
+              }
+            } catch {}
+          })
+        );
+      } catch {}
+    }
+  }
+
+  return state.indopakMap;
+}
+
+/**
  * Stitch translations and dynamic WBW translations into cloned verse objects.
  */
 async function stitchTranslations(
@@ -442,28 +494,40 @@ async function stitchTranslations(
     wbwMap = await getWbwMapForLanguage(wbwMeta.iso_code, chapterId);
   }
 
+  const indopakMap = includeWords ? await getIndoPakMap(chapterId) : null;
+
   return verses.map((verse) => {
     const verseCopy = { ...verse };
 
     if (!includeWords) {
       delete verseCopy.words;
     } else if (Array.isArray(verse.words)) {
-      if (shouldOverlayWbw && wbwMap && wbwMeta) {
-        verseCopy.words = verse.words.map((word: any) => {
-          const location = word.location || `${verse.verse_key}:${word.position}`;
-          const localizedText = wbwMap!.get(location);
-          return {
-            ...word,
-            translation: {
-              text: localizedText !== undefined ? localizedText : (word.translation?.text ?? ''),
-              language_name: wbwMeta.language_name,
-              language_id: wbwMeta.language_id,
-            },
+      verseCopy.words = verse.words.map((word: any) => {
+        const location = word.location || `${verse.verse_key}:${word.position}`;
+        const localizedWbw = shouldOverlayWbw && wbwMap ? wbwMap.get(location) : undefined;
+        const indopakText =
+          indopakMap?.get(location) ||
+          word.text_indopak ||
+          word.textIndopak ||
+          word.text_uthmani ||
+          word.qpc_uthmani_hafs;
+
+        const updatedWord: any = {
+          ...word,
+          text_indopak: indopakText,
+          textIndopak: indopakText,
+        };
+
+        if (shouldOverlayWbw && wbwMeta) {
+          updatedWord.translation = {
+            text: localizedWbw !== undefined ? localizedWbw : (word.translation?.text ?? ''),
+            language_name: wbwMeta.language_name,
+            language_id: wbwMeta.language_id,
           };
-        });
-      } else {
-        verseCopy.words = verse.words.map((word: any) => ({ ...word }));
-      }
+        }
+
+        return updatedWord;
+      });
     }
 
     if (translationMaps.length > 0) {

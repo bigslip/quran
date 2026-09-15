@@ -148,12 +148,46 @@ const QuranWord = ({
 
   // Check if the current word has IndoPak stop signs
   const isIndoPakFont = font === QuranFont.IndoPak;
+  const wordTextContent: string = useMemo(() => {
+    if (isIndoPakFont) {
+      return (
+        (word.textIndopak as string) ||
+        (word.text_indopak as string) ||
+        (word.textUthmani as string) ||
+        (word.text_uthmani as string) ||
+        (word.qpcUthmaniHafs as string) ||
+        word.text ||
+        ''
+      );
+    }
+    if (font === QuranFont.QPCHafs) {
+      return (
+        (word.qpcUthmaniHafs as string) ||
+        (word.qpc_uthmani_hafs as string) ||
+        (word.textUthmani as string) ||
+        (word.text_uthmani as string) ||
+        word.text ||
+        ''
+      );
+    }
+    if (font === QuranFont.MadaniV1 || font === QuranFont.MadaniV2) {
+      return (
+        (word.textUthmani as string) ||
+        (word.text_uthmani as string) ||
+        (word.qpcUthmaniHafs as string) ||
+        word.text ||
+        ''
+      );
+    }
+    return word.text || '';
+  }, [font, isIndoPakFont, word]);
+
   const hasIndoPakStopSign = useMemo(
     () =>
       isIndoPakFont &&
-      word.text &&
-      Array.from(word.text).some((char) => INDO_PAK_STOP_SIGN_CHARS.has(char)),
-    [isIndoPakFont, word.text],
+      Boolean(wordTextContent) &&
+      Array.from(wordTextContent).some((char) => INDO_PAK_STOP_SIGN_CHARS.has(char)),
+    [isIndoPakFont, wordTextContent],
   );
 
   if (isQCFFont(font)) {
@@ -172,7 +206,7 @@ const QuranWord = ({
       />
     );
   } else if (word.charTypeName !== CharType.Pause) {
-    wordText = <TextWord font={font} text={word.text} charType={word.charTypeName} />;
+    wordText = <TextWord font={font} text={wordTextContent} charType={word.charTypeName} />;
   }
 
   /*

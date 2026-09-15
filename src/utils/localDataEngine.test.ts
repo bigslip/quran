@@ -355,5 +355,22 @@ describe('Local Data Query Engine', () => {
       expect(res.count).toBe(0);
     });
   });
+
+  describe('IndoPak Script Text Integration', () => {
+    it('serves authentic IndoPak script text on verses and words', async () => {
+      const res = await getLocalApiResponse('/verses/by_chapter/1', { per_page: 1, words: 'true' });
+      expect(res.verses).toHaveLength(1);
+      const firstWord = res.verses[0].words[0];
+      expect(firstWord.text_indopak).toBe('بِسۡمِ');
+      expect(firstWord.textIndopak).toBe('بِسۡمِ');
+    });
+
+    it('serves authentic IndoPak script text for by_page endpoint', async () => {
+      const res = await getLocalApiResponse('/verses/by_page/1', { words: 'true' });
+      expect(res.verses.length).toBeGreaterThan(0);
+      const firstWord = res.verses[0].words[0];
+      expect(firstWord.text_indopak).toBe('بِسۡمِ');
+    });
+  });
 });
 

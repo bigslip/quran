@@ -101,6 +101,25 @@ const PlainVerseText: React.FC<Props> = ({
                 </PlainVerseTextWord>
               );
             }
+            const wordText =
+              quranFont === QuranFont.IndoPak
+                ? (word.textIndopak ||
+                   word.text_indopak ||
+                   word.textUthmani ||
+                   word.text_uthmani ||
+                   word.qpcUthmaniHafs ||
+                   word.text)
+                : quranFont === QuranFont.QPCHafs
+                ? (word.qpcUthmaniHafs ||
+                   word.qpc_uthmani_hafs ||
+                   word.textUthmani ||
+                   word.text_uthmani ||
+                   word.text)
+                : (word.textUthmani ||
+                   word.text_uthmani ||
+                   word.qpcUthmaniHafs ||
+                   word.text);
+
             return (
               <PlainVerseTextWord
                 key={word.location}
@@ -109,7 +128,7 @@ const PlainVerseText: React.FC<Props> = ({
                 shouldShowWordByWordTransliteration={shouldShowWordByWordTransliteration}
                 isHighlighted={isHighlighted}
               >
-                <TextWord font={quranFont} text={word.text} charType={word.charTypeName} />
+                <TextWord font={quranFont} text={wordText} charType={word.charTypeName} />
               </PlainVerseTextWord>
             );
           })}
