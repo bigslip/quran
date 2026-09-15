@@ -25,11 +25,19 @@ vi.mock('./PlainVerseTextWord', () => ({
 }));
 
 vi.mock('@/dls/QuranWord/TextWord', () => ({
-  default: () => <div data-testid="text-word">بسم</div>,
+  default: ({ text, font, charType }: any) => (
+    <div data-testid="text-word" data-font={font} data-char-type={charType}>
+      {text}
+    </div>
+  ),
 }));
 
 vi.mock('@/dls/QuranWord/GlyphWord', () => ({
-  default: () => <div data-testid="glyph-word">A</div>,
+  default: ({ font, textCodeV1, qpcUthmaniHafs }: any) => (
+    <div data-testid="glyph-word" data-font={font} data-code-v1={textCodeV1}>
+      {qpcUthmaniHafs || textCodeV1 || 'A'}
+    </div>
+  ),
 }));
 
 describe('PlainVerseText', () => {
@@ -45,6 +53,33 @@ describe('PlainVerseText', () => {
     expect(screen.getByTestId('seo-text')).toBeTruthy();
     expect(screen.getByTestId('tajweed-palettes')).toBeTruthy();
     expect(screen.getByTestId('plain-verse-word')).toBeTruthy();
+  });
+
+  it('renders IndoPak text correctly when quranFont is IndoPak', () => {
+    const words = [
+      {
+        id: "1",
+        text: "ﭑ", // QCF code_v1 glyph
+        textIndopak: "بِسۡمِ",
+        textUthmani: "بِسْمِ",
+        charTypeName: "word",
+        verseKey: "1:1",
+        location: "1:1:1",
+        pageNumber: 1,
+      }
+    ];
+    render(
+      <PlainVerseText 
+        words={words as any} 
+        quranFont={'text_indopak' as any} 
+        data-testid="plain-verse" 
+      />
+    );
+    const textWord = screen.getByTestId('text-word');
+    expect(textWord).toBeTruthy();
+    expect(textWord.getAttribute('data-font')).toBe('text_indopak');
+    expect(textWord.textContent).toBe('بِسۡمِ');
+    expect(textWord.textContent).not.toBe('ﭑ');
   });
 });
 
