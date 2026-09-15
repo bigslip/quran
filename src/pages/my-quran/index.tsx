@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
 import { GetStaticProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -6,12 +7,11 @@ import useTranslation from 'next-translate/useTranslation';
 
 import styles from './my-quran.module.scss';
 
-import HeaderNavigation from '@/components/HeaderNavigation';
+import MyQuranHero from '@/components/MyQuran/MyQuranHero';
 import MyQuranTab from '@/components/MyQuran/tabs';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import PageContainer from '@/components/PageContainer';
 import Spinner from '@/dls/Spinner/Spinner';
-import TabSwitcher from '@/dls/TabSwitcher/TabSwitcher';
 import { getAllChaptersData } from '@/utils/chapter';
 import { logEvent } from '@/utils/eventLogger';
 import { getLanguageAlternates } from '@/utils/locale';
@@ -46,29 +46,14 @@ const MyQuranPage = (): JSX.Element => {
 
   const title = t('common:my-quran');
 
-  const tabs = useMemo(
-    () => [
-      {
-        name: t('saved'),
-        value: MyQuranTab.SAVED,
-      },
-      {
-        name: t('recent'),
-        value: MyQuranTab.RECENT,
-      },
-      {
-        name: t('notes-and-reflections'),
-        value: MyQuranTab.NOTES_AND_REFLECTIONS,
-      },
-    ],
-    [t],
+  const onTabChange = useCallback(
+    (value: MyQuranTab) => {
+      logEvent('my_quran_tab_change', { value });
+      setSelectedTab(value);
+      if (tab) router.replace(router.pathname, undefined, { shallow: true });
+    },
+    [router, tab],
   );
-
-  const onTabChange = (value: string) => {
-    logEvent('my_quran_tab_change', { value });
-    setSelectedTab(value as MyQuranTab);
-    if (tab) router.replace(router.pathname, undefined, { shallow: true });
-  };
 
   useEffect(() => {
     if (tab && Object.values(MyQuranTab).includes(tab as MyQuranTab)) {
@@ -86,13 +71,12 @@ const MyQuranPage = (): JSX.Element => {
         noindex
       />
       <main className={styles.main}>
-        <HeaderNavigation title={title} innerClassName={styles.headerNavigationInnerClassName} />
+        <MyQuranHero selectedTab={selectedTab} onTabChange={onTabChange} />
         <PageContainer
-          isSheetsLike
+          isSheetsLike={false}
           wrapperClassName={styles.mainContent}
           className={styles.pageContainer}
         >
-          <TabSwitcher selected={selectedTab} items={tabs} onSelect={onTabChange} />
           <div
             role="tabpanel"
             id={`tabpanel-${selectedTab}`}

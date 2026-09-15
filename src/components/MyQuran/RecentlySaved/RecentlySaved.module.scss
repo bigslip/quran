@@ -42,7 +42,7 @@
   gap: var(--spacing-xsmall-px);
   padding: var(--spacing-micro2-px) var(--spacing-small2-px);
   background: var(--color-surface-card, var(--color-background-alternative-faint-new));
-  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  border: 1px solid var(--color-border-iridescent, var(--color-borders-hairline));
   border-radius: var(--border-radius-pill);
   cursor: pointer;
   transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
@@ -57,17 +57,17 @@
   }
 
   &:hover {
-    border-color: var(--color-primary, #00f2fe);
-    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.08);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px var(--color-primary-subtle, rgba(0, 242, 254, 0.15));
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
 
     .itemText {
-      color: var(--color-primary, #00f2fe);
+      color: #10b981;
     }
 
     .itemArrow {
-      color: var(--color-primary, #00f2fe);
+      color: #10b981;
       transform: translateX(2px);
 
       [dir='rtl'] & {
@@ -81,7 +81,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid #10b981;
     outline-offset: 2px;
   }
 }
@@ -135,6 +135,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -145,6 +146,7 @@
     opacity: 0;
     transform: translateY(calc(var(--spacing-small-px) * -1));
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -156,6 +158,7 @@
     opacity: 0;
     transform: translateY(var(--spacing-small-px));
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

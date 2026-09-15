@@ -5,7 +5,7 @@
   gap: var(--spacing-xsmall-px);
   padding: var(--spacing-micro-px);
   background: var(--color-surface-card, var(--color-background-alternative-faint));
-  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  border: 1px solid var(--color-border-iridescent, var(--color-borders-hairline));
   border-radius: var(--border-radius-pill);
 }
 
@@ -27,18 +27,18 @@
 
   &:hover {
     color: var(--color-text-primary, var(--color-text-white));
-    background-color: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    background-color: rgba(16, 185, 129, 0.08);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid #10b981;
     outline-offset: 2px;
   }
 
   &[data-selected='true'] {
-    background: var(--color-primary-gradient, linear-gradient(135deg, #00f2fe 0%, #4facfe 100%));
-    color: #070a13;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
     font-weight: var(--font-weight-bold);
-    box-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.2));
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
   }
 }

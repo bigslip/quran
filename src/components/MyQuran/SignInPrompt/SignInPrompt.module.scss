@@ -2,10 +2,10 @@
   padding: var(--spacing-large-px);
   border-radius: var(--border-radius-large-px);
   background: var(--color-surface-card, var(--color-background-elevated-new));
-  border: 1px solid var(--color-border-subtle, var(--color-separators-ayah-level));
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--color-border-iridescent, var(--color-separators-ayah-level));
+  backdrop-filter: var(--backdrop-filter-frosted, blur(16px));
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted, blur(16px));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), var(--color-glow-celestial);
 }
 
 .title {
@@ -36,7 +36,7 @@
 .checkIcon svg {
   block-size: var(--spacing-large-px);
   inline-size: var(--spacing-large-px);
-  color: var(--color-primary, var(--color-blue-buttons-and-icons));
+  color: #10b981;
 
   &,
   & path {
@@ -57,14 +57,14 @@
 }
 
 .signInButton {
-  background: var(--color-primary-gradient, linear-gradient(135deg, #00f2fe 0%, #4facfe 100%));
-  color: #070a13;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
   font-weight: var(--font-weight-bold);
   padding-inline: var(--spacing-large-px);
   padding-block: var(--spacing-small-px);
   border-radius: var(--border-radius-pill);
   border: none;
-  box-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.2));
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
   cursor: pointer;
   transition: all var(--transition-fast) ease;
 
@@ -74,8 +74,8 @@
   }
 
   &:hover {
-    filter: brightness(1.15);
-    box-shadow: 0 0 24px var(--color-primary, rgba(0, 242, 254, 0.4));
+    filter: brightness(1.1);
+    box-shadow: 0 0 24px rgba(16, 185, 129, 0.5);
     transform: translateY(-1px);
   }
 
@@ -84,7 +84,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid #10b981;
     outline-offset: 2px;
   }
 }

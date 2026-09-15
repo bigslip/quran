@@ -22,7 +22,7 @@
     },
     "guest-promo": {
       "sign-in": "Sign in",
-      "subtitle": "Compare and contrast verses",
+      "subtitle": "Compare, tag, and organize verses by theme",
       "title": "Create custom collections"
     },
     "items": "{{count}} item",
@@ -36,21 +36,21 @@
     },
     "title": "Collections"
   },
-  "sanctuary-badge": "Personal Spiritual Sanctuary & Notes",
+  "hero-subtitle": "Your personal space for saved verses, recitation history, and Quranic reflections.",
   "hero-title": "My Quran",
-  "hero-subtitle": "Organize your bookmarks, reading history, custom collections and reflections",
-  "saved": "Saved",
-  "recent": "Recent",
   "notes-and-reflections": "Notes & Reflections",
   "page": "Page",
   "reading-bookmark": {
     "empty": "Start reading and save a Reading Bookmark!",
     "title": "My Reading Bookmark"
   },
+  "recent": "Recent History",
   "recent-empty": "Start reading to see your recently read",
   "recently-saved": {
     "title": "Recently Saved"
   },
+  "sanctuary-badge": "Personal Spiritual Sanctuary",
+  "saved": "Saved & Collections",
   "search": {
     "filter": "Filter",
     "placeholder": "Search Saved...",
@@ -58,9 +58,10 @@
   },
   "sign-in-prompt": {
     "features": {
-      "attach-notes": "Attach notes to verses",
-      "custom-collections": "Create custom collections"
+      "attach-notes": "Attach personal notes and reflections to verses",
+      "custom-collections": "Create and manage custom collections"
     },
-    "title": "Sign in or Sign up for free to gain access to the more features!"
-  }
+    "title": "Sign in or Sign up for free to gain access to more features!"
+  },
+  "tabs-aria": "My Quran navigation tabs"
 }

@@ -29,9 +29,10 @@
   padding: var(--spacing-xlarge-px);
   border-radius: var(--border-radius-large-px);
   background: var(--color-surface-card, var(--color-background-elevated-new));
-  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border-iridescent, var(--color-borders-hairline));
+  backdrop-filter: var(--backdrop-filter-frosted, blur(16px));
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted, blur(16px));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), var(--color-glow-celestial);
   color: var(--color-text-secondary, var(--color-text-faded-new));
 
   &:where([data-status='empty'], [data-status='error']) {
