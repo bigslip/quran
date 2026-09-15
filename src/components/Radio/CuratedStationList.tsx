@@ -24,9 +24,9 @@ const CuratedStationList = () => {
 
   const audioService = useContext(AudioPlayerMachineContext);
   const isAudioPlaying = useSelector(audioService, (state) =>
-    state.matches('VISIBLE.AUDIO_PLAYER_INITIATED.PLAYING'),
+    state?.matches ? state.matches('VISIBLE.AUDIO_PLAYER_INITIATED.PLAYING') : false,
   );
-  const radioActor = useSelector(audioService, (state) => state.context.radioActor);
+  const radioActor = useSelector(audioService, (state) => state?.context?.radioActor);
 
   const playStation = async (id: string) => {
     logEvent('station_played', {
@@ -41,7 +41,7 @@ const CuratedStationList = () => {
     });
   };
 
-  const radioContext = radioActor?.getSnapshot()?.context || {};
+  const radioContext = radioActor?.getSnapshot ? radioActor.getSnapshot()?.context || {} : {};
 
   return (
     <div className={styles.container}>

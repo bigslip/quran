@@ -3,14 +3,14 @@
   "curated-station": {
     "juz-amma": {
       "description": "Listen to the final Juz of the Quran",
-      "title": "Juz Amma"
+      "title": "Juz Amma (30)"
     },
     "popular-recitations": {
       "description": "Daily curated feed of recitations",
       "title": "Popular Recitations"
     },
     "surah-al-kahf": {
-      "description": "Listen to Surah Alkahf on repeat",
+      "description": "Listen to Surah Al-Kahf on repeat",
       "title": "Surah Al-Kahf"
     },
     "yaseen-alwaqiah-al-mulk": {
@@ -19,9 +19,21 @@
     }
   },
   "curated-stations": "Curated Stations",
+  "reciter-stations": "Reciter Stations",
   "pause-radio": "Pause Radio",
   "play-radio": "Play Radio",
   "radio-desc": "Listen to non-stop beautiful recitation of the Holy Quran by various reciters.",
-  "reciter-stations": "Reciter Stations",
-  "station": "Station"
+  "station": "Station",
+  "sanctuary-badge": "Holy Quran Continuous Radio Sanctuary",
+  "hero-title": "Quran Radio & Live Stations",
+  "hero-subtitle": "Continuous, uninterrupted soulful Quran recitations by master qaris and thematic stations",
+  "search-placeholder": "Search stations, reciter name, style...",
+  "filter-all": "All Stations",
+  "filter-available": "Available Live",
+  "filter-curated": "Curated Stations",
+  "filter-reciters": "Reciter Stations",
+  "badge-live": "Live Audio",
+  "badge-coming-soon": "Coming Soon",
+  "unavailable-tooltip": "Radio stream for this reciter will be added soon.",
+  "no-results": "No stations or reciters found matching your search."
 }
