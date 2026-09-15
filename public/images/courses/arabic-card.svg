@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="arabicBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c1308" />
+      <stop offset="50%" stop-color="#3d2b10" />
+      <stop offset="100%" stop-color="#120c04" />
+    </linearGradient>
+    <radialGradient id="arabicGlow" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.35" />
+      <stop offset="60%" stop-color="#d97706" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#120c04" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="amberGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="50%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#arabicBg)" />
+  <rect width="100%" height="100%" fill="url(#arabicGlow)" />
+  <g transform="translate(400, 200)" text-anchor="middle">
+    <!-- Calligraphic Pen / Letter motifs -->
+    <circle r="120" fill="none" stroke="#f59e0b" stroke-opacity="0.15" stroke-width="1" />
+    <circle r="85" fill="#291a08" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="1.5" />
+    <!-- Stylized Arabic Letter 'Dhad' or Calligraphy Motif -->
+    <path d="M-15 15 C-25 15 -35 5 -30 -10 C-25 -25 5 -20 15 -10 C25 0 35 15 20 15 Z" fill="none" stroke="url(#amberGold)" stroke-width="2.5" />
+    <circle cx="5" cy="-22" r="4" fill="#fbbf24" />
+    <text y="70" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#fffbeb">زبان عربی و واژگان قرآنی</text>
+    <text y="95" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#fcd34d">Arabic &amp; Quranic Vocabulary</text>
+  </g>
+</svg>
