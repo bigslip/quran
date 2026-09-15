@@ -3,15 +3,16 @@
 
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
-import classNames from 'classnames';
 import { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
 
 import styles from './apps-portal.module.scss';
 
+import AppsPortalHero, { AppFilterChip } from '@/components/AppsPortal/AppsPortalHero';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import PageContainer from '@/components/PageContainer';
+import Button, { ButtonShape, ButtonType } from '@/dls/Button/Button';
 import useDebounce from '@/hooks/useDebounce';
 import GlobeIcon from '@/icons/globe.svg';
 import SearchQuerySource from '@/types/SearchQuerySource';
@@ -21,13 +22,13 @@ import { getLanguageAlternates } from '@/utils/locale';
 import { getCanonicalUrl } from '@/utils/navigation';
 import { getBasePath } from '@/utils/url';
 
-interface AppLinks {
+export interface AppLinks {
   androidHref?: string;
   iosHref?: string;
   webHref?: string;
 }
 
-interface FeaturedApp extends AppLinks {
+export interface FeaturedApp extends AppLinks {
   id: string;
   name: string;
   tagline: string;
@@ -36,7 +37,7 @@ interface FeaturedApp extends AppLinks {
   iconAlt: string;
 }
 
-interface AppTile extends AppLinks {
+export interface AppTile extends AppLinks {
   id: string;
   title: string;
   description: string;
@@ -46,7 +47,7 @@ interface AppTile extends AppLinks {
   tagline?: string;
 }
 
-type AppCategory =
+export type AppCategory =
   | 'study-tools'
   | 'reflections'
   | 'popular'
@@ -54,75 +55,17 @@ type AppCategory =
   | 'community'
   | 'hadith-sunnah';
 
-type FilterValue = 'all' | AppCategory;
+export type FilterValue = 'all' | AppCategory;
 
-interface FilterChip {
-  label: string;
-  value: FilterValue;
-}
+export type AppPlatform = 'android' | 'ios' | 'web';
 
-type AppPlatform = 'android' | 'ios' | 'web';
-
-interface AppCtaLabels {
+export interface AppCtaLabels {
   playStoreAlt: string;
   appStoreAlt: string;
   webCtaText: string;
 }
 
 const VisitBadge: FC<{ label: string }> = ({ label }) => {
-  const { lang } = useTranslation('app-portal');
-
-  if (!lang.startsWith('ar')) {
-    return (
-      <svg
-        className={styles.storeBadgeImage}
-        width={96}
-        height={32}
-        viewBox="0 0 135 40"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect width="135" height="40" rx="5" fill="#000" />
-        <g transform="translate(8 7)">
-          <g transform="scale(1.1)">
-            <path
-              d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-              stroke="#FFF"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M2 12H22"
-              stroke="#FFF"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2V2Z"
-              stroke="#FFF"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </g>
-        </g>
-        <text
-          x="46"
-          y="20"
-          fill="#FFF"
-          fontSize="15"
-          fontFamily="inherit"
-          fontWeight="600"
-          dominantBaseline="middle"
-        >
-          {label}
-        </text>
-      </svg>
-    );
-  }
-
   return (
     <span className={styles.visitBadge}>
       <span className={styles.visitBadgeIcon} aria-hidden="true">
@@ -208,16 +151,6 @@ const getFeaturedAppTiles = (t: (key: string) => string): AppTile[] => [
     iosHref: 'https://apps.apple.com/us/app/quranreflect/id1444969758',
     categories: ['popular', 'reflections', 'study-tools'],
   },
-];
-
-const getFilters = (t: (key: string) => string): FilterChip[] => [
-  { label: t('browse.filters.all'), value: 'all' },
-  { label: t('browse.filters.study-tools'), value: 'study-tools' },
-  { label: t('browse.filters.reflections'), value: 'reflections' },
-  { label: t('browse.filters.popular'), value: 'popular' },
-  { label: t('browse.filters.quran-reader'), value: 'quran-reader' },
-  { label: t('browse.filters.community'), value: 'community' },
-  { label: t('browse.filters.hadith-sunnah'), value: 'hadith-sunnah' },
 ];
 
 const getAppTiles = (t: (key: string) => string): AppTile[] => [
@@ -317,45 +250,8 @@ const getAppTiles = (t: (key: string) => string): AppTile[] => [
   },
 ];
 
-interface FiltersBarProps {
-  activeFilter: FilterValue;
-  onFilterChange: (filter: FilterValue) => void;
-  onSearchChange: (query: string) => void;
-  searchLabel: string;
-  searchQuery: string;
-  filters: FilterChip[];
-}
-
-interface AppGridProps {
-  apps: AppTile[];
-  emptyText: string;
-  ctaLabels: AppCtaLabels;
-}
-
-interface BrowseAppsProps {
-  noResultsText: string;
-  searchLabel: string;
-  filters: FilterChip[];
-  apps: AppTile[];
-  title: string;
-  ctaLabels: AppCtaLabels;
-}
-
 const path = '/apps';
 const OG_IMAGE_URL = `${getBasePath()}/images/app-portal/connected-quran-apps.png`;
-
-interface HeroProps {
-  title: string;
-  description: string;
-}
-
-const Hero: FC<HeroProps> = ({ title, description }) => (
-  <header className={styles.hero}>
-    {/* <div className={styles.heroBadge}>Quran Foundation</div> */}
-    <h1 className={styles.heroTitle}>{title}</h1>
-    <p className={styles.heroSubtitle}>{description}</p>
-  </header>
-);
 
 interface AppCtaRowProps extends AppLinks {
   appId: string;
@@ -385,7 +281,7 @@ const AppCtaRow: FC<AppCtaRowProps> = ({ androidHref, iosHref, webHref, appId, c
             alt={ctaLabels.playStoreAlt}
             src="/images/play-store.svg"
             width={96}
-            height={32}
+            height={20}
             className={styles.storeBadgeImage}
           />
         </a>
@@ -403,7 +299,7 @@ const AppCtaRow: FC<AppCtaRowProps> = ({ androidHref, iosHref, webHref, appId, c
             alt={ctaLabels.appStoreAlt}
             src="/images/app-store.svg"
             width={96}
-            height={32}
+            height={20}
             className={styles.storeBadgeImage}
           />
         </a>
@@ -436,7 +332,7 @@ const FeaturedCard: FC<{
             alt={app.iconAlt}
             src={app.iconSrc}
             fill
-            sizes="70px"
+            sizes="56px"
             className={styles.appIconImage}
           />
         </span>
@@ -468,8 +364,9 @@ const FeaturedApps: FC<FeaturedAppsProps> = ({ title, viewAllText, apps, ctaLabe
   return (
     <section className={styles.section}>
       <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>{title}</h2>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <div className={styles.sectionTitleContainer}>
+          <h2 className={styles.sectionTitle}>{title}</h2>
+        </div>
         <a
           className={styles.sectionLink}
           href="#browse-apps"
@@ -499,7 +396,7 @@ const AppTileCard: FC<{
             alt={app.iconAlt}
             src={app.iconSrc}
             fill
-            sizes="70px"
+            sizes="56px"
             className={styles.appIconImage}
           />
         </span>
@@ -520,48 +417,38 @@ const AppTileCard: FC<{
   </article>
 );
 
-const FiltersBar: FC<FiltersBarProps> = ({
-  activeFilter,
-  onFilterChange,
-  onSearchChange,
-  searchLabel,
-  searchQuery,
-  filters,
-}) => (
-  <div className={styles.filters}>
-    <div className={styles.search}>
-      <span className={styles.searchIcon} aria-hidden="true">
-        <Image alt="" src="/images/app-portal/search-icon.svg" width={20} height={20} />
-      </span>
-      <input
-        aria-label={searchLabel}
-        onChange={(event) => onSearchChange(event.target.value)}
-        placeholder={searchLabel}
-        type="text"
-        value={searchQuery}
-      />
-    </div>
-    <div className={styles.pills}>
-      {filters.map((filter) => (
-        <button
-          key={filter.value}
-          className={classNames(styles.pill, {
-            [styles.pillActive]: filter.value === activeFilter,
-          })}
-          aria-pressed={filter.value === activeFilter}
-          onClick={() => onFilterChange(filter.value)}
-          type="button"
-        >
-          {filter.label}
-        </button>
-      ))}
-    </div>
-  </div>
-);
+interface AppGridProps {
+  apps: AppTile[];
+  emptyHeading: string;
+  emptyDescription: string;
+  clearFiltersText: string;
+  onResetFilters: () => void;
+  ctaLabels: AppCtaLabels;
+}
 
-const AppGrid: FC<AppGridProps> = ({ apps, emptyText, ctaLabels }) => {
+const AppGrid: FC<AppGridProps> = ({
+  apps,
+  emptyHeading,
+  emptyDescription,
+  clearFiltersText,
+  onResetFilters,
+  ctaLabels,
+}) => {
   if (!apps.length) {
-    return <p className={styles.emptyState}>{emptyText}</p>;
+    return (
+      <div className={styles.emptyStateContainer}>
+        <h3 className={styles.emptyStateTitle}>{emptyHeading}</h3>
+        <p className={styles.emptyStateDescription}>{emptyDescription}</p>
+        <Button
+          type={ButtonType.Primary}
+          shape={ButtonShape.Pill}
+          onClick={onResetFilters}
+          className={styles.clearFiltersButton}
+        >
+          {clearFiltersText}
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -573,72 +460,15 @@ const AppGrid: FC<AppGridProps> = ({ apps, emptyText, ctaLabels }) => {
   );
 };
 
-const BrowseApps: FC<BrowseAppsProps> = ({
-  noResultsText,
-  searchLabel,
-  filters,
-  apps,
-  title,
-  ctaLabels,
-}) => {
+const AppPortalPage: NextPage = () => {
+  const { t, lang } = useTranslation('app-portal');
   const [activeFilter, setActiveFilter] = useState<FilterValue>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, DEBOUNCE_DELAY);
 
-  useEffect(() => {
-    logTextSearchQuery(debouncedSearchQuery, SearchQuerySource.AppPortal);
-  }, [debouncedSearchQuery]);
-
-  const filteredApps = useMemo(() => {
-    const normalizedQuery = searchQuery.trim().toLowerCase();
-
-    return apps.filter((app) => {
-      const matchesFilter = activeFilter === 'all' ? true : app.categories.includes(activeFilter);
-      const matchesSearch =
-        normalizedQuery.length === 0 ||
-        app.title.toLowerCase().includes(normalizedQuery) ||
-        app.description.toLowerCase().includes(normalizedQuery);
-
-      return matchesFilter && matchesSearch;
-    });
-  }, [activeFilter, searchQuery, apps]);
-
-  const handleFilterChange = useCallback((filter: FilterValue) => {
-    const normalizeFilter = filter?.toLowerCase().replaceAll('-', '_');
-    logButtonClick(`app_portal_${normalizeFilter}_tab`);
-    setActiveFilter(filter);
-  }, []);
-
-  const handleSearchChange = useCallback((query: string) => {
-    setSearchQuery(query);
-  }, []);
-
-  return (
-    <section className={styles.sectionAlt} id="browse-apps">
-      <div className={styles.sectionAltInner}>
-        <div className={styles.sectionHeaderAlt}>
-          <h2 className={styles.sectionTitle}>{title}</h2>
-        </div>
-        <FiltersBar
-          activeFilter={activeFilter}
-          onFilterChange={handleFilterChange}
-          onSearchChange={handleSearchChange}
-          searchLabel={searchLabel}
-          searchQuery={searchQuery}
-          filters={filters}
-        />
-        <AppGrid apps={filteredApps} emptyText={noResultsText} ctaLabels={ctaLabels} />
-      </div>
-    </section>
-  );
-};
-
-const AppPortalPage: NextPage = () => {
-  const { t, lang } = useTranslation('app-portal');
-  const { t: tCommon } = useTranslation('common');
-
   const featuredApps = useMemo(() => getFeaturedApps(t), [t]);
   const appTiles = useMemo(() => [...getAppTiles(t), ...getFeaturedAppTiles(t)], [t]);
+
   const ctaLabels = useMemo(
     () => ({
       playStoreAlt: t('cta.google-play'),
@@ -648,7 +478,84 @@ const AppPortalPage: NextPage = () => {
     [t],
   );
 
-  const filters = useMemo(() => getFilters(t), [t]);
+  useEffect(() => {
+    if (debouncedSearchQuery) {
+      logTextSearchQuery(debouncedSearchQuery, SearchQuerySource.AppPortal);
+    }
+  }, [debouncedSearchQuery]);
+
+  const filterCounts = useMemo(() => {
+    return {
+      all: appTiles.length,
+      'study-tools': appTiles.filter((a) => a.categories.includes('study-tools')).length,
+      reflections: appTiles.filter((a) => a.categories.includes('reflections')).length,
+      popular: appTiles.filter((a) => a.categories.includes('popular')).length,
+      'quran-reader': appTiles.filter((a) => a.categories.includes('quran-reader')).length,
+      community: appTiles.filter((a) => a.categories.includes('community')).length,
+      'hadith-sunnah': appTiles.filter((a) => a.categories.includes('hadith-sunnah')).length,
+    };
+  }, [appTiles]);
+
+  const filters: AppFilterChip[] = useMemo(
+    () => [
+      { label: t('filter-all'), value: 'all', count: filterCounts.all },
+      {
+        label: t('filter-study-tools'),
+        value: 'study-tools',
+        count: filterCounts['study-tools'],
+      },
+      {
+        label: t('filter-reflections'),
+        value: 'reflections',
+        count: filterCounts.reflections,
+      },
+      { label: t('filter-popular'), value: 'popular', count: filterCounts.popular },
+      {
+        label: t('filter-quran-reader'),
+        value: 'quran-reader',
+        count: filterCounts['quran-reader'],
+      },
+      { label: t('filter-community'), value: 'community', count: filterCounts.community },
+      {
+        label: t('filter-hadith-sunnah'),
+        value: 'hadith-sunnah',
+        count: filterCounts['hadith-sunnah'],
+      },
+    ],
+    [t, filterCounts],
+  );
+
+  const filteredApps = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+
+    return appTiles.filter((app) => {
+      const matchesFilter = activeFilter === 'all' ? true : app.categories.includes(activeFilter);
+      const matchesSearch =
+        normalizedQuery.length === 0 ||
+        app.title.toLowerCase().includes(normalizedQuery) ||
+        app.description.toLowerCase().includes(normalizedQuery) ||
+        (app.tagline && app.tagline.toLowerCase().includes(normalizedQuery));
+
+      return matchesFilter && matchesSearch;
+    });
+  }, [activeFilter, searchQuery, appTiles]);
+
+  const handleFilterChange = useCallback((filter: string) => {
+    const normalizeFilter = filter?.toLowerCase().replaceAll('-', '_');
+    logButtonClick(`app_portal_${normalizeFilter}_tab`);
+    setActiveFilter(filter as FilterValue);
+  }, []);
+
+  const handleSearchChange = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
+
+  const handleResetFilters = useCallback(() => {
+    setActiveFilter('all');
+    setSearchQuery('');
+  }, []);
+
+  const isFiltered = activeFilter !== 'all' || searchQuery.trim().length > 0;
 
   return (
     <>
@@ -662,21 +569,44 @@ const AppPortalPage: NextPage = () => {
       />
       <PageContainer>
         <main className={styles.page}>
-          <Hero title={t('hero.title')} description={t('hero.description')} />
-          <FeaturedApps
-            title={t('featured.title')}
-            viewAllText={t('featured.view-all')}
-            apps={featuredApps}
-            ctaLabels={ctaLabels}
-          />
-          <BrowseApps
-            noResultsText={tCommon('search.no-results')}
-            searchLabel={tCommon('search.title')}
+          <AppsPortalHero
+            searchQuery={searchQuery}
+            onSearchQueryChange={handleSearchChange}
+            activeFilter={activeFilter}
+            onFilterChange={handleFilterChange}
             filters={filters}
-            apps={appTiles}
-            title={t('browse.title')}
-            ctaLabels={ctaLabels}
           />
+
+          {!isFiltered && (
+            <FeaturedApps
+              title={t('featured.title')}
+              viewAllText={t('featured.view-all')}
+              apps={featuredApps}
+              ctaLabels={ctaLabels}
+            />
+          )}
+
+          <section className={styles.section} id="browse-apps">
+            <div className={styles.sectionHeader}>
+              <div className={styles.sectionTitleContainer}>
+                <h2 className={styles.sectionTitle}>
+                  {isFiltered ? t('browse.title') : t('browse.title')}
+                </h2>
+                <span className={styles.sectionCount}>
+                  {filteredApps.length}
+                </span>
+              </div>
+            </div>
+
+            <AppGrid
+              apps={filteredApps}
+              emptyHeading={t('no-results-heading')}
+              emptyDescription={t('no-results-message')}
+              clearFiltersText={t('clear-filters')}
+              onResetFilters={handleResetFilters}
+              ctaLabels={ctaLabels}
+            />
+          </section>
         </main>
       </PageContainer>
     </>
