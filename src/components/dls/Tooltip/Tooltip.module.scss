@@ -17,7 +17,6 @@
   background-color: var(--color-background-inverse);
   max-inline-size: calc(10 * var(--spacing-mega));
   display: flex;
-  direction: ltr;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-micro2-px);
@@ -76,15 +75,15 @@
   margin-inline-start: auto;
   cursor: pointer;
 
-  [dir='rtl'] & svg {
-    transform: scaleX(1);
+  [dir='rtl'] & svg,
+  :global([dir='rtl']) & svg {
+    transform: rotate(180deg);
   }
 }
 
 .contentWithPrefix {
   z-index: var(--z-index-sticky);
   display: flex;
-  direction: ltr;
   align-items: center;
   gap: var(--spacing-xxsmall2-px);
 
@@ -96,7 +95,6 @@
 .clickableContent {
   cursor: pointer;
   display: flex;
-  direction: ltr;
   align-items: center;
   gap: var(--spacing-micro2-px);
 

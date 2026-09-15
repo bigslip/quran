@@ -84,14 +84,14 @@
   margin-inline-start: auto;
   cursor: pointer;
 
-  [dir='rtl'] & svg {
-    transform: scaleX(1);
+  [dir='rtl'] & svg,
+  :global([dir='rtl']) & svg {
+    transform: rotate(180deg);
   }
 }
 
 .contentWithPrefix {
   display: flex;
-  direction: ltr;
   align-items: center;
   gap: var(--spacing-xxsmall2-px);
   background: transparent;
@@ -106,7 +106,6 @@
 .clickableContent {
   cursor: pointer;
   display: flex;
-  direction: ltr;
   align-items: center;
   gap: var(--spacing-micro2-px);
 
