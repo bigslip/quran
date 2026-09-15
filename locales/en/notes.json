@@ -1,6 +1,7 @@
 {
   "add-another-note": "Add another note",
   "body-placeholder": "Use this space to save general notes, or to write a reflection.",
+  "placeholder": "Notes",
   "checkbox-refl-intro": {
     "checkbox": {
       "desc": "<li>Posting means that your reflection will be shared on QuranReflect under your name where it will be reviewed by the moderation team and visible to the QuranReflect community.</li><li>Once your post is reviewed and approved or promoted by our moderation team, you may get likes, comments and follow notifications. Upon signing into QuranReflect, you can update your notification settings to suit your preferences.</li><li>You may view your notes and posted reflections under your Quran.ir login profile in the “My Notes and Reflections” section, or log into <link>QuranReflect</link> using your Quran.ir sign-in email.</li>",

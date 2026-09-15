@@ -336,5 +336,24 @@ describe('Local Data Query Engine', () => {
       expect(res.pagination.totalRecords || res.pagination.total_records).toBeGreaterThan(0);
     });
   });
+
+  describe('Learning Plans & Auth Endpoints', () => {
+    it('serves empty courses response gracefully', async () => {
+      const res = await getLocalApiResponse('/courses', { myCourses: false, languages: ['en'] });
+      expect(res.data).toEqual([]);
+      expect(res.pagination).toBeDefined();
+    });
+
+    it('serves auth/courses endpoint gracefully', async () => {
+      const res = await getLocalApiResponse('/auth/courses', { myCourses: false, languages: ['en'] });
+      expect(res.data).toEqual([]);
+      expect(res.pagination).toBeDefined();
+    });
+
+    it('serves courses count endpoint', async () => {
+      const res = await getLocalApiResponse('/courses/count');
+      expect(res.count).toBe(0);
+    });
+  });
 });
 

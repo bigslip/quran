@@ -1141,6 +1141,40 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     return { total: 0 };
   }
 
+  // -------------------------------------------------------------
+  // 17. Learning Plans & Auth-Scoped Endpoints (Local/Offline Support)
+  // -------------------------------------------------------------
+  if (cleanPath === 'courses' || cleanPath === 'auth/courses') {
+    return {
+      data: [],
+      pagination: {
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+    };
+  }
+
+  if (cleanPath === 'courses/count' || cleanPath === 'auth/courses/count') {
+    return { count: 0 };
+  }
+
+  if (cleanPath.startsWith('courses/') || cleanPath.startsWith('auth/courses/')) {
+    return { data: null };
+  }
+
+  if (
+    cleanPath.startsWith('collections') ||
+    cleanPath.startsWith('auth/collections') ||
+    cleanPath.startsWith('bookmarks') ||
+    cleanPath.startsWith('auth/bookmarks') ||
+    cleanPath.startsWith('activity') ||
+    cleanPath.startsWith('auth/activity') ||
+    cleanPath.startsWith('notes') ||
+    cleanPath.startsWith('auth/notes')
+  ) {
+    return { data: [], pagination: { hasNextPage: false, hasPreviousPage: false } };
+  }
+
   throw new Error(`Endpoint not supported locally: ${cleanPath}`);
 }
 

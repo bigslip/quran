@@ -9,16 +9,16 @@ import styles from './Notes.module.scss';
 import { setIsVisible, selectNotes } from '@/redux/slices/QuranReader/notes';
 
 const Notes = () => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('notes');
   const dispatch = useDispatch();
   const { isVisible } = useSelector(selectNotes, shallowEqual);
 
   return (
     <div className={classNames(styles.container, { [styles.visibleContainer]: isVisible })}>
-      {t('notes:placeholder', { defaultValue: 'Notes placeholders' })}
+      {t('body-placeholder', { defaultValue: 'Use this space to save general notes, or to write a reflection.' })}
       <br />
       <button type="button" onClick={() => dispatch({ type: setIsVisible.type, payload: false })}>
-        {t('close')}
+        {t('common:close')}
       </button>
     </div>
   );

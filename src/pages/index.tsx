@@ -5,7 +5,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { NextPage, GetStaticProps } from 'next';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
 import useTranslation from 'next-translate/useTranslation';
 import { useSelector } from 'react-redux';
 
@@ -84,9 +83,6 @@ const Index: NextPage<IndexProps> = ({
 
   return (
     <>
-      <Head>
-        <link rel="preload" as="image" href="/images/background.png" crossOrigin="anonymous" />
-      </Head>
       <NextSeoWrapper
         title={t('home:noble-quran')}
         url={getCanonicalUrl(lang, '')}
