@@ -1009,7 +1009,66 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
   if (cleanPath === 'audio/reciters') {
     try {
       const recitersPath = await resolveDataFile('audio/reciters.json');
-      return JSON.parse(await fs.readFile(recitersPath, 'utf-8'));
+      const data = JSON.parse(await fs.readFile(recitersPath, 'utf-8'));
+      const locale = String(query.locale || query.language || '').toLowerCase();
+      const availableReciterIds = new Set([7, 9, 201, 202]);
+
+      const faReciterMeta: Record<number, { name: string; style: string }> = {
+        201: { name: 'استاد شهریار پرهیزگار', style: 'ترتیل' },
+        7: { name: 'مشاری راشد العفاسی', style: 'ترتیل' },
+        9: { name: 'محمد صدیق منشاوی', style: 'ترتیل' },
+        202: { name: 'محمود خلیل الحصری', style: 'ترتیل' },
+        203: { name: 'استاد کریم منصوری', style: 'تحقیق' },
+        204: { name: 'استاد حامد شاکرنژاد', style: 'تحقیق' },
+        205: { name: 'استاد عباس امام‌جمعه', style: 'ترتیل' },
+        206: { name: 'استاد محمدحسین سعیدیان', style: 'ترتیل' },
+        207: { name: 'استاد احمد ابوالقاسمی', style: 'تحقیق' },
+        208: { name: 'استاد مهدی فروغی', style: 'ترتیل' },
+        1: { name: 'عبدالباسط عبدالصمد', style: 'تحقیق / مجود' },
+        2: { name: 'عبدالباسط عبدالصمد', style: 'ترتیل' },
+        3: { name: 'عبدالرحمن السدیس', style: 'ترتیل' },
+        4: { name: 'ابوبکر الشاطری', style: 'ترتیل' },
+        5: { name: 'هانی الرفاعی', style: 'ترتیل' },
+        6: { name: 'محمود خلیل الحصری', style: 'ترتیل' },
+        10: { name: 'سعود الشریم', style: 'ترتیل' },
+        12: { name: 'محمود خلیل الحصری', style: 'آموزشی' },
+        97: { name: 'یاسر الدوسری', style: 'ترتیل' },
+        161: { name: 'خلیفه التنیجی', style: 'ترتیل' },
+        168: { name: 'محمد صدیق منشاوی', style: 'تکرار کودکان' },
+        173: { name: 'مشاری راشد العفاسی', style: 'ترتیل' },
+      };
+
+      const reciters = (data.reciters || []).map((r: any) => {
+        const isAvailable = availableReciterIds.has(Number(r.id));
+        const faMeta = faReciterMeta[Number(r.id)];
+        const translatedName =
+          locale === 'fa' && faMeta
+            ? { name: faMeta.name, language_name: 'persian' }
+            : r.translated_name;
+        const style =
+          locale === 'fa' && faMeta
+            ? { ...r.style, name: faMeta.style }
+            : r.style;
+
+        return {
+          ...r,
+          is_available: isAvailable,
+          isAvailable,
+          has_audio: isAvailable,
+          hasAudio: isAvailable,
+          translated_name: translatedName,
+          translatedName,
+          style,
+        };
+      });
+
+      // Sort available reciters first, preserving order within groups
+      reciters.sort((a: any, b: any) => {
+        if (Boolean(a.is_available) === Boolean(b.is_available)) return 0;
+        return a.is_available ? -1 : 1;
+      });
+
+      return { reciters };
     } catch {
       return state.recitersList || { reciters: [] };
     }

@@ -51,3 +51,51 @@
 .pageContainer {
   padding-block-end: var(--spacing-max);
 }
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-block: var(--spacing-xlarge-px);
+  padding-inline: var(--spacing-medium-px);
+  background: var(--color-surface-card);
+  border: 1px dashed var(--color-border-subtle);
+  border-radius: var(--border-radius-rounded);
+  margin-block: var(--spacing-medium-px);
+}
+
+.emptyTitle {
+  font-size: var(--font-size-medium-px);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-block-end: var(--spacing-xsmall-px);
+}
+
+.emptySubtitle {
+  font-size: var(--font-size-small-px);
+  color: var(--color-text-secondary);
+  margin-block-end: var(--spacing-medium-px);
+}
+
+.resetButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--spacing-medium-px);
+  padding-block: var(--spacing-xsmall-px);
+  background: var(--color-surface-floating);
+  border: 1px solid var(--color-border-iridescent);
+  border-radius: var(--border-radius-pill);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small-px);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast) ease;
+
+  &:hover {
+    border-color: #10b981;
+    color: #10b981;
+  }
+}

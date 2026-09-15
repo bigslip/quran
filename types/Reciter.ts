@@ -20,5 +20,7 @@ interface Reciter {
     languageName: string;
     name: string;
   };
+  isAvailable?: boolean;
+  hasAudio?: boolean;
 }
 export default Reciter;

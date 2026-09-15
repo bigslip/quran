@@ -1,17 +1,197 @@
 {
   "reciters": [
     {
-      "id": 97,
-      "reciter_id": 20,
-      "name": "Yasser Ad Dussary",
+      "id": 201,
+      "reciter_id": 201,
+      "name": "Shahriar Parhizgar",
       "translated_name": {
-        "name": "Yasser Ad Dussary",
+        "name": "Shahriar Parhizgar",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 7,
+      "reciter_id": 6,
+      "name": "Mishari Rashid al-`Afasy",
+      "translated_name": {
+        "name": "Mishari Rashid al-`Afasy",
         "language_name": "english"
       },
       "style": {
         "name": "Murattal",
         "language_name": "english",
         "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 9,
+      "reciter_id": 7,
+      "name": "Mohamed Siddiq al-Minshawi",
+      "translated_name": {
+        "name": "Mohamed Siddiq al-Minshawi",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 202,
+      "reciter_id": 202,
+      "name": "Mahmoud Khalil Al-Husary",
+      "translated_name": {
+        "name": "Mahmoud Khalil Al-Husary",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 203,
+      "reciter_id": 203,
+      "name": "Karim Mansouri",
+      "translated_name": {
+        "name": "Karim Mansouri",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Mujawwad",
+        "language_name": "english",
+        "description": "Mujawwad is melodic and expressive Quranic recitation."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 204,
+      "reciter_id": 204,
+      "name": "Hamed Shakernejad",
+      "translated_name": {
+        "name": "Hamed Shakernejad",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Mujawwad",
+        "language_name": "english",
+        "description": "Mujawwad is melodic and expressive Quranic recitation."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 205,
+      "reciter_id": 205,
+      "name": "Abbas Emamjomeh",
+      "translated_name": {
+        "name": "Abbas Emamjomeh",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 206,
+      "reciter_id": 206,
+      "name": "Mohammad Hossein Saeidian",
+      "translated_name": {
+        "name": "Mohammad Hossein Saeidian",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 207,
+      "reciter_id": 207,
+      "name": "Ahmad Abolghasemi",
+      "translated_name": {
+        "name": "Ahmad Abolghasemi",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Mujawwad",
+        "language_name": "english",
+        "description": "Mujawwad is melodic and expressive Quranic recitation."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 208,
+      "reciter_id": 208,
+      "name": "Mahdi Foroughi",
+      "translated_name": {
+        "name": "Mahdi Foroughi",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 1,
+      "reciter_id": 1,
+      "name": "AbdulBaset AbdulSamad",
+      "translated_name": {
+        "name": "AbdulBaset AbdulSamad",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Mujawwad",
+        "language_name": "english",
+        "description": "Mujawwad is a melodic style of Holy Quran recitation."
       },
       "qirat": {
         "name": "Hafs",
@@ -127,78 +307,6 @@
       }
     },
     {
-      "id": 161,
-      "reciter_id": 11,
-      "name": "Khalifah Al Tunaiji",
-      "translated_name": {
-        "name": "Khalifah Al Tunaiji",
-        "language_name": "english"
-      },
-      "style": {
-        "name": "Murattal",
-        "language_name": "english",
-        "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
-      },
-      "qirat": {
-        "name": "Hafs",
-        "language_name": "english"
-      }
-    },
-    {
-      "id": 1,
-      "reciter_id": 1,
-      "name": "AbdulBaset AbdulSamad",
-      "translated_name": {
-        "name": "AbdulBaset AbdulSamad",
-        "language_name": "english"
-      },
-      "style": {
-        "name": "Mujawwad",
-        "language_name": "english",
-        "description": "Mujawwad is a melodic style of Holy Quran recitation."
-      },
-      "qirat": {
-        "name": "Hafs",
-        "language_name": "english"
-      }
-    },
-    {
-      "id": 7,
-      "reciter_id": 6,
-      "name": "Mishari Rashid al-`Afasy",
-      "translated_name": {
-        "name": "Mishari Rashid al-`Afasy",
-        "language_name": "english"
-      },
-      "style": {
-        "name": "Murattal",
-        "language_name": "english",
-        "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
-      },
-      "qirat": {
-        "name": "Hafs",
-        "language_name": "english"
-      }
-    },
-    {
-      "id": 9,
-      "reciter_id": 7,
-      "name": "Mohamed Siddiq al-Minshawi",
-      "translated_name": {
-        "name": "Mohamed Siddiq al-Minshawi",
-        "language_name": "english"
-      },
-      "style": {
-        "name": "Murattal",
-        "language_name": "english",
-        "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
-      },
-      "qirat": {
-        "name": "Hafs",
-        "language_name": "english"
-      }
-    },
-    {
       "id": 12,
       "reciter_id": 5,
       "name": "Mahmoud Khalil Al-Husary",
@@ -210,6 +318,42 @@
         "name": "Muallim",
         "language_name": "english",
         "description": "Muallim is a teaching style recitation of the Holy Quran."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 97,
+      "reciter_id": 20,
+      "name": "Yasser Ad Dussary",
+      "translated_name": {
+        "name": "Yasser Ad Dussary",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
+      },
+      "qirat": {
+        "name": "Hafs",
+        "language_name": "english"
+      }
+    },
+    {
+      "id": 161,
+      "reciter_id": 11,
+      "name": "Khalifah Al Tunaiji",
+      "translated_name": {
+        "name": "Khalifah Al Tunaiji",
+        "language_name": "english"
+      },
+      "style": {
+        "name": "Murattal",
+        "language_name": "english",
+        "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
       },
       "qirat": {
         "name": "Hafs",
@@ -246,42 +390,6 @@
         "name": "Murattal",
         "language_name": "english",
         "description": "Murattal is Quranic recitation at a slower pace, used for study and practice."
-      },
-      "qirat": {
-        "name": "Hafs",
-        "language_name": "english"
-      }
-    },
-    {
-      "id": 201,
-      "reciter_id": 201,
-      "name": "Shahriar Parhizgar",
-      "translated_name": {
-        "name": "Shahriar Parhizgar",
-        "language_name": "english"
-      },
-      "style": {
-        "name": "Murattal",
-        "language_name": "english",
-        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
-      },
-      "qirat": {
-        "name": "Hafs",
-        "language_name": "english"
-      }
-    },
-    {
-      "id": 202,
-      "reciter_id": 202,
-      "name": "Mahmoud Khalil Al-Husary",
-      "translated_name": {
-        "name": "Mahmoud Khalil Al-Husary",
-        "language_name": "english"
-      },
-      "style": {
-        "name": "Murattal",
-        "language_name": "english",
-        "description": "Murattal is Quranic recitation at a measured pace, used for study and practice."
       },
       "qirat": {
         "name": "Hafs",
