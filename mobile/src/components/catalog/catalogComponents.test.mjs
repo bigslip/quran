@@ -12,10 +12,15 @@ import {
   extractAyahNumberFromKey,
   formatJuzStartInfo,
   formatJuzPageRange,
+  formatCanonicalSurahHint,
+  formatSurahAccessibilityLabel,
+  formatJuzAccessibilityLabel,
   getRevelationPlaceLabel,
   getSurahNavigationRoute,
   getJuzNavigationRoute,
+  CATALOG_COMPONENT_CONTRACTS,
 } from './catalogFormatters.ts';
+import { colors } from '../../theme/colors.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,7 +29,7 @@ const DB_PATH = path.resolve(__dirname, '../../../../mobile/assets/data/quran.db
 describe('Catalog Components Logic & Data Integrity Tests', () => {
   const db = new DatabaseSync(DB_PATH);
 
-  describe('Formatting Functions & Helpers', () => {
+  describe('Formatting Functions & Helpers (Persian Numerals Default)', () => {
     it('toPersianDigits converts ASCII digits 0-9 to Persian digits', () => {
       assert.strictEqual(toPersianDigits(0), '۰');
       assert.strictEqual(toPersianDigits(1), '۱');
@@ -33,35 +38,37 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(toPersianDigits('سوره 1 • آیه 7'), 'سوره ۱ • آیه ۷');
     });
 
-    it('formatSurahBadgeNumber handles standard and revelation order modes', () => {
+    it('formatSurahBadgeNumber defaults to Persian numerals and handles revelation order', () => {
       const fatihah = { id: 1, revelation_order: 5 };
       const baqarah = { id: 2, revelation_order: 87 };
 
-      // Standard mode
-      assert.strictEqual(formatSurahBadgeNumber(fatihah, false), '1');
-      assert.strictEqual(formatSurahBadgeNumber(baqarah, false), '2');
+      // Standard mode (default Persian numerals)
+      assert.strictEqual(formatSurahBadgeNumber(fatihah), '۱');
+      assert.strictEqual(formatSurahBadgeNumber(baqarah), '۲');
 
-      // Revelation order mode
-      assert.strictEqual(formatSurahBadgeNumber(fatihah, true), '5');
-      assert.strictEqual(formatSurahBadgeNumber(baqarah, true), '87');
+      // Revelation order mode (default Persian numerals)
+      assert.strictEqual(formatSurahBadgeNumber(fatihah, true), '۵');
+      assert.strictEqual(formatSurahBadgeNumber(baqarah, true), '۸۷');
 
-      // Persian digits mode
-      assert.strictEqual(formatSurahBadgeNumber(fatihah, false, true), '۱');
-      assert.strictEqual(formatSurahBadgeNumber(fatihah, true, true), '۵');
+      // Explicit ASCII mode
+      assert.strictEqual(formatSurahBadgeNumber(fatihah, false, false), '1');
+      assert.strictEqual(formatSurahBadgeNumber(fatihah, true, false), '5');
     });
 
-    it('formatAyahCount formats verse counts properly', () => {
-      assert.strictEqual(formatAyahCount(7), '7 آیه');
-      assert.strictEqual(formatAyahCount(286), '286 آیه');
-      assert.strictEqual(formatAyahCount(7, true), '۷ آیه');
-      assert.strictEqual(formatAyahCount(286, true), '۲۸۶ آیه');
+    it('formatAyahCount defaults to Persian numerals', () => {
+      assert.strictEqual(formatAyahCount(7), '۷ آیه');
+      assert.strictEqual(formatAyahCount(286), '۲۸۶ آیه');
+      // Explicit ASCII
+      assert.strictEqual(formatAyahCount(7, false), '7 آیه');
+      assert.strictEqual(formatAyahCount(286, false), '286 آیه');
     });
 
-    it('formatJuzBadge formats Juz title badge', () => {
-      assert.strictEqual(formatJuzBadge(1), 'جزء 1');
-      assert.strictEqual(formatJuzBadge(30), 'جزء 30');
-      assert.strictEqual(formatJuzBadge(1, true), 'جزء ۱');
-      assert.strictEqual(formatJuzBadge(30, true), 'جزء ۳۰');
+    it('formatJuzBadge defaults to Persian numerals', () => {
+      assert.strictEqual(formatJuzBadge(1), 'جزء ۱');
+      assert.strictEqual(formatJuzBadge(30), 'جزء ۳۰');
+      // Explicit ASCII
+      assert.strictEqual(formatJuzBadge(1, false), 'جزء 1');
+      assert.strictEqual(formatJuzBadge(30, false), 'جزء 30');
     });
 
     it('extractAyahNumberFromKey extracts the ayah number from verse_key', () => {
@@ -72,26 +79,78 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(extractAyahNumberFromKey('10'), '10');
     });
 
-    it('formatJuzStartInfo formats starting Surah and Ayah info', () => {
+    it('formatJuzStartInfo defaults to Persian numerals', () => {
       assert.strictEqual(
         formatJuzStartInfo('فاتحه', '1:1'),
-        'سوره فاتحه • آیه 1'
+        'سوره فاتحه • آیه ۱'
       );
       assert.strictEqual(
         formatJuzStartInfo('بقره', '2:142'),
-        'سوره بقره • آیه 142'
-      );
-      assert.strictEqual(
-        formatJuzStartInfo('بقره', '2:142', true),
         'سوره بقره • آیه ۱۴۲'
+      );
+      // Explicit ASCII
+      assert.strictEqual(
+        formatJuzStartInfo('بقره', '2:142', false),
+        'سوره بقره • آیه 142'
       );
     });
 
-    it('formatJuzPageRange formats page boundary strings', () => {
-      assert.strictEqual(formatJuzPageRange(1, 21), 'صفحات 1 تا 21');
-      assert.strictEqual(formatJuzPageRange(582, 604), 'صفحات 582 تا 604');
-      assert.strictEqual(formatJuzPageRange(1, 21, true), 'صفحات ۱ تا ۲۱');
-      assert.strictEqual(formatJuzPageRange(582, 604, true), 'صفحات ۵۸۲ تا ۶۰۴');
+    it('formatJuzPageRange defaults to Persian numerals', () => {
+      assert.strictEqual(formatJuzPageRange(1, 21), 'صفحات ۱ تا ۲۱');
+      assert.strictEqual(formatJuzPageRange(582, 604), 'صفحات ۵۸۲ تا ۶۰۴');
+      // Explicit ASCII
+      assert.strictEqual(formatJuzPageRange(1, 21, false), 'صفحات 1 تا 21');
+      assert.strictEqual(formatJuzPageRange(582, 604, false), 'صفحات 582 تا 604');
+    });
+
+    it('formatCanonicalSurahHint formats canonical surah ID for revelation order mode', () => {
+      assert.strictEqual(formatCanonicalSurahHint(1), '• شماره سوره: ۱');
+      assert.strictEqual(formatCanonicalSurahHint(96), '• شماره سوره: ۹۶');
+      // Explicit ASCII
+      assert.strictEqual(formatCanonicalSurahHint(96, false), '• شماره سوره: 96');
+    });
+
+    it('formatSurahAccessibilityLabel includes surah number in Persian numerals', () => {
+      const fatihah = { id: 1, name_fa: 'فاتحه', name_arabic: 'الفاتحة', verses_count: 7, revelation_order: 5 };
+      const alaq = { id: 96, name_fa: 'علق', name_arabic: 'العلق', verses_count: 19, revelation_order: 1 };
+
+      // Standard mode
+      assert.strictEqual(
+        formatSurahAccessibilityLabel(fatihah, false),
+        'سوره ۱، فاتحه، الفاتحة، ۷ آیه'
+      );
+
+      // Revelation order mode (includes canonical ID and revelation rank)
+      assert.strictEqual(
+        formatSurahAccessibilityLabel(fatihah, true),
+        'سوره ۱، فاتحه، رتبه نزول ۵، الفاتحة، ۷ آیه'
+      );
+      assert.strictEqual(
+        formatSurahAccessibilityLabel(alaq, true),
+        'سوره ۹۶، علق، رتبه نزول ۱، العلق، ۱۹ آیه'
+      );
+
+      // Explicit ASCII mode
+      assert.strictEqual(
+        formatSurahAccessibilityLabel(fatihah, false, false),
+        'سوره 1، فاتحه، الفاتحة، 7 آیه'
+      );
+    });
+
+    it('formatJuzAccessibilityLabel formats complete Juz accessibility summary in Persian', () => {
+      const juz1 = {
+        juz_number: 1,
+        first_surah_name_fa: 'فاتحه',
+        first_verse_key: '1:1',
+        page_start: 1,
+        page_end: 21,
+        verses_count: 148,
+      };
+
+      assert.strictEqual(
+        formatJuzAccessibilityLabel(juz1),
+        'جزء ۱، سوره فاتحه • آیه ۱، صفحات ۱ تا ۲۱، ۱۴۸ آیه'
+      );
     });
 
     it('getRevelationPlaceLabel returns Persian label for Makkah / Madinah', () => {
@@ -108,7 +167,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
   });
 
   describe('SurahCardItem Props & Data Integrity', () => {
-    it('validates all 114 Surahs satisfy SurahCardItem props requirements', () => {
+    it('validates all 114 Surahs satisfy SurahCardItem props & Persian formatting contracts', () => {
       const chapters = db.prepare('SELECT * FROM chapters ORDER BY id ASC').all();
       assert.strictEqual(chapters.length, 114);
 
@@ -127,46 +186,66 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
         const chipLabel = getRevelationPlaceLabel(surah.revelation_place);
         assert.ok(chipLabel === 'مکی' || chipLabel === 'مدنی');
 
-        // Verse count
+        // Verse count in Persian
         assert.ok(surah.verses_count > 0);
         const verseCountStr = formatAyahCount(surah.verses_count);
-        assert.ok(verseCountStr.includes('آیه'));
+        assert.strictEqual(verseCountStr, `${toPersianDigits(surah.verses_count)} آیه`);
 
-        // Badge numbers in standard and revelation order modes
+        // Badge numbers: default Persian
         const standardBadge = formatSurahBadgeNumber(surah, false);
-        assert.strictEqual(standardBadge, String(surah.id));
+        assert.strictEqual(standardBadge, toPersianDigits(surah.id));
 
         const revBadge = formatSurahBadgeNumber(surah, true);
-        assert.strictEqual(revBadge, String(surah.revelation_order));
+        assert.strictEqual(revBadge, toPersianDigits(surah.revelation_order));
+
+        // Canonical hint for revelation order
+        const canonicalHint = formatCanonicalSurahHint(surah.id);
+        assert.strictEqual(canonicalHint, `• شماره سوره: ${toPersianDigits(surah.id)}`);
 
         // Navigation Route
         const route = getSurahNavigationRoute(surah.id);
         assert.strictEqual(route, `/surah/${surah.id}`);
 
-        // Accessibility Label
-        const a11yLabel = `سوره ${surah.name_fa}، ${surah.name_arabic}، ${surah.verses_count} آیه`;
-        assert.ok(a11yLabel.includes(surah.name_fa));
-        assert.ok(a11yLabel.includes(surah.name_arabic));
+        // Accessibility Labels (verify actual formatters)
+        const standardA11y = formatSurahAccessibilityLabel(surah, false);
+        assert.ok(standardA11y.includes(`سوره ${toPersianDigits(surah.id)}`));
+        assert.ok(standardA11y.includes(surah.name_fa));
+        assert.ok(standardA11y.includes(surah.name_arabic));
+        assert.ok(standardA11y.includes(toPersianDigits(surah.verses_count)));
+
+        const revA11y = formatSurahAccessibilityLabel(surah, true);
+        assert.ok(revA11y.includes(`سوره ${toPersianDigits(surah.id)}`));
+        assert.ok(revA11y.includes(`رتبه نزول ${toPersianDigits(surah.revelation_order)}`));
       }
     });
 
-    it('properly differentiates Al-Fatihah and Al-Alaq revelation ranks', () => {
+    it('properly differentiates Al-Fatihah and Al-Alaq revelation ranks & canonical hints', () => {
       const fatihah = db.prepare('SELECT * FROM chapters WHERE id = 1').get();
       assert.strictEqual(fatihah.id, 1);
       assert.strictEqual(fatihah.revelation_order, 5);
-      assert.strictEqual(formatSurahBadgeNumber(fatihah, false), '1');
-      assert.strictEqual(formatSurahBadgeNumber(fatihah, true), '5');
+      assert.strictEqual(formatSurahBadgeNumber(fatihah, false), '۱');
+      assert.strictEqual(formatSurahBadgeNumber(fatihah, true), '۵');
+      assert.strictEqual(formatCanonicalSurahHint(fatihah.id), '• شماره سوره: ۱');
+      assert.strictEqual(
+        formatSurahAccessibilityLabel(fatihah, true),
+        `سوره ۱، ${fatihah.name_fa}، رتبه نزول ۵، الفاتحة، ۷ آیه`
+      );
 
       const alaq = db.prepare('SELECT * FROM chapters WHERE id = 96').get();
       assert.strictEqual(alaq.id, 96);
       assert.strictEqual(alaq.revelation_order, 1); // First revealed Surah
-      assert.strictEqual(formatSurahBadgeNumber(alaq, false), '96');
-      assert.strictEqual(formatSurahBadgeNumber(alaq, true), '1');
+      assert.strictEqual(formatSurahBadgeNumber(alaq, false), '۹۶');
+      assert.strictEqual(formatSurahBadgeNumber(alaq, true), '۱');
+      assert.strictEqual(formatCanonicalSurahHint(alaq.id), '• شماره سوره: ۹۶');
+      assert.strictEqual(
+        formatSurahAccessibilityLabel(alaq, true),
+        `سوره ۹۶، ${alaq.name_fa}، رتبه نزول ۱، العلق، ۱۹ آیه`
+      );
     });
   });
 
   describe('JuzCardItem Props & Data Integrity', () => {
-    it('validates all 30 Juzs satisfy JuzCardItem props requirements', () => {
+    it('validates all 30 Juzs satisfy JuzCardItem props & Persian formatting contracts', () => {
       const query = `
         WITH juz_meta AS (
           SELECT 
@@ -200,23 +279,27 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
         const juz = juzs[i];
         assert.strictEqual(juz.juz_number, i + 1);
 
-        // Badge title
+        // Badge title in Persian
         const badgeTitle = formatJuzBadge(juz.juz_number);
-        assert.strictEqual(badgeTitle, `جزء ${juz.juz_number}`);
+        assert.strictEqual(badgeTitle, `جزء ${toPersianDigits(juz.juz_number)}`);
 
-        // Verse Count
+        // Verse Count in Persian
         assert.ok(juz.verses_count > 0);
         const versesStr = formatAyahCount(juz.verses_count);
-        assert.ok(versesStr.includes(`${juz.verses_count} آیه`));
+        assert.strictEqual(versesStr, `${toPersianDigits(juz.verses_count)} آیه`);
 
-        // Start Info
+        // Start Info in Persian
         const startInfo = formatJuzStartInfo(juz.first_surah_name_fa, juz.first_verse_key);
-        assert.ok(startInfo.startsWith('سوره '));
-        assert.ok(startInfo.includes(' • آیه '));
+        assert.ok(startInfo.startsWith(`سوره ${juz.first_surah_name_fa}`));
+        const startAyahNum = toPersianDigits(extractAyahNumberFromKey(juz.first_verse_key));
+        assert.ok(startInfo.includes(` • آیه ${startAyahNum}`));
 
-        // Page Range
+        // Page Range in Persian
         const pageRange = formatJuzPageRange(juz.page_start, juz.page_end);
-        assert.strictEqual(pageRange, `صفحات ${juz.page_start} تا ${juz.page_end}`);
+        assert.strictEqual(
+          pageRange,
+          `صفحات ${toPersianDigits(juz.page_start)} تا ${toPersianDigits(juz.page_end)}`
+        );
 
         // Navigation Route
         const navRoute = getJuzNavigationRoute(juz.first_chapter_id);
@@ -225,40 +308,62 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
         // Arabic Preview Snippet
         assert.ok(typeof juz.preview_text === 'string' && juz.preview_text.length > 0);
 
-        // Accessibility Label
-        const a11yLabel = `${badgeTitle}، ${startInfo}، ${pageRange}، ${versesStr}`;
-        assert.ok(a11yLabel.includes(`جزء ${juz.juz_number}`));
+        // Accessibility Label using actual formatter
+        const a11yLabel = formatJuzAccessibilityLabel(juz);
+        assert.ok(a11yLabel.includes(`جزء ${toPersianDigits(juz.juz_number)}`));
         assert.ok(a11yLabel.includes(juz.first_surah_name_fa));
+        assert.ok(a11yLabel.includes(startAyahNum));
+        assert.ok(a11yLabel.includes(toPersianDigits(juz.page_start)));
+        assert.ok(a11yLabel.includes(toPersianDigits(juz.page_end)));
+        assert.ok(a11yLabel.includes(toPersianDigits(juz.verses_count)));
       }
     });
 
-    it('verifies Juz 1 and Juz 30 boundary cases in detail', () => {
+    it('verifies Juz 1 and Juz 30 boundary cases with Persian numerals', () => {
       // Juz 1: Al-Fatihah 1:1, pages 1 to 21
       const juz1StartInfo = formatJuzStartInfo('فاتحه', '1:1');
-      assert.strictEqual(juz1StartInfo, 'سوره فاتحه • آیه 1');
-      assert.strictEqual(formatJuzPageRange(1, 21), 'صفحات 1 تا 21');
+      assert.strictEqual(juz1StartInfo, 'سوره فاتحه • آیه ۱');
+      assert.strictEqual(formatJuzPageRange(1, 21), 'صفحات ۱ تا ۲۱');
       assert.strictEqual(getJuzNavigationRoute(1), '/surah/1');
 
       // Juz 30: An-Naba 78:1, pages 582 to 604
       const juz30StartInfo = formatJuzStartInfo('نبأ', '78:1');
-      assert.strictEqual(juz30StartInfo, 'سوره نبأ • آیه 1');
-      assert.strictEqual(formatJuzPageRange(582, 604), 'صفحات 582 تا 604');
+      assert.strictEqual(juz30StartInfo, 'سوره نبأ • آیه ۱');
+      assert.strictEqual(formatJuzPageRange(582, 604), 'صفحات ۵۸۲ تا ۶۰۴');
       assert.strictEqual(getJuzNavigationRoute(78), '/surah/78');
     });
   });
 
-  describe('Touch Target & Accessibility Standards Verification', () => {
-    it('verifies touch target minimum dimensions (>= 44x44px) contract', () => {
-      const minTouchTarget = 44;
-      const surahCardMinHeight = 74;
-      const surahCardMinWidth = 44;
-      const juzCardMinHeight = 110;
-      const juzCardMinWidth = 44;
+  describe('Touch Target & Layout Contracts Verification', () => {
+    it('verifies exported component layout contracts satisfy minimum touch dimensions (>= 44px)', () => {
+      const { minTouchTarget, surahCard, juzCard } = CATALOG_COMPONENT_CONTRACTS;
 
-      assert.ok(surahCardMinHeight >= minTouchTarget, 'SurahCardItem minHeight satisfies 44px');
-      assert.ok(surahCardMinWidth >= minTouchTarget, 'SurahCardItem minWidth satisfies 44px');
-      assert.ok(juzCardMinHeight >= minTouchTarget, 'JuzCardItem minHeight satisfies 44px');
-      assert.ok(juzCardMinWidth >= minTouchTarget, 'JuzCardItem minWidth satisfies 44px');
+      assert.strictEqual(minTouchTarget, 44);
+      assert.ok(surahCard.minHeight >= minTouchTarget, 'SurahCardItem minHeight satisfies 44px');
+      assert.ok(surahCard.minWidth >= minTouchTarget, 'SurahCardItem minWidth satisfies 44px');
+      assert.ok(juzCard.minHeight >= minTouchTarget, 'JuzCardItem minHeight satisfies 44px');
+      assert.ok(juzCard.minWidth >= minTouchTarget, 'JuzCardItem minWidth satisfies 44px');
+
+      // Concentric medallion dimensions
+      assert.strictEqual(surahCard.badgeOuterSize, 44);
+      assert.strictEqual(surahCard.badgeInnerSize, 36);
+      assert.ok(surahCard.badgeOuterSize >= minTouchTarget);
+    });
+
+    it('verifies Sanctuary theme tokens are defined and properly structured', () => {
+      // Primary accent tokens
+      assert.strictEqual(colors.primarySubtle, 'rgba(16, 185, 129, 0.12)');
+      assert.strictEqual(colors.primaryGlow, 'rgba(16, 185, 129, 0.25)');
+
+      // Revelation badge tokens
+      assert.strictEqual(colors.badgeMadani, 'rgba(16, 185, 129, 0.15)');
+      assert.strictEqual(colors.badgeMadaniText, '#6ee7b7');
+      assert.strictEqual(colors.badgeMakki, 'rgba(245, 158, 11, 0.15)');
+      assert.strictEqual(colors.badgeMakkiText, '#fcd34d');
+
+      // Sacred gold tokens
+      assert.strictEqual(colors.goldAccent, '#fbbf24');
+      assert.strictEqual(colors.goldGlow, 'rgba(251, 191, 36, 0.2)');
     });
   });
 });

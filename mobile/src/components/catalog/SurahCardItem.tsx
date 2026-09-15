@@ -13,8 +13,11 @@ import { Chapter } from '@/types/quran';
 import {
   formatSurahBadgeNumber,
   formatAyahCount,
+  formatCanonicalSurahHint,
+  formatSurahAccessibilityLabel,
   getRevelationPlaceLabel,
   getSurahNavigationRoute,
+  CATALOG_COMPONENT_CONTRACTS,
 } from './catalogFormatters';
 
 export interface SurahCardItemProps {
@@ -45,6 +48,9 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
   const badgeNumber = formatSurahBadgeNumber(surah, isRevelationOrder);
   const revelationLabel = getRevelationPlaceLabel(surah.revelation_place);
   const verseCountText = formatAyahCount(surah.verses_count);
+  const isMakki = surah.revelation_place === 'makkah';
+  const accessibilityLabelText = formatSurahAccessibilityLabel(surah, isRevelationOrder);
+  const canonicalSurahHint = formatCanonicalSurahHint(surah.id);
 
   return (
     <TouchableOpacity
@@ -54,7 +60,7 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
       style={[styles.container, style]}
       accessible={true}
       accessibilityRole="button"
-      accessibilityLabel={`سوره ${surah.name_fa}، ${surah.name_arabic}، ${surah.verses_count} آیه`}
+      accessibilityLabel={accessibilityLabelText}
       accessibilityHint="برای مشاهده و قرائت سوره ضربه بزنید"
     >
       {/* Start Section: Geometric Number Badge + Persian Info */}
@@ -83,8 +89,20 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
           <View style={styles.titleRow}>
             <Text style={styles.persianTitle}>{surah.name_fa}</Text>
             {/* Makki / Madani Chip Badge */}
-            <View style={styles.chipBadge}>
-              <Text style={styles.chipText}>{revelationLabel}</Text>
+            <View
+              style={[
+                styles.chipBadge,
+                isMakki ? styles.chipBadgeMakki : styles.chipBadgeMadani,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.chipText,
+                  isMakki ? styles.chipTextMakki : styles.chipTextMadani,
+                ]}
+              >
+                {revelationLabel}
+              </Text>
             </View>
           </View>
 
@@ -92,7 +110,7 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
             <Text style={styles.subtitleText}>{surah.name_simple}</Text>
             {isRevelationOrder && (
               <Text style={styles.revelationRankHint}>
-                • نزول: {surah.revelation_order}
+                {canonicalSurahHint}
               </Text>
             )}
           </View>
@@ -110,13 +128,13 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: 74,
-    minWidth: 44,
+    minHeight: CATALOG_COMPONENT_CONTRACTS.surahCard.minHeight,
+    minWidth: CATALOG_COMPONENT_CONTRACTS.surahCard.minWidth,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: colors.surfaceCard,
-    borderWidth: 1,
+    borderWidth: CATALOG_COMPONENT_CONTRACTS.surahCard.containerBorderWidth,
     borderColor: colors.borderSubtle,
     borderRadius: borderRadius.lg,
     paddingVertical: spacing.md,
@@ -130,11 +148,11 @@ const styles = StyleSheet.create({
     marginEnd: spacing.md,
   },
   badgeOuter: {
-    width: 44,
-    height: 44,
+    width: CATALOG_COMPONENT_CONTRACTS.surahCard.badgeOuterSize,
+    height: CATALOG_COMPONENT_CONTRACTS.surahCard.badgeOuterSize,
     borderRadius: borderRadius.circle,
     backgroundColor: colors.surfaceFloating,
-    borderWidth: 1.5,
+    borderWidth: CATALOG_COMPONENT_CONTRACTS.surahCard.badgeOuterBorderWidth,
     borderColor: colors.borderIridescent,
     alignItems: 'center',
     justifyContent: 'center',
@@ -144,10 +162,10 @@ const styles = StyleSheet.create({
     borderColor: colors.goldAccent,
   },
   badgeInner: {
-    width: 36,
-    height: 36,
+    width: CATALOG_COMPONENT_CONTRACTS.surahCard.badgeInnerSize,
+    height: CATALOG_COMPONENT_CONTRACTS.surahCard.badgeInnerSize,
     borderRadius: borderRadius.circle,
-    borderWidth: 1,
+    borderWidth: CATALOG_COMPONENT_CONTRACTS.surahCard.badgeInnerBorderWidth,
     borderColor: colors.borderSubtle,
     alignItems: 'center',
     justifyContent: 'center',
@@ -178,19 +196,32 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
   },
   chipBadge: {
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.25)',
+    backgroundColor: colors.primarySubtle,
+    borderWidth: CATALOG_COMPONENT_CONTRACTS.surahCard.chipBorderWidth,
+    borderColor: colors.primaryGlow,
     borderRadius: borderRadius.sm,
-    paddingHorizontal: spacing.xs + 2,
-    paddingVertical: 2,
-    marginStart: spacing.xs,
+    paddingHorizontal: CATALOG_COMPONENT_CONTRACTS.surahCard.chipPaddingHorizontal,
+    paddingVertical: CATALOG_COMPONENT_CONTRACTS.surahCard.chipPaddingVertical,
+  },
+  chipBadgeMakki: {
+    backgroundColor: colors.badgeMakki,
+    borderColor: colors.goldGlow,
+  },
+  chipBadgeMadani: {
+    backgroundColor: colors.badgeMadani,
+    borderColor: colors.primaryGlow,
   },
   chipText: {
     fontFamily: fonts.uiRegular,
     fontSize: fontSizes.xs,
     fontWeight: '600',
     color: colors.textSecondary,
+  },
+  chipTextMakki: {
+    color: colors.badgeMakkiText,
+  },
+  chipTextMadani: {
+    color: colors.badgeMadaniText,
   },
   subtitleRow: {
     flexDirection: 'row',
@@ -214,9 +245,9 @@ const styles = StyleSheet.create({
   },
   arabicCalligraphy: {
     fontFamily: fonts.quranHafs,
-    fontSize: 21,
+    fontSize: CATALOG_COMPONENT_CONTRACTS.surahCard.arabicFontSize,
     color: colors.goldAccent,
-    lineHeight: 32,
+    lineHeight: CATALOG_COMPONENT_CONTRACTS.surahCard.arabicLineHeight,
   },
   verseCount: {
     fontFamily: fonts.uiRegular,

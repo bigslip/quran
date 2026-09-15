@@ -15,7 +15,9 @@ import {
   formatJuzStartInfo,
   formatJuzPageRange,
   formatAyahCount,
+  formatJuzAccessibilityLabel,
   getJuzNavigationRoute,
+  CATALOG_COMPONENT_CONTRACTS,
 } from './catalogFormatters';
 
 export interface JuzCardItemProps {
@@ -48,6 +50,7 @@ export const JuzCardItem: React.FC<JuzCardItemProps> = ({
   );
   const pageRangeText = formatJuzPageRange(juz.page_start, juz.page_end);
   const ayahCountText = formatAyahCount(juz.verses_count);
+  const accessibilityLabelText = formatJuzAccessibilityLabel(juz);
 
   return (
     <TouchableOpacity
@@ -57,7 +60,7 @@ export const JuzCardItem: React.FC<JuzCardItemProps> = ({
       style={[styles.container, style]}
       accessible={true}
       accessibilityRole="button"
-      accessibilityLabel={`${juzBadgeText}، ${startInfoText}، ${pageRangeText}، ${ayahCountText}`}
+      accessibilityLabel={accessibilityLabelText}
       accessibilityHint="برای ورود به ابتدای این جزء ضربه بزنید"
     >
       {/* Top Header Row: Geometric Juz Badge + Verse Count Pill */}
@@ -95,10 +98,10 @@ export const JuzCardItem: React.FC<JuzCardItemProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: 110,
-    minWidth: 44,
+    minHeight: CATALOG_COMPONENT_CONTRACTS.juzCard.minHeight,
+    minWidth: CATALOG_COMPONENT_CONTRACTS.juzCard.minWidth,
     backgroundColor: colors.surfaceCard,
-    borderWidth: 1,
+    borderWidth: CATALOG_COMPONENT_CONTRACTS.juzCard.containerBorderWidth,
     borderColor: colors.borderSubtle,
     borderRadius: borderRadius.lg,
     padding: spacing.md,
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
   },
   juzBadge: {
     backgroundColor: colors.surfaceFloating,
-    borderWidth: 1.5,
+    borderWidth: CATALOG_COMPONENT_CONTRACTS.juzCard.juzBadgeBorderWidth,
     borderColor: colors.borderIridescent,
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
@@ -128,9 +131,9 @@ const styles = StyleSheet.create({
     color: colors.goldAccent,
   },
   ayahPill: {
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.25)',
+    backgroundColor: colors.primarySubtle,
+    borderWidth: CATALOG_COMPONENT_CONTRACTS.juzCard.ayahPillBorderWidth,
+    borderColor: colors.primaryGlow,
     borderRadius: borderRadius.pill,
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
@@ -168,9 +171,9 @@ const styles = StyleSheet.create({
   },
   previewText: {
     fontFamily: fonts.quranHafs,
-    fontSize: 16,
+    fontSize: CATALOG_COMPONENT_CONTRACTS.juzCard.previewFontSize,
     color: colors.textSecondary,
-    lineHeight: 28,
+    lineHeight: CATALOG_COMPONENT_CONTRACTS.juzCard.previewLineHeight,
     textAlign: 'right',
   },
 });
