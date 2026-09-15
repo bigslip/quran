@@ -4,8 +4,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, I18nManager } from 'react-native';
 import { colors } from '@/theme';
+
+I18nManager.allowRTL(true);
+I18nManager.forceRTL(true);
 
 SplashScreen.preventAutoHideAsync();
 

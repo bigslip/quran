@@ -358,6 +358,9 @@ const styles = StyleSheet.create({
   listenButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 44,
+    minWidth: 44,
     gap: 4,
   },
   listenButtonText: {

@@ -33,7 +33,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             onChangeText('');
             onClear?.();
           }}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          hitSlop={{ top: 14, bottom: 14, left: 14, right: 14 }}
         >
           <X size={16} color={colors.textFaded} />
         </TouchableOpacity>
@@ -51,12 +51,11 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
     borderRadius: borderRadius.pill,
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
     height: 48,
     width: '100%',
   },
   icon: {
-    marginRight: spacing.sm,
+    marginEnd: spacing.sm,
   },
   input: {
     flex: 1,
