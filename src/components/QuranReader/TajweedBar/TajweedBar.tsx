@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { memo, useCallback } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -15,7 +15,6 @@ import {
 import { selectIsSidebarNavigationVisible } from '@/redux/slices/QuranReader/sidebarNavigation';
 import { logEvent } from '@/utils/eventLogger';
 
-// Ensures bar starts off-screen before measurement to prevent flash on mount
 const TAJWEED_RULES = [
   'edgham',
   'mad-2',
@@ -25,69 +24,72 @@ const TAJWEED_RULES = [
   'ekhfa',
   'qalqala',
   'tafkhim',
-];
+] as const;
 
 const TajweedColors = () => {
   const { t } = useTranslation('quran-reader');
-  const ref = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   const showTajweedBar = useSelector(selectIsTajweedBarExpanded);
   const isSidebarNavigationVisible = useSelector(selectIsSidebarNavigationVisible);
-
   const { themeVariant } = useThemeDetector();
 
-  const toggle = () => {
-    dispatch(setIsTajweedBarExpanded(!showTajweedBar));
-    if (showTajweedBar) {
-      logEvent('tajweed_bar_closed');
-    } else {
-      logEvent('tajweed_bar_opened');
-    }
-  };
+  const toggle = useCallback(() => {
+    const nextState = !showTajweedBar;
+    dispatch(setIsTajweedBarExpanded(nextState));
+    logEvent(nextState ? 'tajweed_bar_opened' : 'tajweed_bar_closed');
+  }, [dispatch, showTajweedBar]);
 
   return (
-    <div
+    <aside
+      aria-label={t('tajweed-colors')}
       className={classNames(styles.container, {
-        [styles.hiddenContainer]: !showTajweedBar,
         [styles.withSidebarNavigation]: isSidebarNavigationVisible,
       })}
     >
       <div
-        ref={ref}
-        className={classNames(styles.tajweedContainer, {
-          [styles.shadow]: showTajweedBar,
+        className={classNames(styles.drawerWrapper, {
+          [styles.drawerExpanded]: showTajweedBar,
+          [styles.drawerCollapsed]: !showTajweedBar,
         })}
+        aria-hidden={!showTajweedBar}
       >
-        <div className={styles.rulesContainer}>
-          {TAJWEED_RULES.map((rule) => (
-            <div className={styles.ruleContainer} key={rule}>
-              <div className={classNames(styles.circle, styles[`${themeVariant}-${rule}`])} />
-              <p>{t(rule)}</p>
-            </div>
-          ))}
+        <div className={styles.rulesCard}>
+          <div className={styles.rulesGrid}>
+            {TAJWEED_RULES.map((rule) => (
+              <span className={styles.ruleChip} key={rule}>
+                <span
+                  className={classNames(styles.pip, styles[`${themeVariant}-${rule}`])}
+                  aria-hidden="true"
+                />
+                <span className={styles.ruleLabel}>{t(rule)}</span>
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div
-        className={classNames(styles.switcher)}
+      <button
+        type="button"
+        className={classNames(styles.switcher, {
+          [styles.switcherActive]: showTajweedBar,
+        })}
         onClick={toggle}
-        onKeyDown={toggle}
-        role="button"
-        tabIndex={0}
+        aria-expanded={showTajweedBar}
+        aria-label={t('tajweed-colors')}
       >
-        <p>{t('tajweed-colors')}</p>
+        <span className={styles.switcherText}>{t('tajweed-colors')}</span>
         <span
           className={classNames(styles.chevronIconContainer, {
             [styles.rotate180]: showTajweedBar,
-            [styles.rotate]: !showTajweedBar,
           })}
         >
-          <ChevronDownIcon />
+          <ChevronDownIcon className={styles.chevronIcon} />
         </span>
-      </div>
-    </div>
+      </button>
+    </aside>
   );
 };
 
-export default TajweedColors;
+export default memo(TajweedColors);
+
