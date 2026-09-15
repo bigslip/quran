@@ -145,17 +145,24 @@ const syncReflectionAndLessonLanguagesIfNotCustomized = (
 const syncWordByWordLocaleIfUsingDefaults = (
   state: RootState,
   dispatch: Dispatch<AnyAction>,
+  prevLocale: string,
   nextLocale: string,
 ) => {
-  if (state.readingPreferences?.isUsingDefaultWordByWordLocale === false) return;
-
-  const defaultWordByWordLocale =
+  const defaultWordByWordLocalePrev =
+    getReadingPreferencesInitialState(prevLocale).selectedWordByWordLocale;
+  const defaultWordByWordLocaleNext =
     getReadingPreferencesInitialState(nextLocale).selectedWordByWordLocale;
   const currentWordByWordLocale = state.readingPreferences?.selectedWordByWordLocale;
-  if (currentWordByWordLocale === defaultWordByWordLocale) return;
+
+  const isUsingDefaults =
+    state.readingPreferences?.isUsingDefaultWordByWordLocale !== false ||
+    currentWordByWordLocale === defaultWordByWordLocalePrev;
+
+  if (!isUsingDefaults) return;
+  if (currentWordByWordLocale === defaultWordByWordLocaleNext) return;
 
   dispatch({
-    ...setSelectedWordByWordLocale({ value: defaultWordByWordLocale, locale: nextLocale }),
+    ...setSelectedWordByWordLocale({ value: defaultWordByWordLocaleNext, locale: nextLocale }),
     meta: { skipDefaultSettings: true },
   });
 };
@@ -176,7 +183,7 @@ const syncLocaleDependentSettings =
 
     syncTranslationsIfUsingDefaults(state, dispatch, nextLocale);
     syncTafsirsIfUsingDefaults(state, dispatch, nextLocale);
-    syncWordByWordLocaleIfUsingDefaults(state, dispatch, nextLocale);
+    syncWordByWordLocaleIfUsingDefaults(state, dispatch, prevLocale, nextLocale);
     syncReflectionAndLessonLanguagesIfNotCustomized(state, dispatch, prevLocale, nextLocale);
   };
 

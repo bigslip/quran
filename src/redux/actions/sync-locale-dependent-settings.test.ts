@@ -164,7 +164,7 @@ describe('syncLocaleDependentSettings', () => {
       readingPreferences: {
         selectedReflectionLanguages: ['ar'],
         selectedLessonLanguages: ['ar'],
-        selectedWordByWordLocale: 'ar',
+        selectedWordByWordLocale: 'id',
         isUsingDefaultWordByWordLocale: false,
       },
     };
