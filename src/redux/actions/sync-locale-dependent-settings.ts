@@ -147,7 +147,7 @@ const syncWordByWordLocaleIfUsingDefaults = (
   dispatch: Dispatch<AnyAction>,
   nextLocale: string,
 ) => {
-  if (!state.readingPreferences?.isUsingDefaultWordByWordLocale) return;
+  if (state.readingPreferences?.isUsingDefaultWordByWordLocale === false) return;
 
   const defaultWordByWordLocale =
     getReadingPreferencesInitialState(nextLocale).selectedWordByWordLocale;

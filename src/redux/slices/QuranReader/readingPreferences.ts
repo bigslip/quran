@@ -189,7 +189,7 @@ export const selectWordClickFunctionality = (state: RootState) =>
 export const selectWordByWordLocale = (state: RootState) =>
   state.readingPreferences.selectedWordByWordLocale;
 export const selectIsUsingDefaultWordByWordLocale = (state: RootState) =>
-  state.readingPreferences.isUsingDefaultWordByWordLocale;
+  state.readingPreferences.isUsingDefaultWordByWordLocale ?? true;
 export const selectSelectedReadingTranslation = (state: RootState) =>
   state.readingPreferences.selectedReadingTranslation;
 

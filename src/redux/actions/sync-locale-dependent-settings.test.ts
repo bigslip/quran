@@ -99,6 +99,7 @@ describe('syncLocaleDependentSettings', () => {
         // user explicitly picked Arabic content while site locale was English
         selectedReflectionLanguages: ['ar'],
         selectedLessonLanguages: ['ar'],
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -114,6 +115,7 @@ describe('syncLocaleDependentSettings', () => {
       readingPreferences: {
         selectedReflectionLanguages: ['ar', 'fr'],
         selectedLessonLanguages: ['ar', 'fr'],
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -132,6 +134,7 @@ describe('syncLocaleDependentSettings', () => {
         selectedLessonLanguages: ['ar'],
         hasCustomizedReflectionLanguages: true,
         hasCustomizedLessonLanguages: true,
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -146,6 +149,7 @@ describe('syncLocaleDependentSettings', () => {
       readingPreferences: {
         selectedReflectionLanguages: ['ar', 'en'],
         selectedLessonLanguages: ['ar', 'en'],
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -174,6 +178,27 @@ describe('syncLocaleDependentSettings', () => {
       {
         ...setLessonLanguages(['en']),
         meta: { skipCustomization: true, skipDefaultSettings: true },
+      },
+    ]);
+  });
+
+  it('syncs wbw when isUsingDefaultWordByWordLocale is undefined (legacy persisted state)', () => {
+    const state = {
+      translations: { isUsingDefaultTranslations: false },
+      tafsirs: { isUsingDefaultTafsirs: false },
+      readingPreferences: {
+        selectedReflectionLanguages: ['fa'],
+        selectedLessonLanguages: ['fa'],
+        selectedWordByWordLocale: 'en',
+        // isUsingDefaultWordByWordLocale is undefined
+      },
+    };
+
+    const actions = runThunk(state, 'fa', 'fa');
+    expect(actions).toEqual([
+      {
+        ...setSelectedWordByWordLocale({ value: 'fa', locale: 'fa' }),
+        meta: { skipDefaultSettings: true },
       },
     ]);
   });
