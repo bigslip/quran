@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getLocalApiResponse, initializeLocalDataEngine } from './localDataEngine';
+import { getLocalApiResponse, handleLocalApiRequest, initializeLocalDataEngine } from './localDataEngine';
 
 describe('Local Data Query Engine', () => {
   it('initializes cleanly without errors', async () => {
@@ -208,7 +208,7 @@ describe('Local Data Query Engine', () => {
       expect(languages.languages).toBeDefined();
 
       const wbw = await getLocalApiResponse('/resources/word_by_word_translations');
-      expect(wbw.word_by_word_translations).toHaveLength(3);
+      expect(wbw.word_by_word_translations).toHaveLength(6);
     });
   });
 
@@ -254,6 +254,69 @@ describe('Local Data Query Engine', () => {
       const res = await getLocalApiResponse('/foot_notes/195932');
       expect(res.foot_note).toBeDefined();
       expect(res.foot_note.id).toBe(195932);
+    });
+  });
+
+  describe('Word-by-Word Multi-Language Translations', () => {
+    it('serves list of available WBW languages (en, fa, ur, tr, id, bn)', async () => {
+      const res = await handleLocalApiRequest('resources/word_by_word_translations');
+      expect(res.word_by_word_translations).toBeDefined();
+      expect(res.word_by_word_translations).toHaveLength(6);
+      const isoCodes = res.word_by_word_translations.map((w: any) => w.iso_code);
+      expect(isoCodes).toEqual(['en', 'fa', 'ur', 'tr', 'id', 'bn']);
+    });
+
+    it('stitches Persian word-by-word translations when word_translation_language is fa in by_chapter', async () => {
+      const res = await handleLocalApiRequest('verses/by_chapter/1', {
+        words: 'true',
+        word_translation_language: 'fa',
+      });
+      expect(res).toBeDefined();
+      expect(res.verses).toBeDefined();
+      expect(res.verses.length).toBeGreaterThan(0);
+      const firstWord = res.verses[0].words[0];
+      expect(firstWord.translation.text).toBe('به نام');
+      expect(firstWord.translation.language_name).toBe('persian');
+      expect(firstWord.translation.language_id).toBe(43);
+    });
+
+    it('stitches Persian word-by-word translations when word_translation_language is fa in by_page', async () => {
+      const res = await handleLocalApiRequest('verses/by_page/1', {
+        words: 'true',
+        word_translation_language: 'fa',
+      });
+      expect(res).toBeDefined();
+      expect(res.verses).toBeDefined();
+      expect(res.verses.length).toBeGreaterThan(0);
+      const firstWord = res.verses[0].words[0];
+      expect(firstWord.translation.text).toBe('به نام');
+      expect(firstWord.translation.language_name).toBe('persian');
+      expect(firstWord.translation.language_id).toBe(43);
+    });
+
+    it('stitches Persian word-by-word translations when word_translation_language is fa in by_juz', async () => {
+      const res = await handleLocalApiRequest('verses/by_juz/1', {
+        words: 'true',
+        word_translation_language: 'fa',
+        per_page: 5,
+      });
+      expect(res).toBeDefined();
+      expect(res.verses).toBeDefined();
+      expect(res.verses.length).toBeGreaterThan(0);
+      const firstWord = res.verses[0].words[0];
+      expect(firstWord.translation.text).toBe('به نام');
+      expect(firstWord.translation.language_name).toBe('persian');
+      expect(firstWord.translation.language_id).toBe(43);
+    });
+
+    it('preserves English word-by-word translations when word_translation_language is en or default', async () => {
+      const res = await handleLocalApiRequest('verses/by_chapter/1', {
+        words: 'true',
+      });
+      const firstWord = res.verses[0].words[0];
+      expect(firstWord.translation.text).toBe('In (the) name');
+      expect(firstWord.translation.language_name).toBe('english');
+      expect(firstWord.translation.language_id).toBe(38);
     });
   });
 

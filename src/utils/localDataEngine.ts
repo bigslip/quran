@@ -41,6 +41,7 @@ interface DataEngineState {
   recitersList: any;
   audioTimestampsByChapter: Map<string, any>;
   chapterInfoCache: Map<string, any>;
+  wbwTranslationsMap: Map<string, Map<string, string>>;
 }
 
 const state: DataEngineState = {
@@ -63,6 +64,7 @@ const state: DataEngineState = {
   recitersList: null,
   audioTimestampsByChapter: new Map(),
   chapterInfoCache: new Map(),
+  wbwTranslationsMap: new Map(),
 };
 
 // Cold-start mutex promise to prevent concurrent initialization races
@@ -237,6 +239,7 @@ export function _resetStateForTesting(): void {
   state.recitersList = null;
   state.audioTimestampsByChapter.clear();
   state.chapterInfoCache.clear();
+  state.wbwTranslationsMap.clear();
 }
 
 
@@ -311,10 +314,94 @@ const LANGUAGE_NAME_TO_ID: Record<string, number> = {
   chinese: 185,
 };
 
+export const WBW_LANGUAGES_LIST = [
+  { id: 1, name: 'English', language_name: 'english', iso_code: 'en' },
+  { id: 2, name: 'Persian', language_name: 'persian', iso_code: 'fa' },
+  { id: 3, name: 'Urdu', language_name: 'urdu', iso_code: 'ur' },
+  { id: 4, name: 'Turkish', language_name: 'turkish', iso_code: 'tr' },
+  { id: 5, name: 'Indonesian', language_name: 'indonesian', iso_code: 'id' },
+  { id: 6, name: 'Bengali', language_name: 'bengali', iso_code: 'bn' },
+];
+
+const WBW_LANGUAGES_META: Record<string, { iso_code: string; language_name: string; language_id: number; name: string }> = {
+  en: { iso_code: 'en', language_name: 'english', language_id: 38, name: 'English' },
+  english: { iso_code: 'en', language_name: 'english', language_id: 38, name: 'English' },
+  fa: { iso_code: 'fa', language_name: 'persian', language_id: 43, name: 'Persian' },
+  persian: { iso_code: 'fa', language_name: 'persian', language_id: 43, name: 'Persian' },
+  farsi: { iso_code: 'fa', language_name: 'persian', language_id: 43, name: 'Persian' },
+  ur: { iso_code: 'ur', language_name: 'urdu', language_id: 174, name: 'Urdu' },
+  urdu: { iso_code: 'ur', language_name: 'urdu', language_id: 174, name: 'Urdu' },
+  tr: { iso_code: 'tr', language_name: 'turkish', language_id: 167, name: 'Turkish' },
+  turkish: { iso_code: 'tr', language_name: 'turkish', language_id: 167, name: 'Turkish' },
+  id: { iso_code: 'id', language_name: 'indonesian', language_id: 67, name: 'Indonesian' },
+  indonesian: { iso_code: 'id', language_name: 'indonesian', language_id: 67, name: 'Indonesian' },
+  bn: { iso_code: 'bn', language_name: 'bengali', language_id: 20, name: 'Bengali' },
+  bengali: { iso_code: 'bn', language_name: 'bengali', language_id: 20, name: 'Bengali' },
+};
+
 /**
- * Stitch translations into cloned verse objects.
+ * Fetch WBW localized translations map on-demand with caching.
  */
-async function stitchTranslations(verses: any[], translationIds: number[], includeWords = true): Promise<any[]> {
+async function getWbwMapForLanguage(isoCode: string, chapterId?: number): Promise<Map<string, string>> {
+  if (!state.wbwTranslationsMap.has(isoCode)) {
+    state.wbwTranslationsMap.set(isoCode, new Map<string, string>());
+  }
+  const langMap = state.wbwTranslationsMap.get(isoCode)!;
+
+  if (chapterId) {
+    if (langMap.has(`${chapterId}:1:1`)) {
+      return langMap;
+    }
+    try {
+      const chapterPath = await resolveDataFile(`wbw/${isoCode}/${chapterId}.json`);
+      const chapterData = JSON.parse(await fs.readFile(chapterPath, 'utf-8'));
+      const words = chapterData.words || {};
+      for (const [loc, text] of Object.entries(words)) {
+        langMap.set(loc, text as string);
+      }
+      return langMap;
+    } catch {
+      // Fall through to unified file lookup
+    }
+  }
+
+  if (langMap.size === 0) {
+    try {
+      const unifiedPath = await resolveDataFile(`wbw/${isoCode}.json`);
+      const unifiedData = JSON.parse(await fs.readFile(unifiedPath, 'utf-8'));
+      for (const [loc, text] of Object.entries(unifiedData)) {
+        langMap.set(loc, text as string);
+      }
+    } catch {
+      try {
+        await Promise.all(
+          Array.from({ length: 114 }, (_, i) => i + 1).map(async (ch) => {
+            try {
+              const shardPath = await resolveDataFile(`wbw/${isoCode}/${ch}.json`);
+              const shardData = JSON.parse(await fs.readFile(shardPath, 'utf-8'));
+              for (const [loc, text] of Object.entries(shardData.words || {})) {
+                langMap.set(loc, text as string);
+              }
+            } catch {}
+          })
+        );
+      } catch {}
+    }
+  }
+
+  return langMap;
+}
+
+/**
+ * Stitch translations and dynamic WBW translations into cloned verse objects.
+ */
+async function stitchTranslations(
+  verses: any[],
+  translationIds: number[],
+  includeWords = true,
+  wbwLanguage?: string,
+  chapterId?: number
+): Promise<any[]> {
   if (verses.length === 0) return [];
 
   const translationMaps: {
@@ -348,11 +435,35 @@ async function stitchTranslations(verses: any[], translationIds: number[], inclu
     });
   }
 
+  const wbwMeta = wbwLanguage ? WBW_LANGUAGES_META[wbwLanguage.toLowerCase()] : undefined;
+  const shouldOverlayWbw = Boolean(wbwMeta && wbwMeta.iso_code !== 'en');
+  let wbwMap: Map<string, string> | null = null;
+  if (shouldOverlayWbw && wbwMeta) {
+    wbwMap = await getWbwMapForLanguage(wbwMeta.iso_code, chapterId);
+  }
+
   return verses.map((verse) => {
     const verseCopy = { ...verse };
 
     if (!includeWords) {
       delete verseCopy.words;
+    } else if (Array.isArray(verse.words)) {
+      if (shouldOverlayWbw && wbwMap && wbwMeta) {
+        verseCopy.words = verse.words.map((word: any) => {
+          const location = word.location || `${verse.verse_key}:${word.position}`;
+          const localizedText = wbwMap!.get(location);
+          return {
+            ...word,
+            translation: {
+              text: localizedText !== undefined ? localizedText : (word.translation?.text ?? ''),
+              language_name: wbwMeta.language_name,
+              language_id: wbwMeta.language_id,
+            },
+          };
+        });
+      } else {
+        verseCopy.words = verse.words.map((word: any) => ({ ...word }));
+      }
     }
 
     if (translationMaps.length > 0) {
@@ -452,6 +563,14 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
 
   const includeWords = query.words !== false && query.words !== 'false';
   const translationIds = parseTranslationIds(query.translations);
+  const rawWbwLang = (
+    query.word_translation_language ||
+    query.wordTranslationLanguage ||
+    query.wbw_locale ||
+    query.wbwLocale ||
+    ''
+  ).toString().toLowerCase().trim();
+  const wbwLanguage = rawWbwLang || undefined;
 
   // -------------------------------------------------------------
   // 1. Chapters Endpoints
@@ -617,7 +736,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
   if (cleanPath.startsWith('verses/by_page/')) {
     const pageId = Number(cleanPath.replace('verses/by_page/', ''));
     const rawVerses = state.versesByPage.get(pageId) || [];
-    const stitched = await stitchTranslations(rawVerses, translationIds, includeWords);
+    const stitched = await stitchTranslations(rawVerses, translationIds, includeWords, wbwLanguage);
     const pagination = createPagination(rawVerses.length, pageId, 'all');
 
     return {
@@ -648,7 +767,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     const page = Number(query.page) || 1;
     const perPage = query.per_page || query.perPage || 10;
     const sliced = sliceVerses(chapterVerses, page, perPage);
-    const stitched = await stitchTranslations(sliced, translationIds, includeWords);
+    const stitched = await stitchTranslations(sliced, translationIds, includeWords, wbwLanguage, chapterId);
     const pagination = createPagination(totalRecords, page, perPage);
 
     return {
@@ -667,7 +786,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     const page = Number(query.page) || 1;
     const perPage = query.per_page || query.perPage || 10;
     const sliced = sliceVerses(juzVerses, page, perPage);
-    const stitched = await stitchTranslations(sliced, translationIds, includeWords);
+    const stitched = await stitchTranslations(sliced, translationIds, includeWords, wbwLanguage);
     const pagination = createPagination(totalRecords, page, perPage);
 
     return {
@@ -686,7 +805,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     const page = Number(query.page) || 1;
     const perPage = query.per_page || query.perPage || 10;
     const sliced = sliceVerses(hizbVerses, page, perPage);
-    const stitched = await stitchTranslations(sliced, translationIds, includeWords);
+    const stitched = await stitchTranslations(sliced, translationIds, includeWords, wbwLanguage);
     const pagination = createPagination(totalRecords, page, perPage);
 
     return {
@@ -705,7 +824,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     const page = Number(query.page) || 1;
     const perPage = query.per_page || query.perPage || 10;
     const sliced = sliceVerses(rubVerses, page, perPage);
-    const stitched = await stitchTranslations(sliced, translationIds, includeWords);
+    const stitched = await stitchTranslations(sliced, translationIds, includeWords, wbwLanguage);
     const pagination = createPagination(totalRecords, page, perPage);
 
     return {
@@ -736,7 +855,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     const page = Number(query.page) || 1;
     const perPage = query.per_page || query.perPage || 10;
     const sliced = sliceVerses(rangeVerses, page, perPage);
-    const stitched = await stitchTranslations(sliced, translationIds, includeWords);
+    const stitched = await stitchTranslations(sliced, translationIds, includeWords, wbwLanguage);
     const pagination = createPagination(totalRecords, page, perPage);
 
     return {
@@ -754,7 +873,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     if (!verse) {
       throw new Error(`Verse not found: ${verseKey}`);
     }
-    const [stitched] = await stitchTranslations([verse], translationIds, includeWords);
+    const [stitched] = await stitchTranslations([verse], translationIds, includeWords, wbwLanguage);
     return { verse: stitched };
   }
 
@@ -816,11 +935,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
 
   if (cleanPath === 'resources/word_by_word_translations') {
     return {
-      word_by_word_translations: [
-        { id: 1, name: 'English', language_name: 'english', iso_code: 'en' },
-        { id: 2, name: 'Persian', language_name: 'persian', iso_code: 'fa' },
-        { id: 3, name: 'Urdu', language_name: 'urdu', iso_code: 'ur' },
-      ],
+      word_by_word_translations: WBW_LANGUAGES_LIST,
     };
   }
 
@@ -976,7 +1091,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
     }
 
     const rangeVerses = state.allVerses.slice(fromIdx, toIdx + 1);
-    const stitched = await stitchTranslations(rangeVerses, translationIds, true);
+    const stitched = await stitchTranslations(rangeVerses, translationIds, true, wbwLanguage);
     const rawLines = stitched.map((v) => `${v.text_uthmani} (${v.verse_key})`);
 
     return {
@@ -1028,4 +1143,7 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
 
   throw new Error(`Endpoint not supported locally: ${cleanPath}`);
 }
+
+export const handleLocalApiRequest = getLocalApiResponse;
+
 
