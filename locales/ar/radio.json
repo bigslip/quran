@@ -35,5 +35,6 @@
   "badge-live": "بث مباشر",
   "badge-coming-soon": "قريباً",
   "unavailable-tooltip": "البث الإذاعي لهذا القارئ سيتوفر قريباً.",
+  "filter-stations-aria": "تصفية محطات الإذاعة",
   "no-results": "لم يتم العثور على أي محطة مطابقة للبحث."
 }

@@ -35,5 +35,6 @@
   "badge-live": "Live Audio",
   "badge-coming-soon": "Coming Soon",
   "unavailable-tooltip": "Radio stream for this reciter will be added soon.",
+  "filter-stations-aria": "Radio station filters",
   "no-results": "No stations or reciters found matching your search."
 }

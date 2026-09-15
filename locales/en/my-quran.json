@@ -36,18 +36,21 @@
     },
     "title": "Collections"
   },
+  "sanctuary-badge": "Personal Spiritual Sanctuary & Notes",
+  "hero-title": "My Quran",
+  "hero-subtitle": "Organize your bookmarks, reading history, custom collections and reflections",
+  "saved": "Saved",
+  "recent": "Recent",
   "notes-and-reflections": "Notes & Reflections",
   "page": "Page",
   "reading-bookmark": {
     "empty": "Start reading and save a Reading Bookmark!",
     "title": "My Reading Bookmark"
   },
-  "recent": "Recent",
   "recent-empty": "Start reading to see your recently read",
   "recently-saved": {
     "title": "Recently Saved"
   },
-  "saved": "Saved",
   "search": {
     "filter": "Filter",
     "placeholder": "Search Saved...",

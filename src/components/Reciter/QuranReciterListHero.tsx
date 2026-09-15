@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -27,13 +27,13 @@ const QuranReciterListHero: React.FC<QuranReciterListHeroProps> = ({
   className,
   ...props
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('reciter');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     onSearchQueryChange('');
     inputRef.current?.focus();
-  };
+  }, [onSearchQueryChange]);
 
   return (
     <div className={classNames(styles.outerContainer, className)} {...props}>
@@ -68,6 +68,11 @@ const QuranReciterListHero: React.FC<QuranReciterListHeroProps> = ({
               className={styles.searchInput}
               value={searchQuery}
               onChange={(e) => onSearchQueryChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  handleClear();
+                }
+              }}
               placeholder={t('reciter:search-placeholder')}
               autoComplete="off"
               spellCheck="false"
@@ -84,14 +89,20 @@ const QuranReciterListHero: React.FC<QuranReciterListHeroProps> = ({
                 <IconClose />
               </Button>
             ) : (
-              <div className={styles.shortcutBadge}>⌘K</div>
+              <div className={styles.shortcutBadge} aria-hidden="true">
+                ⌘K
+              </div>
             )}
           </div>
         </div>
 
         {/* Filter Pills */}
         {onFilterChange && (
-          <div className={styles.filterPillsContainer} role="tablist" aria-label="Reciter Filters">
+          <div
+            className={styles.filterPillsContainer}
+            role="tablist"
+            aria-label={t('reciter:filter-reciters-aria')}
+          >
             <button
               type="button"
               role="tab"

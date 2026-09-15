@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -30,10 +30,10 @@ const RadioHero: React.FC<RadioHeroProps> = ({
   const { t } = useTranslation('radio');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     onSearchQueryChange('');
     inputRef.current?.focus();
-  };
+  }, [onSearchQueryChange]);
 
   return (
     <div className={classNames(styles.outerContainer, className)} {...props}>
@@ -68,6 +68,11 @@ const RadioHero: React.FC<RadioHeroProps> = ({
               className={styles.searchInput}
               value={searchQuery}
               onChange={(e) => onSearchQueryChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  handleClear();
+                }
+              }}
               placeholder={t('radio:search-placeholder')}
               autoComplete="off"
               spellCheck="false"
@@ -84,14 +89,20 @@ const RadioHero: React.FC<RadioHeroProps> = ({
                 <IconClose />
               </Button>
             ) : (
-              <div className={styles.shortcutBadge}>⌘K</div>
+              <div className={styles.shortcutBadge} aria-hidden="true">
+                ⌘K
+              </div>
             )}
           </div>
         </div>
 
         {/* Filter Pills */}
         {onFilterChange && (
-          <div className={styles.filterPillsContainer} role="tablist" aria-label="Radio Station Filters">
+          <div
+            className={styles.filterPillsContainer}
+            role="tablist"
+            aria-label={t('radio:filter-stations-aria')}
+          >
             <button
               type="button"
               role="tab"

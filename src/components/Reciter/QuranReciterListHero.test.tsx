@@ -110,5 +110,19 @@ describe('QuranReciterListHero', () => {
     fireEvent.click(availablePill);
     expect(onFilterChange).toHaveBeenCalledWith('available');
   });
+
+  it('clears search input when Escape is pressed', () => {
+    const onSearchQueryChange = vi.fn();
+    render(
+      <QuranReciterListHero
+        searchQuery="Parhizgar"
+        onSearchQueryChange={onSearchQueryChange}
+      />,
+    );
+
+    const input = screen.getByRole('textbox', { name: /search/i });
+    fireEvent.keyDown(input, { key: 'Escape' });
+    expect(onSearchQueryChange).toHaveBeenCalledWith('');
+  });
 });
 

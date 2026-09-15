@@ -16,5 +16,6 @@
   "badge-available": "تلاوة كاملة",
   "badge-coming-soon": "قريباً",
   "unavailable-tooltip": "التسجيلات الصوتية لهذا القارئ ستتوفر قريباً.",
+  "filter-reciters-aria": "تصفية القراء",
   "no-results": "لم يتم العثور على أي قارئ مطابق للبحث."
 }

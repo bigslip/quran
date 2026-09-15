@@ -83,6 +83,11 @@ const ReciterStationList: React.FC<ReciterStationListProps> = ({ reciters, class
               onClick={isAvailable ? handlePlayStation : undefined}
               role={isAvailable ? 'button' : undefined}
               tabIndex={isAvailable ? 0 : -1}
+              aria-label={
+                isAvailable
+                  ? `${isStationPlaying ? t('common:audio.pause') : t('common:audio.play')} - ${reciterName}`
+                  : undefined
+              }
               onKeyDown={(e) => {
                 if (isAvailable && (e.key === 'Enter' || e.key === ' ')) {
                   e.preventDefault();

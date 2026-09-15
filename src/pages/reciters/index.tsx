@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import { GetStaticProps } from 'next';
@@ -61,10 +61,10 @@ const RecitersListPage = ({ reciters = [] }: { reciters?: Reciter[] }) => {
     return result;
   }, [reciters, searchQuery, activeFilter]);
 
-  const handleResetFilters = () => {
+  const handleResetFilters = useCallback(() => {
     setSearchQuery('');
     setActiveFilter('all');
-  };
+  }, []);
 
   return (
     <>

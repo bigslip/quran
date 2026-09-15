@@ -16,5 +16,6 @@
   "badge-available": "Full Audio",
   "badge-coming-soon": "Coming Soon",
   "unavailable-tooltip": "Audio files for this reciter will be added soon.",
+  "filter-reciters-aria": "Reciter filters",
   "no-results": "No reciters found matching your search."
 }

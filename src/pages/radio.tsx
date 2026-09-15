@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { GetStaticProps } from 'next';
 import useTranslation from 'next-translate/useTranslation';
@@ -70,10 +70,10 @@ const RadioPage = ({ reciters = [] }: RadioPageProps) => {
 
   const hasAnyResults = filteredCuratedStations.length > 0 || filteredReciters.length > 0;
 
-  const handleResetFilters = () => {
+  const handleResetFilters = useCallback(() => {
     setSearchQuery('');
     setActiveFilter('all');
-  };
+  }, []);
 
   return (
     <>
@@ -107,7 +107,7 @@ const RadioPage = ({ reciters = [] }: RadioPageProps) => {
                   </h2>
                 </div>
                 <div className={layoutStyle.fullWidth}>
-                  <CuratedStationList />
+                  <CuratedStationList stations={filteredCuratedStations} />
                 </div>
               </div>
             )}

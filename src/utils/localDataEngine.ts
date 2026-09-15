@@ -1052,6 +1052,10 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
 
         return {
           ...r,
+          profilePicture: r.profile_picture || r.profilePicture,
+          profile_picture: r.profile_picture || r.profilePicture,
+          reciterId: r.reciter_id || r.reciterId || r.id,
+          reciter_id: r.reciter_id || r.reciterId || r.id,
           is_available: isAvailable,
           isAvailable,
           has_audio: isAvailable,
