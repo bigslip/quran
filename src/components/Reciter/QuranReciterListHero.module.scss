@@ -169,6 +169,16 @@
   font-size: var(--font-size-small-px);
   font-family: inherit;
   min-inline-size: 0;
+  box-shadow: none;
+
+  &:focus,
+  &:focus-visible,
+  &:active {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
 
   &::placeholder {
     color: var(--color-text-secondary);
