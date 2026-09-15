@@ -1,4 +1,10 @@
-import { ScopedMutator, Cache } from 'swr/dist/types';
+export type ScopedMutator<T = any> = (key: any, data?: any, opts?: any) => Promise<any>;
+export type Cache<T = any> = {
+  get?: (key: string) => any;
+  set?: (key: string, value: any) => void;
+  delete?: (key: string) => void;
+  keys?: () => string[];
+};
 
 import { GetAllNotesResponse, Note } from '@/types/auth/Note';
 import { makeGetNoteByIdUrl, makeGetNotesByVerseUrl, makeNotesUrl } from '@/utils/auth/apiPaths';

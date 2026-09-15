@@ -31,9 +31,6 @@ const withPWAConfig = withPWA({
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   modularizeImports: {
     lodash: {
       transform: 'lodash/{{member}}',
@@ -41,19 +38,16 @@ const nextConfig = {
   },
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: [
-      'cdn.qurancdn.com',
-      'static.qurancdn.com',
-      'vercel.com',
-      'now.sh',
-      'quran.ir',
-      'images.quran.ir',
-      // Google OAuth user avatars
-      'lh3.googleusercontent.com',
-      // S3-hosted avatars (generic domain required for OAuth providers)
-      's3.amazonaws.com',
-      // Facebook OAuth user avatars
-      'platform-lookaside.fbsbx.com',
+    remotePatterns: [
+      { protocol: 'https', hostname: 'cdn.qurancdn.com' },
+      { protocol: 'https', hostname: 'static.qurancdn.com' },
+      { protocol: 'https', hostname: 'vercel.com' },
+      { protocol: 'https', hostname: 'now.sh' },
+      { protocol: 'https', hostname: 'quran.ir' },
+      { protocol: 'https', hostname: 'images.quran.ir' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'https', hostname: 's3.amazonaws.com' },
+      { protocol: 'https', hostname: 'platform-lookaside.fbsbx.com' },
     ],
   },
   webpack: (webpackConfig) => {
