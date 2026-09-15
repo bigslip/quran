@@ -13,6 +13,18 @@ export interface Chapter {
   pages_end: number;
 }
 
+export interface Juz {
+  juz_number: number;
+  page_start: number;
+  page_end: number;
+  verses_count: number;
+  first_chapter_id: number;
+  first_verse_key: string;
+  first_surah_name_arabic: string;
+  first_surah_name_fa: string;
+  preview_text: string;
+}
+
 export interface Verse {
   id: number;
   chapter_id: number;
