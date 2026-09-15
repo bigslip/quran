@@ -7,7 +7,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 
 import InlineWordByWord from '../InlineWordByWord';
-import { TooltipType } from '../Tooltip';
+import { ContentSide, TooltipType } from '../Tooltip';
 
 import getTooltipText from './getToolTipText';
 import GlyphWord from './GlyphWord';
@@ -452,6 +452,8 @@ const QuranWord = ({
 
             return (
               <MobilePopover
+                isContainerSpan
+                contentSide={ContentSide.TOP}
                 icon={<ArrowIcon />}
                 isOpen={isTooltipOpen ? true : undefined}
                 defaultStyling={false}
