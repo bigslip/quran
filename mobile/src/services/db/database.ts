@@ -8,7 +8,7 @@ let initPromise: Promise<SQLite.SQLiteDatabase> | null = null;
 
 /**
  * Initializes and opens the offline pre-bundled Quran SQLite database.
- * On first app run, copies the pre-bundled `assets/data/quran.db` into the app's SQLite directory.
+ * Ensures the database contains all 114 Surahs and words table, otherwise imports/overwrites from the bundled asset.
  */
 export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
   if (dbInstance) {
@@ -19,31 +19,75 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
     return initPromise;
   }
 
-  initPromise = (async () => {
-    const dbDir = `${FileSystem.documentDirectory}SQLite/`;
-    const dbPath = `${dbDir}${DB_NAME}`;
+  initPromise = (async (): Promise<SQLite.SQLiteDatabase> => {
+    let db: SQLite.SQLiteDatabase | null = null;
+    let isValid = false;
 
-    const dirInfo = await FileSystem.getInfoAsync(dbDir);
-    if (!dirInfo.exists) {
-      await FileSystem.makeDirectoryAsync(dbDir, { intermediates: true });
-    }
-
-    const fileInfo = await FileSystem.getInfoAsync(dbPath);
-    if (!fileInfo.exists) {
-      // Copy bundled asset to local SQLite storage
-      const asset = Asset.fromModule(require('../../../assets/data/quran.db'));
-      await asset.downloadAsync();
-      if (asset.localUri) {
-        await FileSystem.copyAsync({
-          from: asset.localUri,
-          to: dbPath,
-        });
+    try {
+      db = await SQLite.openDatabaseAsync(DB_NAME);
+      const test = await db.getFirstAsync<{ count: number }>(
+        "SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='chapters';"
+      );
+      if (test && test.count > 0) {
+        const row = await db.getFirstAsync<{ count: number }>("SELECT count(*) as count FROM chapters;");
+        if (row && row.count === 114) {
+          isValid = true;
+        }
       }
+    } catch {
+      isValid = false;
     }
 
-    dbInstance = await SQLite.openDatabaseAsync(DB_NAME);
+    if (!isValid) {
+      if (db) {
+        try {
+          await db.closeAsync();
+        } catch {}
+      }
+
+      // Try expo-sqlite's built-in asset import first with forceOverwrite
+      try {
+        await SQLite.importDatabaseFromAssetAsync(DB_NAME, {
+          assetId: require('../../../assets/data/quran.db'),
+          forceOverwrite: true,
+        });
+      } catch (importErr) {
+        console.warn('importDatabaseFromAssetAsync fallback to manual copy:', importErr);
+        // Fallback to manual FileSystem copy
+        const dbDir = `${FileSystem.documentDirectory}SQLite/`;
+        const dbPath = `${dbDir}${DB_NAME}`;
+        await FileSystem.makeDirectoryAsync(dbDir, { intermediates: true });
+        const asset = await Asset.fromModule(require('../../../assets/data/quran.db')).downloadAsync();
+        if (asset.localUri) {
+          await FileSystem.copyAsync({
+            from: asset.localUri,
+            to: dbPath,
+          });
+        }
+      }
+
+      // Re-open database after import
+      db = await SQLite.openDatabaseAsync(DB_NAME);
+    }
+
+    if (!db) {
+      throw new Error('Failed to initialize SQLite database');
+    }
+
+    dbInstance = db;
     return dbInstance;
   })();
 
   return initPromise;
+}
+
+/**
+ * Closes the active database connection.
+ */
+export async function closeDatabase(): Promise<void> {
+  if (dbInstance) {
+    await dbInstance.closeAsync();
+    dbInstance = null;
+  }
+  initPromise = null;
 }
