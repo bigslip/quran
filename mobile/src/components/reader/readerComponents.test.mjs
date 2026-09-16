@@ -15,6 +15,15 @@ import {
   formatSurahNumberBadge,
   formatSurahHeaderAccessibilityLabel,
   formatInfoButtonAccessibilityLabel,
+  formatVerseBadgeNumber,
+  formatContinuousVerseAccessibilityLabel,
+  formatMushafJuzTitle,
+  formatMushafPageTitle,
+  formatMushafSurahTitle,
+  formatMushafHeaderAccessibilityLabel,
+  groupWordsByLine,
+  CHAPTER_NAMES_FA,
+  getSurahNameFa,
 } from './readerContracts.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
 import { colors } from '../../theme/colors.ts';
@@ -335,6 +344,403 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
   });
 
+  describe('ContinuousVerseCard Component Contracts, Layout & Formatting', () => {
+    it('formats verse badge number in Persian digits for single, double, and triple digits', () => {
+      assert.strictEqual(formatVerseBadgeNumber(1), '۱');
+      assert.strictEqual(formatVerseBadgeNumber(7), '۷');
+      assert.strictEqual(formatVerseBadgeNumber(42), '۴۲');
+      assert.strictEqual(formatVerseBadgeNumber(110), '۱۱۰');
+      assert.strictEqual(formatVerseBadgeNumber(255), '۲۵۵');
+      assert.strictEqual(formatVerseBadgeNumber(286), '۲۸۶');
+    });
+
+    it('formats comprehensive accessibility label for ContinuousVerseCard with active translation info', () => {
+      const verse = { verse_number: 255, chapter_id: 2 };
+      assert.strictEqual(
+        formatContinuousVerseAccessibilityLabel(verse),
+        'آیه شماره ۲۵۵ از سوره ۲'
+      );
+      assert.strictEqual(
+        formatContinuousVerseAccessibilityLabel(verse, 'مکارم'),
+        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: مکارم'
+      );
+      assert.strictEqual(
+        formatContinuousVerseAccessibilityLabel(verse, 'انصاریان'),
+        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: انصاریان'
+      );
+      assert.strictEqual(
+        formatContinuousVerseAccessibilityLabel(verse, 'هردو'),
+        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: هردو'
+      );
+    });
+
+    it('verifies font scale scaling calculations and contracts', () => {
+      const { quranFontSize, quranLineHeightDefault, defaultFontScale } =
+        READER_COMPONENT_CONTRACTS.verseCard;
+
+      assert.strictEqual(quranFontSize, 26);
+      assert.strictEqual(quranLineHeightDefault, 54);
+      assert.strictEqual(defaultFontScale, 1.0);
+
+      // Scale 1.0 (default)
+      const scale1Size = Math.round(quranFontSize * 1.0);
+      const scale1LH = Math.round(quranLineHeightDefault * 1.0);
+      assert.strictEqual(scale1Size, 26);
+      assert.strictEqual(scale1LH, 54);
+      assert.ok(scale1LH >= 52 && scale1LH <= 56, 'Line height at scale 1.0 is ~52-56px');
+
+      // Scale 1.3
+      const scale13Size = Math.round(quranFontSize * 1.3);
+      const scale13LH = Math.round(quranLineHeightDefault * 1.3);
+      assert.strictEqual(scale13Size, 34);
+      assert.strictEqual(scale13LH, 70);
+
+      // Scale 0.8
+      const scale08Size = Math.round(quranFontSize * 0.8);
+      const scale08LH = Math.round(quranLineHeightDefault * 0.8);
+      assert.strictEqual(scale08Size, 21);
+      assert.strictEqual(scale08LH, 43);
+
+      // Scale 1.5
+      const scale15Size = Math.round(quranFontSize * 1.5);
+      const scale15LH = Math.round(quranLineHeightDefault * 1.5);
+      assert.strictEqual(scale15Size, 39);
+      assert.strictEqual(scale15LH, 81);
+    });
+
+    it('simulates translation switching logic (makarem, ansarian, both, none)', () => {
+      const sampleVerse = {
+        id: 1,
+        chapter_id: 1,
+        verse_number: 1,
+        verse_key: '1:1',
+        page_number: 1,
+        juz_number: 1,
+        hizb_number: 1,
+        rub_el_hizb_number: 1,
+        text_uthmani: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ',
+        translation_fa_makarem: 'به نام خداوند بخشنده بخشایشگر',
+        translation_fa_ansarian: 'به نام خدا که رحمتش بی‌اندازه است و مهربانی‌اش همیشگی',
+      };
+
+      function evaluateRenderedTranslations(showTranslation, activeTranslation, v) {
+        const renderMakarem =
+          showTranslation &&
+          (activeTranslation === 'makarem' || activeTranslation === 'both') &&
+          Boolean(v.translation_fa_makarem);
+        const renderAnsarian =
+          showTranslation &&
+          (activeTranslation === 'ansarian' || activeTranslation === 'both') &&
+          Boolean(v.translation_fa_ansarian);
+        return { renderMakarem, renderAnsarian };
+      }
+
+      // 1. activeTranslation === 'makarem'
+      const tMakarem = evaluateRenderedTranslations(true, 'makarem', sampleVerse);
+      assert.strictEqual(tMakarem.renderMakarem, true);
+      assert.strictEqual(tMakarem.renderAnsarian, false);
+
+      // 2. activeTranslation === 'ansarian'
+      const tAnsarian = evaluateRenderedTranslations(true, 'ansarian', sampleVerse);
+      assert.strictEqual(tAnsarian.renderMakarem, false);
+      assert.strictEqual(tAnsarian.renderAnsarian, true);
+
+      // 3. activeTranslation === 'both'
+      const tBoth = evaluateRenderedTranslations(true, 'both', sampleVerse);
+      assert.strictEqual(tBoth.renderMakarem, true);
+      assert.strictEqual(tBoth.renderAnsarian, true);
+
+      // 4. showTranslation === false
+      const tDisabled = evaluateRenderedTranslations(false, 'both', sampleVerse);
+      assert.strictEqual(tDisabled.renderMakarem, false);
+      assert.strictEqual(tDisabled.renderAnsarian, false);
+    });
+
+    it('verifies active playing state styling contract tokens', () => {
+      const { activeBorderColor, activeBackgroundColor } =
+        READER_COMPONENT_CONTRACTS.verseCard;
+
+      assert.strictEqual(activeBorderColor, '#10b981');
+      assert.strictEqual(activeBorderColor, colors.primary);
+      assert.strictEqual(activeBackgroundColor, 'rgba(10, 38, 30, 0.85)');
+      assert.strictEqual(activeBackgroundColor, colors.surfaceFloating);
+    });
+
+    it('verifies ContinuousVerseCard.tsx source code contracts and accessibility', () => {
+      const source = fs.readFileSync(
+        path.resolve(__dirname, './ContinuousVerseCard.tsx'),
+        'utf8'
+      );
+
+      // 1. Concentric geometric verse number badge in Persian digits
+      assert.ok(source.includes('badgeOuter'));
+      assert.ok(source.includes('badgeInner'));
+      assert.ok(source.includes('verseBadgeText'));
+      assert.ok(source.includes('formatVerseBadgeNumber(verse.verse_number)'));
+
+      // 2. Sacred Arabic text with selectable font and scaling
+      assert.ok(source.includes('arabicFontFamily'));
+      assert.ok(source.includes('fonts.quranHafs'));
+      assert.ok(source.includes('fonts.quranIndoPak'));
+      assert.ok(source.includes('scaledQuranFontSize'));
+      assert.ok(source.includes('scaledQuranLineHeight'));
+      assert.ok(source.includes('colors.textPrimary'));
+      assert.ok(source.includes('allowFontScaling={false}'));
+
+      // 3. Word-by-word inline view
+      assert.ok(source.includes('showWordByWord'));
+      assert.ok(source.includes('wbwFlowContainer'));
+      assert.ok(source.includes('wbwItemCard'));
+      assert.ok(source.includes('wbwGlossText'));
+      assert.ok(source.includes('word.translation_fa'));
+
+      // 4. Translation view with chips
+      assert.ok(source.includes('translationsContainer'));
+      assert.ok(source.includes('translationBlock'));
+      assert.ok(source.includes('translatorChip'));
+      assert.ok(source.includes('مکارم شیرازی'));
+      assert.ok(source.includes('حسین انصاریان'));
+      assert.ok(source.includes('verse.translation_fa_makarem'));
+      assert.ok(source.includes('verse.translation_fa_ansarian'));
+
+      // 5. 4 Action buttons with >= 44x44px touch targets
+      assert.ok(source.includes('onPlayVerse'));
+      assert.ok(source.includes('onBookmarkVerse'));
+      assert.ok(source.includes('onShareVerse'));
+      assert.ok(source.includes('onVerseInsights'));
+      assert.ok(source.includes('minWidth: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize'));
+      assert.ok(source.includes('minHeight: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize'));
+      assert.ok(source.includes('accessibilityRole="button"'));
+
+      // 6. Active playing state
+      assert.ok(source.includes('isActivePlaying'));
+      assert.ok(source.includes('cardActive'));
+      assert.ok(source.includes('cardInactive'));
+      assert.ok(source.includes('colors.surfaceFloating'));
+      assert.ok(source.includes('colors.primary'));
+    });
+  });
+
+  describe('MushafPageView Component Contracts, Line Grouping & Navigation', () => {
+    it('groups words by line across 15 lines for Page 1 (Al-Fatihah) from SQLite database', () => {
+      const page1Words = db
+        .prepare(
+          'SELECT * FROM words WHERE page_number = 1 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC'
+        )
+        .all();
+      assert.strictEqual(page1Words.length, 29);
+
+      const lineMap = groupWordsByLine(page1Words);
+      assert.strictEqual(lineMap.size, 15);
+
+      // On Page 1, lines 1..8 are decorative frame/headpiece, lines 9..15 contain all 29 words
+      for (let l = 1; l <= 8; l++) {
+        assert.strictEqual(lineMap.get(l).length, 0, `Line ${l} on Page 1 must be empty`);
+      }
+
+      let totalWordsInMap = 0;
+      for (let l = 9; l <= 15; l++) {
+        const wordsOnLine = lineMap.get(l);
+        assert.ok(wordsOnLine.length > 0, `Line ${l} on Page 1 must have words`);
+        totalWordsInMap += wordsOnLine.length;
+      }
+      assert.strictEqual(totalWordsInMap, 29);
+
+      // First word: Bismillah on line 9
+      assert.strictEqual(lineMap.get(9)[0].verse_key, '1:1');
+      assert.strictEqual(lineMap.get(9)[0].text_uthmani, 'بِسْمِ');
+
+      // Last word: Ad-Dallin on line 15
+      const line15Words = lineMap.get(15);
+      assert.strictEqual(line15Words[line15Words.length - 1].verse_key, '1:7');
+      assert.strictEqual(line15Words[line15Words.length - 1].text_uthmani, 'ٱلضَّآلِّينَ');
+    });
+
+    it('groups words by line across all 15 lines for Page 3 from SQLite database', () => {
+      const page3Words = db
+        .prepare(
+          'SELECT * FROM words WHERE page_number = 3 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC'
+        )
+        .all();
+      assert.ok(page3Words.length > 0);
+
+      const lineMap = groupWordsByLine(page3Words);
+      assert.strictEqual(lineMap.size, 15);
+
+      // All 15 lines on Page 3 must contain words
+      for (let l = 1; l <= 15; l++) {
+        const wordsOnLine = lineMap.get(l);
+        assert.ok(wordsOnLine.length > 0, `Line ${l} on Page 3 must have words`);
+        for (const w of wordsOnLine) {
+          assert.strictEqual(w.line_number, l);
+        }
+      }
+
+      // Check strict monotonic reading order inside every line
+      for (let l = 1; l <= 15; l++) {
+        const words = lineMap.get(l);
+        for (let i = 0; i < words.length - 1; i++) {
+          const curr = words[i];
+          const next = words[i + 1];
+          assert.ok(
+            curr.chapter_id < next.chapter_id ||
+              (curr.chapter_id === next.chapter_id && curr.verse_number < next.verse_number) ||
+              (curr.chapter_id === next.chapter_id &&
+                curr.verse_number === next.verse_number &&
+                curr.position < next.position),
+            `Line ${l} words must be in strict sequential reading order`
+          );
+        }
+      }
+    });
+
+    it('groups words across multi-Surah page (Page 604) correctly preserving line grouping', () => {
+      const page604Words = db
+        .prepare(
+          'SELECT * FROM words WHERE page_number = 604 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC'
+        )
+        .all();
+      assert.ok(page604Words.length > 0);
+
+      const lineMap = groupWordsByLine(page604Words);
+      assert.strictEqual(lineMap.size, 15);
+
+      // Page 604 contains Surahs 112 (Al-Ikhlas), 113 (Al-Falaq), and 114 (An-Nas)
+      const surahsFound = new Set();
+      for (let l = 1; l <= 15; l++) {
+        for (const w of lineMap.get(l)) {
+          surahsFound.add(w.chapter_id);
+        }
+      }
+      assert.ok(surahsFound.has(112));
+      assert.ok(surahsFound.has(113));
+      assert.ok(surahsFound.has(114));
+    });
+
+    it('handles edge cases for groupWordsByLine (empty input, unsorted input, invalid lines)', () => {
+      // Empty input
+      const emptyMap = groupWordsByLine([]);
+      assert.strictEqual(emptyMap.size, 15);
+      for (let l = 1; l <= 15; l++) {
+        assert.deepStrictEqual(emptyMap.get(l), []);
+      }
+
+      // Unsorted input is sorted in canonical reading order
+      const unsortedWords = [
+        { id: 2, line_number: 1, chapter_id: 1, verse_number: 1, position: 2, text_uthmani: 'ٱللَّهِ' },
+        { id: 1, line_number: 1, chapter_id: 1, verse_number: 1, position: 1, text_uthmani: 'بِسْمِ' },
+        { id: 3, line_number: 16, chapter_id: 1, verse_number: 1, position: 3, text_uthmani: 'invalid' }, // line 16 out of bounds
+      ];
+      const sortedMap = groupWordsByLine(unsortedWords);
+      assert.strictEqual(sortedMap.get(1).length, 2);
+      assert.strictEqual(sortedMap.get(1)[0].position, 1);
+      assert.strictEqual(sortedMap.get(1)[1].position, 2);
+      assert.strictEqual(sortedMap.has(16), false);
+    });
+
+    it('formats Mushaf page header titles in Persian digits', () => {
+      // Juz titles
+      assert.strictEqual(formatMushafJuzTitle(1), 'جزء ۱');
+      assert.strictEqual(formatMushafJuzTitle(15), 'جزء ۱۵');
+      assert.strictEqual(formatMushafJuzTitle(30), 'جزء ۳۰');
+
+      // Page titles
+      assert.strictEqual(formatMushafPageTitle(1), 'صفحه ۱');
+      assert.strictEqual(formatMushafPageTitle(2), 'صفحه ۲');
+      assert.strictEqual(formatMushafPageTitle(604), 'صفحه ۶۰۴');
+
+      // Surah titles
+      assert.strictEqual(formatMushafSurahTitle('فاتحه'), 'سوره فاتحه');
+      assert.strictEqual(formatMushafSurahTitle('سوره بقره'), 'سوره بقره');
+      assert.strictEqual(formatMushafSurahTitle(''), '');
+
+      // Header accessibility label
+      assert.strictEqual(
+        formatMushafHeaderAccessibilityLabel(1, 1, 'فاتحه'),
+        'صفحه ۱، جزء ۱، سوره فاتحه'
+      );
+      assert.strictEqual(
+        formatMushafHeaderAccessibilityLabel(604, 30, 'ناس'),
+        'صفحه ۶۰۴، جزء ۳۰، سوره ناس'
+      );
+    });
+
+    it('verifies CHAPTER_NAMES_FA and getSurahNameFa lookup across all 114 Surahs', () => {
+      assert.strictEqual(Object.keys(CHAPTER_NAMES_FA).length, 114);
+      assert.strictEqual(getSurahNameFa(1), 'فاتحه');
+      assert.strictEqual(getSurahNameFa(2), 'بقره');
+      assert.strictEqual(getSurahNameFa(3), 'آل عمران');
+      assert.strictEqual(getSurahNameFa(18), 'کهف');
+      assert.strictEqual(getSurahNameFa(36), 'یس');
+      assert.strictEqual(getSurahNameFa(55), 'الرحمن');
+      assert.strictEqual(getSurahNameFa(112), 'اخلاص');
+      assert.strictEqual(getSurahNameFa(113), 'فلق');
+      assert.strictEqual(getSurahNameFa(114), 'ناس');
+      assert.strictEqual(getSurahNameFa(999), '');
+    });
+
+    it('verifies MushafPageView.tsx source code structure, contracts, and touch targets', () => {
+      const source = fs.readFileSync(
+        path.resolve(__dirname, './MushafPageView.tsx'),
+        'utf8'
+      );
+
+      // 1. Header bar
+      assert.ok(source.includes('accessibilityRole="header"'));
+      assert.ok(source.includes('formatMushafJuzTitle'));
+      assert.ok(source.includes('formatMushafSurahTitle'));
+      assert.ok(source.includes('formatMushafPageTitle'));
+
+      // 2. 15-line physical layout
+      assert.ok(source.includes('READER_COMPONENT_CONTRACTS.mushafPage.totalLines'));
+      assert.ok(source.includes('groupWordsByLine'));
+      assert.ok(source.includes('linesList.map'));
+      assert.ok(source.includes('mushafLine'));
+      assert.ok(source.includes('flexDirection: \'row-reverse\''));
+
+      // 3. Interactive word selection
+      assert.ok(source.includes('onVersePress?.(word.verse_key)'));
+      assert.ok(source.includes('ayahEndMarker'));
+
+      // 4. Page navigation bottom controls with >= 44x44px touch targets
+      assert.ok(source.includes('onPrevPage'));
+      assert.ok(source.includes('onNextPage'));
+      assert.ok(source.includes('minWidth: READER_COMPONENT_CONTRACTS.mushafPage.navButtonSize'));
+      assert.ok(source.includes('minHeight: READER_COMPONENT_CONTRACTS.mushafPage.navButtonSize'));
+      assert.ok(source.includes('accessibilityLabel="صفحه قبلی"'));
+      assert.ok(source.includes('accessibilityLabel="صفحه بعدی"'));
+      assert.ok(source.includes('disabled={pageNumber >= 604}'));
+      assert.ok(source.includes('disabled={pageNumber <= 1}'));
+    });
+  });
+
+  describe('Dual-Mode Touch Targets & Accessibility Compliance (>= 44x44px)', () => {
+    it('verifies all reader components guarantee minimum touch target size >= 44x44px', () => {
+      const { minTouchTarget, surahHeader, bismillah, verseCard, mushafPage } =
+        READER_COMPONENT_CONTRACTS;
+
+      assert.strictEqual(minTouchTarget, 44);
+
+      // SurahHeaderBanner
+      assert.ok(surahHeader.infoButtonSize >= minTouchTarget);
+      assert.ok(surahHeader.emblemSize >= minTouchTarget);
+      assert.ok(surahHeader.minHeight >= minTouchTarget);
+
+      // BismillahBanner
+      assert.ok(bismillah.minHeight >= minTouchTarget);
+
+      // ContinuousVerseCard
+      assert.ok(verseCard.actionButtonSize >= minTouchTarget);
+      assert.strictEqual(verseCard.minTouchTarget, 44);
+
+      // MushafPageView
+      assert.ok(mushafPage.navButtonSize >= minTouchTarget);
+      assert.ok(mushafPage.headerMinHeight >= minTouchTarget);
+      assert.ok(mushafPage.footerMinHeight >= minTouchTarget);
+      assert.strictEqual(mushafPage.minTouchTarget, 44);
+    });
+  });
+
   describe('Reader Index Exports Contract', () => {
     it('verifies mobile/src/components/reader/index.ts exports all components and contracts', () => {
       const indexSource = fs.readFileSync(
@@ -344,7 +750,10 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
 
       assert.ok(indexSource.includes("export * from './SurahHeaderBanner'"));
       assert.ok(indexSource.includes("export * from './BismillahBanner'"));
+      assert.ok(indexSource.includes("export * from './ContinuousVerseCard'"));
+      assert.ok(indexSource.includes("export * from './MushafPageView'"));
       assert.ok(indexSource.includes("export * from './readerContracts'"));
     });
   });
 });
+
