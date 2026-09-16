@@ -689,4 +689,281 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(results.length, 0);
     });
   });
+
+  describe('Surahs Screen (surahs.tsx) Integration & State Filtering Tests', () => {
+    const surahsById = db.prepare('SELECT * FROM chapters ORDER BY id ASC;').all();
+    const surahsByRev = db.prepare('SELECT * FROM chapters ORDER BY revelation_order ASC;').all();
+    const rawJuzs = db.prepare(`
+      WITH juz_meta AS (
+        SELECT 
+          juz_number,
+          MIN(page_number) AS page_start,
+          MAX(page_number) AS page_end,
+          COUNT(id) AS verses_count,
+          MIN(id) AS first_verse_id
+        FROM verses
+        GROUP BY juz_number
+      ),
+      juz_surahs AS (
+        SELECT 
+          v.juz_number,
+          GROUP_CONCAT(DISTINCT c.name_fa) AS surah_names_fa,
+          GROUP_CONCAT(DISTINCT c.name_arabic) AS surah_names_arabic
+        FROM verses v
+        JOIN chapters c ON c.id = v.chapter_id
+        GROUP BY v.juz_number
+      )
+      SELECT 
+        jm.juz_number,
+        jm.page_start,
+        jm.page_end,
+        jm.verses_count,
+        v.chapter_id AS first_chapter_id,
+        v.verse_key AS first_verse_key,
+        c.name_arabic AS first_surah_name_arabic,
+        c.name_fa AS first_surah_name_fa,
+        SUBSTR(v.text_uthmani, 1, 60) AS preview_text,
+        TRIM(COALESCE(js.surah_names_fa, '') || ',' || COALESCE(js.surah_names_arabic, ''), ',') AS surah_names_text
+      FROM juz_meta jm
+      JOIN verses v ON v.id = jm.first_verse_id
+      JOIN chapters c ON c.id = v.chapter_id
+      LEFT JOIN juz_surahs js ON js.juz_number = jm.juz_number
+      ORDER BY jm.juz_number ASC;
+    `).all();
+
+    const juzs = rawJuzs.map((j) => ({
+      ...j,
+      surah_names: j.surah_names_text
+        ? j.surah_names_text.split(',').map((s) => s.trim()).filter(Boolean)
+        : [],
+    }));
+
+    const surahsScreenSource = fs.readFileSync(
+      path.resolve(__dirname, '../../app/(tabs)/surahs.tsx'),
+      'utf8'
+    );
+
+    it('verifies surahs.tsx source code contains required layout, headers, components, and virtualization props', () => {
+      // 1. Sanctuary Header with AmbientGlow height={220}
+      assert.ok(
+        surahsScreenSource.includes('<AmbientGlow height={220}'),
+        'surahs.tsx must render AmbientGlow with height={220}'
+      );
+
+      // 2. Title row: "فهرست قرآن" with counter badge
+      assert.ok(
+        surahsScreenSource.includes('فهرست قرآن'),
+        'surahs.tsx must render Sanctuary title "فهرست قرآن"'
+      );
+      assert.ok(
+        surahsScreenSource.includes('countBadge'),
+        'surahs.tsx must define countBadge in styles and JSX'
+      );
+
+      // 3. SearchBar with real-time query and onClear
+      assert.ok(
+        surahsScreenSource.includes('<SearchBar'),
+        'surahs.tsx must render SearchBar'
+      );
+      assert.ok(
+        surahsScreenSource.includes('onClear='),
+        'SearchBar must have onClear prop bound to clear query'
+      );
+
+      // 4. CatalogTabSwitcher with activeTab and onTabChange
+      assert.ok(
+        surahsScreenSource.includes('<CatalogTabSwitcher'),
+        'surahs.tsx must render CatalogTabSwitcher'
+      );
+      assert.ok(
+        surahsScreenSource.includes('activeTab={activeTab}'),
+        'CatalogTabSwitcher must bind activeTab state'
+      );
+      assert.ok(
+        surahsScreenSource.includes('onTabChange='),
+        'CatalogTabSwitcher must bind onTabChange handler'
+      );
+
+      // 5. ActivityIndicator for loading state
+      assert.ok(
+        surahsScreenSource.includes('<ActivityIndicator'),
+        'surahs.tsx must render ActivityIndicator during loading'
+      );
+      assert.ok(
+        surahsScreenSource.includes('colors.primary'),
+        'ActivityIndicator must use colors.primary'
+      );
+
+      // 6. FlatList with exact performance virtualization props
+      assert.ok(
+        surahsScreenSource.includes('initialNumToRender={12}'),
+        'FlatList must specify initialNumToRender={12}'
+      );
+      assert.ok(
+        surahsScreenSource.includes('maxToRenderPerBatch={12}'),
+        'FlatList must specify maxToRenderPerBatch={12}'
+      );
+      assert.ok(
+        surahsScreenSource.includes('windowSize={5}'),
+        'FlatList must specify windowSize={5}'
+      );
+      assert.ok(
+        surahsScreenSource.includes('removeClippedSubviews={true}'),
+        'FlatList must specify removeClippedSubviews={true}'
+      );
+
+      // 7. CatalogEmptyState rendering on empty results
+      assert.ok(
+        surahsScreenSource.includes('<CatalogEmptyState'),
+        'FlatList must configure CatalogEmptyState as ListEmptyComponent'
+      );
+      assert.ok(
+        surahsScreenSource.includes('onClearQuery='),
+        'CatalogEmptyState must receive onClearQuery handler'
+      );
+
+      // 8. Navigation handlers to /surah/[id] and first_chapter_id
+      assert.ok(
+        surahsScreenSource.includes('/surah/'),
+        'surahs.tsx must navigate to /surah/[id]'
+      );
+      assert.ok(
+        surahsScreenSource.includes('first_chapter_id'),
+        'Juz navigation must target first_chapter_id'
+      );
+    });
+
+    it('simulates canonical Surah tab: data filtering, counter badge, and card contracts', () => {
+      const activeTab = 'surah';
+
+      // Default state (no search)
+      const query = '';
+      const filtered = filterSurahs(surahsById, query);
+      assert.strictEqual(filtered.length, 114);
+      assert.strictEqual(filtered[0].id, 1);
+      assert.strictEqual(filtered[113].id, 114);
+
+      // Counter badge text
+      const countBadge = `${toPersianDigits(filtered.length)} سوره`;
+      assert.strictEqual(countBadge, '۱۱۴ سوره');
+
+      // Search by Persian name "کوثر"
+      const filteredKawthar = filterSurahs(surahsById, 'کوثر');
+      assert.strictEqual(filteredKawthar.length, 1);
+      assert.strictEqual(filteredKawthar[0].id, 108);
+      assert.strictEqual(filteredKawthar[0].name_arabic, 'الكوثر');
+      assert.strictEqual(`${toPersianDigits(filteredKawthar.length)} سوره`, '۱ سوره');
+
+      // Search by Persian numeral "۱۰۸"
+      const filteredNumPersian = filterSurahs(surahsById, '۱۰۸');
+      assert.ok(filteredNumPersian.some((s) => s.id === 108));
+
+      // Navigation target
+      const navRoute = getSurahNavigationRoute(filteredKawthar[0].id);
+      assert.strictEqual(navRoute, '/surah/108');
+    });
+
+    it('simulates revelation order tab: chronological sequence, rank badge, and canonical hints', () => {
+      const activeTab = 'revelation';
+
+      // Default state
+      const query = '';
+      const filtered = filterSurahs(surahsByRev, query);
+      assert.strictEqual(filtered.length, 114);
+
+      // First revealed is Surah Al-Alaq (id 96, revelation_order 1)
+      assert.strictEqual(filtered[0].id, 96);
+      assert.strictEqual(filtered[0].revelation_order, 1);
+      assert.strictEqual(formatSurahBadgeNumber(filtered[0], true), '۱');
+      assert.strictEqual(formatCanonicalSurahHint(filtered[0].id), '• شماره سوره: ۹۶');
+
+      // 5th revealed is Surah Al-Fatihah (id 1, revelation_order 5)
+      assert.strictEqual(filtered[4].id, 1);
+      assert.strictEqual(filtered[4].revelation_order, 5);
+      assert.strictEqual(formatSurahBadgeNumber(filtered[4], true), '۵');
+      assert.strictEqual(formatCanonicalSurahHint(filtered[4].id), '• شماره سوره: ۱');
+
+      // Last revealed is Surah An-Nasr (id 110, revelation_order 114)
+      assert.strictEqual(filtered[113].id, 110);
+      assert.strictEqual(filtered[113].revelation_order, 114);
+      assert.strictEqual(formatSurahBadgeNumber(filtered[113], true), '۱۱۴');
+      assert.strictEqual(formatCanonicalSurahHint(filtered[113].id), '• شماره سوره: ۱۱۰');
+
+      // Counter badge text
+      const countBadge = `${toPersianDigits(filtered.length)} سوره`;
+      assert.strictEqual(countBadge, '۱۱۴ سوره');
+    });
+
+    it('simulates Juz tab: 30 partitions, starting Surah pointers, and contained Surah recall', () => {
+      const activeTab = 'juz';
+
+      // Default state
+      const query = '';
+      const filtered = filterJuzs(juzs, query);
+      assert.strictEqual(filtered.length, 30);
+      assert.strictEqual(filtered[0].juz_number, 1);
+      assert.strictEqual(filtered[29].juz_number, 30);
+
+      // Counter badge text
+      const countBadge = `${toPersianDigits(filtered.length)} جزء`;
+      assert.strictEqual(countBadge, '۳۰ جزء');
+
+      // Search by Juz number "۳۰"
+      const filteredJuz30 = filterJuzs(juzs, '۳۰');
+      assert.strictEqual(filteredJuz30.length, 1);
+      assert.strictEqual(filteredJuz30[0].juz_number, 30);
+      assert.strictEqual(filteredJuz30[0].first_chapter_id, 78);
+      assert.strictEqual(getJuzNavigationRoute(filteredJuz30[0].first_chapter_id), '/surah/78');
+      assert.strictEqual(`${toPersianDigits(filteredJuz30.length)} جزء`, '۱ جزء');
+
+      // Search by contained Surah "ناس" -> matches Juz 30
+      const filteredNas = filterJuzs(juzs, 'ناس');
+      assert.ok(filteredNas.some((j) => j.juz_number === 30));
+
+      // Search by contained Surah "بقره" -> matches Juz 1, 2, and 3
+      const filteredBaqarah = filterJuzs(juzs, 'بقره');
+      assert.strictEqual(filteredBaqarah.length, 3);
+      assert.deepStrictEqual(filteredBaqarah.map((j) => j.juz_number), [1, 2, 3]);
+      assert.strictEqual(`${toPersianDigits(filteredBaqarah.length)} جزء`, '۳ جزء');
+    });
+
+    it('verifies empty state behavior when query matches zero items in any tab', () => {
+      const unmatchedQuery = 'کلمه_ناموجود_در_قرآن_xyz_123';
+
+      const emptySurahs = filterSurahs(surahsById, unmatchedQuery);
+      assert.strictEqual(emptySurahs.length, 0);
+      assert.strictEqual(`${toPersianDigits(emptySurahs.length)} سوره`, '۰ سوره');
+
+      const emptyRev = filterSurahs(surahsByRev, unmatchedQuery);
+      assert.strictEqual(emptyRev.length, 0);
+      assert.strictEqual(`${toPersianDigits(emptyRev.length)} سوره`, '۰ سوره');
+
+      const emptyJuz = filterJuzs(juzs, unmatchedQuery);
+      assert.strictEqual(emptyJuz.length, 0);
+      assert.strictEqual(`${toPersianDigits(emptyJuz.length)} جزء`, '۰ جزء');
+    });
+
+    it('verifies keyExtractor uniqueness across all 3 tabs without collisions', () => {
+      // Key extractor formula used in surahs.tsx:
+      // if ('juz_number' in item) return `juz-${item.juz_number}`;
+      // return `${activeTab}-${item.id}`;
+
+      // 1. Canonical surah tab
+      const surahKeys = surahsById.map((s) => `surah-${s.id}`);
+      assert.strictEqual(new Set(surahKeys).size, 114);
+
+      // 2. Revelation surah tab
+      const revKeys = surahsByRev.map((s) => `revelation-${s.id}`);
+      assert.strictEqual(new Set(revKeys).size, 114);
+
+      // 3. Juz tab
+      const juzKeys = juzs.map((j) => `juz-${j.juz_number}`);
+      assert.strictEqual(new Set(juzKeys).size, 30);
+
+      // Cross-tab collision check between all 3 sets
+      const allKeys = [...surahKeys, ...revKeys, ...juzKeys];
+      assert.strictEqual(new Set(allKeys).size, 114 + 114 + 30);
+    });
+  });
 });
+

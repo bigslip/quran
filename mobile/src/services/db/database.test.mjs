@@ -170,4 +170,106 @@ describe('Mobile Quran SQLite Database Tests', () => {
     }
     assert.strictEqual(totalVerses, 6236);
   });
+
+  it('should correctly order Surahs by canonical id vs revelation_order', () => {
+    // 1. Order by canonical id ASC
+    const byId = db.prepare('SELECT * FROM chapters ORDER BY id ASC;').all();
+    assert.strictEqual(byId.length, 114);
+    assert.strictEqual(byId[0].id, 1);
+    assert.strictEqual(byId[0].name_arabic, 'الفاتحة');
+    assert.strictEqual(byId[0].revelation_order, 5);
+
+    assert.strictEqual(byId[1].id, 2);
+    assert.strictEqual(byId[1].name_arabic, 'البقرة');
+
+    assert.strictEqual(byId[113].id, 114);
+    assert.strictEqual(byId[113].name_arabic, 'الناس');
+
+    // Verify all 1..114 are strictly monotonic by id
+    for (let i = 0; i < 114; i++) {
+      assert.strictEqual(byId[i].id, i + 1);
+    }
+
+    // 2. Order by revelation_order ASC
+    const byRev = db.prepare('SELECT * FROM chapters ORDER BY revelation_order ASC;').all();
+    assert.strictEqual(byRev.length, 114);
+
+    // 1st revealed Surah: Al-Alaq (id 96, revelation_order 1)
+    assert.strictEqual(byRev[0].id, 96);
+    assert.strictEqual(byRev[0].revelation_order, 1);
+    assert.strictEqual(byRev[0].name_arabic, 'العلق');
+
+    // 2nd revealed Surah: Al-Qalam (id 68, revelation_order 2)
+    assert.strictEqual(byRev[1].id, 68);
+    assert.strictEqual(byRev[1].revelation_order, 2);
+    assert.strictEqual(byRev[1].name_arabic, 'القلم');
+
+    // 3rd revealed Surah: Al-Muzzammil (id 73, revelation_order 3)
+    assert.strictEqual(byRev[2].id, 73);
+    assert.strictEqual(byRev[2].revelation_order, 3);
+
+    // 4th revealed Surah: Al-Muddaththir (id 74, revelation_order 4)
+    assert.strictEqual(byRev[3].id, 74);
+    assert.strictEqual(byRev[3].revelation_order, 4);
+
+    // 5th revealed Surah: Al-Fatihah (id 1, revelation_order 5)
+    assert.strictEqual(byRev[4].id, 1);
+    assert.strictEqual(byRev[4].revelation_order, 5);
+
+    // Last revealed Surah: An-Nasr (id 110, revelation_order 114)
+    assert.strictEqual(byRev[113].id, 110);
+    assert.strictEqual(byRev[113].revelation_order, 114);
+    assert.strictEqual(byRev[113].name_arabic, 'النصر');
+
+    // Verify all 1..114 revelation ranks are strictly monotonic without duplicates or gaps
+    for (let i = 0; i < 114; i++) {
+      assert.strictEqual(byRev[i].revelation_order, i + 1);
+    }
+
+    // Ensure both arrays contain the exact same set of chapters
+    const setById = new Set(byId.map((c) => c.id));
+    const setByRev = new Set(byRev.map((c) => c.id));
+    assert.strictEqual(setById.size, 114);
+    assert.strictEqual(setByRev.size, 114);
+    for (let id = 1; id <= 114; id++) {
+      assert.ok(setById.has(id));
+      assert.ok(setByRev.has(id));
+    }
+  });
+
+  it('should query Surahs by Juz accurately (getSurahsByJuz)', () => {
+    const getSurahsByJuzQuery = `
+      SELECT DISTINCT c.* FROM chapters c
+      JOIN verses v ON v.chapter_id = c.id
+      WHERE v.juz_number = ?
+      ORDER BY c.id ASC;
+    `;
+
+    // Juz 1: Contains Al-Fatihah (1) and Al-Baqarah (2)
+    const juz1Surahs = db.prepare(getSurahsByJuzQuery).all(1);
+    assert.strictEqual(juz1Surahs.length, 2);
+    assert.strictEqual(juz1Surahs[0].id, 1);
+    assert.strictEqual(juz1Surahs[1].id, 2);
+
+    // Juz 2: Contains only Al-Baqarah (2)
+    const juz2Surahs = db.prepare(getSurahsByJuzQuery).all(2);
+    assert.strictEqual(juz2Surahs.length, 1);
+    assert.strictEqual(juz2Surahs[0].id, 2);
+
+    // Juz 3: Contains Al-Baqarah (2) and Ali 'Imran (3)
+    const juz3Surahs = db.prepare(getSurahsByJuzQuery).all(3);
+    assert.strictEqual(juz3Surahs.length, 2);
+    assert.strictEqual(juz3Surahs[0].id, 2);
+    assert.strictEqual(juz3Surahs[1].id, 3);
+
+    // Juz 30: Contains 37 Surahs from 78 (An-Naba) to 114 (An-Nas)
+    const juz30Surahs = db.prepare(getSurahsByJuzQuery).all(30);
+    assert.strictEqual(juz30Surahs.length, 37);
+    assert.strictEqual(juz30Surahs[0].id, 78);
+    assert.strictEqual(juz30Surahs[36].id, 114);
+    for (let i = 0; i < 37; i++) {
+      assert.strictEqual(juz30Surahs[i].id, 78 + i);
+    }
+  });
 });
+
