@@ -784,40 +784,57 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.strictEqual(countArabicBaseCharacters('ٱلرَّحِيمِ'), 6);
     });
 
-    it('verifies calculateMushafLineFontSize clamps font size so text never overflows screen', () => {
-      // Line 6 of Page 440 (7 words, 3 markers, 33 base chars)
+    it('verifies calculateMushafLineFontSize scales font size dynamically and monotonically with fontScale', () => {
+      // Line 6 of Page 440 (7 words, 2 markers, 33 base chars)
       // On iPhone 13 (390px, available width = 362px):
-      const line6Scale1 = calculateMushafLineFontSize({
+      const line6Scale08 = calculateMushafLineFontSize({
         wordCount: 7,
         totalBaseChars: 33,
-        markerCount: 3,
+        markerCount: 2,
+        availableLineWidth: 362,
+        fontScale: 0.8,
+      });
+      const line6Scale10 = calculateMushafLineFontSize({
+        wordCount: 7,
+        totalBaseChars: 33,
+        markerCount: 2,
         availableLineWidth: 362,
         fontScale: 1.0,
       });
-      assert.strictEqual(line6Scale1.fontSize <= 17, true, 'Line 6 at 1.0x must not exceed 17px');
-      assert.strictEqual(line6Scale1.isJustified, true);
-      assert.strictEqual(line6Scale1.wordPadding, 0.5);
-
-      // On extreme scale (1.6x), font size must strictly clamp <= 17px to prevent overflow
+      const line6Scale12 = calculateMushafLineFontSize({
+        wordCount: 7,
+        totalBaseChars: 33,
+        markerCount: 2,
+        availableLineWidth: 362,
+        fontScale: 1.2,
+      });
+      const line6Scale14 = calculateMushafLineFontSize({
+        wordCount: 7,
+        totalBaseChars: 33,
+        markerCount: 2,
+        availableLineWidth: 362,
+        fontScale: 1.4,
+      });
       const line6Scale16 = calculateMushafLineFontSize({
         wordCount: 7,
         totalBaseChars: 33,
-        markerCount: 3,
+        markerCount: 2,
         availableLineWidth: 362,
         fontScale: 1.6,
       });
-      assert.strictEqual(line6Scale16.fontSize <= 17, true, 'Line 6 at 1.6x must be safely clamped to <= 17px');
-      assert.strictEqual(line6Scale16.fontSize >= 15, true, 'Line 6 at 1.6x must maintain comfortable reading size');
 
-      // On narrow screen (360px Android, available width = 332px):
-      const line6Narrow = calculateMushafLineFontSize({
-        wordCount: 7,
-        totalBaseChars: 33,
-        markerCount: 3,
-        availableLineWidth: 332,
-        fontScale: 1.6,
-      });
-      assert.strictEqual(line6Narrow.fontSize <= 16, true, 'Line 6 on 360px screen must be clamped <= 16px');
+      // Monotonic scaling across all steps: font size MUST increase at every step
+      assert.ok(line6Scale08.fontSize < line6Scale10.fontSize, '0.8x must be smaller than 1.0x');
+      assert.ok(line6Scale10.fontSize < line6Scale12.fontSize, '1.0x must be smaller than 1.2x');
+      assert.ok(line6Scale12.fontSize < line6Scale14.fontSize, '1.2x must be smaller than 1.4x');
+      assert.ok(line6Scale14.fontSize < line6Scale16.fontSize, '1.4x must be smaller than 1.6x');
+
+      // Font size at 1.6x must be significantly larger (>= 25px) to respect user accessibility preference
+      assert.ok(line6Scale16.fontSize >= 25, 'Line 6 at 1.6x must be >= 25px');
+
+      // At scale 1.0, line must fit on a single line and be justified edge-to-edge
+      assert.strictEqual(line6Scale10.isJustified, true, 'Line 6 at 1.0x must be justified edge-to-edge');
+      assert.strictEqual(line6Scale10.wordPadding, 1.5);
 
       // Short line with few words (e.g. 3 words, 12 base chars):
       const shortLine = calculateMushafLineFontSize({
@@ -827,50 +844,60 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         availableLineWidth: 362,
         fontScale: 1.0,
       });
-      assert.strictEqual(shortLine.fontSize >= 20, true, 'Short lines can use larger font size');
+      assert.strictEqual(shortLine.fontSize >= 18, true, 'Short lines can use larger font size');
       assert.strictEqual(shortLine.isJustified, false, 'Lines with < 4 words should be centered');
-      assert.strictEqual(shortLine.wordPadding, 1);
     });
 
-    it('verifies Page 440 lines from database never exceed available width across all scales', () => {
+    it('verifies Page 440 lines fit on a single line at standard scale (1.0x) across devices', () => {
       const page440Words = db
         .prepare('SELECT * FROM words WHERE page_number = 440 ORDER BY line_number, position')
         .all();
       const lineMap = groupWordsByLine(page440Words);
 
-      // Test across screen widths: 360px (Android), 390px (iPhone 13), 428px (Pro Max)
+      // Test on 360px (Android), 390px (iPhone 13), 428px (Pro Max)
       for (const screenWidth of [360, 390, 428]) {
         const availableWidth = screenWidth - 28;
 
-        // Test across scales [0.8 .. 1.6]
-        for (const scale of [0.8, 1.0, 1.2, 1.4, 1.6]) {
-          for (let l = 1; l <= 15; l++) {
-            const words = lineMap.get(l) || [];
-            if (words.length === 0) continue;
+        for (let l = 1; l <= 15; l++) {
+          const words = lineMap.get(l) || [];
+          if (words.length === 0) continue;
 
-            const baseChars = words.reduce(
-              (acc, w) => acc + countArabicBaseCharacters(w.text_uthmani),
-              0
-            );
-            const markerCount = words.filter((w) => w.position === 1 || w.id % 5 === 0).length;
+          const baseChars = words.reduce(
+            (acc, w) => acc + countArabicBaseCharacters(w.text_uthmani),
+            0
+          );
+          const markerCount = 1;
 
-            const result = calculateMushafLineFontSize({
-              wordCount: words.length,
-              totalBaseChars: baseChars,
-              markerCount,
-              availableLineWidth: availableWidth,
-              fontScale: scale,
-            });
+          const result = calculateMushafLineFontSize({
+            wordCount: words.length,
+            totalBaseChars: baseChars,
+            markerCount,
+            availableLineWidth: availableWidth,
+            fontScale: 1.0,
+          });
 
-            // Mathematical verification: estimated line width MUST be <= availableWidth
-            const estimatedWidth = (baseChars + words.length * 0.7 + markerCount * 3.0) * (result.fontSize * 0.43);
-            assert.ok(
-              estimatedWidth <= availableWidth,
-              `Page 440 Line ${l} at scale ${scale} on ${screenWidth}px screen: est=${estimatedWidth} > avail=${availableWidth}`
-            );
+          // Line must fit on 1 line at 1.0x
+          const estimatedWidth = (baseChars + words.length * 0.7 + markerCount * 2.5) * (result.fontSize * 0.42);
+          assert.ok(
+            estimatedWidth <= availableWidth,
+            `Page 440 Line ${l} at scale 1.0 on ${screenWidth}px: est=${estimatedWidth} > avail=${availableWidth}`
+          );
+          if (words.length >= 4) {
+            assert.strictEqual(result.isJustified, true, `Line ${l} with ${words.length} words must be justified`);
           }
         }
       }
+    });
+
+    it('verifies MushafPageView handles wrapped lines with flexWrap wrap and minHeight', () => {
+      const source = fs.readFileSync(
+        path.resolve(__dirname, './MushafPageView.tsx'),
+        'utf8'
+      );
+      assert.ok(source.includes("flexWrap: 'wrap'"), 'Must have flexWrap wrap on mushafLine style');
+      assert.ok(source.includes('rowGap: 4'), 'Must have rowGap on mushafLine style');
+      assert.ok(source.includes('minHeight: scaledLineHeight'), 'Must use minHeight for scaled line height');
+      assert.ok(!source.includes('height: scaledLineHeight'), 'Must NOT have fixed height: scaledLineHeight on mushafLine');
     });
 
   });

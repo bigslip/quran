@@ -250,7 +250,6 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                     styles.mushafLine,
                     {
                       minHeight: scaledLineHeight,
-                      height: scaledLineHeight,
                       justifyContent: isJustified ? 'space-between' : 'center',
                     },
                   ]}
@@ -325,7 +324,6 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                     styles.surahCartoucheContainer,
                     {
                       minHeight: scaledLineHeight,
-                      height: scaledLineHeight,
                     },
                   ]}
                   testID={`${testID}-line-${lineNum}-surah-cartouche`}
@@ -373,7 +371,6 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                     styles.bismillahLineContainer,
                     {
                       minHeight: scaledLineHeight,
-                      height: scaledLineHeight,
                     },
                   ]}
                   testID={`${testID}-line-${lineNum}-bismillah`}
@@ -410,7 +407,6 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                   styles.mushafLineEmpty,
                   {
                     minHeight: scaledLineHeight,
-                    height: scaledLineHeight,
                   },
                 ]}
                 testID={`${testID}-line-${lineNum}`}
@@ -539,14 +535,14 @@ const styles = StyleSheet.create({
   },
   mushafLine: {
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
-    height: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 0.5,
     borderBottomColor: colors.borderSeparator,
-    paddingVertical: 1,
-    flexWrap: 'nowrap',
+    paddingVertical: 2,
+    flexWrap: 'wrap',
+    rowGap: 4,
   },
   mushafLineEmpty: {
     justifyContent: 'center',

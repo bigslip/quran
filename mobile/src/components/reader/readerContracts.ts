@@ -644,45 +644,35 @@ export function calculateMushafLineFontSize(params: {
     fontScale = 1.0,
   } = params;
 
-  const totalItems = wordCount + markerCount;
   // Effective character weight: base glyphs + inter-word spacing + marker glyphs
-  const effectiveCharWeight = totalBaseChars + (wordCount * 0.7) + (markerCount * 3.0);
+  const effectiveCharWeight = totalBaseChars + (wordCount * 0.7) + (markerCount * 2.5);
 
-  // Maximum safe font size that physically fits availableLineWidth with 0.43 char width coefficient
-  const safeAvailWidth = Math.max(240, availableLineWidth - 6);
-  const maxSafeFontSize = Math.floor(safeAvailWidth / Math.max(1, effectiveCharWeight * 0.43));
+  // Compute ideal font size at 1.0x scale that fits this line on a single row
+  const idealSingleLineWidth = Math.floor(
+    availableLineWidth / Math.max(1, effectiveCharWeight * 0.42)
+  );
 
-  // Base font size targets based on items count
-  let baseTarget: number;
-  if (totalItems <= 4) {
-    baseTarget = 22;
-  } else if (totalItems <= 6) {
-    baseTarget = 20;
-  } else if (totalItems <= 8) {
-    baseTarget = 18;
-  } else if (totalItems <= 10) {
-    baseTarget = 16.5;
-  } else {
-    baseTarget = 15;
-  }
+  // Base font size target at 1.0x scale: clamped between 12px (for ultra-dense lines) and 20px (for short lines)
+  const baseTarget = Math.max(12, Math.min(20, idealSingleLineWidth));
 
-  // Scale target font size by user's fontScale
-  const desired = baseTarget * fontScale;
-
-  // Final font size clamped to safe upper bound to prevent horizontal overflow
-  const fontSize = Math.max(11, Math.min(maxSafeFontSize, Math.round(desired)));
+  // Directly scale by user's fontScale so EVERY step on the font scale stepper is respected!
+  const fontSize = Math.max(11, Math.round(baseTarget * fontScale));
 
   // Proportional line height: base 42px or scaled by font size
   const lineHeight = Math.max(
     READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
-    Math.round(fontSize * 2.3)
+    Math.round(fontSize * 2.2)
   );
 
-  // Dynamic word padding: reduced to 0 on dense lines so justification handles spacing
-  const wordPadding = wordCount >= 8 ? 0 : wordCount >= 6 ? 0.5 : 1;
+  // Dynamic word padding: reduced on dense lines so justification handles spacing
+  const wordPadding = wordCount >= 8 ? 0.5 : 1.5;
 
-  // Justify lines with 4 or more words from edge to edge
-  const isJustified = wordCount >= 4;
+  // Check if estimated line width at current fontSize fits on a single line
+  const estimatedLineWidth = effectiveCharWeight * fontSize * 0.42;
+  const fitsSingleLine = estimatedLineWidth <= availableLineWidth;
+
+  // Lines with >= 4 words that fit on a single line are justified edge-to-edge
+  const isJustified = wordCount >= 4 && fitsSingleLine;
 
   return {
     fontSize,
