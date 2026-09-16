@@ -83,3 +83,33 @@ export interface ReadingProgress {
   lastReadTimestamp: number;
   progressPercent: number;
 }
+
+export interface WordLinguisticInfo {
+  id: number;
+  verse_key: string;
+  position: number;
+  text_uthmani: string;
+  text_indopak?: string;
+  translation_fa: string;
+  root_arabic?: string;
+  lemma?: string;
+  part_of_speech?: string;
+}
+
+export interface TafsirExcerpt {
+  id: string;
+  author_name: string; // 'مکارم شیرازی (نمونه)' | 'علامه طباطبایی (المیزان)' | 'حجت‌الاسلام قرائتی (نور)'
+  title: string;
+  text: string;
+  points?: string[];
+}
+
+export interface AyahInsight {
+  verse_key: string;
+  chapter_id: number;
+  verse_number: number;
+  linguistic_summary: string;
+  contemplative_theme: string;
+  words: WordLinguisticInfo[];
+  tafsirs: TafsirExcerpt[];
+}

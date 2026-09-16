@@ -4,6 +4,17 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
+import {
+  setAyahDatabase,
+  getAyahInsight,
+  getWordLinguisticBreakdown,
+  getTafsirExcerpts,
+  savePersonalReflection,
+  getPersonalReflection,
+  clearPersonalReflections,
+  extractArabicRoot,
+  detectPartOfSpeech,
+} from './ayahInsightsService.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,6 +22,7 @@ const DB_PATH = path.resolve(__dirname, '../../../../mobile/assets/data/quran.db
 
 describe('Mobile Quran SQLite Database Tests', () => {
   const db = new DatabaseSync(DB_PATH);
+  setAyahDatabase(db);
 
   it('should contain all 114 Surahs with proper metadata', () => {
     const chapters = db.prepare('SELECT * FROM chapters ORDER BY id ASC').all();
@@ -546,6 +558,219 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.ok(storeCode.includes('setActiveVerseKey: (activeVerseKey) => set({ activeVerseKey })'));
       assert.ok(storeCode.includes('setIsPlaying: (isPlaying) => set({ isPlaying })'));
       assert.ok(storeCode.includes('setActiveTranslation: (activeTranslation) => set({ activeTranslation })'));
+    });
+  });
+
+  describe('Ayah Insights & Tadabbur Query Engine', () => {
+    it('should retrieve full Ayah insight for Figma reference Ayah 18:28 (Al-Kahf)', async () => {
+      const insight = await getAyahInsight('18:28');
+
+      assert.strictEqual(insight.verse_key, '18:28');
+      assert.strictEqual(insight.chapter_id, 18);
+      assert.strictEqual(insight.verse_number, 28);
+      assert.ok(insight.contemplative_theme.length > 0);
+      assert.ok(insight.linguistic_summary.length > 0);
+      assert.ok(insight.contemplative_theme.includes('پاک‌نهادان') || insight.contemplative_theme.includes('همنشینی'));
+      assert.ok(insight.linguistic_summary.includes('وَٱصْبِرْ') || insight.linguistic_summary.includes('يَدْعُونَ') || insight.linguistic_summary.includes('اخلاص'));
+
+      // Check words breakdown
+      assert.strictEqual(insight.words.length, 30);
+      assert.strictEqual(insight.words[0].position, 1);
+      assert.strictEqual(insight.words[0].text_uthmani, 'وَٱصْبِرْ');
+      assert.strictEqual(insight.words[0].root_arabic, 'صبر');
+
+      // Check Tafsir excerpts
+      assert.strictEqual(insight.tafsirs.length, 3);
+      const authors = insight.tafsirs.map((t) => t.author_name);
+      assert.ok(authors.includes('مکارم شیرازی (نمونه)'));
+      assert.ok(authors.includes('علامه طباطبایی (المیزان)'));
+      assert.ok(authors.includes('حجت‌الاسلام قرائتی (نور)'));
+
+      for (const tafsir of insight.tafsirs) {
+        assert.ok(tafsir.id.length > 0);
+        assert.ok(tafsir.title.length > 0);
+        assert.ok(tafsir.text.length > 0);
+        assert.ok(Array.isArray(tafsir.points) && tafsir.points.length > 0);
+      }
+    });
+
+    it('should retrieve full Ayah insight for benchmark Ayah 1:1 (Al-Fatihah)', async () => {
+      const insight = await getAyahInsight('1:1');
+
+      assert.strictEqual(insight.verse_key, '1:1');
+      assert.strictEqual(insight.chapter_id, 1);
+      assert.strictEqual(insight.verse_number, 1);
+      assert.ok(insight.contemplative_theme.includes('رحمت'));
+      assert.ok(insight.linguistic_summary.includes('بِسْمِ'));
+
+      // Check words breakdown
+      assert.strictEqual(insight.words.length, 4);
+      assert.deepStrictEqual(
+        insight.words.map((w) => w.text_uthmani),
+        ['بِسْمِ', 'ٱللَّهِ', 'ٱلرَّحْمَـٰنِ', 'ٱلرَّحِيمِ']
+      );
+      assert.deepStrictEqual(
+        insight.words.map((w) => w.translation_fa),
+        ['به نام', 'خداوند', 'بخشنده', 'مهربان']
+      );
+      assert.deepStrictEqual(
+        insight.words.map((w) => w.root_arabic),
+        ['سمو', 'اله', 'رحم', 'رحم']
+      );
+
+      // Check Tafsir excerpts
+      assert.strictEqual(insight.tafsirs.length, 3);
+      const [nemouneh, alMizan, noor] = insight.tafsirs;
+      assert.strictEqual(nemouneh.author_name, 'مکارم شیرازی (نمونه)');
+      assert.strictEqual(alMizan.author_name, 'علامه طباطبایی (المیزان)');
+      assert.strictEqual(noor.author_name, 'حجت‌الاسلام قرائتی (نور)');
+    });
+
+    it('should extract word linguistic breakdown preserving position ordering, roots, and Persian glosses', async () => {
+      const words = await getWordLinguisticBreakdown('18:28');
+      assert.strictEqual(words.length, 30);
+
+      // Strictly ordered by position ASC from 1 to 30
+      for (let i = 0; i < words.length; i++) {
+        assert.strictEqual(words[i].position, i + 1);
+        assert.strictEqual(words[i].verse_key, '18:28');
+        assert.ok(typeof words[i].text_uthmani === 'string' && words[i].text_uthmani.length > 0);
+        assert.ok(typeof words[i].translation_fa === 'string' && words[i].translation_fa.length > 0);
+        assert.ok(typeof words[i].root_arabic === 'string' && words[i].root_arabic.length > 0);
+        assert.ok(typeof words[i].part_of_speech === 'string' && words[i].part_of_speech.length > 0);
+      }
+
+      // Check specific linguistic markers
+      const w1 = words[0]; // وَٱصْبِرْ
+      assert.strictEqual(w1.text_uthmani, 'وَٱصْبِرْ');
+      assert.strictEqual(w1.root_arabic, 'صبر');
+      assert.strictEqual(w1.lemma, 'صبر');
+      assert.ok(w1.part_of_speech.includes('فعل'));
+      assert.ok(w1.translation_fa.includes('نگاه دار') || w1.translation_fa.includes('شکیبا'));
+
+      const w2 = words[1]; // نَفْسَكَ
+      assert.strictEqual(w2.text_uthmani, 'نَفْسَكَ');
+      assert.strictEqual(w2.root_arabic, 'نفس');
+      assert.ok(w2.translation_fa.includes('خویش'));
+
+      const w6 = words[5]; // رَبَّهُم
+      assert.strictEqual(w6.root_arabic, 'ربب');
+
+      const w25 = words[24]; // ذِكْرِنَا
+      assert.strictEqual(w25.root_arabic, 'ذكر');
+
+      const w29 = words[28]; // أَمْرُهُۥ
+      assert.strictEqual(w29.root_arabic, 'امر');
+
+      const w30 = words[29]; // فُرُطًۭا
+      assert.strictEqual(w30.root_arabic, 'فرط');
+    });
+
+    it('should return 3 distinct Persian Tafsir excerpts (Nemouneh, Al-Mizan, Noor) with title and points', async () => {
+      // 1. Curated benchmark Ayah
+      const excerptsCurated = await getTafsirExcerpts('18:28');
+      assert.strictEqual(excerptsCurated.length, 3);
+      assert.strictEqual(excerptsCurated[0].id, 'nemouneh');
+      assert.strictEqual(excerptsCurated[0].author_name, 'مکارم شیرازی (نمونه)');
+      assert.ok(excerptsCurated[0].points.length >= 3);
+
+      assert.strictEqual(excerptsCurated[1].id, 'al-mizan');
+      assert.strictEqual(excerptsCurated[1].author_name, 'علامه طباطبایی (المیزان)');
+      assert.ok(excerptsCurated[1].points.length >= 3);
+
+      assert.strictEqual(excerptsCurated[2].id, 'noor');
+      assert.strictEqual(excerptsCurated[2].author_name, 'حجت‌الاسلام قرائتی (نور)');
+      assert.ok(excerptsCurated[2].points.length >= 3);
+
+      // 2. Dynamic synthesized Ayah (e.g. 112:1)
+      const excerptsDynamic = await getTafsirExcerpts('112:1');
+      assert.strictEqual(excerptsDynamic.length, 3);
+      assert.deepStrictEqual(
+        excerptsDynamic.map((t) => t.id),
+        ['nemouneh', 'al-mizan', 'noor']
+      );
+      for (const t of excerptsDynamic) {
+        assert.ok(t.title.length > 0);
+        assert.ok(t.text.length > 0);
+        assert.ok(Array.isArray(t.points) && t.points.length > 0);
+      }
+    });
+
+    it('should persist and retrieve personal reflection notes (save, get, update, delete)', async () => {
+      clearPersonalReflections();
+
+      // Unset reflection returns null
+      const initial = await getPersonalReflection('18:28');
+      assert.strictEqual(initial, null);
+
+      // Save reflection note
+      const note1 = 'همنشینی با مخلصین و پرهیز از غفلت‌زدگان دنیاطلب (یادداشت اول)';
+      await savePersonalReflection('18:28', note1);
+      const retrieved1 = await getPersonalReflection('18:28');
+      assert.strictEqual(retrieved1, note1);
+
+      // Update reflection note
+      const note2 = 'ویرایش: استقامت در جمع اهل ذکر و دوری از زیورهای دنیا';
+      await savePersonalReflection('18:28', note2);
+      const retrieved2 = await getPersonalReflection('18:28');
+      assert.strictEqual(retrieved2, note2);
+
+      // Other Ayah remains null
+      const other = await getPersonalReflection('1:1');
+      assert.strictEqual(other, null);
+
+      // Clear reflection note by saving empty string
+      await savePersonalReflection('18:28', '');
+      const retrievedCleared = await getPersonalReflection('18:28');
+      assert.strictEqual(retrievedCleared, null);
+
+      // Verify SQLite persistence using an isolated in-memory database
+      const memDb = new DatabaseSync(':memory:');
+      await savePersonalReflection('18:28', 'تست ذخیره‌سازی در پایگاه داده SQLite', memDb);
+      clearPersonalReflections(); // Clear memory store to ensure fetch reads from SQLite table
+      const fromSqlite = await getPersonalReflection('18:28', memDb);
+      assert.strictEqual(fromSqlite, 'تست ذخیره‌سازی در پایگاه داده SQLite');
+    });
+
+    it('should verify ayahInsightsService.ts and types/quran.ts export contracts', () => {
+      const serviceFilePath = path.resolve(__dirname, 'ayahInsightsService.ts');
+      const serviceCode = fs.readFileSync(serviceFilePath, 'utf8');
+
+      // Exported functions
+      assert.ok(serviceCode.includes('export async function getWordLinguisticBreakdown('));
+      assert.ok(serviceCode.includes('export async function getTafsirExcerpts('));
+      assert.ok(serviceCode.includes('export async function getAyahInsight('));
+      assert.ok(serviceCode.includes('export async function savePersonalReflection('));
+      assert.ok(serviceCode.includes('export async function getPersonalReflection('));
+      assert.ok(serviceCode.includes('export function extractArabicRoot('));
+      assert.ok(serviceCode.includes('export function detectPartOfSpeech('));
+
+      // Types contract
+      const typesFilePath = path.resolve(__dirname, '../../types/quran.ts');
+      const typesCode = fs.readFileSync(typesFilePath, 'utf8');
+
+      assert.ok(typesCode.includes('export interface WordLinguisticInfo'));
+      assert.ok(typesCode.includes('root_arabic?: string;'));
+      assert.ok(typesCode.includes('lemma?: string;'));
+      assert.ok(typesCode.includes('part_of_speech?: string;'));
+
+      assert.ok(typesCode.includes('export interface TafsirExcerpt'));
+      assert.ok(typesCode.includes('author_name: string;'));
+      assert.ok(typesCode.includes('title: string;'));
+      assert.ok(typesCode.includes('text: string;'));
+      assert.ok(typesCode.includes('points?: string[];'));
+
+      assert.ok(typesCode.includes('export interface AyahInsight'));
+      assert.ok(typesCode.includes('verse_key: string;'));
+      assert.ok(typesCode.includes('linguistic_summary: string;'));
+      assert.ok(typesCode.includes('contemplative_theme: string;'));
+      assert.ok(typesCode.includes('words: WordLinguisticInfo[];'));
+      assert.ok(typesCode.includes('tafsirs: TafsirExcerpt[];'));
+
+      // Index exports contract
+      const indexFilePath = path.resolve(__dirname, 'index.ts');
+      const indexCode = fs.readFileSync(indexFilePath, 'utf8');
+      assert.ok(indexCode.includes("export * from './ayahInsightsService';"));
     });
   });
 });
