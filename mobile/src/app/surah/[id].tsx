@@ -20,6 +20,7 @@ import {
   AudioPlaybackDock,
   ReaderSettingsModal,
 } from '@/components/reader';
+import { AyahInsightsDrawer } from '../../components/insights';
 import { Chapter, Verse, Word } from '@/types/quran';
 import { getSurahById } from '@/services/db/surahService';
 import {
@@ -44,6 +45,8 @@ export default function SurahReaderScreen() {
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
   const [bookmarkedKeys, setBookmarkedKeys] = useState<Set<string>>(new Set());
+  const [selectedInsightVerse, setSelectedInsightVerse] = useState<Verse | null>(null);
+  const [isInsightsOpen, setIsInsightsOpen] = useState(false);
 
   // Zustand reading store
   const {
@@ -202,8 +205,14 @@ export default function SurahReaderScreen() {
     Share.share({ message: textToShare }).catch(() => {});
   }, []);
 
-  const handleVerseInsights = useCallback((_verse: Verse) => {
-    // Placeholder for verse insights / tadabbur drawer
+  const handleVerseInsights = useCallback((verse: Verse) => {
+    setSelectedInsightVerse(verse);
+    setIsInsightsOpen(true);
+  }, []);
+
+  const handleCloseInsights = useCallback(() => {
+    setIsInsightsOpen(false);
+    setSelectedInsightVerse(null);
   }, []);
 
   // Mushaf Page Navigation Handlers
@@ -390,6 +399,19 @@ export default function SurahReaderScreen() {
         onToggleWordByWord={toggleWordByWord}
         showTranslation={showTranslation}
         onToggleShowTranslation={toggleTranslation}
+      />
+
+      {/* Ayah Insights & Tadabbur Drawer */}
+      <AyahInsightsDrawer
+        visible={isInsightsOpen}
+        verse={selectedInsightVerse}
+        chapterNameFa={chapter?.name_fa}
+        onClose={handleCloseInsights}
+        onPlayVerse={handlePlayVerse}
+        onBookmarkVerse={handleBookmarkVerse}
+        isBookmarked={selectedInsightVerse ? bookmarkedKeys.has(selectedInsightVerse.verse_key) : false}
+        quranFont={quranFont}
+        testID="ayah-insights-drawer"
       />
     </View>
   );

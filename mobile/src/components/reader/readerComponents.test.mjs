@@ -1349,6 +1349,66 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       const p604Verses = db.prepare('SELECT * FROM verses WHERE page_number = 604').all();
       assert.strictEqual(p604Verses.length, 15); // Surahs 112 (4) + 113 (5) + 114 (6) = 15 verses
     });
+
+    it('verifies AyahInsightsDrawer integration, state management, and callback bindings', () => {
+      // 1. Component import and render
+      assert.ok(
+        surahScreenSource.includes('AyahInsightsDrawer'),
+        'Screen must import and render AyahInsightsDrawer'
+      );
+      assert.ok(
+        surahScreenSource.includes('<AyahInsightsDrawer'),
+        'Screen JSX must include <AyahInsightsDrawer'
+      );
+
+      // 2. State and handler definitions
+      assert.ok(
+        surahScreenSource.includes('selectedInsightVerse'),
+        'Screen must manage selectedInsightVerse state'
+      );
+      assert.ok(
+        surahScreenSource.includes('isInsightsOpen'),
+        'Screen must manage isInsightsOpen state'
+      );
+      assert.ok(
+        surahScreenSource.includes('handleVerseInsights'),
+        'Screen must implement handleVerseInsights'
+      );
+      assert.ok(
+        surahScreenSource.includes('handleCloseInsights'),
+        'Screen must implement handleCloseInsights'
+      );
+
+      // 3. Prop bindings
+      assert.ok(
+        surahScreenSource.includes('visible={isInsightsOpen}'),
+        'AyahInsightsDrawer must bind visible={isInsightsOpen}'
+      );
+      assert.ok(
+        surahScreenSource.includes('verse={selectedInsightVerse}'),
+        'AyahInsightsDrawer must bind verse={selectedInsightVerse}'
+      );
+      assert.ok(
+        surahScreenSource.includes('onClose={handleCloseInsights}'),
+        'AyahInsightsDrawer must bind onClose={handleCloseInsights}'
+      );
+      assert.ok(
+        surahScreenSource.includes('onPlayVerse={handlePlayVerse}'),
+        'AyahInsightsDrawer must bind onPlayVerse={handlePlayVerse}'
+      );
+      assert.ok(
+        surahScreenSource.includes('onBookmarkVerse={handleBookmarkVerse}'),
+        'AyahInsightsDrawer must bind onBookmarkVerse={handleBookmarkVerse}'
+      );
+      assert.ok(
+        surahScreenSource.includes('bookmarkedKeys.has(selectedInsightVerse.verse_key)'),
+        'AyahInsightsDrawer must derive isBookmarked from bookmarkedKeys'
+      );
+      assert.ok(
+        surahScreenSource.includes('testID="ayah-insights-drawer"'),
+        'AyahInsightsDrawer must have testID="ayah-insights-drawer"'
+      );
+    });
   });
 });
 

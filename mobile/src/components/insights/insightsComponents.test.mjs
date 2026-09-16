@@ -957,6 +957,185 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       assert.ok(readerIndexSource.includes("export * from '../insights/AyahInsightsDrawer'"));
     });
   });
+
+  describe('Screen Integration: Surah Reader Screen & AyahInsightsDrawer (Task 5)', () => {
+    const surahScreenPath = path.resolve(__dirname, '../../app/surah/[id].tsx');
+    const surahScreenSource = fs.readFileSync(surahScreenPath, 'utf8');
+
+    it('verifies surah/[id].tsx imports and renders AyahInsightsDrawer', () => {
+      assert.ok(
+        surahScreenSource.includes('AyahInsightsDrawer'),
+        'surah/[id].tsx must reference AyahInsightsDrawer'
+      );
+      assert.ok(
+        surahScreenSource.includes('import { AyahInsightsDrawer }') ||
+        surahScreenSource.includes('AyahInsightsDrawer,'),
+        'surah/[id].tsx must import AyahInsightsDrawer'
+      );
+      assert.ok(
+        surahScreenSource.includes('<AyahInsightsDrawer'),
+        'surah/[id].tsx must render <AyahInsightsDrawer in JSX'
+      );
+      assert.ok(
+        surahScreenSource.includes('testID="ayah-insights-drawer"'),
+        'AyahInsightsDrawer must have testID="ayah-insights-drawer"'
+      );
+    });
+
+    it('verifies state management (selectedInsightVerse, isInsightsOpen) and handlers (handleVerseInsights, handleCloseInsights)', () => {
+      assert.ok(
+        surahScreenSource.includes('selectedInsightVerse'),
+        'Must define selectedInsightVerse state'
+      );
+      assert.ok(
+        surahScreenSource.includes('isInsightsOpen'),
+        'Must define isInsightsOpen state'
+      );
+      assert.ok(
+        surahScreenSource.includes('handleVerseInsights'),
+        'Must implement handleVerseInsights callback'
+      );
+      assert.ok(
+        surahScreenSource.includes('handleCloseInsights'),
+        'Must implement handleCloseInsights callback'
+      );
+      assert.ok(
+        surahScreenSource.includes('setSelectedInsightVerse(verse)'),
+        'handleVerseInsights must set selected insight verse'
+      );
+      assert.ok(
+        surahScreenSource.includes('setIsInsightsOpen(true)'),
+        'handleVerseInsights must open insights drawer'
+      );
+      assert.ok(
+        surahScreenSource.includes('setIsInsightsOpen(false)'),
+        'handleCloseInsights must close insights drawer'
+      );
+      assert.ok(
+        surahScreenSource.includes('setSelectedInsightVerse(null)'),
+        'handleCloseInsights must reset selected insight verse'
+      );
+    });
+
+    it('verifies AyahInsightsDrawer prop bindings and callback connections', () => {
+      assert.ok(
+        surahScreenSource.includes('visible={isInsightsOpen}'),
+        'Must bind visible={isInsightsOpen}'
+      );
+      assert.ok(
+        surahScreenSource.includes('verse={selectedInsightVerse}'),
+        'Must bind verse={selectedInsightVerse}'
+      );
+      assert.ok(
+        surahScreenSource.includes('chapterNameFa={chapter?.name_fa}'),
+        'Must bind chapterNameFa={chapter?.name_fa}'
+      );
+      assert.ok(
+        surahScreenSource.includes('onClose={handleCloseInsights}'),
+        'Must bind onClose={handleCloseInsights}'
+      );
+      assert.ok(
+        surahScreenSource.includes('onPlayVerse={handlePlayVerse}'),
+        'Must bind onPlayVerse={handlePlayVerse}'
+      );
+      assert.ok(
+        surahScreenSource.includes('onBookmarkVerse={handleBookmarkVerse}'),
+        'Must bind onBookmarkVerse={handleBookmarkVerse}'
+      );
+      assert.ok(
+        surahScreenSource.includes('quranFont={quranFont}'),
+        'Must bind quranFont={quranFont}'
+      );
+      assert.ok(
+        surahScreenSource.includes('onVerseInsights={handleVerseInsights}'),
+        'ContinuousVerseCard must bind onVerseInsights={handleVerseInsights}'
+      );
+    });
+
+    it('verifies isBookmarked derivation from bookmarkedKeys Set and toggle behavior', () => {
+      assert.ok(
+        surahScreenSource.includes('bookmarkedKeys.has(selectedInsightVerse.verse_key)'),
+        'Must check bookmarkedKeys.has(selectedInsightVerse.verse_key) for isBookmarked'
+      );
+
+      // Simulation of bookmarkedKeys Set behavior with verse selection
+      const mockVerse1 = { verse_key: '18:28' };
+      const mockVerse2 = { verse_key: '18:29' };
+      const bookmarkedKeys = new Set(['18:28']);
+
+      const isBookmarked1 = mockVerse1 ? bookmarkedKeys.has(mockVerse1.verse_key) : false;
+      assert.strictEqual(isBookmarked1, true, '18:28 should be bookmarked');
+
+      const isBookmarked2 = mockVerse2 ? bookmarkedKeys.has(mockVerse2.verse_key) : false;
+      assert.strictEqual(isBookmarked2, false, '18:29 should not be bookmarked');
+
+      const isBookmarkedNull = null ? bookmarkedKeys.has(null.verse_key) : false;
+      assert.strictEqual(isBookmarkedNull, false, 'Null verse should default to false');
+    });
+
+    it('simulates the complete user interaction flow: tap insights -> drawer opens -> play/bookmark/close', () => {
+      // 1. Initial State
+      let selectedInsightVerse = null;
+      let isInsightsOpen = false;
+      let activeVerseKey = null;
+      let isPlaying = false;
+      const bookmarkedKeys = new Set();
+
+      const handleVerseInsights = (verse) => {
+        selectedInsightVerse = verse;
+        isInsightsOpen = true;
+      };
+
+      const handleCloseInsights = () => {
+        isInsightsOpen = false;
+        selectedInsightVerse = null;
+      };
+
+      const handlePlayVerse = (verse) => {
+        activeVerseKey = verse.verse_key;
+        isPlaying = true;
+      };
+
+      const handleBookmarkVerse = (verse) => {
+        if (bookmarkedKeys.has(verse.verse_key)) {
+          bookmarkedKeys.delete(verse.verse_key);
+        } else {
+          bookmarkedKeys.add(verse.verse_key);
+        }
+      };
+
+      const testVerse = {
+        id: 2168,
+        chapter_id: 18,
+        verse_number: 28,
+        verse_key: '18:28',
+        text_uthmani: 'وَٱصْبِرْ نَفْسَكَ مَعَ ٱلَّذِينَ يَدْعُونَ رَبَّهُم',
+      };
+
+      // 2. User taps insights icon on ContinuousVerseCard
+      handleVerseInsights(testVerse);
+      assert.strictEqual(isInsightsOpen, true);
+      assert.deepStrictEqual(selectedInsightVerse, testVerse);
+
+      // Verify bookmarked prop derivation
+      assert.strictEqual(bookmarkedKeys.has(selectedInsightVerse.verse_key), false);
+
+      // 3. User bookmarks verse from drawer header
+      handleBookmarkVerse(selectedInsightVerse);
+      assert.strictEqual(bookmarkedKeys.has('18:28'), true);
+      assert.strictEqual(bookmarkedKeys.has(selectedInsightVerse.verse_key), true);
+
+      // 4. User plays audio from drawer header
+      handlePlayVerse(selectedInsightVerse);
+      assert.strictEqual(activeVerseKey, '18:28');
+      assert.strictEqual(isPlaying, true);
+
+      // 5. User closes drawer
+      handleCloseInsights();
+      assert.strictEqual(isInsightsOpen, false);
+      assert.strictEqual(selectedInsightVerse, null);
+    });
+  });
 });
 
 
