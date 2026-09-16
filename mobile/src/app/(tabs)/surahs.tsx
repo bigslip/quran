@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   ListRenderItem,
+  TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
@@ -28,45 +29,61 @@ type CatalogItem = Chapter | Juz;
 
 export default function SurahsScreen() {
   const router = useRouter();
+  const flatListRef = useRef<FlatList<CatalogItem>>(null);
   const [activeTab, setActiveTab] = useState<CatalogTabId>('surah');
   const [query, setQuery] = useState('');
   const [surahs, setSurahs] = useState<Chapter[]>([]);
   const [revelationSurahs, setRevelationSurahs] = useState<Chapter[]>([]);
   const [juzs, setJuzs] = useState<Juz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  const loadCatalogData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setHasError(false);
+      const [allSurahs, allJuzs] = await Promise.all([
+        getAllSurahs('id'),
+        getAllJuzs(),
+      ]);
+
+      const sortedRev = [...allSurahs].sort(
+        (a, b) => a.revelation_order - b.revelation_order
+      );
+
+      setSurahs(allSurahs);
+      setRevelationSurahs(sortedRev);
+      setJuzs(allJuzs);
+    } catch (err) {
+      console.error('Failed to load Quran catalog data:', err);
+      setHasError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function loadCatalogData() {
-      try {
-        setIsLoading(true);
-        const [allSurahs, allRevSurahs, allJuzs] = await Promise.all([
-          getAllSurahs('id'),
-          getAllSurahs('revelation_order'),
-          getAllJuzs(),
-        ]);
-
-        if (isMounted) {
-          setSurahs(allSurahs);
-          setRevelationSurahs(allRevSurahs);
-          setJuzs(allJuzs);
-        }
-      } catch (err) {
-        console.error('Failed to load Quran catalog data:', err);
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
     loadCatalogData();
+  }, [loadCatalogData]);
 
-    return () => {
-      isMounted = false;
-    };
+  const handleTabChange = useCallback((tab: CatalogTabId) => {
+    setActiveTab(tab);
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
   }, []);
+
+  const handleSurahPress = useCallback(
+    (surah: Chapter) => {
+      router.push(`/surah/${surah.id}` as any);
+    },
+    [router]
+  );
+
+  const handleJuzPress = useCallback(
+    (juz: Juz) => {
+      router.push(`/surah/${juz.first_chapter_id}` as any);
+    },
+    [router]
+  );
 
   const filteredData = useMemo<CatalogItem[]>(() => {
     if (activeTab === 'surah') {
@@ -110,26 +127,19 @@ export default function SurahsScreen() {
   const renderItem = useCallback<ListRenderItem<CatalogItem>>(
     ({ item }) => {
       if (activeTab === 'juz') {
-        const juz = item as Juz;
-        return (
-          <JuzCardItem
-            juz={juz}
-            onPress={(j) => router.push(`/surah/${j.first_chapter_id}` as any)}
-          />
-        );
+        return <JuzCardItem juz={item as Juz} onPress={handleJuzPress} />;
       }
 
-      const surah = item as Chapter;
       const isRevelation = activeTab === 'revelation';
       return (
         <SurahCardItem
-          surah={surah}
+          surah={item as Chapter}
           isRevelationOrder={isRevelation}
-          onPress={(s) => router.push(`/surah/${s.id}` as any)}
+          onPress={handleSurahPress}
         />
       );
     },
-    [activeTab, router]
+    [activeTab, handleSurahPress, handleJuzPress]
   );
 
   return (
@@ -166,7 +176,7 @@ export default function SurahsScreen() {
         {/* 3-way Segmented Catalog Tab Switcher */}
         <CatalogTabSwitcher
           activeTab={activeTab}
-          onTabChange={(tab) => setActiveTab(tab)}
+          onTabChange={handleTabChange}
         />
       </View>
 
@@ -176,8 +186,23 @@ export default function SurahsScreen() {
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={styles.loadingText}>در حال بارگذاری فهرست قرآن...</Text>
         </View>
+      ) : hasError ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorTitle}>خطا در بارگذاری اطلاعات</Text>
+          <Text style={styles.errorSubtitle}>امکان بارگذاری فهرست قرآن وجود ندارد</Text>
+          <TouchableOpacity
+            style={styles.retryButton}
+            onPress={loadCatalogData}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="تلاش مجدد"
+          >
+            <Text style={styles.retryButtonText}>تلاش مجدد</Text>
+          </TouchableOpacity>
+        </View>
       ) : (
         <FlatList
+          ref={flatListRef}
           data={filteredData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
@@ -264,6 +289,45 @@ const styles = StyleSheet.create({
     fontFamily: fonts.uiRegular,
     fontSize: fontSizes.sm,
     color: colors.textSecondary,
+  },
+  errorContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.xl,
+    gap: spacing.sm,
+  },
+  errorTitle: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.md,
+    fontWeight: '700',
+    color: colors.textPrimary,
+    textAlign: 'center',
+  },
+  errorSubtitle: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.sm,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+  },
+  retryButton: {
+    backgroundColor: colors.primarySubtle,
+    borderWidth: 1,
+    borderColor: colors.primaryGlow,
+    borderRadius: borderRadius.pill,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
+    minHeight: 44,
+    minWidth: 120,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  retryButtonText: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.sm,
+    fontWeight: '700',
+    color: colors.primary,
   },
   listContent: {
     paddingHorizontal: spacing.lg,
