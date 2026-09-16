@@ -15,7 +15,9 @@
       "supportsTablet": true,
       "bundleIdentifier": "ir.quran.app",
       "infoPlist": {
-        "UIBackgroundModes": ["audio"]
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
@@ -46,7 +48,10 @@
         {
           "enableFTS": true
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-splash-screen",
+      "expo-status-bar"
     ],
     "scheme": "quranir",
     "experiments": {
