@@ -1,6 +1,4 @@
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
-import { colors } from '../../theme/colors.ts';
-import { spacing, borderRadius } from '../../theme/spacing.ts';
 
 /**
  * Component dimensions and layout contracts for Insights touch targets and accessibility.
