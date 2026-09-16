@@ -31,6 +31,7 @@ import {
   formatAudioDockTitle,
   formatFontScalePercentage,
   clampFontScale,
+  formatAyahEndMarker,
 } from './readerContracts.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
 import { colors } from '../../theme/colors.ts';
@@ -686,6 +687,26 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.strictEqual(getSurahNameFa(999), '');
     });
 
+    it('formats Ayah end marker with inward-embracing ornate brackets', () => {
+      // Single digit
+      const marker1 = formatAyahEndMarker(1);
+      assert.strictEqual(marker1, ' ﴾۱﴿ ');
+
+      // Double digit
+      const marker45 = formatAyahEndMarker(45);
+      assert.strictEqual(marker45, ' ﴾۴۵﴿ ');
+
+      // Triple digit
+      const marker114 = formatAyahEndMarker(114);
+      assert.strictEqual(marker114, ' ﴾۱۱۴﴿ ');
+
+      // Verify Unicode bracket codepoints:
+      // U+FD3E is opening curve (inward to the right in LTR presentation)
+      // U+FD3F is closing curve (inward to the left in LTR presentation)
+      assert.strictEqual(marker1.charCodeAt(1), 0xFD3E);
+      assert.strictEqual(marker1.charCodeAt(marker1.length - 2), 0xFD3F);
+    });
+
     it('verifies MushafPageView.tsx source code structure, contracts, and touch targets', () => {
       const source = fs.readFileSync(
         path.resolve(__dirname, './MushafPageView.tsx'),
@@ -708,6 +729,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 3. Interactive word selection & verse end marker
       assert.ok(source.includes('onVersePress?.(word.verse_key)'));
       assert.ok(source.includes('ayahEndMarker'));
+      assert.ok(source.includes('formatAyahEndMarker'));
       assert.ok(source.includes('verseEndWordKeys'));
 
       // 4. In-page Surah Title Cartouche and Bismillah Calligraphy

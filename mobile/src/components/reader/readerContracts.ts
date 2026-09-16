@@ -586,3 +586,19 @@ export function clampFontScale(scale: number): number {
   const clamped = Math.max(min, Math.min(max, scale));
   return Math.round(clamped * 10) / 10;
 }
+
+/**
+ * Formats the Ayah end marker with ornate Quranic brackets (U+FD3E and U+FD3F) and Persian numerals.
+ *
+ * In standard Unicode and bidirectional text presentation:
+ * - U+FD3E (﴾) has the opening curve (facing inwards to the right in LTR presentation)
+ * - U+FD3F (﴿) has the closing curve (facing inwards to the left in LTR presentation)
+ * Enclosing the Persian verse number between \uFD3E and \uFD3F guarantees that the ornate brackets
+ * gracefully embrace the number across both Android and iOS without inverting outwards.
+ *
+ * Example: formatAyahEndMarker(1) => " ﴾۱﴿ "
+ */
+export function formatAyahEndMarker(verseNumber: number): string {
+  return ` ﴾${toPersianDigits(verseNumber)}﴿ `;
+}
+

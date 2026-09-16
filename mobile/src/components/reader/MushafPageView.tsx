@@ -31,6 +31,7 @@ import {
   getSurahNameArabic,
   getSurahVersesCount,
   shouldRenderBismillah,
+  formatAyahEndMarker,
 } from './readerContracts';
 
 export interface MushafPageViewProps {
@@ -267,7 +268,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                             ]}
                             allowFontScaling={false}
                           >
-                            {` ﴿${toPersianDigits(word.verse_number)}﴾ `}
+                            {formatAyahEndMarker(word.verse_number)}
                           </Text>
                         )}
                       </TouchableOpacity>
