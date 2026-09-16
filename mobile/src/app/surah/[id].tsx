@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowRight, BookOpen, AlignLeft, SlidersHorizontal } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import {
   SurahHeaderBanner,
@@ -441,7 +441,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   topBar: {
-    flexDirection: 'row-reverse',
+    flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: 54,
@@ -482,7 +482,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   topBarActions: {
-    flexDirection: 'row-reverse',
+    flexDirection: rtlRow,
     alignItems: 'center',
     gap: spacing.xs,
   },

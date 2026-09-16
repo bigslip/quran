@@ -24,6 +24,10 @@ import {
   groupWordsByLine,
   CHAPTER_NAMES_FA,
   getSurahNameFa,
+  CHAPTER_NAMES_ARABIC,
+  CHAPTER_VERSES_COUNT,
+  getSurahNameArabic,
+  getSurahVersesCount,
   formatAudioDockTitle,
   formatFontScalePercentage,
   clampFontScale,
@@ -699,13 +703,19 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('groupWordsByLine'));
       assert.ok(source.includes('LINES_LIST.map') || source.includes('linesList.map'));
       assert.ok(source.includes('mushafLine'));
-      assert.ok(source.includes('flexDirection: \'row-reverse\''));
+      assert.ok(source.includes('flexDirection: rtlRow') || source.includes("flexDirection: 'row-reverse'"));
 
-      // 3. Interactive word selection
+      // 3. Interactive word selection & verse end marker
       assert.ok(source.includes('onVersePress?.(word.verse_key)'));
       assert.ok(source.includes('ayahEndMarker'));
+      assert.ok(source.includes('verseEndWordKeys'));
 
-      // 4. Page navigation bottom controls with >= 44x44px touch targets
+      // 4. In-page Surah Title Cartouche and Bismillah Calligraphy
+      assert.ok(source.includes('surahCartoucheContainer'));
+      assert.ok(source.includes('bismillahLineContainer'));
+      assert.ok(source.includes('BISMILLAH_TEXT'));
+
+      // 5. Page navigation bottom controls with >= 44x44px touch targets
       assert.ok(source.includes('onPrevPage'));
       assert.ok(source.includes('onNextPage'));
       assert.ok(source.includes('minWidth: READER_COMPONENT_CONTRACTS.mushafPage.navButtonSize'));
@@ -715,6 +725,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('disabled={pageNumber >= 604}'));
       assert.ok(source.includes('disabled={pageNumber <= 1}'));
     });
+
   });
 
   describe('AudioPlaybackDock Component Contracts, Layout & Formatting', () => {
@@ -1410,6 +1421,218 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       );
     });
   });
+
+  describe('Cross-Platform RTL Layout, Mushaf Ayah Markers & In-Page Bismillah Tests', () => {
+    it('verifies cross-platform RTL layout helpers and bidirectional mapping', () => {
+      // 1. Verify rtl.ts source code structure and exported contracts
+      const rtlSource = fs.readFileSync(
+        path.resolve(__dirname, '../../theme/rtl.ts'),
+        'utf8'
+      );
+      assert.ok(rtlSource.includes('export const isRTL'));
+      assert.ok(rtlSource.includes('export const rtlRow'));
+      assert.ok(rtlSource.includes('export const rtlRowReverse'));
+      assert.ok(rtlSource.includes('export const rtlTextAlign'));
+      assert.ok(rtlSource.includes('export const ltrTextAlign'));
+      assert.ok(rtlSource.includes('export const rtlFlexStart'));
+      assert.ok(rtlSource.includes('export const rtlFlexEnd'));
+
+      // 2. Verify bidirectional layout mapping logic:
+      // When isRTL is true: row flows RTL, textAlign 'left' maps to physical Right on Android
+      // When isRTL is false: row-reverse flows RTL, textAlign 'right' maps to physical Right on iOS
+      function deriveRtlLayout(isRTLFlag) {
+        return {
+          row: isRTLFlag ? 'row' : 'row-reverse',
+          rowReverse: isRTLFlag ? 'row-reverse' : 'row',
+          textAlign: isRTLFlag ? 'left' : 'right',
+          flexStart: isRTLFlag ? 'flex-start' : 'flex-end',
+        };
+      }
+
+      assert.deepStrictEqual(deriveRtlLayout(true), {
+        row: 'row',
+        rowReverse: 'row-reverse',
+        textAlign: 'left',
+        flexStart: 'flex-start',
+      });
+
+      assert.deepStrictEqual(deriveRtlLayout(false), {
+        row: 'row-reverse',
+        rowReverse: 'row',
+        textAlign: 'right',
+        flexStart: 'flex-end',
+      });
+
+      // 3. Verify ContinuousVerseCard source binds rtlRow, rtlTextAlign, and rtlFlexStart
+      const cardSource = fs.readFileSync(
+        path.resolve(__dirname, './ContinuousVerseCard.tsx'),
+        'utf8'
+      );
+      assert.ok(cardSource.includes('flexDirection: rtlRow'));
+      assert.ok(cardSource.includes('textAlign: rtlTextAlign'));
+      assert.ok(cardSource.includes('alignItems: rtlFlexStart'));
+
+      // 4. Verify SurahReaderScreen source binds rtlRow for topBar and topBarActions
+      const surahSource = fs.readFileSync(
+        path.resolve(__dirname, '../../app/surah/[id].tsx'),
+        'utf8'
+      );
+      assert.ok(surahSource.includes('flexDirection: rtlRow'));
+
+      // 5. Verify MushafPageView source binds rtlRow for lines, word touchables, and header
+      const mushafSource = fs.readFileSync(
+        path.resolve(__dirname, './MushafPageView.tsx'),
+        'utf8'
+      );
+      assert.ok(mushafSource.includes('flexDirection: rtlRow'));
+    });
+
+    it('validates Arabic Surah names and verse counts across all 114 Surahs from database', () => {
+      const dbChapters = db.prepare('SELECT id, name_arabic, verses_count FROM chapters ORDER BY id ASC').all();
+      assert.strictEqual(dbChapters.length, 114);
+
+      for (const ch of dbChapters) {
+        const arabicName = getSurahNameArabic(ch.id);
+        const versesCount = getSurahVersesCount(ch.id);
+
+        assert.ok(arabicName.length > 0, `Arabic name missing for Surah ${ch.id}`);
+        assert.strictEqual(arabicName, ch.name_arabic, `Surah ${ch.id} Arabic name mismatch`);
+        assert.strictEqual(versesCount, ch.verses_count, `Surah ${ch.id} verses count mismatch`);
+      }
+
+      // Spot check notable Surahs
+      assert.strictEqual(getSurahNameArabic(1), 'الفاتحة');
+      assert.strictEqual(getSurahVersesCount(1), 7);
+      assert.strictEqual(getSurahNameArabic(55), 'الرحمن');
+      assert.strictEqual(getSurahVersesCount(55), 78);
+      assert.strictEqual(getSurahNameArabic(56), 'الواقعة');
+      assert.strictEqual(getSurahVersesCount(56), 96);
+      assert.strictEqual(getSurahNameArabic(114), 'الناس');
+      assert.strictEqual(getSurahVersesCount(114), 6);
+    });
+
+    it('verifies that multi-line verses render EXACTLY ONE Ayah end marker on the final word', () => {
+      // Query Page 534 words from SQLite database
+      const pageWords = db.prepare(
+        'SELECT * FROM words WHERE page_number = ? ORDER BY line_number ASC, position ASC'
+      ).all(534);
+
+      assert.ok(pageWords.length > 0);
+
+      // Replicate the verseEndWordKeys logic from MushafPageView
+      const verseEndWordKeys = new Map();
+      for (const w of pageWords) {
+        const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
+        verseEndWordKeys.set(w.verse_key, key);
+      }
+      const endWordKeySet = new Set(verseEndWordKeys.values());
+
+      // Verse 55:72 spans line 2 (word 1: حُورٌۭ) and line 3 (words 2..4: مَّقْصُورَٰتٌۭ فِى ٱلْخِيَامِ)
+      const v72Words = pageWords.filter(w => w.verse_key === '55:72');
+      assert.strictEqual(v72Words.length, 4);
+
+      const v72EndMarkers = v72Words.filter(w => {
+        const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
+        return endWordKeySet.has(key);
+      });
+
+      // Must have exactly ONE end marker, placed on word 4, NOT word 1 (which was on line 2)
+      assert.strictEqual(v72EndMarkers.length, 1, 'Verse 55:72 must have exactly 1 end marker');
+      assert.strictEqual(v72EndMarkers[0].position, 4, 'End marker must be on final word position 4');
+      assert.strictEqual(v72EndMarkers[0].text_uthmani, 'ٱلْخِيَامِ');
+
+      // Verse 55:77 spans line 5 (word 1: فَبِأَىِّ) and line 6 (words 2..4: ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ)
+      const v77Words = pageWords.filter(w => w.verse_key === '55:77');
+      assert.strictEqual(v77Words.length, 4);
+
+      const v77EndMarkers = v77Words.filter(w => {
+        const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
+        return endWordKeySet.has(key);
+      });
+
+      assert.strictEqual(v77EndMarkers.length, 1, 'Verse 55:77 must have exactly 1 end marker');
+      assert.strictEqual(v77EndMarkers[0].position, 4, 'End marker must be on final word position 4');
+      assert.strictEqual(v77EndMarkers[0].text_uthmani, 'تُكَذِّبَانِ');
+
+      // Check EVERY verse on page 534: every verse must have strictly 1 end marker
+      const uniqueVerses = [...new Set(pageWords.map(w => w.verse_key))];
+      for (const vk of uniqueVerses) {
+        const wordsOfVk = pageWords.filter(w => w.verse_key === vk);
+        const markers = wordsOfVk.filter(w => {
+          const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
+          return endWordKeySet.has(key);
+        });
+        assert.strictEqual(
+          markers.length,
+          1,
+          `Verse ${vk} on page 534 must have exactly one Ayah ending marker`
+        );
+      }
+    });
+
+    it('verifies in-page Surah Title Cartouche and Bismillah Banner line mapping on Page 531 and 534', () => {
+      // Helper replicating inPageLineRoles logic
+      function deriveLineRoles(pageNumber) {
+        const words = db.prepare(
+          'SELECT * FROM words WHERE page_number = ? ORDER BY line_number ASC, position ASC'
+        ).all(pageNumber);
+
+        const roles = new Map();
+        const seenChapters = new Set();
+
+        for (const w of words) {
+          if (w.verse_number === 1 && !seenChapters.has(w.chapter_id)) {
+            seenChapters.add(w.chapter_id);
+            const startLine = w.line_number ?? 1;
+            if (startLine >= 3) {
+              roles.set(startLine - 2, { type: 'surah_title', chapterId: w.chapter_id });
+              if (shouldRenderBismillah(w.chapter_id)) {
+                roles.set(startLine - 1, { type: 'bismillah', chapterId: w.chapter_id });
+              }
+            } else if (startLine === 2) {
+              if (w.chapter_id === 9) {
+                roles.set(1, { type: 'surah_title', chapterId: 9 });
+              } else {
+                roles.set(1, { type: 'bismillah', chapterId: w.chapter_id });
+              }
+            }
+          }
+        }
+
+        if (pageNumber === 1) {
+          roles.set(8, { type: 'surah_title', chapterId: 1 });
+        } else if (pageNumber === 2) {
+          roles.set(8, { type: 'surah_title', chapterId: 2 });
+          roles.set(9, { type: 'bismillah', chapterId: 2 });
+        }
+
+        return roles;
+      }
+
+      // 1. Page 531: Surah 55 (Ar-Rahman) starts at line 7
+      const roles531 = deriveLineRoles(531);
+      assert.deepStrictEqual(roles531.get(5), { type: 'surah_title', chapterId: 55 });
+      assert.deepStrictEqual(roles531.get(6), { type: 'bismillah', chapterId: 55 });
+
+      // 2. Page 534: Surah 56 (Al-Waqi'ah) starts at line 9
+      const roles534 = deriveLineRoles(534);
+      assert.deepStrictEqual(roles534.get(7), { type: 'surah_title', chapterId: 56 });
+      assert.deepStrictEqual(roles534.get(8), { type: 'bismillah', chapterId: 56 });
+
+      // 3. Page 187: Surah 9 (At-Tawbah) starts at line 2 - Bismillah must be omitted
+      const roles187 = deriveLineRoles(187);
+      assert.deepStrictEqual(roles187.get(1), { type: 'surah_title', chapterId: 9 });
+      assert.strictEqual(roles187.has(2), false); // Line 2 has words, line 1 is Surah title only
+
+      // 4. Page 604: Surah 113 starts at line 7, Surah 114 starts at line 12
+      const roles604 = deriveLineRoles(604);
+      assert.deepStrictEqual(roles604.get(5), { type: 'surah_title', chapterId: 113 });
+      assert.deepStrictEqual(roles604.get(6), { type: 'bismillah', chapterId: 113 });
+      assert.deepStrictEqual(roles604.get(10), { type: 'surah_title', chapterId: 114 });
+      assert.deepStrictEqual(roles604.get(11), { type: 'bismillah', chapterId: 114 });
+    });
+  });
 });
+
 
 

@@ -8,7 +8,16 @@ import {
   ViewStyle,
 } from 'react-native';
 import { Play, Pause, Bookmark, Share2, Sparkles } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  rtlRow,
+  rtlTextAlign,
+  rtlFlexStart,
+} from '@/theme';
 import { Verse, Word } from '@/types/quran';
 import {
   READER_COMPONENT_CONTRACTS,
@@ -281,7 +290,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   headerBar: {
-    flexDirection: 'row-reverse',
+    flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: spacing.md,
@@ -312,7 +321,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   actionBar: {
-    flexDirection: 'row-reverse',
+    flexDirection: rtlRow,
     alignItems: 'center',
     gap: spacing.xs,
   },
@@ -332,16 +341,17 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: spacing.xs,
     marginBottom: spacing.sm,
+    alignItems: rtlFlexStart,
   },
   arabicText: {
     color: colors.textPrimary,
-    textAlign: 'right',
+    textAlign: rtlTextAlign,
     writingDirection: 'rtl',
     width: '100%',
     flexShrink: 1,
   },
   wbwFlowContainer: {
-    flexDirection: 'row-reverse',
+    flexDirection: rtlRow,
     flexWrap: 'wrap',
     gap: spacing.xs,
     marginVertical: spacing.sm,
@@ -384,7 +394,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   translationHeaderRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
@@ -408,9 +418,10 @@ const styles = StyleSheet.create({
     fontSize: READER_COMPONENT_CONTRACTS.verseCard.translationFontSize,
     lineHeight: READER_COMPONENT_CONTRACTS.verseCard.translationLineHeight,
     color: colors.textSecondary,
-    textAlign: 'right',
+    textAlign: rtlTextAlign,
     writingDirection: 'rtl',
     width: '100%',
     flexShrink: 1,
   },
+
 });
