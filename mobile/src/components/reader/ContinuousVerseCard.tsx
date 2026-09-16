@@ -10,7 +10,6 @@ import {
 import { Play, Pause, Bookmark, Share2, Sparkles } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { Verse, Word } from '@/types/quran';
-import { toPersianDigits } from '@/components/catalog';
 import {
   READER_COMPONENT_CONTRACTS,
   formatVerseBadgeNumber,
@@ -45,7 +44,7 @@ export interface ContinuousVerseCardProps {
  * - Action toolbar with 4 buttons (Play, Bookmark, Share, Insights) all >= 44x44px touch targets
  * - Active audio playback highlight with emerald glow border and surface floating background
  */
-export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = ({
+export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.memo(({
   verse,
   isActivePlaying = false,
   quranFont = 'hafs',
@@ -255,7 +254,7 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = ({
       )}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   cardContainer: {

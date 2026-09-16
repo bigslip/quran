@@ -36,6 +36,11 @@ export interface MushafPageViewProps {
   testID?: string;
 }
 
+const LINES_LIST = Array.from(
+  { length: READER_COMPONENT_CONTRACTS.mushafPage.totalLines },
+  (_, idx) => idx + 1
+);
+
 /**
  * MushafPageView renders a high-fidelity 15-line physical Mushaf page layout.
  *
@@ -46,7 +51,7 @@ export interface MushafPageViewProps {
  * - Interactive word/verse selection triggering `onVersePress(verseKey)`
  * - Page navigation bottom controls (Next Page / Previous Page) with >= 44x44px touch targets
  */
-export const MushafPageView: React.FC<MushafPageViewProps> = ({
+export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
   pageNumber,
   verses,
   words,
@@ -92,11 +97,6 @@ export const MushafPageView: React.FC<MushafPageViewProps> = ({
     resolvedSurahName
   );
 
-  const linesList = Array.from(
-    { length: READER_COMPONENT_CONTRACTS.mushafPage.totalLines },
-    (_, idx) => idx + 1
-  );
-
   return (
     <View testID={testID} style={[styles.container, style]}>
       {/* Header Bar: Juz Name, Surah Name, and Page Number */}
@@ -136,7 +136,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = ({
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.mushafFrame} testID={`${testID}-mushaf-frame`}>
-          {linesList.map((lineNum) => {
+          {LINES_LIST.map((lineNum) => {
             const wordsOnLine = lineMap.get(lineNum) || [];
             const hasWords = wordsOnLine.length > 0;
 
@@ -256,7 +256,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = ({
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

@@ -694,7 +694,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 2. 15-line physical layout
       assert.ok(source.includes('READER_COMPONENT_CONTRACTS.mushafPage.totalLines'));
       assert.ok(source.includes('groupWordsByLine'));
-      assert.ok(source.includes('linesList.map'));
+      assert.ok(source.includes('LINES_LIST.map') || source.includes('linesList.map'));
       assert.ok(source.includes('mushafLine'));
       assert.ok(source.includes('flexDirection: \'row-reverse\''));
 
