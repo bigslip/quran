@@ -1435,32 +1435,37 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(rtlSource.includes('export const rtlTextAlign'));
       assert.ok(rtlSource.includes('export const ltrTextAlign'));
       assert.ok(rtlSource.includes('export const rtlFlexStart'));
-      assert.ok(rtlSource.includes('export const rtlFlexEnd'));
+      assert.ok(rtlSource.includes('export const rtlWritingDirection'));
 
-      // 2. Verify bidirectional layout mapping logic:
-      // When isRTL is true: row flows RTL, textAlign 'left' maps to physical Right on Android
-      // When isRTL is false: row-reverse flows RTL, textAlign 'right' maps to physical Right on iOS
-      function deriveRtlLayout(isRTLFlag) {
+      // 2. Verify deterministic bidirectional layout mapping logic:
+      // In standard (LTR) coordinate space without native RTL distortion:
+      // - row-reverse places child 0 on the physical Right
+      // - for Arabic/Persian text, Android Fabric TextLayoutManager swaps ALIGN_OPPOSITE,
+      //   so 'left' maps to Gravity.RIGHT, while iOS uses 'right'.
+      function derivePlatformRtlLayout(platform) {
         return {
-          row: isRTLFlag ? 'row' : 'row-reverse',
-          rowReverse: isRTLFlag ? 'row-reverse' : 'row',
-          textAlign: isRTLFlag ? 'left' : 'right',
-          flexStart: isRTLFlag ? 'flex-start' : 'flex-end',
+          row: 'row-reverse',
+          rowReverse: 'row',
+          textAlign: platform === 'android' ? 'left' : 'right',
+          flexStart: 'flex-end',
+          flexEnd: 'flex-start',
         };
       }
 
-      assert.deepStrictEqual(deriveRtlLayout(true), {
-        row: 'row',
-        rowReverse: 'row-reverse',
+      assert.deepStrictEqual(derivePlatformRtlLayout('android'), {
+        row: 'row-reverse',
+        rowReverse: 'row',
         textAlign: 'left',
-        flexStart: 'flex-start',
+        flexStart: 'flex-end',
+        flexEnd: 'flex-start',
       });
 
-      assert.deepStrictEqual(deriveRtlLayout(false), {
+      assert.deepStrictEqual(derivePlatformRtlLayout('ios'), {
         row: 'row-reverse',
         rowReverse: 'row',
         textAlign: 'right',
         flexStart: 'flex-end',
+        flexEnd: 'flex-start',
       });
 
       // 3. Verify ContinuousVerseCard source binds rtlRow, rtlTextAlign, and rtlFlexStart

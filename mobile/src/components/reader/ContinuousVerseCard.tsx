@@ -17,6 +17,7 @@ import {
   rtlRow,
   rtlTextAlign,
   rtlFlexStart,
+  rtlWritingDirection,
 } from '@/theme';
 import { Verse, Word } from '@/types/quran';
 import {
@@ -346,7 +347,7 @@ const styles = StyleSheet.create({
   arabicText: {
     color: colors.textPrimary,
     textAlign: rtlTextAlign,
-    writingDirection: 'rtl',
+    writingDirection: rtlWritingDirection,
     width: '100%',
     flexShrink: 1,
   },
@@ -419,7 +420,7 @@ const styles = StyleSheet.create({
     lineHeight: READER_COMPONENT_CONTRACTS.verseCard.translationLineHeight,
     color: colors.textSecondary,
     textAlign: rtlTextAlign,
-    writingDirection: 'rtl',
+    writingDirection: rtlWritingDirection,
     width: '100%',
     flexShrink: 1,
   },

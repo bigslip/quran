@@ -7,8 +7,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, StyleSheet, I18nManager } from 'react-native';
 import { colors } from '@/theme';
 
-I18nManager.allowRTL(true);
-I18nManager.forceRTL(true);
+// Ensure native RTL mirroring is disabled; Quran.ir manages its own bidirectional presentation
+I18nManager.allowRTL(false);
+I18nManager.forceRTL(false);
 
 SplashScreen.preventAutoHideAsync();
 
@@ -46,5 +47,6 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: colors.background,
+    direction: 'ltr',
   },
 });
