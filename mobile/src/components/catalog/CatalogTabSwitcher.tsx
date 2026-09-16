@@ -15,9 +15,6 @@ import {
   type CatalogTab,
 } from './catalogFormatters';
 
-export type { CatalogTabId, CatalogTab };
-export { CATALOG_TABS };
-
 export interface CatalogTabSwitcherProps {
   activeTab: CatalogTabId;
   onTabChange: (tab: CatalogTabId) => void;
