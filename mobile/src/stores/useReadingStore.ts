@@ -60,7 +60,7 @@ export const useReadingStore = create<ReadingState>((set) => ({
       lastReadChapterNameFa: chapterNameFa,
     }),
 
-  setFontScale: (scale) => set({ fontScale: Math.max(0.8, Math.min(1.8, scale)) }),
+  setFontScale: (scale) => set({ fontScale: Math.max(0.8, Math.min(1.6, scale)) }),
   setQuranScript: (script) => set({ quranScript: script }),
   setSelectedReciterId: (id) => set({ selectedReciterId: id }),
   toggleWordByWord: () => set((state) => ({ showWordByWord: !state.showWordByWord })),
