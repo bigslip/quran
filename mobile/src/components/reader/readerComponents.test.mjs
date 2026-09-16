@@ -1440,13 +1440,12 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 2. Verify deterministic bidirectional layout mapping logic:
       // In standard (LTR) coordinate space without native RTL distortion:
       // - row-reverse places child 0 on the physical Right
-      // - for Arabic/Persian text, Android Fabric TextLayoutManager swaps ALIGN_OPPOSITE,
-      //   so 'left' maps to Gravity.RIGHT, while iOS uses 'right'.
+      // - 'right' text alignment aligns text to the physical Right across both platforms.
       function derivePlatformRtlLayout(platform) {
         return {
           row: 'row-reverse',
           rowReverse: 'row',
-          textAlign: platform === 'android' ? 'left' : 'right',
+          textAlign: 'right',
           flexStart: 'flex-end',
           flexEnd: 'flex-start',
         };
@@ -1455,7 +1454,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.deepStrictEqual(derivePlatformRtlLayout('android'), {
         row: 'row-reverse',
         rowReverse: 'row',
-        textAlign: 'left',
+        textAlign: 'right',
         flexStart: 'flex-end',
         flexEnd: 'flex-start',
       });

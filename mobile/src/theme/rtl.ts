@@ -19,16 +19,10 @@ export const rtlRow: 'row' | 'row-reverse' = 'row-reverse';
 export const rtlRowReverse: 'row' | 'row-reverse' = 'row';
 
 /** Text alignment that always aligns to the physical Right across both Android and iOS. */
-export const rtlTextAlign: 'left' | 'right' = Platform.select({
-  android: 'left',
-  default: 'right',
-});
+export const rtlTextAlign: 'left' | 'right' = 'right';
 
 /** Text alignment that always aligns to the physical Left across both Android and iOS. */
-export const ltrTextAlign: 'left' | 'right' = Platform.select({
-  android: 'right',
-  default: 'left',
-});
+export const ltrTextAlign: 'left' | 'right' = 'left';
 
 /** Cross-axis flex alignment that aligns to the physical Right in column layouts. */
 export const rtlFlexStart: 'flex-start' | 'flex-end' = 'flex-end';
