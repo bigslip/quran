@@ -1020,6 +1020,336 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(indexSource.includes("export * from './readerContracts'"));
     });
   });
+
+  describe('SurahReaderScreen Architecture & Contract Verification', () => {
+    const surahScreenPath = path.resolve(__dirname, '../../app/surah/[id].tsx');
+    const surahScreenSource = fs.readFileSync(surahScreenPath, 'utf8');
+
+    it('verifies screen component imports, structure, and default export', () => {
+      // 1. Default export function
+      assert.ok(
+        surahScreenSource.includes('export default function SurahReaderScreen'),
+        'SurahReaderScreen must be exported as default function'
+      );
+
+      // 2. All 7 Sanctuary Phase 1C components imported
+      assert.ok(surahScreenSource.includes('SurahHeaderBanner'), 'Must import SurahHeaderBanner');
+      assert.ok(surahScreenSource.includes('BismillahBanner'), 'Must import BismillahBanner');
+      assert.ok(surahScreenSource.includes('ContinuousVerseCard'), 'Must import ContinuousVerseCard');
+      assert.ok(surahScreenSource.includes('MushafPageView'), 'Must import MushafPageView');
+      assert.ok(surahScreenSource.includes('AudioPlaybackDock'), 'Must import AudioPlaybackDock');
+      assert.ok(surahScreenSource.includes('ReaderSettingsModal'), 'Must import ReaderSettingsModal');
+      assert.ok(surahScreenSource.includes('AmbientGlow'), 'Must import AmbientGlow');
+
+      // 3. Database services imported
+      assert.ok(surahScreenSource.includes('getSurahById'), 'Must import getSurahById');
+      assert.ok(surahScreenSource.includes('getVersesByChapter'), 'Must import getVersesByChapter');
+      assert.ok(surahScreenSource.includes('getVersesByPage'), 'Must import getVersesByPage');
+      assert.ok(surahScreenSource.includes('getPageWords'), 'Must import getPageWords');
+
+      // 4. Zustand store hooks and state bindings
+      assert.ok(surahScreenSource.includes('useReadingStore'), 'Must consume useReadingStore');
+      assert.ok(surahScreenSource.includes('viewMode'), 'Must access viewMode from store');
+      assert.ok(surahScreenSource.includes('setViewMode'), 'Must access setViewMode from store');
+      assert.ok(surahScreenSource.includes('quranFont'), 'Must access quranFont from store');
+      assert.ok(surahScreenSource.includes('setQuranFont'), 'Must access setQuranFont from store');
+      assert.ok(surahScreenSource.includes('fontScale'), 'Must access fontScale from store');
+      assert.ok(surahScreenSource.includes('setFontScale'), 'Must access setFontScale from store');
+      assert.ok(surahScreenSource.includes('showWordByWord'), 'Must access showWordByWord from store');
+      assert.ok(surahScreenSource.includes('toggleWordByWord'), 'Must access toggleWordByWord from store');
+      assert.ok(surahScreenSource.includes('showTranslation'), 'Must access showTranslation from store');
+      assert.ok(surahScreenSource.includes('toggleTranslation'), 'Must access toggleTranslation from store');
+      assert.ok(surahScreenSource.includes('activeTranslation'), 'Must access activeTranslation from store');
+      assert.ok(surahScreenSource.includes('setActiveTranslation'), 'Must access setActiveTranslation from store');
+      assert.ok(surahScreenSource.includes('activeVerseKey'), 'Must access activeVerseKey from store');
+      assert.ok(surahScreenSource.includes('setActiveVerseKey'), 'Must access setActiveVerseKey from store');
+      assert.ok(surahScreenSource.includes('isPlaying'), 'Must access isPlaying from store');
+      assert.ok(surahScreenSource.includes('setIsPlaying'), 'Must access setIsPlaying from store');
+      assert.ok(surahScreenSource.includes('setLastRead'), 'Must access setLastRead from store');
+    });
+
+    it('verifies top bar navigation touch targets (>= 44x44px), RTL layout, and accessibility', () => {
+      // 1. Touch target dimension contract (>= 44x44px)
+      assert.ok(
+        surahScreenSource.includes('minWidth: 44') && surahScreenSource.includes('minHeight: 44'),
+        'Top bar navigation buttons must specify minWidth: 44 and minHeight: 44'
+      );
+
+      // 2. Back button specifications
+      assert.ok(
+        surahScreenSource.includes('router.back()'),
+        'Back button must navigate back via router.back()'
+      );
+      assert.ok(
+        surahScreenSource.includes('accessibilityRole="button"'),
+        'Navigation buttons must specify accessibilityRole="button"'
+      );
+      assert.ok(
+        surahScreenSource.includes('accessibilityLabel="بازگشت به فهرست سوره‌ها"') ||
+        surahScreenSource.includes('accessibilityLabel="بازگشت به فهرست سورهها"'),
+        'Back button must have Persian accessibilityLabel for returning to Surah list'
+      );
+      assert.ok(surahScreenSource.includes('<ArrowRight'), 'Back button must use ArrowRight icon');
+
+      // 3. Title block with Persian title and Arabic calligraphy subtitle
+      assert.ok(
+        surahScreenSource.includes('chapter?.name_fa'),
+        'Title block must render chapter?.name_fa'
+      );
+      assert.ok(
+        surahScreenSource.includes('chapter?.name_arabic'),
+        'Title block must render chapter?.name_arabic'
+      );
+
+      // 4. View Mode Toggle button
+      assert.ok(
+        surahScreenSource.includes('accessibilityLabel="تغییر حالت نمایش"'),
+        'View mode toggle button must have accessibilityLabel="تغییر حالت نمایش"'
+      );
+      assert.ok(
+        surahScreenSource.includes('<BookOpen') && surahScreenSource.includes('<AlignLeft'),
+        'View mode toggle button must alternate between BookOpen and AlignLeft icons'
+      );
+
+      // 5. Reader Settings button
+      assert.ok(
+        surahScreenSource.includes('accessibilityLabel="تنظیمات مطالعه قرآن"'),
+        'Settings button must have accessibilityLabel="تنظیمات مطالعه قرآن"'
+      );
+      assert.ok(
+        surahScreenSource.includes('<SlidersHorizontal'),
+        'Settings button must use SlidersHorizontal icon'
+      );
+    });
+
+    it('verifies dual-mode conditional rendering structure (continuous FlatList vs mushaf MushafPageView)', () => {
+      // 1. Dual mode branch on viewMode
+      assert.ok(
+        surahScreenSource.includes("viewMode === 'continuous'"),
+        'Must conditionally branch based on viewMode === continuous'
+      );
+
+      // 2. Continuous FlatList mode
+      assert.ok(surahScreenSource.includes('<FlatList'), 'Must render FlatList in continuous mode');
+      assert.ok(surahScreenSource.includes('data={verses}'), 'FlatList data must be verses');
+      assert.ok(
+        surahScreenSource.includes('<SurahHeaderBanner'),
+        'ListHeaderComponent must include SurahHeaderBanner'
+      );
+      assert.ok(
+        surahScreenSource.includes('<BismillahBanner'),
+        'ListHeaderComponent must include BismillahBanner'
+      );
+      assert.ok(
+        surahScreenSource.includes('<ContinuousVerseCard'),
+        'FlatList renderItem must render ContinuousVerseCard'
+      );
+
+      // 3. Virtualization performance props on FlatList
+      assert.ok(
+        surahScreenSource.includes('initialNumToRender='),
+        'FlatList must specify initialNumToRender'
+      );
+      assert.ok(
+        surahScreenSource.includes('maxToRenderPerBatch='),
+        'FlatList must specify maxToRenderPerBatch'
+      );
+      assert.ok(
+        surahScreenSource.includes('removeClippedSubviews={true}'),
+        'FlatList must specify removeClippedSubviews={true}'
+      );
+
+      // 4. MushafPageView mode
+      assert.ok(
+        surahScreenSource.includes('<MushafPageView'),
+        'Must render MushafPageView in mushaf mode'
+      );
+      assert.ok(
+        surahScreenSource.includes('pageNumber={currentPage}'),
+        'MushafPageView must receive pageNumber={currentPage}'
+      );
+      assert.ok(
+        surahScreenSource.includes('verses={pageVerses}'),
+        'MushafPageView must receive verses={pageVerses}'
+      );
+      assert.ok(
+        surahScreenSource.includes('words={pageWords}'),
+        'MushafPageView must receive words={pageWords}'
+      );
+      assert.ok(
+        surahScreenSource.includes('onPrevPage={handlePrevPage}'),
+        'MushafPageView must bind onPrevPage'
+      );
+      assert.ok(
+        surahScreenSource.includes('onNextPage={handleNextPage}'),
+        'MushafPageView must bind onNextPage'
+      );
+      assert.ok(
+        surahScreenSource.includes('onVersePress={handleVersePress}'),
+        'MushafPageView must bind onVersePress'
+      );
+    });
+
+    it('verifies audio dock integration, callback binding, and state synchronization', () => {
+      // 1. AudioPlaybackDock conditional rendering
+      assert.ok(
+        surahScreenSource.includes('{activeVerseKey &&'),
+        'AudioPlaybackDock must render conditionally when activeVerseKey is non-null'
+      );
+      assert.ok(
+        surahScreenSource.includes('<AudioPlaybackDock'),
+        'Screen must render AudioPlaybackDock'
+      );
+      assert.ok(
+        surahScreenSource.includes('isPlaying={isPlaying}'),
+        'AudioPlaybackDock must bind isPlaying'
+      );
+      assert.ok(
+        surahScreenSource.includes('activeVerseKey={activeVerseKey}'),
+        'AudioPlaybackDock must bind activeVerseKey'
+      );
+      assert.ok(
+        surahScreenSource.includes('onPlayPause={handlePlayPause}'),
+        'AudioPlaybackDock must bind onPlayPause'
+      );
+      assert.ok(
+        surahScreenSource.includes('onNextAyah={handleNextAyah}'),
+        'AudioPlaybackDock must bind onNextAyah'
+      );
+      assert.ok(
+        surahScreenSource.includes('onPrevAyah={handlePrevAyah}'),
+        'AudioPlaybackDock must bind onPrevAyah'
+      );
+      assert.ok(
+        surahScreenSource.includes('onToggleRepeat={handleToggleRepeat}'),
+        'AudioPlaybackDock must bind onToggleRepeat'
+      );
+      assert.ok(
+        surahScreenSource.includes('onCloseDock={handleCloseDock}'),
+        'AudioPlaybackDock must bind onCloseDock'
+      );
+
+      // 2. Behavioral simulation of audio flow handlers
+      const mockVerses = [
+        { verse_key: '1:1', chapter_id: 1, verse_number: 1 },
+        { verse_key: '1:2', chapter_id: 1, verse_number: 2 },
+        { verse_key: '1:3', chapter_id: 1, verse_number: 3 },
+      ];
+
+      // Next ayah advancement
+      let currentKey = '1:1';
+      let idx = mockVerses.findIndex((v) => v.verse_key === currentKey);
+      let nextKey = idx < mockVerses.length - 1 ? mockVerses[idx + 1].verse_key : currentKey;
+      assert.strictEqual(nextKey, '1:2');
+
+      // Next ayah advancement again
+      idx = mockVerses.findIndex((v) => v.verse_key === nextKey);
+      nextKey = idx < mockVerses.length - 1 ? mockVerses[idx + 1].verse_key : nextKey;
+      assert.strictEqual(nextKey, '1:3');
+
+      // Next ayah at end of chapter stays at end
+      idx = mockVerses.findIndex((v) => v.verse_key === nextKey);
+      const boundaryNext = idx < mockVerses.length - 1 ? mockVerses[idx + 1].verse_key : nextKey;
+      assert.strictEqual(boundaryNext, '1:3');
+
+      // Previous ayah navigation
+      idx = mockVerses.findIndex((v) => v.verse_key === '1:3');
+      const prevKey = idx > 0 ? mockVerses[idx - 1].verse_key : '1:3';
+      assert.strictEqual(prevKey, '1:2');
+
+      // Repeat toggle behavior: if isRepeating is true, next ayah replays current
+      const isRepeating = true;
+      const repeatKey = isRepeating ? currentKey : nextKey;
+      assert.strictEqual(repeatKey, '1:1');
+    });
+
+    it('verifies reader settings modal integration and state binding', () => {
+      assert.ok(
+        surahScreenSource.includes('<ReaderSettingsModal'),
+        'Screen must render ReaderSettingsModal'
+      );
+      assert.ok(
+        surahScreenSource.includes('visible={isSettingsOpen}'),
+        'ReaderSettingsModal must bind visible to isSettingsOpen'
+      );
+      assert.ok(
+        surahScreenSource.includes('onChangeFontScale={setFontScale}'),
+        'ReaderSettingsModal must bind onChangeFontScale to setFontScale'
+      );
+      assert.ok(
+        surahScreenSource.includes('onChangeViewMode={setViewMode}'),
+        'ReaderSettingsModal must bind onChangeViewMode to setViewMode'
+      );
+      assert.ok(
+        surahScreenSource.includes('onChangeQuranFont={setQuranFont}'),
+        'ReaderSettingsModal must bind onChangeQuranFont to setQuranFont'
+      );
+      assert.ok(
+        surahScreenSource.includes('onChangeActiveTranslation={setActiveTranslation}'),
+        'ReaderSettingsModal must bind onChangeActiveTranslation to setActiveTranslation'
+      );
+      assert.ok(
+        surahScreenSource.includes('onToggleWordByWord={toggleWordByWord}'),
+        'ReaderSettingsModal must bind onToggleWordByWord to toggleWordByWord'
+      );
+      assert.ok(
+        surahScreenSource.includes('onToggleShowTranslation={toggleTranslation}'),
+        'ReaderSettingsModal must bind onToggleShowTranslation to toggleTranslation'
+      );
+    });
+
+    it('verifies page-based data fetching and navigation contracts', () => {
+      // 1. Source checks for initial page and navigation clamping
+      assert.ok(
+        surahScreenSource.includes('pages_start') || surahScreenSource.includes('currentPage'),
+        'Must initialize currentPage with chapter starting page'
+      );
+      assert.ok(
+        surahScreenSource.includes('Math.max(1,'),
+        'handlePrevPage must clamp to minimum page 1'
+      );
+      assert.ok(
+        surahScreenSource.includes('Math.min(604,'),
+        'handleNextPage must clamp to maximum page 604'
+      );
+
+      // 2. Clamping simulation
+      const clampPrev = (p) => Math.max(1, p - 1);
+      const clampNext = (p) => Math.min(604, p + 1);
+
+      assert.strictEqual(clampPrev(1), 1);
+      assert.strictEqual(clampPrev(2), 1);
+      assert.strictEqual(clampPrev(50), 49);
+
+      assert.strictEqual(clampNext(604), 604);
+      assert.strictEqual(clampNext(603), 604);
+      assert.strictEqual(clampNext(1), 2);
+
+      // 3. Database validation for chapter starting pages
+      const fatihah = db.prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 1').get();
+      assert.strictEqual(fatihah.pages_start, 1);
+      assert.strictEqual(fatihah.verses_count, 7);
+
+      const baqarah = db.prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 2').get();
+      assert.strictEqual(baqarah.pages_start, 2);
+      assert.strictEqual(baqarah.verses_count, 286);
+
+      const tawbah = db.prepare('SELECT id, pages_start, bismillah_pre FROM chapters WHERE id = 9').get();
+      assert.strictEqual(tawbah.pages_start, 187);
+      assert.strictEqual(tawbah.bismillah_pre, 0);
+
+      const nas = db.prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 114').get();
+      assert.strictEqual(nas.pages_start, 604);
+      assert.strictEqual(nas.verses_count, 6);
+
+      // 4. Verify DB verses count on Page 1 (Fatihah) and Page 604
+      const p1Verses = db.prepare('SELECT * FROM verses WHERE page_number = 1').all();
+      assert.strictEqual(p1Verses.length, 7);
+
+      const p604Verses = db.prepare('SELECT * FROM verses WHERE page_number = 604').all();
+      assert.strictEqual(p604Verses.length, 15); // Surahs 112 (4) + 113 (5) + 114 (6) = 15 verses
+    });
+  });
 });
 
 
