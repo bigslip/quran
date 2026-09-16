@@ -19,6 +19,12 @@ export const INSIGHTS_COMPONENT_CONTRACTS = {
   wordButtonMinHeight: 44,
   activeWordBorderWidth: 1.5,
   activeCardBorderWidth: 1.5,
+  tafsirPillMinHeight: 44,
+  tafsirPillMinWidth: 44,
+  tafsirBodyLineHeight: 26,
+  reflectionInputMinHeight: 100,
+  reflectionButtonMinHeight: 44,
+  reflectionButtonMinWidth: 44,
 } as const;
 
 /**
@@ -91,4 +97,35 @@ export function formatPartOfSpeechFa(pos?: string): string {
 export function formatInsightAyahHeader(surahName: string, verseNumber: number): string {
   const cleanSurahName = (surahName || '').replace(/^سوره\s+/, '').trim();
   return `سوره ${cleanSurahName} • آیه ${toPersianDigits(verseNumber)}`;
+}
+
+/**
+ * Formats a Tafsir excerpt into a concise pill label for the source selector:
+ * e.g. "نمونه (مکارم)", "المیزان (طباطبایی)", "نور (قرائتی)".
+ */
+export function formatTafsirPillTitle(tafsir?: { id?: string; author_name?: string; title?: string }): string {
+  if (!tafsir) return '';
+  const id = (tafsir.id || '').toLowerCase();
+  const author = tafsir.author_name || '';
+
+  if (id.includes('nemouneh') || author.includes('نمونه') || author.includes('مکارم')) {
+    return 'نمونه (مکارم)';
+  }
+  if (id.includes('mizan') || author.includes('المیزان') || author.includes('طباطبایی')) {
+    return 'المیزان (طباطبایی)';
+  }
+  if (id.includes('noor') || author.includes('نور') || author.includes('قرائتی')) {
+    return 'نور (قرائتی)';
+  }
+
+  return author || tafsir.title || tafsir.id || '';
+}
+
+/**
+ * Formats a character count into Persian numeral notation with "نویسه" suffix:
+ * e.g. 42 -> "۴۲ نویسه", 0 -> "۰ نویسه".
+ */
+export function formatReflectionCharCount(count: number): string {
+  const safeCount = typeof count === 'number' && !Number.isNaN(count) ? Math.max(0, count) : 0;
+  return `${toPersianDigits(safeCount)} نویسه`;
 }

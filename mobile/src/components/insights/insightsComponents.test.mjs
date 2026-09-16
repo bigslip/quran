@@ -11,6 +11,8 @@ import {
   formatArabicRoot,
   formatPartOfSpeechFa,
   formatInsightAyahHeader,
+  formatTafsirPillTitle,
+  formatReflectionCharCount,
 } from './insightsContracts.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
 import { colors } from '../../theme/colors.ts';
@@ -19,6 +21,9 @@ import {
   setAyahDatabase,
   getAyahInsight,
   getWordLinguisticBreakdown,
+  savePersonalReflection,
+  getPersonalReflection,
+  clearPersonalReflections,
 } from '../../services/db/ayahInsightsService.ts';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -102,6 +107,35 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       assert.strictEqual(formatInsightAyahHeader('سوره کهف', 28), 'سوره کهف • آیه ۲۸');
       assert.strictEqual(formatInsightAyahHeader('  فاتحه  ', 7), 'سوره فاتحه • آیه ۷');
     });
+
+    it('formatTafsirPillTitle formats tafsirs into concise source pill labels', () => {
+      assert.strictEqual(
+        formatTafsirPillTitle({ id: 'nemouneh', author_name: 'مکارم شیرازی (نمونه)' }),
+        'نمونه (مکارم)'
+      );
+      assert.strictEqual(
+        formatTafsirPillTitle({ id: 'al-mizan', author_name: 'علامه طباطبایی (المیزان)' }),
+        'المیزان (طباطبایی)'
+      );
+      assert.strictEqual(
+        formatTafsirPillTitle({ id: 'noor', author_name: 'حجت‌الاسلام قرائتی (نور)' }),
+        'نور (قرائتی)'
+      );
+
+      // Fallbacks
+      assert.strictEqual(
+        formatTafsirPillTitle({ id: 'custom', author_name: 'تفسیر ابوالفتوح رازی' }),
+        'تفسیر ابوالفتوح رازی'
+      );
+      assert.strictEqual(formatTafsirPillTitle(undefined), '');
+    });
+
+    it('formatReflectionCharCount formats character counts with Persian numerals and suffix', () => {
+      assert.strictEqual(formatReflectionCharCount(0), '۰ نویسه');
+      assert.strictEqual(formatReflectionCharCount(42), '۴۲ نویسه');
+      assert.strictEqual(formatReflectionCharCount(150), '۱۵۰ نویسه');
+      assert.strictEqual(formatReflectionCharCount(-5), '۰ نویسه');
+    });
   });
 
   describe('INSIGHTS_COMPONENT_CONTRACTS Validation', () => {
@@ -126,6 +160,22 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
         INSIGHTS_COMPONENT_CONTRACTS.wordButtonMinHeight >= 44,
         'wordButtonMinHeight must be at least 44px'
       );
+      assert.ok(
+        INSIGHTS_COMPONENT_CONTRACTS.tafsirPillMinHeight >= 44,
+        'tafsirPillMinHeight must be at least 44px'
+      );
+      assert.ok(
+        INSIGHTS_COMPONENT_CONTRACTS.tafsirPillMinWidth >= 44,
+        'tafsirPillMinWidth must be at least 44px'
+      );
+      assert.ok(
+        INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinHeight >= 44,
+        'reflectionButtonMinHeight must be at least 44px'
+      );
+      assert.ok(
+        INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinWidth >= 44,
+        'reflectionButtonMinWidth must be at least 44px'
+      );
     });
 
     it('verifies typography and layout contracts', () => {
@@ -134,6 +184,8 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.cardBorderRadius, 16);
       assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.translationFontSize, 15);
       assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.translationLineHeight, 26);
+      assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.tafsirBodyLineHeight, 26);
+      assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.reflectionInputMinHeight, 100);
       assert.deepStrictEqual(INSIGHTS_COMPONENT_CONTRACTS.wordHitSlop, {
         top: 8,
         bottom: 8,
@@ -409,6 +461,239 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
     });
   });
 
+  describe('TafsirTabContent Component Source & Contracts (Task 3)', () => {
+    const tafsirSource = fs.readFileSync(
+      path.resolve(__dirname, './TafsirTabContent.tsx'),
+      'utf8'
+    );
+
+    it('verifies TafsirTabContentProps interface exports and React.memo wrapping', () => {
+      assert.ok(tafsirSource.includes('export interface TafsirTabContentProps'));
+      assert.ok(tafsirSource.includes('tafsirs: TafsirExcerpt[];'));
+      assert.ok(tafsirSource.includes('selectedTafsirId: string;'));
+      assert.ok(tafsirSource.includes('onSelectTafsir: (id: string) => void;'));
+      assert.ok(tafsirSource.includes('contemplativeTheme?: string;'));
+      assert.ok(tafsirSource.includes('style?: StyleProp<ViewStyle>;'));
+      assert.ok(tafsirSource.includes('testID?: string;'));
+      assert.ok(tafsirSource.includes('React.memo('));
+      assert.ok(tafsirSource.includes("displayName = 'TafsirTabContent'"));
+    });
+
+    it('verifies Contemplative Theme Card structure and styling', () => {
+      assert.ok(tafsirSource.includes('themeCard'));
+      assert.ok(tafsirSource.includes('contemplativeTheme'));
+      assert.ok(tafsirSource.includes('«پیام کلیدی و تم تدبری»'));
+      assert.ok(tafsirSource.includes('colors.surfaceFloating'));
+      assert.ok(tafsirSource.includes('colors.primary'));
+      assert.ok(tafsirSource.includes('Sparkles'));
+      assert.ok(tafsirSource.includes('themeContentText'));
+    });
+
+    it('verifies Source Selector Segmented Pills and touch targets >= 44x44px', () => {
+      assert.ok(tafsirSource.includes('sourceSelectorContainer'));
+      assert.ok(tafsirSource.includes('accessibilityRole="tablist"'));
+      assert.ok(tafsirSource.includes('accessibilityRole="tab"'));
+      assert.ok(tafsirSource.includes('onSelectTafsir(tafsir.id)'));
+      assert.ok(tafsirSource.includes('pillButtonActive'));
+      assert.ok(tafsirSource.includes('colors.primarySubtle'));
+      assert.ok(tafsirSource.includes('colors.primary'));
+      assert.ok(tafsirSource.includes('INSIGHTS_COMPONENT_CONTRACTS.tafsirPillMinHeight'));
+      assert.ok(tafsirSource.includes('INSIGHTS_COMPONENT_CONTRACTS.tafsirPillMinWidth'));
+      assert.ok(tafsirSource.includes('formatTafsirPillTitle(tafsir)'));
+    });
+
+    it('verifies Selected Tafsir Exegesis Card, Author Chip, and Bullet Takeaways', () => {
+      assert.ok(tafsirSource.includes('exegesisCard'));
+      assert.ok(tafsirSource.includes('authorBadge'));
+      assert.ok(tafsirSource.includes('colors.goldAccent'));
+      assert.ok(tafsirSource.includes('activeTafsir.author_name'));
+      assert.ok(tafsirSource.includes('activeTafsir.title'));
+      assert.ok(tafsirSource.includes('tafsirBodyText'));
+      assert.ok(tafsirSource.includes('colors.textPrimary'));
+      assert.ok(tafsirSource.includes('INSIGHTS_COMPONENT_CONTRACTS.tafsirBodyLineHeight'));
+
+      // Takeaways section and bullet points
+      assert.ok(tafsirSource.includes('takeawaysSection'));
+      assert.ok(tafsirSource.includes('نکات کلیدی و تدبری'));
+      assert.ok(tafsirSource.includes('bulletDot'));
+      assert.ok(tafsirSource.includes('takeawayText'));
+      assert.ok(tafsirSource.includes('emptyCard'));
+    });
+  });
+
+  describe('PersonalReflectionCard Component Source & Contracts (Task 3)', () => {
+    const reflectionSource = fs.readFileSync(
+      path.resolve(__dirname, './PersonalReflectionCard.tsx'),
+      'utf8'
+    );
+
+    it('verifies PersonalReflectionCardProps interface exports and React.memo wrapping', () => {
+      assert.ok(reflectionSource.includes('export interface PersonalReflectionCardProps'));
+      assert.ok(reflectionSource.includes('verseKey: string;'));
+      assert.ok(reflectionSource.includes('initialReflection?: string;'));
+      assert.ok(reflectionSource.includes('onSaveReflection: (note: string) => Promise<void>;'));
+      assert.ok(reflectionSource.includes('style?: StyleProp<ViewStyle>;'));
+      assert.ok(reflectionSource.includes('testID?: string;'));
+      assert.ok(reflectionSource.includes('React.memo('));
+      assert.ok(reflectionSource.includes("displayName = 'PersonalReflectionCard'"));
+    });
+
+    it('verifies Sanctuary card container, header title, and subtitle', () => {
+      assert.ok(reflectionSource.includes('colors.surfaceCard'));
+      assert.ok(reflectionSource.includes('colors.borderSubtle'));
+      assert.ok(reflectionSource.includes('borderRadius.lg'));
+      assert.ok(reflectionSource.includes('یادداشت و تاملات شخصی'));
+      assert.ok(reflectionSource.includes('«برداشت‌ها و تجربیات شخصی خود را در پرتو این آیه ثبت کنید»'));
+    });
+
+    it('verifies Multi-line TextInput with RTL formatting and minHeight 100px', () => {
+      assert.ok(reflectionSource.includes('«تامل و برداشت شخصی خود را از این آیه شریفه بنویسید...»'));
+      assert.ok(reflectionSource.includes('multiline'));
+      assert.ok(reflectionSource.includes("textAlign: 'right'"));
+      assert.ok(reflectionSource.includes("writingDirection: 'rtl'"));
+      assert.ok(reflectionSource.includes('INSIGHTS_COMPONENT_CONTRACTS.reflectionInputMinHeight'));
+      assert.ok(reflectionSource.includes('colors.backgroundElevated'));
+    });
+
+    it('verifies Action row, Save button, Clear button, Status badge, and Character counter', () => {
+      // Save button with emerald background and >= 44x44px target
+      assert.ok(reflectionSource.includes('saveButton'));
+      assert.ok(reflectionSource.includes('colors.primary'));
+      assert.ok(reflectionSource.includes('ذخیره یادداشت'));
+      assert.ok(reflectionSource.includes('INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinHeight'));
+      assert.ok(reflectionSource.includes('INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinWidth'));
+
+      // Clear button
+      assert.ok(reflectionSource.includes('clearButton'));
+      assert.ok(reflectionSource.includes('پاک کردن'));
+
+      // Status badge
+      assert.ok(reflectionSource.includes('statusBadge'));
+      assert.ok(reflectionSource.includes('ذخیره شد'));
+
+      // Character counter with Persian numerals
+      assert.ok(reflectionSource.includes('formatReflectionCharCount(note.length)'));
+      assert.ok(reflectionSource.includes('charCountText'));
+    });
+  });
+
+  describe('Tafsir & Reflection Interactive Simulated Workflows (Task 3)', () => {
+    it('simulates tafsir pill switching callback and active tafsir resolution', () => {
+      const mockTafsirs = [
+        {
+          id: 'nemouneh',
+          author_name: 'مکارم شیرازی (نمونه)',
+          title: 'تفسیر نمونه',
+          text: 'متن نمونه',
+          points: ['نکته ۱', 'نکته ۲'],
+        },
+        {
+          id: 'al-mizan',
+          author_name: 'علامه طباطبایی (المیزان)',
+          title: 'تفسیر المیزان',
+          text: 'متن المیزان',
+          points: ['نکته الف'],
+        },
+        {
+          id: 'noor',
+          author_name: 'حجت‌الاسلام قرائتی (نور)',
+          title: 'تفسیر نور',
+          text: 'متن نور',
+        },
+      ];
+
+      let currentSelectedId = 'nemouneh';
+      const onSelectTafsir = (id) => {
+        currentSelectedId = id;
+      };
+
+      function resolveTafsir(tafsirList, selectedId) {
+        return tafsirList.find((t) => t.id === selectedId) || tafsirList[0] || null;
+      }
+
+      // Initial active tafsir
+      let active = resolveTafsir(mockTafsirs, currentSelectedId);
+      assert.strictEqual(active.id, 'nemouneh');
+      assert.strictEqual(formatTafsirPillTitle(active), 'نمونه (مکارم)');
+      assert.strictEqual(active.points.length, 2);
+
+      // Select Al-Mizan
+      onSelectTafsir('al-mizan');
+      active = resolveTafsir(mockTafsirs, currentSelectedId);
+      assert.strictEqual(active.id, 'al-mizan');
+      assert.strictEqual(formatTafsirPillTitle(active), 'المیزان (طباطبایی)');
+      assert.strictEqual(active.points.length, 1);
+
+      // Select Noor
+      onSelectTafsir('noor');
+      active = resolveTafsir(mockTafsirs, currentSelectedId);
+      assert.strictEqual(active.id, 'noor');
+      assert.strictEqual(formatTafsirPillTitle(active), 'نور (قرائتی)');
+
+      // Unmatched ID falls back to first tafsir
+      active = resolveTafsir(mockTafsirs, 'unknown-id');
+      assert.strictEqual(active.id, 'nemouneh');
+
+      // Empty tafsirs list returns null
+      assert.strictEqual(resolveTafsir([], 'nemouneh'), null);
+    });
+
+    it('simulates reflection editing, character counting, and clear functionality', () => {
+      let currentNote = '';
+      let isSaved = false;
+
+      const handleChangeText = (text) => {
+        currentNote = text;
+        isSaved = false;
+      };
+
+      const handleClear = () => {
+        currentNote = '';
+        isSaved = false;
+      };
+
+      // Initial state
+      assert.strictEqual(currentNote, '');
+      assert.strictEqual(formatReflectionCharCount(currentNote.length), '۰ نویسه');
+
+      // Type contemplation text
+      handleChangeText('این آیه یادآور اهمیت پایداری در ایمان است.');
+      assert.strictEqual(currentNote.length, 42);
+      assert.strictEqual(formatReflectionCharCount(currentNote.length), '۴۲ نویسه');
+      assert.strictEqual(isSaved, false);
+
+      // Clear reflection
+      handleClear();
+      assert.strictEqual(currentNote, '');
+      assert.strictEqual(formatReflectionCharCount(currentNote.length), '۰ نویسه');
+    });
+
+    it('simulates saving reflection to SQLite and retrieving persisted note', async () => {
+      const testVerseKey = '18:28';
+      const testReflection = 'تامل و برداشت شخصی در باب همراهی با صادقان و صابران.';
+
+      // Save reflection
+      await savePersonalReflection(testVerseKey, testReflection, db);
+
+      // Retrieve persisted reflection
+      const persisted = await getPersonalReflection(testVerseKey, db);
+      assert.ok(persisted !== null, 'Saved reflection must be retrievable');
+      assert.strictEqual(persisted, testReflection);
+
+      // Update reflection
+      const updatedReflection = 'برداشت اصلاح‌شده: پایداری در همراهی با حق.';
+      await savePersonalReflection(testVerseKey, updatedReflection, db);
+      const updated = await getPersonalReflection(testVerseKey, db);
+      assert.strictEqual(updated, updatedReflection);
+
+      // Save empty note to delete/clear reflection
+      await savePersonalReflection(testVerseKey, '', db);
+      const deleted = await getPersonalReflection(testVerseKey, db);
+      assert.strictEqual(deleted, null);
+      clearPersonalReflections();
+    });
+  });
+
   describe('Insights Index Exports Contract', () => {
     it('verifies mobile/src/components/insights/index.ts exports all components and contracts', () => {
       const indexSource = fs.readFileSync(
@@ -419,6 +704,9 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       assert.ok(indexSource.includes("export * from './insightsContracts'"));
       assert.ok(indexSource.includes("export * from './AyahScripturePreviewCard'"));
       assert.ok(indexSource.includes("export * from './WordLinguisticBreakdownCard'"));
+      assert.ok(indexSource.includes("export * from './TafsirTabContent'"));
+      assert.ok(indexSource.includes("export * from './PersonalReflectionCard'"));
     });
   });
 });
+
