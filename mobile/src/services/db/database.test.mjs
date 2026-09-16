@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import path from 'node:path';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
 
@@ -270,6 +271,221 @@ describe('Mobile Quran SQLite Database Tests', () => {
     for (let i = 0; i < 37; i++) {
       assert.strictEqual(juz30Surahs[i].id, 78 + i);
     }
+  });
+
+  describe('Page-based Reading Engine Queries (getVersesByPage & getPageWords)', () => {
+    function getVersesByPage(pageNumber) {
+      const versesQuery = `
+        SELECT * FROM verses
+        WHERE page_number = ?
+        ORDER BY id ASC;
+      `;
+      const verses = db.prepare(versesQuery).all(pageNumber);
+
+      if (verses.length > 0) {
+        const wordsQuery = `
+          SELECT * FROM words
+          WHERE page_number = ?
+          ORDER BY line_number ASC, position ASC;
+        `;
+        const allWords = db.prepare(wordsQuery).all(pageNumber);
+
+        const wordsByVerse = new Map();
+        for (const w of allWords) {
+          if (!wordsByVerse.has(w.verse_key)) {
+            wordsByVerse.set(w.verse_key, []);
+          }
+          wordsByVerse.get(w.verse_key).push(w);
+        }
+
+        for (const v of verses) {
+          v.words = wordsByVerse.get(v.verse_key) || [];
+        }
+      }
+
+      return verses;
+    }
+
+    function getPageWords(pageNumber) {
+      const wordsQuery = `
+        SELECT * FROM words
+        WHERE page_number = ?
+        ORDER BY line_number ASC, position ASC;
+      `;
+      return db.prepare(wordsQuery).all(pageNumber);
+    }
+
+    it('should correctly return verses for Page 1 (Al-Fatihah 1:1..1:7), Page 2 (Al-Baqarah 2:1..2:5), and Page 604 (Al-Ikhlas, Al-Falaq, An-Nas)', () => {
+      // 1. Page 1: Al-Fatihah (1:1 .. 1:7)
+      const page1Verses = getVersesByPage(1);
+      assert.strictEqual(page1Verses.length, 7);
+      assert.strictEqual(page1Verses[0].verse_key, '1:1');
+      assert.strictEqual(page1Verses[6].verse_key, '1:7');
+      assert.deepStrictEqual(
+        page1Verses.map((v) => v.verse_key),
+        ['1:1', '1:2', '1:3', '1:4', '1:5', '1:6', '1:7']
+      );
+      for (const v of page1Verses) {
+        assert.strictEqual(v.page_number, 1);
+        assert.strictEqual(v.chapter_id, 1);
+        assert.ok(Array.isArray(v.words) && v.words.length > 0);
+      }
+      // 1:1 has 4 words ('بِسْمِ', 'ٱللَّهِ', 'ٱلرَّحْمَـٰنِ', 'ٱلرَّحِيمِ')
+      assert.strictEqual(page1Verses[0].words.length, 4);
+      assert.strictEqual(page1Verses[0].words[0].text_uthmani, 'بِسْمِ');
+
+      // 2. Page 2: Al-Baqarah (2:1 .. 2:5)
+      const page2Verses = getVersesByPage(2);
+      assert.strictEqual(page2Verses.length, 5);
+      assert.strictEqual(page2Verses[0].verse_key, '2:1');
+      assert.strictEqual(page2Verses[4].verse_key, '2:5');
+      assert.deepStrictEqual(
+        page2Verses.map((v) => v.verse_key),
+        ['2:1', '2:2', '2:3', '2:4', '2:5']
+      );
+      for (const v of page2Verses) {
+        assert.strictEqual(v.page_number, 2);
+        assert.strictEqual(v.chapter_id, 2);
+        assert.ok(Array.isArray(v.words) && v.words.length > 0);
+      }
+      // 2:1 is 'الٓمٓ' (1 word)
+      assert.strictEqual(page2Verses[0].words.length, 1);
+      assert.strictEqual(page2Verses[0].words[0].text_uthmani, 'الٓمٓ');
+
+      // 3. Page 604: Al-Ikhlas (112:1..112:4), Al-Falaq (113:1..113:5), An-Nas (114:1..114:6)
+      const page604Verses = getVersesByPage(604);
+      assert.strictEqual(page604Verses.length, 15);
+      assert.strictEqual(page604Verses[0].verse_key, '112:1');
+      assert.strictEqual(page604Verses[3].verse_key, '112:4');
+      assert.strictEqual(page604Verses[4].verse_key, '113:1');
+      assert.strictEqual(page604Verses[8].verse_key, '113:5');
+      assert.strictEqual(page604Verses[9].verse_key, '114:1');
+      assert.strictEqual(page604Verses[14].verse_key, '114:6');
+
+      const chapterIdsOn604 = [...new Set(page604Verses.map((v) => v.chapter_id))];
+      assert.deepStrictEqual(chapterIdsOn604, [112, 113, 114]);
+      for (const v of page604Verses) {
+        assert.strictEqual(v.page_number, 604);
+        assert.ok(Array.isArray(v.words) && v.words.length > 0);
+      }
+
+      // Empty results for non-existent pages
+      assert.deepStrictEqual(getVersesByPage(0), []);
+      assert.deepStrictEqual(getVersesByPage(605), []);
+    });
+
+    it('should return all words for Page 1 with valid line_number and position (getPageWords: Page 1)', () => {
+      const page1Words = getPageWords(1);
+      assert.strictEqual(page1Words.length, 29);
+
+      // Verify all words have page_number 1 and valid line_number and position
+      for (let i = 0; i < page1Words.length; i++) {
+        const w = page1Words[i];
+        assert.strictEqual(w.page_number, 1);
+        assert.strictEqual(typeof w.line_number, 'number');
+        assert.ok(w.line_number >= 1 && w.line_number <= 15);
+        assert.strictEqual(typeof w.position, 'number');
+        assert.ok(w.position >= 1);
+      }
+
+      // First word: Bismillah
+      assert.strictEqual(page1Words[0].verse_key, '1:1');
+      assert.strictEqual(page1Words[0].position, 1);
+      assert.strictEqual(page1Words[0].line_number, 9);
+      assert.strictEqual(page1Words[0].text_uthmani, 'بِسْمِ');
+
+      // Last word: Ad-Dallin
+      const lastWord = page1Words[page1Words.length - 1];
+      assert.strictEqual(lastWord.verse_key, '1:7');
+      assert.strictEqual(lastWord.position, 9);
+      assert.strictEqual(lastWord.line_number, 15);
+      assert.strictEqual(lastWord.text_uthmani, 'ٱلضَّآلِّينَ');
+
+      // Verify ordering is monotonic by line_number ASC, then position within line
+      for (let i = 0; i < page1Words.length - 1; i++) {
+        const curr = page1Words[i];
+        const next = page1Words[i + 1];
+        assert.ok(
+          curr.line_number < next.line_number ||
+            (curr.line_number === next.line_number &&
+              (curr.verse_key !== next.verse_key || curr.position <= next.position))
+        );
+      }
+    });
+
+    it('should ensure word counts from getPageWords match hydrated verse words across pages', () => {
+      const testPages = [1, 2, 3, 21, 582, 604];
+
+      for (const page of testPages) {
+        const pageWords = getPageWords(page);
+        const pageVerses = getVersesByPage(page);
+
+        // Sum words across all hydrated verses on the page
+        const totalVerseWords = pageVerses.reduce((acc, v) => acc + (v.words?.length || 0), 0);
+        assert.strictEqual(
+          pageWords.length,
+          totalVerseWords,
+          `Word count mismatch on page ${page}: getPageWords=${pageWords.length} vs verse words=${totalVerseWords}`
+        );
+
+        // Verify set of word IDs from getPageWords matches all hydrated verse words
+        const flattenedVerseWords = pageVerses.flatMap((v) => v.words);
+        assert.strictEqual(flattenedVerseWords.length, pageWords.length);
+
+        const pageWordIds = new Set(pageWords.map((w) => w.id));
+        const verseWordIds = new Set(flattenedVerseWords.map((w) => w.id));
+        assert.strictEqual(pageWordIds.size, verseWordIds.size);
+        for (const id of pageWordIds) {
+          assert.ok(verseWordIds.has(id));
+        }
+      }
+    });
+
+    it('should verify verseService.ts exports getVersesByPage and getPageWords with correct signatures', () => {
+      const serviceFilePath = path.resolve(__dirname, 'verseService.ts');
+      const serviceCode = fs.readFileSync(serviceFilePath, 'utf8');
+
+      assert.ok(serviceCode.includes('export async function getVersesByPage(pageNumber: number): Promise<Verse[]>'));
+      assert.ok(serviceCode.includes('export async function getPageWords(pageNumber: number): Promise<Word[]>'));
+      assert.ok(serviceCode.includes('SELECT * FROM verses'));
+      assert.ok(serviceCode.includes('WHERE page_number = ?'));
+      assert.ok(serviceCode.includes('ORDER BY id ASC'));
+      assert.ok(serviceCode.includes('SELECT * FROM words'));
+      assert.ok(serviceCode.includes('ORDER BY line_number ASC, position ASC'));
+    });
+
+    it('should verify useReadingStore state properties, defaults, and setters contract', () => {
+      const storeFilePath = path.resolve(__dirname, '../../stores/useReadingStore.ts');
+      const storeCode = fs.readFileSync(storeFilePath, 'utf8');
+
+      // State properties
+      assert.ok(storeCode.includes("viewMode: 'continuous' | 'mushaf'"));
+      assert.ok(storeCode.includes("quranFont: 'hafs' | 'indopak'"));
+      assert.ok(storeCode.includes('activeVerseKey: string | null'));
+      assert.ok(storeCode.includes('isPlaying: boolean'));
+      assert.ok(storeCode.includes("activeTranslation: 'makarem' | 'ansarian' | 'both'"));
+
+      // Setters interface
+      assert.ok(storeCode.includes("setViewMode: (mode: 'continuous' | 'mushaf') => void"));
+      assert.ok(storeCode.includes("setQuranFont: (font: 'hafs' | 'indopak') => void"));
+      assert.ok(storeCode.includes('setActiveVerseKey: (key: string | null) => void'));
+      assert.ok(storeCode.includes('setIsPlaying: (playing: boolean) => void'));
+      assert.ok(storeCode.includes("setActiveTranslation: (translation: 'makarem' | 'ansarian' | 'both') => void"));
+
+      // Defaults
+      assert.ok(storeCode.includes("viewMode: 'continuous'"));
+      assert.ok(storeCode.includes("quranFont: 'hafs'"));
+      assert.ok(storeCode.includes('activeVerseKey: null'));
+      assert.ok(storeCode.includes('isPlaying: false'));
+      assert.ok(storeCode.includes("activeTranslation: 'makarem'"));
+
+      // Action implementations
+      assert.ok(storeCode.includes('setViewMode: (viewMode) => set({ viewMode })'));
+      assert.ok(storeCode.includes('setQuranFont: (quranFont) => set({ quranFont })'));
+      assert.ok(storeCode.includes('setActiveVerseKey: (activeVerseKey) => set({ activeVerseKey })'));
+      assert.ok(storeCode.includes('setIsPlaying: (isPlaying) => set({ isPlaying })'));
+      assert.ok(storeCode.includes('setActiveTranslation: (activeTranslation) => set({ activeTranslation })'));
+    });
   });
 });
 
