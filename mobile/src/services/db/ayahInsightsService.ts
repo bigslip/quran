@@ -1,4 +1,4 @@
-import type { WordLinguisticInfo, TafsirExcerpt, AyahInsight } from '../../types/quran.ts';
+import type { WordLinguisticInfo, TafsirExcerpt, AyahInsight } from '../../types/quran';
 
 /**
  * Unified database adapter interface supporting both expo-sqlite and node:sqlite.
@@ -68,9 +68,12 @@ async function getActiveDb(providedDb?: any): Promise<SQLiteLikeDb> {
 
   // In React Native / Expo environment, dynamically load getDatabase
   try {
-    const dbModule = await import('./database');
-    const expoDb = await dbModule.getDatabase();
-    return adaptDatabase(expoDb);
+    const dbModule = typeof require !== 'undefined' ? require('./database') : null;
+    if (dbModule && typeof dbModule.getDatabase === 'function') {
+      const expoDb = await dbModule.getDatabase();
+      return adaptDatabase(expoDb);
+    }
+    throw new Error('No database module');
   } catch (err) {
     throw new Error('No active database provider found. Call setAyahDatabase(db) or pass db parameter.');
   }

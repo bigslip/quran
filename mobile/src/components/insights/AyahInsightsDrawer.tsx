@@ -88,6 +88,7 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
     setActiveWordPosition(1);
 
     async function loadData() {
+      if (!verse) return;
       try {
         const [loadedInsight, loadedReflection] = await Promise.all([
           getAyahInsight(verse.verse_key),

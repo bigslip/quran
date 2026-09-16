@@ -98,7 +98,6 @@ export const PersonalReflectionCard: React.FC<PersonalReflectionCardProps> = Rea
         multiline
         textAlignVertical="top"
         textAlign="right"
-        writingDirection="rtl"
         accessible={true}
         accessibilityLabel="متن یادداشت و تامل شخصی"
       />
