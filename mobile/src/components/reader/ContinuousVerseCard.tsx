@@ -230,8 +230,10 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
           {/* Makarem Translation */}
           {shouldRenderMakarem && (
             <View style={styles.translationBlock} testID={`${testID}-translation-makarem`}>
-              <View style={styles.translatorChip} testID={`${testID}-chip-makarem`}>
-                <Text style={styles.translatorChipText}>مکارم شیرازی</Text>
+              <View style={styles.translationHeaderRow}>
+                <View style={styles.translatorChip} testID={`${testID}-chip-makarem`}>
+                  <Text style={styles.translatorChipText}>مکارم شیرازی</Text>
+                </View>
               </View>
               <Text style={styles.translationText}>
                 {verse.translation_fa_makarem}
@@ -242,8 +244,10 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
           {/* Ansarian Translation */}
           {shouldRenderAnsarian && (
             <View style={styles.translationBlock} testID={`${testID}-translation-ansarian`}>
-              <View style={styles.translatorChip} testID={`${testID}-chip-ansarian`}>
-                <Text style={styles.translatorChipText}>حسین انصاریان</Text>
+              <View style={styles.translationHeaderRow}>
+                <View style={styles.translatorChip} testID={`${testID}-chip-ansarian`}>
+                  <Text style={styles.translatorChipText}>حسین انصاریان</Text>
+                </View>
               </View>
               <Text style={styles.translationText}>
                 {verse.translation_fa_ansarian}
@@ -260,7 +264,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: borderRadius.lg,
     borderWidth: 1,
-    padding: spacing.lg,
+    padding: spacing.md,
     marginVertical: spacing.xs,
   },
   cardInactive: {
@@ -277,7 +281,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   headerBar: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: spacing.md,
@@ -308,7 +312,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   actionBar: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: spacing.xs,
   },
@@ -325,6 +329,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   arabicTextContainer: {
+    width: '100%',
     paddingVertical: spacing.xs,
     marginBottom: spacing.sm,
   },
@@ -332,11 +337,13 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     textAlign: 'right',
     writingDirection: 'rtl',
+    width: '100%',
+    flexShrink: 1,
   },
   wbwFlowContainer: {
     flexDirection: 'row-reverse',
     flexWrap: 'wrap',
-    gap: spacing.sm,
+    gap: spacing.xs,
     marginVertical: spacing.sm,
     paddingTop: spacing.xs,
     paddingBottom: spacing.sm,
@@ -348,10 +355,11 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.sm,
     borderWidth: 1,
     borderColor: colors.borderSubtle,
-    paddingHorizontal: spacing.sm,
+    paddingHorizontal: spacing.xs + 2,
     paddingVertical: spacing.xs,
     alignItems: 'center',
     justifyContent: 'center',
+    maxWidth: '100%',
   },
   wbwArabicText: {
     color: colors.textPrimary,
@@ -373,9 +381,15 @@ const styles = StyleSheet.create({
   },
   translationBlock: {
     gap: spacing.xs,
+    width: '100%',
+  },
+  translationHeaderRow: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: '100%',
   },
   translatorChip: {
-    alignSelf: 'flex-end',
     backgroundColor: colors.primarySubtle,
     borderWidth: 1,
     borderColor: colors.primaryGlow,
@@ -396,5 +410,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     textAlign: 'right',
     writingDirection: 'rtl',
+    width: '100%',
+    flexShrink: 1,
   },
 });

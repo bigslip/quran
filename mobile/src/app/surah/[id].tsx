@@ -123,10 +123,16 @@ export default function SurahReaderScreen() {
     };
   }, [currentPage]);
 
-  // View mode toggle handler
+  // View mode toggle handler with active verse page synchronization
   const handleToggleViewMode = useCallback(() => {
+    if (viewMode === 'continuous' && activeVerseKey) {
+      const activeVerse = verses.find((v) => v.verse_key === activeVerseKey);
+      if (activeVerse && activeVerse.page_number) {
+        setCurrentPage(activeVerse.page_number);
+      }
+    }
     setViewMode(viewMode === 'continuous' ? 'mushaf' : 'continuous');
-  }, [viewMode, setViewMode]);
+  }, [viewMode, activeVerseKey, verses, setViewMode]);
 
   // Audio Playback Flow Handlers
   const handlePlayVerse = useCallback(
@@ -435,11 +441,11 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   topBar: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: 54,
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.md,
     paddingBottom: spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: colors.borderSubtle,
@@ -476,7 +482,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   topBarActions: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: spacing.xs,
   },
@@ -485,7 +491,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   versesListContent: {
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.md,
     paddingTop: spacing.md,
     paddingBottom: 48,
     gap: spacing.md,
@@ -495,7 +501,7 @@ const styles = StyleSheet.create({
   },
   mushafContainer: {
     flex: 1,
-    padding: spacing.md,
+    padding: spacing.xs,
   },
   mushafWithDock: {
     paddingBottom: 90,

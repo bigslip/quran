@@ -64,9 +64,22 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
     <View testID={testID} style={[styles.outerCard, style]}>
       {/* Inner Sanctuary Geometric Frame */}
       <View style={styles.innerFrame}>
-        {/* Top Control Bar: Info Action & Geometric Surah Number Emblem */}
+        {/* Top Control Bar: Geometric Surah Number Emblem (Right in RTL) & Info Action (Left in RTL) */}
         <View style={styles.topControlBar}>
-          {/* Info Button with guaranteed >= 44x44px touch target */}
+          {/* Surah Number Emblem Medallion (Right in RTL) */}
+          <View
+            style={styles.cornerNumberEmblem}
+            testID={`${testID}-number-emblem`}
+            accessible={false}
+          >
+            <View style={styles.cornerNumberEmblemInner}>
+              <Text style={styles.cornerNumberText}>
+                {toPersianDigits(chapter.id)}
+              </Text>
+            </View>
+          </View>
+
+          {/* Info Button with guaranteed >= 44x44px touch target (Left in RTL) */}
           <TouchableOpacity
             testID={`${testID}-info-button`}
             activeOpacity={0.7}
@@ -84,19 +97,6 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
               strokeWidth={2}
             />
           </TouchableOpacity>
-
-          {/* Surah Number Emblem Medallion */}
-          <View
-            style={styles.cornerNumberEmblem}
-            testID={`${testID}-number-emblem`}
-            accessible={false}
-          >
-            <View style={styles.cornerNumberEmblemInner}>
-              <Text style={styles.cornerNumberText}>
-                {toPersianDigits(chapter.id)}
-              </Text>
-            </View>
-          </View>
         </View>
 
         {/* Centerpiece: Sacred Calligraphy & Persian Title */}
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   topControlBar: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: spacing.xs,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   badgesRow: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',

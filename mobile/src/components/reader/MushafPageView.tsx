@@ -139,6 +139,20 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
           {LINES_LIST.map((lineNum) => {
             const wordsOnLine = lineMap.get(lineNum) || [];
             const hasWords = wordsOnLine.length > 0;
+            const wordCount = wordsOnLine.length;
+
+            // Responsive font scaling based on word count to prevent any line overflow on mobile screens:
+            const dynamicFontSize =
+              wordCount >= 13
+                ? 13
+                : wordCount >= 10
+                ? 15
+                : wordCount >= 8
+                ? 17
+                : wordCount >= 6
+                ? 19
+                : 21;
+            const dynamicWordPadding = wordCount >= 10 ? 1 : 2;
 
             return (
               <View
@@ -165,7 +179,10 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                         key={`word-${word.id || `${lineNum}-${wordIndex}`}`}
                         activeOpacity={0.6}
                         onPress={() => onVersePress?.(word.verse_key)}
-                        style={styles.wordTouchable}
+                        style={[
+                          styles.wordTouchable,
+                          { paddingHorizontal: dynamicWordPadding },
+                        ]}
                         accessible={true}
                         accessibilityRole="button"
                         accessibilityLabel={`کلمه ${arabicWordText} از آیه ${word.verse_key}`}
@@ -173,7 +190,10 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                         <Text
                           style={[
                             styles.wordText,
-                            { fontFamily: arabicFontFamily },
+                            {
+                              fontFamily: arabicFontFamily,
+                              fontSize: dynamicFontSize,
+                            },
                           ]}
                           allowFontScaling={false}
                         >
@@ -181,7 +201,10 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                         </Text>
                         {isLastWordOfVerse && (
                           <Text
-                            style={styles.ayahEndMarker}
+                            style={[
+                              styles.ayahEndMarker,
+                              { fontSize: Math.max(10, dynamicFontSize - 6) },
+                            ]}
                             allowFontScaling={false}
                           >
                             {` ﴿${toPersianDigits(word.verse_number)}﴾ `}
@@ -201,37 +224,8 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
         </View>
       </ScrollView>
 
-      {/* Bottom Page Navigation Controls */}
+      {/* Bottom Page Navigation Controls (RTL) */}
       <View style={styles.footerBar} testID={`${testID}-footer`}>
-        {/* Next Page Button (Left in RTL, advances forward pageNumber + 1) */}
-        <TouchableOpacity
-          testID={`${testID}-nav-next`}
-          activeOpacity={0.7}
-          onPress={onNextPage}
-          disabled={pageNumber >= 604}
-          style={[
-            styles.navButton,
-            pageNumber >= 604 && styles.navButtonDisabled,
-          ]}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel="صفحه بعدی"
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <ChevronLeft
-            size={READER_COMPONENT_CONTRACTS.mushafPage.navIconSize}
-            color={pageNumber >= 604 ? colors.textFaded : colors.primary}
-            strokeWidth={2}
-          />
-        </TouchableOpacity>
-
-        {/* Center Page Indicator */}
-        <View style={styles.pageIndicatorContainer} testID={`${testID}-footer-page-indicator`}>
-          <Text style={styles.pageIndicatorText}>
-            {formatMushafPageTitle(pageNumber)}
-          </Text>
-        </View>
-
         {/* Previous Page Button (Right in RTL, goes back pageNumber - 1) */}
         <TouchableOpacity
           testID={`${testID}-nav-prev`}
@@ -253,6 +247,35 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
             strokeWidth={2}
           />
         </TouchableOpacity>
+
+        {/* Center Page Indicator */}
+        <View style={styles.pageIndicatorContainer} testID={`${testID}-footer-page-indicator`}>
+          <Text style={styles.pageIndicatorText}>
+            {formatMushafPageTitle(pageNumber)}
+          </Text>
+        </View>
+
+        {/* Next Page Button (Left in RTL, advances forward pageNumber + 1) */}
+        <TouchableOpacity
+          testID={`${testID}-nav-next`}
+          activeOpacity={0.7}
+          onPress={onNextPage}
+          disabled={pageNumber >= 604}
+          style={[
+            styles.navButton,
+            pageNumber >= 604 && styles.navButtonDisabled,
+          ]}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="صفحه بعدی"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <ChevronLeft
+            size={READER_COMPONENT_CONTRACTS.mushafPage.navIconSize}
+            color={pageNumber >= 604 ? colors.textFaded : colors.primary}
+            strokeWidth={2}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -270,10 +293,10 @@ const styles = StyleSheet.create({
   headerBar: {
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.headerMinHeight,
     height: READER_COMPONENT_CONTRACTS.mushafPage.headerMinHeight,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.md,
     backgroundColor: colors.surfaceCard,
     borderBottomWidth: 1,
     borderBottomColor: colors.borderSubtle,
@@ -302,25 +325,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   mushafContent: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: 2,
   },
   mushafFrame: {
     backgroundColor: colors.surfaceCard,
     borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.borderIridescent,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.xs,
   },
   mushafLine: {
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     borderBottomWidth: 0.5,
     borderBottomColor: colors.borderSeparator,
-    paddingVertical: 2,
+    paddingVertical: 1,
+    flexWrap: 'nowrap',
   },
   mushafLineEmpty: {
     justifyContent: 'center',
@@ -331,6 +355,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 2,
     paddingVertical: 2,
+    flexShrink: 0,
   },
   wordText: {
     fontSize: READER_COMPONENT_CONTRACTS.mushafPage.quranFontSize,
@@ -358,10 +383,10 @@ const styles = StyleSheet.create({
   footerBar: {
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.footerMinHeight,
     height: READER_COMPONENT_CONTRACTS.mushafPage.footerMinHeight,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.md,
     backgroundColor: colors.surfaceCard,
     borderTopWidth: 1,
     borderTopColor: colors.borderSubtle,
