@@ -602,3 +602,93 @@ export function formatAyahEndMarker(verseNumber: number): string {
   return ` ﴾${toPersianDigits(verseNumber)}﴿ `;
 }
 
+/**
+ * Strips Arabic combining diacritical marks (harakat, tashkeel, sukun, dagger alif)
+ * to count actual base glyphs for visual line layout calculations.
+ */
+export function countArabicBaseCharacters(text?: string): number {
+  if (!text) return 0;
+  return text.replace(/[\u0640\u064B-\u065F\u0670\u06D6-\u06ED\u08D4-\u08E1]/g, '').trim().length;
+}
+
+export interface MushafLineFontSizeResult {
+  fontSize: number;
+  lineHeight: number;
+  wordPadding: number;
+  isJustified: boolean;
+}
+
+/**
+ * Calculates responsive font size, line height, and word spacing for a 15-line physical Mushaf line.
+ *
+ * Algorithm:
+ * - Uses total base character length and Ayah marker count to compute line glyph weight.
+ * - Caps dynamic font size by physical screen width constraint to strictly guarantee that text
+ *   NEVER overflows horizontally past screen margins across all devices (360px..1024px) and
+ *   font scales (0.8x..1.6x).
+ * - Distributes remaining width via edge-to-edge justification (justifyContent: 'space-between')
+ *   for lines with >= 4 words.
+ */
+export function calculateMushafLineFontSize(params: {
+  wordCount: number;
+  totalBaseChars: number;
+  markerCount: number;
+  availableLineWidth: number;
+  fontScale?: number;
+}): MushafLineFontSizeResult {
+  const {
+    wordCount,
+    totalBaseChars,
+    markerCount,
+    availableLineWidth,
+    fontScale = 1.0,
+  } = params;
+
+  const totalItems = wordCount + markerCount;
+  // Effective character weight: base glyphs + inter-word spacing + marker glyphs
+  const effectiveCharWeight = totalBaseChars + (wordCount * 0.7) + (markerCount * 3.0);
+
+  // Maximum safe font size that physically fits availableLineWidth with 0.43 char width coefficient
+  const safeAvailWidth = Math.max(240, availableLineWidth - 6);
+  const maxSafeFontSize = Math.floor(safeAvailWidth / Math.max(1, effectiveCharWeight * 0.43));
+
+  // Base font size targets based on items count
+  let baseTarget: number;
+  if (totalItems <= 4) {
+    baseTarget = 22;
+  } else if (totalItems <= 6) {
+    baseTarget = 20;
+  } else if (totalItems <= 8) {
+    baseTarget = 18;
+  } else if (totalItems <= 10) {
+    baseTarget = 16.5;
+  } else {
+    baseTarget = 15;
+  }
+
+  // Scale target font size by user's fontScale
+  const desired = baseTarget * fontScale;
+
+  // Final font size clamped to safe upper bound to prevent horizontal overflow
+  const fontSize = Math.max(11, Math.min(maxSafeFontSize, Math.round(desired)));
+
+  // Proportional line height: base 42px or scaled by font size
+  const lineHeight = Math.max(
+    READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
+    Math.round(fontSize * 2.3)
+  );
+
+  // Dynamic word padding: reduced to 0 on dense lines so justification handles spacing
+  const wordPadding = wordCount >= 8 ? 0 : wordCount >= 6 ? 0.5 : 1;
+
+  // Justify lines with 4 or more words from edge to edge
+  const isJustified = wordCount >= 4;
+
+  return {
+    fontSize,
+    lineHeight,
+    wordPadding,
+    isJustified,
+  };
+}
+

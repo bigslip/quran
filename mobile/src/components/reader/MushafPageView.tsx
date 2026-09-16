@@ -7,6 +7,7 @@ import {
   StyleProp,
   ViewStyle,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import { ChevronRight, ChevronLeft } from 'lucide-react-native';
 import {
@@ -32,6 +33,8 @@ import {
   getSurahVersesCount,
   shouldRenderBismillah,
   formatAyahEndMarker,
+  countArabicBaseCharacters,
+  calculateMushafLineFontSize,
 } from './readerContracts';
 
 export interface MushafPageViewProps {
@@ -157,6 +160,9 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
     return roles;
   }, [allWords, pageNumber]);
 
+  const { width: windowWidth } = useWindowDimensions();
+  const availableLineWidth = Math.max(260, windowWidth - 28);
+
   const arabicFontFamily = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
   const headerAccessibilityLabel = formatMushafHeaderAccessibilityLabel(
     pageNumber,
@@ -208,24 +214,33 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
             const hasWords = wordsOnLine.length > 0;
             const wordCount = wordsOnLine.length;
 
-            // Responsive font scaling based on word count, scaled by user fontScale:
-            const baseFontSize =
-              wordCount >= 13
-                ? 13
-                : wordCount >= 10
-                ? 15
-                : wordCount >= 8
-                ? 17
-                : wordCount >= 6
-                ? 19
-                : 21;
-            const dynamicFontSize = Math.round(baseFontSize * fontScale);
-            const dynamicWordPadding = wordCount >= 10 ? 1 : 2;
-            const isJustified = wordCount >= 5;
-            const scaledLineHeight = Math.max(
-              READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
-              Math.round(READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight * fontScale)
-            );
+            // Count base characters and markers on this line to compute safe responsive scaling
+            let lineBaseChars = 0;
+            let markerCount = 0;
+            for (const word of wordsOnLine) {
+              const wordKey = word.id ? String(word.id) : `${word.verse_key}:${word.position}`;
+              if (verseEndWordKeys.has(wordKey)) {
+                markerCount++;
+              }
+              const arabicWordText =
+                quranFont === 'indopak' && word.text_indopak
+                  ? word.text_indopak
+                  : word.text_uthmani;
+              lineBaseChars += countArabicBaseCharacters(arabicWordText);
+            }
+
+            const {
+              fontSize: dynamicFontSize,
+              lineHeight: scaledLineHeight,
+              wordPadding: dynamicWordPadding,
+              isJustified,
+            } = calculateMushafLineFontSize({
+              wordCount,
+              totalBaseChars: lineBaseChars,
+              markerCount,
+              availableLineWidth,
+              fontScale,
+            });
 
             if (hasWords) {
               return (
@@ -257,7 +272,10 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                         onPress={() => onVersePress?.(word.verse_key)}
                         style={[
                           styles.wordTouchable,
-                          { paddingHorizontal: dynamicWordPadding },
+                          {
+                            paddingHorizontal: dynamicWordPadding,
+                            marginHorizontal: isJustified ? 0 : 3,
+                          },
                         ]}
                         accessible={true}
                         accessibilityRole="button"
@@ -280,7 +298,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                           <Text
                             style={[
                               styles.ayahEndMarker,
-                              { fontSize: Math.max(10, dynamicFontSize - 5) },
+                              { fontSize: Math.max(10, Math.round(dynamicFontSize * 0.75)) },
                             ]}
                             allowFontScaling={false}
                           >
@@ -323,7 +341,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                           styles.surahCartoucheTitle,
                           {
                             fontFamily: arabicFontFamily,
-                            fontSize: Math.round(16 * fontScale),
+                            fontSize: Math.min(20, Math.round(16 * fontScale)),
                           },
                         ]}
                         allowFontScaling={false}
@@ -334,7 +352,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                         <Text
                           style={[
                             styles.surahCartoucheBadge,
-                            { fontSize: Math.max(9, Math.round(fontSizes.xs * fontScale)) },
+                            { fontSize: Math.max(9, Math.min(12, Math.round(fontSizes.xs * fontScale))) },
                           ]}
                         >
                           {`آيَاتُهَا ${toPersianDigits(versesCount)}`}
@@ -370,7 +388,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                       styles.bismillahCalligraphyText,
                       {
                         fontFamily: arabicFontFamily,
-                        fontSize: Math.round(18 * fontScale),
+                        fontSize: Math.min(22, Math.round(18 * fontScale)),
                       },
                     ]}
                     allowFontScaling={false}
@@ -517,6 +535,7 @@ const styles = StyleSheet.create({
     borderColor: colors.borderIridescent,
     paddingVertical: spacing.xs,
     paddingHorizontal: spacing.xs,
+    overflow: 'hidden',
   },
   mushafLine: {
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
