@@ -69,7 +69,7 @@ describe('Mobile Quran SQLite Database Tests', () => {
     assert.ok(ftsResultsAr.length > 0);
   });
 
-  it('should retrieve all 30 Juzs with valid page ranges, verse counts, and starting Surahs', () => {
+  it('should retrieve all 30 Juzs with valid page ranges, verse counts, starting Surahs, and contained Surahs', () => {
     const query = `
       WITH juz_meta AS (
         SELECT 
@@ -80,6 +80,15 @@ describe('Mobile Quran SQLite Database Tests', () => {
           MIN(id) AS first_verse_id
         FROM verses
         GROUP BY juz_number
+      ),
+      juz_surahs AS (
+        SELECT 
+          v.juz_number,
+          GROUP_CONCAT(DISTINCT c.name_fa) AS surah_names_fa,
+          GROUP_CONCAT(DISTINCT c.name_arabic) AS surah_names_arabic
+        FROM verses v
+        JOIN chapters c ON c.id = v.chapter_id
+        GROUP BY v.juz_number
       )
       SELECT 
         jm.juz_number,
@@ -90,10 +99,12 @@ describe('Mobile Quran SQLite Database Tests', () => {
         v.verse_key AS first_verse_key,
         c.name_arabic AS first_surah_name_arabic,
         c.name_fa AS first_surah_name_fa,
-        SUBSTR(v.text_uthmani, 1, 60) AS preview_text
+        SUBSTR(v.text_uthmani, 1, 60) AS preview_text,
+        TRIM(COALESCE(js.surah_names_fa, '') || ',' || COALESCE(js.surah_names_arabic, ''), ',') AS surah_names_text
       FROM juz_meta jm
       JOIN verses v ON v.id = jm.first_verse_id
       JOIN chapters c ON c.id = v.chapter_id
+      LEFT JOIN juz_surahs js ON js.juz_number = jm.juz_number
       ORDER BY jm.juz_number ASC;
     `;
     const juzs = db.prepare(query).all();
@@ -112,6 +123,17 @@ describe('Mobile Quran SQLite Database Tests', () => {
     assert.strictEqual(juz1.first_surah_name_arabic, 'الفاتحة');
     assert.ok(juz1.first_surah_name_fa.includes('فاتحه'));
     assert.ok(juz1.preview_text.length > 0);
+    assert.ok(juz1.surah_names_text.includes('فاتحه'));
+    assert.ok(juz1.surah_names_text.includes('بقره'));
+
+    // Verify Juz 2 contains Al-Baqarah
+    const juz2 = juzs[1];
+    assert.ok(juz2.surah_names_text.includes('بقره'));
+
+    // Verify Juz 3 contains Al-Baqarah and Ali Imran
+    const juz3 = juzs[2];
+    assert.ok(juz3.surah_names_text.includes('بقره'));
+    assert.ok(juz3.surah_names_text.includes('عمران'));
 
     // Verify Juz 30 boundary & metadata
     const juz30 = juzs[29];
@@ -124,6 +146,11 @@ describe('Mobile Quran SQLite Database Tests', () => {
     assert.strictEqual(juz30.first_surah_name_arabic, 'النبإ');
     assert.ok(juz30.first_surah_name_fa.includes('نبأ'));
     assert.ok(juz30.preview_text.length > 0);
+    assert.ok(juz30.surah_names_text.includes('نبأ') || juz30.surah_names_text.includes('نبا'));
+    assert.ok(juz30.surah_names_text.includes('اخلاص'));
+    assert.ok(juz30.surah_names_text.includes('فلق'));
+    assert.ok(juz30.surah_names_text.includes('ناس'));
+    assert.ok(juz30.surah_names_text.includes('کافرون') || juz30.surah_names_text.includes('كافرون'));
 
     // Verify properties across all 30 Juzs
     let totalVerses = 0;
@@ -138,6 +165,7 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.ok(typeof juz.first_surah_name_arabic === 'string' && juz.first_surah_name_arabic.length > 0);
       assert.ok(typeof juz.first_surah_name_fa === 'string' && juz.first_surah_name_fa.length > 0);
       assert.ok(typeof juz.preview_text === 'string' && juz.preview_text.length > 0);
+      assert.ok(typeof juz.surah_names_text === 'string' && juz.surah_names_text.length > 0);
       totalVerses += juz.verses_count;
     }
     assert.strictEqual(totalVerses, 6236);

@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
+import fs from 'node:fs';
 
 import {
   toPersianDigits,
@@ -399,6 +400,21 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(juzTab?.label, 'جزءها');
       assert.strictEqual(revTab?.label, 'ترتیب نزول');
     });
+
+    it('verifies CatalogTabSwitcher root view does not have accessible={true} to keep tabs directly focusable', () => {
+      const switcherSource = fs.readFileSync(
+        path.resolve(__dirname, './CatalogTabSwitcher.tsx'),
+        'utf8'
+      );
+      // Container View must declare accessibilityRole="tablist"
+      assert.ok(switcherSource.includes('accessibilityRole="tablist"'));
+      // Container View must NOT have accessible={true} so child tabs are not collapsed/hidden by screen readers
+      assert.doesNotMatch(switcherSource, /<View[^>]*accessible=\{true\}[^>]*accessibilityRole="tablist"/);
+      assert.doesNotMatch(switcherSource, /<View[^>]*accessibilityRole="tablist"[^>]*accessible=\{true\}/);
+      // Child TouchableOpacity tabs must have accessibilityRole="tab" and accessible={true}
+      assert.ok(switcherSource.includes('accessibilityRole="tab"'));
+      assert.ok(switcherSource.includes('accessible={true}'));
+    });
   });
 
   describe('Search Text Normalization (normalizeSearchText)', () => {
@@ -434,10 +450,20 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(normalizeSearchText('الإخلاص'), 'الاخلاص');
       assert.strictEqual(normalizeSearchText('النبإ'), 'النبا');
       assert.strictEqual(normalizeSearchText('نبأ'), 'نبا');
+
+      // Waw with Hamza (ؤ -> و) and Yeh with Hamza (ئ -> ی)
+      assert.strictEqual(normalizeSearchText('المؤمنون'), 'المومنون');
+      assert.strictEqual(normalizeSearchText('مومنون'), 'مومنون');
+      assert.strictEqual(normalizeSearchText('لؤلؤ'), 'لولو');
+      assert.strictEqual(normalizeSearchText('قائم'), 'قایم');
+      assert.strictEqual(normalizeSearchText('ذئب'), 'ذیب');
     });
 
-    it('trims whitespace and lowercases English queries', () => {
-      assert.strictEqual(normalizeSearchText('  Al-Fatihah  '), 'al-fatihah');
+    it('strips hyphens and apostrophes for transliterated search and lowercases', () => {
+      assert.strictEqual(normalizeSearchText('Ya-Sin'), 'yasin');
+      assert.strictEqual(normalizeSearchText("Al-Mu'minun"), 'almuminun');
+      assert.strictEqual(normalizeSearchText("Ali 'Imran"), 'ali imran');
+      assert.strictEqual(normalizeSearchText('  Al-Fatihah  '), 'alfatihah');
       assert.strictEqual(normalizeSearchText('  THE OPENER  '), 'the opener');
       assert.strictEqual(normalizeSearchText(''), '');
       assert.strictEqual(normalizeSearchText(null), '');
@@ -512,6 +538,22 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.ok(results.some((s) => s.id === 96 && s.revelation_order === 1));
     });
 
+    it('matches transliterated queries with hyphens and apostrophes (yasin -> Ya-Sin, muminun -> Al-Mu\'minun, ali imran -> Ali \'Imran)', () => {
+      const yasinResults = filterSurahs(chapters, 'yasin');
+      assert.ok(yasinResults.some((s) => s.name_simple === 'Ya-Sin'));
+
+      const muminunResults = filterSurahs(chapters, 'muminun');
+      assert.ok(muminunResults.some((s) => s.name_simple === "Al-Mu'minun"));
+
+      const aliImranResults = filterSurahs(chapters, 'ali imran');
+      assert.ok(aliImranResults.some((s) => s.name_simple === "Ali 'Imran"));
+    });
+
+    it('matches Arabic queries with hamza on waw (مومنون -> المؤمنون)', () => {
+      const results = filterSurahs(chapters, 'مومنون');
+      assert.ok(results.some((s) => s.name_arabic === 'المؤمنون'));
+    });
+
     it('returns empty array when no Surah matches query', () => {
       const results = filterSurahs(chapters, 'کلمه_ناموجود_در_قرآن_xyz');
       assert.strictEqual(results.length, 0);
@@ -529,6 +571,15 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
           MIN(id) as min_verse_id
         FROM verses
         GROUP BY juz_number
+      ),
+      juz_surahs AS (
+        SELECT 
+          v.juz_number,
+          GROUP_CONCAT(DISTINCT c.name_fa) AS surah_names_fa,
+          GROUP_CONCAT(DISTINCT c.name_arabic) AS surah_names_arabic
+        FROM verses v
+        JOIN chapters c ON c.id = v.chapter_id
+        GROUP BY v.juz_number
       )
       SELECT
         jm.juz_number,
@@ -539,13 +590,21 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
         v.verse_key as first_verse_key,
         c.name_arabic as first_surah_name_arabic,
         c.name_fa as first_surah_name_fa,
-        SUBSTR(v.text_uthmani, 1, 45) || '...' as preview_text
+        SUBSTR(v.text_uthmani, 1, 45) || '...' as preview_text,
+        TRIM(COALESCE(js.surah_names_fa, '') || ',' || COALESCE(js.surah_names_arabic, ''), ',') AS surah_names_text
       FROM juz_meta jm
       JOIN verses v ON v.id = jm.min_verse_id
       JOIN chapters c ON c.id = v.chapter_id
+      LEFT JOIN juz_surahs js ON js.juz_number = jm.juz_number
       ORDER BY jm.juz_number ASC;
     `;
-    const juzs = db.prepare(juzQuery).all();
+    const rawJuzs = db.prepare(juzQuery).all();
+    const juzs = rawJuzs.map((j) => ({
+      ...j,
+      surah_names: j.surah_names_text
+        ? j.surah_names_text.split(',').map((s) => s.trim()).filter(Boolean)
+        : [],
+    }));
 
     it('empty or whitespace query returns all 30 Juzs unchanged', () => {
       assert.strictEqual(filterJuzs(juzs, '').length, 30);
@@ -597,12 +656,31 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(results[0].juz_number, 1);
     });
 
-    it('filters by starting Surah for Juz 2 and 3 ("بقره")', () => {
+    it('filters by Surah name across all contained Surahs ("بقره" in Juz 1, 2, 3)', () => {
       const results = filterJuzs(juzs, 'بقره');
-      assert.strictEqual(results.length, 2);
+      assert.strictEqual(results.length, 3);
       assert.deepStrictEqual(
         results.map((j) => j.juz_number),
-        [2, 3]
+        [1, 2, 3]
+      );
+    });
+
+    it('filters by Surah names in Juz 30 ("اخلاص", "فلق", "ناس", "کافرون")', () => {
+      for (const surahName of ['اخلاص', 'فلق', 'ناس', 'کافرون']) {
+        const results = filterJuzs(juzs, surahName);
+        assert.ok(
+          results.some((j) => j.juz_number === 30),
+          `Searching "${surahName}" should match Juz 30`
+        );
+      }
+    });
+
+    it('filters by "سوره" prefix for contained Surah ("سوره بقره" in Juz 1, 2, 3)', () => {
+      const results = filterJuzs(juzs, 'سوره بقره');
+      assert.strictEqual(results.length, 3);
+      assert.deepStrictEqual(
+        results.map((j) => j.juz_number),
+        [1, 2, 3]
       );
     });
 

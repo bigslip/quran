@@ -32,13 +32,12 @@ export const CatalogTabSwitcher: React.FC<CatalogTabSwitcherProps> = ({
   tabs = CATALOG_TABS,
   style,
   testID = 'catalog-tab-switcher',
-}) => {
+}: CatalogTabSwitcherProps) => {
   return (
     <View
       testID={testID}
       style={[styles.container, style]}
       accessibilityRole="tablist"
-      accessible={true}
     >
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;

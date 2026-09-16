@@ -23,6 +23,8 @@ export interface Juz {
   first_surah_name_arabic: string;
   first_surah_name_fa: string;
   preview_text: string;
+  surah_names?: string[];
+  surah_names_text?: string;
 }
 
 export interface Verse {

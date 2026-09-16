@@ -213,6 +213,9 @@ export function getJuzNavigationRoute(firstChapterId: number): string {
  * - Normalizes Arabic Kaf (ك) to Persian Kaf (ک)
  * - Normalizes Teh Marbuta (ة) and Heh with Hamza (ۀ) to Heh (ه)
  * - Normalizes Alef forms (آ, أ, إ, ٱ) to bare Alef (ا)
+ * - Normalizes Waw with Hamza (ؤ) to Waw (و)
+ * - Normalizes Yeh with Hamza (ئ) to Persian Yeh (ی)
+ * - Strips hyphens and apostrophes ([-'’`]) for transliterated search
  * - Trims whitespace and lowercases
  */
 export function normalizeSearchText(text: string): string {
@@ -225,6 +228,9 @@ export function normalizeSearchText(text: string): string {
     .replace(/ك/g, 'ک')
     .replace(/[ةۀ]/g, 'ه')
     .replace(/[آأإٱ]/g, 'ا')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ی')
+    .replace(/[-'’`]/g, '')
     .trim()
     .toLowerCase();
 }
@@ -292,8 +298,7 @@ export function filterSurahs(surahs: Chapter[], query: string): Chapter[] {
  * Matches:
  * - Juz number (e.g. 30 or "۳۰")
  * - "جزء X" (e.g. "جزء ۳۰", "جزء 30")
- * - First Surah Persian name (first_surah_name_fa)
- * - First Surah Arabic name (first_surah_name_arabic)
+ * - Contained Surah names (Persian and Arabic) or starting Surah metadata
  * Returns the original array unchanged if query is empty.
  */
 export function filterJuzs(juzs: Juz[], query: string): Juz[] {
@@ -305,7 +310,8 @@ export function filterJuzs(juzs: Juz[], query: string): Juz[] {
     return juzs;
   }
 
-  const cleanQuery = normalizedQuery.replace(/^جزء\s*/, '').trim();
+  const cleanJuzQuery = normalizedQuery.replace(/^جزء\s*/, '').trim();
+  const cleanSurahQuery = normalizedQuery.replace(/^سوره\s*/, '').trim();
 
   return juzs.filter((juz) => {
     const juzNumStr = String(juz.juz_number);
@@ -313,23 +319,42 @@ export function filterJuzs(juzs: Juz[], query: string): Juz[] {
     const surahFaNorm = normalizeSearchText(juz.first_surah_name_fa);
     const surahArabicNorm = normalizeSearchText(juz.first_surah_name_arabic);
 
-    if (
-      juzNumStr === normalizedQuery ||
-      juzBadgeNorm.includes(normalizedQuery) ||
-      surahFaNorm.includes(normalizedQuery) ||
-      surahArabicNorm.includes(normalizedQuery)
-    ) {
-      return true;
-    }
-
-    if (cleanQuery && cleanQuery !== normalizedQuery) {
+    const matchesQuery = (q: string) => {
+      if (!q) return false;
       if (
-        juzNumStr === cleanQuery ||
-        surahFaNorm.includes(cleanQuery) ||
-        surahArabicNorm.includes(cleanQuery)
+        juzNumStr === q ||
+        juzBadgeNorm.includes(q) ||
+        surahFaNorm.includes(q) ||
+        surahArabicNorm.includes(q)
       ) {
         return true;
       }
+
+      if (juz.surah_names && juz.surah_names.length > 0) {
+        if (juz.surah_names.some((name) => normalizeSearchText(name).includes(q))) {
+          return true;
+        }
+      }
+
+      if (juz.surah_names_text) {
+        if (normalizeSearchText(juz.surah_names_text).includes(q)) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    if (matchesQuery(normalizedQuery)) {
+      return true;
+    }
+
+    if (cleanJuzQuery && cleanJuzQuery !== normalizedQuery && matchesQuery(cleanJuzQuery)) {
+      return true;
+    }
+
+    if (cleanSurahQuery && cleanSurahQuery !== normalizedQuery && matchesQuery(cleanSurahQuery)) {
+      return true;
     }
 
     return false;
