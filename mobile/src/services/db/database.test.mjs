@@ -286,7 +286,7 @@ describe('Mobile Quran SQLite Database Tests', () => {
         const wordsQuery = `
           SELECT * FROM words
           WHERE page_number = ?
-          ORDER BY line_number ASC, position ASC;
+          ORDER BY chapter_id ASC, verse_number ASC, position ASC;
         `;
         const allWords = db.prepare(wordsQuery).all(pageNumber);
 
@@ -310,7 +310,7 @@ describe('Mobile Quran SQLite Database Tests', () => {
       const wordsQuery = `
         SELECT * FROM words
         WHERE page_number = ?
-        ORDER BY line_number ASC, position ASC;
+        ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC;
       `;
       return db.prepare(wordsQuery).all(pageNumber);
     }
@@ -401,15 +401,75 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.strictEqual(lastWord.line_number, 15);
       assert.strictEqual(lastWord.text_uthmani, 'ٱلضَّآلِّينَ');
 
-      // Verify ordering is monotonic by line_number ASC, then position within line
+      // Verify ordering is monotonic by line_number ASC, then strictly sequential across verses and positions
       for (let i = 0; i < page1Words.length - 1; i++) {
         const curr = page1Words[i];
         const next = page1Words[i + 1];
         assert.ok(
           curr.line_number < next.line_number ||
             (curr.line_number === next.line_number &&
-              (curr.verse_key !== next.verse_key || curr.position <= next.position))
+              ((curr.chapter_id < next.chapter_id) ||
+                (curr.chapter_id === next.chapter_id && curr.verse_number < next.verse_number) ||
+                (curr.chapter_id === next.chapter_id && curr.verse_number === next.verse_number && curr.position < next.position)))
         );
+      }
+    });
+
+    it('should strictly preserve sequential reading order for shared lines (Page 1 Line 13 & Page 604 Line 4)', () => {
+      // 1. Page 1, Line 13: 1:6 and 1:7 share line 13
+      const page1Words = getPageWords(1);
+      const p1Line13 = page1Words.filter((w) => w.line_number === 13);
+      const p1L13Formatted = p1Line13.map((w) => `${w.verse_key}:${w.text_uthmani}`);
+      assert.deepStrictEqual(p1L13Formatted, [
+        '1:6:ٱلصِّرَٰطَ',
+        '1:6:ٱلْمُسْتَقِيمَ',
+        '1:7:صِرَٰطَ',
+        '1:7:ٱلَّذِينَ',
+        '1:7:أَنْعَمْتَ',
+      ]);
+
+      // 2. Page 604, Line 4: 112:3 and 112:4 share line 4
+      const page604Words = getPageWords(604);
+      const p604Line4 = page604Words.filter((w) => w.line_number === 4);
+      const p604L4Formatted = p604Line4.map((w) => `${w.verse_key}:${w.text_uthmani}`);
+      assert.deepStrictEqual(p604L4Formatted, [
+        '112:3:وَلَمْ',
+        '112:3:يُولَدْ',
+        '112:4:وَلَمْ',
+        '112:4:يَكُن',
+        '112:4:لَّهُۥ',
+        '112:4:كُفُوًا',
+        '112:4:أَحَدٌۢ',
+      ]);
+    });
+
+    it('should ensure valid reading order across all lines on all 604 pages without scrambled words', () => {
+      for (let page = 1; page <= 604; page++) {
+        const words = getPageWords(page);
+        for (let i = 0; i < words.length - 1; i++) {
+          const curr = words[i];
+          const next = words[i + 1];
+          if (curr.line_number === next.line_number) {
+            const isOrderValid =
+              curr.chapter_id < next.chapter_id ||
+              (curr.chapter_id === next.chapter_id && curr.verse_number < next.verse_number) ||
+              (curr.chapter_id === next.chapter_id &&
+                curr.verse_number === next.verse_number &&
+                curr.position < next.position);
+
+            assert.ok(
+              isOrderValid,
+              `Scrambled word order on page ${page}, line ${curr.line_number}: ` +
+                `word ${curr.verse_key} pos ${curr.position} (${curr.text_uthmani}) preceded ` +
+                `word ${next.verse_key} pos ${next.position} (${next.text_uthmani})`
+            );
+          } else {
+            assert.ok(
+              curr.line_number < next.line_number,
+              `Line numbers not increasing on page ${page}: line ${curr.line_number} followed by line ${next.line_number}`
+            );
+          }
+        }
       }
     });
 
@@ -451,7 +511,8 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.ok(serviceCode.includes('WHERE page_number = ?'));
       assert.ok(serviceCode.includes('ORDER BY id ASC'));
       assert.ok(serviceCode.includes('SELECT * FROM words'));
-      assert.ok(serviceCode.includes('ORDER BY line_number ASC, position ASC'));
+      assert.ok(serviceCode.includes('ORDER BY chapter_id ASC, verse_number ASC, position ASC'));
+      assert.ok(serviceCode.includes('ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC'));
     });
 
     it('should verify useReadingStore state properties, defaults, and setters contract', () => {

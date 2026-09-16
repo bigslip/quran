@@ -5,6 +5,7 @@ interface ReadingState {
   lastReadVerseNumber: number;
   lastReadChapterNameFa: string;
   fontScale: number;
+  /** Text encoding / orthography standard: 'uthmani' (Madani Uthmani script) vs 'indopak' (Indo-Pakistani script encoding). */
   quranScript: 'uthmani' | 'indopak';
   selectedReciterId: number;
   showWordByWord: boolean;
@@ -12,6 +13,7 @@ interface ReadingState {
 
   // Dual-mode reading engine state
   viewMode: 'continuous' | 'mushaf';
+  /** Display typeface / rendering font: 'hafs' (Madani QPC Hafs font) vs 'indopak' (IndoPak Nastaliq font). */
   quranFont: 'hafs' | 'indopak';
   activeVerseKey: string | null;
   isPlaying: boolean;
@@ -19,6 +21,7 @@ interface ReadingState {
 
   setLastRead: (chapterId: number, verseNumber: number, chapterNameFa: string) => void;
   setFontScale: (scale: number) => void;
+  /** Updates the Quran text encoding standard ('uthmani' vs 'indopak'). */
   setQuranScript: (script: 'uthmani' | 'indopak') => void;
   setSelectedReciterId: (id: number) => void;
   toggleWordByWord: () => void;
@@ -26,6 +29,7 @@ interface ReadingState {
 
   // Dual-mode reading engine setters
   setViewMode: (mode: 'continuous' | 'mushaf') => void;
+  /** Updates the Quran display typeface ('hafs' vs 'indopak'). */
   setQuranFont: (font: 'hafs' | 'indopak') => void;
   setActiveVerseKey: (key: string | null) => void;
   setIsPlaying: (playing: boolean) => void;

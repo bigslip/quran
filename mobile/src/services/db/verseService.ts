@@ -79,7 +79,7 @@ export async function getVersesByPage(pageNumber: number): Promise<Verse[]> {
     const wordsQuery = `
       SELECT * FROM words
       WHERE page_number = ?
-      ORDER BY line_number ASC, position ASC;
+      ORDER BY chapter_id ASC, verse_number ASC, position ASC;
     `;
     const allWords = await db.getAllAsync<Word>(wordsQuery, [pageNumber]);
 
@@ -107,7 +107,7 @@ export async function getPageWords(pageNumber: number): Promise<Word[]> {
   const wordsQuery = `
     SELECT * FROM words
     WHERE page_number = ?
-    ORDER BY line_number ASC, position ASC;
+    ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC;
   `;
   return db.getAllAsync<Word>(wordsQuery, [pageNumber]);
 }
