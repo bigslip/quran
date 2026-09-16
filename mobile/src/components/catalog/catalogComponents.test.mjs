@@ -18,7 +18,11 @@ import {
   getRevelationPlaceLabel,
   getSurahNavigationRoute,
   getJuzNavigationRoute,
+  normalizeSearchText,
+  filterSurahs,
+  filterJuzs,
   CATALOG_COMPONENT_CONTRACTS,
+  CATALOG_TABS,
 } from './catalogFormatters.ts';
 import { colors } from '../../theme/colors.ts';
 
@@ -364,6 +368,247 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       // Sacred gold tokens
       assert.strictEqual(colors.goldAccent, '#fbbf24');
       assert.strictEqual(colors.goldGlow, 'rgba(251, 191, 36, 0.2)');
+    });
+
+    it('verifies CatalogTabSwitcher and CatalogEmptyState layout contracts satisfy >= 44px touch targets', () => {
+      const { minTouchTarget, tabSwitcher, emptyState } = CATALOG_COMPONENT_CONTRACTS;
+
+      assert.strictEqual(minTouchTarget, 44);
+      assert.ok(tabSwitcher.minHeight >= minTouchTarget, 'tabSwitcher minHeight satisfies 44px');
+      assert.ok(tabSwitcher.containerMinHeight >= minTouchTarget, 'tabSwitcher containerMinHeight satisfies 44px');
+      assert.ok(tabSwitcher.tabMinHeight >= minTouchTarget, 'tabSwitcher tabMinHeight satisfies 44px');
+      assert.ok(tabSwitcher.tabMinWidth >= minTouchTarget, 'tabSwitcher tabMinWidth satisfies 44px');
+
+      assert.ok(emptyState.clearButtonMinHeight >= minTouchTarget, 'clearButtonMinHeight satisfies 44px');
+      assert.ok(emptyState.clearButtonMinWidth >= minTouchTarget, 'clearButtonMinWidth satisfies 44px');
+      assert.strictEqual(emptyState.iconBadgeSize, 64);
+    });
+
+    it('verifies CATALOG_TABS definition satisfies required 3 Sanctuary tabs', () => {
+      assert.strictEqual(CATALOG_TABS.length, 3);
+      assert.deepStrictEqual(
+        CATALOG_TABS.map((t) => t.id),
+        ['surah', 'juz', 'revelation']
+      );
+
+      const surahTab = CATALOG_TABS.find((t) => t.id === 'surah');
+      const juzTab = CATALOG_TABS.find((t) => t.id === 'juz');
+      const revTab = CATALOG_TABS.find((t) => t.id === 'revelation');
+
+      assert.ok(surahTab?.label.includes('سوره'));
+      assert.strictEqual(juzTab?.label, 'جزءها');
+      assert.strictEqual(revTab?.label, 'ترتیب نزول');
+    });
+  });
+
+  describe('Search Text Normalization (normalizeSearchText)', () => {
+    it('normalizes Persian and Arabic digits to ASCII 0-9', () => {
+      assert.strictEqual(normalizeSearchText('۰۱۲۳۴۵۶۷۸۹'), '0123456789');
+      assert.strictEqual(normalizeSearchText('٠١٢٣٤٥٦٧٨٩'), '0123456789');
+      assert.strictEqual(normalizeSearchText('سوره ۱۱۴'), 'سوره 114');
+      assert.strictEqual(normalizeSearchText('جزء ۳۰'), 'جزء 30');
+    });
+
+    it('removes Arabic diacritics / harakat, superscript alef, tatweel, and ZWNJ/ZWJ', () => {
+      assert.strictEqual(normalizeSearchText('الْفَاتِحَةُ'), 'الفاتحه');
+      assert.strictEqual(normalizeSearchText('الرَّحْمَٰنِ الرَّحِيمِ'), 'الرحمن الرحیم');
+      assert.strictEqual(normalizeSearchText('قُـــرْآن'), 'قران');
+      assert.strictEqual(normalizeSearchText('سوره‌ها'), 'سورهها');
+    });
+
+    it('normalizes Arabic letters to Persian standard (Yeh, Kaf, Teh Marbuta, Alef variants)', () => {
+      // Yeh variants
+      assert.strictEqual(normalizeSearchText('علي'), 'علی');
+      assert.strictEqual(normalizeSearchText('هدى'), 'هدی');
+
+      // Kaf variant
+      assert.strictEqual(normalizeSearchText('كتاب'), 'کتاب');
+
+      // Teh Marbuta & Heh with Hamza
+      assert.strictEqual(normalizeSearchText('الفاتحة'), 'الفاتحه');
+      assert.strictEqual(normalizeSearchText('خانۀ'), 'خانه');
+
+      // Alef forms
+      assert.strictEqual(normalizeSearchText('آل عمران'), 'ال عمران');
+      assert.strictEqual(normalizeSearchText('الأنعام'), 'الانعام');
+      assert.strictEqual(normalizeSearchText('الإخلاص'), 'الاخلاص');
+      assert.strictEqual(normalizeSearchText('النبإ'), 'النبا');
+      assert.strictEqual(normalizeSearchText('نبأ'), 'نبا');
+    });
+
+    it('trims whitespace and lowercases English queries', () => {
+      assert.strictEqual(normalizeSearchText('  Al-Fatihah  '), 'al-fatihah');
+      assert.strictEqual(normalizeSearchText('  THE OPENER  '), 'the opener');
+      assert.strictEqual(normalizeSearchText(''), '');
+      assert.strictEqual(normalizeSearchText(null), '');
+      assert.strictEqual(normalizeSearchText(undefined), '');
+    });
+  });
+
+  describe('Real-Time Surah Search Filtering (filterSurahs)', () => {
+    const chapters = db.prepare('SELECT * FROM chapters ORDER BY id ASC').all();
+
+    it('empty or whitespace query returns all 114 Surahs unchanged', () => {
+      assert.strictEqual(filterSurahs(chapters, '').length, 114);
+      assert.strictEqual(filterSurahs(chapters, '   ').length, 114);
+      assert.strictEqual(filterSurahs(chapters, null).length, 114);
+    });
+
+    it('filters by Persian name (e.g. "فاتحه")', () => {
+      const results = filterSurahs(chapters, 'فاتحه');
+      assert.ok(results.length >= 1);
+      assert.strictEqual(results[0].id, 1);
+      assert.ok(results[0].name_fa.includes('فاتحه'));
+    });
+
+    it('filters by Arabic calligraphy name (e.g. "الفاتحة")', () => {
+      const results = filterSurahs(chapters, 'الفاتحة');
+      assert.ok(results.length >= 1);
+      assert.strictEqual(results[0].id, 1);
+      assert.strictEqual(results[0].name_arabic, 'الفاتحة');
+    });
+
+    it('filters by simple transliterated name (e.g. "Fatihah")', () => {
+      const results = filterSurahs(chapters, 'Fatihah');
+      assert.ok(results.length >= 1);
+      assert.strictEqual(results[0].id, 1);
+      assert.strictEqual(results[0].name_simple, 'Al-Fatihah');
+    });
+
+    it('filters by English name (e.g. "The Opener")', () => {
+      const results = filterSurahs(chapters, 'The Opener');
+      assert.ok(results.length >= 1);
+      assert.strictEqual(results[0].id, 1);
+      assert.strictEqual(results[0].name_en, 'The Opener');
+    });
+
+    it('filters by number (ASCII 1 and Persian ۱)', () => {
+      const asciiResults = filterSurahs(chapters, '1');
+      assert.ok(asciiResults.length >= 1);
+      assert.ok(asciiResults.some((s) => s.id === 1));
+
+      const persianResults = filterSurahs(chapters, '۱');
+      assert.ok(persianResults.length >= 1);
+      assert.ok(persianResults.some((s) => s.id === 1));
+
+      // Boundary check for Surah 114
+      const surah114Ascii = filterSurahs(chapters, '114');
+      assert.ok(surah114Ascii.some((s) => s.id === 114));
+
+      const surah114Persian = filterSurahs(chapters, '۱۱۴');
+      assert.ok(surah114Persian.some((s) => s.id === 114));
+    });
+
+    it('filters with prefix "سوره" (e.g. "سوره ۱" and "سوره فاتحه")', () => {
+      const resNum = filterSurahs(chapters, 'سوره ۱');
+      assert.ok(resNum.some((s) => s.id === 1));
+
+      const resName = filterSurahs(chapters, 'سوره فاتحه');
+      assert.ok(resName.some((s) => s.id === 1));
+    });
+
+    it('matches revelation order rank (e.g. Surah Al-Alaq revelation_order: 1)', () => {
+      const results = filterSurahs(chapters, '1');
+      assert.ok(results.some((s) => s.id === 96 && s.revelation_order === 1));
+    });
+
+    it('returns empty array when no Surah matches query', () => {
+      const results = filterSurahs(chapters, 'کلمه_ناموجود_در_قرآن_xyz');
+      assert.strictEqual(results.length, 0);
+    });
+  });
+
+  describe('Real-Time Juz Search Filtering (filterJuzs)', () => {
+    const juzQuery = `
+      WITH juz_meta AS (
+        SELECT
+          juz_number,
+          MIN(page_number) as page_start,
+          MAX(page_number) as page_end,
+          COUNT(id) as verses_count,
+          MIN(id) as min_verse_id
+        FROM verses
+        GROUP BY juz_number
+      )
+      SELECT
+        jm.juz_number,
+        jm.page_start,
+        jm.page_end,
+        jm.verses_count,
+        v.chapter_id as first_chapter_id,
+        v.verse_key as first_verse_key,
+        c.name_arabic as first_surah_name_arabic,
+        c.name_fa as first_surah_name_fa,
+        SUBSTR(v.text_uthmani, 1, 45) || '...' as preview_text
+      FROM juz_meta jm
+      JOIN verses v ON v.id = jm.min_verse_id
+      JOIN chapters c ON c.id = v.chapter_id
+      ORDER BY jm.juz_number ASC;
+    `;
+    const juzs = db.prepare(juzQuery).all();
+
+    it('empty or whitespace query returns all 30 Juzs unchanged', () => {
+      assert.strictEqual(filterJuzs(juzs, '').length, 30);
+      assert.strictEqual(filterJuzs(juzs, '   ').length, 30);
+      assert.strictEqual(filterJuzs(juzs, null).length, 30);
+    });
+
+    it('filters by number (ASCII 30 and Persian ۳۰)', () => {
+      const asciiResults = filterJuzs(juzs, '30');
+      assert.strictEqual(asciiResults.length, 1);
+      assert.strictEqual(asciiResults[0].juz_number, 30);
+
+      const persianResults = filterJuzs(juzs, '۳۰');
+      assert.strictEqual(persianResults.length, 1);
+      assert.strictEqual(persianResults[0].juz_number, 30);
+    });
+
+    it('filters by "جزء ۳۰" and "جزء 30"', () => {
+      const res1 = filterJuzs(juzs, 'جزء ۳۰');
+      assert.strictEqual(res1.length, 1);
+      assert.strictEqual(res1[0].juz_number, 30);
+
+      const res2 = filterJuzs(juzs, 'جزء 30');
+      assert.strictEqual(res2.length, 1);
+      assert.strictEqual(res2[0].juz_number, 30);
+    });
+
+    it('filters by starting Surah Persian name (e.g. "نبأ" for Juz 30)', () => {
+      const results = filterJuzs(juzs, 'نبأ');
+      assert.strictEqual(results.length, 1);
+      assert.strictEqual(results[0].juz_number, 30);
+      assert.ok(results[0].first_surah_name_fa.includes('نبأ'));
+
+      // Also without hamza: "نبا"
+      const resultsNoHamza = filterJuzs(juzs, 'نبا');
+      assert.strictEqual(resultsNoHamza.length, 1);
+      assert.strictEqual(resultsNoHamza[0].juz_number, 30);
+    });
+
+    it('filters by starting Surah Arabic name (e.g. "النبإ" for Juz 30)', () => {
+      const results = filterJuzs(juzs, 'النبإ');
+      assert.strictEqual(results.length, 1);
+      assert.strictEqual(results[0].juz_number, 30);
+    });
+
+    it('filters by starting Surah for Juz 1 ("فاتحه")', () => {
+      const results = filterJuzs(juzs, 'فاتحه');
+      assert.strictEqual(results.length, 1);
+      assert.strictEqual(results[0].juz_number, 1);
+    });
+
+    it('filters by starting Surah for Juz 2 and 3 ("بقره")', () => {
+      const results = filterJuzs(juzs, 'بقره');
+      assert.strictEqual(results.length, 2);
+      assert.deepStrictEqual(
+        results.map((j) => j.juz_number),
+        [2, 3]
+      );
+    });
+
+    it('returns empty array when no Juz matches query', () => {
+      const results = filterJuzs(juzs, 'جزء ۹۹۹');
+      assert.strictEqual(results.length, 0);
     });
   });
 });

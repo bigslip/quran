@@ -28,7 +28,43 @@ export const CATALOG_COMPONENT_CONTRACTS = {
     previewFontSize: 16,
     containerBorderWidth: 1,
   },
+  tabSwitcher: {
+    minHeight: 44,
+    containerMinHeight: 52,
+    tabMinHeight: 44,
+    tabMinWidth: 44,
+    containerBorderWidth: 1,
+    activeTabBorderWidth: 1,
+    padding: 4,
+  },
+  emptyState: {
+    minHeight: 200,
+    iconBadgeSize: 64,
+    clearButtonMinHeight: 44,
+    clearButtonMinWidth: 44,
+    clearButtonBorderWidth: 1,
+  },
 } as const;
+
+/**
+ * Tab identifier for the catalog tab switcher:
+ * - 'surah': standard Surah list
+ * - 'juz': 30 Juz partitions
+ * - 'revelation': chronological revelation order
+ */
+export type CatalogTabId = 'surah' | 'juz' | 'revelation';
+
+export interface CatalogTab {
+  id: CatalogTabId;
+  label: string;
+}
+
+export const CATALOG_TABS: readonly CatalogTab[] = [
+  { id: 'surah', label: 'سوره‌ها' },
+  { id: 'juz', label: 'جزءها' },
+  { id: 'revelation', label: 'ترتیب نزول' },
+] as const;
+
 
 /**
  * Converts ASCII digits (0-9) to Persian digits (۰-۹).
@@ -168,3 +204,135 @@ export function getSurahNavigationRoute(chapterId: number): string {
 export function getJuzNavigationRoute(firstChapterId: number): string {
   return `/surah/${firstChapterId}`;
 }
+
+/**
+ * Normalizes text for Arabic / Persian search matching:
+ * - Converts Persian digits (۰-۹) and Arabic digits (٠-٩) to ASCII 0-9
+ * - Removes Arabic diacritics / harakat ([\u064B-\u065F]), superscript alef (\u0670), tatweel (\u0640), and ZWNJ/ZWJ
+ * - Normalizes Arabic Yeh (ي, ى) to Persian Yeh (ی)
+ * - Normalizes Arabic Kaf (ك) to Persian Kaf (ک)
+ * - Normalizes Teh Marbuta (ة) and Heh with Hamza (ۀ) to Heh (ه)
+ * - Normalizes Alef forms (آ, أ, إ, ٱ) to bare Alef (ا)
+ * - Trims whitespace and lowercases
+ */
+export function normalizeSearchText(text: string): string {
+  if (!text) return '';
+  return String(text)
+    .replace(/[\u06F0-\u06F9]/g, (digit) => String(digit.charCodeAt(0) - 0x06F0))
+    .replace(/[\u0660-\u0669]/g, (digit) => String(digit.charCodeAt(0) - 0x0660))
+    .replace(/[\u064B-\u065F\u0670\u0640\u200C\u200D]/g, '')
+    .replace(/[يى]/g, 'ی')
+    .replace(/ك/g, 'ک')
+    .replace(/[ةۀ]/g, 'ه')
+    .replace(/[آأإٱ]/g, 'ا')
+    .trim()
+    .toLowerCase();
+}
+
+/**
+ * Filters Surahs based on real-time search query.
+ * Matches:
+ * - Persian name (name_fa)
+ * - Arabic calligraphy name (name_arabic)
+ * - Simple transliterated name (name_simple)
+ * - English translation name (name_en)
+ * - Surah number (id)
+ * - Revelation order (revelation_order)
+ * Returns the original array unchanged if query is empty.
+ */
+export function filterSurahs(surahs: Chapter[], query: string): Chapter[] {
+  if (!query || !query.trim()) {
+    return surahs;
+  }
+  const normalizedQuery = normalizeSearchText(query);
+  if (!normalizedQuery) {
+    return surahs;
+  }
+
+  const cleanQuery = normalizedQuery.replace(/^سوره\s*/, '').trim();
+
+  return surahs.filter((surah) => {
+    const nameFaNorm = normalizeSearchText(surah.name_fa);
+    const nameArabicNorm = normalizeSearchText(surah.name_arabic);
+    const nameSimpleNorm = normalizeSearchText(surah.name_simple);
+    const nameEnNorm = normalizeSearchText(surah.name_en);
+    const idStr = String(surah.id);
+    const revOrderStr = String(surah.revelation_order);
+
+    if (
+      nameFaNorm.includes(normalizedQuery) ||
+      nameArabicNorm.includes(normalizedQuery) ||
+      nameSimpleNorm.includes(normalizedQuery) ||
+      nameEnNorm.includes(normalizedQuery) ||
+      idStr === normalizedQuery ||
+      revOrderStr === normalizedQuery
+    ) {
+      return true;
+    }
+
+    if (cleanQuery && cleanQuery !== normalizedQuery) {
+      if (
+        nameFaNorm.includes(cleanQuery) ||
+        nameArabicNorm.includes(cleanQuery) ||
+        nameSimpleNorm.includes(cleanQuery) ||
+        nameEnNorm.includes(cleanQuery) ||
+        idStr === cleanQuery ||
+        revOrderStr === cleanQuery
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+}
+
+/**
+ * Filters Juzs based on real-time search query.
+ * Matches:
+ * - Juz number (e.g. 30 or "۳۰")
+ * - "جزء X" (e.g. "جزء ۳۰", "جزء 30")
+ * - First Surah Persian name (first_surah_name_fa)
+ * - First Surah Arabic name (first_surah_name_arabic)
+ * Returns the original array unchanged if query is empty.
+ */
+export function filterJuzs(juzs: Juz[], query: string): Juz[] {
+  if (!query || !query.trim()) {
+    return juzs;
+  }
+  const normalizedQuery = normalizeSearchText(query);
+  if (!normalizedQuery) {
+    return juzs;
+  }
+
+  const cleanQuery = normalizedQuery.replace(/^جزء\s*/, '').trim();
+
+  return juzs.filter((juz) => {
+    const juzNumStr = String(juz.juz_number);
+    const juzBadgeNorm = normalizeSearchText(`جزء ${juz.juz_number}`);
+    const surahFaNorm = normalizeSearchText(juz.first_surah_name_fa);
+    const surahArabicNorm = normalizeSearchText(juz.first_surah_name_arabic);
+
+    if (
+      juzNumStr === normalizedQuery ||
+      juzBadgeNorm.includes(normalizedQuery) ||
+      surahFaNorm.includes(normalizedQuery) ||
+      surahArabicNorm.includes(normalizedQuery)
+    ) {
+      return true;
+    }
+
+    if (cleanQuery && cleanQuery !== normalizedQuery) {
+      if (
+        juzNumStr === cleanQuery ||
+        surahFaNorm.includes(cleanQuery) ||
+        surahArabicNorm.includes(cleanQuery)
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+}
+
