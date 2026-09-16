@@ -24,6 +24,9 @@ import {
   groupWordsByLine,
   CHAPTER_NAMES_FA,
   getSurahNameFa,
+  formatAudioDockTitle,
+  formatFontScalePercentage,
+  clampFontScale,
 } from './readerContracts.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
 import { colors } from '../../theme/colors.ts';
@@ -714,10 +717,261 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
   });
 
+  describe('AudioPlaybackDock Component Contracts, Layout & Formatting', () => {
+    it('formats Persian Ayah title with Surah name and Persian verse numbers', () => {
+      // Standard cases
+      assert.strictEqual(
+        formatAudioDockTitle('الفاتحه', 1),
+        'سوره الفاتحه • آیه ۱'
+      );
+      assert.strictEqual(
+        formatAudioDockTitle('سوره بقره', 255),
+        'سوره بقره • آیه ۲۵۵'
+      );
+      assert.strictEqual(
+        formatAudioDockTitle('کهف', 110),
+        'سوره کهف • آیه ۱۱۰'
+      );
+
+      // Surah name only
+      assert.strictEqual(formatAudioDockTitle('یس'), 'سوره یس');
+      assert.strictEqual(formatAudioDockTitle('سوره اخلاص'), 'سوره اخلاص');
+
+      // Verse number only
+      assert.strictEqual(formatAudioDockTitle(undefined, 7), 'آیه ۷');
+      assert.strictEqual(formatAudioDockTitle('', 42), 'آیه ۴۲');
+
+      // Empty input
+      assert.strictEqual(formatAudioDockTitle(), '');
+      assert.strictEqual(formatAudioDockTitle('', undefined), '');
+    });
+
+    it('verifies AudioPlaybackDock layout and dimension contracts', () => {
+      const { audioDock, minTouchTarget } = READER_COMPONENT_CONTRACTS;
+
+      assert.strictEqual(audioDock.minHeight, 64);
+      assert.strictEqual(audioDock.primaryButtonSize, 48);
+      assert.strictEqual(audioDock.secondaryButtonSize, 44);
+      assert.strictEqual(audioDock.defaultReciter, 'استاد شهریار پرهیزگار');
+
+      // Touch target compliance
+      assert.ok(audioDock.minHeight >= minTouchTarget);
+      assert.ok(audioDock.primaryButtonSize >= minTouchTarget);
+      assert.ok(audioDock.secondaryButtonSize >= minTouchTarget);
+    });
+
+    it('verifies AudioPlaybackDock.tsx source code structure, contracts, RTL layout, and accessibility', () => {
+      const source = fs.readFileSync(
+        path.resolve(__dirname, './AudioPlaybackDock.tsx'),
+        'utf8'
+      );
+
+      // 1. Props interface
+      assert.ok(source.includes('interface AudioPlaybackDockProps'));
+      assert.ok(source.includes('isPlaying: boolean'));
+      assert.ok(source.includes('activeVerseKey: string | null'));
+      assert.ok(source.includes('surahName?: string'));
+      assert.ok(source.includes('verseNumber?: number'));
+      assert.ok(source.includes('reciterName?: string'));
+      assert.ok(source.includes('onPlayPause?: () => void'));
+      assert.ok(source.includes('onNextAyah?: () => void'));
+      assert.ok(source.includes('onPrevAyah?: () => void'));
+      assert.ok(source.includes('onToggleRepeat?: () => void'));
+      assert.ok(source.includes('isRepeating?: boolean'));
+      assert.ok(source.includes('onPressDock?: () => void'));
+      assert.ok(source.includes('onCloseDock?: () => void'));
+
+      // 2. Returns null when activeVerseKey is null
+      assert.ok(source.includes('if (!activeVerseKey)'));
+      assert.ok(source.includes('return null;'));
+
+      // 3. Fallback reciter name
+      assert.ok(source.includes('READER_COMPONENT_CONTRACTS.audioDock.defaultReciter'));
+
+      // 4. RTL alignment and Sanctuary tokens
+      assert.ok(source.includes("flexDirection: 'row-reverse'"));
+      assert.ok(source.includes('colors.surfaceFloating'));
+      assert.ok(source.includes('colors.borderIridescent'));
+      assert.ok(source.includes('colors.primary'));
+      assert.ok(source.includes('borderRadius.lg'));
+
+      // 5. Controls toolbar and prominent Play/Pause button (48px)
+      assert.ok(source.includes('playPauseButton'));
+      assert.ok(source.includes('READER_COMPONENT_CONTRACTS.audioDock.primaryButtonSize'));
+      assert.ok(source.includes('READER_COMPONENT_CONTRACTS.audioDock.secondaryButtonSize'));
+
+      // 6. Lucide icons: Play, Pause, SkipBack, SkipForward, Repeat, X
+      assert.ok(source.includes('<Play'));
+      assert.ok(source.includes('<Pause'));
+      assert.ok(source.includes('<SkipBack'));
+      assert.ok(source.includes('<SkipForward'));
+      assert.ok(source.includes('<Repeat'));
+      assert.ok(source.includes('<X'));
+
+      // 7. Persian accessibility labels & roles
+      assert.ok(source.includes('accessibilityRole="toolbar"'));
+      assert.ok(source.includes('accessibilityRole="button"'));
+      assert.ok(source.includes('توقف پخش صوت'));
+      assert.ok(source.includes('پخش صوت'));
+      assert.ok(source.includes('آیه بعدی'));
+      assert.ok(source.includes('آیه قبلی'));
+      assert.ok(source.includes('تکرار آیه'));
+      assert.ok(source.includes('بستن پخش صوتی'));
+
+      // 8. React.memo optimization
+      assert.ok(source.includes('React.memo('));
+    });
+  });
+
+  describe('ReaderSettingsModal Component Contracts, Stepper & Toggles', () => {
+    it('formats font scale percentages with Persian numerals', () => {
+      assert.strictEqual(formatFontScalePercentage(1.0), '۱۰۰٪');
+      assert.strictEqual(formatFontScalePercentage(0.8), '۸۰٪');
+      assert.strictEqual(formatFontScalePercentage(1.6), '۱۶۰٪');
+      assert.strictEqual(formatFontScalePercentage(1.2), '۱۲۰٪');
+      assert.strictEqual(formatFontScalePercentage(0.95), '۹۵٪');
+      assert.strictEqual(formatFontScalePercentage(1.35), '۱۳۵٪');
+    });
+
+    it('enforces font scale boundaries [0.8 .. 1.6] and stepper clamping logic', () => {
+      const { minScale, maxScale, scaleStep } = READER_COMPONENT_CONTRACTS.settingsModal;
+
+      assert.strictEqual(minScale, 0.8);
+      assert.strictEqual(maxScale, 1.6);
+      assert.strictEqual(scaleStep, 0.1);
+
+      // Clamping logic
+      assert.strictEqual(clampFontScale(0.5), 0.8);
+      assert.strictEqual(clampFontScale(0.79), 0.8);
+      assert.strictEqual(clampFontScale(0.8), 0.8);
+      assert.strictEqual(clampFontScale(1.0), 1.0);
+      assert.strictEqual(clampFontScale(1.4), 1.4);
+      assert.strictEqual(clampFontScale(1.6), 1.6);
+      assert.strictEqual(clampFontScale(1.61), 1.6);
+      assert.strictEqual(clampFontScale(2.0), 1.6);
+
+      // Decrement step clamp simulation
+      let currentScale = 0.8;
+      let nextScale = Math.max(minScale, Math.round((currentScale - scaleStep) * 10) / 10);
+      assert.strictEqual(nextScale, 0.8, 'Cannot decrement below minScale 0.8');
+
+      // Increment step clamp simulation
+      currentScale = 1.6;
+      nextScale = Math.min(maxScale, Math.round((currentScale + scaleStep) * 10) / 10);
+      assert.strictEqual(nextScale, 1.6, 'Cannot increment above maxScale 1.6');
+
+      // Mid-range step
+      currentScale = 1.0;
+      assert.strictEqual(
+        Math.min(maxScale, Math.round((currentScale + scaleStep) * 10) / 10),
+        1.1
+      );
+      assert.strictEqual(
+        Math.max(minScale, Math.round((currentScale - scaleStep) * 10) / 10),
+        0.9
+      );
+    });
+
+    it('verifies ReaderSettingsModal layout, dimension contracts, and touch targets', () => {
+      const { settingsModal, minTouchTarget } = READER_COMPONENT_CONTRACTS;
+
+      assert.strictEqual(settingsModal.closeButtonSize, 44);
+      assert.strictEqual(settingsModal.stepperButtonSize, 44);
+      assert.ok(settingsModal.closeButtonSize >= minTouchTarget);
+      assert.ok(settingsModal.stepperButtonSize >= minTouchTarget);
+    });
+
+    it('verifies ReaderSettingsModal.tsx source code structure, contracts, and touch targets', () => {
+      const source = fs.readFileSync(
+        path.resolve(__dirname, './ReaderSettingsModal.tsx'),
+        'utf8'
+      );
+
+      // 1. Props interface
+      assert.ok(source.includes('interface ReaderSettingsModalProps'));
+      assert.ok(source.includes('visible: boolean'));
+      assert.ok(source.includes('onClose: () => void'));
+      assert.ok(source.includes('fontScale: number'));
+      assert.ok(source.includes('onChangeFontScale: (scale: number) => void'));
+      assert.ok(source.includes("viewMode: 'continuous' | 'mushaf'"));
+      assert.ok(source.includes("onChangeViewMode: (mode: 'continuous' | 'mushaf') => void"));
+      assert.ok(source.includes("quranFont: 'hafs' | 'indopak'"));
+      assert.ok(source.includes("onChangeQuranFont: (font: 'hafs' | 'indopak') => void"));
+      assert.ok(source.includes("activeTranslation: 'makarem' | 'ansarian' | 'both'"));
+      assert.ok(source.includes("onChangeActiveTranslation: (translation: 'makarem' | 'ansarian' | 'both') => void"));
+      assert.ok(source.includes('showWordByWord: boolean'));
+      assert.ok(source.includes('onToggleWordByWord: (show: boolean) => void'));
+      assert.ok(source.includes('showTranslation?: boolean'));
+      assert.ok(source.includes('onToggleShowTranslation?: (show: boolean) => void'));
+
+      // 2. Modal configuration
+      assert.ok(source.includes('<Modal'));
+      assert.ok(source.includes('transparent={true}'));
+      assert.ok(source.includes('animationType="slide"'));
+
+      // 3. Header and dismiss touch targets >= 44x44px
+      assert.ok(source.includes('تنظیمات مطالعه قرآن'));
+      assert.ok(source.includes('READER_COMPONENT_CONTRACTS.settingsModal.closeButtonSize'));
+      assert.ok(source.includes('accessibilityLabel="بستن تنظیمات"'));
+
+      // 4. Section 1: View mode segmented buttons
+      assert.ok(source.includes('حالت نمایش'));
+      assert.ok(source.includes('نمای متنی (پیوسته)'));
+      assert.ok(source.includes('مصحف چاپی (۱۵ خطی)'));
+      assert.ok(source.includes("onChangeViewMode('continuous')"));
+      assert.ok(source.includes("onChangeViewMode('mushaf')"));
+
+      // 5. Section 2: Quran font segmented buttons
+      assert.ok(source.includes('قلم رسم‌الخط قرآن'));
+      assert.ok(source.includes('عثمان طه (حفص)'));
+      assert.ok(source.includes('نستعلیق (اردو / شبه‌قاره)'));
+      assert.ok(source.includes("onChangeQuranFont('hafs')"));
+      assert.ok(source.includes("onChangeQuranFont('indopak')"));
+
+      // 6. Section 3: Font scale stepper & live preview
+      assert.ok(source.includes('اندازه قلم قرآن'));
+      assert.ok(source.includes('READER_COMPONENT_CONTRACTS.settingsModal.stepperButtonSize'));
+      assert.ok(source.includes('handleDecrementScale'));
+      assert.ok(source.includes('handleIncrementScale'));
+      assert.ok(source.includes('formatFontScalePercentage'));
+      assert.ok(source.includes('previewArabicText'));
+      assert.ok(source.includes('previewText'));
+
+      // 7. Section 4: Persian translation segmented selector
+      assert.ok(source.includes('انتخاب مترجم فارسی'));
+      assert.ok(source.includes('مکارم شیرازی'));
+      assert.ok(source.includes('حسین انصاریان'));
+      assert.ok(source.includes('هر دو'));
+      assert.ok(source.includes("onChangeActiveTranslation('makarem')"));
+      assert.ok(source.includes("onChangeActiveTranslation('ansarian')"));
+      assert.ok(source.includes("onChangeActiveTranslation('both')"));
+
+      // 8. Section 5: Switches
+      assert.ok(source.includes('<Switch'));
+      assert.ok(source.includes('نمایش ترجمه واژه به واژه'));
+      assert.ok(source.includes('نمایش ترجمه فارسی'));
+
+      // 9. Sanctuary tokens
+      assert.ok(source.includes('colors.surfaceCard'));
+      assert.ok(source.includes('colors.primary'));
+      assert.ok(source.includes('borderRadius.xl'));
+
+      // 10. React.memo optimization
+      assert.ok(source.includes('React.memo('));
+    });
+  });
+
   describe('Dual-Mode Touch Targets & Accessibility Compliance (>= 44x44px)', () => {
     it('verifies all reader components guarantee minimum touch target size >= 44x44px', () => {
-      const { minTouchTarget, surahHeader, bismillah, verseCard, mushafPage } =
-        READER_COMPONENT_CONTRACTS;
+      const {
+        minTouchTarget,
+        surahHeader,
+        bismillah,
+        verseCard,
+        mushafPage,
+        audioDock,
+        settingsModal,
+      } = READER_COMPONENT_CONTRACTS;
 
       assert.strictEqual(minTouchTarget, 44);
 
@@ -738,6 +992,15 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(mushafPage.headerMinHeight >= minTouchTarget);
       assert.ok(mushafPage.footerMinHeight >= minTouchTarget);
       assert.strictEqual(mushafPage.minTouchTarget, 44);
+
+      // AudioPlaybackDock
+      assert.ok(audioDock.primaryButtonSize >= minTouchTarget);
+      assert.ok(audioDock.secondaryButtonSize >= minTouchTarget);
+      assert.ok(audioDock.minHeight >= minTouchTarget);
+
+      // ReaderSettingsModal
+      assert.ok(settingsModal.closeButtonSize >= minTouchTarget);
+      assert.ok(settingsModal.stepperButtonSize >= minTouchTarget);
     });
   });
 
@@ -752,8 +1015,11 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(indexSource.includes("export * from './BismillahBanner'"));
       assert.ok(indexSource.includes("export * from './ContinuousVerseCard'"));
       assert.ok(indexSource.includes("export * from './MushafPageView'"));
+      assert.ok(indexSource.includes("export * from './AudioPlaybackDock'"));
+      assert.ok(indexSource.includes("export * from './ReaderSettingsModal'"));
       assert.ok(indexSource.includes("export * from './readerContracts'"));
     });
   });
 });
+
 

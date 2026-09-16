@@ -61,6 +61,26 @@ export const READER_COMPONENT_CONTRACTS = {
     quranFontSize: 22,
     quranLineHeight: 42,
   },
+  audioDock: {
+    minHeight: 64,
+    primaryButtonSize: 48,
+    secondaryButtonSize: 44,
+    defaultReciter: 'استاد شهریار پرهیزگار',
+    iconSize: 20,
+    primaryIconSize: 24,
+    borderRadius: 16,
+  },
+  settingsModal: {
+    minScale: 0.8,
+    maxScale: 1.6,
+    scaleStep: 0.1,
+    closeButtonSize: 44,
+    stepperButtonSize: 44,
+    stepperIconSize: 20,
+    closeIconSize: 20,
+    previewFontSize: 22,
+    previewText: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+  },
 } as const;
 
 /**
@@ -370,4 +390,46 @@ export function groupWordsByLine(words: Word[]): Map<number, Word[]> {
   }
 
   return lineMap;
+}
+
+/**
+ * Formats Persian Ayah title for AudioPlaybackDock:
+ * e.g., "سوره الفاتحه • آیه ۱" or "سوره فاتحه • آیه ۱"
+ */
+export function formatAudioDockTitle(
+  surahName?: string,
+  verseNumber?: number
+): string {
+  const parts: string[] = [];
+
+  if (surahName && surahName.trim().length > 0) {
+    const trimmed = surahName.trim();
+    parts.push(trimmed.startsWith('سوره') ? trimmed : `سوره ${trimmed}`);
+  }
+
+  if (verseNumber !== undefined && verseNumber !== null) {
+    parts.push(`آیه ${toPersianDigits(verseNumber)}`);
+  }
+
+  return parts.join(' • ');
+}
+
+/**
+ * Formats font scale value (0.8 .. 1.6) to Persian percentage string:
+ * e.g. 1.0 -> '۱۰۰٪', 0.8 -> '۸۰٪', 1.6 -> '۱۶۰٪'
+ */
+export function formatFontScalePercentage(scale: number): string {
+  const percentage = Math.round(scale * 100);
+  return `${toPersianDigits(percentage)}٪`;
+}
+
+/**
+ * Clamps font scale to the contractual [minScale, maxScale] range (0.8 .. 1.6).
+ * Rounds to 1 decimal place.
+ */
+export function clampFontScale(scale: number): number {
+  const min = READER_COMPONENT_CONTRACTS.settingsModal.minScale;
+  const max = READER_COMPONENT_CONTRACTS.settingsModal.maxScale;
+  const clamped = Math.max(min, Math.min(max, scale));
+  return Math.round(clamped * 10) / 10;
 }
