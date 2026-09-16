@@ -72,10 +72,10 @@
   export async function getPersonalReflection(verseKey: string): Promise<string | null>;
   ```
 
-- [ ] **Step 1: Write tests for `ayahInsightsService` in `database.test.mjs`**
-- [ ] **Step 2: Implement `ayahInsightsService.ts` with root extraction and Tafsir synthesis**
-- [ ] **Step 3: Run `node --test mobile/src/services/db/database.test.mjs` and verify pass**
-- [ ] **Step 4: Commit `feat(mobile): implement offline Ayah insights and tafsir data service`**
+- [x] **Step 1: Write tests for `ayahInsightsService` in `database.test.mjs`**
+- [x] **Step 2: Implement `ayahInsightsService.ts` with root extraction and Tafsir synthesis**
+- [x] **Step 3: Run `node --test mobile/src/services/db/database.test.mjs` and verify pass**
+- [x] **Step 4: Commit `feat(mobile): implement offline Ayah insights and tafsir data service`**
 
 ---
 
@@ -102,10 +102,10 @@
   }
   ```
 
-- [ ] **Step 1: Create `insightsContracts.ts` with layout, sizing, and formatting helpers**
-- [ ] **Step 2: Build `AyahScripturePreviewCard.tsx` with word tap highlight and active word badge**
-- [ ] **Step 3: Write tests for word selection, typography, and accessibility**
-- [ ] **Step 4: Commit `feat(mobile): implement AyahScripturePreviewCard with interactive word highlight`**
+- [x] **Step 1: Create `insightsContracts.ts` with layout, sizing, and formatting helpers**
+- [x] **Step 2: Build `AyahScripturePreviewCard.tsx` with word tap highlight and active word badge**
+- [x] **Step 3: Write tests for word selection, typography, and accessibility**
+- [x] **Step 4: Commit `feat(mobile): implement AyahScripturePreviewCard with interactive word highlight`**
 
 ---
 
@@ -136,10 +136,10 @@
   }
   ```
 
-- [ ] **Step 1: Build `TafsirTabContent.tsx` with source switcher pills and bullet takeaways**
-- [ ] **Step 2: Build `PersonalReflectionCard.tsx` with note input and persistence**
-- [ ] **Step 3: Add unit tests in `insightsComponents.test.mjs`**
-- [ ] **Step 4: Commit `feat(mobile): implement TafsirTabContent and PersonalReflectionCard`**
+- [x] **Step 1: Build `TafsirTabContent.tsx` with source switcher pills and bullet takeaways**
+- [x] **Step 2: Build `PersonalReflectionCard.tsx` with note input and persistence**
+- [x] **Step 3: Add unit tests in `insightsComponents.test.mjs`**
+- [x] **Step 4: Commit `feat(mobile): implement TafsirTabContent and PersonalReflectionCard`**
 
 ---
 
@@ -166,11 +166,11 @@
   }
   ```
 
-- [ ] **Step 1: Implement `AyahInsightsDrawer.tsx` with Sanctuary bottom sheet modal**
-- [ ] **Step 2: Wire 3 segmented tabs: Tafsir & Reflections, Vocabulary Breakdown, Personal Notes**
-- [ ] **Step 3: Export from `components/insights/index.ts`**
-- [ ] **Step 4: Write tests verifying touch targets (>= 44x44px), tab switching, and contracts**
-- [ ] **Step 5: Commit `feat(mobile): implement AyahInsightsDrawer sanctuary sheet`**
+- [x] **Step 1: Implement `AyahInsightsDrawer.tsx` with Sanctuary bottom sheet modal**
+- [x] **Step 2: Wire 3 segmented tabs: Tafsir & Reflections, Vocabulary Breakdown, Personal Notes**
+- [x] **Step 3: Export from `components/insights/index.ts`**
+- [x] **Step 4: Write tests verifying touch targets (>= 44x44px), tab switching, and contracts**
+- [x] **Step 5: Commit `feat(mobile): implement AyahInsightsDrawer sanctuary sheet`**
 
 ---
 
@@ -180,9 +180,10 @@
 - Test: `mobile/src/components/reader/readerComponents.test.mjs`
 - Test: `mobile/src/components/insights/insightsComponents.test.mjs`
 
-- [ ] **Step 1: Wire `handleVerseInsights` in `surah/[id].tsx` to open `AyahInsightsDrawer`**
-- [ ] **Step 2: Bind selected verse and chapter metadata to drawer**
-- [ ] **Step 3: Run full mobile test suites (`insightsComponents.test.mjs`, `readerComponents.test.mjs`, `database.test.mjs`, `catalogComponents.test.mjs`)**
-- [ ] **Step 4: Run web regression suite (`yarn --ignore-engines test --run`)**
-- [ ] **Step 5: Commit `feat(mobile): wire AyahInsightsDrawer into surah reader screen`**
-- [ ] **Step 6: Execute Whole-Phase Code Review for Phase 1D**
+- [x] **Step 1: Wire `handleVerseInsights` in `surah/[id].tsx` to open `AyahInsightsDrawer`**
+- [x] **Step 2: Bind selected verse and chapter metadata to drawer**
+- [x] **Step 3: Run full mobile test suites (`insightsComponents.test.mjs`, `readerComponents.test.mjs`, `database.test.mjs`, `catalogComponents.test.mjs`)**
+- [x] **Step 4: Run web regression suite (`yarn --ignore-engines test --run`)**
+- [x] **Step 5: Commit `feat(mobile): wire AyahInsightsDrawer into surah reader screen`**
+- [x] **Step 6: Execute Whole-Phase Code Review for Phase 1D**
+
