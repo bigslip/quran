@@ -39,6 +39,7 @@ export interface MushafPageViewProps {
   verses: Verse[];
   words?: Word[];
   quranFont?: 'hafs' | 'indopak';
+  fontScale?: number;
   onPrevPage?: () => void;
   onNextPage?: () => void;
   onVersePress?: (verseKey: string) => void;
@@ -70,6 +71,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
   verses,
   words,
   quranFont = 'hafs',
+  fontScale = 1.0,
   onPrevPage,
   onNextPage,
   onVersePress,
@@ -206,8 +208,8 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
             const hasWords = wordsOnLine.length > 0;
             const wordCount = wordsOnLine.length;
 
-            // Responsive font scaling based on word count to prevent any line overflow on mobile screens:
-            const dynamicFontSize =
+            // Responsive font scaling based on word count, scaled by user fontScale:
+            const baseFontSize =
               wordCount >= 13
                 ? 13
                 : wordCount >= 10
@@ -217,13 +219,26 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                 : wordCount >= 6
                 ? 19
                 : 21;
+            const dynamicFontSize = Math.round(baseFontSize * fontScale);
             const dynamicWordPadding = wordCount >= 10 ? 1 : 2;
+            const isJustified = wordCount >= 5;
+            const scaledLineHeight = Math.max(
+              READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
+              Math.round(READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight * fontScale)
+            );
 
             if (hasWords) {
               return (
                 <View
                   key={`mushaf-line-${lineNum}`}
-                  style={styles.mushafLine}
+                  style={[
+                    styles.mushafLine,
+                    {
+                      minHeight: scaledLineHeight,
+                      height: scaledLineHeight,
+                      justifyContent: isJustified ? 'space-between' : 'center',
+                    },
+                  ]}
                   testID={`${testID}-line-${lineNum}`}
                 >
                   {wordsOnLine.map((word, wordIndex) => {
@@ -257,6 +272,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                             },
                           ]}
                           allowFontScaling={false}
+                          numberOfLines={1}
                         >
                           {arabicWordText}
                         </Text>
@@ -287,7 +303,13 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
               return (
                 <View
                   key={`mushaf-line-${lineNum}`}
-                  style={styles.surahCartoucheContainer}
+                  style={[
+                    styles.surahCartoucheContainer,
+                    {
+                      minHeight: scaledLineHeight,
+                      height: scaledLineHeight,
+                    },
+                  ]}
                   testID={`${testID}-line-${lineNum}-surah-cartouche`}
                   accessible={true}
                   accessibilityRole="header"
@@ -297,13 +319,24 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                     <Text style={styles.surahCartoucheOrnament}>◈</Text>
                     <View style={styles.surahCartoucheContent}>
                       <Text
-                        style={[styles.surahCartoucheTitle, { fontFamily: arabicFontFamily }]}
+                        style={[
+                          styles.surahCartoucheTitle,
+                          {
+                            fontFamily: arabicFontFamily,
+                            fontSize: Math.round(16 * fontScale),
+                          },
+                        ]}
                         allowFontScaling={false}
                       >
                         {`سُورَةُ ${chapterArabic}`}
                       </Text>
                       {versesCount > 0 && (
-                        <Text style={styles.surahCartoucheBadge}>
+                        <Text
+                          style={[
+                            styles.surahCartoucheBadge,
+                            { fontSize: Math.max(9, Math.round(fontSizes.xs * fontScale)) },
+                          ]}
+                        >
                           {`آيَاتُهَا ${toPersianDigits(versesCount)}`}
                         </Text>
                       )}
@@ -318,7 +351,13 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
               return (
                 <View
                   key={`mushaf-line-${lineNum}`}
-                  style={styles.bismillahLineContainer}
+                  style={[
+                    styles.bismillahLineContainer,
+                    {
+                      minHeight: scaledLineHeight,
+                      height: scaledLineHeight,
+                    },
+                  ]}
                   testID={`${testID}-line-${lineNum}-bismillah`}
                   accessible={true}
                   accessibilityRole="header"
@@ -329,7 +368,10 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                   <Text
                     style={[
                       styles.bismillahCalligraphyText,
-                      { fontFamily: arabicFontFamily },
+                      {
+                        fontFamily: arabicFontFamily,
+                        fontSize: Math.round(18 * fontScale),
+                      },
                     ]}
                     allowFontScaling={false}
                   >
@@ -345,7 +387,14 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
             return (
               <View
                 key={`mushaf-line-${lineNum}`}
-                style={[styles.mushafLine, styles.mushafLineEmpty]}
+                style={[
+                  styles.mushafLine,
+                  styles.mushafLineEmpty,
+                  {
+                    minHeight: scaledLineHeight,
+                    height: scaledLineHeight,
+                  },
+                ]}
                 testID={`${testID}-line-${lineNum}`}
               >
                 <View style={styles.emptyLinePlaceholder}>
@@ -474,7 +523,7 @@ const styles = StyleSheet.create({
     height: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     flexDirection: rtlRow,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     borderBottomWidth: 0.5,
     borderBottomColor: colors.borderSeparator,
     paddingVertical: 1,

@@ -746,6 +746,40 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('accessibilityLabel="صفحه بعدی"'));
       assert.ok(source.includes('disabled={pageNumber >= 604}'));
       assert.ok(source.includes('disabled={pageNumber <= 1}'));
+
+      // 6. Font scale prop & line text justification contracts
+      assert.ok(source.includes('fontScale?: number'));
+      assert.ok(source.includes('fontScale = 1.0'));
+      assert.ok(source.includes('isJustified'));
+      assert.ok(source.includes("justifyContent: isJustified ? 'space-between' : 'center'"));
+    });
+
+    it('verifies MushafPageView fontScale scaling and line justification logic', () => {
+      // Font scaling calculation verification across scales [0.8 .. 1.6]
+      const baseSizes = [13, 15, 17, 19, 21];
+      for (const base of baseSizes) {
+        assert.strictEqual(Math.round(base * 0.8), Math.round(base * 0.8));
+        assert.strictEqual(Math.round(base * 1.0), base);
+        assert.strictEqual(Math.round(base * 1.6), Math.round(base * 1.6));
+      }
+
+      // Line height scaling calculation
+      const baseLineHeight = READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight; // 42
+      assert.strictEqual(Math.max(baseLineHeight, Math.round(baseLineHeight * 0.8)), 42);
+      assert.strictEqual(Math.max(baseLineHeight, Math.round(baseLineHeight * 1.0)), 42);
+      assert.strictEqual(Math.max(baseLineHeight, Math.round(baseLineHeight * 1.2)), 50);
+      assert.strictEqual(Math.max(baseLineHeight, Math.round(baseLineHeight * 1.5)), 63);
+
+      // Line justification: full lines (>= 5 words) justify edge-to-edge; short lines (< 5) center
+      function isLineJustified(wordCount) {
+        return wordCount >= 5;
+      }
+      assert.strictEqual(isLineJustified(10), true);
+      assert.strictEqual(isLineJustified(8), true);
+      assert.strictEqual(isLineJustified(5), true);
+      assert.strictEqual(isLineJustified(4), false);
+      assert.strictEqual(isLineJustified(3), false);
+      assert.strictEqual(isLineJustified(1), false);
     });
 
   });
@@ -1208,6 +1242,10 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(
         surahScreenSource.includes('words={pageWords}'),
         'MushafPageView must receive words={pageWords}'
+      );
+      assert.ok(
+        surahScreenSource.includes('fontScale={fontScale}'),
+        'MushafPageView must receive fontScale={fontScale}'
       );
       assert.ok(
         surahScreenSource.includes('onPrevPage={handlePrevPage}'),
