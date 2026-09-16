@@ -25,7 +25,28 @@ export const INSIGHTS_COMPONENT_CONTRACTS = {
   reflectionInputMinHeight: 100,
   reflectionButtonMinHeight: 44,
   reflectionButtonMinWidth: 44,
+  drawerMinTouchTarget: 44,
+  drawerMaxSheetHeightPercent: 0.9,
+  dragHandleWidth: 36,
+  dragHandleHeight: 4,
+  headerButtonMinHeight: 44,
+  headerButtonMinWidth: 44,
+  drawerActionIconSize: 20,
+  tabSwitcherMinHeight: 44,
+  tabButtonMinHeight: 44,
+  tabButtonMinWidth: 44,
 } as const;
+
+/**
+ * 3-Tab definition for the Ayah Insights Drawer.
+ */
+export const INSIGHTS_DRAWER_TABS = [
+  { id: 'tafsir', label: 'تفسیر و تدبر' },
+  { id: 'vocabulary', label: 'تحلیل واژگان' },
+  { id: 'reflection', label: 'یادداشت من' },
+] as const;
+
+export type InsightDrawerTabId = (typeof INSIGHTS_DRAWER_TABS)[number]['id'];
 
 /**
  * Formats a word's position into a Persian numeral badge string (e.g. "واژه ۱", "واژه ۲").
@@ -129,3 +150,17 @@ export function formatReflectionCharCount(count: number): string {
   const safeCount = typeof count === 'number' && !Number.isNaN(count) ? Math.max(0, count) : 0;
   return `${toPersianDigits(safeCount)} نویسه`;
 }
+
+/**
+ * Formats Juz and Page numbers into a Persian numeral badge string:
+ * e.g. (15, 297) -> "صفحه ۲۹۷ • جزء ۱۵".
+ */
+export function formatJuzAndPageBadge(juz?: number, page?: number): string {
+  const pagePart = typeof page === 'number' && !Number.isNaN(page) ? `صفحه ${toPersianDigits(page)}` : '';
+  const juzPart = typeof juz === 'number' && !Number.isNaN(juz) ? `جزء ${toPersianDigits(juz)}` : '';
+  if (pagePart && juzPart) {
+    return `${pagePart} • ${juzPart}`;
+  }
+  return pagePart || juzPart || '';
+}
+

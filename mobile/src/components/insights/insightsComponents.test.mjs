@@ -7,12 +7,14 @@ import fs from 'node:fs';
 
 import {
   INSIGHTS_COMPONENT_CONTRACTS,
+  INSIGHTS_DRAWER_TABS,
   formatWordPositionBadge,
   formatArabicRoot,
   formatPartOfSpeechFa,
   formatInsightAyahHeader,
   formatTafsirPillTitle,
   formatReflectionCharCount,
+  formatJuzAndPageBadge,
 } from './insightsContracts.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
 import { colors } from '../../theme/colors.ts';
@@ -694,7 +696,244 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
     });
   });
 
-  describe('Insights Index Exports Contract', () => {
+  describe('AyahInsightsDrawer Sanctuary Sheet Tests (Task 4)', () => {
+    const drawerSource = fs.readFileSync(
+      path.resolve(__dirname, './AyahInsightsDrawer.tsx'),
+      'utf8'
+    );
+
+    describe('Drawer Formatting & Contracts', () => {
+      it('formatJuzAndPageBadge formats juz and page in Persian numerals', () => {
+        assert.strictEqual(formatJuzAndPageBadge(15, 297), 'صفحه ۲۹۷ • جزء ۱۵');
+        assert.strictEqual(formatJuzAndPageBadge(1, 1), 'صفحه ۱ • جزء ۱');
+        assert.strictEqual(formatJuzAndPageBadge(30, 604), 'صفحه ۶۰۴ • جزء ۳۰');
+
+        // Handles missing page or juz gracefully
+        assert.strictEqual(formatJuzAndPageBadge(undefined, 297), 'صفحه ۲۹۷');
+        assert.strictEqual(formatJuzAndPageBadge(15, undefined), 'جزء ۱۵');
+        assert.strictEqual(formatJuzAndPageBadge(undefined, undefined), '');
+      });
+
+      it('verifies INSIGHTS_DRAWER_TABS contract', () => {
+        assert.strictEqual(INSIGHTS_DRAWER_TABS.length, 3);
+        assert.deepStrictEqual(INSIGHTS_DRAWER_TABS[0], { id: 'tafsir', label: 'تفسیر و تدبر' });
+        assert.deepStrictEqual(INSIGHTS_DRAWER_TABS[1], { id: 'vocabulary', label: 'تحلیل واژگان' });
+        assert.deepStrictEqual(INSIGHTS_DRAWER_TABS[2], { id: 'reflection', label: 'یادداشت من' });
+      });
+
+      it('verifies drawer layout and accessibility contracts in INSIGHTS_COMPONENT_CONTRACTS', () => {
+        assert.ok(INSIGHTS_COMPONENT_CONTRACTS.drawerMinTouchTarget >= 44);
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.drawerMaxSheetHeightPercent, 0.9);
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.dragHandleWidth, 36);
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.dragHandleHeight, 4);
+        assert.ok(INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinHeight >= 44);
+        assert.ok(INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinWidth >= 44);
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.drawerActionIconSize, 20);
+        assert.ok(INSIGHTS_COMPONENT_CONTRACTS.tabSwitcherMinHeight >= 44);
+        assert.ok(INSIGHTS_COMPONENT_CONTRACTS.tabButtonMinHeight >= 44);
+        assert.ok(INSIGHTS_COMPONENT_CONTRACTS.tabButtonMinWidth >= 44);
+      });
+    });
+
+    describe('AyahInsightsDrawer Component Source & Architecture', () => {
+      it('verifies AyahInsightsDrawerProps interface exports and React.memo wrapping', () => {
+        assert.ok(drawerSource.includes('export interface AyahInsightsDrawerProps'));
+        assert.ok(drawerSource.includes('visible: boolean;'));
+        assert.ok(drawerSource.includes('verse: Verse | null;'));
+        assert.ok(drawerSource.includes('chapterNameFa?: string;'));
+        assert.ok(drawerSource.includes('onClose: () => void;'));
+        assert.ok(drawerSource.includes('onPlayVerse?: (verse: Verse) => void;'));
+        assert.ok(drawerSource.includes('onBookmarkVerse?: (verse: Verse) => void;'));
+        assert.ok(drawerSource.includes('isBookmarked?: boolean;'));
+        assert.ok(drawerSource.includes("quranFont?: 'hafs' | 'indopak';"));
+        assert.ok(drawerSource.includes('style?: StyleProp<ViewStyle>;'));
+        assert.ok(drawerSource.includes('testID?: string;'));
+        assert.ok(drawerSource.includes('React.memo('));
+        assert.ok(drawerSource.includes("displayName = 'AyahInsightsDrawer'"));
+      });
+
+      it('verifies Modal, Darkened Backdrop, and Bottom Sheet container styling', () => {
+        // Transparent slide modal
+        assert.ok(drawerSource.includes('<Modal'));
+        assert.ok(drawerSource.includes('transparent={true}'));
+        assert.ok(drawerSource.includes('animationType="slide"'));
+        assert.ok(drawerSource.includes('onRequestClose={onClose}'));
+
+        // Backdrop with 65% opacity and touchable dismiss
+        assert.ok(drawerSource.includes('backgroundColor: \'rgba(0, 0, 0, 0.65)\''));
+        assert.ok(drawerSource.includes('onPress={onClose}'));
+        assert.ok(drawerSource.includes('accessibilityLabel="بستن پنجره تدبر"'));
+
+        // Sheet container
+        assert.ok(drawerSource.includes('colors.surfaceCard'));
+        assert.ok(drawerSource.includes('colors.borderSubtle'));
+        assert.ok(drawerSource.includes('borderRadius.xl'));
+        assert.ok(drawerSource.includes("maxHeight: '90%'"));
+
+        // Drag handle indicator
+        assert.ok(drawerSource.includes('INSIGHTS_COMPONENT_CONTRACTS.dragHandleWidth'));
+        assert.ok(drawerSource.includes('INSIGHTS_COMPONENT_CONTRACTS.dragHandleHeight'));
+        assert.ok(drawerSource.includes('dragHandle'));
+      });
+
+      it('verifies RTL Header Bar, Persian digits title, Juz/Page badge, and 5 action buttons', () => {
+        // RTL Header bar
+        assert.ok(drawerSource.includes('headerBar'));
+        assert.ok(drawerSource.includes("flexDirection: 'row-reverse'"));
+
+        // Persian digits Surah & Ayah title
+        assert.ok(drawerSource.includes('formatInsightAyahHeader(chapterNameFa || \'\', verse.verse_number)'));
+        assert.ok(drawerSource.includes('formatJuzAndPageBadge(verse.juz_number, verse.page_number)'));
+
+        // 5 action buttons
+        assert.ok(drawerSource.includes('INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinWidth'));
+        assert.ok(drawerSource.includes('INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinHeight'));
+
+        // 1. Copy button
+        assert.ok(drawerSource.includes('accessibilityLabel="کپی متن و ترجمه آیه"'));
+        assert.ok(drawerSource.includes('Copy'));
+
+        // 2. Share button
+        assert.ok(drawerSource.includes('accessibilityLabel="اشتراکگذاری آیه"'));
+        assert.ok(drawerSource.includes('Share2'));
+
+        // 3. Bookmark button
+        assert.ok(drawerSource.includes('accessibilityLabel="نشانکردن آیه"'));
+        assert.ok(drawerSource.includes('Bookmark'));
+        assert.ok(drawerSource.includes('onBookmarkVerse'));
+
+        // 4. Play button
+        assert.ok(drawerSource.includes('accessibilityLabel="پخش صوتی آیه"'));
+        assert.ok(drawerSource.includes('Play'));
+        assert.ok(drawerSource.includes('onPlayVerse'));
+
+        // 5. Close button
+        assert.ok(drawerSource.includes('accessibilityLabel="بستن پنجره تدبر"'));
+        assert.ok(drawerSource.includes('X'));
+      });
+
+      it('verifies Sticky Scripture Preview with AyahScripturePreviewCard', () => {
+        assert.ok(drawerSource.includes('<AyahScripturePreviewCard'));
+        assert.ok(drawerSource.includes('verseKey={verse.verse_key}'));
+        assert.ok(drawerSource.includes('textUthmani={verse.text_uthmani}'));
+        assert.ok(drawerSource.includes('activeWordPosition={activeWordPosition}'));
+        assert.ok(drawerSource.includes('onSelectWord={setActiveWordPosition}'));
+        assert.ok(drawerSource.includes('quranFont={quranFont}'));
+      });
+
+      it('verifies Segmented 3-Tab Switcher and Tab Body rendering', () => {
+        // 3-tab switcher
+        assert.ok(drawerSource.includes('INSIGHTS_DRAWER_TABS.map'));
+        assert.ok(drawerSource.includes('accessibilityRole="tab"'));
+        assert.ok(drawerSource.includes('accessibilityRole="tablist"'));
+        assert.ok(drawerSource.includes('colors.primarySubtle'));
+        assert.ok(drawerSource.includes('colors.primary'));
+
+        // Tab body ScrollView
+        assert.ok(drawerSource.includes('<ScrollView'));
+        assert.ok(drawerSource.includes('scrollBody'));
+
+        // Loading spinner
+        assert.ok(drawerSource.includes('<ActivityIndicator'));
+        assert.ok(drawerSource.includes('colors.primary'));
+
+        // Conditional rendering: TafsirTabContent vs WordLinguisticBreakdownCard vs PersonalReflectionCard
+        assert.ok(drawerSource.includes("<TafsirTabContent"));
+        assert.ok(drawerSource.includes("<WordLinguisticBreakdownCard"));
+        assert.ok(drawerSource.includes("<PersonalReflectionCard"));
+
+        // Data integration
+        assert.ok(drawerSource.includes('getAyahInsight(verse.verse_key)'));
+        assert.ok(drawerSource.includes('getPersonalReflection(verse.verse_key)'));
+        assert.ok(drawerSource.includes('savePersonalReflection(verse.verse_key, note)'));
+        assert.ok(drawerSource.includes('isMounted'));
+      });
+    });
+
+    describe('Simulated Workflows & State Synchronization', () => {
+      it('simulates tab switching between tafsir, vocabulary, and reflection', () => {
+        let activeTab = 'tafsir';
+        const setActiveTab = (tab) => {
+          activeTab = tab;
+        };
+
+        assert.strictEqual(activeTab, 'tafsir');
+        setActiveTab('vocabulary');
+        assert.strictEqual(activeTab, 'vocabulary');
+        setActiveTab('reflection');
+        assert.strictEqual(activeTab, 'reflection');
+      });
+
+      it('simulates word position synchronization between preview and breakdown card', () => {
+        let activeWordPosition = 1;
+        const setActiveWordPosition = (pos) => {
+          activeWordPosition = pos;
+        };
+
+        assert.strictEqual(activeWordPosition, 1);
+        // Tapping word 5 in scripture preview
+        setActiveWordPosition(5);
+        assert.strictEqual(activeWordPosition, 5);
+
+        // Tapping word 2 in vocabulary breakdown list
+        setActiveWordPosition(2);
+        assert.strictEqual(activeWordPosition, 2);
+      });
+
+      it('simulates copy and share formatting for an Ayah', () => {
+        const mockVerse = {
+          chapter_id: 18,
+          verse_number: 28,
+          verse_key: '18:28',
+          text_uthmani: 'وَٱصْبِرْ نَفْسَكَ مَعَ ٱلَّذِينَ يَدْعُونَ رَبَّهُم',
+          translation_fa_makarem: 'با کسانی باش که پروردگار خود را صبح و شام می‌خوانند.',
+        };
+
+        const copyText = `${mockVerse.text_uthmani}\n\n${mockVerse.translation_fa_makarem}`.trim();
+        assert.ok(copyText.includes('وَٱصْبِرْ'));
+        assert.ok(copyText.includes('پروردگار خود را'));
+
+        const ayahHeader = formatInsightAyahHeader('کهف', mockVerse.verse_number);
+        const shareText = `${mockVerse.text_uthmani}\n\n${mockVerse.translation_fa_makarem}\n(${ayahHeader})`.trim();
+        assert.ok(shareText.includes('سوره کهف • آیه ۲۸'));
+      });
+
+      it('simulates all 5 header action button callbacks', () => {
+        const mockVerse = {
+          id: 2168,
+          chapter_id: 18,
+          verse_number: 28,
+          verse_key: '18:28',
+          text_uthmani: 'وَٱصْبِرْ نَفْسَكَ مَعَ ٱلَّذِينَ يَدْعُونَ رَبَّهُم',
+        };
+
+        let playedVerse = null;
+        let bookmarkedVerse = null;
+        let closed = false;
+
+        const onPlayVerse = (v) => {
+          playedVerse = v;
+        };
+        const onBookmarkVerse = (v) => {
+          bookmarkedVerse = v;
+        };
+        const onClose = () => {
+          closed = true;
+        };
+
+        onPlayVerse(mockVerse);
+        assert.strictEqual(playedVerse?.verse_key, '18:28');
+
+        onBookmarkVerse(mockVerse);
+        assert.strictEqual(bookmarkedVerse?.verse_key, '18:28');
+
+        onClose();
+        assert.strictEqual(closed, true);
+      });
+    });
+  });
+
+  describe('Insights Index & Reader Index Exports Contract', () => {
     it('verifies mobile/src/components/insights/index.ts exports all components and contracts', () => {
       const indexSource = fs.readFileSync(
         path.resolve(__dirname, './index.ts'),
@@ -706,7 +945,18 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       assert.ok(indexSource.includes("export * from './WordLinguisticBreakdownCard'"));
       assert.ok(indexSource.includes("export * from './TafsirTabContent'"));
       assert.ok(indexSource.includes("export * from './PersonalReflectionCard'"));
+      assert.ok(indexSource.includes("export * from './AyahInsightsDrawer'"));
+    });
+
+    it('verifies mobile/src/components/reader/index.ts exports AyahInsightsDrawer', () => {
+      const readerIndexSource = fs.readFileSync(
+        path.resolve(__dirname, '../reader/index.ts'),
+        'utf8'
+      );
+
+      assert.ok(readerIndexSource.includes("export * from '../insights/AyahInsightsDrawer'"));
     });
   });
 });
+
 
