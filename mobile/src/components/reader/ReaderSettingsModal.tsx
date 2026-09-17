@@ -57,6 +57,13 @@ export interface ReaderSettingsModalProps {
   onSelectReciter?: (id: number) => void;
   selectedTranslationIds?: number[];
   onToggleTranslation?: (id: number) => void;
+  // Word by Word customization props
+  wordByWordLocale?: 'fa' | 'en';
+  onChangeWordByWordLocale?: (locale: 'fa' | 'en') => void;
+  wordByWordDisplay?: 'inline' | 'tooltip';
+  onChangeWordByWordDisplay?: (display: 'inline' | 'tooltip') => void;
+  wordByWordContentType?: ('translation' | 'transliteration')[];
+  onChangeWordByWordContentType?: (types: ('translation' | 'transliteration')[]) => void;
 }
 
 /**
@@ -90,6 +97,12 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.mem
   onSelectReciter,
   selectedTranslationIds,
   onToggleTranslation,
+  wordByWordLocale,
+  onChangeWordByWordLocale,
+  wordByWordDisplay,
+  onChangeWordByWordDisplay,
+  wordByWordContentType,
+  onChangeWordByWordContentType,
 }) => {
   const [activeTab, setActiveTab] = useState<SettingsTabId>(initialTab);
 
@@ -135,6 +148,12 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.mem
           <WordByWordSection
             showWordByWord={showWordByWord}
             onToggleWordByWord={onToggleWordByWord}
+            wordByWordLocale={wordByWordLocale}
+            onChangeWordByWordLocale={onChangeWordByWordLocale}
+            wordByWordDisplay={wordByWordDisplay}
+            onChangeWordByWordDisplay={onChangeWordByWordDisplay}
+            wordByWordContentType={wordByWordContentType}
+            onChangeWordByWordContentType={onChangeWordByWordContentType}
             testID={`${testID}-wbw-section`}
           />
         );

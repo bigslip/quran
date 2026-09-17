@@ -1148,6 +1148,35 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
   });
 
+  describe('Multi-Translation & WBW Integration Tests', () => {
+    it('ContinuousVerseCard should support rendering translations by selectedTranslationIds and wordByWordLocale', () => {
+      const code = fs.readFileSync(path.resolve(__dirname, 'ContinuousVerseCard.tsx'), 'utf8');
+      assert.ok(code.includes('selectedTranslationIds'));
+      assert.ok(code.includes('wordByWordLocale'));
+      assert.ok(code.includes('getVerseTranslationText'));
+      assert.ok(code.includes('getTranslationById'));
+    });
+
+    it('AudioPlaybackDock should dynamically resolve reciter name from reciterService or props', () => {
+      const code = fs.readFileSync(path.resolve(__dirname, 'AudioPlaybackDock.tsx'), 'utf8');
+      assert.ok(code.includes('getReciterById'));
+      assert.ok(code.includes('selectedReciterId'));
+    });
+
+    it('surah/[id].tsx should wire store state and actions into ContinuousVerseCard, AudioPlaybackDock, and ReaderSettingsModal', () => {
+      const surahScreenPath = path.resolve(__dirname, '../../app/surah/[id].tsx');
+      const code = fs.readFileSync(surahScreenPath, 'utf8');
+      assert.ok(code.includes('selectedReciterId'));
+      assert.ok(code.includes('selectedTranslationIds'));
+      assert.ok(code.includes('wordByWordLocale'));
+      assert.ok(code.includes('wordByWordDisplay'));
+      assert.ok(code.includes('wordByWordContentType'));
+      assert.ok(code.includes('selectedTranslationIds={selectedTranslationIds}'));
+      assert.ok(code.includes('wordByWordLocale={wordByWordLocale}'));
+      assert.ok(code.includes('selectedReciterId={selectedReciterId}'));
+    });
+  });
+
   describe('Dual-Mode Touch Targets & Accessibility Compliance (>= 44x44px)', () => {
     it('verifies all reader components guarantee minimum touch target size >= 44x44px', () => {
       const {

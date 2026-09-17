@@ -67,6 +67,16 @@ export default function SurahReaderScreen() {
     isPlaying,
     setIsPlaying,
     setLastRead,
+    selectedReciterId,
+    setSelectedReciterId,
+    selectedTranslationIds,
+    toggleSelectedTranslationId,
+    wordByWordLocale,
+    setWordByWordLocale,
+    wordByWordDisplay,
+    setWordByWordDisplay,
+    wordByWordContentType,
+    setWordByWordContentType,
   } = useReadingStore();
 
   // Load Chapter & full chapter verses
@@ -342,8 +352,10 @@ export default function SurahReaderScreen() {
               quranFont={quranFont}
               fontScale={fontScale}
               showWordByWord={showWordByWord}
+              wordByWordLocale={wordByWordLocale}
               showTranslation={showTranslation}
               activeTranslation={activeTranslation}
+              selectedTranslationIds={selectedTranslationIds}
               onPlayVerse={handlePlayVerse}
               onBookmarkVerse={handleBookmarkVerse}
               onShareVerse={handleShareVerse}
@@ -381,6 +393,7 @@ export default function SurahReaderScreen() {
             isPlaying={isPlaying}
             activeVerseKey={activeVerseKey}
             surahName={chapter?.name_fa}
+            selectedReciterId={selectedReciterId}
             isRepeating={isRepeating}
             onPlayPause={handlePlayPause}
             onNextAyah={handleNextAyah}
@@ -407,6 +420,16 @@ export default function SurahReaderScreen() {
         onToggleWordByWord={toggleWordByWord}
         showTranslation={showTranslation}
         onToggleShowTranslation={toggleTranslation}
+        selectedReciterId={selectedReciterId}
+        onSelectReciter={setSelectedReciterId}
+        selectedTranslationIds={selectedTranslationIds}
+        onToggleTranslation={toggleSelectedTranslationId}
+        wordByWordLocale={wordByWordLocale}
+        onChangeWordByWordLocale={setWordByWordLocale}
+        wordByWordDisplay={wordByWordDisplay}
+        onChangeWordByWordDisplay={setWordByWordDisplay}
+        wordByWordContentType={wordByWordContentType}
+        onChangeWordByWordContentType={setWordByWordContentType}
       />
 
       {/* Ayah Insights & Tadabbur Drawer */}

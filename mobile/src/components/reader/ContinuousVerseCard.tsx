@@ -26,6 +26,10 @@ import {
   formatContinuousVerseAccessibilityLabel,
   formatAyahEndMarker,
 } from './readerContracts';
+import {
+  getTranslationById,
+  getVerseTranslationText,
+} from '@/services/db/translationService';
 
 export interface ContinuousVerseCardProps {
   verse: Verse;
@@ -33,8 +37,10 @@ export interface ContinuousVerseCardProps {
   quranFont?: 'hafs' | 'indopak';
   fontScale?: number;
   showWordByWord?: boolean;
+  wordByWordLocale?: 'fa' | 'en';
   showTranslation?: boolean;
   activeTranslation?: 'makarem' | 'ansarian' | 'both';
+  selectedTranslationIds?: number[];
   onPlayVerse?: (verse: Verse) => void;
   onBookmarkVerse?: (verse: Verse) => void;
   onShareVerse?: (verse: Verse) => void;
@@ -50,8 +56,8 @@ export interface ContinuousVerseCardProps {
  * Features:
  * - Concentric geometric verse number badge in Persian digits
  * - Sacred Arabic text in selected font (Uthmanic Hafs or IndoPak Nastaleeq) with proportional font scaling
- * - Optional Word-by-Word inline view with Persian glosses
- * - Configurable Persian translation view (Makarem, Ansarian, or both) with translator chips
+ * - Optional Word-by-Word inline view with Persian/English glosses
+ * - Configurable Persian & English translations view (Makarem, Ansarian, or multi-selected) with translator chips
  * - Action toolbar with 4 buttons (Play, Bookmark, Share, Insights) all >= 44x44px touch targets
  * - Active audio playback highlight with emerald glow border and surface floating background
  */
@@ -61,8 +67,10 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
   quranFont = 'hafs',
   fontScale = 1.0,
   showWordByWord = false,
+  wordByWordLocale = 'fa',
   showTranslation = true,
   activeTranslation = 'makarem',
+  selectedTranslationIds,
   onPlayVerse,
   onBookmarkVerse,
   onShareVerse,
@@ -223,59 +231,87 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
       {/* Word-by-Word Inline View (When Enabled) */}
       {showWordByWord && verse.words && verse.words.length > 0 && (
         <View style={styles.wbwFlowContainer} testID={`${testID}-wbw-container`}>
-          {verse.words.map((word: Word) => (
-            <View key={`word-${word.id || word.position}`} style={styles.wbwItemCard}>
-              <Text
-                style={[
-                  styles.wbwArabicText,
-                  {
-                    fontFamily: arabicFontFamily,
-                    fontSize: Math.round(18 * fontScale),
-                  },
-                ]}
-                allowFontScaling={false}
-              >
-                {quranFont === 'indopak' && word.text_indopak ? word.text_indopak : word.text_uthmani}
-              </Text>
-              <Text style={styles.wbwGlossText}>
-                {word.translation_fa || '—'}
-              </Text>
-            </View>
-          ))}
+          {verse.words.map((word: Word) => {
+            const gloss = wordByWordLocale === 'en'
+              ? (word.translation_en || word.translation_fa || '—')
+              : (word.translation_fa || '—');
+            return (
+              <View key={`word-${word.id || word.position}`} style={styles.wbwItemCard}>
+                <Text
+                  style={[
+                    styles.wbwArabicText,
+                    {
+                      fontFamily: arabicFontFamily,
+                      fontSize: Math.round(18 * fontScale),
+                    },
+                  ]}
+                  allowFontScaling={false}
+                >
+                  {quranFont === 'indopak' && word.text_indopak ? word.text_indopak : word.text_uthmani}
+                </Text>
+                <Text style={styles.wbwGlossText}>
+                  {gloss}
+                </Text>
+              </View>
+            );
+          })}
         </View>
       )}
 
-      {/* Persian Translations Section */}
-      {showTranslation && (shouldRenderMakarem || shouldRenderAnsarian) && (
-        <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
-          {/* Makarem Translation */}
-          {shouldRenderMakarem && (
-            <View style={styles.translationBlock} testID={`${testID}-translation-makarem`}>
-              <View style={styles.translationHeaderRow}>
-                <View style={styles.translatorChip} testID={`${testID}-chip-makarem`}>
-                  <Text style={styles.translatorChipText}>مکارم شیرازی</Text>
+      {/* Translations Section */}
+      {showTranslation && (
+        (selectedTranslationIds && selectedTranslationIds.length > 0) ? (
+          <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
+            {selectedTranslationIds.map((transId) => {
+              const transText = getVerseTranslationText(verse, transId);
+              if (!transText) return null;
+              const transMeta = getTranslationById(transId);
+              const authorName = transMeta?.authorName || transMeta?.nameFa || 'ترجمه';
+              return (
+                <View key={`translation-${transId}`} style={styles.translationBlock} testID={`${testID}-translation-${transId}`}>
+                  <View style={styles.translationHeaderRow}>
+                    <View style={styles.translatorChip} testID={`${testID}-chip-${transId}`}>
+                      <Text style={styles.translatorChipText}>{authorName}</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.translationText}>
+                    {transText}
+                  </Text>
                 </View>
+              );
+            })}
+          </View>
+        ) : (shouldRenderMakarem || shouldRenderAnsarian) ? (
+          <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
+            {/* Makarem Translation */}
+            {shouldRenderMakarem && (
+              <View style={styles.translationBlock} testID={`${testID}-translation-makarem`}>
+                <View style={styles.translationHeaderRow}>
+                  <View style={styles.translatorChip} testID={`${testID}-chip-makarem`}>
+                    <Text style={styles.translatorChipText}>مکارم شیرازی</Text>
+                  </View>
+                </View>
+                <Text style={styles.translationText}>
+                  {verse.translation_fa_makarem}
+                </Text>
               </View>
-              <Text style={styles.translationText}>
-                {verse.translation_fa_makarem}
-              </Text>
-            </View>
-          )}
+            )}
 
-          {/* Ansarian Translation */}
-          {shouldRenderAnsarian && (
-            <View style={styles.translationBlock} testID={`${testID}-translation-ansarian`}>
-              <View style={styles.translationHeaderRow}>
-                <View style={styles.translatorChip} testID={`${testID}-chip-ansarian`}>
-                  <Text style={styles.translatorChipText}>حسین انصاریان</Text>
+            {/* Ansarian Translation */}
+            {shouldRenderAnsarian && (
+              <View style={styles.translationBlock} testID={`${testID}-translation-ansarian`}>
+                <View style={styles.translationHeaderRow}>
+                  <View style={styles.translatorChip} testID={`${testID}-chip-ansarian`}>
+                    <Text style={styles.translatorChipText}>حسین انصاریان</Text>
+                  </View>
                 </View>
+                <Text style={styles.translationText}>
+                  {verse.translation_fa_ansarian}
+                </Text>
               </View>
-              <Text style={styles.translationText}>
-                {verse.translation_fa_ansarian}
-              </Text>
-            </View>
-          )}
-        </View>
+            )}
+          </View>
+        ) : null
       )}
     </View>
   );

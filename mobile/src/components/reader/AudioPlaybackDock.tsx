@@ -14,6 +14,7 @@ import {
   formatAudioDockTitle,
   getSurahNameFa,
 } from './readerContracts';
+import { getReciterById } from '@/services/audio/reciterService';
 
 export interface AudioPlaybackDockProps {
   isPlaying: boolean;
@@ -21,6 +22,7 @@ export interface AudioPlaybackDockProps {
   surahName?: string;
   verseNumber?: number;
   reciterName?: string;
+  selectedReciterId?: number;
   onPlayPause?: () => void;
   onNextAyah?: () => void;
   onPrevAyah?: () => void;
@@ -48,6 +50,7 @@ export const AudioPlaybackDock: React.FC<AudioPlaybackDockProps> = React.memo(({
   surahName,
   verseNumber,
   reciterName = READER_COMPONENT_CONTRACTS.audioDock.defaultReciter,
+  selectedReciterId,
   onPlayPause,
   onNextAyah,
   onPrevAyah,
@@ -81,7 +84,10 @@ export const AudioPlaybackDock: React.FC<AudioPlaybackDockProps> = React.memo(({
   const ayahTitle =
     formatAudioDockTitle(resolvedSurahName, resolvedVerseNumber) ||
     `آیه ${activeVerseKey}`;
-  const resolvedReciter = reciterName || READER_COMPONENT_CONTRACTS.audioDock.defaultReciter;
+  const resolvedReciter =
+    (selectedReciterId !== undefined ? getReciterById(selectedReciterId)?.nameFa : undefined) ||
+    reciterName ||
+    READER_COMPONENT_CONTRACTS.audioDock.defaultReciter;
 
   return (
     <View
