@@ -1857,6 +1857,17 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.deepStrictEqual(roles604.get(10), { type: 'surah_title', chapterId: 114 });
       assert.deepStrictEqual(roles604.get(11), { type: 'bismillah', chapterId: 114 });
     });
+
+    it('verifies exact layout-based auto-scroll and CellRendererComponent contract in surah/[id].tsx', () => {
+      const surahScreenPath = path.resolve(__dirname, '../../app/surah/[id].tsx');
+      const code = fs.readFileSync(surahScreenPath, 'utf8');
+
+      assert.ok(code.includes('CellRendererComponent={CellRenderer}'), 'Must pass CellRendererComponent to FlatList');
+      assert.ok(code.includes('verseLayoutsRef.current.set'), 'Must register verse layouts in verseLayoutsRef');
+      assert.ok(code.includes('flatListRef.current?.scrollToOffset'), 'Must scroll using exact offset');
+      assert.ok(code.includes('lastScrolledVerseKeyRef'), 'Must prevent duplicate scrolls with lastScrolledVerseKeyRef');
+      assert.ok(code.includes('windowSize={11}'), 'Must maintain buffer with windowSize');
+    });
   });
 });
 

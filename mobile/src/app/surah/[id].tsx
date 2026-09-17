@@ -88,6 +88,8 @@ export default function SurahReaderScreen() {
     let isMounted = true;
     async function loadChapterData() {
       setLoading(true);
+      verseLayoutsRef.current.clear();
+      lastScrolledVerseKeyRef.current = null;
       try {
         const ch = await getSurahById(chapterId);
         const vs = await getVersesByChapter(chapterId, { includeWords: true });
@@ -161,6 +163,12 @@ export default function SurahReaderScreen() {
   const activeVerseKeyRef = React.useRef(activeVerseKey);
   activeVerseKeyRef.current = activeVerseKey;
 
+  const isPlayingRef = React.useRef(isPlaying);
+  isPlayingRef.current = isPlaying;
+
+  const verseLayoutsRef = React.useRef<Map<string, { y: number; height: number; index: number }>>(new Map());
+  const lastScrolledVerseKeyRef = React.useRef<string | null>(null);
+
   // Unload audio on unmount
   useEffect(() => {
     return () => {
@@ -180,19 +188,67 @@ export default function SurahReaderScreen() {
     };
   }, [isPlaying]);
 
-  // Auto-scroll to currently reciting verse in continuous reading mode
+  // Exact cell renderer that registers layout coordinates and handles immediate scroll alignment
+  const CellRenderer = useCallback(
+    ({ children, index, item, style, onLayout, ...restProps }: any) => {
+      return (
+        <View
+          {...restProps}
+          style={style}
+          onLayout={(e) => {
+            onLayout?.(e);
+            if (item?.verse_key) {
+              const layout = {
+                y: e.nativeEvent.layout.y,
+                height: e.nativeEvent.layout.height,
+                index,
+              };
+              verseLayoutsRef.current.set(item.verse_key, layout);
+
+              // If this item is the currently reciting verse and hasn't been scrolled to yet
+              if (
+                isPlayingRef.current &&
+                activeVerseKeyRef.current === item.verse_key &&
+                lastScrolledVerseKeyRef.current !== item.verse_key
+              ) {
+                lastScrolledVerseKeyRef.current = item.verse_key;
+                flatListRef.current?.scrollToOffset({
+                  offset: Math.max(0, layout.y - 16),
+                  animated: true,
+                });
+              }
+            }
+          }}
+        >
+          {children}
+        </View>
+      );
+    },
+    []
+  );
+
+  // Auto-scroll to currently reciting verse in continuous reading mode with exact measured offset
   useEffect(() => {
     if (viewMode === 'continuous' && activeVerseKey && isPlaying) {
-      const activeIndex = verses.findIndex((v) => v.verse_key === activeVerseKey);
-      if (activeIndex >= 0 && flatListRef.current) {
-        try {
-          flatListRef.current.scrollToIndex({
-            index: activeIndex,
-            animated: true,
-            viewPosition: 0.15,
-          });
-        } catch {
-          // Handled by onScrollToIndexFailed fallback
+      const layout = verseLayoutsRef.current.get(activeVerseKey);
+      if (layout) {
+        lastScrolledVerseKeyRef.current = activeVerseKey;
+        flatListRef.current?.scrollToOffset({
+          offset: Math.max(0, layout.y - 16),
+          animated: true,
+        });
+      } else {
+        const activeIndex = verses.findIndex((v) => v.verse_key === activeVerseKey);
+        if (activeIndex >= 0 && flatListRef.current) {
+          try {
+            flatListRef.current.scrollToIndex({
+              index: activeIndex,
+              animated: true,
+              viewPosition: 0,
+            });
+          } catch {
+            // Handled by onScrollToIndexFailed fallback
+          }
         }
       }
     }
@@ -221,6 +277,7 @@ export default function SurahReaderScreen() {
             const idx = currentVerses.findIndex((v) => v.verse_key === verseKey);
             if (idx >= 0 && idx < currentVerses.length - 1) {
               const nextVerse = currentVerses[idx + 1];
+              lastScrolledVerseKeyRef.current = null;
               setActiveVerseKey(nextVerse.verse_key);
               setIsPlaying(true);
               if (nextVerse.page_number) {
@@ -266,6 +323,7 @@ export default function SurahReaderScreen() {
         await audioPlayerService.resume();
         setIsPlaying(true);
       } else {
+        lastScrolledVerseKeyRef.current = null;
         setActiveVerseKey(verse.verse_key);
         setIsPlaying(true);
         if (verse.page_number) {
@@ -289,6 +347,7 @@ export default function SurahReaderScreen() {
         await audioPlayerService.resume();
         setIsPlaying(true);
       } else if (verses.length > 0) {
+        lastScrolledVerseKeyRef.current = null;
         const firstVerse = verses[0];
         setActiveVerseKey(firstVerse.verse_key);
         setIsPlaying(true);
@@ -312,6 +371,7 @@ export default function SurahReaderScreen() {
     const currentIndex = verses.findIndex((v) => v.verse_key === activeVerseKey);
     if (currentIndex >= 0 && currentIndex < verses.length - 1) {
       const nextVerse = verses[currentIndex + 1];
+      lastScrolledVerseKeyRef.current = null;
       setActiveVerseKey(nextVerse.verse_key);
       setIsPlaying(true);
       if (nextVerse.page_number) {
@@ -329,6 +389,7 @@ export default function SurahReaderScreen() {
     const currentIndex = verses.findIndex((v) => v.verse_key === activeVerseKey);
     if (currentIndex > 0) {
       const prevVerse = verses[currentIndex - 1];
+      lastScrolledVerseKeyRef.current = null;
       setActiveVerseKey(prevVerse.verse_key);
       setIsPlaying(true);
       if (prevVerse.page_number) {
@@ -346,6 +407,7 @@ export default function SurahReaderScreen() {
   }, []);
 
   const handleCloseDock = useCallback(async () => {
+    lastScrolledVerseKeyRef.current = null;
     await audioPlayerService.stop();
     setIsPlaying(false);
     setActiveVerseKey(null);
@@ -484,16 +546,18 @@ export default function SurahReaderScreen() {
             styles.versesListContent,
             activeVerseKey ? styles.versesListWithDock : null,
           ]}
+          CellRendererComponent={CellRenderer}
           onScrollToIndexFailed={(info) => {
-            setTimeout(() => {
-              if (flatListRef.current && info.index >= 0 && info.index < verses.length) {
-                flatListRef.current.scrollToIndex({
-                  index: info.index,
-                  animated: true,
-                  viewPosition: 0.15,
-                });
-              }
-            }, 100);
+            if (flatListRef.current && info.index >= 0 && info.index < verses.length) {
+              const estimatedOffset = Math.max(
+                0,
+                info.averageItemLength * info.index
+              );
+              flatListRef.current.scrollToOffset({
+                offset: estimatedOffset,
+                animated: true,
+              });
+            }
           }}
           ListHeaderComponent={
             chapter ? (
@@ -526,7 +590,7 @@ export default function SurahReaderScreen() {
           )}
           initialNumToRender={10}
           maxToRenderPerBatch={10}
-          windowSize={5}
+          windowSize={11}
           removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
         />
