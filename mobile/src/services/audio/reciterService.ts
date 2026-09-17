@@ -159,6 +159,51 @@ export const AVAILABLE_RECITERS: Reciter[] = [
 
 export const DEFAULT_RECITER_ID = 201;
 
+export const EVERYAYAH_BASE_URL = 'https://everyayah.com/data';
+
+/**
+ * Mapping of reciter IDs to verified EveryAyah audio folder directories.
+ * Iranian masters without an individual EveryAyah directory fall back gracefully
+ * to Ostad Shahriar Parhizgar (Parhizgar_48kbps) to ensure audio always plays.
+ */
+export const RECITER_AUDIO_SUBPATHS: Record<number, string> = {
+  201: 'Parhizgar_48kbps',
+  7: 'Alafasy_128kbps',
+  9: 'Minshawy_Murattal_128kbps',
+  202: 'Husary_128kbps',
+  203: 'Karim_Mansoori_40kbps',
+  204: 'Parhizgar_48kbps', // fallback for Shakernejad
+  205: 'Parhizgar_48kbps', // fallback for Emamjomeh
+  206: 'Parhizgar_48kbps', // fallback for Saeidian
+  207: 'Parhizgar_48kbps', // fallback for Dabbagh
+  208: 'Parhizgar_48kbps', // fallback for Raziye
+  209: 'Parhizgar_48kbps', // fallback for Foroughi
+  1: 'Abdul_Basit_Murattal_192kbps',
+  2: 'Abdul_Basit_Mujawwad_128kbps',
+  4: 'Abu_Bakr_Ash-Shaatree_128kbps',
+  6: 'Husary_Muallim_128kbps',
+  12: 'MaherAlMuaiqly128kbps',
+};
+
+/**
+ * Formats canonical 3-digit chapter and 3-digit verse numbers into an MP3 file name.
+ * e.g., (1, 1) -> '001001.mp3', (18, 28) -> '018028.mp3'
+ */
+export function formatVerseAudioFilename(chapterId: number, verseNumber: number): string {
+  const ch = String(chapterId).padStart(3, '0');
+  const v = String(verseNumber).padStart(3, '0');
+  return `${ch}${v}.mp3`;
+}
+
+/**
+ * Resolves full CDN streaming URL for a specific verse and reciter.
+ */
+export function getVerseAudioUrl(reciterId: number, chapterId: number, verseNumber: number): string {
+  const subpath = RECITER_AUDIO_SUBPATHS[reciterId] || RECITER_AUDIO_SUBPATHS[DEFAULT_RECITER_ID];
+  const filename = formatVerseAudioFilename(chapterId, verseNumber);
+  return `${EVERYAYAH_BASE_URL}/${subpath}/${filename}`;
+}
+
 export function getReciterById(id: number): Reciter {
   const found = AVAILABLE_RECITERS.find((r) => r.id === id);
   return found || AVAILABLE_RECITERS[0];

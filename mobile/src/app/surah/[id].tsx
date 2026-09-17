@@ -29,6 +29,8 @@ import {
   getPageWords,
 } from '@/services/db/verseService';
 import { useReadingStore } from '@/stores/useReadingStore';
+import { audioPlayerService } from '@/services/audio/audioPlayerService';
+import { DEFAULT_RECITER_ID } from '@/services/audio/reciterService';
 
 export default function SurahReaderScreen() {
   const router = useRouter();
@@ -144,29 +146,125 @@ export default function SurahReaderScreen() {
     setViewMode(viewMode === 'continuous' ? 'mushaf' : 'continuous');
   }, [viewMode, activeVerseKey, verses, setViewMode]);
 
+  // Sync references to latest state to avoid stale closures in audio onFinish callbacks
+  const versesRef = React.useRef(verses);
+  versesRef.current = verses;
+
+  const chapterRef = React.useRef(chapter);
+  chapterRef.current = chapter;
+
+  const isRepeatingRef = React.useRef(isRepeating);
+  isRepeatingRef.current = isRepeating;
+
+  const activeVerseKeyRef = React.useRef(activeVerseKey);
+  activeVerseKeyRef.current = activeVerseKey;
+
+  // Unload audio on unmount
+  useEffect(() => {
+    return () => {
+      audioPlayerService.stop();
+    };
+  }, []);
+
+  // Core audio playback executor
+  const playAyahAudio = useCallback(
+    async (verseKey: string) => {
+      const parts = verseKey.split(':');
+      const chId = parseInt(parts[0], 10);
+      const vNum = parseInt(parts[1], 10);
+      if (isNaN(chId) || isNaN(vNum)) return;
+
+      const reciterId = selectedReciterId || DEFAULT_RECITER_ID;
+
+      await audioPlayerService.playVerse(
+        reciterId,
+        chId,
+        vNum,
+        () => {
+          // Callback when the active verse finishes reciting
+          if (isRepeatingRef.current) {
+            playAyahAudio(verseKey);
+          } else {
+            const currentVerses = versesRef.current;
+            const idx = currentVerses.findIndex((v) => v.verse_key === verseKey);
+            if (idx >= 0 && idx < currentVerses.length - 1) {
+              const nextVerse = currentVerses[idx + 1];
+              setActiveVerseKey(nextVerse.verse_key);
+              setIsPlaying(true);
+              if (chapterRef.current) {
+                setLastRead(nextVerse.chapter_id, nextVerse.verse_number, chapterRef.current.name_fa);
+              }
+              playAyahAudio(nextVerse.verse_key);
+            } else {
+              setIsPlaying(false);
+              setActiveVerseKey(null);
+            }
+          }
+        },
+        (error) => {
+          console.warn('Audio playback error:', error);
+          setIsPlaying(false);
+        }
+      );
+    },
+    [selectedReciterId, setActiveVerseKey, setIsPlaying, setLastRead]
+  );
+
+  // Synchronize audio stream when reciter changes during active playback
+  const currentReciterIdRef = React.useRef(selectedReciterId);
+  useEffect(() => {
+    if (currentReciterIdRef.current !== selectedReciterId) {
+      currentReciterIdRef.current = selectedReciterId;
+      if (isPlaying && activeVerseKey) {
+        playAyahAudio(activeVerseKey);
+      }
+    }
+  }, [selectedReciterId, isPlaying, activeVerseKey, playAyahAudio]);
+
   // Audio Playback Flow Handlers
   const handlePlayVerse = useCallback(
-    (verse: Verse) => {
+    async (verse: Verse) => {
       if (activeVerseKey === verse.verse_key && isPlaying) {
+        await audioPlayerService.pause();
         setIsPlaying(false);
+      } else if (activeVerseKey === verse.verse_key && !isPlaying) {
+        await audioPlayerService.resume();
+        setIsPlaying(true);
       } else {
         setActiveVerseKey(verse.verse_key);
         setIsPlaying(true);
         if (chapter) {
           setLastRead(verse.chapter_id, verse.verse_number, chapter.name_fa);
         }
+        await playAyahAudio(verse.verse_key);
       }
     },
-    [activeVerseKey, isPlaying, chapter, setActiveVerseKey, setIsPlaying, setLastRead]
+    [activeVerseKey, isPlaying, chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]
   );
 
-  const handlePlayPause = useCallback(() => {
-    setIsPlaying(!isPlaying);
-  }, [isPlaying, setIsPlaying]);
+  const handlePlayPause = useCallback(async () => {
+    if (isPlaying) {
+      await audioPlayerService.pause();
+      setIsPlaying(false);
+    } else {
+      if (activeVerseKey) {
+        await audioPlayerService.resume();
+        setIsPlaying(true);
+      } else if (verses.length > 0) {
+        const firstVerse = verses[0];
+        setActiveVerseKey(firstVerse.verse_key);
+        setIsPlaying(true);
+        if (chapter) {
+          setLastRead(firstVerse.chapter_id, firstVerse.verse_number, chapter.name_fa);
+        }
+        await playAyahAudio(firstVerse.verse_key);
+      }
+    }
+  }, [isPlaying, activeVerseKey, verses, chapter, setIsPlaying, setActiveVerseKey, setLastRead, playAyahAudio]);
 
-  const handleNextAyah = useCallback(() => {
+  const handleNextAyah = useCallback(async () => {
     if (isRepeating && activeVerseKey) {
-      setIsPlaying(true);
+      await playAyahAudio(activeVerseKey);
       return;
     }
     if (!activeVerseKey || verses.length === 0) return;
@@ -178,10 +276,11 @@ export default function SurahReaderScreen() {
       if (chapter) {
         setLastRead(nextVerse.chapter_id, nextVerse.verse_number, chapter.name_fa);
       }
+      await playAyahAudio(nextVerse.verse_key);
     }
-  }, [isRepeating, activeVerseKey, verses, chapter, setActiveVerseKey, setIsPlaying, setLastRead]);
+  }, [isRepeating, activeVerseKey, verses, chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]);
 
-  const handlePrevAyah = useCallback(() => {
+  const handlePrevAyah = useCallback(async () => {
     if (!activeVerseKey || verses.length === 0) return;
     const currentIndex = verses.findIndex((v) => v.verse_key === activeVerseKey);
     if (currentIndex > 0) {
@@ -191,14 +290,16 @@ export default function SurahReaderScreen() {
       if (chapter) {
         setLastRead(prevVerse.chapter_id, prevVerse.verse_number, chapter.name_fa);
       }
+      await playAyahAudio(prevVerse.verse_key);
     }
-  }, [activeVerseKey, verses, chapter, setActiveVerseKey, setIsPlaying, setLastRead]);
+  }, [activeVerseKey, verses, chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]);
 
   const handleToggleRepeat = useCallback(() => {
     setIsRepeating((prev) => !prev);
   }, []);
 
-  const handleCloseDock = useCallback(() => {
+  const handleCloseDock = useCallback(async () => {
+    await audioPlayerService.stop();
     setIsPlaying(false);
     setActiveVerseKey(null);
   }, [setIsPlaying, setActiveVerseKey]);
@@ -241,7 +342,7 @@ export default function SurahReaderScreen() {
   }, []);
 
   const handleVersePress = useCallback(
-    (verseKey: string) => {
+    async (verseKey: string) => {
       setActiveVerseKey(verseKey);
       setIsPlaying(true);
       if (chapter) {
@@ -252,8 +353,9 @@ export default function SurahReaderScreen() {
           setLastRead(chId, vNum, chapter.name_fa);
         }
       }
+      await playAyahAudio(verseKey);
     },
-    [chapter, setActiveVerseKey, setIsPlaying, setLastRead]
+    [chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]
   );
 
   if (loading) {

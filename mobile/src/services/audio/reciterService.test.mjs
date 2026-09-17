@@ -2,8 +2,11 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import {
   AVAILABLE_RECITERS,
+  DEFAULT_RECITER_ID,
   getReciterById,
   searchReciters,
+  formatVerseAudioFilename,
+  getVerseAudioUrl,
 } from './reciterService.ts';
 
 describe('Reciter Catalog Service Tests', () => {
@@ -66,4 +69,34 @@ describe('Reciter Catalog Service Tests', () => {
     assert.ok(mujawwadOnly.every((r) => r.style === 'Mujawwad'));
     assert.ok(mujawwadOnly.some((r) => r.id === 203)); // Karim Mansouri
   });
+
+  it('should correctly format verse audio filename with 3-digit padding', () => {
+    assert.strictEqual(formatVerseAudioFilename(1, 1), '001001.mp3');
+    assert.strictEqual(formatVerseAudioFilename(1, 7), '001007.mp3');
+    assert.strictEqual(formatVerseAudioFilename(18, 28), '018028.mp3');
+    assert.strictEqual(formatVerseAudioFilename(114, 6), '114006.mp3');
+  });
+
+  it('should generate valid audio streaming URLs for various reciters', () => {
+    // Parhizgar (201)
+    const parhizgarUrl = getVerseAudioUrl(201, 1, 1);
+    assert.strictEqual(parhizgarUrl, 'https://everyayah.com/data/Parhizgar_48kbps/001001.mp3');
+
+    // Alafasy (7)
+    const afasyUrl = getVerseAudioUrl(7, 18, 28);
+    assert.strictEqual(afasyUrl, 'https://everyayah.com/data/Alafasy_128kbps/018028.mp3');
+
+    // Minshawi (9)
+    const minshawiUrl = getVerseAudioUrl(9, 114, 1);
+    assert.strictEqual(minshawiUrl, 'https://everyayah.com/data/Minshawy_Murattal_128kbps/114001.mp3');
+
+    // Karim Mansouri (203)
+    const mansouriUrl = getVerseAudioUrl(203, 1, 1);
+    assert.strictEqual(mansouriUrl, 'https://everyayah.com/data/Karim_Mansoori_40kbps/001001.mp3');
+
+    // Unknown reciter falls back to Parhizgar
+    const fallbackUrl = getVerseAudioUrl(99999, 1, 1);
+    assert.strictEqual(fallbackUrl, 'https://everyayah.com/data/Parhizgar_48kbps/001001.mp3');
+  });
 });
+
