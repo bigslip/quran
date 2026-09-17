@@ -202,7 +202,7 @@ export default function SurahReaderScreen() {
           }
         },
         (error) => {
-          console.warn('Audio playback error:', error);
+          console.error('[SurahReader] Audio playback error:', error);
           setIsPlaying(false);
         }
       );

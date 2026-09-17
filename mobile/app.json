@@ -51,7 +51,8 @@
       ],
       "expo-asset",
       "expo-splash-screen",
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-audio"
     ],
     "scheme": "quranir",
     "experiments": {

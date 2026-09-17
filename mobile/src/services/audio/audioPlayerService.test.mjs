@@ -1,6 +1,12 @@
 import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert';
 import { audioPlayerService } from './audioPlayerService.ts';
+import {
+  createExpoAudioDriver,
+  createLegacyExpoAvDriver,
+  createMockAudioDriver,
+  getDefaultAudioDriver,
+} from './audioDriver.ts';
 
 describe('Audio Player Service Unit & Lifecycle Tests', () => {
   let mockDriverCalls = [];
@@ -82,5 +88,164 @@ describe('Audio Player Service Unit & Lifecycle Tests', () => {
     // Simulate playback finish
     finishCallback();
     assert.strictEqual(finished, true);
+  });
+});
+
+describe('Expo Audio Driver (Modern SDK 57 expo-audio) Tests', () => {
+  it('should initialize silent mode bypass and play audio through createAudioPlayer', async () => {
+    let modeConfig = null;
+    let createdSource = null;
+    let createdOptions = null;
+    let playCalled = false;
+    let statusListener = null;
+
+    const mockExpoAudio = {
+      setAudioModeAsync: async (mode) => {
+        modeConfig = mode;
+      },
+      createAudioPlayer: (source, options) => {
+        createdSource = source;
+        createdOptions = options;
+        return {
+          playing: false,
+          play: () => {
+            playCalled = true;
+          },
+          pause: () => {
+            playCalled = false;
+          },
+          remove: () => {},
+          addListener: (event, cb) => {
+            if (event === 'playbackStatusUpdate') {
+              statusListener = cb;
+            }
+            return { remove: () => {} };
+          },
+        };
+      },
+    };
+
+    const driver = createExpoAudioDriver(mockExpoAudio);
+    let finished = false;
+    await driver.playSound('https://everyayah.com/data/Parhizgar_48kbps/001001.mp3', () => {
+      finished = true;
+    });
+
+    assert.deepStrictEqual(modeConfig, {
+      playsInSilentMode: true,
+      shouldPlayInBackground: true,
+      interruptionMode: 'doNotMix',
+    });
+    assert.strictEqual(createdSource, 'https://everyayah.com/data/Parhizgar_48kbps/001001.mp3');
+    assert.deepStrictEqual(createdOptions, { updateInterval: 250 });
+    assert.strictEqual(playCalled, true);
+    assert.strictEqual(driver.isPlaying(), true);
+
+    // Simulate playback completion event
+    assert.ok(statusListener !== null);
+    statusListener({ didJustFinish: true, playing: false });
+    assert.strictEqual(finished, true);
+    assert.strictEqual(driver.isPlaying(), false);
+  });
+
+  it('should handle playback status error and trigger onError callback', async () => {
+    let statusListener = null;
+    const mockExpoAudio = {
+      setAudioModeAsync: async () => {},
+      createAudioPlayer: () => ({
+        playing: true,
+        play: () => {},
+        pause: () => {},
+        remove: () => {},
+        addListener: (event, cb) => {
+          if (event === 'playbackStatusUpdate') {
+            statusListener = cb;
+          }
+          return { remove: () => {} };
+        },
+      }),
+    };
+
+    const driver = createExpoAudioDriver(mockExpoAudio);
+    let capturedError = null;
+    await driver.playSound('https://example.com/bad.mp3', undefined, (err) => {
+      capturedError = err;
+    });
+
+    statusListener({ error: 'Network connection lost', playing: false });
+    assert.ok(capturedError !== null);
+    assert.strictEqual(capturedError.message, 'Network connection lost');
+    assert.strictEqual(driver.isPlaying(), false);
+  });
+
+  it('should pause and resume player cleanly', async () => {
+    let playCount = 0;
+    let pauseCount = 0;
+    const mockExpoAudio = {
+      setAudioModeAsync: async () => {},
+      createAudioPlayer: () => ({
+        playing: true,
+        play: () => {
+          playCount++;
+        },
+        pause: () => {
+          pauseCount++;
+        },
+        remove: () => {},
+        addListener: () => ({ remove: () => {} }),
+      }),
+    };
+
+    const driver = createExpoAudioDriver(mockExpoAudio);
+    await driver.playSound('https://everyayah.com/data/Parhizgar_48kbps/001001.mp3');
+    assert.strictEqual(playCount, 1);
+
+    await driver.pauseSound();
+    assert.strictEqual(pauseCount, 1);
+
+    await driver.resumeSound();
+    assert.strictEqual(playCount, 2);
+
+    await driver.stopSound();
+    assert.strictEqual(pauseCount, 2);
+    assert.strictEqual(driver.isPlaying(), false);
+  });
+});
+
+describe('Legacy Expo AV Driver Tests', () => {
+  it('should support Sound.createAsync and playback controls', async () => {
+    let soundCreated = false;
+    let modeSet = false;
+
+    const mockAudioModule = {
+      setAudioModeAsync: async () => {
+        modeSet = true;
+      },
+      Sound: {
+        createAsync: async (source, initialStatus, onPlaybackStatusUpdate) => {
+          soundCreated = true;
+          return {
+            sound: {
+              getStatusAsync: async () => ({ isLoaded: true, isPlaying: true }),
+              playAsync: async () => {},
+              pauseAsync: async () => {},
+              stopAsync: async () => {},
+              unloadAsync: async () => {},
+            },
+            status: { isLoaded: true },
+          };
+        },
+      },
+    };
+
+    const driver = createLegacyExpoAvDriver(mockAudioModule);
+    await driver.playSound('https://example.com/test.mp3');
+
+    assert.strictEqual(modeSet, true);
+    assert.strictEqual(soundCreated, true);
+    assert.strictEqual(driver.isPlaying(), true);
+
+    await driver.pauseSound();
+    assert.strictEqual(driver.isPlaying(), false);
   });
 });
