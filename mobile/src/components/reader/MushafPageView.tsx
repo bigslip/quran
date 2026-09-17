@@ -534,6 +534,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   mushafLine: {
+    width: '100%',
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     flexDirection: rtlRow,
     alignItems: 'center',

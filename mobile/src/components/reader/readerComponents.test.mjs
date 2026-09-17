@@ -836,6 +836,11 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.strictEqual(line6Scale10.isJustified, true, 'Line 6 at 1.0x must be justified edge-to-edge');
       assert.strictEqual(line6Scale10.wordPadding, 1.5);
 
+      // On bigger font sizes (1.2x, 1.4x, 1.6x), lines with >= 4 words MUST remain justified edge-to-edge
+      assert.strictEqual(line6Scale12.isJustified, true, 'Line 6 at 1.2x must remain justified');
+      assert.strictEqual(line6Scale14.isJustified, true, 'Line 6 at 1.4x must remain justified');
+      assert.strictEqual(line6Scale16.isJustified, true, 'Line 6 at 1.6x must remain justified');
+
       // Short line with few words (e.g. 3 words, 12 base chars):
       const shortLine = calculateMushafLineFontSize({
         wordCount: 3,

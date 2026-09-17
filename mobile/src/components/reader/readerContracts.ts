@@ -667,12 +667,8 @@ export function calculateMushafLineFontSize(params: {
   // Dynamic word padding: reduced on dense lines so justification handles spacing
   const wordPadding = wordCount >= 8 ? 0.5 : 1.5;
 
-  // Check if estimated line width at current fontSize fits on a single line
-  const estimatedLineWidth = effectiveCharWeight * fontSize * 0.42;
-  const fitsSingleLine = estimatedLineWidth <= availableLineWidth;
-
-  // Lines with >= 4 words that fit on a single line are justified edge-to-edge
-  const isJustified = wordCount >= 4 && fitsSingleLine;
+  // Justify lines with 4 or more words from edge to edge across all font sizes
+  const isJustified = wordCount >= 4;
 
   return {
     fontSize,
