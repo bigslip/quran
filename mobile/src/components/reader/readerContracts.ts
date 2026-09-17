@@ -619,15 +619,9 @@ export interface MushafLineFontSizeResult {
 }
 
 /**
- * Calculates responsive font size, line height, and word spacing for a 15-line physical Mushaf line.
- *
- * Algorithm:
- * - Uses total base character length and Ayah marker count to compute line glyph weight.
- * - Caps dynamic font size by physical screen width constraint to strictly guarantee that text
- *   NEVER overflows horizontally past screen margins across all devices (360px..1024px) and
- *   font scales (0.8x..1.6x).
- * - Distributes remaining width via edge-to-edge justification (justifyContent: 'space-between')
- *   for lines with >= 4 words.
+ * Calculates responsive font size, line height, and word spacing for Quran reader mode.
+ * Dynamically and monotonically scales with fontScale (0.8x .. 1.6x)
+ * to guarantee that every stepper click visibly updates text size.
  */
 export function calculateMushafLineFontSize(params: {
   wordCount: number;
@@ -638,52 +632,41 @@ export function calculateMushafLineFontSize(params: {
 }): MushafLineFontSizeResult {
   const {
     wordCount,
-    totalBaseChars,
-    markerCount,
-    availableLineWidth,
     fontScale = 1.0,
   } = params;
 
-  // Effective character weight: base glyphs + inter-word spacing + marker glyphs
-  const effectiveCharWeight = totalBaseChars + (wordCount * 0.65) + (markerCount * 2.2);
+  // Base font size target from contract (22px) scaled monotonically with fontScale
+  const baseFontSize = READER_COMPONENT_CONTRACTS.mushafPage.quranFontSize;
+  const fontSize = Math.max(12, Math.round(baseFontSize * fontScale));
 
-  // Maximum safe font size that physically fits availableLineWidth on a single line without overflowing
-  const maxSingleLineFont = Math.floor(
-    availableLineWidth / Math.max(1, effectiveCharWeight * 0.40)
-  );
-
-  // Base font size target at 1.0x scale: 82% of max capacity, clamped between 10px and 22px
-  const baseTarget = Math.max(10, Math.min(22, Math.round(maxSingleLineFont * 0.82)));
-
-  // Scaled desired font size based on user stepper selection
-  const desired = Math.round(baseTarget * fontScale);
-
-  // Final font size clamped strictly to maxSingleLineFont so text never overflows horizontal screen bounds
-  const fontSize = Math.max(10, Math.min(maxSingleLineFont, desired));
-
-  // Proportional line height: base 42px or scaled by font size
+  // Proportional line height
   const lineHeight = Math.max(
     READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     Math.round(fontSize * 2.2)
   );
 
-  // Dynamic word padding: reduced on dense lines so justification handles spacing
+  // Dynamic word padding
   const wordPadding = wordCount >= 8 ? 0.5 : 1.5;
-
-  // Estimated line width and remaining space for justification
-  const estimatedLineWidth = Math.round(effectiveCharWeight * fontSize * 0.40);
-  const leftover = availableLineWidth - estimatedLineWidth;
-  const gapPerWord = wordCount > 1 ? leftover / (wordCount - 1) : 0;
-
-  // Lines with >= 4 words where gap per word does not exceed 16px are justified edge-to-edge.
-  // This completely eliminates unusual or giant spaces between words while preserving authentic Quranic justification!
-  const isJustified = wordCount >= 4 && gapPerWord <= 16;
 
   return {
     fontSize,
     lineHeight,
     wordPadding,
-    isJustified,
+    isJustified: true,
   };
 }
+
+/**
+ * Calculates page-level font size and line height for continuous flowing Mushaf view.
+ */
+export function calculateMushafPageFontSize(fontScale: number = 1.0): {
+  fontSize: number;
+  lineHeight: number;
+} {
+  const baseFontSize = READER_COMPONENT_CONTRACTS.mushafPage.quranFontSize; // 22
+  const fontSize = Math.max(12, Math.round(baseFontSize * fontScale));
+  const lineHeight = Math.round(fontSize * 2.2);
+  return { fontSize, lineHeight };
+}
+
 

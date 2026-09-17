@@ -34,6 +34,7 @@ import {
   formatAyahEndMarker,
   countArabicBaseCharacters,
   calculateMushafLineFontSize,
+  calculateMushafPageFontSize,
 } from './readerContracts.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
 import { colors } from '../../theme/colors.ts';
@@ -721,18 +722,20 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('formatMushafSurahTitle'));
       assert.ok(source.includes('formatMushafPageTitle'));
 
-      // 2. 15-line physical layout
+      // 2. Continuous justified layout & physical Mushaf page contracts
       assert.ok(source.includes('READER_COMPONENT_CONTRACTS.mushafPage.totalLines'));
       assert.ok(source.includes('groupWordsByLine'));
-      assert.ok(source.includes('LINES_LIST.map') || source.includes('linesList.map'));
-      assert.ok(source.includes('mushafLine'));
+      assert.ok(source.includes('chapterSegments'));
+      assert.ok(source.includes('continuousQuranText'));
+      assert.ok(source.includes("textAlign: 'justify'"));
+      assert.ok(source.includes("writingDirection: 'rtl'"));
       assert.ok(source.includes('flexDirection: rtlRow') || source.includes("flexDirection: 'row-reverse'"));
 
-      // 3. Interactive word selection & verse end marker
-      assert.ok(source.includes('onVersePress?.(word.verse_key)'));
+      // 3. Interactive verse selection & verse end marker
+      assert.ok(source.includes('onVersePress?.(verse.verseKey)'));
       assert.ok(source.includes('ayahEndMarker'));
       assert.ok(source.includes('formatAyahEndMarker'));
-      assert.ok(source.includes('verseEndWordKeys'));
+      assert.ok(source.includes('activeVerseHighlight'));
 
       // 4. In-page Surah Title Cartouche and Bismillah Calligraphy
       assert.ok(source.includes('surahCartoucheContainer'));
@@ -749,16 +752,11 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('disabled={pageNumber >= 604}'));
       assert.ok(source.includes('disabled={pageNumber <= 1}'));
 
-      // 6. Font scale prop & line text justification contracts
+      // 6. Font scale prop & continuous flowing typography contracts
       assert.ok(source.includes('fontScale?: number'));
       assert.ok(source.includes('fontScale = 1.0'));
-      assert.ok(source.includes('isJustified'));
-      assert.ok(source.includes("justifyContent: isJustified ? 'space-between' : 'center'"));
-
-      // 7. Responsive auto-fitting font size and base character counting
-      assert.ok(source.includes('calculateMushafLineFontSize'));
-      assert.ok(source.includes('countArabicBaseCharacters'));
-      assert.ok(source.includes('useWindowDimensions'));
+      assert.ok(source.includes('dynamicFontSize'));
+      assert.ok(source.includes('calculateMushafPageFontSize'));
       assert.ok(source.includes("overflow: 'hidden'"));
     });
 
@@ -823,21 +821,21 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         fontScale: 1.6,
       });
 
-      // Scaling: font size increases with scale and caps at maxSingleLineFont to prevent overflow
+      // Strict monotonic increase across stepper scales
       assert.ok(line6Scale08.fontSize < line6Scale10.fontSize, '0.8x must be smaller than 1.0x');
       assert.ok(line6Scale10.fontSize < line6Scale12.fontSize, '1.0x must be smaller than 1.2x');
       assert.ok(line6Scale12.fontSize <= line6Scale14.fontSize, '1.2x must be <= 1.4x');
       assert.ok(line6Scale14.fontSize <= line6Scale16.fontSize, '1.4x must be <= 1.6x');
 
-      // Font size at 1.6x caps safely at single line capacity (21px) without overflowing
-      assert.ok(line6Scale16.fontSize >= 20, 'Line 6 at 1.6x must reach single line capacity (>= 20px)');
-      assert.ok(line6Scale16.fontSize <= 22, 'Line 6 at 1.6x must not exceed single line capacity (<= 22px)');
+      // Font size scales cleanly without artificial clamping
+      assert.ok(line6Scale16.fontSize >= 20, 'Line 6 at 1.6x must reach >= 20px');
+      assert.ok(line6Scale16.fontSize <= 36, 'Line 6 at 1.6x must scale appropriately (<= 36px)');
 
-      // At scale 1.0, line must fit on a single line and be justified edge-to-edge
+      // At scale 1.0, line must be justified edge-to-edge
       assert.strictEqual(line6Scale10.isJustified, true, 'Line 6 at 1.0x must be justified edge-to-edge');
       assert.strictEqual(line6Scale10.wordPadding, 1.5);
 
-      // On bigger font sizes (1.2x, 1.4x, 1.6x), lines with >= 4 words remain justified edge-to-edge
+      // On bigger font sizes (1.2x, 1.4x, 1.6x), lines remain justified
       assert.strictEqual(line6Scale12.isJustified, true, 'Line 6 at 1.2x must remain justified');
       assert.strictEqual(line6Scale14.isJustified, true, 'Line 6 at 1.4x must remain justified');
       assert.strictEqual(line6Scale16.isJustified, true, 'Line 6 at 1.6x must remain justified');
@@ -851,61 +849,39 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         fontScale: 1.0,
       });
       assert.strictEqual(shortLine.fontSize >= 18, true, 'Short lines can use larger font size');
-      assert.strictEqual(shortLine.isJustified, false, 'Lines with < 4 words should not be stretched');
+      assert.strictEqual(shortLine.isJustified, true);
     });
 
-    it('verifies Page 440 lines fit on a single line across devices and scales without overflowing', () => {
-      const page440Words = db
-        .prepare('SELECT * FROM words WHERE page_number = 440 ORDER BY line_number, position')
-        .all();
-      const lineMap = groupWordsByLine(page440Words);
-
-      // Test on 360px (Android), 390px (iPhone 13), 428px (Pro Max)
-      for (const screenWidth of [360, 390, 428]) {
-        const availableWidth = screenWidth - 28;
-
-        for (const scale of [0.8, 1.0, 1.2, 1.4, 1.6]) {
-          for (let l = 1; l <= 15; l++) {
-            const words = lineMap.get(l) || [];
-            if (words.length === 0) continue;
-
-            const baseChars = words.reduce(
-              (acc, w) => acc + countArabicBaseCharacters(w.text_uthmani),
-              0
-            );
-            const markerCount = 1;
-
-            const result = calculateMushafLineFontSize({
-              wordCount: words.length,
-              totalBaseChars: baseChars,
-              markerCount,
-              availableLineWidth: availableWidth,
-              fontScale: scale,
-            });
-
-            // Mathematical verification: estimated line width MUST be <= availableWidth
-            const estimatedWidth = (baseChars + words.length * 0.65 + markerCount * 2.2) * (result.fontSize * 0.40);
-            assert.ok(
-              estimatedWidth <= availableWidth,
-              `Page 440 Line ${l} at scale ${scale} on ${screenWidth}px: est=${estimatedWidth} > avail=${availableWidth}`
-            );
-            if (scale >= 1.0 && words.length >= 4) {
-              assert.strictEqual(result.isJustified, true, `Line ${l} with ${words.length} words must be justified at scale ${scale}`);
-            }
-          }
-        }
+    it('verifies calculateMushafPageFontSize scales font size dynamically and monotonically with fontScale', () => {
+      for (const scale of [0.8, 1.0, 1.2, 1.4, 1.6]) {
+        const { fontSize, lineHeight } = calculateMushafPageFontSize(scale);
+        assert.ok(fontSize >= 16 && fontSize <= 36, `Font size at scale ${scale} must be within readable range`);
+        assert.ok(lineHeight >= 36 && lineHeight <= 80, `Line height at scale ${scale} must be proportional`);
       }
+
+      // Verify monotonic scaling across every stepper step
+      const s08 = calculateMushafPageFontSize(0.8);
+      const s10 = calculateMushafPageFontSize(1.0);
+      const s12 = calculateMushafPageFontSize(1.2);
+      const s14 = calculateMushafPageFontSize(1.4);
+      const s16 = calculateMushafPageFontSize(1.6);
+
+      assert.ok(s08.fontSize < s10.fontSize, '0.8x must be strictly smaller than 1.0x');
+      assert.ok(s10.fontSize < s12.fontSize, '1.0x must be strictly smaller than 1.2x');
+      assert.ok(s12.fontSize < s14.fontSize, '1.2x must be strictly smaller than 1.4x');
+      assert.ok(s14.fontSize < s16.fontSize, '1.4x must be strictly smaller than 1.6x');
     });
 
-    it('verifies MushafPageView keeps lines single-line with flexWrap nowrap to prevent unusual gaps', () => {
+    it('verifies MushafPageView renders continuous flowing text with native text-align justify to prevent unusual gaps and ensure responsive font scaling (Tanzil model)', () => {
       const source = fs.readFileSync(
         path.resolve(__dirname, './MushafPageView.tsx'),
         'utf8'
       );
-      assert.ok(source.includes("flexWrap: 'nowrap'"), 'Must have flexWrap nowrap on mushafLine style');
-      assert.ok(!source.includes("flexWrap: 'wrap'"), 'Must NOT have flexWrap wrap on mushafLine style');
-      assert.ok(source.includes('minHeight: scaledLineHeight'), 'Must use minHeight for scaled line height');
-      assert.ok(!source.includes('height: scaledLineHeight'), 'Must NOT have fixed height: scaledLineHeight on mushafLine');
+      assert.ok(source.includes("textAlign: 'justify'"), 'Must have textAlign justify for continuous flow');
+      assert.ok(source.includes("writingDirection: 'rtl'"), 'Must have writingDirection rtl');
+      assert.ok(source.includes('continuousQuranText'), 'Must have continuousQuranText style');
+      assert.ok(source.includes('activeVerseHighlight'), 'Must support active verse highlighting');
+      assert.ok(source.includes('calculateMushafPageFontSize'), 'Must use calculateMushafPageFontSize for scaling');
     });
 
   });

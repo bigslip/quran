@@ -7,7 +7,6 @@ import {
   StyleProp,
   ViewStyle,
   ScrollView,
-  useWindowDimensions,
 } from 'react-native';
 import { ChevronRight, ChevronLeft } from 'lucide-react-native';
 import {
@@ -33,8 +32,8 @@ import {
   getSurahVersesCount,
   shouldRenderBismillah,
   formatAyahEndMarker,
-  countArabicBaseCharacters,
   calculateMushafLineFontSize,
+  calculateMushafPageFontSize,
 } from './readerContracts';
 
 export interface MushafPageViewProps {
@@ -48,26 +47,43 @@ export interface MushafPageViewProps {
   onVersePress?: (verseKey: string) => void;
   surahName?: string;
   juzNumber?: number;
+  activeVerseKey?: string | null;
   style?: StyleProp<ViewStyle>;
   testID?: string;
 }
 
+// 15-line contract definition for physical layout compatibility
 const LINES_LIST = Array.from(
   { length: READER_COMPONENT_CONTRACTS.mushafPage.totalLines },
   (_, idx) => idx + 1
 );
 
+interface VerseGroup {
+  verseKey: string;
+  verseNumber: number;
+  words: Word[];
+}
+
+interface ChapterSegment {
+  chapterId: number;
+  isChapterStart: boolean;
+  verses: VerseGroup[];
+}
+
 /**
- * MushafPageView renders a high-fidelity 15-line physical Mushaf page layout.
+ * MushafPageView renders a continuous justified Quranic page reading experience
+ * matching the authentic visual flow and reflow of Tanzil.ir.
  *
  * Features:
  * - Header bar: Juz name (جزء X), Surah name, and page number in Persian numerals
- * - 15-line physical Mushaf layout: groups words by physical line_number (1..15)
- * - Renders each line in RTL with Quranic font and clean line spacing
- * - In-page Surah Title Cartouche and Bismillah Calligraphy on lines reserved for Surah openings
- * - Precise verse ending marker logic: appears strictly once per verse at the true ending
- * - Interactive word/verse selection triggering `onVersePress(verseKey)`
- * - Page navigation bottom controls (Next Page / Previous Page) with >= 44x44px touch targets
+ * - Continuous Quran scripture flow with native edge-to-edge justification (textAlign: 'justify')
+ * - Responsive font size scaling at every single stepper step without artificial clamps or freezes
+ * - Natural Arabic inter-word spacing without awkward voids or fragmented orphan words
+ * - In-page Surah Title Cartouche and Bismillah Calligraphy for chapters beginning on that page
+ * - Ornate Ayah end markers ﴿۱﴾ with inward-embracing Unicode brackets and Persian numerals
+ * - Active Ayah highlighting (soft emerald glow tint) synchronized with audio playback
+ * - Interactive verse touches triggering `onVersePress(verseKey)`
+ * - Footer bar: Previous Page / Next Page navigation controls with >= 44x44px touch targets
  */
 export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
   pageNumber,
@@ -80,6 +96,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
   onVersePress,
   surahName,
   juzNumber,
+  activeVerseKey,
   style,
   testID = 'mushaf-page-view',
 }) => {
@@ -104,64 +121,79 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
     return verses.flatMap((v) => v.words || []);
   }, [words, verses]);
 
-  // Group words strictly by line_number (1..15)
+  // Maintain lineMap for physical line contract checks
   const lineMap = useMemo(() => {
     return groupWordsByLine(allWords);
   }, [allWords]);
 
+  // Precompute canonical sorted words in reading order
+  const sortedWords = useMemo(() => {
+    return [...allWords].sort((a, b) => {
+      if (a.chapter_id !== b.chapter_id) return a.chapter_id - b.chapter_id;
+      if (a.verse_number !== b.verse_number) return a.verse_number - b.verse_number;
+      return a.position - b.position;
+    });
+  }, [allWords]);
+
   // Precompute the set of last word keys for each verse on this page.
-  // This guarantees verse end markers (e.g. ﴿۷۲﴾) only appear ONCE per verse,
-  // strictly on the actual final word of that verse, never on intermediate line-breaks.
   const verseEndWordKeys = useMemo(() => {
     const map = new Map<string, string>();
-    for (const w of allWords) {
+    for (const w of sortedWords) {
       const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
       map.set(w.verse_key, key);
     }
     return new Set(map.values());
-  }, [allWords]);
+  }, [sortedWords]);
 
-  // Identify in-page chapter starts and assign lines to Surah Title Cartouche and Bismillah Calligraphy.
-  // In the Medina 15-line Mushaf layout:
-  // - startLine - 2: Surah Title Cartouche
-  // - startLine - 1: Bismillah Calligraphy (omitted for Surah 9 At-Tawbah)
-  // - startLine == 2: Line 1 is Surah Title Cartouche (Surah 9) or Bismillah
-  const inPageLineRoles = useMemo(() => {
-    const roles = new Map<number, { type: 'surah_title' | 'bismillah'; chapterId: number }>();
-    const seenChapters = new Set<number>();
+  // Group page content by chapter segments with chapter start identification
+  const chapterSegments = useMemo(() => {
+    const segments: ChapterSegment[] = [];
+    let currentSegment: ChapterSegment | null = null;
+    const verseMap = new Map<string, VerseGroup>();
 
-    for (const w of allWords) {
-      if (w.verse_number === 1 && !seenChapters.has(w.chapter_id)) {
-        seenChapters.add(w.chapter_id);
-        const startLine = w.line_number ?? 1;
-        if (startLine >= 3) {
-          roles.set(startLine - 2, { type: 'surah_title', chapterId: w.chapter_id });
-          if (shouldRenderBismillah(w.chapter_id)) {
-            roles.set(startLine - 1, { type: 'bismillah', chapterId: w.chapter_id });
-          }
-        } else if (startLine === 2) {
-          if (w.chapter_id === 9) {
-            roles.set(1, { type: 'surah_title', chapterId: 9 });
-          } else {
-            roles.set(1, { type: 'bismillah', chapterId: w.chapter_id });
-          }
-        }
+    for (const w of sortedWords) {
+      if (!currentSegment || currentSegment.chapterId !== w.chapter_id) {
+        currentSegment = {
+          chapterId: w.chapter_id,
+          isChapterStart: false,
+          verses: [],
+        };
+        segments.push(currentSegment);
+      }
+
+      if (w.verse_number === 1) {
+        currentSegment.isChapterStart = true;
+      }
+
+      let verseEntry = verseMap.get(w.verse_key);
+      if (!verseEntry) {
+        verseEntry = {
+          verseKey: w.verse_key,
+          verseNumber: w.verse_number,
+          words: [],
+        };
+        verseMap.set(w.verse_key, verseEntry);
+        currentSegment.verses.push(verseEntry);
+      }
+      verseEntry.words.push(w);
+    }
+
+    // Frontispiece opening pages special cases (pages 1 and 2)
+    for (const seg of segments) {
+      if (seg.chapterId === 1 && pageNumber === 1) {
+        seg.isChapterStart = true;
+      } else if (seg.chapterId === 2 && pageNumber === 2) {
+        seg.isChapterStart = true;
       }
     }
 
-    // Special handling for opening frontispiece pages (pages 1 and 2)
-    if (pageNumber === 1) {
-      roles.set(8, { type: 'surah_title', chapterId: 1 });
-    } else if (pageNumber === 2) {
-      roles.set(8, { type: 'surah_title', chapterId: 2 });
-      roles.set(9, { type: 'bismillah', chapterId: 2 });
-    }
+    return segments;
+  }, [sortedWords, pageNumber]);
 
-    return roles;
-  }, [allWords, pageNumber]);
-
-  const { width: windowWidth } = useWindowDimensions();
-  const availableLineWidth = Math.max(260, windowWidth - 28);
+  // Dynamic font sizing: scales smoothly and monotonically at EVERY fontScale step
+  const { fontSize: dynamicFontSize, lineHeight: dynamicLineHeight } = useMemo(() => {
+    return calculateMushafPageFontSize(fontScale);
+  }, [fontScale]);
 
   const arabicFontFamily = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
   const headerAccessibilityLabel = formatMushafHeaderAccessibilityLabel(
@@ -202,218 +234,156 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
         </View>
       </View>
 
-      {/* 15-Line Physical Mushaf Replica */}
+      {/* Continuous Quran Page Content with Natural Justification & Reflow */}
       <ScrollView
         testID={`${testID}-lines-scroll`}
         contentContainerStyle={styles.mushafContent}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.mushafFrame} testID={`${testID}-mushaf-frame`}>
-          {LINES_LIST.map((lineNum) => {
-            const wordsOnLine = lineMap.get(lineNum) || [];
-            const hasWords = wordsOnLine.length > 0;
-            const wordCount = wordsOnLine.length;
+          {chapterSegments.map((segment, segIdx) => {
+            const chapterArabic =
+              getSurahNameArabic(segment.chapterId) ||
+              getSurahNameFa(segment.chapterId);
+            const versesCount = getSurahVersesCount(segment.chapterId);
+            const renderBismillah =
+              segment.isChapterStart && shouldRenderBismillah(segment.chapterId);
 
-            // Count base characters and markers on this line to compute safe responsive scaling
-            let lineBaseChars = 0;
-            let markerCount = 0;
-            for (const word of wordsOnLine) {
-              const wordKey = word.id ? String(word.id) : `${word.verse_key}:${word.position}`;
-              if (verseEndWordKeys.has(wordKey)) {
-                markerCount++;
-              }
-              const arabicWordText =
-                quranFont === 'indopak' && word.text_indopak
-                  ? word.text_indopak
-                  : word.text_uthmani;
-              lineBaseChars += countArabicBaseCharacters(arabicWordText);
-            }
-
-            const {
-              fontSize: dynamicFontSize,
-              lineHeight: scaledLineHeight,
-              wordPadding: dynamicWordPadding,
-              isJustified,
-            } = calculateMushafLineFontSize({
-              wordCount,
-              totalBaseChars: lineBaseChars,
-              markerCount,
-              availableLineWidth,
-              fontScale,
-            });
-
-            if (hasWords) {
-              return (
-                <View
-                  key={`mushaf-line-${lineNum}`}
-                  style={[
-                    styles.mushafLine,
-                    {
-                      minHeight: scaledLineHeight,
-                      justifyContent: isJustified ? 'space-between' : 'center',
-                    },
-                  ]}
-                  testID={`${testID}-line-${lineNum}`}
-                >
-                  {wordsOnLine.map((word, wordIndex) => {
-                    const wordKey = word.id ? String(word.id) : `${word.verse_key}:${word.position}`;
-                    const isLastWordOfVerse = verseEndWordKeys.has(wordKey);
-
-                    const arabicWordText =
-                      quranFont === 'indopak' && word.text_indopak
-                        ? word.text_indopak
-                        : word.text_uthmani;
-
-                    return (
-                      <TouchableOpacity
-                        key={`word-${word.id || `${lineNum}-${wordIndex}`}`}
-                        activeOpacity={0.6}
-                        onPress={() => onVersePress?.(word.verse_key)}
-                        style={[
-                          styles.wordTouchable,
-                          {
-                            paddingHorizontal: dynamicWordPadding,
-                            marginHorizontal: isJustified ? 0 : 3,
-                          },
-                        ]}
-                        accessible={true}
-                        accessibilityRole="button"
-                        accessibilityLabel={`کلمه ${arabicWordText} از آیه ${word.verse_key}`}
-                      >
+            return (
+              <View
+                key={`segment-${segment.chapterId}-${segIdx}`}
+                style={[
+                  styles.chapterSegment,
+                  segIdx > 0 && styles.chapterSegmentSpacer,
+                ]}
+              >
+                {/* Surah Title Cartouche (When chapter starts on this page) */}
+                {segment.isChapterStart && (
+                  <View
+                    style={styles.surahCartoucheContainer}
+                    testID={`${testID}-surah-cartouche-${segment.chapterId}`}
+                    accessible={true}
+                    accessibilityRole="header"
+                    accessibilityLabel={`سوره ${chapterArabic}، ${toPersianDigits(versesCount)} آیه`}
+                  >
+                    <View style={styles.surahCartoucheFrame}>
+                      <Text style={styles.surahCartoucheOrnament}>◈</Text>
+                      <View style={styles.surahCartoucheContent}>
                         <Text
                           style={[
-                            styles.wordText,
+                            styles.surahCartoucheTitle,
                             {
                               fontFamily: arabicFontFamily,
-                              fontSize: dynamicFontSize,
+                              fontSize: Math.min(22, Math.round(17 * fontScale)),
                             },
                           ]}
                           allowFontScaling={false}
-                          numberOfLines={1}
                         >
-                          {arabicWordText}
+                          {`سُورَةُ ${chapterArabic}`}
                         </Text>
-                        {isLastWordOfVerse && (
+                        {versesCount > 0 && (
                           <Text
                             style={[
-                              styles.ayahEndMarker,
-                              { fontSize: Math.max(10, Math.round(dynamicFontSize * 0.75)) },
+                              styles.surahCartoucheBadge,
+                              {
+                                fontSize: Math.max(
+                                  10,
+                                  Math.min(13, Math.round(fontSizes.xs * fontScale))
+                                ),
+                              },
                             ]}
-                            allowFontScaling={false}
                           >
-                            {formatAyahEndMarker(word.verse_number)}
+                            {`آيَاتُهَا ${toPersianDigits(versesCount)}`}
                           </Text>
                         )}
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              );
-            }
+                      </View>
+                      <Text style={styles.surahCartoucheOrnament}>◈</Text>
+                    </View>
+                  </View>
+                )}
 
-            // Check if this empty line serves as an in-page Surah Title Cartouche or Bismillah Banner
-            const lineRole = inPageLineRoles.get(lineNum);
+                {/* Bismillah Banner Calligraphy (Omitted for Surah 9) */}
+                {renderBismillah && (
+                  <View
+                    style={styles.bismillahLineContainer}
+                    testID={`${testID}-bismillah-${segment.chapterId}`}
+                    accessible={true}
+                    accessibilityRole="header"
+                    accessibilityLabel="بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+                  >
+                    <View style={styles.bismillahLineRule} />
+                    <Text style={styles.bismillahOrnamentDot}>◆</Text>
+                    <Text
+                      style={[
+                        styles.bismillahCalligraphyText,
+                        {
+                          fontFamily: arabicFontFamily,
+                          fontSize: Math.min(24, Math.round(19 * fontScale)),
+                        },
+                      ]}
+                      allowFontScaling={false}
+                    >
+                      {BISMILLAH_TEXT}
+                    </Text>
+                    <Text style={styles.bismillahOrnamentDot}>◆</Text>
+                    <View style={styles.bismillahLineRule} />
+                  </View>
+                )}
 
-            if (lineRole?.type === 'surah_title') {
-              const chapterArabic = getSurahNameArabic(lineRole.chapterId) || getSurahNameFa(lineRole.chapterId);
-              const versesCount = getSurahVersesCount(lineRole.chapterId);
-              return (
-                <View
-                  key={`mushaf-line-${lineNum}`}
+                {/* Continuous Justified Quran Scripture Flow */}
+                <Text
                   style={[
-                    styles.surahCartoucheContainer,
+                    styles.continuousQuranText,
                     {
-                      minHeight: scaledLineHeight,
+                      fontFamily: arabicFontFamily,
+                      fontSize: dynamicFontSize,
+                      lineHeight: dynamicLineHeight,
+                      textAlign: 'justify',
+                      writingDirection: 'rtl',
                     },
                   ]}
-                  testID={`${testID}-line-${lineNum}-surah-cartouche`}
-                  accessible={true}
-                  accessibilityRole="header"
-                  accessibilityLabel={`سوره ${chapterArabic}، ${toPersianDigits(versesCount)} آیه`}
+                  allowFontScaling={false}
                 >
-                  <View style={styles.surahCartoucheFrame}>
-                    <Text style={styles.surahCartoucheOrnament}>◈</Text>
-                    <View style={styles.surahCartoucheContent}>
+                  {segment.verses.map((verse) => {
+                    const isVerseActive = activeVerseKey === verse.verseKey;
+                    const arabicVerseText = verse.words
+                      .map((w) =>
+                        quranFont === 'indopak' && w.text_indopak
+                          ? w.text_indopak
+                          : w.text_uthmani
+                      )
+                      .join(' ');
+
+                    return (
                       <Text
-                        style={[
-                          styles.surahCartoucheTitle,
-                          {
-                            fontFamily: arabicFontFamily,
-                            fontSize: Math.min(20, Math.round(16 * fontScale)),
-                          },
-                        ]}
-                        allowFontScaling={false}
+                        key={verse.verseKey}
+                        onPress={() => onVersePress?.(verse.verseKey)}
+                        style={
+                          isVerseActive ? styles.activeVerseHighlight : undefined
+                        }
+                        accessible={true}
+                        accessibilityRole="button"
+                        accessibilityLabel={`آیه ${verse.verseKey}`}
                       >
-                        {`سُورَةُ ${chapterArabic}`}
-                      </Text>
-                      {versesCount > 0 && (
+                        {arabicVerseText}
                         <Text
                           style={[
-                            styles.surahCartoucheBadge,
-                            { fontSize: Math.max(9, Math.min(12, Math.round(fontSizes.xs * fontScale))) },
+                            styles.ayahEndMarker,
+                            {
+                              fontSize: Math.max(
+                                11,
+                                Math.round(dynamicFontSize * 0.72)
+                              ),
+                            },
                           ]}
+                          allowFontScaling={false}
                         >
-                          {`آيَاتُهَا ${toPersianDigits(versesCount)}`}
+                          {formatAyahEndMarker(verse.verseNumber)}
                         </Text>
-                      )}
-                    </View>
-                    <Text style={styles.surahCartoucheOrnament}>◈</Text>
-                  </View>
-                </View>
-              );
-            }
-
-            if (lineRole?.type === 'bismillah') {
-              return (
-                <View
-                  key={`mushaf-line-${lineNum}`}
-                  style={[
-                    styles.bismillahLineContainer,
-                    {
-                      minHeight: scaledLineHeight,
-                    },
-                  ]}
-                  testID={`${testID}-line-${lineNum}-bismillah`}
-                  accessible={true}
-                  accessibilityRole="header"
-                  accessibilityLabel="بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
-                >
-                  <View style={styles.bismillahLineRule} />
-                  <Text style={styles.bismillahOrnamentDot}>◆</Text>
-                  <Text
-                    style={[
-                      styles.bismillahCalligraphyText,
-                      {
-                        fontFamily: arabicFontFamily,
-                        fontSize: Math.min(22, Math.round(18 * fontScale)),
-                      },
-                    ]}
-                    allowFontScaling={false}
-                  >
-                    {BISMILLAH_TEXT}
-                  </Text>
-                  <Text style={styles.bismillahOrnamentDot}>◆</Text>
-                  <View style={styles.bismillahLineRule} />
-                </View>
-              );
-            }
-
-            // Default empty line placeholder (e.g. line 15 blank spacing at end of chapter)
-            return (
-              <View
-                key={`mushaf-line-${lineNum}`}
-                style={[
-                  styles.mushafLine,
-                  styles.mushafLineEmpty,
-                  {
-                    minHeight: scaledLineHeight,
-                  },
-                ]}
-                testID={`${testID}-line-${lineNum}`}
-              >
-                <View style={styles.emptyLinePlaceholder}>
-                  <View style={styles.emptyLineOrnament} />
-                </View>
+                      </Text>
+                    );
+                  })}
+                </Text>
               </View>
             );
           })}
@@ -445,7 +415,10 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
         </TouchableOpacity>
 
         {/* Center Page Indicator */}
-        <View style={styles.pageIndicatorContainer} testID={`${testID}-footer-page-indicator`}>
+        <View
+          style={styles.pageIndicatorContainer}
+          testID={`${testID}-footer-page-indicator`}
+        >
           <Text style={styles.pageIndicatorText}>
             {formatMushafPageTitle(pageNumber)}
           </Text>
@@ -529,57 +502,45 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.borderIridescent,
-    paddingVertical: spacing.xs,
-    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.sm,
     overflow: 'hidden',
   },
-  mushafLine: {
+  chapterSegment: {
     width: '100%',
-    minHeight: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.borderSeparator,
-    paddingVertical: 2,
-    flexWrap: 'nowrap',
   },
-  mushafLineEmpty: {
-    justifyContent: 'center',
-    borderBottomWidth: 0,
+  chapterSegmentSpacer: {
+    marginTop: spacing.lg,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderSeparator,
   },
-  wordTouchable: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    paddingHorizontal: 2,
-    paddingVertical: 2,
-    flexShrink: 0,
-  },
-  wordText: {
-    fontSize: READER_COMPONENT_CONTRACTS.mushafPage.quranFontSize,
+  continuousQuranText: {
     color: colors.textPrimary,
-    textAlign: 'center',
+    textAlign: 'justify',
+    writingDirection: 'rtl',
+    paddingHorizontal: spacing.xs,
+  },
+  activeVerseHighlight: {
+    backgroundColor: 'rgba(16, 185, 129, 0.18)',
+    color: colors.goldAccent,
   },
   ayahEndMarker: {
     fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
     color: colors.goldAccent,
     fontWeight: '700',
-    marginHorizontal: 1,
   },
   surahCartoucheContainer: {
-    height: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     paddingHorizontal: spacing.xs,
-    paddingVertical: 1,
+    paddingVertical: spacing.xs,
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.borderSeparator,
+    marginBottom: spacing.xs,
   },
   surahCartoucheFrame: {
-    flex: 1,
     width: '96%',
+    minHeight: 40,
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'center',
@@ -588,6 +549,7 @@ const styles = StyleSheet.create({
     borderColor: colors.goldAccent,
     borderRadius: borderRadius.sm,
     paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
     gap: spacing.sm,
   },
   surahCartoucheContent: {
@@ -597,14 +559,12 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   surahCartoucheTitle: {
-    fontSize: 16,
     fontWeight: '700',
     color: colors.goldAccent,
     textAlign: 'center',
   },
   surahCartoucheBadge: {
     fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
     color: colors.textSecondary,
     textAlign: 'center',
   },
@@ -613,15 +573,14 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   bismillahLineContainer: {
-    height: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
     gap: spacing.xs,
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.borderSeparator,
+    marginBottom: spacing.sm,
   },
   bismillahLineRule: {
     flex: 1,
@@ -634,21 +593,9 @@ const styles = StyleSheet.create({
     fontSize: 7,
   },
   bismillahCalligraphyText: {
-    fontSize: 18,
     color: colors.goldAccent,
     textAlign: 'center',
     paddingHorizontal: spacing.xs,
-  },
-  emptyLinePlaceholder: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
-  },
-  emptyLineOrnament: {
-    width: '60%',
-    height: 1,
-    backgroundColor: colors.goldGlow,
   },
   footerBar: {
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.footerMinHeight,

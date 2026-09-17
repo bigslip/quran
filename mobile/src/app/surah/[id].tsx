@@ -366,6 +366,7 @@ export default function SurahReaderScreen() {
             quranFont={quranFont}
             fontScale={fontScale}
             surahName={chapter?.name_fa}
+            activeVerseKey={activeVerseKey}
             onPrevPage={handlePrevPage}
             onNextPage={handleNextPage}
             onVersePress={handleVersePress}
