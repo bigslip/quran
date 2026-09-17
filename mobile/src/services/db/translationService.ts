@@ -179,7 +179,7 @@ export function searchTranslations(
     return (
       translation.name.toLowerCase().includes(normalizedQuery) ||
       translation.nameFa.includes(normalizedQuery) ||
-      translation.authorName.includes(normalizedQuery)
+      translation.authorName.toLowerCase().includes(normalizedQuery)
     );
   });
 }
@@ -192,9 +192,10 @@ export function getVerseTranslationText(
     translation_fa_makarem?: string;
     translation_fa_ansarian?: string;
     translation_en_saheeh?: string;
-  },
+  } | null | undefined,
   translationId: number
 ): string | null {
+  if (!verse) return null;
   if (translationId === 841) return verse.translation_fa_makarem || null;
   if (translationId === 842) return verse.translation_fa_ansarian || null;
   if (translationId === 20) return verse.translation_en_saheeh || null;
