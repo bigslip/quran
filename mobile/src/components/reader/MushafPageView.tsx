@@ -370,10 +370,8 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(({
                           style={[
                             styles.ayahEndMarker,
                             {
-                              fontSize: Math.max(
-                                11,
-                                Math.round(dynamicFontSize * 0.72)
-                              ),
+                              fontFamily: fonts.quranHafs,
+                              fontSize: dynamicFontSize,
                             },
                           ]}
                           allowFontScaling={false}
@@ -526,9 +524,8 @@ const styles = StyleSheet.create({
     color: colors.goldAccent,
   },
   ayahEndMarker: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.quranHafs,
     color: colors.goldAccent,
-    fontWeight: '700',
   },
   surahCartoucheContainer: {
     minHeight: READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,

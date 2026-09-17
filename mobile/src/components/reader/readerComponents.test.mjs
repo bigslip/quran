@@ -690,24 +690,30 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.strictEqual(getSurahNameFa(999), '');
     });
 
-    it('formats Ayah end marker with inward-embracing ornate brackets', () => {
-      // Single digit
+    it('formats Ayah end marker with authentic Medina Mushaf rosette glyphs matching web', () => {
+      // Single digit (Ayah 1 => U+FC00)
       const marker1 = formatAyahEndMarker(1);
-      assert.strictEqual(marker1, ' ﴾۱﴿ ');
+      assert.strictEqual(marker1, ` ${String.fromCharCode(0xFC00)} `);
+      assert.strictEqual(marker1.trim().charCodeAt(0), 0xFC00);
 
-      // Double digit
+      // Double digit (Ayah 45 => U+FC00 + 44)
       const marker45 = formatAyahEndMarker(45);
-      assert.strictEqual(marker45, ' ﴾۴۵﴿ ');
+      assert.strictEqual(marker45, ` ${String.fromCharCode(0xFC00 + 44)} `);
+      assert.strictEqual(marker45.trim().charCodeAt(0), 0xFC00 + 44);
 
-      // Triple digit
+      // Triple digit (Ayah 114 => U+FC00 + 113)
       const marker114 = formatAyahEndMarker(114);
-      assert.strictEqual(marker114, ' ﴾۱۱۴﴿ ');
+      assert.strictEqual(marker114, ` ${String.fromCharCode(0xFC00 + 113)} `);
+      assert.strictEqual(marker114.trim().charCodeAt(0), 0xFC00 + 113);
 
-      // Verify Unicode bracket codepoints:
-      // U+FD3E is opening curve (inward to the right in LTR presentation)
-      // U+FD3F is closing curve (inward to the left in LTR presentation)
-      assert.strictEqual(marker1.charCodeAt(1), 0xFD3E);
-      assert.strictEqual(marker1.charCodeAt(marker1.length - 2), 0xFD3F);
+      // Longest Ayah in Quran (Ayah 286 => U+FD1D)
+      const marker286 = formatAyahEndMarker(286);
+      assert.strictEqual(marker286, ` ${String.fromCharCode(0xFD1D)} `);
+      assert.strictEqual(marker286.trim().charCodeAt(0), 0xFD1D);
+
+      // Fallback for verse numbers > 286
+      const fallbackMarker = formatAyahEndMarker(300);
+      assert.strictEqual(fallbackMarker, ' ﴾۳۰۰﴿ ');
     });
 
     it('verifies MushafPageView.tsx source code structure, contracts, and touch targets', () => {

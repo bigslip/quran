@@ -24,6 +24,7 @@ import {
   READER_COMPONENT_CONTRACTS,
   formatVerseBadgeNumber,
   formatContinuousVerseAccessibilityLabel,
+  formatAyahEndMarker,
 } from './readerContracts';
 
 export interface ContinuousVerseCardProps {
@@ -206,6 +207,16 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
           allowFontScaling={false}
         >
           {arabicText}
+          <Text
+            style={[
+              styles.ayahEndMarker,
+              {
+                fontSize: scaledQuranFontSize,
+              },
+            ]}
+          >
+            {formatAyahEndMarker(verse.verse_number)}
+          </Text>
         </Text>
       </View>
 
@@ -350,6 +361,10 @@ const styles = StyleSheet.create({
     writingDirection: rtlWritingDirection,
     width: '100%',
     flexShrink: 1,
+  },
+  ayahEndMarker: {
+    fontFamily: fonts.quranHafs,
+    color: colors.goldAccent,
   },
   wbwFlowContainer: {
     flexDirection: rtlRow,
