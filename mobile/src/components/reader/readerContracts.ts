@@ -588,17 +588,18 @@ export function clampFontScale(scale: number): number {
 }
 
 /**
- * Formats the Ayah end marker with ornate Quranic brackets (U+FD3E and U+FD3F) and Persian numerals.
+ * Formats the Ayah end marker with the authentic Medina Mushaf rosette medallion.
  *
- * In standard Unicode and bidirectional text presentation:
- * - U+FD3E (﴾) has the opening curve (facing inwards to the right in LTR presentation)
- * - U+FD3F (﴿) has the closing curve (facing inwards to the left in LTR presentation)
- * Enclosing the Persian verse number between \uFD3E and \uFD3F guarantees that the ornate brackets
- * gracefully embrace the number across both Android and iOS without inverting outwards.
+ * In UthmanicHafs (King Fahd Complex Quran font, matching the web implementation),
+ * codepoints U+FC00 through U+FD1D correspond to pre-composed Medina Mushaf ayah rosettes
+ * with verse numbers 1 through 286 enclosed inside the floral medallion.
  *
- * Example: formatAyahEndMarker(1) => " ﴾۱﴿ "
+ * Example: formatAyahEndMarker(1) => " \uFC00 "
  */
 export function formatAyahEndMarker(verseNumber: number): string {
+  if (verseNumber >= 1 && verseNumber <= 286) {
+    return ` ${String.fromCharCode(0xFC00 + verseNumber - 1)} `;
+  }
   return ` ﴾${toPersianDigits(verseNumber)}﴿ `;
 }
 
@@ -668,5 +669,22 @@ export function calculateMushafPageFontSize(fontScale: number = 1.0): {
   const lineHeight = Math.round(fontSize * 2.2);
   return { fontSize, lineHeight };
 }
+
+/**
+ * Formats selected translations count in Persian digits:
+ * e.g., 1 -> '۱ ترجمه انتخاب شده'
+ */
+export function formatSelectedTranslationsCount(count: number): string {
+  return `${toPersianDigits(count)} ترجمه انتخاب شده`;
+}
+
+/**
+ * Formats reciter badge with Persian name and recitation style:
+ * e.g., ('استاد شهریار پرهیزگار', 'ترتیل') -> 'استاد شهریار پرهیزگار (ترتیل)'
+ */
+export function formatReciterBadge(nameFa: string, styleFa: string): string {
+  return `${nameFa} (${styleFa})`;
+}
+
 
 

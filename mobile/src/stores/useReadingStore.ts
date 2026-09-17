@@ -19,6 +19,12 @@ interface ReadingState {
   isPlaying: boolean;
   activeTranslation: 'makarem' | 'ansarian' | 'both';
 
+  // Reciter, multi-translation, and word-by-word linguistics state
+  selectedTranslationIds: number[];
+  wordByWordLocale: 'fa' | 'en';
+  wordByWordDisplay: 'inline' | 'tooltip';
+  wordByWordContentType: ('translation' | 'transliteration')[];
+
   setLastRead: (chapterId: number, verseNumber: number, chapterNameFa: string) => void;
   setFontScale: (scale: number) => void;
   /** Updates the Quran text encoding standard ('uthmani' vs 'indopak'). */
@@ -34,6 +40,13 @@ interface ReadingState {
   setActiveVerseKey: (key: string | null) => void;
   setIsPlaying: (playing: boolean) => void;
   setActiveTranslation: (translation: 'makarem' | 'ansarian' | 'both') => void;
+
+  // Reciter, multi-translation, and word-by-word setters
+  setSelectedTranslationIds: (ids: number[]) => void;
+  toggleSelectedTranslationId: (id: number) => void;
+  setWordByWordLocale: (locale: 'fa' | 'en') => void;
+  setWordByWordDisplay: (display: 'inline' | 'tooltip') => void;
+  setWordByWordContentType: (types: ('translation' | 'transliteration')[]) => void;
 }
 
 export const useReadingStore = create<ReadingState>((set) => ({
@@ -42,7 +55,7 @@ export const useReadingStore = create<ReadingState>((set) => ({
   lastReadChapterNameFa: 'فاتحه (گشایش)',
   fontScale: 1.0,
   quranScript: 'uthmani',
-  selectedReciterId: 7,
+  selectedReciterId: 201, // Shahriar Parhizgar default
   showWordByWord: true,
   showTranslation: true,
 
@@ -52,6 +65,12 @@ export const useReadingStore = create<ReadingState>((set) => ({
   activeVerseKey: null,
   isPlaying: false,
   activeTranslation: 'makarem',
+
+  // Reciter, multi-translation, and word-by-word linguistics defaults
+  selectedTranslationIds: [841], // Makarem default
+  wordByWordLocale: 'fa',
+  wordByWordDisplay: 'inline',
+  wordByWordContentType: ['translation'],
 
   setLastRead: (chapterId, verseNumber, chapterNameFa) =>
     set({
@@ -72,4 +91,16 @@ export const useReadingStore = create<ReadingState>((set) => ({
   setActiveVerseKey: (activeVerseKey) => set({ activeVerseKey }),
   setIsPlaying: (isPlaying) => set({ isPlaying }),
   setActiveTranslation: (activeTranslation) => set({ activeTranslation }),
+
+  // Reciter, multi-translation, and word-by-word actions
+  setSelectedTranslationIds: (ids) => set({ selectedTranslationIds: ids }),
+  toggleSelectedTranslationId: (id) =>
+    set((state) => ({
+      selectedTranslationIds: state.selectedTranslationIds.includes(id)
+        ? state.selectedTranslationIds.filter((tId) => tId !== id)
+        : [...state.selectedTranslationIds, id],
+    })),
+  setWordByWordLocale: (locale) => set({ wordByWordLocale: locale }),
+  setWordByWordDisplay: (display) => set({ wordByWordDisplay: display }),
+  setWordByWordContentType: (types) => set({ wordByWordContentType: types }),
 }));
