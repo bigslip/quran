@@ -137,15 +137,49 @@ describe('Expo Audio Driver (Modern SDK 57 expo-audio) Tests', () => {
       interruptionMode: 'doNotMix',
     });
     assert.strictEqual(createdSource, 'https://everyayah.com/data/Parhizgar_48kbps/001001.mp3');
-    assert.deepStrictEqual(createdOptions, { updateInterval: 250 });
+    assert.deepStrictEqual(createdOptions, {
+      updateInterval: 250,
+      keepAudioSessionActive: true,
+    });
     assert.strictEqual(playCalled, true);
     assert.strictEqual(driver.isPlaying(), true);
 
     // Simulate playback completion event
     assert.ok(statusListener !== null);
     statusListener({ didJustFinish: true, playing: false });
+    await new Promise((r) => setTimeout(r, 30));
     assert.strictEqual(finished, true);
     assert.strictEqual(driver.isPlaying(), false);
+  });
+
+  it('should seamlessly replace track when player already exists and supports replace', async () => {
+    let replacedUrl = null;
+    let playCount = 0;
+    const mockExpoAudio = {
+      setAudioModeAsync: async () => {},
+      createAudioPlayer: (url, opts) => ({
+        playing: true,
+        replace: (newUrl) => {
+          replacedUrl = newUrl;
+        },
+        play: () => {
+          playCount++;
+        },
+        pause: () => {},
+        remove: () => {},
+        addListener: () => ({ remove: () => {} }),
+      }),
+    };
+
+    const driver = createExpoAudioDriver(mockExpoAudio);
+    await driver.playSound('https://everyayah.com/data/Parhizgar_48kbps/001001.mp3');
+    assert.strictEqual(playCount, 1);
+
+    // Play next verse
+    await driver.playSound('https://everyayah.com/data/Parhizgar_48kbps/001002.mp3');
+    assert.strictEqual(replacedUrl, 'https://everyayah.com/data/Parhizgar_48kbps/001002.mp3');
+    assert.strictEqual(playCount, 2);
+    assert.strictEqual(driver.isPlaying(), true);
   });
 
   it('should handle playback status error and trigger onError callback', async () => {

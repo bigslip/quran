@@ -36,7 +36,8 @@ export function createMockAudioDriver(): AudioDriver {
 
 /**
  * Modern Expo Audio driver utilizing `expo-audio` (standard in Expo SDK 57+).
- * Handles silent mode bypass on iOS, background audio playback, and status updates.
+ * Handles silent mode bypass on iOS, continuous playback via player.replace(),
+ * background audio playback, and status updates.
  */
 export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
   let player: any = null;
@@ -44,6 +45,9 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
   let currentLoadedUrl: string | null = null;
   let isAudioModeSet = false;
   let statusSubscription: any = null;
+  let hasFinishedCurrent = false;
+  let activeOnFinish: (() => void) | null = null;
+  let activeOnError: ((err: Error) => void) | null = null;
 
   const ensureMode = async () => {
     if (!isAudioModeSet && ExpoAudio?.setAudioModeAsync) {
@@ -60,12 +64,60 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
     }
   };
 
+  const setupStatusSubscription = (targetPlayer: any) => {
+    if (statusSubscription) {
+      try {
+        statusSubscription.remove();
+      } catch {
+        // ignore
+      }
+      statusSubscription = null;
+    }
+
+    statusSubscription = targetPlayer.addListener('playbackStatusUpdate', (status: any) => {
+      if (!status) return;
+
+      if (typeof status.playing === 'boolean') {
+        isSoundPlaying = status.playing;
+      }
+
+      if (status.error) {
+        console.error('[AudioDriver:expo-audio] Playback error status:', status.error);
+        isSoundPlaying = false;
+        try {
+          targetPlayer.pause();
+        } catch {
+          // ignore
+        }
+        activeOnError?.(new Error(status.error));
+      } else if (status.didJustFinish && !hasFinishedCurrent) {
+        console.log('[AudioDriver:expo-audio] Playback finished for:', currentLoadedUrl);
+        hasFinishedCurrent = true;
+        isSoundPlaying = false;
+        try {
+          targetPlayer.pause();
+        } catch {
+          // ignore
+        }
+        // Defer onFinish to next tick so native AVQueuePlayer / ExoPlayer settles transition cleanly
+        const cb = activeOnFinish;
+        setTimeout(() => {
+          cb?.();
+        }, 16);
+      }
+    });
+  };
+
   return {
     playSound: async (url: string, onFinish?: () => void, onError?: (err: Error) => void) => {
       console.log('[AudioDriver:expo-audio] playSound called with url:', url);
       await ensureMode();
 
-      // If resuming same audio URL that is already loaded and paused
+      activeOnFinish = onFinish || null;
+      activeOnError = onError || null;
+      hasFinishedCurrent = false;
+
+      // 1. If resuming same audio URL that is already loaded and paused
       if (player && currentLoadedUrl === url) {
         try {
           if (!player.playing) {
@@ -78,69 +130,43 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
         }
       }
 
-      // Cleanup previous player and event listeners
-      if (statusSubscription) {
-        try {
-          statusSubscription.remove();
-        } catch {
-          // ignore
-        }
-        statusSubscription = null;
-      }
-
-      if (player) {
-        try {
-          player.pause();
-          player.remove();
-        } catch {
-          // ignore
-        }
-        player = null;
-      }
-
       currentLoadedUrl = url;
 
+      // 2. If player already exists, reuse it via player.replace() to prevent native audio session reset
+      if (player && typeof player.replace === 'function') {
+        try {
+          player.replace(url);
+          player.play();
+          isSoundPlaying = true;
+          console.log('[AudioDriver:expo-audio] Seamlessly replaced track with:', url);
+          return;
+        } catch (err) {
+          console.warn('[AudioDriver:expo-audio] player.replace failed, falling back to createAudioPlayer:', err);
+          try {
+            player.pause();
+            player.remove();
+          } catch {
+            // ignore
+          }
+          player = null;
+        }
+      }
+
+      // 3. First-time initialization of player with keepAudioSessionActive
       try {
-        player = ExpoAudio.createAudioPlayer(url, { updateInterval: 250 });
-
-        statusSubscription = player.addListener('playbackStatusUpdate', (status: any) => {
-          if (!status) return;
-
-          if (typeof status.playing === 'boolean') {
-            isSoundPlaying = status.playing;
-          }
-
-          if (status.error) {
-            console.error('[AudioDriver:expo-audio] Playback error status:', status.error);
-            isSoundPlaying = false;
-            if (player) {
-              try {
-                player.pause();
-              } catch {
-                // ignore
-              }
-            }
-            onError?.(new Error(status.error));
-          } else if (status.didJustFinish) {
-            console.log('[AudioDriver:expo-audio] Playback finished for:', url);
-            isSoundPlaying = false;
-            if (player) {
-              try {
-                player.pause();
-              } catch {
-                // ignore
-              }
-            }
-            onFinish?.();
-          }
+        player = ExpoAudio.createAudioPlayer(url, {
+          updateInterval: 250,
+          keepAudioSessionActive: true,
         });
+
+        setupStatusSubscription(player);
 
         player.play();
         isSoundPlaying = true;
         console.log('[AudioDriver:expo-audio] Successfully started playback for:', url);
       } catch (err: any) {
         isSoundPlaying = false;
-        console.error('[AudioDriver:expo-audio] Failed to start playback:', err);
+        console.error('[AudioDriver:expo-audio] Failed to create or play audio:', err);
         onError?.(err instanceof Error ? err : new Error(String(err)));
       }
     },
@@ -168,6 +194,10 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
     },
 
     stopSound: async () => {
+      activeOnFinish = null;
+      activeOnError = null;
+      hasFinishedCurrent = true;
+
       if (statusSubscription) {
         try {
           statusSubscription.remove();

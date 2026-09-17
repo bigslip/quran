@@ -9,6 +9,7 @@ import {
   Share,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { ArrowRight, BookOpen, AlignLeft, SlidersHorizontal } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
@@ -49,6 +50,7 @@ export default function SurahReaderScreen() {
   const [bookmarkedKeys, setBookmarkedKeys] = useState<Set<string>>(new Set());
   const [selectedInsightVerse, setSelectedInsightVerse] = useState<Verse | null>(null);
   const [isInsightsOpen, setIsInsightsOpen] = useState(false);
+  const flatListRef = React.useRef<FlatList<Verse>>(null);
 
   // Zustand reading store
   const {
@@ -166,6 +168,36 @@ export default function SurahReaderScreen() {
     };
   }, []);
 
+  // Keep screen awake while audio is actively reciting
+  useEffect(() => {
+    if (isPlaying) {
+      activateKeepAwakeAsync('quran-audio-recitation').catch(() => {});
+    } else {
+      deactivateKeepAwake('quran-audio-recitation').catch(() => {});
+    }
+    return () => {
+      deactivateKeepAwake('quran-audio-recitation').catch(() => {});
+    };
+  }, [isPlaying]);
+
+  // Auto-scroll to currently reciting verse in continuous reading mode
+  useEffect(() => {
+    if (viewMode === 'continuous' && activeVerseKey && isPlaying) {
+      const activeIndex = verses.findIndex((v) => v.verse_key === activeVerseKey);
+      if (activeIndex >= 0 && flatListRef.current) {
+        try {
+          flatListRef.current.scrollToIndex({
+            index: activeIndex,
+            animated: true,
+            viewPosition: 0.15,
+          });
+        } catch {
+          // Handled by onScrollToIndexFailed fallback
+        }
+      }
+    }
+  }, [activeVerseKey, isPlaying, viewMode, verses]);
+
   // Core audio playback executor
   const playAyahAudio = useCallback(
     async (verseKey: string) => {
@@ -191,6 +223,9 @@ export default function SurahReaderScreen() {
               const nextVerse = currentVerses[idx + 1];
               setActiveVerseKey(nextVerse.verse_key);
               setIsPlaying(true);
+              if (nextVerse.page_number) {
+                setCurrentPage(nextVerse.page_number);
+              }
               if (chapterRef.current) {
                 setLastRead(nextVerse.chapter_id, nextVerse.verse_number, chapterRef.current.name_fa);
               }
@@ -233,6 +268,9 @@ export default function SurahReaderScreen() {
       } else {
         setActiveVerseKey(verse.verse_key);
         setIsPlaying(true);
+        if (verse.page_number) {
+          setCurrentPage(verse.page_number);
+        }
         if (chapter) {
           setLastRead(verse.chapter_id, verse.verse_number, chapter.name_fa);
         }
@@ -254,6 +292,9 @@ export default function SurahReaderScreen() {
         const firstVerse = verses[0];
         setActiveVerseKey(firstVerse.verse_key);
         setIsPlaying(true);
+        if (firstVerse.page_number) {
+          setCurrentPage(firstVerse.page_number);
+        }
         if (chapter) {
           setLastRead(firstVerse.chapter_id, firstVerse.verse_number, chapter.name_fa);
         }
@@ -273,6 +314,9 @@ export default function SurahReaderScreen() {
       const nextVerse = verses[currentIndex + 1];
       setActiveVerseKey(nextVerse.verse_key);
       setIsPlaying(true);
+      if (nextVerse.page_number) {
+        setCurrentPage(nextVerse.page_number);
+      }
       if (chapter) {
         setLastRead(nextVerse.chapter_id, nextVerse.verse_number, chapter.name_fa);
       }
@@ -287,6 +331,9 @@ export default function SurahReaderScreen() {
       const prevVerse = verses[currentIndex - 1];
       setActiveVerseKey(prevVerse.verse_key);
       setIsPlaying(true);
+      if (prevVerse.page_number) {
+        setCurrentPage(prevVerse.page_number);
+      }
       if (chapter) {
         setLastRead(prevVerse.chapter_id, prevVerse.verse_number, chapter.name_fa);
       }
@@ -430,12 +477,24 @@ export default function SurahReaderScreen() {
       {/* Dual-Mode Content View */}
       {viewMode === 'continuous' ? (
         <FlatList
+          ref={flatListRef}
           data={verses}
           keyExtractor={(item) => item.verse_key}
           contentContainerStyle={[
             styles.versesListContent,
             activeVerseKey ? styles.versesListWithDock : null,
           ]}
+          onScrollToIndexFailed={(info) => {
+            setTimeout(() => {
+              if (flatListRef.current && info.index >= 0 && info.index < verses.length) {
+                flatListRef.current.scrollToIndex({
+                  index: info.index,
+                  animated: true,
+                  viewPosition: 0.15,
+                });
+              }
+            }, 100);
+          }}
           ListHeaderComponent={
             chapter ? (
               <View style={styles.listHeaderContainer}>
