@@ -686,5 +686,22 @@ export function formatReciterBadge(nameFa: string, styleFa: string): string {
   return `${nameFa} (${styleFa})`;
 }
 
+/**
+ * Tab identifier for ReaderSettingsModal drawer tabs.
+ */
+export type SettingsTabId = 'display' | 'reciter' | 'translations' | 'wbw';
 
+export interface SettingsTabItem {
+  id: SettingsTabId;
+  label: string;
+}
 
+/**
+ * Persian labels and IDs for the 4 settings drawer tabs.
+ */
+export const SETTINGS_TABS: readonly SettingsTabItem[] = [
+  { id: 'display', label: 'قلم و نمایش' },
+  { id: 'reciter', label: 'قاری قرآن' },
+  { id: 'translations', label: 'ترجمه‌ها' },
+  { id: 'wbw', label: 'واژه به واژه' },
+] as const;

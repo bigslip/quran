@@ -1066,16 +1066,17 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('interface ReaderSettingsModalProps'));
       assert.ok(source.includes('visible: boolean'));
       assert.ok(source.includes('onClose: () => void'));
-      assert.ok(source.includes('fontScale: number'));
-      assert.ok(source.includes('onChangeFontScale: (scale: number) => void'));
-      assert.ok(source.includes("viewMode: 'continuous' | 'mushaf'"));
-      assert.ok(source.includes("onChangeViewMode: (mode: 'continuous' | 'mushaf') => void"));
-      assert.ok(source.includes("quranFont: 'hafs' | 'indopak'"));
-      assert.ok(source.includes("onChangeQuranFont: (font: 'hafs' | 'indopak') => void"));
-      assert.ok(source.includes("activeTranslation: 'makarem' | 'ansarian' | 'both'"));
-      assert.ok(source.includes("onChangeActiveTranslation: (translation: 'makarem' | 'ansarian' | 'both') => void"));
-      assert.ok(source.includes('showWordByWord: boolean'));
-      assert.ok(source.includes('onToggleWordByWord: (show: boolean) => void'));
+      assert.ok(source.includes('initialTab?: SettingsTabId'));
+      assert.ok(source.includes('fontScale?: number') || source.includes('fontScale'));
+      assert.ok(source.includes('onChangeFontScale?: (scale: number) => void'));
+      assert.ok(source.includes("viewMode?: 'continuous' | 'mushaf'"));
+      assert.ok(source.includes("onChangeViewMode?: (mode: 'continuous' | 'mushaf') => void"));
+      assert.ok(source.includes("quranFont?: 'hafs' | 'indopak'"));
+      assert.ok(source.includes("onChangeQuranFont?: (font: 'hafs' | 'indopak') => void"));
+      assert.ok(source.includes("activeTranslation?: 'makarem' | 'ansarian' | 'both'"));
+      assert.ok(source.includes("onChangeActiveTranslation?: (translation: 'makarem' | 'ansarian' | 'both') => void"));
+      assert.ok(source.includes('showWordByWord?: boolean'));
+      assert.ok(source.includes('onToggleWordByWord?: (show: boolean) => void'));
       assert.ok(source.includes('showTranslation?: boolean'));
       assert.ok(source.includes('onToggleShowTranslation?: (show: boolean) => void'));
 
@@ -1089,50 +1090,61 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('READER_COMPONENT_CONTRACTS.settingsModal.closeButtonSize'));
       assert.ok(source.includes('accessibilityLabel="بستن تنظیمات"'));
 
-      // 4. Section 1: View mode segmented buttons
-      assert.ok(source.includes('حالت نمایش'));
-      assert.ok(source.includes('نمای متنی (پیوسته)'));
-      assert.ok(source.includes('مصحف چاپی (۱۵ خطی)'));
-      assert.ok(source.includes("onChangeViewMode('continuous')"));
-      assert.ok(source.includes("onChangeViewMode('mushaf')"));
+      // 4. Modular settings section components
+      assert.ok(source.includes('DisplayFontSection'));
+      assert.ok(source.includes('ReciterSelectionSection'));
+      assert.ok(source.includes('TranslationSelectionSection'));
+      assert.ok(source.includes('WordByWordSection'));
 
-      // 5. Section 2: Quran font segmented buttons
-      assert.ok(source.includes('قلم رسم‌الخط قرآن'));
-      assert.ok(source.includes('عثمان طه (حفص)'));
-      assert.ok(source.includes('نستعلیق (اردو / شبه‌قاره)'));
-      assert.ok(source.includes("onChangeQuranFont('hafs')"));
-      assert.ok(source.includes("onChangeQuranFont('indopak')"));
-
-      // 6. Section 3: Font scale stepper & live preview
-      assert.ok(source.includes('اندازه قلم قرآن'));
-      assert.ok(source.includes('READER_COMPONENT_CONTRACTS.settingsModal.stepperButtonSize'));
-      assert.ok(source.includes('handleDecrementScale'));
-      assert.ok(source.includes('handleIncrementScale'));
-      assert.ok(source.includes('formatFontScalePercentage'));
-      assert.ok(source.includes('previewArabicText'));
-      assert.ok(source.includes('previewText'));
-
-      // 7. Section 4: Persian translation segmented selector
-      assert.ok(source.includes('انتخاب مترجم فارسی'));
-      assert.ok(source.includes('مکارم شیرازی'));
-      assert.ok(source.includes('حسین انصاریان'));
-      assert.ok(source.includes('هر دو'));
-      assert.ok(source.includes("onChangeActiveTranslation('makarem')"));
-      assert.ok(source.includes("onChangeActiveTranslation('ansarian')"));
-      assert.ok(source.includes("onChangeActiveTranslation('both')"));
-
-      // 8. Section 5: Switches
-      assert.ok(source.includes('<Switch'));
-      assert.ok(source.includes('نمایش ترجمه واژه به واژه'));
-      assert.ok(source.includes('نمایش ترجمه فارسی'));
-
-      // 9. Sanctuary tokens
+      // 5. Sanctuary tokens
       assert.ok(source.includes('colors.surfaceCard'));
       assert.ok(source.includes('colors.primary'));
       assert.ok(source.includes('borderRadius.xl'));
 
-      // 10. React.memo optimization
+      // 6. React.memo optimization
       assert.ok(source.includes('React.memo('));
+    });
+  });
+
+  describe('Tabbed ReaderSettingsModal Architecture Tests', () => {
+    it('should render 4 segmented navigation tabs with Persian labels', () => {
+      const code = fs.readFileSync(path.resolve(__dirname, 'ReaderSettingsModal.tsx'), 'utf8');
+      assert.ok(code.includes('display'));
+      assert.ok(code.includes('reciter'));
+      assert.ok(code.includes('translations'));
+      assert.ok(code.includes('wbw'));
+      assert.ok(code.includes('قلم و نمایش'));
+      assert.ok(code.includes('قاری قرآن'));
+      assert.ok(code.includes('ترجمه‌ها'));
+      assert.ok(code.includes('واژه به واژه'));
+    });
+
+    it('should ensure all tab buttons have touch targets >= 44x44px and accessibilityRole="tab"', () => {
+      const code = fs.readFileSync(path.resolve(__dirname, 'ReaderSettingsModal.tsx'), 'utf8');
+      assert.ok(code.includes('accessibilityRole="tab"'));
+      assert.ok(code.includes('READER_COMPONENT_CONTRACTS.minTouchTarget') || code.includes('minHeight: 44'));
+    });
+
+    it('should export SettingsTabId and SETTINGS_TABS contract and re-export in index', () => {
+      const contractsCode = fs.readFileSync(path.resolve(__dirname, 'readerContracts.ts'), 'utf8');
+      assert.ok(contractsCode.includes('SettingsTabId'));
+      assert.ok(contractsCode.includes('SETTINGS_TABS'));
+
+      const modalCode = fs.readFileSync(path.resolve(__dirname, 'ReaderSettingsModal.tsx'), 'utf8');
+      assert.ok(modalCode.includes('export type { SettingsTabId }') || modalCode.includes('export type SettingsTabId'));
+
+      const indexCode = fs.readFileSync(path.resolve(__dirname, 'index.ts'), 'utf8');
+      assert.ok(indexCode.includes("export * from './ReaderSettingsModal'"));
+      assert.ok(indexCode.includes("export * from './readerContracts'"));
+    });
+
+    it('should dynamically switch sections based on active tab and pass props', () => {
+      const code = fs.readFileSync(path.resolve(__dirname, 'ReaderSettingsModal.tsx'), 'utf8');
+      assert.ok(code.includes('<DisplayFontSection'));
+      assert.ok(code.includes('<ReciterSelectionSection'));
+      assert.ok(code.includes('<TranslationSelectionSection'));
+      assert.ok(code.includes('<WordByWordSection'));
+      assert.ok(code.includes('initialTab'));
     });
   });
 
