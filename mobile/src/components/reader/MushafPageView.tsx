@@ -542,8 +542,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: colors.borderSeparator,
     paddingVertical: 2,
-    flexWrap: 'wrap',
-    rowGap: 4,
+    flexWrap: 'nowrap',
   },
   mushafLineEmpty: {
     justifyContent: 'center',

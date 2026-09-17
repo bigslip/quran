@@ -823,20 +823,21 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         fontScale: 1.6,
       });
 
-      // Monotonic scaling across all steps: font size MUST increase at every step
+      // Scaling: font size increases with scale and caps at maxSingleLineFont to prevent overflow
       assert.ok(line6Scale08.fontSize < line6Scale10.fontSize, '0.8x must be smaller than 1.0x');
       assert.ok(line6Scale10.fontSize < line6Scale12.fontSize, '1.0x must be smaller than 1.2x');
-      assert.ok(line6Scale12.fontSize < line6Scale14.fontSize, '1.2x must be smaller than 1.4x');
-      assert.ok(line6Scale14.fontSize < line6Scale16.fontSize, '1.4x must be smaller than 1.6x');
+      assert.ok(line6Scale12.fontSize <= line6Scale14.fontSize, '1.2x must be <= 1.4x');
+      assert.ok(line6Scale14.fontSize <= line6Scale16.fontSize, '1.4x must be <= 1.6x');
 
-      // Font size at 1.6x must be significantly larger (>= 25px) to respect user accessibility preference
-      assert.ok(line6Scale16.fontSize >= 25, 'Line 6 at 1.6x must be >= 25px');
+      // Font size at 1.6x caps safely at single line capacity (21px) without overflowing
+      assert.ok(line6Scale16.fontSize >= 20, 'Line 6 at 1.6x must reach single line capacity (>= 20px)');
+      assert.ok(line6Scale16.fontSize <= 22, 'Line 6 at 1.6x must not exceed single line capacity (<= 22px)');
 
       // At scale 1.0, line must fit on a single line and be justified edge-to-edge
       assert.strictEqual(line6Scale10.isJustified, true, 'Line 6 at 1.0x must be justified edge-to-edge');
       assert.strictEqual(line6Scale10.wordPadding, 1.5);
 
-      // On bigger font sizes (1.2x, 1.4x, 1.6x), lines with >= 4 words MUST remain justified edge-to-edge
+      // On bigger font sizes (1.2x, 1.4x, 1.6x), lines with >= 4 words remain justified edge-to-edge
       assert.strictEqual(line6Scale12.isJustified, true, 'Line 6 at 1.2x must remain justified');
       assert.strictEqual(line6Scale14.isJustified, true, 'Line 6 at 1.4x must remain justified');
       assert.strictEqual(line6Scale16.isJustified, true, 'Line 6 at 1.6x must remain justified');
@@ -850,10 +851,10 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         fontScale: 1.0,
       });
       assert.strictEqual(shortLine.fontSize >= 18, true, 'Short lines can use larger font size');
-      assert.strictEqual(shortLine.isJustified, false, 'Lines with < 4 words should be centered');
+      assert.strictEqual(shortLine.isJustified, false, 'Lines with < 4 words should not be stretched');
     });
 
-    it('verifies Page 440 lines fit on a single line at standard scale (1.0x) across devices', () => {
+    it('verifies Page 440 lines fit on a single line across devices and scales without overflowing', () => {
       const page440Words = db
         .prepare('SELECT * FROM words WHERE page_number = 440 ORDER BY line_number, position')
         .all();
@@ -863,44 +864,46 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       for (const screenWidth of [360, 390, 428]) {
         const availableWidth = screenWidth - 28;
 
-        for (let l = 1; l <= 15; l++) {
-          const words = lineMap.get(l) || [];
-          if (words.length === 0) continue;
+        for (const scale of [0.8, 1.0, 1.2, 1.4, 1.6]) {
+          for (let l = 1; l <= 15; l++) {
+            const words = lineMap.get(l) || [];
+            if (words.length === 0) continue;
 
-          const baseChars = words.reduce(
-            (acc, w) => acc + countArabicBaseCharacters(w.text_uthmani),
-            0
-          );
-          const markerCount = 1;
+            const baseChars = words.reduce(
+              (acc, w) => acc + countArabicBaseCharacters(w.text_uthmani),
+              0
+            );
+            const markerCount = 1;
 
-          const result = calculateMushafLineFontSize({
-            wordCount: words.length,
-            totalBaseChars: baseChars,
-            markerCount,
-            availableLineWidth: availableWidth,
-            fontScale: 1.0,
-          });
+            const result = calculateMushafLineFontSize({
+              wordCount: words.length,
+              totalBaseChars: baseChars,
+              markerCount,
+              availableLineWidth: availableWidth,
+              fontScale: scale,
+            });
 
-          // Line must fit on 1 line at 1.0x
-          const estimatedWidth = (baseChars + words.length * 0.7 + markerCount * 2.5) * (result.fontSize * 0.42);
-          assert.ok(
-            estimatedWidth <= availableWidth,
-            `Page 440 Line ${l} at scale 1.0 on ${screenWidth}px: est=${estimatedWidth} > avail=${availableWidth}`
-          );
-          if (words.length >= 4) {
-            assert.strictEqual(result.isJustified, true, `Line ${l} with ${words.length} words must be justified`);
+            // Mathematical verification: estimated line width MUST be <= availableWidth
+            const estimatedWidth = (baseChars + words.length * 0.65 + markerCount * 2.2) * (result.fontSize * 0.40);
+            assert.ok(
+              estimatedWidth <= availableWidth,
+              `Page 440 Line ${l} at scale ${scale} on ${screenWidth}px: est=${estimatedWidth} > avail=${availableWidth}`
+            );
+            if (scale >= 1.0 && words.length >= 4) {
+              assert.strictEqual(result.isJustified, true, `Line ${l} with ${words.length} words must be justified at scale ${scale}`);
+            }
           }
         }
       }
     });
 
-    it('verifies MushafPageView handles wrapped lines with flexWrap wrap and minHeight', () => {
+    it('verifies MushafPageView keeps lines single-line with flexWrap nowrap to prevent unusual gaps', () => {
       const source = fs.readFileSync(
         path.resolve(__dirname, './MushafPageView.tsx'),
         'utf8'
       );
-      assert.ok(source.includes("flexWrap: 'wrap'"), 'Must have flexWrap wrap on mushafLine style');
-      assert.ok(source.includes('rowGap: 4'), 'Must have rowGap on mushafLine style');
+      assert.ok(source.includes("flexWrap: 'nowrap'"), 'Must have flexWrap nowrap on mushafLine style');
+      assert.ok(!source.includes("flexWrap: 'wrap'"), 'Must NOT have flexWrap wrap on mushafLine style');
       assert.ok(source.includes('minHeight: scaledLineHeight'), 'Must use minHeight for scaled line height');
       assert.ok(!source.includes('height: scaledLineHeight'), 'Must NOT have fixed height: scaledLineHeight on mushafLine');
     });

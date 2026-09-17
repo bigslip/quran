@@ -645,18 +645,21 @@ export function calculateMushafLineFontSize(params: {
   } = params;
 
   // Effective character weight: base glyphs + inter-word spacing + marker glyphs
-  const effectiveCharWeight = totalBaseChars + (wordCount * 0.7) + (markerCount * 2.5);
+  const effectiveCharWeight = totalBaseChars + (wordCount * 0.65) + (markerCount * 2.2);
 
-  // Compute ideal font size at 1.0x scale that fits this line on a single row
-  const idealSingleLineWidth = Math.floor(
-    availableLineWidth / Math.max(1, effectiveCharWeight * 0.42)
+  // Maximum safe font size that physically fits availableLineWidth on a single line without overflowing
+  const maxSingleLineFont = Math.floor(
+    availableLineWidth / Math.max(1, effectiveCharWeight * 0.40)
   );
 
-  // Base font size target at 1.0x scale: clamped between 12px (for ultra-dense lines) and 20px (for short lines)
-  const baseTarget = Math.max(12, Math.min(20, idealSingleLineWidth));
+  // Base font size target at 1.0x scale: 82% of max capacity, clamped between 10px and 22px
+  const baseTarget = Math.max(10, Math.min(22, Math.round(maxSingleLineFont * 0.82)));
 
-  // Directly scale by user's fontScale so EVERY step on the font scale stepper is respected!
-  const fontSize = Math.max(11, Math.round(baseTarget * fontScale));
+  // Scaled desired font size based on user stepper selection
+  const desired = Math.round(baseTarget * fontScale);
+
+  // Final font size clamped strictly to maxSingleLineFont so text never overflows horizontal screen bounds
+  const fontSize = Math.max(10, Math.min(maxSingleLineFont, desired));
 
   // Proportional line height: base 42px or scaled by font size
   const lineHeight = Math.max(
@@ -667,8 +670,14 @@ export function calculateMushafLineFontSize(params: {
   // Dynamic word padding: reduced on dense lines so justification handles spacing
   const wordPadding = wordCount >= 8 ? 0.5 : 1.5;
 
-  // Justify lines with 4 or more words from edge to edge across all font sizes
-  const isJustified = wordCount >= 4;
+  // Estimated line width and remaining space for justification
+  const estimatedLineWidth = Math.round(effectiveCharWeight * fontSize * 0.40);
+  const leftover = availableLineWidth - estimatedLineWidth;
+  const gapPerWord = wordCount > 1 ? leftover / (wordCount - 1) : 0;
+
+  // Lines with >= 4 words where gap per word does not exceed 16px are justified edge-to-edge.
+  // This completely eliminates unusual or giant spaces between words while preserving authentic Quranic justification!
+  const isJustified = wordCount >= 4 && gapPerWord <= 16;
 
   return {
     fontSize,
