@@ -217,7 +217,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   sectionTitle: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '600',
     fontSize: fontSizes.sm,
     color: colors.goldAccent,
     textAlign: rtlTextAlign,
@@ -262,7 +263,7 @@ const styles = StyleSheet.create({
   pillButton: {
     minHeight: 44,
     paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.full,
+    borderRadius: borderRadius.pill,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -276,12 +277,13 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
   },
   pillText: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '500',
     fontSize: fontSizes.xs,
   },
   pillTextActive: {
     color: colors.textPrimary,
-    fontFamily: fonts.uiBold,
+    fontWeight: '700',
   },
   pillTextInactive: {
     color: colors.textSecondary,
@@ -292,6 +294,7 @@ const styles = StyleSheet.create({
   reciterCard: {
     flexDirection: rtlRow,
     alignItems: 'center',
+    gap: spacing.sm,
     minHeight: 52,
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
@@ -307,7 +310,6 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
   },
   checkboxContainer: {
-    marginRight: spacing.sm,
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 44,
@@ -340,14 +342,15 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   reciterNameFa: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '600',
     fontSize: fontSizes.sm,
     textAlign: rtlTextAlign,
     writingDirection: rtlWritingDirection,
   },
   nameSelected: {
     color: colors.primaryLight,
-    fontFamily: fonts.uiBold,
+    fontWeight: '700',
   },
   nameUnselected: {
     color: colors.textPrimary,
@@ -362,7 +365,7 @@ const styles = StyleSheet.create({
   styleChip: {
     paddingHorizontal: spacing.xs,
     paddingVertical: 2,
-    borderRadius: borderRadius.xs,
+    borderRadius: borderRadius.sm,
     borderWidth: 0.5,
   },
   styleChipMurattal: {

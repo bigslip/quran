@@ -236,7 +236,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   sectionTitle: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '600',
     fontSize: fontSizes.sm,
     color: colors.goldAccent,
     textAlign: rtlTextAlign,
@@ -246,12 +247,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(251, 191, 36, 0.12)',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
-    borderRadius: borderRadius.full,
+    borderRadius: borderRadius.pill,
     borderWidth: 1,
     borderColor: 'rgba(251, 191, 36, 0.3)',
   },
   counterBadgeText: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '500',
     fontSize: 11,
     color: colors.goldAccent,
   },
@@ -293,7 +295,7 @@ const styles = StyleSheet.create({
   pillButton: {
     minHeight: 44,
     paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.full,
+    borderRadius: borderRadius.pill,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -307,12 +309,13 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
   },
   pillText: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '500',
     fontSize: fontSizes.xs,
   },
   pillTextActive: {
     color: colors.textPrimary,
-    fontFamily: fonts.uiBold,
+    fontWeight: '700',
   },
   pillTextInactive: {
     color: colors.textSecondary,
@@ -323,6 +326,7 @@ const styles = StyleSheet.create({
   translationCard: {
     flexDirection: rtlRow,
     alignItems: 'center',
+    gap: spacing.sm,
     minHeight: 52,
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
@@ -338,7 +342,6 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
   },
   checkboxContainer: {
-    marginRight: spacing.sm,
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 44,
@@ -347,7 +350,7 @@ const styles = StyleSheet.create({
   checkedBox: {
     width: 22,
     height: 22,
-    borderRadius: borderRadius.xs,
+    borderRadius: borderRadius.sm,
     backgroundColor: 'rgba(16, 185, 129, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -360,7 +363,7 @@ const styles = StyleSheet.create({
   uncheckedBox: {
     width: 22,
     height: 22,
-    borderRadius: borderRadius.xs,
+    borderRadius: borderRadius.sm,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.25)',
   },
@@ -374,14 +377,15 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   translationName: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '600',
     fontSize: fontSizes.sm,
     textAlign: rtlTextAlign,
     writingDirection: rtlWritingDirection,
   },
   nameSelected: {
     color: colors.primaryLight,
-    fontFamily: fonts.uiBold,
+    fontWeight: '700',
   },
   nameUnselected: {
     color: colors.textPrimary,
@@ -396,7 +400,7 @@ const styles = StyleSheet.create({
   langBadge: {
     paddingHorizontal: spacing.xs,
     paddingVertical: 2,
-    borderRadius: borderRadius.xs,
+    borderRadius: borderRadius.sm,
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderWidth: 0.5,
     borderColor: colors.borderSubtle,

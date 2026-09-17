@@ -265,7 +265,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   sectionTitle: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '600',
     fontSize: fontSizes.sm,
     color: colors.goldAccent,
     textAlign: rtlTextAlign,
@@ -301,7 +302,7 @@ const styles = StyleSheet.create({
   },
   segmentTextActive: {
     color: colors.textPrimary,
-    fontFamily: fonts.uiBold,
+    fontWeight: '700',
   },
   segmentTextInactive: {
     color: colors.textSecondary,
@@ -335,7 +336,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   percentageText: {
-    fontFamily: fonts.uiBold,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '700',
     fontSize: fontSizes.md,
     color: colors.textPrimary,
     textAlign: 'center',

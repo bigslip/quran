@@ -298,6 +298,7 @@ const styles = StyleSheet.create({
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: spacing.sm,
     backgroundColor: colors.surfaceCard,
     borderRadius: borderRadius.lg,
     padding: spacing.md,
@@ -307,10 +308,10 @@ const styles = StyleSheet.create({
   },
   masterLabelContainer: {
     flex: 1,
-    marginRight: spacing.sm,
   },
   masterTitle: {
-    fontFamily: fonts.uiBold,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '700',
     fontSize: fontSizes.sm,
     color: colors.textPrimary,
     textAlign: rtlTextAlign,
@@ -338,7 +339,8 @@ const styles = StyleSheet.create({
   },
   optionBlock: {},
   optionTitle: {
-    fontFamily: fonts.uiMedium,
+    fontFamily: fonts.uiRegular,
+    fontWeight: '600',
     fontSize: fontSizes.xs,
     color: colors.goldAccent,
     textAlign: rtlTextAlign,
@@ -374,7 +376,7 @@ const styles = StyleSheet.create({
   },
   segmentTextActive: {
     color: colors.textPrimary,
-    fontFamily: fonts.uiBold,
+    fontWeight: '700',
   },
   segmentTextInactive: {
     color: colors.textSecondary,
@@ -385,6 +387,7 @@ const styles = StyleSheet.create({
   checkboxRow: {
     flexDirection: rtlRow,
     alignItems: 'center',
+    gap: spacing.sm,
     minHeight: 48,
     borderRadius: borderRadius.md,
     backgroundColor: colors.surfaceCard,
@@ -397,12 +400,11 @@ const styles = StyleSheet.create({
     minWidth: 32,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: spacing.sm,
   },
   checkedBox: {
     width: 22,
     height: 22,
-    borderRadius: borderRadius.xs,
+    borderRadius: borderRadius.sm,
     backgroundColor: 'rgba(16, 185, 129, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -412,7 +414,7 @@ const styles = StyleSheet.create({
   uncheckedBox: {
     width: 22,
     height: 22,
-    borderRadius: borderRadius.xs,
+    borderRadius: borderRadius.sm,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.25)',
   },
@@ -424,7 +426,7 @@ const styles = StyleSheet.create({
   },
   labelActive: {
     color: colors.textPrimary,
-    fontFamily: fonts.uiMedium,
+    fontWeight: '600',
   },
   labelInactive: {
     color: colors.textSecondary,
