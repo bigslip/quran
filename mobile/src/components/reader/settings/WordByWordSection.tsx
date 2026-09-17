@@ -145,7 +145,7 @@ export const WordByWordSection: React.FC<WordByWordSectionProps> = React.memo(({
               ]}
               accessible={true}
               accessibilityRole="button"
-              accessibilityLabel="Word by word English language"
+              accessibilityLabel="زبان واژه به واژه انگلیسی"
             >
               <Text
                 style={[

@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "build:db": "node ../scripts/mobile/build-sqlite-db.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --test src/**/*.test.{ts,mjs}"
+    "test": "node --test 'src/**/*.test.{ts,mjs}'"
   },
   "dependencies": {
     "expo": "^57.0.0",
