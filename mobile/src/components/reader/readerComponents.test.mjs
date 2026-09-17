@@ -530,6 +530,19 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('colors.surfaceFloating'));
       assert.ok(source.includes('colors.primary'));
     });
+
+    it('verifies translator chip only renders when more than one translation is displayed', () => {
+      const source = fs.readFileSync(
+        path.resolve(__dirname, './ContinuousVerseCard.tsx'),
+        'utf8'
+      );
+
+      // Verify showTranslatorChips and showFallbackChips guards
+      assert.ok(source.includes('const showTranslatorChips = validTranslations.length > 1;'));
+      assert.ok(source.includes('const showFallbackChips = shouldRenderMakarem && shouldRenderAnsarian;'));
+      assert.ok(source.includes('{showTranslatorChips && ('));
+      assert.ok(source.includes('{showFallbackChips && ('));
+    });
   });
 
   describe('MushafPageView Component Contracts, Line Grouping & Navigation', () => {

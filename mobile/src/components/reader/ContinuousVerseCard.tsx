@@ -89,6 +89,25 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
   const shouldRenderMakarem = showTranslation && (activeTranslation === 'makarem' || activeTranslation === 'both') && Boolean(verse.translation_fa_makarem);
   const shouldRenderAnsarian = showTranslation && (activeTranslation === 'ansarian' || activeTranslation === 'both') && Boolean(verse.translation_fa_ansarian);
 
+  const validTranslations = React.useMemo(() => {
+    if (!showTranslation || !selectedTranslationIds || selectedTranslationIds.length === 0) {
+      return [];
+    }
+    return selectedTranslationIds
+      .map((transId) => {
+        const transText = getVerseTranslationText(verse, transId);
+        if (!transText) return null;
+        const transMeta = getTranslationById(transId);
+        const authorName = transMeta?.authorName || transMeta?.nameFa || 'ترجمه';
+        return { transId, transText, authorName };
+      })
+      .filter((item): item is { transId: number; transText: string; authorName: string } => item !== null);
+  }, [showTranslation, selectedTranslationIds, verse]);
+
+  // Only show translator chip/name when more than one translation is displayed simultaneously
+  const showTranslatorChips = validTranslations.length > 1;
+  const showFallbackChips = shouldRenderMakarem && shouldRenderAnsarian;
+
   return (
     <View
       testID={testID}
@@ -261,36 +280,36 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
       {/* Translations Section */}
       {showTranslation && (
         (selectedTranslationIds && selectedTranslationIds.length > 0) ? (
-          <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
-            {selectedTranslationIds.map((transId) => {
-              const transText = getVerseTranslationText(verse, transId);
-              if (!transText) return null;
-              const transMeta = getTranslationById(transId);
-              const authorName = transMeta?.authorName || transMeta?.nameFa || 'ترجمه';
-              return (
+          validTranslations.length > 0 ? (
+            <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
+              {validTranslations.map(({ transId, transText, authorName }) => (
                 <View key={`translation-${transId}`} style={styles.translationBlock} testID={`${testID}-translation-${transId}`}>
-                  <View style={styles.translationHeaderRow}>
-                    <View style={styles.translatorChip} testID={`${testID}-chip-${transId}`}>
-                      <Text style={styles.translatorChipText}>{authorName}</Text>
+                  {showTranslatorChips && (
+                    <View style={styles.translationHeaderRow}>
+                      <View style={styles.translatorChip} testID={`${testID}-chip-${transId}`}>
+                        <Text style={styles.translatorChipText}>{authorName}</Text>
+                      </View>
                     </View>
-                  </View>
+                  )}
                   <Text style={styles.translationText}>
                     {transText}
                   </Text>
                 </View>
-              );
-            })}
-          </View>
+              ))}
+            </View>
+          ) : null
         ) : (shouldRenderMakarem || shouldRenderAnsarian) ? (
           <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
             {/* Makarem Translation */}
             {shouldRenderMakarem && (
               <View style={styles.translationBlock} testID={`${testID}-translation-makarem`}>
-                <View style={styles.translationHeaderRow}>
-                  <View style={styles.translatorChip} testID={`${testID}-chip-makarem`}>
-                    <Text style={styles.translatorChipText}>مکارم شیرازی</Text>
+                {showFallbackChips && (
+                  <View style={styles.translationHeaderRow}>
+                    <View style={styles.translatorChip} testID={`${testID}-chip-makarem`}>
+                      <Text style={styles.translatorChipText}>مکارم شیرازی</Text>
+                    </View>
                   </View>
-                </View>
+                )}
                 <Text style={styles.translationText}>
                   {verse.translation_fa_makarem}
                 </Text>
@@ -300,11 +319,13 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
             {/* Ansarian Translation */}
             {shouldRenderAnsarian && (
               <View style={styles.translationBlock} testID={`${testID}-translation-ansarian`}>
-                <View style={styles.translationHeaderRow}>
-                  <View style={styles.translatorChip} testID={`${testID}-chip-ansarian`}>
-                    <Text style={styles.translatorChipText}>حسین انصاریان</Text>
+                {showFallbackChips && (
+                  <View style={styles.translationHeaderRow}>
+                    <View style={styles.translatorChip} testID={`${testID}-chip-ansarian`}>
+                      <Text style={styles.translatorChipText}>حسین انصاریان</Text>
+                    </View>
                   </View>
-                </View>
+                )}
                 <Text style={styles.translationText}>
                   {verse.translation_fa_ansarian}
                 </Text>
