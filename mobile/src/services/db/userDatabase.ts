@@ -1,4 +1,4 @@
-/* eslint-disable import/extensions */
+/* eslint-disable import/extensions, no-restricted-syntax, no-await-in-loop */
 import { adaptDatabase, type SQLiteLikeDb } from './ayahInsightsService.ts';
 
 const USER_DB_NAME = 'quran_user.db';
@@ -26,7 +26,7 @@ export function resetUserDatabaseForTesting(): void {
   isInitialized = false;
 }
 
-async function createBookmarkTables(db: SQLiteLikeDb): Promise<void> {
+async function createParentTables(db: SQLiteLikeDb): Promise<void> {
   await db.run!(`
     CREATE TABLE IF NOT EXISTS user_bookmarks (
       id TEXT PRIMARY KEY,
@@ -39,18 +39,6 @@ async function createBookmarkTables(db: SQLiteLikeDb): Promise<void> {
     );
   `);
 
-  await db.run!(`
-    CREATE TABLE IF NOT EXISTS bookmark_tag_map (
-      bookmark_id TEXT NOT NULL,
-      tag_id TEXT NOT NULL,
-      PRIMARY KEY (bookmark_id, tag_id),
-      FOREIGN KEY (bookmark_id) REFERENCES user_bookmarks(id) ON DELETE CASCADE,
-      FOREIGN KEY (tag_id) REFERENCES user_tags(id) ON DELETE CASCADE
-    );
-  `);
-}
-
-async function createUserAuxTables(db: SQLiteLikeDb): Promise<void> {
   await db.run!(`
     CREATE TABLE IF NOT EXISTS user_tags (
       id TEXT PRIMARY KEY,
@@ -66,6 +54,18 @@ async function createUserAuxTables(db: SQLiteLikeDb): Promise<void> {
       verse_key TEXT PRIMARY KEY,
       reflection TEXT NOT NULL,
       updated_at INTEGER NOT NULL
+    );
+  `);
+}
+
+async function createChildTables(db: SQLiteLikeDb): Promise<void> {
+  await db.run!(`
+    CREATE TABLE IF NOT EXISTS bookmark_tag_map (
+      bookmark_id TEXT NOT NULL,
+      tag_id TEXT NOT NULL,
+      PRIMARY KEY (bookmark_id, tag_id),
+      FOREIGN KEY (bookmark_id) REFERENCES user_bookmarks(id) ON DELETE CASCADE,
+      FOREIGN KEY (tag_id) REFERENCES user_tags(id) ON DELETE CASCADE
     );
   `);
 }
@@ -89,21 +89,19 @@ async function seedPresetTags(db: SQLiteLikeDb): Promise<void> {
   const existing = await db.getFirst<{ count: number }>('SELECT count(*) as count FROM user_tags;');
   if (!existing || existing.count === 0) {
     const now = Date.now();
-    await Promise.all(
-      PRESET_TAGS.map((tag) =>
-        db.run!(
-          'INSERT OR IGNORE INTO user_tags (id, name, color, is_preset, created_at) VALUES (?, ?, ?, 1, ?);',
-          [tag.id, tag.name, tag.color, now],
-        ),
-      ),
-    );
+    for (const tag of PRESET_TAGS) {
+      await db.run!(
+        'INSERT OR IGNORE INTO user_tags (id, name, color, is_preset, created_at) VALUES (?, ?, ?, 1, ?);',
+        [tag.id, tag.name, tag.color, now],
+      );
+    }
   }
 }
 
 export async function initUserTables(db: SQLiteLikeDb): Promise<void> {
   if (!db.run) return;
-  await createBookmarkTables(db);
-  await createUserAuxTables(db);
+  await createParentTables(db);
+  await createChildTables(db);
   await createIndexes(db);
   await seedPresetTags(db);
 }
