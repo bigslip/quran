@@ -38,6 +38,9 @@ export async function createCustomTag(name: string, color = '#10B981'): Promise<
   if (!trimmed) {
     throw new Error('Tag name cannot be empty');
   }
+  if (trimmed.includes(',')) {
+    throw new Error('Tag name cannot contain commas');
+  }
 
   const userDb = await getUserDatabase();
   const id = `tag_${Date.now().toString(36)}`;
@@ -246,33 +249,27 @@ export async function addBookmark(params: {
   const userDb = await getUserDatabase();
   const now = Date.now();
 
-  const existing = await userDb.getFirst<{ id: string; created_at: number }>(
-    'SELECT id, created_at FROM user_bookmarks WHERE verse_key = ?;',
+  const existing = await userDb.getFirst<{ id: string; created_at: number; note?: string | null }>(
+    'SELECT id, created_at, note FROM user_bookmarks WHERE verse_key = ?;',
     [params.verse_key],
   );
 
   const id = existing ? existing.id : generateId();
   const createdAt = existing ? existing.created_at : now;
+  const noteToSave =
+    params.note !== undefined ? params.note.trim() || null : existing?.note || null;
 
   if (userDb.run) {
     if (existing) {
       await userDb.run(
         'UPDATE user_bookmarks SET chapter_id = ?, verse_number = ?, note = ?, updated_at = ? WHERE id = ?;',
-        [params.chapter_id, params.verse_number, params.note?.trim() || null, now, id],
+        [params.chapter_id, params.verse_number, noteToSave, now, id],
       );
     } else {
       await userDb.run(
         `INSERT INTO user_bookmarks (id, verse_key, chapter_id, verse_number, note, created_at, updated_at)
          VALUES (?, ?, ?, ?, ?, ?, ?);`,
-        [
-          id,
-          params.verse_key,
-          params.chapter_id,
-          params.verse_number,
-          params.note?.trim() || null,
-          createdAt,
-          now,
-        ],
+        [id, params.verse_key, params.chapter_id, params.verse_number, noteToSave, createdAt, now],
       );
     }
 
