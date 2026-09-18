@@ -50,6 +50,9 @@ export const READER_COMPONENT_CONTRACTS = {
     translationLineHeight: 26,
     activeBorderColor: '#10b981',
     activeBackgroundColor: 'rgba(10, 38, 30, 0.85)',
+    highlightBorderColor: '#F59E0B',
+    highlightBackgroundColor: 'rgba(245, 158, 11, 0.08)',
+    highlightDurationMs: 2500,
   },
   mushafPage: {
     totalLines: 15,
@@ -705,3 +708,50 @@ export const SETTINGS_TABS: readonly SettingsTabItem[] = [
   { id: 'translations', label: 'ترجمه‌ها' },
   { id: 'wbw', label: 'واژه به واژه' },
 ] as const;
+
+/**
+ * Safely parses a verse parameter from URL search params into a positive integer.
+ * Returns null if the value is missing, not a valid positive integer, or <= 0.
+ */
+export function parseVerseParam(verseParam: unknown): number | null {
+  if (verseParam === null || verseParam === undefined) return null;
+  if (typeof verseParam === 'number') {
+    return Number.isInteger(verseParam) && verseParam > 0 ? verseParam : null;
+  }
+  if (typeof verseParam === 'string') {
+    const trimmed = verseParam.trim();
+    if (!/^\d+$/.test(trimmed)) return null;
+    const parsed = parseInt(trimmed, 10);
+    return !isNaN(parsed) && parsed > 0 ? parsed : null;
+  }
+  return null;
+}
+
+/**
+ * Calculates the target Mushaf page for a given verse number.
+ */
+export function calculateTargetPage(
+  verses: { verse_number: number; page_number: number }[],
+  targetVerseNum: number,
+): number | null {
+  const match = verses.find((v) => v.verse_number === targetVerseNum);
+  return match?.page_number ?? null;
+}
+
+/**
+ * Calculates the target array index for a given verse number in continuous mode.
+ */
+export function calculateTargetVerseIndex(
+  verses: { verse_number: number }[],
+  targetVerseNum: number,
+): number {
+  return verses.findIndex((v) => v.verse_number === targetVerseNum);
+}
+
+/**
+ * Formats standard verse key for highlighting / lookup: `${chapterId}:${verseNumber}`.
+ */
+export function formatHighlightVerseKey(chapterId: number, verseNumber: number): string {
+  return `${chapterId}:${verseNumber}`;
+}
+

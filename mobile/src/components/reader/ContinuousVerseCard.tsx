@@ -34,6 +34,7 @@ import {
 export interface ContinuousVerseCardProps {
   verse: Verse;
   isActivePlaying?: boolean;
+  isHighlighted?: boolean;
   quranFont?: 'hafs' | 'indopak';
   fontScale?: number;
   showWordByWord?: boolean;
@@ -43,6 +44,7 @@ export interface ContinuousVerseCardProps {
   selectedTranslationIds?: number[];
   onPlayVerse?: (verse: Verse) => void;
   onBookmarkVerse?: (verse: Verse) => void;
+  onToggleBookmark?: (verse: Verse) => void;
   onShareVerse?: (verse: Verse) => void;
   onVerseInsights?: (verse: Verse) => void;
   isBookmarked?: boolean;
@@ -60,10 +62,12 @@ export interface ContinuousVerseCardProps {
  * - Configurable Persian & English translations view (Makarem, Ansarian, or multi-selected) with translator chips
  * - Action toolbar with 4 buttons (Play, Bookmark, Share, Insights) all >= 44x44px touch targets
  * - Active audio playback highlight with emerald glow border and surface floating background
+ * - Golden-emerald highlight border and aura when navigated via deep-link
  */
 export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.memo(({
   verse,
   isActivePlaying = false,
+  isHighlighted = false,
   quranFont = 'hafs',
   fontScale = 1.0,
   showWordByWord = false,
@@ -73,6 +77,7 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
   selectedTranslationIds,
   onPlayVerse,
   onBookmarkVerse,
+  onToggleBookmark,
   onShareVerse,
   onVerseInsights,
   isBookmarked = false,
@@ -114,10 +119,9 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
       style={[
         styles.cardContainer,
         isActivePlaying ? styles.cardActive : styles.cardInactive,
+        isHighlighted && styles.cardHighlighted,
         style,
       ]}
-      accessible={true}
-      accessibilityLabel={accessibilityLabel}
     >
       {/* Header Bar: Concentric Verse Number Emblem & 4 Action Buttons */}
       <View style={styles.headerBar} testID={`${testID}-header`}>
@@ -138,76 +142,82 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
         <View style={styles.actionBar} testID={`${testID}-actions`}>
           {/* 1. Play Button */}
           <TouchableOpacity
-            testID={`${testID}-action-play`}
+            style={[
+              styles.actionButton,
+              isActivePlaying && styles.actionButtonActive,
+            ]}
             activeOpacity={0.7}
             onPress={() => onPlayVerse?.(verse)}
-            style={styles.actionButton}
-            accessible={true}
             accessibilityRole="button"
-            accessibilityLabel={isActivePlaying ? 'توقف پخش صوتی آیه' : 'پخش صوتی آیه'}
+            accessibilityLabel={
+              isActivePlaying
+                ? `توقف تلاوت آیه ${verseBadgeText}`
+                : `پخش صوتی آیه ${verseBadgeText}`
+            }
+            testID={`${testID}-btn-play`}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
             {isActivePlaying ? (
               <Pause
                 size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
                 color={colors.primary}
-                strokeWidth={2}
               />
             ) : (
               <Play
                 size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
-                color={colors.primary}
-                strokeWidth={2}
+                color={colors.textSecondary}
               />
             )}
           </TouchableOpacity>
 
           {/* 2. Bookmark Button */}
           <TouchableOpacity
-            testID={`${testID}-action-bookmark`}
+            style={[
+              styles.actionButton,
+              isBookmarked && styles.actionButtonBookmarked,
+            ]}
             activeOpacity={0.7}
-            onPress={() => onBookmarkVerse?.(verse)}
-            style={styles.actionButton}
-            accessible={true}
+            onPress={() => (onToggleBookmark || onBookmarkVerse)?.(verse)}
             accessibilityRole="button"
-            accessibilityLabel={isBookmarked ? 'حذف نشان آیه' : 'نشان‌گذاری آیه'}
+            accessibilityLabel={
+              isBookmarked
+                ? `حذف نشانک آیه ${verseBadgeText}`
+                : `نشان کردن آیه ${verseBadgeText}`
+            }
+            testID={`${testID}-btn-bookmark`}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
             <Bookmark
               size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
               color={isBookmarked ? colors.goldAccent : colors.textSecondary}
-              fill={isBookmarked ? colors.goldAccent : 'transparent'}
-              strokeWidth={2}
+              fill={isBookmarked ? colors.goldAccent : 'none'}
             />
           </TouchableOpacity>
 
           {/* 3. Share Button */}
           <TouchableOpacity
-            testID={`${testID}-action-share`}
+            style={styles.actionButton}
             activeOpacity={0.7}
             onPress={() => onShareVerse?.(verse)}
-            style={styles.actionButton}
-            accessible={true}
             accessibilityRole="button"
-            accessibilityLabel="اشتراک‌گذاری آیه"
+            accessibilityLabel={`اشتراک‌گذاری آیه ${verseBadgeText}`}
+            testID={`${testID}-btn-share`}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
             <Share2
               size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
               color={colors.textSecondary}
-              strokeWidth={2}
             />
           </TouchableOpacity>
 
-          {/* 4. Insights Button */}
+          {/* 4. Insights / Tadabbur Drawer Button */}
           <TouchableOpacity
-            testID={`${testID}-action-insights`}
+            style={styles.actionButton}
             activeOpacity={0.7}
             onPress={() => onVerseInsights?.(verse)}
-            style={styles.actionButton}
-            accessible={true}
             accessibilityRole="button"
-            accessibilityLabel="تدبر و بینش آیه"
+            accessibilityLabel={`مشاهده تدبر و ریشه لغوی آیه ${verseBadgeText}`}
+            testID={`${testID}-btn-insights`}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
             <Sparkles
@@ -220,7 +230,12 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
       </View>
 
       {/* Sacred Arabic Quranic Text */}
-      <View style={styles.arabicTextContainer} testID={`${testID}-arabic-container`}>
+      <View
+        style={styles.arabicTextContainer}
+        testID={`${testID}-arabic-container`}
+        accessible={true}
+        accessibilityLabel={accessibilityLabel}
+      >
         <Text
           style={[
             styles.arabicText,
@@ -262,6 +277,7 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
                     {
                       fontFamily: arabicFontFamily,
                       fontSize: Math.round(18 * fontScale),
+                      lineHeight: Math.round(18 * fontScale * 1.8),
                     },
                   ]}
                   allowFontScaling={false}
@@ -282,20 +298,28 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
         (selectedTranslationIds && selectedTranslationIds.length > 0) ? (
           validTranslations.length > 0 ? (
             <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
-              {validTranslations.map(({ transId, transText, authorName }) => (
-                <View key={`translation-${transId}`} style={styles.translationBlock} testID={`${testID}-translation-${transId}`}>
-                  {showTranslatorChips && (
-                    <View style={styles.translationHeaderRow}>
-                      <View style={styles.translatorChip} testID={`${testID}-chip-${transId}`}>
-                        <Text style={styles.translatorChipText}>{authorName}</Text>
+              {validTranslations.map(({ transId, transText, authorName }) => {
+                const isLatin = /^[\u0000-\u007F]/.test(transText.trim());
+                return (
+                  <View key={`translation-${transId}`} style={styles.translationBlock} testID={`${testID}-translation-${transId}`}>
+                    {showTranslatorChips && (
+                      <View style={styles.translationHeaderRow}>
+                        <View style={styles.translatorChip} testID={`${testID}-chip-${transId}`}>
+                          <Text style={styles.translatorChipText}>{authorName}</Text>
+                        </View>
                       </View>
-                    </View>
-                  )}
-                  <Text style={styles.translationText}>
-                    {transText}
-                  </Text>
-                </View>
-              ))}
+                    )}
+                    <Text
+                      style={[
+                        styles.translationText,
+                        isLatin && { textAlign: 'left', writingDirection: 'ltr' },
+                      ]}
+                    >
+                      {transText}
+                    </Text>
+                  </View>
+                );
+              })}
             </View>
           ) : null
         ) : (shouldRenderMakarem || shouldRenderAnsarian) ? (
@@ -358,6 +382,16 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 4,
   },
+  cardHighlighted: {
+    borderColor: '#F59E0B',
+    borderWidth: 2,
+    backgroundColor: 'rgba(245, 158, 11, 0.08)',
+    shadowColor: '#F59E0B',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 4,
+  },
   headerBar: {
     flexDirection: rtlRow,
     alignItems: 'center',
@@ -405,6 +439,14 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  actionButtonActive: {
+    backgroundColor: colors.primarySubtle,
+    borderColor: colors.primary,
+  },
+  actionButtonBookmarked: {
+    backgroundColor: colors.primarySubtle,
+    borderColor: colors.goldAccent,
   },
   arabicTextContainer: {
     width: '100%',

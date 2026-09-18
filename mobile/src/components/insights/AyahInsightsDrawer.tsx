@@ -39,6 +39,7 @@ export interface AyahInsightsDrawerProps {
   onClose: () => void;
   onPlayVerse?: (verse: Verse) => void;
   onBookmarkVerse?: (verse: Verse) => void;
+  onToggleBookmark?: (verse: Verse) => void;
   isBookmarked?: boolean;
   quranFont?: 'hafs' | 'indopak';
   style?: StyleProp<ViewStyle>;
@@ -64,6 +65,7 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
   onClose,
   onPlayVerse,
   onBookmarkVerse,
+  onToggleBookmark,
   isBookmarked = false,
   quranFont = 'hafs',
   style,
@@ -154,12 +156,14 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
     }
   }, [verse, chapterNameFa]);
 
+  const handleToggleBookmark = onToggleBookmark || onBookmarkVerse;
+
   // Bookmark toggle
   const handleBookmark = useCallback(() => {
-    if (verse && onBookmarkVerse) {
-      onBookmarkVerse(verse);
+    if (verse && handleToggleBookmark) {
+      handleToggleBookmark(verse);
     }
-  }, [verse, onBookmarkVerse]);
+  }, [verse, handleToggleBookmark]);
 
   // Audio Play
   const handlePlay = useCallback(() => {

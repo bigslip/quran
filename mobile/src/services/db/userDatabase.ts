@@ -100,6 +100,7 @@ async function seedPresetTags(db: SQLiteLikeDb): Promise<void> {
 
 export async function initUserTables(db: SQLiteLikeDb): Promise<void> {
   if (!db.run) return;
+  await db.run('PRAGMA foreign_keys = ON;');
   await createParentTables(db);
   await createChildTables(db);
   await createIndexes(db);

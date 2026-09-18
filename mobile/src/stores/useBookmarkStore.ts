@@ -140,7 +140,7 @@ export const useBookmarkStore = create<BookmarkState>((set, get) => ({
         console.warn('[BookmarkStore] delete failed, rolling back:', err);
         await get().loadBookmarks();
       }
-      return false;
+      return get().bookmarkedKeys.has(verse.verse_key);
     }
     // Optimistic add
     nextKeys.add(verse.verse_key);
@@ -152,7 +152,7 @@ export const useBookmarkStore = create<BookmarkState>((set, get) => ({
       console.warn('[BookmarkStore] add failed, rolling back:', err);
       await get().loadBookmarks();
     }
-    return true;
+    return get().bookmarkedKeys.has(verse.verse_key);
   },
 
   updateNote: async (verseKey, note) => {

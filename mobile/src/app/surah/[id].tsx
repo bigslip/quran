@@ -30,12 +30,13 @@ import {
   getPageWords,
 } from '@/services/db/verseService';
 import { useReadingStore } from '@/stores/useReadingStore';
+import { useBookmarkStore } from '@/stores/useBookmarkStore';
 import { audioPlayerService } from '@/services/audio/audioPlayerService';
 import { DEFAULT_RECITER_ID } from '@/services/audio/reciterService';
 
 export default function SurahReaderScreen() {
   const router = useRouter();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, verse } = useLocalSearchParams<{ id: string; verse?: string }>();
   const chapterId = Number(id) || 1;
 
   // Local state
@@ -47,10 +48,20 @@ export default function SurahReaderScreen() {
   const [pageWords, setPageWords] = useState<Word[]>([]);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
-  const [bookmarkedKeys, setBookmarkedKeys] = useState<Set<string>>(new Set());
+  const [highlightedVerseKey, setHighlightedVerseKey] = useState<string | null>(null);
   const [selectedInsightVerse, setSelectedInsightVerse] = useState<Verse | null>(null);
   const [isInsightsOpen, setIsInsightsOpen] = useState(false);
   const flatListRef = React.useRef<FlatList<Verse>>(null);
+
+  // Bookmark store
+  const { bookmarkedKeys, toggleBookmark, loadBookmarks } = useBookmarkStore();
+
+  // Load user bookmarks on mount
+  useEffect(() => {
+    if (bookmarkedKeys.size === 0) {
+      loadBookmarks();
+    }
+  }, [bookmarkedKeys.size, loadBookmarks]);
 
   // Zustand reading store
   const {
@@ -97,9 +108,20 @@ export default function SurahReaderScreen() {
           setChapter(ch);
           setVerses(vs);
           if (ch) {
-            const startPage = ch.pages_start ?? 1;
-            setCurrentPage(startPage);
-            setLastRead(ch.id, 1, ch.name_fa);
+            const targetVerseNum = verse ? parseInt(verse, 10) : null;
+            const targetVerse =
+              targetVerseNum && !isNaN(targetVerseNum)
+                ? vs.find((v) => v.verse_number === targetVerseNum)
+                : null;
+
+            if (targetVerse && targetVerse.page_number) {
+              setCurrentPage(targetVerse.page_number);
+              setLastRead(ch.id, targetVerse.verse_number, ch.name_fa);
+            } else {
+              const startPage = ch.pages_start ?? 1;
+              setCurrentPage(startPage);
+              setLastRead(ch.id, 1, ch.name_fa);
+            }
           }
         }
       } catch (err) {
@@ -114,7 +136,45 @@ export default function SurahReaderScreen() {
     return () => {
       isMounted = false;
     };
-  }, [chapterId, setLastRead]);
+  }, [chapterId, verse, setLastRead]);
+
+  // Handle verse deep-linking auto-scroll and highlight aura in continuous mode
+  useEffect(() => {
+    if (!loading && verse && verses.length > 0) {
+      const targetVerseNum = parseInt(verse, 10);
+      if (!isNaN(targetVerseNum) && targetVerseNum > 0) {
+        const targetKey = `${chapterId}:${targetVerseNum}`;
+        const targetIndex = verses.findIndex((v) => v.verse_number === targetVerseNum);
+
+        if (targetIndex >= 0) {
+          if (viewMode === 'continuous') {
+            setHighlightedVerseKey(targetKey);
+            const scrollTimer = setTimeout(() => {
+              flatListRef.current?.scrollToIndex({
+                index: targetIndex,
+                animated: true,
+                viewPosition: 0,
+              });
+            }, 160);
+
+            const highlightTimer = setTimeout(() => {
+              setHighlightedVerseKey(null);
+            }, 2500);
+
+            return () => {
+              clearTimeout(scrollTimer);
+              clearTimeout(highlightTimer);
+            };
+          } else {
+            const targetVerse = verses[targetIndex];
+            if (targetVerse?.page_number) {
+              setCurrentPage(targetVerse.page_number);
+            }
+          }
+        }
+      }
+    }
+  }, [loading, verse, verses, viewMode, chapterId]);
 
   // Load Mushaf page verses & words when currentPage changes
   useEffect(() => {
@@ -229,7 +289,7 @@ export default function SurahReaderScreen() {
 
   // Auto-scroll to currently reciting verse in continuous reading mode with exact measured offset
   useEffect(() => {
-    if (viewMode === 'continuous' && activeVerseKey && isPlaying) {
+    if (viewMode === 'continuous' && activeVerseKey && isPlaying && !isUserInteractingRef.current) {
       const layout = verseLayoutsRef.current.get(activeVerseKey);
       if (layout) {
         lastScrolledVerseKeyRef.current = activeVerseKey;
@@ -313,13 +373,26 @@ export default function SurahReaderScreen() {
     }
   }, [selectedReciterId, isPlaying, activeVerseKey, playAyahAudio]);
 
-  // Audio Playback Flow Handlers
+  // Track user drag interaction to prevent auto-scrolling from fighting manual user reading
+  const isUserInteractingRef = React.useRef(false);
+  const userScrollTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Invalidate cached cell layout coordinates when reading typography or translation settings change
+  useEffect(() => {
+    verseLayoutsRef.current.clear();
+    lastScrolledVerseKeyRef.current = null;
+  }, [fontScale, quranFont, showWordByWord, showTranslation, selectedTranslationIds]);
+
+  // Audio Playback Flow Handlers with stable callback identity
   const handlePlayVerse = useCallback(
     async (verse: Verse) => {
-      if (activeVerseKey === verse.verse_key && isPlaying) {
+      const currentActiveKey = activeVerseKeyRef.current;
+      const currentPlaying = isPlayingRef.current;
+
+      if (currentActiveKey === verse.verse_key && currentPlaying) {
         await audioPlayerService.pause();
         setIsPlaying(false);
-      } else if (activeVerseKey === verse.verse_key && !isPlaying) {
+      } else if (currentActiveKey === verse.verse_key && !currentPlaying) {
         await audioPlayerService.resume();
         setIsPlaying(true);
       } else {
@@ -329,13 +402,13 @@ export default function SurahReaderScreen() {
         if (verse.page_number) {
           setCurrentPage(verse.page_number);
         }
-        if (chapter) {
-          setLastRead(verse.chapter_id, verse.verse_number, chapter.name_fa);
+        if (chapterRef.current) {
+          setLastRead(verse.chapter_id, verse.verse_number, chapterRef.current.name_fa);
         }
         await playAyahAudio(verse.verse_key);
       }
     },
-    [activeVerseKey, isPlaying, chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]
+    [setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]
   );
 
   const handlePlayPause = useCallback(async () => {
@@ -414,17 +487,16 @@ export default function SurahReaderScreen() {
   }, [setIsPlaying, setActiveVerseKey]);
 
   // Verse action handlers
-  const handleBookmarkVerse = useCallback((verse: Verse) => {
-    setBookmarkedKeys((prev) => {
-      const next = new Set(prev);
-      if (next.has(verse.verse_key)) {
-        next.delete(verse.verse_key);
-      } else {
-        next.add(verse.verse_key);
-      }
-      return next;
-    });
-  }, []);
+  const handleBookmarkVerse = useCallback(
+    (verseItem: Verse) => {
+      toggleBookmark({
+        verse_key: verseItem.verse_key,
+        chapter_id: verseItem.chapter_id || chapterId,
+        verse_number: verseItem.verse_number,
+      });
+    },
+    [toggleBookmark, chapterId]
+  );
 
   const handleShareVerse = useCallback((verse: Verse) => {
     const textToShare = `${verse.text_uthmani}\n\n${verse.translation_fa_makarem || ''}\n(سوره ${verse.chapter_id}، آیه ${verse.verse_number})`;
@@ -551,12 +623,19 @@ export default function SurahReaderScreen() {
             if (flatListRef.current && info.index >= 0 && info.index < verses.length) {
               const estimatedOffset = Math.max(
                 0,
-                info.averageItemLength * info.index
+                (info.averageItemLength || 120) * info.index
               );
               flatListRef.current.scrollToOffset({
                 offset: estimatedOffset,
                 animated: true,
               });
+              setTimeout(() => {
+                flatListRef.current?.scrollToIndex({
+                  index: info.index,
+                  animated: true,
+                  viewPosition: 0,
+                });
+              }, 120);
             }
           }}
           ListHeaderComponent={
@@ -574,6 +653,7 @@ export default function SurahReaderScreen() {
             <ContinuousVerseCard
               verse={item}
               isActivePlaying={activeVerseKey === item.verse_key && isPlaying}
+              isHighlighted={highlightedVerseKey === item.verse_key}
               quranFont={quranFont}
               fontScale={fontScale}
               showWordByWord={showWordByWord}
@@ -583,6 +663,7 @@ export default function SurahReaderScreen() {
               selectedTranslationIds={selectedTranslationIds}
               onPlayVerse={handlePlayVerse}
               onBookmarkVerse={handleBookmarkVerse}
+              onToggleBookmark={handleBookmarkVerse}
               onShareVerse={handleShareVerse}
               onVerseInsights={handleVerseInsights}
               isBookmarked={bookmarkedKeys.has(item.verse_key)}
@@ -593,6 +674,22 @@ export default function SurahReaderScreen() {
           windowSize={11}
           removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
+          onScrollBeginDrag={() => {
+            isUserInteractingRef.current = true;
+            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+          }}
+          onScrollEndDrag={() => {
+            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+            userScrollTimeoutRef.current = setTimeout(() => {
+              isUserInteractingRef.current = false;
+            }, 3000);
+          }}
+          onMomentumScrollEnd={() => {
+            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+            userScrollTimeoutRef.current = setTimeout(() => {
+              isUserInteractingRef.current = false;
+            }, 3000);
+          }}
         />
       ) : (
         <View style={[styles.mushafContainer, activeVerseKey ? styles.mushafWithDock : null]}>
@@ -665,6 +762,7 @@ export default function SurahReaderScreen() {
         onClose={handleCloseInsights}
         onPlayVerse={handlePlayVerse}
         onBookmarkVerse={handleBookmarkVerse}
+        onToggleBookmark={handleBookmarkVerse}
         isBookmarked={selectedInsightVerse ? bookmarkedKeys.has(selectedInsightVerse.verse_key) : false}
         quranFont={quranFont}
         testID="ayah-insights-drawer"

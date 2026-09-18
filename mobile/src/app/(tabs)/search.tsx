@@ -52,7 +52,7 @@ export default function SearchScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.resultCard}
-            onPress={() => router.push(`/surah/${item.chapter_id}` as any)}
+            onPress={() => router.push(`/surah/${item.chapter_id}?verse=${item.verse_number}` as any)}
             activeOpacity={0.75}
           >
             <View style={styles.resultHeader}>
