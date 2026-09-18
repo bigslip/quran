@@ -20,6 +20,7 @@ import {
   MushafPageView,
   AudioPlaybackDock,
   ReaderSettingsModal,
+  parseVerseParam,
 } from '@/components/reader';
 import { AyahInsightsDrawer } from '../../components/insights';
 import { Chapter, Verse, Word } from '@/types/quran';
@@ -108,11 +109,10 @@ export default function SurahReaderScreen() {
           setChapter(ch);
           setVerses(vs);
           if (ch) {
-            const targetVerseNum = verse ? parseInt(verse, 10) : null;
-            const targetVerse =
-              targetVerseNum && !isNaN(targetVerseNum)
-                ? vs.find((v) => v.verse_number === targetVerseNum)
-                : null;
+            const targetVerseNum = parseVerseParam(verse);
+            const targetVerse = targetVerseNum
+              ? vs.find((v) => v.verse_number === targetVerseNum)
+              : null;
 
             if (targetVerse && targetVerse.page_number) {
               setCurrentPage(targetVerse.page_number);
@@ -141,8 +141,8 @@ export default function SurahReaderScreen() {
   // Handle verse deep-linking auto-scroll and highlight aura in continuous mode
   useEffect(() => {
     if (!loading && verse && verses.length > 0) {
-      const targetVerseNum = parseInt(verse, 10);
-      if (!isNaN(targetVerseNum) && targetVerseNum > 0) {
+      const targetVerseNum = parseVerseParam(verse);
+      if (targetVerseNum && targetVerseNum > 0) {
         const targetKey = `${chapterId}:${targetVerseNum}`;
         const targetIndex = verses.findIndex((v) => v.verse_number === targetVerseNum);
 
@@ -150,11 +150,13 @@ export default function SurahReaderScreen() {
           if (viewMode === 'continuous') {
             setHighlightedVerseKey(targetKey);
             const scrollTimer = setTimeout(() => {
-              flatListRef.current?.scrollToIndex({
-                index: targetIndex,
-                animated: true,
-                viewPosition: 0,
-              });
+              try {
+                flatListRef.current?.scrollToIndex({
+                  index: targetIndex,
+                  animated: true,
+                  viewPosition: 0,
+                });
+              } catch {}
             }, 160);
 
             const highlightTimer = setTimeout(() => {
@@ -376,6 +378,15 @@ export default function SurahReaderScreen() {
   // Track user drag interaction to prevent auto-scrolling from fighting manual user reading
   const isUserInteractingRef = React.useRef(false);
   const userScrollTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clean up user scroll timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (userScrollTimeoutRef.current) {
+        clearTimeout(userScrollTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Invalidate cached cell layout coordinates when reading typography or translation settings change
   useEffect(() => {
@@ -630,11 +641,15 @@ export default function SurahReaderScreen() {
                 animated: true,
               });
               setTimeout(() => {
-                flatListRef.current?.scrollToIndex({
-                  index: info.index,
-                  animated: true,
-                  viewPosition: 0,
-                });
+                try {
+                  flatListRef.current?.scrollToIndex({
+                    index: info.index,
+                    animated: true,
+                    viewPosition: 0,
+                  });
+                } catch {
+                  // Ignore index errors if layout is not ready
+                }
               }, 120);
             }
           }}
