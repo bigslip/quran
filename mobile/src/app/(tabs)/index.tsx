@@ -11,7 +11,16 @@ import {
   Compass,
   Sparkles,
 } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, rtlTextAlign } from '@/theme';
+import {
+  colors as defaultColors,
+  useThemeColors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  rtlRow,
+  rtlTextAlign,
+} from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { SanctuaryBadge } from '@/components/common/SanctuaryBadge';
 import { SanctuaryCard } from '@/components/common/SanctuaryCard';
@@ -22,6 +31,7 @@ import { useReadingStore } from '@/stores/useReadingStore';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const colors = useThemeColors();
   const [searchQuery, setSearchQuery] = useState('');
   const [greeting, setGreeting] = useState('روز بخیر');
   const [isQuickJumpOpen, setIsQuickJumpOpen] = useState(false);
@@ -56,15 +66,17 @@ export default function HomeScreen() {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <AmbientGlow height={320} />
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Header Sanctuary Badge & Greeting */}
         <View style={styles.header}>
           <SanctuaryBadge label="فضای معنوی قرآن کریم" />
-          <Text style={styles.greetingText}>{greeting}، همراه قرآنی</Text>
-          <Text style={styles.heroTitle}>قرآن من</Text>
+          <Text style={[styles.greetingText, { color: colors.textMuted }]}>
+            {greeting}، همراه قرآنی
+          </Text>
+          <Text style={[styles.heroTitle, { color: colors.textPrimary }]}>قرآن من</Text>
         </View>
 
         {/* Search Command Bar */}
@@ -77,22 +89,35 @@ export default function HomeScreen() {
         </View>
 
         {/* Continue Reading Card */}
-        <SanctuaryCard elevated style={styles.continueCard}>
+        <SanctuaryCard
+          elevated
+          style={[
+            styles.continueCard,
+            { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
+          ]}
+        >
           <View style={styles.continueHeader}>
             <View style={styles.continueBadge}>
               <Bookmark size={14} color={colors.primary} />
-              <Text style={styles.continueBadgeText}>ادامه تلاوت</Text>
+              <Text style={[styles.continueBadgeText, { color: colors.primary }]}>ادامه تلاوت</Text>
             </View>
-            <Text style={styles.lastReadTime}>آخرین بازدید</Text>
+            <Text style={[styles.lastReadTime, { color: colors.textFaded }]}>آخرین بازدید</Text>
           </View>
 
           <View style={styles.continueBody}>
             <View style={styles.continueInfo}>
-              <Text style={styles.surahNameFa}>{lastReadChapterNameFa}</Text>
-              <Text style={styles.verseLocation}>آیه {lastReadVerseNumber}</Text>
+              <Text style={[styles.surahNameFa, { color: colors.textPrimary }]}>
+                {lastReadChapterNameFa}
+              </Text>
+              <Text style={[styles.verseLocation, { color: colors.textSecondary }]}>
+                آیه {lastReadVerseNumber}
+              </Text>
             </View>
             <TouchableOpacity
-              style={styles.playButton}
+              style={[
+                styles.playButton,
+                { backgroundColor: colors.primary, shadowColor: colors.primary },
+              ]}
               activeOpacity={0.8}
               onPress={() => router.push(`/surah/${lastReadChapterId}` as any)}
             >
@@ -101,7 +126,9 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.progressBarBg}>
-            <View style={[styles.progressBarFill, { width: '45%' }]} />
+            <View
+              style={[styles.progressBarFill, { width: '45%', backgroundColor: colors.primary }]}
+            />
           </View>
         </SanctuaryCard>
 
@@ -115,14 +142,22 @@ export default function HomeScreen() {
           accessibilityLabel="پرش سریع به متن قرآن"
           testID="home-quick-jump-button"
         >
-          <SanctuaryCard elevated style={styles.quickJumpCard}>
+          <SanctuaryCard
+            elevated
+            style={[
+              styles.quickJumpCard,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderIridescent },
+            ]}
+          >
             <View style={styles.quickJumpRow}>
               <View style={styles.quickJumpIconContainer}>
                 <Compass size={24} color={colors.goldAccent} />
               </View>
               <View style={styles.quickJumpInfo}>
-                <Text style={styles.quickJumpTitle}>پرش سریع به متن قرآن</Text>
-                <Text style={styles.quickJumpSubtitle}>
+                <Text style={[styles.quickJumpTitle, { color: colors.textPrimary }]}>
+                  پرش سریع به متن قرآن
+                </Text>
+                <Text style={[styles.quickJumpSubtitle, { color: colors.textSecondary }]}>
                   انتقال مستقیم به سوره، آیه، شماره صفحه یا جزء
                 </Text>
               </View>
@@ -132,7 +167,7 @@ export default function HomeScreen() {
 
         {/* Quick Surah Access Pills */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>دسترسی سریع</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>دسترسی سریع</Text>
           <Sparkles size={16} color={colors.goldAccent} />
         </View>
 
@@ -144,67 +179,118 @@ export default function HomeScreen() {
           {quickSurahs.map((s) => (
             <TouchableOpacity
               key={s.id}
-              style={styles.quickSurahPill}
+              style={[
+                styles.quickSurahPill,
+                { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+              ]}
               onPress={() => router.push(`/surah/${s.id}` as any)}
               activeOpacity={0.7}
             >
-              <Text style={styles.quickSurahName}>سوره {s.name}</Text>
-              <Text style={styles.quickSurahDesc}>{s.desc}</Text>
+              <Text style={[styles.quickSurahName, { color: colors.textPrimary }]}>
+                سوره {s.name}
+              </Text>
+              <Text style={[styles.quickSurahDesc, { color: colors.textFaded }]}>{s.desc}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
         {/* Daily Ayah Card */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>آیه و تدبر روز</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>آیه و تدبر روز</Text>
         </View>
 
-        <SanctuaryCard style={styles.dailyAyahCard}>
-          <Text style={styles.dailyAyahArabic}>أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</Text>
-          <Text style={styles.dailyAyahTranslation}>
+        <SanctuaryCard
+          style={[
+            styles.dailyAyahCard,
+            { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
+          ]}
+        >
+          <Text style={[styles.dailyAyahArabic, { color: colors.textPrimary }]}>
+            أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ
+          </Text>
+          <Text style={[styles.dailyAyahTranslation, { color: colors.textSecondary }]}>
             «آگاه باشید که تنها با یاد خدا دل‌ها آرام می‌گیرد.»
           </Text>
-          <View style={styles.dailyAyahFooter}>
-            <Text style={styles.dailyAyahRef}>سوره رعد • آیه ۲۸</Text>
+          <View style={[styles.dailyAyahFooter, { borderTopColor: colors.borderSeparator }]}>
+            <Text style={[styles.dailyAyahRef, { color: colors.textFaded }]}>
+              سوره رعد • آیه ۲۸
+            </Text>
             <TouchableOpacity style={styles.listenButton}>
               <Play size={14} color={colors.primary} />
-              <Text style={styles.listenButtonText}>استماع</Text>
+              <Text style={[styles.listenButtonText, { color: colors.primary }]}>استماع</Text>
             </TouchableOpacity>
           </View>
         </SanctuaryCard>
 
         {/* Quick Portal Services */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>بخش‌های منتخب</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>بخش‌های منتخب</Text>
         </View>
 
         <View style={styles.gridContainer}>
           <TouchableOpacity
-            style={styles.gridItem}
+            style={[
+              styles.gridItem,
+              { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
+            ]}
             activeOpacity={0.75}
             onPress={() => router.push('/surahs')}
           >
             <BookOpen size={24} color={colors.primary} />
-            <Text style={styles.gridItemTitle}>فهرست ۱۱۴ سوره</Text>
-            <Text style={styles.gridItemDesc}>فهرست ترتیبی و نزول</Text>
+            <Text style={[styles.gridItemTitle, { color: colors.textPrimary }]}>
+              فهرست ۱۱۴ سوره
+            </Text>
+            <Text style={[styles.gridItemDesc, { color: colors.textFaded }]}>
+              فهرست ترتیبی و نزول
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.gridItem} activeOpacity={0.75}>
+          <TouchableOpacity
+            style={[
+              styles.gridItem,
+              { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
+            ]}
+            activeOpacity={0.75}
+          >
             <Radio size={24} color={colors.goldAccent} />
-            <Text style={styles.gridItemTitle}>رادیو ۲۴ ساعته</Text>
-            <Text style={styles.gridItemDesc}>پخش زنده تلاوت قرآن</Text>
+            <Text style={[styles.gridItemTitle, { color: colors.textPrimary }]}>
+              رادیو ۲۴ ساعته
+            </Text>
+            <Text style={[styles.gridItemDesc, { color: colors.textFaded }]}>
+              پخش زنده تلاوت قرآن
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.gridItem} activeOpacity={0.75}>
+          <TouchableOpacity
+            style={[
+              styles.gridItem,
+              { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
+            ]}
+            activeOpacity={0.75}
+          >
             <Mic size={24} color="#38bdf8" />
-            <Text style={styles.gridItemTitle}>قاریان برگزیده</Text>
-            <Text style={styles.gridItemDesc}>اساتید ایرانی و جهان اسلام</Text>
+            <Text style={[styles.gridItemTitle, { color: colors.textPrimary }]}>
+              قاریان برگزیده
+            </Text>
+            <Text style={[styles.gridItemDesc, { color: colors.textFaded }]}>
+              اساتید ایرانی و جهان اسلام
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.gridItem} activeOpacity={0.75}>
+          <TouchableOpacity
+            style={[
+              styles.gridItem,
+              { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
+            ]}
+            activeOpacity={0.75}
+          >
             <Award size={24} color="#ec4899" />
-            <Text style={styles.gridItemTitle}>برنامه‌های آموزشی</Text>
-            <Text style={styles.gridItemDesc}>تجوید و تفسیر کاربردی</Text>
+            <Text style={[styles.gridItemTitle, { color: colors.textPrimary }]}>
+              برنامه‌های آموزشی
+            </Text>
+            <Text style={[styles.gridItemDesc, { color: colors.textFaded }]}>
+              تجوید و تفسیر کاربردی
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -220,6 +306,8 @@ export default function HomeScreen() {
     </View>
   );
 }
+
+const colors = defaultColors;
 
 const styles = StyleSheet.create({
   container: {

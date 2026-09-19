@@ -18,7 +18,7 @@ import {
   Compass,
   ChevronDown,
 } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, useAppTheme } from '@/theme';
+import { fonts, fontSizes, spacing, borderRadius, rtlRow, useAppTheme } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import {
   SurahHeaderBanner,
@@ -807,10 +807,11 @@ export default function SurahReaderScreen() {
           ListHeaderComponent={
             chapter ? (
               <View style={styles.listHeaderContainer}>
-                <SurahHeaderBanner chapter={chapter} />
+                <SurahHeaderBanner chapter={chapter} theme={theme} />
                 <BismillahBanner
                   chapterId={chapter.id}
                   bismillahPre={Boolean(chapter.bismillah_pre)}
+                  theme={theme}
                 />
               </View>
             ) : null
@@ -891,6 +892,7 @@ export default function SurahReaderScreen() {
             surahName={chapter?.name_fa}
             selectedReciterId={selectedReciterId}
             isRepeating={isRepeating}
+            theme={theme}
             onPlayPause={handlePlayPause}
             onNextAyah={handleNextAyah}
             onPrevAyah={handlePrevAyah}
@@ -904,6 +906,7 @@ export default function SurahReaderScreen() {
       <ReaderSettingsModal
         visible={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+        theme={theme}
         fontScale={fontScale}
         onChangeFontScale={setFontScale}
         viewMode={viewMode}
@@ -962,11 +965,9 @@ export default function SurahReaderScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   center: {
     flex: 1,
-    backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.md,
@@ -974,7 +975,6 @@ const styles = StyleSheet.create({
   loadingText: {
     fontFamily: fonts.uiRegular,
     fontSize: fontSizes.sm,
-    color: colors.textSecondary,
   },
   topBar: {
     flexDirection: rtlRow,
@@ -984,8 +984,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: colors.borderSubtle,
-    backgroundColor: colors.backgroundElevated,
     zIndex: 10,
   },
   topBarLeading: {
@@ -1000,9 +998,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: borderRadius.circle,
-    backgroundColor: colors.surfaceFloating,
     borderWidth: 1,
-    borderColor: colors.borderSubtle,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1013,10 +1009,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: spacing.sm,
     marginHorizontal: spacing.xs,
-    backgroundColor: colors.surfaceFloating,
     borderRadius: borderRadius.md,
     borderWidth: 1,
-    borderColor: colors.borderSubtle,
     minHeight: 44,
   },
   topBarTitleRow: {
@@ -1035,7 +1029,6 @@ const styles = StyleSheet.create({
   topBarSurahFa: {
     fontFamily: fonts.uiBold,
     fontSize: fontSizes.md - 1,
-    color: colors.textPrimary,
   },
   topBarSubtitleRow: {
     flexDirection: rtlRow,
@@ -1048,17 +1041,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.quranHafs,
     fontSize: 16,
     lineHeight: 20,
-    color: colors.goldAccent,
   },
   topBarSurahMetaDivider: {
     fontSize: 10,
-    color: colors.textMuted,
     marginHorizontal: 1,
   },
   topBarSurahMetaText: {
     fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
-    color: colors.textSecondary,
   },
   topBarActions: {
     minWidth: 96,

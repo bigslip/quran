@@ -38,8 +38,31 @@ import {
   calculateMushafPageFontSize,
 } from './readerContracts.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
-import { colors } from '../../theme/colors.ts';
+import { colors, themePalettes } from '../../theme/colors.ts';
 import { spacing, borderRadius } from '../../theme/spacing.ts';
+
+// Helper to compute luminance & contrast ratio according to WCAG 2.1 specs
+function getLuminance(hex) {
+  let cleaned = hex.replace('#', '');
+  if (cleaned.length === 3)
+    cleaned = cleaned
+      .split('')
+      .map((c) => c + c)
+      .join('');
+  const rgb = [0, 2, 4].map((offset) => {
+    const val = parseInt(cleaned.slice(offset, offset + 2), 16) / 255;
+    return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+}
+
+function getContrastRatio(hex1, hex2) {
+  const l1 = getLuminance(hex1);
+  const l2 = getLuminance(hex2);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -146,6 +169,47 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('dividerLine'));
       assert.ok(source.includes('ornamentDot'));
       assert.ok(source.includes('ornamentDiamond'));
+    });
+
+    it('verifies BismillahBanner.tsx multi-theme support and dynamic gold contrast in Light/Sepia', () => {
+      const source = fs.readFileSync(path.resolve(__dirname, './BismillahBanner.tsx'), 'utf8');
+
+      // Theme prop and hook consumption
+      assert.ok(
+        source.includes('theme?: AppTheme'),
+        'BismillahBanner must declare optional theme?: AppTheme prop',
+      );
+      assert.ok(
+        source.includes('useThemeColors()') || source.includes('useThemeColors'),
+        'BismillahBanner must consume useThemeColors',
+      );
+
+      // Contrast ratio calculation for themePalettes.light.goldAccent (#D97706) against light background
+      const lightGoldContrast = getContrastRatio(
+        themePalettes.light.goldAccent,
+        themePalettes.light.background,
+      );
+      assert.ok(
+        lightGoldContrast >= 3.0,
+        `Light theme goldAccent contrast must be >= 3.0:1 for large text (24px). Actual: ${lightGoldContrast}`,
+      );
+
+      // Contrast ratio calculation for themePalettes.sepia.goldAccent (#B45309) against sepia background
+      const sepiaGoldContrast = getContrastRatio(
+        themePalettes.sepia.goldAccent,
+        themePalettes.sepia.background,
+      );
+      assert.ok(
+        sepiaGoldContrast >= 4.5,
+        `Sepia theme goldAccent contrast must be >= 4.5:1. Actual: ${sepiaGoldContrast}`,
+      );
+
+      // Static #fbbf24 contrast on Light background must be < 2.0:1 (1.67:1 failure), proving the fix
+      const staticLightContrast = getContrastRatio('#fbbf24', themePalettes.light.background);
+      assert.ok(
+        staticLightContrast < 2.0,
+        `Static #fbbf24 on light background must fail WCAG contrast (< 2.0:1). Actual: ${staticLightContrast}`,
+      );
     });
   });
 

@@ -1,14 +1,17 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Play, Pause, SkipBack, SkipForward, Repeat, X } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius, shadows } from '@/theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  shadows,
+  useThemeColors,
+  themePalettes,
+  AppTheme,
+} from '@/theme';
 import {
   READER_COMPONENT_CONTRACTS,
   formatAudioDockTitle,
@@ -23,6 +26,7 @@ export interface AudioPlaybackDockProps {
   verseNumber?: number;
   reciterName?: string;
   selectedReciterId?: number;
+  theme?: AppTheme;
   onPlayPause?: () => void;
   onNextAyah?: () => void;
   onPrevAyah?: () => void;
@@ -44,188 +48,209 @@ export interface AudioPlaybackDockProps {
  * - RTL audio controls: Repeat toggle, Previous Ayah, prominent 48px Play/Pause, Next Ayah, and Close button.
  * - All interactive touch targets >= 44x44px conforming to Sanctuary and WCAG accessibility standards.
  */
-export const AudioPlaybackDock: React.FC<AudioPlaybackDockProps> = React.memo(({
-  isPlaying,
-  activeVerseKey,
-  surahName,
-  verseNumber,
-  reciterName = READER_COMPONENT_CONTRACTS.audioDock.defaultReciter,
-  selectedReciterId,
-  onPlayPause,
-  onNextAyah,
-  onPrevAyah,
-  onToggleRepeat,
-  isRepeating = false,
-  onPressDock,
-  onCloseDock,
-  style,
-  testID = 'audio-playback-dock',
-}) => {
-  if (!activeVerseKey) {
-    return null;
-  }
+export const AudioPlaybackDock: React.FC<AudioPlaybackDockProps> = React.memo(
+  ({
+    isPlaying,
+    activeVerseKey,
+    surahName,
+    verseNumber,
+    reciterName = READER_COMPONENT_CONTRACTS.audioDock.defaultReciter,
+    selectedReciterId,
+    theme,
+    onPlayPause,
+    onNextAyah,
+    onPrevAyah,
+    onToggleRepeat,
+    isRepeating = false,
+    onPressDock,
+    onCloseDock,
+    style,
+    testID = 'audio-playback-dock',
+  }) => {
+    const activeColors = useThemeColors();
+    const colors = theme ? themePalettes[theme] ?? activeColors : activeColors;
 
-  // Resolve Surah name and verse number from activeVerseKey ('ch:v') if not explicitly passed
-  let resolvedSurahName = surahName;
-  let resolvedVerseNumber = verseNumber;
-
-  if (!resolvedSurahName || resolvedVerseNumber === undefined) {
-    const parts = activeVerseKey.split(':');
-    const chId = parseInt(parts[0], 10);
-    const vNum = parseInt(parts[1], 10);
-    if (!resolvedSurahName && !isNaN(chId)) {
-      resolvedSurahName = getSurahNameFa(chId);
+    if (!activeVerseKey) {
+      return null;
     }
-    if (resolvedVerseNumber === undefined && !isNaN(vNum)) {
-      resolvedVerseNumber = vNum;
+
+    // Resolve Surah name and verse number from activeVerseKey ('ch:v') if not explicitly passed
+    let resolvedSurahName = surahName;
+    let resolvedVerseNumber = verseNumber;
+
+    if (!resolvedSurahName || resolvedVerseNumber === undefined) {
+      const parts = activeVerseKey.split(':');
+      const chId = parseInt(parts[0], 10);
+      const vNum = parseInt(parts[1], 10);
+      if (!resolvedSurahName && !isNaN(chId)) {
+        resolvedSurahName = getSurahNameFa(chId);
+      }
+      if (resolvedVerseNumber === undefined && !isNaN(vNum)) {
+        resolvedVerseNumber = vNum;
+      }
     }
-  }
 
-  const ayahTitle =
-    formatAudioDockTitle(resolvedSurahName, resolvedVerseNumber) ||
-    `آیه ${activeVerseKey}`;
-  const resolvedReciter =
-    (selectedReciterId !== undefined ? getReciterById(selectedReciterId)?.nameFa : undefined) ||
-    reciterName ||
-    READER_COMPONENT_CONTRACTS.audioDock.defaultReciter;
+    const ayahTitle =
+      formatAudioDockTitle(resolvedSurahName, resolvedVerseNumber) || `آیه ${activeVerseKey}`;
+    const resolvedReciter =
+      (selectedReciterId !== undefined ? getReciterById(selectedReciterId)?.nameFa : undefined) ||
+      reciterName ||
+      READER_COMPONENT_CONTRACTS.audioDock.defaultReciter;
 
-  return (
-    <View
-      testID={testID}
-      style={[styles.dockContainer, style]}
-      accessible={true}
-      accessibilityRole="toolbar"
-      accessibilityLabel={`نوار پخش صوت: ${ayahTitle}، قاری: ${resolvedReciter}`}
-    >
-      {/* Active Ayah Information & Reciter Subtitle */}
-      <TouchableOpacity
-        testID={`${testID}-info`}
-        onPress={onPressDock}
-        disabled={!onPressDock}
-        activeOpacity={0.7}
-        style={styles.infoArea}
+    return (
+      <View
+        testID={testID}
+        style={[
+          styles.dockContainer,
+          {
+            backgroundColor: colors.surfaceFloating,
+            borderColor: colors.borderSubtle,
+          },
+          style,
+        ]}
         accessible={true}
-        accessibilityRole="button"
-        accessibilityLabel={`مشاهده آیه ${ayahTitle}، قاری: ${resolvedReciter}`}
+        accessibilityRole="toolbar"
+        accessibilityLabel={`نوار پخش صوت: ${ayahTitle}، قاری: ${resolvedReciter}`}
       >
-        <Text
-          testID={`${testID}-title`}
-          style={styles.ayahTitle}
-          numberOfLines={1}
-          ellipsizeMode="tail"
+        {/* Active Ayah Information & Reciter Subtitle */}
+        <TouchableOpacity
+          testID={`${testID}-info`}
+          onPress={onPressDock}
+          disabled={!onPressDock}
+          activeOpacity={0.7}
+          style={styles.infoArea}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={`مشاهده آیه ${ayahTitle}، قاری: ${resolvedReciter}`}
         >
-          {ayahTitle}
-        </Text>
-        <View testID={`${testID}-reciter`} style={styles.reciterChip}>
-          <Text style={styles.reciterText} numberOfLines={1}>
-            {resolvedReciter}
+          <Text
+            testID={`${testID}-title`}
+            style={[styles.ayahTitle, { color: colors.textPrimary }]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {ayahTitle}
           </Text>
+          <View
+            testID={`${testID}-reciter`}
+            style={[
+              styles.reciterChip,
+              {
+                backgroundColor: colors.primarySubtle,
+                borderColor: colors.borderSubtle,
+              },
+            ]}
+          >
+            <Text style={[styles.reciterText, { color: colors.textSecondary }]} numberOfLines={1}>
+              {resolvedReciter}
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        {/* RTL Audio Controls Toolbar */}
+        <View testID={`${testID}-controls`} style={styles.controlsToolbar}>
+          {/* 1. Repeat Toggle Button */}
+          <TouchableOpacity
+            testID={`${testID}-repeat`}
+            onPress={onToggleRepeat}
+            activeOpacity={0.7}
+            style={styles.controlButton}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel={isRepeating ? 'غیرفعال‌سازی تکرار آیه' : 'تکرار آیه'}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Repeat
+              size={READER_COMPONENT_CONTRACTS.audioDock.iconSize}
+              color={isRepeating ? colors.primary : colors.textFaded}
+              strokeWidth={isRepeating ? 2.5 : 2}
+            />
+          </TouchableOpacity>
+
+          {/* 2. Previous Ayah Button */}
+          <TouchableOpacity
+            testID={`${testID}-prev`}
+            onPress={onPrevAyah}
+            activeOpacity={0.7}
+            style={styles.controlButton}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="آیه قبلی"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <SkipBack
+              size={READER_COMPONENT_CONTRACTS.audioDock.iconSize}
+              color={colors.textPrimary}
+              strokeWidth={2}
+            />
+          </TouchableOpacity>
+
+          {/* 3. Prominent Circular Play/Pause Button */}
+          <TouchableOpacity
+            testID={`${testID}-play-pause`}
+            onPress={onPlayPause}
+            activeOpacity={0.8}
+            style={[styles.playPauseButton, { backgroundColor: colors.primary }]}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel={isPlaying ? 'توقف پخش صوت' : 'پخش صوت'}
+            hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
+          >
+            {isPlaying ? (
+              <Pause
+                size={READER_COMPONENT_CONTRACTS.audioDock.primaryIconSize}
+                color={colors.textInverse}
+                strokeWidth={2.5}
+              />
+            ) : (
+              <Play
+                size={READER_COMPONENT_CONTRACTS.audioDock.primaryIconSize}
+                color={colors.textInverse}
+                strokeWidth={2.5}
+              />
+            )}
+          </TouchableOpacity>
+
+          {/* 4. Next Ayah Button */}
+          <TouchableOpacity
+            testID={`${testID}-next`}
+            onPress={onNextAyah}
+            activeOpacity={0.7}
+            style={styles.controlButton}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="آیه بعدی"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <SkipForward
+              size={READER_COMPONENT_CONTRACTS.audioDock.iconSize}
+              color={colors.textPrimary}
+              strokeWidth={2}
+            />
+          </TouchableOpacity>
+
+          {/* 5. Close / Dismiss Dock Button */}
+          <TouchableOpacity
+            testID={`${testID}-close`}
+            onPress={onCloseDock}
+            activeOpacity={0.7}
+            style={styles.controlButton}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="بستن پخش صوتی"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <X
+              size={READER_COMPONENT_CONTRACTS.audioDock.iconSize}
+              color={colors.textSecondary}
+              strokeWidth={2}
+            />
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
-
-      {/* RTL Audio Controls Toolbar */}
-      <View testID={`${testID}-controls`} style={styles.controlsToolbar}>
-        {/* 1. Repeat Toggle Button */}
-        <TouchableOpacity
-          testID={`${testID}-repeat`}
-          onPress={onToggleRepeat}
-          activeOpacity={0.7}
-          style={styles.controlButton}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel={isRepeating ? 'غیرفعال‌سازی تکرار آیه' : 'تکرار آیه'}
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <Repeat
-            size={READER_COMPONENT_CONTRACTS.audioDock.iconSize}
-            color={isRepeating ? colors.primary : colors.textFaded}
-            strokeWidth={isRepeating ? 2.5 : 2}
-          />
-        </TouchableOpacity>
-
-        {/* 2. Previous Ayah Button */}
-        <TouchableOpacity
-          testID={`${testID}-prev`}
-          onPress={onPrevAyah}
-          activeOpacity={0.7}
-          style={styles.controlButton}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel="آیه قبلی"
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <SkipBack
-            size={READER_COMPONENT_CONTRACTS.audioDock.iconSize}
-            color={colors.textPrimary}
-            strokeWidth={2}
-          />
-        </TouchableOpacity>
-
-        {/* 3. Prominent Circular Play/Pause Button */}
-        <TouchableOpacity
-          testID={`${testID}-play-pause`}
-          onPress={onPlayPause}
-          activeOpacity={0.8}
-          style={styles.playPauseButton}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel={isPlaying ? 'توقف پخش صوت' : 'پخش صوت'}
-          hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
-        >
-          {isPlaying ? (
-            <Pause
-              size={READER_COMPONENT_CONTRACTS.audioDock.primaryIconSize}
-              color={colors.textInverse}
-              strokeWidth={2.5}
-            />
-          ) : (
-            <Play
-              size={READER_COMPONENT_CONTRACTS.audioDock.primaryIconSize}
-              color={colors.textInverse}
-              strokeWidth={2.5}
-            />
-          )}
-        </TouchableOpacity>
-
-        {/* 4. Next Ayah Button */}
-        <TouchableOpacity
-          testID={`${testID}-next`}
-          onPress={onNextAyah}
-          activeOpacity={0.7}
-          style={styles.controlButton}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel="آیه بعدی"
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <SkipForward
-            size={READER_COMPONENT_CONTRACTS.audioDock.iconSize}
-            color={colors.textPrimary}
-            strokeWidth={2}
-          />
-        </TouchableOpacity>
-
-        {/* 5. Close / Dismiss Dock Button */}
-        <TouchableOpacity
-          testID={`${testID}-close`}
-          onPress={onCloseDock}
-          activeOpacity={0.7}
-          style={styles.controlButton}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel="بستن پخش صوتی"
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <X
-            size={READER_COMPONENT_CONTRACTS.audioDock.iconSize}
-            color={colors.textSecondary}
-            strokeWidth={2}
-          />
-        </TouchableOpacity>
       </View>
-    </View>
-  );
-});
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   dockContainer: {
