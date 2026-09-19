@@ -10,7 +10,14 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { ArrowRight, BookOpen, AlignLeft, SlidersHorizontal, Compass } from 'lucide-react-native';
+import {
+  ArrowRight,
+  BookOpen,
+  AlignLeft,
+  SlidersHorizontal,
+  Compass,
+  ChevronDown,
+} from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import {
@@ -21,7 +28,9 @@ import {
   AudioPlaybackDock,
   ReaderSettingsModal,
   parseVerseParam,
+  formatSurahTitleFa,
 } from '@/components/reader';
+import { toPersianDigits } from '@/components/catalog';
 import { AyahInsightsDrawer } from '../../components/insights';
 import { QuickJumpModal, QuickJumpTabId } from '@/components/navigation';
 import { Chapter, Verse, Word } from '@/types/quran';
@@ -652,58 +661,58 @@ export default function SurahReaderScreen() {
 
       {/* Top Bar Navigation (RTL) */}
       <View style={styles.topBar}>
-        {/* Back Button (>= 44x44px touch target) */}
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.navButton}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel="بازگشت به فهرست سوره‌ها"
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <ArrowRight size={22} color={colors.textPrimary} />
-        </TouchableOpacity>
+        {/* Leading Action (RTL: Back Button) - balanced width */}
+        <View style={styles.topBarLeading}>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={styles.navButton}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="بازگشت به فهرست سوره‌ها"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <ArrowRight size={22} color={colors.textPrimary} />
+          </TouchableOpacity>
+        </View>
 
-        {/* Title Block: Persian Title & Arabic Calligraphy Subtitle (Touchable for Quick Jump) */}
+        {/* Centerpiece: Interactive Sanctuary Quick Jump Navigation Pill */}
         <TouchableOpacity
-          style={styles.topBarTitleBlock}
+          style={styles.topBarTitlePill}
           onPress={() => {
             setQuickJumpInitialTab('surah_ayah');
             setIsQuickJumpOpen(true);
           }}
           activeOpacity={0.7}
+          testID="reader-quick-jump-button"
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel={`سوره ${
-            chapter?.name_fa || ''
-          }، برای پرش سریع به سوره یا آیه دیگر لمس کنید`}
+          accessibilityLabel="پرش سریع به سوره، آیه یا صفحه"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Text style={styles.topBarSurahFa} numberOfLines={1}>
-            {chapter?.name_fa}
-          </Text>
-          <Text style={styles.topBarSurahArabic} numberOfLines={1}>
-            {chapter?.name_arabic}
-          </Text>
+          {/* Primary Row: Compass + Persian Surah Title + Dropdown Chevron */}
+          <View style={styles.topBarTitleRow}>
+            <Compass size={13} color={colors.primaryLight} style={styles.pillCompass} />
+            <Text style={styles.topBarSurahFa} numberOfLines={1}>
+              {formatSurahTitleFa(chapter?.name_fa)}
+            </Text>
+            <ChevronDown size={13} color={colors.goldAccent} style={styles.pillChevron} />
+          </View>
+
+          {/* Subtitle Row: Sacred Arabic calligraphy & Revelation metadata */}
+          <View style={styles.topBarSubtitleRow}>
+            <Text style={styles.topBarSurahArabic} numberOfLines={1}>
+              {chapter?.name_arabic}
+            </Text>
+            <Text style={styles.topBarSurahMetaDivider}>•</Text>
+            <Text style={styles.topBarSurahMetaText} numberOfLines={1}>
+              {toPersianDigits(chapter?.id || 1)} (
+              {chapter?.revelation_place === 'makkah' ? 'مکی' : 'مدنی'})
+            </Text>
+          </View>
         </TouchableOpacity>
 
-        {/* Action Controls Toolbar: Quick Jump, View Mode Toggle & Reader Settings */}
+        {/* Trailing Controls Toolbar (RTL): Dual-Mode Toggle & Settings */}
         <View style={styles.topBarActions}>
-          {/* Quick Jump Compass Button (>= 44x44px touch target) */}
-          <TouchableOpacity
-            onPress={() => {
-              setQuickJumpInitialTab('surah_ayah');
-              setIsQuickJumpOpen(true);
-            }}
-            style={styles.navButton}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel="پرش سریع به سوره، آیه یا صفحه"
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            testID="reader-quick-jump-button"
-          >
-            <Compass size={20} color={colors.textSecondary} />
-          </TouchableOpacity>
-
           {/* Dual-Mode Toggle Button (>= 44x44px touch target) */}
           <TouchableOpacity
             onPress={handleToggleViewMode}
@@ -935,11 +944,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 54,
     paddingHorizontal: spacing.md,
-    paddingBottom: spacing.md,
+    paddingBottom: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.borderSubtle,
     backgroundColor: colors.backgroundElevated,
     zIndex: 10,
+  },
+  topBarLeading: {
+    minWidth: 96,
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   navButton: {
     minWidth: 44,
@@ -953,26 +968,65 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  topBarTitleBlock: {
-    alignItems: 'center',
+  topBarTitlePill: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 5,
     paddingHorizontal: spacing.sm,
+    marginHorizontal: spacing.xs,
+    backgroundColor: 'rgba(7, 36, 28, 0.65)',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: 'rgba(16, 185, 129, 0.22)',
+    minHeight: 44,
+  },
+  topBarTitleRow: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+  },
+  pillCompass: {
+    opacity: 0.9,
+  },
+  pillChevron: {
+    opacity: 0.85,
+    marginTop: 1,
   },
   topBarSurahFa: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.md,
-    fontWeight: '700',
+    fontFamily: fonts.uiBold,
+    fontSize: fontSizes.md - 1,
     color: colors.textPrimary,
+  },
+  topBarSubtitleRow: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    marginTop: 1,
   },
   topBarSurahArabic: {
     fontFamily: fonts.quranHafs,
-    fontSize: fontSizes.sm,
+    fontSize: 16,
+    lineHeight: 20,
     color: colors.goldAccent,
-    marginTop: 2,
+  },
+  topBarSurahMetaDivider: {
+    fontSize: 10,
+    color: colors.textMuted,
+    marginHorizontal: 1,
+  },
+  topBarSurahMetaText: {
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
+    color: colors.textSecondary,
   },
   topBarActions: {
+    minWidth: 96,
     flexDirection: rtlRow,
     alignItems: 'center',
+    justifyContent: 'flex-end',
     gap: spacing.xs,
   },
   listHeaderContainer: {

@@ -16,8 +16,10 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
     'Vazirmatn-Regular': require('../../assets/fonts/Vazirmatn-Regular.ttf'),
-    'UthmanicHafs': require('../../assets/fonts/UthmanicHafs.ttf'),
-    'IndoPakNastaleeq': require('../../assets/fonts/IndoPakNastaleeq.ttf'),
+    'Vazirmatn-Medium': require('../../assets/fonts/Vazirmatn-Medium.ttf'),
+    'Vazirmatn-Bold': require('../../assets/fonts/Vazirmatn-Bold.ttf'),
+    UthmanicHafs: require('../../assets/fonts/UthmanicHafs.ttf'),
+    IndoPakNastaleeq: require('../../assets/fonts/IndoPakNastaleeq.ttf'),
   });
 
   useEffect(() => {

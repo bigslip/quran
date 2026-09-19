@@ -93,10 +93,7 @@ export const READER_COMPONENT_CONTRACTS = {
  * 2. Returns false if bismillahPre is explicitly false.
  * 3. Returns true for Surah 1 and Surah 2, and all other chapters when bismillahPre !== false.
  */
-export function shouldRenderBismillah(
-  chapterId: number,
-  bismillahPre?: boolean
-): boolean {
+export function shouldRenderBismillah(chapterId: number, bismillahPre?: boolean): boolean {
   if (chapterId === 9) {
     return false;
   }
@@ -145,7 +142,7 @@ export function formatSurahHeaderAccessibilityLabel(
   chapter: Pick<
     Chapter,
     'id' | 'name_fa' | 'name_arabic' | 'revelation_place' | 'revelation_order' | 'verses_count'
-  >
+  >,
 ): string {
   const surahNum = toPersianDigits(chapter.id);
   const place = formatRevelationPlace(chapter.revelation_place);
@@ -173,7 +170,7 @@ export function formatVerseBadgeNumber(verseNumber: number): string {
  */
 export function formatContinuousVerseAccessibilityLabel(
   verse: Pick<Verse, 'verse_number' | 'chapter_id'>,
-  activeTranslation?: string
+  activeTranslation?: string,
 ): string {
   const vNum = toPersianDigits(verse.verse_number);
   const cNum = toPersianDigits(verse.chapter_id);
@@ -207,12 +204,25 @@ export function formatMushafSurahTitle(surahName: string): string {
 }
 
 /**
+ * Formats a Persian chapter name into a polite, clean Surah title e.g. "سوره بقره", "سوره یس".
+ * Strips out explanatory parentheses like "(گاو)" and avoids duplicating "سوره".
+ */
+export function formatSurahTitleFa(chapterNameFa?: string): string {
+  if (!chapterNameFa) return 'سوره قرآن';
+  const stripped = chapterNameFa.split('(')[0].trim();
+  if (stripped.startsWith('سوره')) {
+    return stripped;
+  }
+  return `سوره ${stripped}`;
+}
+
+/**
  * Formats comprehensive accessibility label for MushafPageView header.
  */
 export function formatMushafHeaderAccessibilityLabel(
   pageNumber: number,
   juzNumber?: number,
-  surahName?: string
+  surahName?: string,
 ): string {
   const parts: string[] = [`صفحه ${toPersianDigits(pageNumber)}`];
   if (juzNumber !== undefined) {
@@ -475,18 +485,120 @@ export const CHAPTER_NAMES_ARABIC: Record<number, string> = {
  * Maps all 114 Surah IDs to their total verse counts.
  */
 export const CHAPTER_VERSES_COUNT: Record<number, number> = {
-  1: 7, 2: 286, 3: 200, 4: 176, 5: 120, 6: 165, 7: 206, 8: 75, 9: 129, 10: 109,
-  11: 123, 12: 111, 13: 43, 14: 52, 15: 99, 16: 128, 17: 111, 18: 110, 19: 98, 20: 135,
-  21: 112, 22: 78, 23: 118, 24: 64, 25: 77, 26: 227, 27: 93, 28: 88, 29: 69, 30: 60,
-  31: 34, 32: 30, 33: 73, 34: 54, 35: 45, 36: 83, 37: 182, 38: 88, 39: 75, 40: 85,
-  41: 54, 42: 53, 43: 89, 44: 59, 45: 37, 46: 35, 47: 38, 48: 29, 49: 18, 50: 45,
-  51: 60, 52: 49, 53: 62, 54: 55, 55: 78, 56: 96, 57: 29, 58: 22, 59: 24, 60: 13,
-  61: 14, 62: 11, 63: 11, 64: 18, 65: 12, 66: 12, 67: 30, 68: 52, 69: 52, 70: 44,
-  71: 28, 72: 28, 73: 20, 74: 56, 75: 40, 76: 31, 77: 50, 78: 40, 79: 46, 80: 42,
-  81: 29, 82: 19, 83: 36, 84: 25, 85: 22, 86: 17, 87: 19, 88: 26, 89: 30, 90: 20,
-  91: 15, 92: 21, 93: 11, 94: 8, 95: 8, 96: 19, 97: 5, 98: 8, 99: 8, 100: 11,
-  101: 11, 102: 8, 103: 3, 104: 9, 105: 5, 106: 4, 107: 7, 108: 3, 109: 6, 110: 3,
-  111: 5, 112: 4, 113: 5, 114: 6,
+  1: 7,
+  2: 286,
+  3: 200,
+  4: 176,
+  5: 120,
+  6: 165,
+  7: 206,
+  8: 75,
+  9: 129,
+  10: 109,
+  11: 123,
+  12: 111,
+  13: 43,
+  14: 52,
+  15: 99,
+  16: 128,
+  17: 111,
+  18: 110,
+  19: 98,
+  20: 135,
+  21: 112,
+  22: 78,
+  23: 118,
+  24: 64,
+  25: 77,
+  26: 227,
+  27: 93,
+  28: 88,
+  29: 69,
+  30: 60,
+  31: 34,
+  32: 30,
+  33: 73,
+  34: 54,
+  35: 45,
+  36: 83,
+  37: 182,
+  38: 88,
+  39: 75,
+  40: 85,
+  41: 54,
+  42: 53,
+  43: 89,
+  44: 59,
+  45: 37,
+  46: 35,
+  47: 38,
+  48: 29,
+  49: 18,
+  50: 45,
+  51: 60,
+  52: 49,
+  53: 62,
+  54: 55,
+  55: 78,
+  56: 96,
+  57: 29,
+  58: 22,
+  59: 24,
+  60: 13,
+  61: 14,
+  62: 11,
+  63: 11,
+  64: 18,
+  65: 12,
+  66: 12,
+  67: 30,
+  68: 52,
+  69: 52,
+  70: 44,
+  71: 28,
+  72: 28,
+  73: 20,
+  74: 56,
+  75: 40,
+  76: 31,
+  77: 50,
+  78: 40,
+  79: 46,
+  80: 42,
+  81: 29,
+  82: 19,
+  83: 36,
+  84: 25,
+  85: 22,
+  86: 17,
+  87: 19,
+  88: 26,
+  89: 30,
+  90: 20,
+  91: 15,
+  92: 21,
+  93: 11,
+  94: 8,
+  95: 8,
+  96: 19,
+  97: 5,
+  98: 8,
+  99: 8,
+  100: 11,
+  101: 11,
+  102: 8,
+  103: 3,
+  104: 9,
+  105: 5,
+  106: 4,
+  107: 7,
+  108: 3,
+  109: 6,
+  110: 3,
+  111: 5,
+  112: 4,
+  113: 5,
+  114: 6,
 };
 
 /**
@@ -502,7 +614,6 @@ export function getSurahNameArabic(chapterId: number): string {
 export function getSurahVersesCount(chapterId: number): number {
   return CHAPTER_VERSES_COUNT[chapterId] || 0;
 }
-
 
 /**
  * Groups words by physical Mushaf line number (1..15).
@@ -540,7 +651,11 @@ export function groupWordsByLine(words: Word[]): Map<number, Word[]> {
 
   for (const word of sortedWords) {
     const line = word.line_number;
-    if (line !== undefined && line >= 1 && line <= READER_COMPONENT_CONTRACTS.mushafPage.totalLines) {
+    if (
+      line !== undefined &&
+      line >= 1 &&
+      line <= READER_COMPONENT_CONTRACTS.mushafPage.totalLines
+    ) {
       lineMap.get(line)?.push(word);
     }
   }
@@ -552,10 +667,7 @@ export function groupWordsByLine(words: Word[]): Map<number, Word[]> {
  * Formats Persian Ayah title for AudioPlaybackDock:
  * e.g., "سوره الفاتحه • آیه ۱" or "سوره فاتحه • آیه ۱"
  */
-export function formatAudioDockTitle(
-  surahName?: string,
-  verseNumber?: number
-): string {
+export function formatAudioDockTitle(surahName?: string, verseNumber?: number): string {
   const parts: string[] = [];
 
   if (surahName && surahName.trim().length > 0) {
@@ -601,7 +713,7 @@ export function clampFontScale(scale: number): number {
  */
 export function formatAyahEndMarker(verseNumber: number): string {
   if (verseNumber >= 1 && verseNumber <= 286) {
-    return ` ${String.fromCharCode(0xFC00 + verseNumber - 1)} `;
+    return ` ${String.fromCharCode(0xfc00 + verseNumber - 1)} `;
   }
   return ` ﴾${toPersianDigits(verseNumber)}﴿ `;
 }
@@ -634,10 +746,7 @@ export function calculateMushafLineFontSize(params: {
   availableLineWidth: number;
   fontScale?: number;
 }): MushafLineFontSizeResult {
-  const {
-    wordCount,
-    fontScale = 1.0,
-  } = params;
+  const { wordCount, fontScale = 1.0 } = params;
 
   // Base font size target from contract (22px) scaled monotonically with fontScale
   const baseFontSize = READER_COMPONENT_CONTRACTS.mushafPage.quranFontSize;
@@ -646,7 +755,7 @@ export function calculateMushafLineFontSize(params: {
   // Proportional line height
   const lineHeight = Math.max(
     READER_COMPONENT_CONTRACTS.mushafPage.quranLineHeight,
-    Math.round(fontSize * 2.2)
+    Math.round(fontSize * 2.2),
   );
 
   // Dynamic word padding
@@ -754,4 +863,3 @@ export function calculateTargetVerseIndex(
 export function formatHighlightVerseKey(chapterId: number, verseNumber: number): string {
   return `${chapterId}:${verseNumber}`;
 }
-

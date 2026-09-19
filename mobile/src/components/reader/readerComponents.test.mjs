@@ -15,6 +15,7 @@ import {
   formatSurahNumberBadge,
   formatSurahHeaderAccessibilityLabel,
   formatInfoButtonAccessibilityLabel,
+  formatSurahTitleFa,
   formatVerseBadgeNumber,
   formatContinuousVerseAccessibilityLabel,
   formatMushafJuzTitle,
@@ -200,6 +201,14 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       );
     });
 
+    it('formats Persian Surah title properly without duplicate سوره or explanatory parentheses', () => {
+      assert.strictEqual(formatSurahTitleFa('یس'), 'سوره یس');
+      assert.strictEqual(formatSurahTitleFa('فاتحه'), 'سوره فاتحه');
+      assert.strictEqual(formatSurahTitleFa('بقره (گاو)'), 'سوره بقره');
+      assert.strictEqual(formatSurahTitleFa('سوره اخلاص'), 'سوره اخلاص');
+      assert.strictEqual(formatSurahTitleFa(undefined), 'سوره قرآن');
+    });
+
     it('validates all 114 Surahs from DB satisfy SurahHeaderBanner contracts', () => {
       const chapters = db.prepare('SELECT * FROM chapters ORDER BY id ASC').all();
       assert.strictEqual(chapters.length, 114);
@@ -323,6 +332,8 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('colors.goldAccent'));
       assert.ok(source.includes('chapter.name_arabic'));
       assert.ok(source.includes('fonts.uiRegular'));
+      assert.ok(source.includes('fonts.uiBold'));
+      assert.ok(source.includes('formatSurahTitleFa'));
       assert.ok(source.includes('chapter.name_fa'));
 
       // 3. Badges row
@@ -1361,6 +1372,14 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         'Title block must render chapter?.name_fa',
       );
       assert.ok(
+        surahScreenSource.includes('formatSurahTitleFa(chapter?.name_fa)'),
+        'Top bar title pill must format Persian Surah name with formatSurahTitleFa',
+      );
+      assert.ok(
+        surahScreenSource.includes('testID="reader-quick-jump-button"'),
+        'Top bar title pill must act as Quick Jump trigger with testID="reader-quick-jump-button"',
+      );
+      assert.ok(
         surahScreenSource.includes('chapter?.name_arabic'),
         'Title block must render chapter?.name_arabic',
       );
@@ -1384,6 +1403,15 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         surahScreenSource.includes('<SlidersHorizontal'),
         'Settings button must use SlidersHorizontal icon',
       );
+    });
+
+    it('verifies RootLayout registers Vazirmatn-Medium and Vazirmatn-Bold fonts', () => {
+      const layoutSource = fs.readFileSync(
+        path.resolve(__dirname, '../../app/_layout.tsx'),
+        'utf8',
+      );
+      assert.ok(layoutSource.includes("'Vazirmatn-Medium'"));
+      assert.ok(layoutSource.includes("'Vazirmatn-Bold'"));
     });
 
     it('verifies dual-mode conditional rendering structure (continuous FlatList vs mushaf MushafPageView)', () => {

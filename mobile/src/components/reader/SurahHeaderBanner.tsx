@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Info } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { Chapter } from '@/types/quran';
@@ -19,6 +12,7 @@ import {
   formatSurahNumberBadge,
   formatSurahHeaderAccessibilityLabel,
   formatInfoButtonAccessibilityLabel,
+  formatSurahTitleFa,
 } from './readerContracts';
 
 export interface SurahHeaderBannerProps {
@@ -30,7 +24,7 @@ export interface SurahHeaderBannerProps {
 
 /**
  * SurahHeaderBanner displays an ornate Sanctuary geometric frame for Quran chapter openings.
- * 
+ *
  * Features:
  * - Sacred Arabic calligraphic title in `fonts.quranHafs` (size 32) in `colors.goldAccent`.
  * - Persian title (`name_fa`) in bold `fonts.uiRegular` (size 16) with high-contrast `colors.textPrimary`.
@@ -73,9 +67,7 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
             accessible={false}
           >
             <View style={styles.cornerNumberEmblemInner}>
-              <Text style={styles.cornerNumberText}>
-                {toPersianDigits(chapter.id)}
-              </Text>
+              <Text style={styles.cornerNumberText}>{toPersianDigits(chapter.id)}</Text>
             </View>
           </View>
 
@@ -116,33 +108,21 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
           </Text>
 
           {/* Persian Surah Title */}
-          <Text
-            style={styles.persianTitle}
-            testID={`${testID}-persian-title`}
-          >
-            {chapter.name_fa}
+          <Text style={styles.persianTitle} testID={`${testID}-persian-title`}>
+            {formatSurahTitleFa(chapter.name_fa)}
           </Text>
         </View>
 
         {/* Badges Row: Surah Number, Revelation Place, Revelation Order, Verse Count */}
-        <View
-          style={styles.badgesRow}
-          testID={`${testID}-badges-row`}
-          accessible={false}
-        >
+        <View style={styles.badgesRow} testID={`${testID}-badges-row`} accessible={false}>
           {/* 1. Surah Number Badge */}
           <View style={styles.badgeChip} testID={`${testID}-badge-number`}>
-            <Text style={styles.badgeChipText}>
-              {surahNumberBadgeText}
-            </Text>
+            <Text style={styles.badgeChipText}>{surahNumberBadgeText}</Text>
           </View>
 
           {/* 2. Revelation Place Chip (Makki / Madani) */}
           <View
-            style={[
-              styles.badgeChip,
-              isMakki ? styles.badgeMakkiChip : styles.badgeMadaniChip,
-            ]}
+            style={[styles.badgeChip, isMakki ? styles.badgeMakkiChip : styles.badgeMadaniChip]}
             testID={`${testID}-badge-revelation-place`}
           >
             <Text
@@ -157,16 +137,12 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
 
           {/* 3. Revelation Order Chip */}
           <View style={styles.badgeChip} testID={`${testID}-badge-revelation-order`}>
-            <Text style={styles.badgeChipText}>
-              {revelationOrderText}
-            </Text>
+            <Text style={styles.badgeChipText}>{revelationOrderText}</Text>
           </View>
 
           {/* 4. Verse Count Badge */}
           <View style={styles.badgeChip} testID={`${testID}-badge-verses-count`}>
-            <Text style={styles.badgeChipText}>
-              {verseCountText}
-            </Text>
+            <Text style={styles.badgeChipText}>{verseCountText}</Text>
           </View>
         </View>
       </View>
@@ -229,9 +205,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cornerNumberText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.primaryLight,
   },
   calligraphySection: {
@@ -247,10 +222,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   persianTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: READER_COMPONENT_CONTRACTS.surahHeader.persianFontSize,
     lineHeight: READER_COMPONENT_CONTRACTS.surahHeader.persianLineHeight,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: 'center',
     marginTop: spacing.xs,
@@ -272,9 +246,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xs,
   },
   badgeChipText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium || fonts.uiRegular,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.textSecondary,
   },
   badgeMakkiChip: {

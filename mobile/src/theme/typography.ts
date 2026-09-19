@@ -3,12 +3,15 @@ import { TextStyle } from 'react-native';
 export const fonts = {
   // UI & Translations
   uiRegular: 'Vazirmatn-Regular',
+  uiMedium: 'Vazirmatn-Medium',
+  uiBold: 'Vazirmatn-Bold',
   // Sacred Quran Texts
   quranHafs: 'UthmanicHafs',
   quranIndoPak: 'IndoPakNastaleeq',
   // Typography aliases
   primary: 'Vazirmatn-Regular',
-  primaryBold: 'Vazirmatn-Regular',
+  primaryMedium: 'Vazirmatn-Medium',
+  primaryBold: 'Vazirmatn-Bold',
   uthmanicHafs: 'UthmanicHafs',
 } as const;
 
