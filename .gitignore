@@ -87,3 +87,7 @@ public/audio/reciters/**/*.mp3
 mobile-screenshot/
 mobile/.expo/
 .expo/
+
+# Superpowers Brainstorm Artifacts
+.superpowers/
+
