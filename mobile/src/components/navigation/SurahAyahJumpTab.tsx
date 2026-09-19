@@ -144,13 +144,15 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
     const chips: { label: string; value: number }[] = [
       { label: `آیه ${toPersianDigits(1)}`, value: 1 },
     ];
-    if (maxVerses >= 25) {
+    if (maxVerses > 25) {
       chips.push({ label: `آیه ${toPersianDigits(25)}`, value: 25 });
     }
-    if (maxVerses >= 50) {
+    if (maxVerses > 50) {
       chips.push({ label: `آیه ${toPersianDigits(50)}`, value: 50 });
     }
-    chips.push({ label: 'آخرین آیه', value: maxVerses });
+    if (maxVerses > 1) {
+      chips.push({ label: 'آخرین آیه', value: maxVerses });
+    }
     return chips;
   }, [maxVerses]);
 
@@ -378,6 +380,11 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
             </TouchableOpacity>
           );
         }}
+        ListEmptyComponent={
+          <View style={styles.emptySearchContainer}>
+            <Text style={styles.emptySearchText}>سوره‌ای با این مشخصات یافت نشد</Text>
+          </View>
+        }
       />
     </View>
   );
@@ -684,5 +691,16 @@ const styles = StyleSheet.create({
   },
   surahItemNameArabicSelected: {
     color: colors.goldAccent,
+  },
+  emptySearchContainer: {
+    paddingVertical: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptySearchText: {
+    fontFamily: fonts.primary,
+    fontSize: fontSizes.sm,
+    color: colors.textFaded,
+    textAlign: 'center',
   },
 });
