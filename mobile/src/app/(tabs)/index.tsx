@@ -1,26 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Play, BookOpen, Bookmark, Radio, Mic, Award, Compass, Sparkles } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import {
+  Play,
+  BookOpen,
+  Bookmark,
+  Radio,
+  Mic,
+  Award,
+  Compass,
+  Sparkles,
+} from 'lucide-react-native';
+import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, rtlTextAlign } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { SanctuaryBadge } from '@/components/common/SanctuaryBadge';
 import { SanctuaryCard } from '@/components/common/SanctuaryCard';
 import { SearchBar } from '@/components/common/SearchBar';
+import { QuickJumpModal } from '@/components/navigation';
+import { JumpDestination } from '@/services/db/quickJumpContracts';
 import { useReadingStore } from '@/stores/useReadingStore';
 
 export default function HomeScreen() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [greeting, setGreeting] = useState('روز بخیر');
+  const [isQuickJumpOpen, setIsQuickJumpOpen] = useState(false);
 
   const { lastReadChapterId, lastReadVerseNumber, lastReadChapterNameFa } = useReadingStore();
+
+  const handleQuickJump = useCallback(
+    (destination: JumpDestination) => {
+      setIsQuickJumpOpen(false);
+      router.push(
+        `/surah/${destination.chapterId}?verse=${destination.verseNumber}&page=${destination.pageNumber}` as any,
+      );
+    },
+    [router],
+  );
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -43,10 +59,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <AmbientGlow height={320} />
 
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Header Sanctuary Badge & Greeting */}
         <View style={styles.header}>
           <SanctuaryBadge label="فضای معنوی قرآن کریم" />
@@ -92,6 +105,31 @@ export default function HomeScreen() {
           </View>
         </SanctuaryCard>
 
+        {/* Quick Jump Action Card */}
+        <TouchableOpacity
+          style={styles.quickJumpButton}
+          activeOpacity={0.8}
+          onPress={() => setIsQuickJumpOpen(true)}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="پرش سریع به متن قرآن"
+          testID="home-quick-jump-button"
+        >
+          <SanctuaryCard elevated style={styles.quickJumpCard}>
+            <View style={styles.quickJumpRow}>
+              <View style={styles.quickJumpIconContainer}>
+                <Compass size={24} color={colors.goldAccent} />
+              </View>
+              <View style={styles.quickJumpInfo}>
+                <Text style={styles.quickJumpTitle}>پرش سریع به متن قرآن</Text>
+                <Text style={styles.quickJumpSubtitle}>
+                  انتقال مستقیم به سوره، آیه، شماره صفحه یا جزء
+                </Text>
+              </View>
+            </View>
+          </SanctuaryCard>
+        </TouchableOpacity>
+
         {/* Quick Surah Access Pills */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>دسترسی سریع</Text>
@@ -122,9 +160,7 @@ export default function HomeScreen() {
         </View>
 
         <SanctuaryCard style={styles.dailyAyahCard}>
-          <Text style={styles.dailyAyahArabic}>
-            أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ
-          </Text>
+          <Text style={styles.dailyAyahArabic}>أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</Text>
           <Text style={styles.dailyAyahTranslation}>
             «آگاه باشید که تنها با یاد خدا دل‌ها آرام می‌گیرد.»
           </Text>
@@ -153,34 +189,34 @@ export default function HomeScreen() {
             <Text style={styles.gridItemDesc}>فهرست ترتیبی و نزول</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.gridItem}
-            activeOpacity={0.75}
-          >
+          <TouchableOpacity style={styles.gridItem} activeOpacity={0.75}>
             <Radio size={24} color={colors.goldAccent} />
             <Text style={styles.gridItemTitle}>رادیو ۲۴ ساعته</Text>
             <Text style={styles.gridItemDesc}>پخش زنده تلاوت قرآن</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.gridItem}
-            activeOpacity={0.75}
-          >
+          <TouchableOpacity style={styles.gridItem} activeOpacity={0.75}>
             <Mic size={24} color="#38bdf8" />
             <Text style={styles.gridItemTitle}>قاریان برگزیده</Text>
             <Text style={styles.gridItemDesc}>اساتید ایرانی و جهان اسلام</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.gridItem}
-            activeOpacity={0.75}
-          >
+          <TouchableOpacity style={styles.gridItem} activeOpacity={0.75}>
             <Award size={24} color="#ec4899" />
             <Text style={styles.gridItemTitle}>برنامه‌های آموزشی</Text>
             <Text style={styles.gridItemDesc}>تجوید و تفسیر کاربردی</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      <QuickJumpModal
+        visible={isQuickJumpOpen}
+        onClose={() => setIsQuickJumpOpen(false)}
+        onJump={handleQuickJump}
+        initialChapterId={lastReadChapterId || 1}
+        initialVerseNumber={lastReadVerseNumber || 1}
+        testID="home-quick-jump-modal"
+      />
     </View>
   );
 }
@@ -395,5 +431,44 @@ const styles = StyleSheet.create({
     fontFamily: fonts.uiRegular,
     fontSize: 11,
     color: colors.textFaded,
+  },
+  quickJumpButton: {
+    minHeight: 44,
+    marginBottom: spacing.xl,
+  },
+  quickJumpCard: {
+    padding: spacing.md,
+  },
+  quickJumpRow: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    gap: spacing.md,
+  },
+  quickJumpIconContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: borderRadius.circle,
+    backgroundColor: 'rgba(212, 175, 55, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.25)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quickJumpInfo: {
+    flex: 1,
+  },
+  quickJumpTitle: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.md,
+    fontWeight: '700',
+    color: colors.textPrimary,
+    textAlign: rtlTextAlign,
+  },
+  quickJumpSubtitle: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.xs,
+    color: colors.textSecondary,
+    marginTop: 2,
+    textAlign: rtlTextAlign,
   },
 });

@@ -9,9 +9,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Compass } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { SearchBar } from '@/components/common/SearchBar';
+import { QuickJumpModal } from '@/components/navigation';
+import { JumpDestination } from '@/services/db/quickJumpContracts';
 import {
   SurahCardItem,
   JuzCardItem,
@@ -37,19 +40,25 @@ export default function SurahsScreen() {
   const [juzs, setJuzs] = useState<Juz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [isQuickJumpOpen, setIsQuickJumpOpen] = useState(false);
+
+  const handleQuickJump = useCallback(
+    (destination: JumpDestination) => {
+      setIsQuickJumpOpen(false);
+      router.push(
+        `/surah/${destination.chapterId}?verse=${destination.verseNumber}&page=${destination.pageNumber}` as any,
+      );
+    },
+    [router],
+  );
 
   const loadCatalogData = useCallback(async () => {
     try {
       setIsLoading(true);
       setHasError(false);
-      const [allSurahs, allJuzs] = await Promise.all([
-        getAllSurahs('id'),
-        getAllJuzs(),
-      ]);
+      const [allSurahs, allJuzs] = await Promise.all([getAllSurahs('id'), getAllJuzs()]);
 
-      const sortedRev = [...allSurahs].sort(
-        (a, b) => a.revelation_order - b.revelation_order
-      );
+      const sortedRev = [...allSurahs].sort((a, b) => a.revelation_order - b.revelation_order);
 
       setSurahs(allSurahs);
       setRevelationSurahs(sortedRev);
@@ -75,14 +84,14 @@ export default function SurahsScreen() {
     (surah: Chapter) => {
       router.push(`/surah/${surah.id}` as any);
     },
-    [router]
+    [router],
   );
 
   const handleJuzPress = useCallback(
     (juz: Juz) => {
       router.push(`/surah/${juz.first_chapter_id}` as any);
     },
-    [router]
+    [router],
   );
 
   const filteredData = useMemo<CatalogItem[]>(() => {
@@ -121,7 +130,7 @@ export default function SurahsScreen() {
       }
       return `${activeTab}-${item.id}`;
     },
-    [activeTab]
+    [activeTab],
   );
 
   const renderItem = useCallback<ListRenderItem<CatalogItem>>(
@@ -139,7 +148,7 @@ export default function SurahsScreen() {
         />
       );
     },
-    [activeTab, handleSurahPress, handleJuzPress]
+    [activeTab, handleSurahPress, handleJuzPress],
   );
 
   return (
@@ -155,13 +164,28 @@ export default function SurahsScreen() {
             <Text style={styles.subtitle}>سوره‌ها و جزءهای کلام‌الله مجید</Text>
           </View>
 
-          <View
-            style={styles.countBadge}
-            accessible={true}
-            accessibilityRole="text"
-            accessibilityLabel={`تعداد: ${countBadgeText}`}
-          >
-            <Text style={styles.countBadgeText}>{countBadgeText}</Text>
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              style={styles.quickJumpButton}
+              activeOpacity={0.75}
+              onPress={() => setIsQuickJumpOpen(true)}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="پرش سریع"
+              testID="catalog-quick-jump-button"
+            >
+              <Compass size={16} color={colors.goldAccent} />
+              <Text style={styles.quickJumpButtonText}>پرش سریع</Text>
+            </TouchableOpacity>
+
+            <View
+              style={styles.countBadge}
+              accessible={true}
+              accessibilityRole="text"
+              accessibilityLabel={`تعداد: ${countBadgeText}`}
+            >
+              <Text style={styles.countBadgeText}>{countBadgeText}</Text>
+            </View>
           </View>
         </View>
 
@@ -174,10 +198,7 @@ export default function SurahsScreen() {
         />
 
         {/* 3-way Segmented Catalog Tab Switcher */}
-        <CatalogTabSwitcher
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-        />
+        <CatalogTabSwitcher activeTab={activeTab} onTabChange={handleTabChange} />
       </View>
 
       {/* Main Content Area */}
@@ -210,12 +231,7 @@ export default function SurahsScreen() {
             styles.listContent,
             filteredData.length === 0 && styles.listContentEmpty,
           ]}
-          ListEmptyComponent={
-            <CatalogEmptyState
-              query={query}
-              onClearQuery={() => setQuery('')}
-            />
-          }
+          ListEmptyComponent={<CatalogEmptyState query={query} onClearQuery={() => setQuery('')} />}
           initialNumToRender={12}
           maxToRenderPerBatch={12}
           windowSize={5}
@@ -224,6 +240,15 @@ export default function SurahsScreen() {
           showsVerticalScrollIndicator={false}
         />
       )}
+
+      <QuickJumpModal
+        visible={isQuickJumpOpen}
+        onClose={() => setIsQuickJumpOpen(false)}
+        onJump={handleQuickJump}
+        initialChapterId={1}
+        initialVerseNumber={1}
+        testID="catalog-quick-jump-modal"
+      />
     </View>
   );
 }
@@ -244,6 +269,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  quickJumpButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 44,
+    minWidth: 44,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    backgroundColor: colors.surfaceFloating,
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.3)',
+    borderRadius: borderRadius.pill,
+    gap: 6,
+  },
+  quickJumpButtonText: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.xs,
+    fontWeight: '600',
+    color: colors.goldAccent,
   },
   titleGroup: {
     alignItems: 'flex-start',
