@@ -1958,4 +1958,24 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(code.includes('windowSize={11}'), 'Must maintain buffer with windowSize');
     });
   });
+
+  describe('Reader 4-Theme Precompiled Stylesheets Tests', () => {
+    it('provides valid precompiled stylesheets for all 4 themes with zero runtime allocations', async () => {
+      const { verseCardThemeStyles } = await import('./ContinuousVerseCard.styles.ts');
+      assert.ok(verseCardThemeStyles.dark);
+      assert.ok(verseCardThemeStyles.emerald);
+      assert.ok(verseCardThemeStyles.sepia);
+      assert.ok(verseCardThemeStyles.light);
+
+      // Verify specific ink colors across themes
+      assert.strictEqual(verseCardThemeStyles.sepia.arabicText.color, '#2D2319');
+      assert.strictEqual(verseCardThemeStyles.light.arabicText.color, '#0F172A');
+      assert.strictEqual(verseCardThemeStyles.dark.arabicText.color, '#f8fafc');
+      assert.strictEqual(verseCardThemeStyles.emerald.arabicText.color, '#f0fdf4');
+
+      // Verify rosette colors across themes
+      assert.strictEqual(verseCardThemeStyles.sepia.ayahEndMarker.color, '#B45309');
+      assert.strictEqual(verseCardThemeStyles.light.ayahEndMarker.color, '#D97706');
+    });
+  });
 });

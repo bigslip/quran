@@ -18,7 +18,7 @@ import {
   Compass,
   ChevronDown,
 } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow } from '@/theme';
+import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, useAppTheme } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import {
   SurahHeaderBanner,
@@ -44,6 +44,7 @@ import { DEFAULT_RECITER_ID } from '@/services/audio/reciterService';
 
 export default function SurahReaderScreen() {
   const router = useRouter();
+  const { theme, colors } = useAppTheme();
   const { id, verse } = useLocalSearchParams<{ id: string; verse?: string }>();
   const chapterId = Number(id) || 1;
 
@@ -648,24 +649,34 @@ export default function SurahReaderScreen() {
 
   if (loading) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.center, { backgroundColor: colors.background }]}>
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={styles.loadingText}>در حال بارگذاری سوره...</Text>
+        <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
+          در حال بارگذاری سوره...
+        </Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <AmbientGlow height={180} />
 
       {/* Top Bar Navigation (RTL) */}
-      <View style={styles.topBar}>
+      <View
+        style={[
+          styles.topBar,
+          { backgroundColor: colors.backgroundElevated, borderBottomColor: colors.borderSubtle },
+        ]}
+      >
         {/* Leading Action (RTL: Back Button) - balanced width */}
         <View style={styles.topBarLeading}>
           <TouchableOpacity
             onPress={() => router.back()}
-            style={styles.navButton}
+            style={[
+              styles.navButton,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+            ]}
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="بازگشت به فهرست سوره‌ها"
@@ -677,7 +688,13 @@ export default function SurahReaderScreen() {
 
         {/* Centerpiece: Interactive Sanctuary Quick Jump Navigation Pill */}
         <TouchableOpacity
-          style={styles.topBarTitlePill}
+          style={[
+            styles.topBarTitlePill,
+            {
+              backgroundColor: colors.surfaceFloating,
+              borderColor: colors.borderSubtle,
+            },
+          ]}
           onPress={() => {
             setQuickJumpInitialTab('surah_ayah');
             setIsQuickJumpOpen(true);
@@ -692,7 +709,7 @@ export default function SurahReaderScreen() {
           {/* Primary Row: Compass + Persian Surah Title + Dropdown Chevron */}
           <View style={styles.topBarTitleRow}>
             <Compass size={13} color={colors.primaryLight} style={styles.pillCompass} />
-            <Text style={styles.topBarSurahFa} numberOfLines={1}>
+            <Text style={[styles.topBarSurahFa, { color: colors.textPrimary }]} numberOfLines={1}>
               {formatSurahTitleFa(chapter?.name_fa)}
             </Text>
             <ChevronDown size={13} color={colors.goldAccent} style={styles.pillChevron} />
@@ -700,11 +717,17 @@ export default function SurahReaderScreen() {
 
           {/* Subtitle Row: Sacred Arabic calligraphy & Revelation metadata */}
           <View style={styles.topBarSubtitleRow}>
-            <Text style={styles.topBarSurahArabic} numberOfLines={1}>
+            <Text
+              style={[styles.topBarSurahArabic, { color: colors.goldAccent }]}
+              numberOfLines={1}
+            >
               {chapter?.name_arabic}
             </Text>
-            <Text style={styles.topBarSurahMetaDivider}>•</Text>
-            <Text style={styles.topBarSurahMetaText} numberOfLines={1}>
+            <Text style={[styles.topBarSurahMetaDivider, { color: colors.textMuted }]}>•</Text>
+            <Text
+              style={[styles.topBarSurahMetaText, { color: colors.textSecondary }]}
+              numberOfLines={1}
+            >
               {toPersianDigits(chapter?.id || 1)} (
               {chapter?.revelation_place === 'makkah' ? 'مکی' : 'مدنی'})
             </Text>
@@ -716,7 +739,10 @@ export default function SurahReaderScreen() {
           {/* Dual-Mode Toggle Button (>= 44x44px touch target) */}
           <TouchableOpacity
             onPress={handleToggleViewMode}
-            style={styles.navButton}
+            style={[
+              styles.navButton,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+            ]}
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="تغییر حالت نمایش"
@@ -732,7 +758,10 @@ export default function SurahReaderScreen() {
           {/* Reader Settings Button (>= 44x44px touch target) */}
           <TouchableOpacity
             onPress={() => setIsSettingsOpen(true)}
-            style={styles.navButton}
+            style={[
+              styles.navButton,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+            ]}
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="تنظیمات مطالعه قرآن"
@@ -751,6 +780,7 @@ export default function SurahReaderScreen() {
           keyExtractor={(item) => item.verse_key}
           contentContainerStyle={[
             styles.versesListContent,
+            { backgroundColor: colors.background },
             activeVerseKey ? styles.versesListWithDock : null,
           ]}
           CellRendererComponent={CellRenderer}
@@ -788,6 +818,7 @@ export default function SurahReaderScreen() {
           renderItem={({ item }) => (
             <ContinuousVerseCard
               verse={item}
+              theme={theme}
               isActivePlaying={activeVerseKey === item.verse_key && isPlaying}
               isHighlighted={highlightedVerseKey === item.verse_key}
               quranFont={quranFont}
@@ -828,11 +859,18 @@ export default function SurahReaderScreen() {
           }}
         />
       ) : (
-        <View style={[styles.mushafContainer, activeVerseKey ? styles.mushafWithDock : null]}>
+        <View
+          style={[
+            styles.mushafContainer,
+            { backgroundColor: colors.background },
+            activeVerseKey ? styles.mushafWithDock : null,
+          ]}
+        >
           <MushafPageView
             pageNumber={currentPage}
             verses={pageVerses}
             words={pageWords}
+            theme={theme}
             quranFont={quranFont}
             fontScale={fontScale}
             surahName={chapter?.name_fa}
@@ -975,10 +1013,10 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: spacing.sm,
     marginHorizontal: spacing.xs,
-    backgroundColor: 'rgba(7, 36, 28, 0.65)',
+    backgroundColor: colors.surfaceFloating,
     borderRadius: borderRadius.md,
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.22)',
+    borderColor: colors.borderSubtle,
     minHeight: 44,
   },
   topBarTitleRow: {
