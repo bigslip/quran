@@ -1,6 +1,8 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { readingStorage } from './readingStorage.ts';
 
-interface ReadingState {
+export interface ReadingState {
   lastReadChapterId: number;
   lastReadVerseNumber: number;
   lastReadChapterNameFa: string;
@@ -27,7 +29,7 @@ interface ReadingState {
 
   setLastRead: (chapterId: number, verseNumber: number, chapterNameFa: string) => void;
   setFontScale: (scale: number) => void;
-  /** Updates the Quran text encoding standard ('uthmani' vs 'indopak'). */
+  /** Updates the Quran text encoding standard ('uthmani' vs 'indopak') and synchronizes display typeface. */
   setQuranScript: (script: 'uthmani' | 'indopak') => void;
   setSelectedReciterId: (id: number) => void;
   toggleWordByWord: () => void;
@@ -35,7 +37,7 @@ interface ReadingState {
 
   // Dual-mode reading engine setters
   setViewMode: (mode: 'continuous' | 'mushaf') => void;
-  /** Updates the Quran display typeface ('hafs' vs 'indopak'). */
+  /** Updates the Quran display typeface ('hafs' vs 'indopak') and synchronizes script standard. */
   setQuranFont: (font: 'hafs' | 'indopak') => void;
   setActiveVerseKey: (key: string | null) => void;
   setIsPlaying: (playing: boolean) => void;
@@ -49,58 +51,106 @@ interface ReadingState {
   setWordByWordContentType: (types: ('translation' | 'transliteration')[]) => void;
 }
 
-export const useReadingStore = create<ReadingState>((set) => ({
-  lastReadChapterId: 1,
-  lastReadVerseNumber: 1,
-  lastReadChapterNameFa: 'فاتحه (گشایش)',
-  fontScale: 1.0,
-  quranScript: 'uthmani',
-  selectedReciterId: 201, // Shahriar Parhizgar default
-  showWordByWord: true,
-  showTranslation: true,
+export const useReadingStore = create<ReadingState>()(
+  persist(
+    (set) => ({
+      lastReadChapterId: 1,
+      lastReadVerseNumber: 1,
+      lastReadChapterNameFa: 'فاتحه (گشایش)',
+      fontScale: 1.0,
+      quranScript: 'uthmani',
+      selectedReciterId: 201, // Shahriar Parhizgar default
+      showWordByWord: true,
+      showTranslation: true,
 
-  // Dual-mode reading engine defaults
-  viewMode: 'continuous',
-  quranFont: 'hafs',
-  activeVerseKey: null,
-  isPlaying: false,
-  activeTranslation: 'makarem',
+      // Dual-mode reading engine defaults
+      viewMode: 'continuous',
+      quranFont: 'hafs',
+      activeVerseKey: null,
+      isPlaying: false,
+      activeTranslation: 'makarem',
 
-  // Reciter, multi-translation, and word-by-word linguistics defaults
-  selectedTranslationIds: [841], // Makarem default
-  wordByWordLocale: 'fa',
-  wordByWordDisplay: 'inline',
-  wordByWordContentType: ['translation'],
+      // Reciter, multi-translation, and word-by-word linguistics defaults
+      selectedTranslationIds: [841], // Makarem default
+      wordByWordLocale: 'fa',
+      wordByWordDisplay: 'inline',
+      wordByWordContentType: ['translation'],
 
-  setLastRead: (chapterId, verseNumber, chapterNameFa) =>
-    set({
-      lastReadChapterId: chapterId,
-      lastReadVerseNumber: verseNumber,
-      lastReadChapterNameFa: chapterNameFa,
+      setLastRead: (chapterId, verseNumber, chapterNameFa) =>
+        set({
+          lastReadChapterId: chapterId,
+          lastReadVerseNumber: verseNumber,
+          lastReadChapterNameFa: chapterNameFa,
+        }),
+
+      setFontScale: (scale) => set({ fontScale: Math.max(0.8, Math.min(1.6, scale)) }),
+
+      setQuranScript: (script) =>
+        set({
+          quranScript: script,
+          quranFont: script === 'indopak' ? 'indopak' : 'hafs',
+        }),
+
+      setSelectedReciterId: (id) => set({ selectedReciterId: id }),
+      toggleWordByWord: () => set((state) => ({ showWordByWord: !state.showWordByWord })),
+      toggleTranslation: () => set((state) => ({ showTranslation: !state.showTranslation })),
+
+      // Dual-mode reading engine actions
+      setViewMode: (viewMode) => set({ viewMode }),
+
+      setQuranFont: (quranFont) =>
+        set({
+          quranFont,
+          quranScript: quranFont === 'indopak' ? 'indopak' : 'uthmani',
+        }),
+
+      setActiveVerseKey: (activeVerseKey) => set({ activeVerseKey }),
+      setIsPlaying: (isPlaying) => set({ isPlaying }),
+      setActiveTranslation: (activeTranslation) => set({ activeTranslation }),
+
+      // Reciter, multi-translation, and word-by-word actions
+      setSelectedTranslationIds: (ids) =>
+        set({ selectedTranslationIds: Array.isArray(ids) && ids.length > 0 ? ids : [841] }),
+
+      toggleSelectedTranslationId: (id) =>
+        set((state) => {
+          const exists = state.selectedTranslationIds.includes(id);
+          // Invariant: keep at least one translation selected
+          if (exists && state.selectedTranslationIds.length <= 1) {
+            return state;
+          }
+          return {
+            selectedTranslationIds: exists
+              ? state.selectedTranslationIds.filter((tId) => tId !== id)
+              : [...state.selectedTranslationIds, id],
+          };
+        }),
+
+      setWordByWordLocale: (locale) => set({ wordByWordLocale: locale }),
+      setWordByWordDisplay: (display) => set({ wordByWordDisplay: display }),
+      setWordByWordContentType: (types) => set({ wordByWordContentType: types }),
     }),
-
-  setFontScale: (scale) => set({ fontScale: Math.max(0.8, Math.min(1.6, scale)) }),
-  setQuranScript: (script) => set({ quranScript: script }),
-  setSelectedReciterId: (id) => set({ selectedReciterId: id }),
-  toggleWordByWord: () => set((state) => ({ showWordByWord: !state.showWordByWord })),
-  toggleTranslation: () => set((state) => ({ showTranslation: !state.showTranslation })),
-
-  // Dual-mode reading engine actions
-  setViewMode: (viewMode) => set({ viewMode }),
-  setQuranFont: (quranFont) => set({ quranFont }),
-  setActiveVerseKey: (activeVerseKey) => set({ activeVerseKey }),
-  setIsPlaying: (isPlaying) => set({ isPlaying }),
-  setActiveTranslation: (activeTranslation) => set({ activeTranslation }),
-
-  // Reciter, multi-translation, and word-by-word actions
-  setSelectedTranslationIds: (ids) => set({ selectedTranslationIds: ids }),
-  toggleSelectedTranslationId: (id) =>
-    set((state) => ({
-      selectedTranslationIds: state.selectedTranslationIds.includes(id)
-        ? state.selectedTranslationIds.filter((tId) => tId !== id)
-        : [...state.selectedTranslationIds, id],
-    })),
-  setWordByWordLocale: (locale) => set({ wordByWordLocale: locale }),
-  setWordByWordDisplay: (display) => set({ wordByWordDisplay: display }),
-  setWordByWordContentType: (types) => set({ wordByWordContentType: types }),
-}));
+    {
+      name: 'quran-reading-store',
+      storage: createJSONStorage(() => readingStorage),
+      // Only persist reading progress and user preferences; exclude active playback state
+      partialize: (state) => ({
+        lastReadChapterId: state.lastReadChapterId,
+        lastReadVerseNumber: state.lastReadVerseNumber,
+        lastReadChapterNameFa: state.lastReadChapterNameFa,
+        fontScale: state.fontScale,
+        quranScript: state.quranScript,
+        selectedReciterId: state.selectedReciterId,
+        showWordByWord: state.showWordByWord,
+        showTranslation: state.showTranslation,
+        viewMode: state.viewMode,
+        quranFont: state.quranFont,
+        activeTranslation: state.activeTranslation,
+        selectedTranslationIds: state.selectedTranslationIds,
+        wordByWordLocale: state.wordByWordLocale,
+        wordByWordDisplay: state.wordByWordDisplay,
+        wordByWordContentType: state.wordByWordContentType,
+      }),
+    },
+  ),
+);

@@ -88,15 +88,35 @@ describe('Reciter Catalog Service Tests', () => {
 
     // Minshawi (9)
     const minshawiUrl = getVerseAudioUrl(9, 114, 1);
-    assert.strictEqual(minshawiUrl, 'https://everyayah.com/data/Minshawy_Murattal_128kbps/114001.mp3');
+    assert.strictEqual(
+      minshawiUrl,
+      'https://everyayah.com/data/Minshawy_Murattal_128kbps/114001.mp3',
+    );
 
     // Karim Mansouri (203)
     const mansouriUrl = getVerseAudioUrl(203, 1, 1);
     assert.strictEqual(mansouriUrl, 'https://everyayah.com/data/Karim_Mansoori_40kbps/001001.mp3');
+
+    // Hani ar-Rifai (6)
+    const rifaiUrl = getVerseAudioUrl(6, 1, 1);
+    assert.strictEqual(rifaiUrl, 'https://everyayah.com/data/Hani_Rifai_192kbps/001001.mp3');
+
+    // Abdur-Rahman as-Sudais (3)
+    const sudaisUrl = getVerseAudioUrl(3, 1, 1);
+    assert.strictEqual(
+      sudaisUrl,
+      'https://everyayah.com/data/Abdurrahmaan_As-Sudais_192kbps/001001.mp3',
+    );
+
+    // Saud ash-Shuraym (10)
+    const shuraymUrl = getVerseAudioUrl(10, 1, 1);
+    assert.strictEqual(
+      shuraymUrl,
+      'https://everyayah.com/data/Saood_ash-Shuraym_128kbps/001001.mp3',
+    );
 
     // Unknown reciter falls back to Parhizgar
     const fallbackUrl = getVerseAudioUrl(99999, 1, 1);
     assert.strictEqual(fallbackUrl, 'https://everyayah.com/data/Parhizgar_48kbps/001001.mp3');
   });
 });
-

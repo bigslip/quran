@@ -43,6 +43,22 @@ export async function createCustomTag(name: string, color = '#10B981'): Promise<
   }
 
   const userDb = await getUserDatabase();
+  const existing = await userDb.getFirst<{
+    id: string;
+    name: string;
+    color: string;
+    is_preset: number;
+  }>('SELECT id, name, color, is_preset FROM user_tags WHERE name = ?;', [trimmed]);
+  if (existing) {
+    return {
+      id: existing.id,
+      name: existing.name,
+      color: existing.color,
+      is_preset: Boolean(existing.is_preset),
+      count: 0,
+    };
+  }
+
   const id = `tag_${Date.now().toString(36)}`;
   if (userDb.run) {
     await userDb.run(
@@ -62,8 +78,15 @@ export async function getBookmarkedKeys(): Promise<Set<string>> {
 export async function deleteBookmarkByVerseKey(verseKey: string): Promise<boolean> {
   const userDb = await getUserDatabase();
   if (userDb.run) {
-    await userDb.run('DELETE FROM user_bookmarks WHERE verse_key = ?;', [verseKey]);
-    return true;
+    const bm = await userDb.getFirst<{ id: string }>(
+      'SELECT id FROM user_bookmarks WHERE verse_key = ?;',
+      [verseKey],
+    );
+    if (bm) {
+      await userDb.run('DELETE FROM bookmark_tag_map WHERE bookmark_id = ?;', [bm.id]);
+      await userDb.run('DELETE FROM user_bookmarks WHERE id = ?;', [bm.id]);
+      return true;
+    }
   }
   return false;
 }
@@ -71,6 +94,7 @@ export async function deleteBookmarkByVerseKey(verseKey: string): Promise<boolea
 export async function deleteBookmark(id: string): Promise<boolean> {
   const userDb = await getUserDatabase();
   if (userDb.run) {
+    await userDb.run('DELETE FROM bookmark_tag_map WHERE bookmark_id = ?;', [id]);
     await userDb.run('DELETE FROM user_bookmarks WHERE id = ?;', [id]);
     return true;
   }

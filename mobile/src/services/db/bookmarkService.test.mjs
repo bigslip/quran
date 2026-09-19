@@ -162,4 +162,32 @@ describe('Bookmark Service Layer Tests', () => {
     assert.strictEqual(ascSorted[0].verse_key, '2:1');
     assert.strictEqual(ascSorted[1].verse_key, '1:1');
   });
+
+  it('should return existing tag when createCustomTag is called with duplicate name', async () => {
+    const tag1 = await createCustomTag('اخلاق', '#10B981');
+    const tag2 = await createCustomTag('اخلاق', '#EF4444');
+    assert.strictEqual(tag1.id, tag2.id);
+    assert.strictEqual(tag2.name, 'اخلاق');
+  });
+
+  it('should clean up bookmark_tag_map when deleting by verse_key or id', async () => {
+    const created = await addBookmark({
+      verse_key: '2:1',
+      chapter_id: 2,
+      verse_number: 1,
+      tag_ids: ['tag-fav', 'tag-dua'],
+    });
+
+    const mapRowsBefore = userDb
+      .prepare('SELECT count(*) as count FROM bookmark_tag_map WHERE bookmark_id = ?;')
+      .get(created.id);
+    assert.strictEqual(mapRowsBefore.count, 2);
+
+    await deleteBookmarkByVerseKey('2:1');
+
+    const mapRowsAfter = userDb
+      .prepare('SELECT count(*) as count FROM bookmark_tag_map WHERE bookmark_id = ?;')
+      .get(created.id);
+    assert.strictEqual(mapRowsAfter.count, 0);
+  });
 });

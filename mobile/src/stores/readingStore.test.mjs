@@ -30,12 +30,38 @@ describe('useReadingStore Parity State Tests', () => {
     toggleSelectedTranslationId(841);
     assert.deepStrictEqual(useReadingStore.getState().selectedTranslationIds, [842, 843]);
 
-    // Restoring default
+    // Invariant: Cannot remove the last remaining translation
     setSelectedTranslationIds([841]);
+    toggleSelectedTranslationId(841); // Attempt to deselect only translation
+    assert.deepStrictEqual(
+      useReadingStore.getState().selectedTranslationIds,
+      [841],
+      'Must retain at least 1 translation',
+    );
+  });
+
+  it('should synchronize quranScript and quranFont across settings and reader', () => {
+    const { setQuranScript, setQuranFont } = useReadingStore.getState();
+
+    setQuranScript('indopak');
+    assert.strictEqual(useReadingStore.getState().quranScript, 'indopak');
+    assert.strictEqual(useReadingStore.getState().quranFont, 'indopak');
+
+    setQuranScript('uthmani');
+    assert.strictEqual(useReadingStore.getState().quranScript, 'uthmani');
+    assert.strictEqual(useReadingStore.getState().quranFont, 'hafs');
+
+    setQuranFont('indopak');
+    assert.strictEqual(useReadingStore.getState().quranFont, 'indopak');
+    assert.strictEqual(useReadingStore.getState().quranScript, 'indopak');
+
+    // Restore default
+    setQuranFont('hafs');
   });
 
   it('should update word-by-word preferences', () => {
-    const { setWordByWordLocale, setWordByWordDisplay, setWordByWordContentType } = useReadingStore.getState();
+    const { setWordByWordLocale, setWordByWordDisplay, setWordByWordContentType } =
+      useReadingStore.getState();
 
     setWordByWordLocale('en');
     assert.strictEqual(useReadingStore.getState().wordByWordLocale, 'en');
@@ -44,7 +70,10 @@ describe('useReadingStore Parity State Tests', () => {
     assert.strictEqual(useReadingStore.getState().wordByWordDisplay, 'tooltip');
 
     setWordByWordContentType(['translation', 'transliteration']);
-    assert.deepStrictEqual(useReadingStore.getState().wordByWordContentType, ['translation', 'transliteration']);
+    assert.deepStrictEqual(useReadingStore.getState().wordByWordContentType, [
+      'translation',
+      'transliteration',
+    ]);
 
     // Restore defaults
     setWordByWordLocale('fa');
@@ -62,11 +91,11 @@ describe('useReadingStore Parity State Tests', () => {
     it('formats reciter badge with name and style', () => {
       assert.strictEqual(
         formatReciterBadge('استاد شهریار پرهیزگار', 'ترتیل'),
-        'استاد شهریار پرهیزگار (ترتیل)'
+        'استاد شهریار پرهیزگار (ترتیل)',
       );
       assert.strictEqual(
         formatReciterBadge('مشاری راشد العفاسی', 'ترتیل'),
-        'مشاری راشد العفاسی (ترتیل)'
+        'مشاری راشد العفاسی (ترتیل)',
       );
     });
   });

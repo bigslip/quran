@@ -82,3 +82,8 @@ docs/specs
 # Local Quran Audio Assets
 public/audio/wbw/*.mp3
 public/audio/reciters/**/*.mp3
+
+# Mobile Artifacts
+mobile-screenshot/
+mobile/.expo/
+.expo/

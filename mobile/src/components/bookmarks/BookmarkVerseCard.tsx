@@ -61,501 +61,500 @@ export interface BookmarkVerseCardProps {
   testID?: string;
 }
 
-export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(({
-  bookmark,
-  onPressRead,
-  onDelete,
-  onUpdateNote,
-  onUpdateTags,
-  isPlaying = false,
-  onTogglePlay,
-  availableTags,
-  style,
-  testID = 'bookmark-verse-card',
-}) => {
-  // Reading preferences
-  const {
-    quranFont,
-    fontScale,
-    activeTranslation,
-    selectedTranslationIds,
-    selectedReciterId,
-  } = useReadingStore();
+export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
+  ({
+    bookmark,
+    onPressRead,
+    onDelete,
+    onUpdateNote,
+    onUpdateTags,
+    isPlaying = false,
+    onTogglePlay,
+    availableTags,
+    style,
+    testID = 'bookmark-verse-card',
+  }) => {
+    // Reading preferences
+    const { quranFont, fontScale, activeTranslation, selectedTranslationIds, selectedReciterId } =
+      useReadingStore();
 
-  // All tags from store if availableTags prop not explicitly provided
-  const storeTags = useBookmarkStore((state) => state.tags);
-  const tagList = availableTags && availableTags.length > 0 ? availableTags : storeTags;
+    // All tags from store if availableTags prop not explicitly provided
+    const storeTags = useBookmarkStore((state) => state.tags);
+    const tagList = availableTags && availableTags.length > 0 ? availableTags : storeTags;
 
-  // Local state for inline note editor and tag selector modal
-  const [isEditingNote, setIsEditingNote] = useState<boolean>(false);
-  const [noteInput, setNoteInput] = useState<string>(bookmark.note || '');
-  const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
+    // Local state for inline note editor and tag selector modal
+    const [isEditingNote, setIsEditingNote] = useState<boolean>(false);
+    const [noteInput, setNoteInput] = useState<string>(bookmark.note || '');
+    const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
 
-  // Scaled Quranic typography
-  const scaledQuranFontSize = Math.round(
-    BOOKMARK_COMPONENT_CONTRACTS.card.arabicFontSize * (fontScale || 1.0)
-  );
-  const scaledQuranLineHeight = Math.round(
-    BOOKMARK_COMPONENT_CONTRACTS.card.arabicLineHeight * (fontScale || 1.0)
-  );
-  const arabicFontFamily = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
-  const arabicText =
-    quranFont === 'indopak' && bookmark.text_indopak
-      ? bookmark.text_indopak
-      : bookmark.text_uthmani;
+    // Scaled Quranic typography
+    const scaledQuranFontSize = Math.round(
+      BOOKMARK_COMPONENT_CONTRACTS.card.arabicFontSize * (fontScale || 1.0),
+    );
+    const scaledQuranLineHeight = Math.round(
+      BOOKMARK_COMPONENT_CONTRACTS.card.arabicLineHeight * (fontScale || 1.0),
+    );
+    const arabicFontFamily = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
+    const arabicText =
+      quranFont === 'indopak' && bookmark.text_indopak
+        ? bookmark.text_indopak
+        : bookmark.text_uthmani;
 
-  // Titles & badges
-  const chapterTitle = formatBookmarkChapterTitle(bookmark.chapter_name_fa);
-  const ayahBadgeText = formatBookmarkAyahBadge(bookmark.verse_number);
-  const relativeDateText = formatRelativeTimeFa(bookmark.created_at);
+    // Titles & badges
+    const chapterTitle = formatBookmarkChapterTitle(bookmark.chapter_name_fa);
+    const ayahBadgeText = formatBookmarkAyahBadge(bookmark.verse_number);
+    const relativeDateText = formatRelativeTimeFa(bookmark.created_at);
 
-  // Translations to display
-  const translations = useMemo(() => {
-    const list: { id: number; title: string; text: string }[] = [];
+    // Translations to display
+    const translations = useMemo(() => {
+      const list: { id: number; title: string; text: string }[] = [];
 
-    // Check if multi-translation IDs are set
-    if (selectedTranslationIds && selectedTranslationIds.length > 0) {
-      if (selectedTranslationIds.includes(841) && bookmark.translation_fa_makarem) {
-        list.push({ id: 841, title: 'مکارم شیرازی', text: bookmark.translation_fa_makarem });
+      // Check if multi-translation IDs are set
+      if (selectedTranslationIds && selectedTranslationIds.length > 0) {
+        if (selectedTranslationIds.includes(841) && bookmark.translation_fa_makarem) {
+          list.push({ id: 841, title: 'مکارم شیرازی', text: bookmark.translation_fa_makarem });
+        }
+        if (selectedTranslationIds.includes(842) && bookmark.translation_fa_ansarian) {
+          list.push({ id: 842, title: 'حسین انصاریان', text: bookmark.translation_fa_ansarian });
+        }
+        if (selectedTranslationIds.includes(131) && bookmark.translation_en_saheeh) {
+          list.push({
+            id: 131,
+            title: 'Saheeh International',
+            text: bookmark.translation_en_saheeh,
+          });
+        }
       }
-      if (selectedTranslationIds.includes(842) && bookmark.translation_fa_ansarian) {
-        list.push({ id: 842, title: 'حسین انصاریان', text: bookmark.translation_fa_ansarian });
-      }
-      if (selectedTranslationIds.includes(131) && bookmark.translation_en_saheeh) {
-        list.push({ id: 131, title: 'Saheeh International', text: bookmark.translation_en_saheeh });
-      }
-    }
 
-    // Fallback to activeTranslation setting if list is still empty
-    if (list.length === 0) {
-      if (
-        (activeTranslation === 'makarem' || activeTranslation === 'both') &&
-        bookmark.translation_fa_makarem
-      ) {
-        list.push({ id: 841, title: 'مکارم شیرازی', text: bookmark.translation_fa_makarem });
+      // Fallback to activeTranslation setting if list is still empty
+      if (list.length === 0) {
+        if (
+          (activeTranslation === 'makarem' || activeTranslation === 'both') &&
+          bookmark.translation_fa_makarem
+        ) {
+          list.push({ id: 841, title: 'مکارم شیرازی', text: bookmark.translation_fa_makarem });
+        }
+        if (
+          (activeTranslation === 'ansarian' || activeTranslation === 'both') &&
+          bookmark.translation_fa_ansarian
+        ) {
+          list.push({ id: 842, title: 'حسین انصاریان', text: bookmark.translation_fa_ansarian });
+        }
       }
-      if (
-        (activeTranslation === 'ansarian' || activeTranslation === 'both') &&
-        bookmark.translation_fa_ansarian
-      ) {
-        list.push({ id: 842, title: 'حسین انصاریان', text: bookmark.translation_fa_ansarian });
+
+      // Ensure at least one translation shows if available
+      if (list.length === 0) {
+        if (bookmark.translation_fa_makarem) {
+          list.push({ id: 841, title: 'مکارم شیرازی', text: bookmark.translation_fa_makarem });
+        } else if (bookmark.translation_fa_ansarian) {
+          list.push({ id: 842, title: 'حسین انصاریان', text: bookmark.translation_fa_ansarian });
+        } else if (bookmark.translation_en_saheeh) {
+          list.push({
+            id: 131,
+            title: 'Saheeh International',
+            text: bookmark.translation_en_saheeh,
+          });
+        }
       }
-    }
 
-    // Ensure at least one translation shows if available
-    if (list.length === 0) {
-      if (bookmark.translation_fa_makarem) {
-        list.push({ id: 841, title: 'مکارم شیرازی', text: bookmark.translation_fa_makarem });
-      } else if (bookmark.translation_fa_ansarian) {
-        list.push({ id: 842, title: 'حسین انصاریان', text: bookmark.translation_fa_ansarian });
-      }
-    }
+      return list;
+    }, [selectedTranslationIds, activeTranslation, bookmark]);
 
-    return list;
-  }, [selectedTranslationIds, activeTranslation, bookmark]);
+    const showTranslatorChips = translations.length > 1;
 
-  const showTranslatorChips = translations.length > 1;
-
-  // Audio recitation handler
-  const handleTogglePlay = useCallback(() => {
-    if (onTogglePlay) {
-      onTogglePlay();
-    } else {
-      if (isPlaying) {
-        audioPlayerService.stop();
+    // Audio recitation handler
+    const handleTogglePlay = useCallback(() => {
+      if (onTogglePlay) {
+        onTogglePlay();
       } else {
-        const reciter = selectedReciterId || 201;
-        audioPlayerService.playVerse(reciter, bookmark.chapter_id, bookmark.verse_number);
+        if (isPlaying) {
+          audioPlayerService.stop();
+        } else {
+          const reciter = selectedReciterId || 201;
+          audioPlayerService.playVerse(reciter, bookmark.chapter_id, bookmark.verse_number);
+        }
       }
-    }
-  }, [onTogglePlay, isPlaying, selectedReciterId, bookmark]);
+    }, [onTogglePlay, isPlaying, selectedReciterId, bookmark]);
 
-  // Share handler
-  const handleShare = useCallback(async () => {
-    try {
-      const primaryTrans = translations.length > 0 ? translations[0].text : '';
-      const shareMessage = formatBookmarkShareText(bookmark, primaryTrans);
-      await Share.share({
-        message: shareMessage,
-      });
-    } catch (err) {
-      console.warn('[BookmarkVerseCard] Share failed:', err);
-    }
-  }, [bookmark, translations]);
+    // Share handler
+    const handleShare = useCallback(async () => {
+      try {
+        const primaryTrans = translations.length > 0 ? translations[0].text : '';
+        const shareMessage = formatBookmarkShareText(bookmark, primaryTrans);
+        await Share.share({
+          message: shareMessage,
+        });
+      } catch (err) {
+        console.warn('[BookmarkVerseCard] Share failed:', err);
+      }
+    }, [bookmark, translations]);
 
-  // Note save & cancel
-  const handleSaveNote = useCallback(() => {
-    onUpdateNote(bookmark.verse_key, noteInput.trim());
-    setIsEditingNote(false);
-  }, [bookmark.verse_key, noteInput, onUpdateNote]);
+    // Note save & cancel
+    const handleSaveNote = useCallback(() => {
+      onUpdateNote(bookmark.verse_key, noteInput.trim());
+      setIsEditingNote(false);
+    }, [bookmark.verse_key, noteInput, onUpdateNote]);
 
-  const handleCancelNote = useCallback(() => {
-    setNoteInput(bookmark.note || '');
-    setIsEditingNote(false);
-  }, [bookmark.note]);
+    const handleCancelNote = useCallback(() => {
+      setNoteInput(bookmark.note || '');
+      setIsEditingNote(false);
+    }, [bookmark.note]);
 
-  // Tag toggle inside tag selector modal
-  const handleToggleTag = useCallback((tagId: string) => {
-    const currentTagIds = (bookmark.tags || []).map((t) => t.id);
-    const exists = currentTagIds.includes(tagId);
-    const nextTagIds = exists
-      ? currentTagIds.filter((id) => id !== tagId)
-      : [...currentTagIds, tagId];
-    onUpdateTags(bookmark.id, nextTagIds);
-  }, [bookmark.id, bookmark.tags, onUpdateTags]);
+    // Tag toggle inside tag selector modal
+    const handleToggleTag = useCallback(
+      (tagId: string) => {
+        const currentTagIds = (bookmark.tags || []).map((t) => t.id);
+        const exists = currentTagIds.includes(tagId);
+        const nextTagIds = exists
+          ? currentTagIds.filter((id) => id !== tagId)
+          : [...currentTagIds, tagId];
+        onUpdateTags(bookmark.id, nextTagIds);
+      },
+      [bookmark.id, bookmark.tags, onUpdateTags],
+    );
 
-  const currentTagIdSet = useMemo(
-    () => new Set((bookmark.tags || []).map((t) => t.id)),
-    [bookmark.tags]
-  );
+    const currentTagIdSet = useMemo(
+      () => new Set((bookmark.tags || []).map((t) => t.id)),
+      [bookmark.tags],
+    );
 
-  return (
-    <View
-      testID={testID}
-      style={[
-        styles.cardContainer,
-        isPlaying && styles.cardPlaying,
-        style,
-      ]}
-    >
-      {/* 1. Header Bar: Chapter Title, Ayah Rosette, and Relative Time */}
-      <View style={styles.headerRow} testID={`${testID}-header`}>
-        <View style={styles.headerInfoGroup}>
-          <Text style={styles.chapterTitleText} testID={`${testID}-chapter-title`}>
-            {chapterTitle}
-          </Text>
-          <View style={styles.ayahRosetteBadge} testID={`${testID}-ayah-badge`}>
-            <Text style={styles.ayahRosetteText}>{ayahBadgeText}</Text>
+    return (
+      <View testID={testID} style={[styles.cardContainer, isPlaying && styles.cardPlaying, style]}>
+        {/* 1. Header Bar: Chapter Title, Ayah Rosette, and Relative Time */}
+        <View style={styles.headerRow} testID={`${testID}-header`}>
+          <View style={styles.headerInfoGroup}>
+            <Text style={styles.chapterTitleText} testID={`${testID}-chapter-title`}>
+              {chapterTitle}
+            </Text>
+            <View style={styles.ayahRosetteBadge} testID={`${testID}-ayah-badge`}>
+              <Text style={styles.ayahRosetteText}>{ayahBadgeText}</Text>
+            </View>
           </View>
+
+          {relativeDateText ? (
+            <View style={styles.relativeDateGroup} testID={`${testID}-date`}>
+              <Clock size={12} color={colors.textFaded} />
+              <Text style={styles.relativeDateText}>{relativeDateText}</Text>
+            </View>
+          ) : null}
         </View>
 
-        {relativeDateText ? (
-          <View style={styles.relativeDateGroup} testID={`${testID}-date`}>
-            <Clock size={12} color={colors.textFaded} />
-            <Text style={styles.relativeDateText}>{relativeDateText}</Text>
+        {/* 2. Sacred Arabic Quranic Text */}
+        <View style={styles.arabicContainer} testID={`${testID}-arabic-container`}>
+          <Text
+            style={[
+              styles.arabicText,
+              {
+                fontFamily: arabicFontFamily,
+                fontSize: scaledQuranFontSize,
+                lineHeight: scaledQuranLineHeight,
+              },
+            ]}
+            testID={`${testID}-arabic-text`}
+            allowFontScaling={false}
+          >
+            {arabicText}
+            <Text style={[styles.ayahEndMarker, { fontSize: scaledQuranFontSize }]}>
+              {formatAyahEndMarker(bookmark.verse_number)}
+            </Text>
+          </Text>
+        </View>
+
+        {/* 3. Persian & English Translation Section */}
+        {translations.length > 0 ? (
+          <View style={styles.translationsContainer} testID={`${testID}-translations`}>
+            {translations.map((item) => {
+              const isLatin =
+                item.id === 131 ||
+                (/^[\u0000-\u007F\u2018-\u201F]/.test(item.text.trim()) &&
+                  (/[a-zA-Z]/.test(item.text) || !/[\u0600-\u06FF]/.test(item.text)));
+              return (
+                <View key={`trans-${item.id}`} style={styles.translationBlock}>
+                  {showTranslatorChips ? (
+                    <View
+                      style={[
+                        styles.translationHeaderRow,
+                        isLatin && styles.translationHeaderRowLatin,
+                      ]}
+                    >
+                      <View style={styles.translatorChip}>
+                        <Text style={styles.translatorChipText}>{item.title}</Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  <Text
+                    style={[styles.translationText, isLatin && styles.translationTextLatin]}
+                    testID={`${testID}-translation-${item.id}`}
+                  >
+                    {item.text}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
         ) : null}
-      </View>
 
-      {/* 2. Sacred Arabic Quranic Text */}
-      <View style={styles.arabicContainer} testID={`${testID}-arabic-container`}>
-        <Text
-          style={[
-            styles.arabicText,
-            {
-              fontFamily: arabicFontFamily,
-              fontSize: scaledQuranFontSize,
-              lineHeight: scaledQuranLineHeight,
-            },
-          ]}
-          testID={`${testID}-arabic-text`}
-          allowFontScaling={false}
-        >
-          {arabicText}
-          <Text style={[styles.ayahEndMarker, { fontSize: scaledQuranFontSize }]}>
-            {formatAyahEndMarker(bookmark.verse_number)}
-          </Text>
-        </Text>
-      </View>
-
-      {/* 3. Persian Translation Section */}
-      {translations.length > 0 ? (
-        <View style={styles.translationsContainer} testID={`${testID}-translations`}>
-          {translations.map((item) => {
-            const isLatin = /^[\u0000-\u007F]/.test(item.text.trim());
-            return (
-              <View key={`trans-${item.id}`} style={styles.translationBlock}>
-                {showTranslatorChips ? (
-                  <View style={styles.translatorChip}>
-                    <Text style={styles.translatorChipText}>{item.title}</Text>
-                  </View>
-                ) : null}
-                <Text
-                  style={[
-                    styles.translationText,
-                    isLatin && { textAlign: 'left', writingDirection: 'ltr' },
-                  ]}
-                  testID={`${testID}-translation-${item.id}`}
-                >
-                  {item.text}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
-      ) : null}
-
-      {/* 4. User Personal Note Section */}
-      {isEditingNote ? (
-        <View style={styles.noteEditorContainer} testID={`${testID}-note-editor`}>
-          <TextInput
-            style={styles.noteTextInput}
-            value={noteInput}
-            onChangeText={setNoteInput}
-            placeholder="یادداشت خود را اینجا بنویسید..."
-            placeholderTextColor={colors.textFaded}
-            multiline
-            textAlign="right"
-            testID={`${testID}-note-input`}
-          />
-          <View style={styles.noteEditorActions}>
-            <TouchableOpacity
-              style={styles.noteSaveButton}
-              onPress={handleSaveNote}
-              activeOpacity={0.7}
-              accessibilityRole="button"
-              accessibilityLabel="ذخیره یادداشت"
-              testID={`${testID}-btn-save-note`}
-            >
-              <Check size={16} color="#041410" />
-              <Text style={styles.noteSaveButtonText}>ذخیره</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.noteCancelButton}
-              onPress={handleCancelNote}
-              activeOpacity={0.7}
-              accessibilityRole="button"
-              accessibilityLabel="انصراف از ویرایش یادداشت"
-              testID={`${testID}-btn-cancel-note`}
-            >
-              <Text style={styles.noteCancelButtonText}>انصراف</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : bookmark.note ? (
-        <View style={styles.noteContainer} testID={`${testID}-note-container`}>
-          <View style={styles.noteHeader}>
-            <View style={styles.noteLabelRow}>
-              <Quote size={13} color={colors.goldAccent} />
-              <Text style={styles.noteLabelText}>یادداشت شما</Text>
+        {/* 4. User Personal Note Section */}
+        {isEditingNote ? (
+          <View style={styles.noteEditorContainer} testID={`${testID}-note-editor`}>
+            <TextInput
+              style={styles.noteTextInput}
+              value={noteInput}
+              onChangeText={setNoteInput}
+              placeholder="یادداشت خود را اینجا بنویسید..."
+              placeholderTextColor={colors.textFaded}
+              multiline
+              scrollEnabled={false}
+              textAlign="right"
+              testID={`${testID}-note-input`}
+            />
+            <View style={styles.noteEditorActions}>
+              <TouchableOpacity
+                style={styles.noteSaveButton}
+                onPress={handleSaveNote}
+                activeOpacity={0.7}
+                accessibilityRole="button"
+                accessibilityLabel="ذخیره یادداشت"
+                testID={`${testID}-btn-save-note`}
+                hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+              >
+                <Check size={16} color="#041410" />
+                <Text style={styles.noteSaveButtonText}>ذخیره</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.noteCancelButton}
+                onPress={handleCancelNote}
+                activeOpacity={0.7}
+                accessibilityRole="button"
+                accessibilityLabel="انصراف از ویرایش یادداشت"
+                testID={`${testID}-btn-cancel-note`}
+                hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+              >
+                <Text style={styles.noteCancelButtonText}>انصراف</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={styles.noteEditIconButton}
-              onPress={() => {
-                setNoteInput(bookmark.note || '');
-                setIsEditingNote(true);
-              }}
-              activeOpacity={0.7}
-              accessibilityRole="button"
-              accessibilityLabel="ویرایش یادداشت"
-              testID={`${testID}-btn-edit-note`}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <Edit3 size={15} color={colors.textSecondary} />
-            </TouchableOpacity>
           </View>
-          <Text style={styles.noteDisplayText} testID={`${testID}-note-text`}>
-            {bookmark.note}
-          </Text>
-        </View>
-      ) : (
-        <TouchableOpacity
-          style={styles.addNotePromptButton}
-          onPress={() => setIsEditingNote(true)}
-          activeOpacity={0.7}
-          accessibilityRole="button"
-          accessibilityLabel="افزودن یادداشت"
-          testID={`${testID}-btn-add-note-prompt`}
-        >
-          <Plus size={13} color={colors.primary} />
-          <Text style={styles.addNotePromptText}>افزودن یادداشت</Text>
-        </TouchableOpacity>
-      )}
-
-      {/* 5. Tag Pills Row with + برچسب Button */}
-      <View style={styles.tagsSection} testID={`${testID}-tags-section`}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.tagsScrollViewContent}
-        >
-          {bookmark.tags && bookmark.tags.length > 0
-            ? bookmark.tags.map((tag) => (
-                <View
-                  key={`tag-${tag.id}`}
-                  style={[
-                    styles.tagPill,
-                    { borderColor: tag.color || colors.primary },
-                  ]}
-                  testID={`${testID}-tag-${tag.id}`}
-                >
-                  <View
-                    style={[
-                      styles.tagColorDot,
-                      { backgroundColor: tag.color || colors.primary },
-                    ]}
-                  />
-                  <Text style={styles.tagPillText}>{tag.name}</Text>
-                </View>
-              ))
-            : null}
-
+        ) : bookmark.note ? (
+          <View style={styles.noteContainer} testID={`${testID}-note-container`}>
+            <View style={styles.noteHeader}>
+              <View style={styles.noteLabelRow}>
+                <Quote size={13} color={colors.goldAccent} />
+                <Text style={styles.noteLabelText}>یادداشت شما</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.noteEditIconButton}
+                onPress={() => {
+                  setNoteInput(bookmark.note || '');
+                  setIsEditingNote(true);
+                }}
+                activeOpacity={0.7}
+                accessibilityRole="button"
+                accessibilityLabel="ویرایش یادداشت"
+                testID={`${testID}-btn-edit-note`}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Edit3 size={15} color={colors.textSecondary} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.noteDisplayText} testID={`${testID}-note-text`}>
+              {bookmark.note}
+            </Text>
+          </View>
+        ) : (
           <TouchableOpacity
-            style={styles.addTagButton}
-            onPress={() => setIsTagModalOpen(true)}
+            style={styles.addNotePromptButton}
+            onPress={() => setIsEditingNote(true)}
             activeOpacity={0.7}
             accessibilityRole="button"
-            accessibilityLabel="مدیریت برچسب‌های آیه"
-            testID={`${testID}-btn-open-tags`}
+            accessibilityLabel="افزودن یادداشت"
+            testID={`${testID}-btn-add-note-prompt`}
+            hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
           >
-            <Plus size={13} color={colors.textSecondary} />
-            <Text style={styles.addTagButtonText}>برچسب</Text>
+            <Plus size={13} color={colors.primary} />
+            <Text style={styles.addNotePromptText}>افزودن یادداشت</Text>
           </TouchableOpacity>
-        </ScrollView>
-      </View>
+        )}
 
-      {/* 6. Action Bar: Play, Read in Surah, Share, Delete */}
-      <View style={styles.actionBar} testID={`${testID}-actions`}>
-        {/* Play Recitation Button */}
-        <TouchableOpacity
-          style={[styles.actionIconButton, isPlaying && styles.actionIconButtonActive]}
-          onPress={handleTogglePlay}
-          activeOpacity={0.7}
-          accessibilityRole="button"
-          accessibilityLabel={isPlaying ? 'توقف تلاوت آیه' : 'پخش صوتی آیه'}
-          testID={`${testID}-btn-play`}
-          hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
-        >
-          {isPlaying ? (
-            <Pause
-              size={BOOKMARK_COMPONENT_CONTRACTS.actionButton.iconSize}
-              color={colors.primary}
-            />
-          ) : (
-            <Play
+        {/* 5. Tag Pills Row with + برچسب Button */}
+        <View style={styles.tagsSection} testID={`${testID}-tags-section`}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.tagsScrollViewContent}
+          >
+            {bookmark.tags && bookmark.tags.length > 0
+              ? bookmark.tags.map((tag) => (
+                  <View
+                    key={`tag-${tag.id}`}
+                    style={[styles.tagPill, { borderColor: tag.color || colors.primary }]}
+                    testID={`${testID}-tag-${tag.id}`}
+                  >
+                    <View
+                      style={[styles.tagColorDot, { backgroundColor: tag.color || colors.primary }]}
+                    />
+                    <Text style={styles.tagPillText}>{tag.name}</Text>
+                  </View>
+                ))
+              : null}
+
+            <TouchableOpacity
+              style={styles.addTagButton}
+              onPress={() => setIsTagModalOpen(true)}
+              activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel="مدیریت برچسب‌های آیه"
+              testID={`${testID}-btn-open-tags`}
+              hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
+            >
+              <Plus size={13} color={colors.textSecondary} />
+              <Text style={styles.addTagButtonText}>برچسب</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+
+        {/* 6. Action Bar: Play, Read in Surah, Share, Delete */}
+        <View style={styles.actionBar} testID={`${testID}-actions`}>
+          {/* Play Recitation Button */}
+          <TouchableOpacity
+            style={[styles.actionIconButton, isPlaying && styles.actionIconButtonActive]}
+            onPress={handleTogglePlay}
+            activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={isPlaying ? 'توقف تلاوت آیه' : 'پخش صوتی آیه'}
+            testID={`${testID}-btn-play`}
+            hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+          >
+            {isPlaying ? (
+              <Pause
+                size={BOOKMARK_COMPONENT_CONTRACTS.actionButton.iconSize}
+                color={colors.primary}
+              />
+            ) : (
+              <Play
+                size={BOOKMARK_COMPONENT_CONTRACTS.actionButton.iconSize}
+                color={colors.textSecondary}
+              />
+            )}
+          </TouchableOpacity>
+
+          {/* Read in Surah Primary Action */}
+          <TouchableOpacity
+            style={styles.readInSurahButton}
+            onPress={() => onPressRead(bookmark)}
+            activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel="مشاهده آیه در متن کامل سوره"
+            testID={`${testID}-btn-read`}
+          >
+            <BookOpen size={16} color={colors.primary} />
+            <Text style={styles.readInSurahButtonText}>مشاهده در سوره</Text>
+          </TouchableOpacity>
+
+          {/* Share Button */}
+          <TouchableOpacity
+            style={styles.actionIconButton}
+            onPress={handleShare}
+            activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel="اشتراک‌گذاری آیه و ترجمه"
+            testID={`${testID}-btn-share`}
+            hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+          >
+            <Share2
               size={BOOKMARK_COMPONENT_CONTRACTS.actionButton.iconSize}
               color={colors.textSecondary}
             />
-          )}
-        </TouchableOpacity>
+          </TouchableOpacity>
 
-        {/* Read in Surah Primary Action */}
-        <TouchableOpacity
-          style={styles.readInSurahButton}
-          onPress={() => onPressRead(bookmark)}
-          activeOpacity={0.7}
-          accessibilityRole="button"
-          accessibilityLabel="مشاهده آیه در متن کامل سوره"
-          testID={`${testID}-btn-read`}
+          {/* Delete Button */}
+          <TouchableOpacity
+            style={[styles.actionIconButton, styles.deleteIconButton]}
+            onPress={() => onDelete(bookmark.id)}
+            activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel="حذف نشانه"
+            testID={`${testID}-btn-delete`}
+            hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+          >
+            <Trash2
+              size={BOOKMARK_COMPONENT_CONTRACTS.actionButton.iconSize}
+              color={colors.error}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Tag Selection Modal */}
+        <Modal
+          visible={isTagModalOpen}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setIsTagModalOpen(false)}
         >
-          <BookOpen size={16} color={colors.primary} />
-          <Text style={styles.readInSurahButtonText}>مشاهده در سوره</Text>
-        </TouchableOpacity>
-
-        {/* Share Button */}
-        <TouchableOpacity
-          style={styles.actionIconButton}
-          onPress={handleShare}
-          activeOpacity={0.7}
-          accessibilityRole="button"
-          accessibilityLabel="اشتراک‌گذاری آیه و ترجمه"
-          testID={`${testID}-btn-share`}
-          hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
-        >
-          <Share2
-            size={BOOKMARK_COMPONENT_CONTRACTS.actionButton.iconSize}
-            color={colors.textSecondary}
-          />
-        </TouchableOpacity>
-
-        {/* Delete Button */}
-        <TouchableOpacity
-          style={[styles.actionIconButton, styles.deleteIconButton]}
-          onPress={() => onDelete(bookmark.id)}
-          activeOpacity={0.7}
-          accessibilityRole="button"
-          accessibilityLabel="حذف نشانه"
-          testID={`${testID}-btn-delete`}
-          hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
-        >
-          <Trash2
-            size={BOOKMARK_COMPONENT_CONTRACTS.actionButton.iconSize}
-            color={colors.error}
-          />
-        </TouchableOpacity>
-      </View>
-
-      {/* Tag Selection Modal */}
-      <Modal
-        visible={isTagModalOpen}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setIsTagModalOpen(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalCard} testID={`${testID}-tag-modal`}>
-            <View style={styles.modalHeader}>
-              <View style={styles.modalTitleGroup}>
-                <Text style={styles.modalTitle}>مدیریت برچسب‌ها</Text>
-                <Text style={styles.modalSubtitle}>
-                  {chapterTitle} • {ayahBadgeText}
-                </Text>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard} testID={`${testID}-tag-modal`}>
+              <View style={styles.modalHeader}>
+                <View style={styles.modalTitleGroup}>
+                  <Text style={styles.modalTitle}>مدیریت برچسب‌ها</Text>
+                  <Text style={styles.modalSubtitle}>
+                    {chapterTitle} • {ayahBadgeText}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.modalCloseButton}
+                  onPress={() => setIsTagModalOpen(false)}
+                  accessibilityRole="button"
+                  accessibilityLabel="بستن پنجره برچسب‌ها"
+                  testID={`${testID}-btn-close-tags`}
+                >
+                  <X size={20} color={colors.textFaded} />
+                </TouchableOpacity>
               </View>
+
+              <ScrollView style={styles.tagOptionsList}>
+                {tagList.map((tag) => {
+                  const isSelected = currentTagIdSet.has(tag.id);
+                  return (
+                    <TouchableOpacity
+                      key={`modal-tag-${tag.id}`}
+                      style={[styles.tagOptionRow, isSelected && styles.tagOptionRowSelected]}
+                      onPress={() => handleToggleTag(tag.id)}
+                      activeOpacity={0.7}
+                      accessibilityRole="checkbox"
+                      accessibilityState={{ checked: isSelected }}
+                      testID={`${testID}-modal-tag-${tag.id}`}
+                    >
+                      <View style={styles.tagOptionInfo}>
+                        <View
+                          style={[
+                            styles.tagColorDotLarge,
+                            { backgroundColor: tag.color || colors.primary },
+                          ]}
+                        />
+                        <Text style={styles.tagOptionName}>{tag.name}</Text>
+                      </View>
+
+                      <View style={[styles.tagCheckbox, isSelected && styles.tagCheckboxChecked]}>
+                        {isSelected ? <Check size={14} color="#041410" strokeWidth={3} /> : null}
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+
               <TouchableOpacity
-                style={styles.modalCloseButton}
+                style={styles.modalDoneButton}
                 onPress={() => setIsTagModalOpen(false)}
-                accessibilityRole="button"
-                accessibilityLabel="بستن پنجره برچسب‌ها"
-                testID={`${testID}-btn-close-tags`}
+                activeOpacity={0.8}
               >
-                <X size={20} color={colors.textFaded} />
+                <Text style={styles.modalDoneButtonText}>تأیید و بستن</Text>
               </TouchableOpacity>
             </View>
-
-            <ScrollView style={styles.tagOptionsList}>
-              {tagList.map((tag) => {
-                const isSelected = currentTagIdSet.has(tag.id);
-                return (
-                  <TouchableOpacity
-                    key={`modal-tag-${tag.id}`}
-                    style={[
-                      styles.tagOptionRow,
-                      isSelected && styles.tagOptionRowSelected,
-                    ]}
-                    onPress={() => handleToggleTag(tag.id)}
-                    activeOpacity={0.7}
-                    accessibilityRole="checkbox"
-                    accessibilityState={{ checked: isSelected }}
-                    testID={`${testID}-modal-tag-${tag.id}`}
-                  >
-                    <View style={styles.tagOptionInfo}>
-                      <View
-                        style={[
-                          styles.tagColorDotLarge,
-                          { backgroundColor: tag.color || colors.primary },
-                        ]}
-                      />
-                      <Text style={styles.tagOptionName}>{tag.name}</Text>
-                    </View>
-
-                    <View
-                      style={[
-                        styles.tagCheckbox,
-                        isSelected && styles.tagCheckboxChecked,
-                      ]}
-                    >
-                      {isSelected ? (
-                        <Check size={14} color="#041410" strokeWidth={3} />
-                      ) : null}
-                    </View>
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-
-            <TouchableOpacity
-              style={styles.modalDoneButton}
-              onPress={() => setIsTagModalOpen(false)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.modalDoneButtonText}>تأیید و بستن</Text>
-            </TouchableOpacity>
           </View>
-        </View>
-      </Modal>
-    </View>
-  );
-});
+        </Modal>
+      </View>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -643,13 +642,20 @@ const styles = StyleSheet.create({
   translationBlock: {
     marginBottom: spacing.xs,
   },
+  translationHeaderRow: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  translationHeaderRowLatin: {
+    flexDirection: 'row',
+  },
   translatorChip: {
-    alignSelf: 'flex-start',
     backgroundColor: 'rgba(16, 185, 129, 0.1)',
     borderRadius: borderRadius.sm,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    marginBottom: 4,
+    alignSelf: 'flex-start',
   },
   translatorChipText: {
     fontFamily: fonts.uiRegular,
@@ -663,6 +669,10 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     textAlign: rtlTextAlign,
     writingDirection: 'rtl',
+  },
+  translationTextLatin: {
+    textAlign: 'left',
+    writingDirection: 'ltr',
   },
   noteContainer: {
     backgroundColor: 'rgba(245, 158, 11, 0.07)',
@@ -920,6 +930,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'transparent',
     marginBottom: 4,
+    minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
   },
   tagOptionRowSelected: {
     backgroundColor: 'rgba(16, 185, 129, 0.12)',

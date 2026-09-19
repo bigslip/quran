@@ -41,7 +41,8 @@ describe('Bookmarks Screen & Card Component Contracts', () => {
       text_indopak: 'اللہ لا الہ الا ھو الحی القیوم',
       translation_fa_makarem: 'خداوند، هیچ معبودی جز او نیست؛ زنده و برپادارنده است.',
       translation_fa_ansarian: 'خداست که هیچ معبودی جز او نیست، زنده و پاینده است.',
-      translation_en_saheeh: 'Allah - there is no deity except Him, the Ever-Living, the Sustainer of existence.',
+      translation_en_saheeh:
+        'Allah - there is no deity except Him, the Ever-Living, the Sustainer of existence.',
       page_number: 42,
       juz_number: 3,
       chapter_name_fa: 'بقره (گاو)',
@@ -60,7 +61,8 @@ describe('Bookmarks Screen & Card Component Contracts', () => {
       text_indopak: 'بسم اللہ الرحمن الرحیم',
       translation_fa_makarem: 'به نام خداوند بخشنده بخشایشگر',
       translation_fa_ansarian: 'به نام خدا که رحمتش بی‌اندازه است',
-      translation_en_saheeh: 'In the name of Allah, the Entirely Merciful, the Especially Merciful.',
+      translation_en_saheeh:
+        'In the name of Allah, the Entirely Merciful, the Especially Merciful.',
       page_number: 1,
       juz_number: 1,
       chapter_name_fa: 'فاتحه (گشایش)',
@@ -79,7 +81,8 @@ describe('Bookmarks Screen & Card Component Contracts', () => {
       text_indopak: 'واعتصموا بحبل اللہ جمیعا ولا تفرقوا',
       translation_fa_makarem: 'و همگی به ریسمان خدا چنگ زنید و پراکنده نشوید.',
       translation_fa_ansarian: 'و همگی به ریسمان خدا درآویزید و پراکنده مشوید.',
-      translation_en_saheeh: 'And hold firmly to the rope of Allah all together and do not become divided.',
+      translation_en_saheeh:
+        'And hold firmly to the rope of Allah all together and do not become divided.',
       page_number: 63,
       juz_number: 4,
       chapter_name_fa: 'آل عمران',
@@ -362,6 +365,38 @@ describe('Bookmarks Screen & Card Component Contracts', () => {
 
       cardProps.onTogglePlay();
       assert.strictEqual(isPlayingToggled, true);
+    });
+
+    it('determines English / Latin translation text correctly for LTR alignment', () => {
+      const isEnglishOrLatin = (id, text) =>
+        id === 131 ||
+        (/^[\u0000-\u007F\u2018-\u201F]/.test(text.trim()) &&
+          (/[a-zA-Z]/.test(text) || !/[\u0600-\u06FF]/.test(text)));
+
+      // Saheeh International text
+      assert.strictEqual(
+        isEnglishOrLatin(
+          131,
+          'In the name of Allah, the Entirely Merciful, the Especially Merciful.',
+        ),
+        true,
+      );
+      assert.strictEqual(
+        isEnglishOrLatin(999, '“And hold firmly to the rope of Allah all together...”'),
+        true,
+      );
+
+      // Persian translations (Makarem, Ansarian)
+      assert.strictEqual(isEnglishOrLatin(841, 'به نام خداوند بخشنده بخشایشگر'), false);
+      assert.strictEqual(isEnglishOrLatin(842, 'خداوند، هیچ معبودی جز او نیست'), false);
+    });
+
+    it('verifies touch target hitSlop bounds for compact chips (at least 8px vertical padding)', () => {
+      const chipHitSlop = { top: 8, bottom: 8, left: 6, right: 6 };
+      const chipVisualHeight = 34;
+      const effectiveTouchHeight = chipVisualHeight + chipHitSlop.top + chipHitSlop.bottom;
+      assert.ok(effectiveTouchHeight >= BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget);
+      assert.strictEqual(effectiveTouchHeight, 50);
     });
   });
 });

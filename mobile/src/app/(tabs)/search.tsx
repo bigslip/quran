@@ -42,6 +42,8 @@ export default function SearchScreen() {
         data={results}
         keyExtractor={(item) => item.verse_key}
         contentContainerStyle={styles.resultsList}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
         ListEmptyComponent={
           query.length > 1 ? (
             <Text style={styles.emptyText}>موردی برای «{query}» یافت نشد.</Text>
@@ -52,7 +54,9 @@ export default function SearchScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.resultCard}
-            onPress={() => router.push(`/surah/${item.chapter_id}?verse=${item.verse_number}` as any)}
+            onPress={() =>
+              router.push(`/surah/${item.chapter_id}?verse=${item.verse_number}` as any)
+            }
             activeOpacity={0.75}
           >
             <View style={styles.resultHeader}>

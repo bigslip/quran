@@ -45,10 +45,10 @@ const __dirname = path.dirname(__filename);
 const DB_PATH = path.resolve(__dirname, '../../../../mobile/assets/data/quran.db');
 
 describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
-  const db = new DatabaseSync(DB_PATH);
+  const db = new DatabaseSync(DB_PATH, { readOnly: true });
   const typographySource = fs.readFileSync(
     path.resolve(__dirname, '../../theme/typography.ts'),
-    'utf8'
+    'utf8',
   );
 
   describe('BismillahBanner Rules & Calligraphy Verification', () => {
@@ -123,10 +123,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies BismillahBanner.tsx source code structure and accessibility', () => {
-      const source = fs.readFileSync(
-        path.resolve(__dirname, './BismillahBanner.tsx'),
-        'utf8'
-      );
+      const source = fs.readFileSync(path.resolve(__dirname, './BismillahBanner.tsx'), 'utf8');
 
       // BismillahBanner checks chapter 9 and bismillahPre via shouldRenderBismillah
       assert.ok(source.includes('shouldRenderBismillah(chapterId, bismillahPre)'));
@@ -189,20 +186,17 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       };
 
       const a11yLabel = formatSurahHeaderAccessibilityLabel(fatihah);
-      assert.strictEqual(
-        a11yLabel,
-        'سوره شماره ۱، فاتحه، الفاتحة، مکی، رتبه نزول ۵، ۷ آیه'
-      );
+      assert.strictEqual(a11yLabel, 'سوره شماره ۱، فاتحه، الفاتحة، مکی، رتبه نزول ۵، ۷ آیه');
     });
 
     it('formats info button accessibility label with Persian Surah name', () => {
       assert.strictEqual(
         formatInfoButtonAccessibilityLabel('فاتحه'),
-        'اطلاعات و شناسنامه سوره فاتحه'
+        'اطلاعات و شناسنامه سوره فاتحه',
       );
       assert.strictEqual(
         formatInfoButtonAccessibilityLabel('بقره'),
-        'اطلاعات و شناسنامه سوره بقره'
+        'اطلاعات و شناسنامه سوره بقره',
       );
     });
 
@@ -217,13 +211,13 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         // Revelation order badge
         assert.strictEqual(
           formatRevelationOrderBadge(ch.revelation_order),
-          `ترتیب نزول: ${toPersianDigits(ch.revelation_order)}`
+          `ترتیب نزول: ${toPersianDigits(ch.revelation_order)}`,
         );
 
         // Verse count badge
         assert.strictEqual(
           formatVerseCountBadge(ch.verses_count),
-          `${toPersianDigits(ch.verses_count)} آیه`
+          `${toPersianDigits(ch.verses_count)} آیه`,
         );
 
         // Revelation place
@@ -315,10 +309,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies SurahHeaderBanner.tsx source code contains required layout, touch targets, and props', () => {
-      const source = fs.readFileSync(
-        path.resolve(__dirname, './SurahHeaderBanner.tsx'),
-        'utf8'
-      );
+      const source = fs.readFileSync(path.resolve(__dirname, './SurahHeaderBanner.tsx'), 'utf8');
 
       // 1. Ornate Sanctuary frame with tokens
       assert.ok(source.includes('colors.surfaceCard'));
@@ -345,7 +336,9 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 4. Info button with Info icon and >= 44x44px touch target
       assert.ok(source.includes('<Info'));
       assert.ok(source.includes('minWidth: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize'));
-      assert.ok(source.includes('minHeight: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize'));
+      assert.ok(
+        source.includes('minHeight: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize'),
+      );
       assert.ok(source.includes('accessibilityRole="button"'));
       assert.ok(source.includes('onPress={handleInfoPress}'));
       assert.ok(source.includes('onPressInfo?.(chapter)'));
@@ -367,21 +360,18 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
 
     it('formats comprehensive accessibility label for ContinuousVerseCard with active translation info', () => {
       const verse = { verse_number: 255, chapter_id: 2 };
-      assert.strictEqual(
-        formatContinuousVerseAccessibilityLabel(verse),
-        'آیه شماره ۲۵۵ از سوره ۲'
-      );
+      assert.strictEqual(formatContinuousVerseAccessibilityLabel(verse), 'آیه شماره ۲۵۵ از سوره ۲');
       assert.strictEqual(
         formatContinuousVerseAccessibilityLabel(verse, 'مکارم'),
-        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: مکارم'
+        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: مکارم',
       );
       assert.strictEqual(
         formatContinuousVerseAccessibilityLabel(verse, 'انصاریان'),
-        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: انصاریان'
+        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: انصاریان',
       );
       assert.strictEqual(
         formatContinuousVerseAccessibilityLabel(verse, 'هردو'),
-        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: هردو'
+        'آیه شماره ۲۵۵ از سوره ۲، ترجمه فعال: هردو',
       );
     });
 
@@ -468,8 +458,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies active playing state styling contract tokens', () => {
-      const { activeBorderColor, activeBackgroundColor } =
-        READER_COMPONENT_CONTRACTS.verseCard;
+      const { activeBorderColor, activeBackgroundColor } = READER_COMPONENT_CONTRACTS.verseCard;
 
       assert.strictEqual(activeBorderColor, '#10b981');
       assert.strictEqual(activeBorderColor, colors.primary);
@@ -478,10 +467,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies ContinuousVerseCard.tsx source code contracts and accessibility', () => {
-      const source = fs.readFileSync(
-        path.resolve(__dirname, './ContinuousVerseCard.tsx'),
-        'utf8'
-      );
+      const source = fs.readFileSync(path.resolve(__dirname, './ContinuousVerseCard.tsx'), 'utf8');
 
       // 1. Concentric geometric verse number badge in Persian digits
       assert.ok(source.includes('badgeOuter'));
@@ -520,7 +506,9 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('onShareVerse'));
       assert.ok(source.includes('onVerseInsights'));
       assert.ok(source.includes('minWidth: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize'));
-      assert.ok(source.includes('minHeight: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize'));
+      assert.ok(
+        source.includes('minHeight: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize'),
+      );
       assert.ok(source.includes('accessibilityRole="button"'));
 
       // 6. Active playing state
@@ -532,14 +520,13 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies translator chip only renders when more than one translation is displayed', () => {
-      const source = fs.readFileSync(
-        path.resolve(__dirname, './ContinuousVerseCard.tsx'),
-        'utf8'
-      );
+      const source = fs.readFileSync(path.resolve(__dirname, './ContinuousVerseCard.tsx'), 'utf8');
 
       // Verify showTranslatorChips and showFallbackChips guards
       assert.ok(source.includes('const showTranslatorChips = validTranslations.length > 1;'));
-      assert.ok(source.includes('const showFallbackChips = shouldRenderMakarem && shouldRenderAnsarian;'));
+      assert.ok(
+        source.includes('const showFallbackChips = shouldRenderMakarem && shouldRenderAnsarian;'),
+      );
       assert.ok(source.includes('{showTranslatorChips && ('));
       assert.ok(source.includes('{showFallbackChips && ('));
     });
@@ -549,7 +536,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     it('groups words by line across 15 lines for Page 1 (Al-Fatihah) from SQLite database', () => {
       const page1Words = db
         .prepare(
-          'SELECT * FROM words WHERE page_number = 1 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC'
+          'SELECT * FROM words WHERE page_number = 1 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC',
         )
         .all();
       assert.strictEqual(page1Words.length, 29);
@@ -583,7 +570,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     it('groups words by line across all 15 lines for Page 3 from SQLite database', () => {
       const page3Words = db
         .prepare(
-          'SELECT * FROM words WHERE page_number = 3 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC'
+          'SELECT * FROM words WHERE page_number = 3 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC',
         )
         .all();
       assert.ok(page3Words.length > 0);
@@ -612,7 +599,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
               (curr.chapter_id === next.chapter_id &&
                 curr.verse_number === next.verse_number &&
                 curr.position < next.position),
-            `Line ${l} words must be in strict sequential reading order`
+            `Line ${l} words must be in strict sequential reading order`,
           );
         }
       }
@@ -621,7 +608,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     it('groups words across multi-Surah page (Page 604) correctly preserving line grouping', () => {
       const page604Words = db
         .prepare(
-          'SELECT * FROM words WHERE page_number = 604 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC'
+          'SELECT * FROM words WHERE page_number = 604 ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC',
         )
         .all();
       assert.ok(page604Words.length > 0);
@@ -651,9 +638,30 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
 
       // Unsorted input is sorted in canonical reading order
       const unsortedWords = [
-        { id: 2, line_number: 1, chapter_id: 1, verse_number: 1, position: 2, text_uthmani: 'ٱللَّهِ' },
-        { id: 1, line_number: 1, chapter_id: 1, verse_number: 1, position: 1, text_uthmani: 'بِسْمِ' },
-        { id: 3, line_number: 16, chapter_id: 1, verse_number: 1, position: 3, text_uthmani: 'invalid' }, // line 16 out of bounds
+        {
+          id: 2,
+          line_number: 1,
+          chapter_id: 1,
+          verse_number: 1,
+          position: 2,
+          text_uthmani: 'ٱللَّهِ',
+        },
+        {
+          id: 1,
+          line_number: 1,
+          chapter_id: 1,
+          verse_number: 1,
+          position: 1,
+          text_uthmani: 'بِسْمِ',
+        },
+        {
+          id: 3,
+          line_number: 16,
+          chapter_id: 1,
+          verse_number: 1,
+          position: 3,
+          text_uthmani: 'invalid',
+        }, // line 16 out of bounds
       ];
       const sortedMap = groupWordsByLine(unsortedWords);
       assert.strictEqual(sortedMap.get(1).length, 2);
@@ -681,11 +689,11 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // Header accessibility label
       assert.strictEqual(
         formatMushafHeaderAccessibilityLabel(1, 1, 'فاتحه'),
-        'صفحه ۱، جزء ۱، سوره فاتحه'
+        'صفحه ۱، جزء ۱، سوره فاتحه',
       );
       assert.strictEqual(
         formatMushafHeaderAccessibilityLabel(604, 30, 'ناس'),
-        'صفحه ۶۰۴، جزء ۳۰، سوره ناس'
+        'صفحه ۶۰۴، جزء ۳۰، سوره ناس',
       );
     });
 
@@ -706,23 +714,23 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     it('formats Ayah end marker with authentic Medina Mushaf rosette glyphs matching web', () => {
       // Single digit (Ayah 1 => U+FC00)
       const marker1 = formatAyahEndMarker(1);
-      assert.strictEqual(marker1, ` ${String.fromCharCode(0xFC00)} `);
-      assert.strictEqual(marker1.trim().charCodeAt(0), 0xFC00);
+      assert.strictEqual(marker1, ` ${String.fromCharCode(0xfc00)} `);
+      assert.strictEqual(marker1.trim().charCodeAt(0), 0xfc00);
 
       // Double digit (Ayah 45 => U+FC00 + 44)
       const marker45 = formatAyahEndMarker(45);
-      assert.strictEqual(marker45, ` ${String.fromCharCode(0xFC00 + 44)} `);
-      assert.strictEqual(marker45.trim().charCodeAt(0), 0xFC00 + 44);
+      assert.strictEqual(marker45, ` ${String.fromCharCode(0xfc00 + 44)} `);
+      assert.strictEqual(marker45.trim().charCodeAt(0), 0xfc00 + 44);
 
       // Triple digit (Ayah 114 => U+FC00 + 113)
       const marker114 = formatAyahEndMarker(114);
-      assert.strictEqual(marker114, ` ${String.fromCharCode(0xFC00 + 113)} `);
-      assert.strictEqual(marker114.trim().charCodeAt(0), 0xFC00 + 113);
+      assert.strictEqual(marker114, ` ${String.fromCharCode(0xfc00 + 113)} `);
+      assert.strictEqual(marker114.trim().charCodeAt(0), 0xfc00 + 113);
 
       // Longest Ayah in Quran (Ayah 286 => U+FD1D)
       const marker286 = formatAyahEndMarker(286);
-      assert.strictEqual(marker286, ` ${String.fromCharCode(0xFD1D)} `);
-      assert.strictEqual(marker286.trim().charCodeAt(0), 0xFD1D);
+      assert.strictEqual(marker286, ` ${String.fromCharCode(0xfd1d)} `);
+      assert.strictEqual(marker286.trim().charCodeAt(0), 0xfd1d);
 
       // Fallback for verse numbers > 286
       const fallbackMarker = formatAyahEndMarker(300);
@@ -730,10 +738,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies MushafPageView.tsx source code structure, contracts, and touch targets', () => {
-      const source = fs.readFileSync(
-        path.resolve(__dirname, './MushafPageView.tsx'),
-        'utf8'
-      );
+      const source = fs.readFileSync(path.resolve(__dirname, './MushafPageView.tsx'), 'utf8');
 
       // 1. Header bar
       assert.ok(source.includes('accessibilityRole="header"'));
@@ -748,7 +753,9 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('continuousQuranText'));
       assert.ok(source.includes("textAlign: 'justify'"));
       assert.ok(source.includes("writingDirection: 'rtl'"));
-      assert.ok(source.includes('flexDirection: rtlRow') || source.includes("flexDirection: 'row-reverse'"));
+      assert.ok(
+        source.includes('flexDirection: rtlRow') || source.includes("flexDirection: 'row-reverse'"),
+      );
 
       // 3. Interactive verse selection & verse end marker
       assert.ok(source.includes('onVersePress?.(verse.verseKey)'));
@@ -851,7 +858,11 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(line6Scale16.fontSize <= 36, 'Line 6 at 1.6x must scale appropriately (<= 36px)');
 
       // At scale 1.0, line must be justified edge-to-edge
-      assert.strictEqual(line6Scale10.isJustified, true, 'Line 6 at 1.0x must be justified edge-to-edge');
+      assert.strictEqual(
+        line6Scale10.isJustified,
+        true,
+        'Line 6 at 1.0x must be justified edge-to-edge',
+      );
       assert.strictEqual(line6Scale10.wordPadding, 1.5);
 
       // On bigger font sizes (1.2x, 1.4x, 1.6x), lines remain justified
@@ -874,8 +885,14 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     it('verifies calculateMushafPageFontSize scales font size dynamically and monotonically with fontScale', () => {
       for (const scale of [0.8, 1.0, 1.2, 1.4, 1.6]) {
         const { fontSize, lineHeight } = calculateMushafPageFontSize(scale);
-        assert.ok(fontSize >= 16 && fontSize <= 36, `Font size at scale ${scale} must be within readable range`);
-        assert.ok(lineHeight >= 36 && lineHeight <= 80, `Line height at scale ${scale} must be proportional`);
+        assert.ok(
+          fontSize >= 16 && fontSize <= 36,
+          `Font size at scale ${scale} must be within readable range`,
+        );
+        assert.ok(
+          lineHeight >= 36 && lineHeight <= 80,
+          `Line height at scale ${scale} must be proportional`,
+        );
       }
 
       // Verify monotonic scaling across every stepper step
@@ -892,34 +909,27 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies MushafPageView renders continuous flowing text with native text-align justify to prevent unusual gaps and ensure responsive font scaling (Tanzil model)', () => {
-      const source = fs.readFileSync(
-        path.resolve(__dirname, './MushafPageView.tsx'),
-        'utf8'
+      const source = fs.readFileSync(path.resolve(__dirname, './MushafPageView.tsx'), 'utf8');
+      assert.ok(
+        source.includes("textAlign: 'justify'"),
+        'Must have textAlign justify for continuous flow',
       );
-      assert.ok(source.includes("textAlign: 'justify'"), 'Must have textAlign justify for continuous flow');
       assert.ok(source.includes("writingDirection: 'rtl'"), 'Must have writingDirection rtl');
       assert.ok(source.includes('continuousQuranText'), 'Must have continuousQuranText style');
       assert.ok(source.includes('activeVerseHighlight'), 'Must support active verse highlighting');
-      assert.ok(source.includes('calculateMushafPageFontSize'), 'Must use calculateMushafPageFontSize for scaling');
+      assert.ok(
+        source.includes('calculateMushafPageFontSize'),
+        'Must use calculateMushafPageFontSize for scaling',
+      );
     });
-
   });
 
   describe('AudioPlaybackDock Component Contracts, Layout & Formatting', () => {
     it('formats Persian Ayah title with Surah name and Persian verse numbers', () => {
       // Standard cases
-      assert.strictEqual(
-        formatAudioDockTitle('الفاتحه', 1),
-        'سوره الفاتحه • آیه ۱'
-      );
-      assert.strictEqual(
-        formatAudioDockTitle('سوره بقره', 255),
-        'سوره بقره • آیه ۲۵۵'
-      );
-      assert.strictEqual(
-        formatAudioDockTitle('کهف', 110),
-        'سوره کهف • آیه ۱۱۰'
-      );
+      assert.strictEqual(formatAudioDockTitle('الفاتحه', 1), 'سوره الفاتحه • آیه ۱');
+      assert.strictEqual(formatAudioDockTitle('سوره بقره', 255), 'سوره بقره • آیه ۲۵۵');
+      assert.strictEqual(formatAudioDockTitle('کهف', 110), 'سوره کهف • آیه ۱۱۰');
 
       // Surah name only
       assert.strictEqual(formatAudioDockTitle('یس'), 'سوره یس');
@@ -949,10 +959,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies AudioPlaybackDock.tsx source code structure, contracts, RTL layout, and accessibility', () => {
-      const source = fs.readFileSync(
-        path.resolve(__dirname, './AudioPlaybackDock.tsx'),
-        'utf8'
-      );
+      const source = fs.readFileSync(path.resolve(__dirname, './AudioPlaybackDock.tsx'), 'utf8');
 
       // 1. Props interface
       assert.ok(source.includes('interface AudioPlaybackDockProps'));
@@ -1050,14 +1057,8 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
 
       // Mid-range step
       currentScale = 1.0;
-      assert.strictEqual(
-        Math.min(maxScale, Math.round((currentScale + scaleStep) * 10) / 10),
-        1.1
-      );
-      assert.strictEqual(
-        Math.max(minScale, Math.round((currentScale - scaleStep) * 10) / 10),
-        0.9
-      );
+      assert.strictEqual(Math.min(maxScale, Math.round((currentScale + scaleStep) * 10) / 10), 1.1);
+      assert.strictEqual(Math.max(minScale, Math.round((currentScale - scaleStep) * 10) / 10), 0.9);
     });
 
     it('verifies ReaderSettingsModal layout, dimension contracts, and touch targets', () => {
@@ -1070,10 +1071,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     });
 
     it('verifies ReaderSettingsModal.tsx source code structure, contracts, and touch targets', () => {
-      const source = fs.readFileSync(
-        path.resolve(__dirname, './ReaderSettingsModal.tsx'),
-        'utf8'
-      );
+      const source = fs.readFileSync(path.resolve(__dirname, './ReaderSettingsModal.tsx'), 'utf8');
 
       // 1. Props interface
       assert.ok(source.includes('interface ReaderSettingsModalProps'));
@@ -1087,7 +1085,11 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes("quranFont?: 'hafs' | 'indopak'"));
       assert.ok(source.includes("onChangeQuranFont?: (font: 'hafs' | 'indopak') => void"));
       assert.ok(source.includes("activeTranslation?: 'makarem' | 'ansarian' | 'both'"));
-      assert.ok(source.includes("onChangeActiveTranslation?: (translation: 'makarem' | 'ansarian' | 'both') => void"));
+      assert.ok(
+        source.includes(
+          "onChangeActiveTranslation?: (translation: 'makarem' | 'ansarian' | 'both') => void",
+        ),
+      );
       assert.ok(source.includes('showWordByWord?: boolean'));
       assert.ok(source.includes('onToggleWordByWord?: (show: boolean) => void'));
       assert.ok(source.includes('showTranslation?: boolean'));
@@ -1135,7 +1137,10 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     it('should ensure all tab buttons have touch targets >= 44x44px and accessibilityRole="tab"', () => {
       const code = fs.readFileSync(path.resolve(__dirname, 'ReaderSettingsModal.tsx'), 'utf8');
       assert.ok(code.includes('accessibilityRole="tab"'));
-      assert.ok(code.includes('READER_COMPONENT_CONTRACTS.minTouchTarget') || code.includes('minHeight: 44'));
+      assert.ok(
+        code.includes('READER_COMPONENT_CONTRACTS.minTouchTarget') ||
+          code.includes('minHeight: 44'),
+      );
     });
 
     it('should export SettingsTabId and SETTINGS_TABS contract and re-export in index', () => {
@@ -1144,7 +1149,10 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(contractsCode.includes('SETTINGS_TABS'));
 
       const modalCode = fs.readFileSync(path.resolve(__dirname, 'ReaderSettingsModal.tsx'), 'utf8');
-      assert.ok(modalCode.includes('export type { SettingsTabId }') || modalCode.includes('export type SettingsTabId'));
+      assert.ok(
+        modalCode.includes('export type { SettingsTabId }') ||
+          modalCode.includes('export type SettingsTabId'),
+      );
 
       const indexCode = fs.readFileSync(path.resolve(__dirname, 'index.ts'), 'utf8');
       assert.ok(indexCode.includes("export * from './ReaderSettingsModal'"));
@@ -1235,10 +1243,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
 
   describe('Reader Index Exports Contract', () => {
     it('verifies mobile/src/components/reader/index.ts exports all components and contracts', () => {
-      const indexSource = fs.readFileSync(
-        path.resolve(__dirname, './index.ts'),
-        'utf8'
-      );
+      const indexSource = fs.readFileSync(path.resolve(__dirname, './index.ts'), 'utf8');
 
       assert.ok(indexSource.includes("export * from './SurahHeaderBanner'"));
       assert.ok(indexSource.includes("export * from './BismillahBanner'"));
@@ -1258,16 +1263,22 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 1. Default export function
       assert.ok(
         surahScreenSource.includes('export default function SurahReaderScreen'),
-        'SurahReaderScreen must be exported as default function'
+        'SurahReaderScreen must be exported as default function',
       );
 
       // 2. All 7 Sanctuary Phase 1C components imported
       assert.ok(surahScreenSource.includes('SurahHeaderBanner'), 'Must import SurahHeaderBanner');
       assert.ok(surahScreenSource.includes('BismillahBanner'), 'Must import BismillahBanner');
-      assert.ok(surahScreenSource.includes('ContinuousVerseCard'), 'Must import ContinuousVerseCard');
+      assert.ok(
+        surahScreenSource.includes('ContinuousVerseCard'),
+        'Must import ContinuousVerseCard',
+      );
       assert.ok(surahScreenSource.includes('MushafPageView'), 'Must import MushafPageView');
       assert.ok(surahScreenSource.includes('AudioPlaybackDock'), 'Must import AudioPlaybackDock');
-      assert.ok(surahScreenSource.includes('ReaderSettingsModal'), 'Must import ReaderSettingsModal');
+      assert.ok(
+        surahScreenSource.includes('ReaderSettingsModal'),
+        'Must import ReaderSettingsModal',
+      );
       assert.ok(surahScreenSource.includes('AmbientGlow'), 'Must import AmbientGlow');
 
       // 3. Database services imported
@@ -1284,14 +1295,38 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(surahScreenSource.includes('setQuranFont'), 'Must access setQuranFont from store');
       assert.ok(surahScreenSource.includes('fontScale'), 'Must access fontScale from store');
       assert.ok(surahScreenSource.includes('setFontScale'), 'Must access setFontScale from store');
-      assert.ok(surahScreenSource.includes('showWordByWord'), 'Must access showWordByWord from store');
-      assert.ok(surahScreenSource.includes('toggleWordByWord'), 'Must access toggleWordByWord from store');
-      assert.ok(surahScreenSource.includes('showTranslation'), 'Must access showTranslation from store');
-      assert.ok(surahScreenSource.includes('toggleTranslation'), 'Must access toggleTranslation from store');
-      assert.ok(surahScreenSource.includes('activeTranslation'), 'Must access activeTranslation from store');
-      assert.ok(surahScreenSource.includes('setActiveTranslation'), 'Must access setActiveTranslation from store');
-      assert.ok(surahScreenSource.includes('activeVerseKey'), 'Must access activeVerseKey from store');
-      assert.ok(surahScreenSource.includes('setActiveVerseKey'), 'Must access setActiveVerseKey from store');
+      assert.ok(
+        surahScreenSource.includes('showWordByWord'),
+        'Must access showWordByWord from store',
+      );
+      assert.ok(
+        surahScreenSource.includes('toggleWordByWord'),
+        'Must access toggleWordByWord from store',
+      );
+      assert.ok(
+        surahScreenSource.includes('showTranslation'),
+        'Must access showTranslation from store',
+      );
+      assert.ok(
+        surahScreenSource.includes('toggleTranslation'),
+        'Must access toggleTranslation from store',
+      );
+      assert.ok(
+        surahScreenSource.includes('activeTranslation'),
+        'Must access activeTranslation from store',
+      );
+      assert.ok(
+        surahScreenSource.includes('setActiveTranslation'),
+        'Must access setActiveTranslation from store',
+      );
+      assert.ok(
+        surahScreenSource.includes('activeVerseKey'),
+        'Must access activeVerseKey from store',
+      );
+      assert.ok(
+        surahScreenSource.includes('setActiveVerseKey'),
+        'Must access setActiveVerseKey from store',
+      );
       assert.ok(surahScreenSource.includes('isPlaying'), 'Must access isPlaying from store');
       assert.ok(surahScreenSource.includes('setIsPlaying'), 'Must access setIsPlaying from store');
       assert.ok(surahScreenSource.includes('setLastRead'), 'Must access setLastRead from store');
@@ -1301,53 +1336,53 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 1. Touch target dimension contract (>= 44x44px)
       assert.ok(
         surahScreenSource.includes('minWidth: 44') && surahScreenSource.includes('minHeight: 44'),
-        'Top bar navigation buttons must specify minWidth: 44 and minHeight: 44'
+        'Top bar navigation buttons must specify minWidth: 44 and minHeight: 44',
       );
 
       // 2. Back button specifications
       assert.ok(
         surahScreenSource.includes('router.back()'),
-        'Back button must navigate back via router.back()'
+        'Back button must navigate back via router.back()',
       );
       assert.ok(
         surahScreenSource.includes('accessibilityRole="button"'),
-        'Navigation buttons must specify accessibilityRole="button"'
+        'Navigation buttons must specify accessibilityRole="button"',
       );
       assert.ok(
         surahScreenSource.includes('accessibilityLabel="بازگشت به فهرست سوره‌ها"') ||
-        surahScreenSource.includes('accessibilityLabel="بازگشت به فهرست سورهها"'),
-        'Back button must have Persian accessibilityLabel for returning to Surah list'
+          surahScreenSource.includes('accessibilityLabel="بازگشت به فهرست سورهها"'),
+        'Back button must have Persian accessibilityLabel for returning to Surah list',
       );
       assert.ok(surahScreenSource.includes('<ArrowRight'), 'Back button must use ArrowRight icon');
 
       // 3. Title block with Persian title and Arabic calligraphy subtitle
       assert.ok(
         surahScreenSource.includes('chapter?.name_fa'),
-        'Title block must render chapter?.name_fa'
+        'Title block must render chapter?.name_fa',
       );
       assert.ok(
         surahScreenSource.includes('chapter?.name_arabic'),
-        'Title block must render chapter?.name_arabic'
+        'Title block must render chapter?.name_arabic',
       );
 
       // 4. View Mode Toggle button
       assert.ok(
         surahScreenSource.includes('accessibilityLabel="تغییر حالت نمایش"'),
-        'View mode toggle button must have accessibilityLabel="تغییر حالت نمایش"'
+        'View mode toggle button must have accessibilityLabel="تغییر حالت نمایش"',
       );
       assert.ok(
         surahScreenSource.includes('<BookOpen') && surahScreenSource.includes('<AlignLeft'),
-        'View mode toggle button must alternate between BookOpen and AlignLeft icons'
+        'View mode toggle button must alternate between BookOpen and AlignLeft icons',
       );
 
       // 5. Reader Settings button
       assert.ok(
         surahScreenSource.includes('accessibilityLabel="تنظیمات مطالعه قرآن"'),
-        'Settings button must have accessibilityLabel="تنظیمات مطالعه قرآن"'
+        'Settings button must have accessibilityLabel="تنظیمات مطالعه قرآن"',
       );
       assert.ok(
         surahScreenSource.includes('<SlidersHorizontal'),
-        'Settings button must use SlidersHorizontal icon'
+        'Settings button must use SlidersHorizontal icon',
       );
     });
 
@@ -1355,7 +1390,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 1. Dual mode branch on viewMode
       assert.ok(
         surahScreenSource.includes("viewMode === 'continuous'"),
-        'Must conditionally branch based on viewMode === continuous'
+        'Must conditionally branch based on viewMode === continuous',
       );
 
       // 2. Continuous FlatList mode
@@ -1363,63 +1398,63 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(surahScreenSource.includes('data={verses}'), 'FlatList data must be verses');
       assert.ok(
         surahScreenSource.includes('<SurahHeaderBanner'),
-        'ListHeaderComponent must include SurahHeaderBanner'
+        'ListHeaderComponent must include SurahHeaderBanner',
       );
       assert.ok(
         surahScreenSource.includes('<BismillahBanner'),
-        'ListHeaderComponent must include BismillahBanner'
+        'ListHeaderComponent must include BismillahBanner',
       );
       assert.ok(
         surahScreenSource.includes('<ContinuousVerseCard'),
-        'FlatList renderItem must render ContinuousVerseCard'
+        'FlatList renderItem must render ContinuousVerseCard',
       );
 
       // 3. Virtualization performance props on FlatList
       assert.ok(
         surahScreenSource.includes('initialNumToRender='),
-        'FlatList must specify initialNumToRender'
+        'FlatList must specify initialNumToRender',
       );
       assert.ok(
         surahScreenSource.includes('maxToRenderPerBatch='),
-        'FlatList must specify maxToRenderPerBatch'
+        'FlatList must specify maxToRenderPerBatch',
       );
       assert.ok(
         surahScreenSource.includes('removeClippedSubviews={true}'),
-        'FlatList must specify removeClippedSubviews={true}'
+        'FlatList must specify removeClippedSubviews={true}',
       );
 
       // 4. MushafPageView mode
       assert.ok(
         surahScreenSource.includes('<MushafPageView'),
-        'Must render MushafPageView in mushaf mode'
+        'Must render MushafPageView in mushaf mode',
       );
       assert.ok(
         surahScreenSource.includes('pageNumber={currentPage}'),
-        'MushafPageView must receive pageNumber={currentPage}'
+        'MushafPageView must receive pageNumber={currentPage}',
       );
       assert.ok(
         surahScreenSource.includes('verses={pageVerses}'),
-        'MushafPageView must receive verses={pageVerses}'
+        'MushafPageView must receive verses={pageVerses}',
       );
       assert.ok(
         surahScreenSource.includes('words={pageWords}'),
-        'MushafPageView must receive words={pageWords}'
+        'MushafPageView must receive words={pageWords}',
       );
       assert.ok(
         surahScreenSource.includes('fontScale={fontScale}'),
-        'MushafPageView must receive fontScale={fontScale}'
+        'MushafPageView must receive fontScale={fontScale}',
       );
       assert.ok(
         surahScreenSource.includes('onPrevPage={handlePrevPage}'),
-        'MushafPageView must bind onPrevPage'
+        'MushafPageView must bind onPrevPage',
       );
       assert.ok(
         surahScreenSource.includes('onNextPage={handleNextPage}'),
-        'MushafPageView must bind onNextPage'
+        'MushafPageView must bind onNextPage',
       );
       assert.ok(
         surahScreenSource.includes('onVersePress={handleVersePress}'),
-        'MushafPageView must bind onVersePress'
+        'MushafPageView must bind onVersePress',
       );
     });
 
@@ -1427,39 +1462,39 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 1. AudioPlaybackDock conditional rendering
       assert.ok(
         surahScreenSource.includes('{activeVerseKey &&'),
-        'AudioPlaybackDock must render conditionally when activeVerseKey is non-null'
+        'AudioPlaybackDock must render conditionally when activeVerseKey is non-null',
       );
       assert.ok(
         surahScreenSource.includes('<AudioPlaybackDock'),
-        'Screen must render AudioPlaybackDock'
+        'Screen must render AudioPlaybackDock',
       );
       assert.ok(
         surahScreenSource.includes('isPlaying={isPlaying}'),
-        'AudioPlaybackDock must bind isPlaying'
+        'AudioPlaybackDock must bind isPlaying',
       );
       assert.ok(
         surahScreenSource.includes('activeVerseKey={activeVerseKey}'),
-        'AudioPlaybackDock must bind activeVerseKey'
+        'AudioPlaybackDock must bind activeVerseKey',
       );
       assert.ok(
         surahScreenSource.includes('onPlayPause={handlePlayPause}'),
-        'AudioPlaybackDock must bind onPlayPause'
+        'AudioPlaybackDock must bind onPlayPause',
       );
       assert.ok(
         surahScreenSource.includes('onNextAyah={handleNextAyah}'),
-        'AudioPlaybackDock must bind onNextAyah'
+        'AudioPlaybackDock must bind onNextAyah',
       );
       assert.ok(
         surahScreenSource.includes('onPrevAyah={handlePrevAyah}'),
-        'AudioPlaybackDock must bind onPrevAyah'
+        'AudioPlaybackDock must bind onPrevAyah',
       );
       assert.ok(
         surahScreenSource.includes('onToggleRepeat={handleToggleRepeat}'),
-        'AudioPlaybackDock must bind onToggleRepeat'
+        'AudioPlaybackDock must bind onToggleRepeat',
       );
       assert.ok(
         surahScreenSource.includes('onCloseDock={handleCloseDock}'),
-        'AudioPlaybackDock must bind onCloseDock'
+        'AudioPlaybackDock must bind onCloseDock',
       );
 
       // 2. Behavioral simulation of audio flow handlers
@@ -1499,35 +1534,35 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     it('verifies reader settings modal integration and state binding', () => {
       assert.ok(
         surahScreenSource.includes('<ReaderSettingsModal'),
-        'Screen must render ReaderSettingsModal'
+        'Screen must render ReaderSettingsModal',
       );
       assert.ok(
         surahScreenSource.includes('visible={isSettingsOpen}'),
-        'ReaderSettingsModal must bind visible to isSettingsOpen'
+        'ReaderSettingsModal must bind visible to isSettingsOpen',
       );
       assert.ok(
         surahScreenSource.includes('onChangeFontScale={setFontScale}'),
-        'ReaderSettingsModal must bind onChangeFontScale to setFontScale'
+        'ReaderSettingsModal must bind onChangeFontScale to setFontScale',
       );
       assert.ok(
         surahScreenSource.includes('onChangeViewMode={setViewMode}'),
-        'ReaderSettingsModal must bind onChangeViewMode to setViewMode'
+        'ReaderSettingsModal must bind onChangeViewMode to setViewMode',
       );
       assert.ok(
         surahScreenSource.includes('onChangeQuranFont={setQuranFont}'),
-        'ReaderSettingsModal must bind onChangeQuranFont to setQuranFont'
+        'ReaderSettingsModal must bind onChangeQuranFont to setQuranFont',
       );
       assert.ok(
         surahScreenSource.includes('onChangeActiveTranslation={setActiveTranslation}'),
-        'ReaderSettingsModal must bind onChangeActiveTranslation to setActiveTranslation'
+        'ReaderSettingsModal must bind onChangeActiveTranslation to setActiveTranslation',
       );
       assert.ok(
         surahScreenSource.includes('onToggleWordByWord={toggleWordByWord}'),
-        'ReaderSettingsModal must bind onToggleWordByWord to toggleWordByWord'
+        'ReaderSettingsModal must bind onToggleWordByWord to toggleWordByWord',
       );
       assert.ok(
         surahScreenSource.includes('onToggleShowTranslation={toggleTranslation}'),
-        'ReaderSettingsModal must bind onToggleShowTranslation to toggleTranslation'
+        'ReaderSettingsModal must bind onToggleShowTranslation to toggleTranslation',
       );
     });
 
@@ -1535,15 +1570,15 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 1. Source checks for initial page and navigation clamping
       assert.ok(
         surahScreenSource.includes('pages_start') || surahScreenSource.includes('currentPage'),
-        'Must initialize currentPage with chapter starting page'
+        'Must initialize currentPage with chapter starting page',
       );
       assert.ok(
         surahScreenSource.includes('Math.max(1,'),
-        'handlePrevPage must clamp to minimum page 1'
+        'handlePrevPage must clamp to minimum page 1',
       );
       assert.ok(
         surahScreenSource.includes('Math.min(604,'),
-        'handleNextPage must clamp to maximum page 604'
+        'handleNextPage must clamp to maximum page 604',
       );
 
       // 2. Clamping simulation
@@ -1559,19 +1594,27 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.strictEqual(clampNext(1), 2);
 
       // 3. Database validation for chapter starting pages
-      const fatihah = db.prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 1').get();
+      const fatihah = db
+        .prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 1')
+        .get();
       assert.strictEqual(fatihah.pages_start, 1);
       assert.strictEqual(fatihah.verses_count, 7);
 
-      const baqarah = db.prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 2').get();
+      const baqarah = db
+        .prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 2')
+        .get();
       assert.strictEqual(baqarah.pages_start, 2);
       assert.strictEqual(baqarah.verses_count, 286);
 
-      const tawbah = db.prepare('SELECT id, pages_start, bismillah_pre FROM chapters WHERE id = 9').get();
+      const tawbah = db
+        .prepare('SELECT id, pages_start, bismillah_pre FROM chapters WHERE id = 9')
+        .get();
       assert.strictEqual(tawbah.pages_start, 187);
       assert.strictEqual(tawbah.bismillah_pre, 0);
 
-      const nas = db.prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 114').get();
+      const nas = db
+        .prepare('SELECT id, pages_start, verses_count FROM chapters WHERE id = 114')
+        .get();
       assert.strictEqual(nas.pages_start, 604);
       assert.strictEqual(nas.verses_count, 6);
 
@@ -1587,59 +1630,59 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 1. Component import and render
       assert.ok(
         surahScreenSource.includes('AyahInsightsDrawer'),
-        'Screen must import and render AyahInsightsDrawer'
+        'Screen must import and render AyahInsightsDrawer',
       );
       assert.ok(
         surahScreenSource.includes('<AyahInsightsDrawer'),
-        'Screen JSX must include <AyahInsightsDrawer'
+        'Screen JSX must include <AyahInsightsDrawer',
       );
 
       // 2. State and handler definitions
       assert.ok(
         surahScreenSource.includes('selectedInsightVerse'),
-        'Screen must manage selectedInsightVerse state'
+        'Screen must manage selectedInsightVerse state',
       );
       assert.ok(
         surahScreenSource.includes('isInsightsOpen'),
-        'Screen must manage isInsightsOpen state'
+        'Screen must manage isInsightsOpen state',
       );
       assert.ok(
         surahScreenSource.includes('handleVerseInsights'),
-        'Screen must implement handleVerseInsights'
+        'Screen must implement handleVerseInsights',
       );
       assert.ok(
         surahScreenSource.includes('handleCloseInsights'),
-        'Screen must implement handleCloseInsights'
+        'Screen must implement handleCloseInsights',
       );
 
       // 3. Prop bindings
       assert.ok(
         surahScreenSource.includes('visible={isInsightsOpen}'),
-        'AyahInsightsDrawer must bind visible={isInsightsOpen}'
+        'AyahInsightsDrawer must bind visible={isInsightsOpen}',
       );
       assert.ok(
         surahScreenSource.includes('verse={selectedInsightVerse}'),
-        'AyahInsightsDrawer must bind verse={selectedInsightVerse}'
+        'AyahInsightsDrawer must bind verse={selectedInsightVerse}',
       );
       assert.ok(
         surahScreenSource.includes('onClose={handleCloseInsights}'),
-        'AyahInsightsDrawer must bind onClose={handleCloseInsights}'
+        'AyahInsightsDrawer must bind onClose={handleCloseInsights}',
       );
       assert.ok(
         surahScreenSource.includes('onPlayVerse={handlePlayVerse}'),
-        'AyahInsightsDrawer must bind onPlayVerse={handlePlayVerse}'
+        'AyahInsightsDrawer must bind onPlayVerse={handlePlayVerse}',
       );
       assert.ok(
         surahScreenSource.includes('onBookmarkVerse={handleBookmarkVerse}'),
-        'AyahInsightsDrawer must bind onBookmarkVerse={handleBookmarkVerse}'
+        'AyahInsightsDrawer must bind onBookmarkVerse={handleBookmarkVerse}',
       );
       assert.ok(
         surahScreenSource.includes('bookmarkedKeys.has(selectedInsightVerse.verse_key)'),
-        'AyahInsightsDrawer must derive isBookmarked from bookmarkedKeys'
+        'AyahInsightsDrawer must derive isBookmarked from bookmarkedKeys',
       );
       assert.ok(
         surahScreenSource.includes('testID="ayah-insights-drawer"'),
-        'AyahInsightsDrawer must have testID="ayah-insights-drawer"'
+        'AyahInsightsDrawer must have testID="ayah-insights-drawer"',
       );
     });
   });
@@ -1647,10 +1690,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
   describe('Cross-Platform RTL Layout, Mushaf Ayah Markers & In-Page Bismillah Tests', () => {
     it('verifies cross-platform RTL layout helpers and bidirectional mapping', () => {
       // 1. Verify rtl.ts source code structure and exported contracts
-      const rtlSource = fs.readFileSync(
-        path.resolve(__dirname, '../../theme/rtl.ts'),
-        'utf8'
-      );
+      const rtlSource = fs.readFileSync(path.resolve(__dirname, '../../theme/rtl.ts'), 'utf8');
       assert.ok(rtlSource.includes('export const isRTL'));
       assert.ok(rtlSource.includes('export const rtlRow'));
       assert.ok(rtlSource.includes('export const rtlRowReverse'));
@@ -1692,7 +1732,7 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 3. Verify ContinuousVerseCard source binds rtlRow, rtlTextAlign, and rtlFlexStart
       const cardSource = fs.readFileSync(
         path.resolve(__dirname, './ContinuousVerseCard.tsx'),
-        'utf8'
+        'utf8',
       );
       assert.ok(cardSource.includes('flexDirection: rtlRow'));
       assert.ok(cardSource.includes('textAlign: rtlTextAlign'));
@@ -1701,20 +1741,19 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       // 4. Verify SurahReaderScreen source binds rtlRow for topBar and topBarActions
       const surahSource = fs.readFileSync(
         path.resolve(__dirname, '../../app/surah/[id].tsx'),
-        'utf8'
+        'utf8',
       );
       assert.ok(surahSource.includes('flexDirection: rtlRow'));
 
       // 5. Verify MushafPageView source binds rtlRow for lines, word touchables, and header
-      const mushafSource = fs.readFileSync(
-        path.resolve(__dirname, './MushafPageView.tsx'),
-        'utf8'
-      );
+      const mushafSource = fs.readFileSync(path.resolve(__dirname, './MushafPageView.tsx'), 'utf8');
       assert.ok(mushafSource.includes('flexDirection: rtlRow'));
     });
 
     it('validates Arabic Surah names and verse counts across all 114 Surahs from database', () => {
-      const dbChapters = db.prepare('SELECT id, name_arabic, verses_count FROM chapters ORDER BY id ASC').all();
+      const dbChapters = db
+        .prepare('SELECT id, name_arabic, verses_count FROM chapters ORDER BY id ASC')
+        .all();
       assert.strictEqual(dbChapters.length, 114);
 
       for (const ch of dbChapters) {
@@ -1739,9 +1778,9 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
 
     it('verifies that multi-line verses render EXACTLY ONE Ayah end marker on the final word', () => {
       // Query Page 534 words from SQLite database
-      const pageWords = db.prepare(
-        'SELECT * FROM words WHERE page_number = ? ORDER BY line_number ASC, position ASC'
-      ).all(534);
+      const pageWords = db
+        .prepare('SELECT * FROM words WHERE page_number = ? ORDER BY line_number ASC, position ASC')
+        .all(534);
 
       assert.ok(pageWords.length > 0);
 
@@ -1754,44 +1793,52 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       const endWordKeySet = new Set(verseEndWordKeys.values());
 
       // Verse 55:72 spans line 2 (word 1: حُورٌۭ) and line 3 (words 2..4: مَّقْصُورَٰتٌۭ فِى ٱلْخِيَامِ)
-      const v72Words = pageWords.filter(w => w.verse_key === '55:72');
+      const v72Words = pageWords.filter((w) => w.verse_key === '55:72');
       assert.strictEqual(v72Words.length, 4);
 
-      const v72EndMarkers = v72Words.filter(w => {
+      const v72EndMarkers = v72Words.filter((w) => {
         const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
         return endWordKeySet.has(key);
       });
 
       // Must have exactly ONE end marker, placed on word 4, NOT word 1 (which was on line 2)
       assert.strictEqual(v72EndMarkers.length, 1, 'Verse 55:72 must have exactly 1 end marker');
-      assert.strictEqual(v72EndMarkers[0].position, 4, 'End marker must be on final word position 4');
+      assert.strictEqual(
+        v72EndMarkers[0].position,
+        4,
+        'End marker must be on final word position 4',
+      );
       assert.strictEqual(v72EndMarkers[0].text_uthmani, 'ٱلْخِيَامِ');
 
       // Verse 55:77 spans line 5 (word 1: فَبِأَىِّ) and line 6 (words 2..4: ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ)
-      const v77Words = pageWords.filter(w => w.verse_key === '55:77');
+      const v77Words = pageWords.filter((w) => w.verse_key === '55:77');
       assert.strictEqual(v77Words.length, 4);
 
-      const v77EndMarkers = v77Words.filter(w => {
+      const v77EndMarkers = v77Words.filter((w) => {
         const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
         return endWordKeySet.has(key);
       });
 
       assert.strictEqual(v77EndMarkers.length, 1, 'Verse 55:77 must have exactly 1 end marker');
-      assert.strictEqual(v77EndMarkers[0].position, 4, 'End marker must be on final word position 4');
+      assert.strictEqual(
+        v77EndMarkers[0].position,
+        4,
+        'End marker must be on final word position 4',
+      );
       assert.strictEqual(v77EndMarkers[0].text_uthmani, 'تُكَذِّبَانِ');
 
       // Check EVERY verse on page 534: every verse must have strictly 1 end marker
-      const uniqueVerses = [...new Set(pageWords.map(w => w.verse_key))];
+      const uniqueVerses = [...new Set(pageWords.map((w) => w.verse_key))];
       for (const vk of uniqueVerses) {
-        const wordsOfVk = pageWords.filter(w => w.verse_key === vk);
-        const markers = wordsOfVk.filter(w => {
+        const wordsOfVk = pageWords.filter((w) => w.verse_key === vk);
+        const markers = wordsOfVk.filter((w) => {
           const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
           return endWordKeySet.has(key);
         });
         assert.strictEqual(
           markers.length,
           1,
-          `Verse ${vk} on page 534 must have exactly one Ayah ending marker`
+          `Verse ${vk} on page 534 must have exactly one Ayah ending marker`,
         );
       }
     });
@@ -1799,9 +1846,11 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
     it('verifies in-page Surah Title Cartouche and Bismillah Banner line mapping on Page 531 and 534', () => {
       // Helper replicating inPageLineRoles logic
       function deriveLineRoles(pageNumber) {
-        const words = db.prepare(
-          'SELECT * FROM words WHERE page_number = ? ORDER BY line_number ASC, position ASC'
-        ).all(pageNumber);
+        const words = db
+          .prepare(
+            'SELECT * FROM words WHERE page_number = ? ORDER BY line_number ASC, position ASC',
+          )
+          .all(pageNumber);
 
         const roles = new Map();
         const seenChapters = new Set();
@@ -1862,14 +1911,23 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       const surahScreenPath = path.resolve(__dirname, '../../app/surah/[id].tsx');
       const code = fs.readFileSync(surahScreenPath, 'utf8');
 
-      assert.ok(code.includes('CellRendererComponent={CellRenderer}'), 'Must pass CellRendererComponent to FlatList');
-      assert.ok(code.includes('verseLayoutsRef.current.set'), 'Must register verse layouts in verseLayoutsRef');
-      assert.ok(code.includes('flatListRef.current?.scrollToOffset'), 'Must scroll using exact offset');
-      assert.ok(code.includes('lastScrolledVerseKeyRef'), 'Must prevent duplicate scrolls with lastScrolledVerseKeyRef');
+      assert.ok(
+        code.includes('CellRendererComponent={CellRenderer}'),
+        'Must pass CellRendererComponent to FlatList',
+      );
+      assert.ok(
+        code.includes('verseLayoutsRef.current.set'),
+        'Must register verse layouts in verseLayoutsRef',
+      );
+      assert.ok(
+        code.includes('flatListRef.current?.scrollToOffset'),
+        'Must scroll using exact offset',
+      );
+      assert.ok(
+        code.includes('lastScrolledVerseKeyRef'),
+        'Must prevent duplicate scrolls with lastScrolledVerseKeyRef',
+      );
       assert.ok(code.includes('windowSize={11}'), 'Must maintain buffer with windowSize');
     });
   });
 });
-
-
-

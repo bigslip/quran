@@ -172,6 +172,8 @@ export const RECITER_AUDIO_SUBPATHS: Record<number, string> = {
   9: 'Minshawy_Murattal_128kbps',
   202: 'Husary_128kbps',
   203: 'Karim_Mansoori_40kbps',
+  3: 'Abdurrahmaan_As-Sudais_192kbps',
+  10: 'Saood_ash-Shuraym_128kbps',
   204: 'Parhizgar_48kbps', // fallback for Shakernejad
   205: 'Parhizgar_48kbps', // fallback for Emamjomeh
   206: 'Parhizgar_48kbps', // fallback for Saeidian
@@ -181,7 +183,7 @@ export const RECITER_AUDIO_SUBPATHS: Record<number, string> = {
   1: 'Abdul_Basit_Murattal_192kbps',
   2: 'Abdul_Basit_Mujawwad_128kbps',
   4: 'Abu_Bakr_Ash-Shaatree_128kbps',
-  6: 'Husary_Muallim_128kbps',
+  6: 'Hani_Rifai_192kbps',
   12: 'MaherAlMuaiqly128kbps',
 };
 
@@ -198,7 +200,11 @@ export function formatVerseAudioFilename(chapterId: number, verseNumber: number)
 /**
  * Resolves full CDN streaming URL for a specific verse and reciter.
  */
-export function getVerseAudioUrl(reciterId: number, chapterId: number, verseNumber: number): string {
+export function getVerseAudioUrl(
+  reciterId: number,
+  chapterId: number,
+  verseNumber: number,
+): string {
   const subpath = RECITER_AUDIO_SUBPATHS[reciterId] || RECITER_AUDIO_SUBPATHS[DEFAULT_RECITER_ID];
   const filename = formatVerseAudioFilename(chapterId, verseNumber);
   return `${EVERYAYAH_BASE_URL}/${subpath}/${filename}`;
@@ -209,10 +215,7 @@ export function getReciterById(id: number): Reciter {
   return found || AVAILABLE_RECITERS[0];
 }
 
-export function searchReciters(
-  query: string,
-  style: 'all' | ReciterStyle = 'all'
-): Reciter[] {
+export function searchReciters(query: string, style: 'all' | ReciterStyle = 'all'): Reciter[] {
   const normalizedQuery = query.trim().toLowerCase();
 
   return AVAILABLE_RECITERS.filter((reciter) => {

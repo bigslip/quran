@@ -309,4 +309,32 @@ describe('useBookmarkStore Reactive State Tests', () => {
     assert.strictEqual(filtered.length, 1);
     assert.strictEqual(filtered[0].verse_key, '1:1');
   });
+
+  it('should clear recentlyDeleted when adding a bookmark with the same verse key and sync note updates', async () => {
+    await useBookmarkStore.getState().toggleBookmark({
+      verse_key: '1:1',
+      chapter_id: 1,
+      verse_number: 1,
+      note: 'یادداشت اولیه',
+    });
+
+    const item = useBookmarkStore.getState().bookmarks.find((b) => b.verse_key === '1:1');
+    assert.ok(item);
+
+    // Delete item into undo buffer
+    await useBookmarkStore.getState().deleteBookmark(item.id);
+    assert.strictEqual(useBookmarkStore.getState().recentlyDeleted?.verse_key, '1:1');
+
+    // Updating note for 1:1 while in undo buffer should update recentlyDeleted.note
+    await useBookmarkStore.getState().updateNote('1:1', 'یادداشت تغییر یافته');
+    assert.strictEqual(useBookmarkStore.getState().recentlyDeleted?.note, 'یادداشت تغییر یافته');
+
+    // Re-adding 1:1 should clear recentlyDeleted buffer
+    await useBookmarkStore.getState().toggleBookmark({
+      verse_key: '1:1',
+      chapter_id: 1,
+      verse_number: 1,
+    });
+    assert.strictEqual(useBookmarkStore.getState().recentlyDeleted, null);
+  });
 });

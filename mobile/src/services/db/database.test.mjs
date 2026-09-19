@@ -21,7 +21,7 @@ const __dirname = path.dirname(__filename);
 const DB_PATH = path.resolve(__dirname, '../../../../mobile/assets/data/quran.db');
 
 describe('Mobile Quran SQLite Database Tests', () => {
-  const db = new DatabaseSync(DB_PATH);
+  const db = new DatabaseSync(DB_PATH, { readOnly: true });
   setAyahDatabase(db);
 
   it('should contain all 114 Surahs with proper metadata', () => {
@@ -66,19 +66,27 @@ describe('Mobile Quran SQLite Database Tests', () => {
   });
 
   it('should execute lightning-fast FTS5 search in Persian and Arabic', () => {
-    const ftsResultsFa = db.prepare(`
+    const ftsResultsFa = db
+      .prepare(
+        `
       SELECT verse_key, translation_fa FROM search_fts
       WHERE search_fts MATCH ?
       LIMIT 5;
-    `).all('بخشنده');
+    `,
+      )
+      .all('بخشنده');
     assert.ok(ftsResultsFa.length > 0);
     assert.strictEqual(ftsResultsFa[0].verse_key, '1:1');
 
-    const ftsResultsAr = db.prepare(`
+    const ftsResultsAr = db
+      .prepare(
+        `
       SELECT verse_key, text_clean_arabic FROM search_fts
       WHERE search_fts MATCH ?
       LIMIT 5;
-    `).all('الله');
+    `,
+      )
+      .all('الله');
     assert.ok(ftsResultsAr.length > 0);
   });
 
@@ -163,7 +171,9 @@ describe('Mobile Quran SQLite Database Tests', () => {
     assert.ok(juz30.surah_names_text.includes('اخلاص'));
     assert.ok(juz30.surah_names_text.includes('فلق'));
     assert.ok(juz30.surah_names_text.includes('ناس'));
-    assert.ok(juz30.surah_names_text.includes('کافرون') || juz30.surah_names_text.includes('كافرون'));
+    assert.ok(
+      juz30.surah_names_text.includes('کافرون') || juz30.surah_names_text.includes('كافرون'),
+    );
 
     // Verify properties across all 30 Juzs
     let totalVerses = 0;
@@ -175,7 +185,9 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.ok(juz.verses_count > 0);
       assert.ok(juz.first_chapter_id >= 1 && juz.first_chapter_id <= 114);
       assert.ok(typeof juz.first_verse_key === 'string' && juz.first_verse_key.includes(':'));
-      assert.ok(typeof juz.first_surah_name_arabic === 'string' && juz.first_surah_name_arabic.length > 0);
+      assert.ok(
+        typeof juz.first_surah_name_arabic === 'string' && juz.first_surah_name_arabic.length > 0,
+      );
       assert.ok(typeof juz.first_surah_name_fa === 'string' && juz.first_surah_name_fa.length > 0);
       assert.ok(typeof juz.preview_text === 'string' && juz.preview_text.length > 0);
       assert.ok(typeof juz.surah_names_text === 'string' && juz.surah_names_text.length > 0);
@@ -335,7 +347,7 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.strictEqual(page1Verses[6].verse_key, '1:7');
       assert.deepStrictEqual(
         page1Verses.map((v) => v.verse_key),
-        ['1:1', '1:2', '1:3', '1:4', '1:5', '1:6', '1:7']
+        ['1:1', '1:2', '1:3', '1:4', '1:5', '1:6', '1:7'],
       );
       for (const v of page1Verses) {
         assert.strictEqual(v.page_number, 1);
@@ -353,7 +365,7 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.strictEqual(page2Verses[4].verse_key, '2:5');
       assert.deepStrictEqual(
         page2Verses.map((v) => v.verse_key),
-        ['2:1', '2:2', '2:3', '2:4', '2:5']
+        ['2:1', '2:2', '2:3', '2:4', '2:5'],
       );
       for (const v of page2Verses) {
         assert.strictEqual(v.page_number, 2);
@@ -420,9 +432,11 @@ describe('Mobile Quran SQLite Database Tests', () => {
         assert.ok(
           curr.line_number < next.line_number ||
             (curr.line_number === next.line_number &&
-              ((curr.chapter_id < next.chapter_id) ||
+              (curr.chapter_id < next.chapter_id ||
                 (curr.chapter_id === next.chapter_id && curr.verse_number < next.verse_number) ||
-                (curr.chapter_id === next.chapter_id && curr.verse_number === next.verse_number && curr.position < next.position)))
+                (curr.chapter_id === next.chapter_id &&
+                  curr.verse_number === next.verse_number &&
+                  curr.position < next.position))),
         );
       }
     });
@@ -473,12 +487,12 @@ describe('Mobile Quran SQLite Database Tests', () => {
               isOrderValid,
               `Scrambled word order on page ${page}, line ${curr.line_number}: ` +
                 `word ${curr.verse_key} pos ${curr.position} (${curr.text_uthmani}) preceded ` +
-                `word ${next.verse_key} pos ${next.position} (${next.text_uthmani})`
+                `word ${next.verse_key} pos ${next.position} (${next.text_uthmani})`,
             );
           } else {
             assert.ok(
               curr.line_number < next.line_number,
-              `Line numbers not increasing on page ${page}: line ${curr.line_number} followed by line ${next.line_number}`
+              `Line numbers not increasing on page ${page}: line ${curr.line_number} followed by line ${next.line_number}`,
             );
           }
         }
@@ -497,7 +511,7 @@ describe('Mobile Quran SQLite Database Tests', () => {
         assert.strictEqual(
           pageWords.length,
           totalVerseWords,
-          `Word count mismatch on page ${page}: getPageWords=${pageWords.length} vs verse words=${totalVerseWords}`
+          `Word count mismatch on page ${page}: getPageWords=${pageWords.length} vs verse words=${totalVerseWords}`,
         );
 
         // Verify set of word IDs from getPageWords matches all hydrated verse words
@@ -517,14 +531,26 @@ describe('Mobile Quran SQLite Database Tests', () => {
       const serviceFilePath = path.resolve(__dirname, 'verseService.ts');
       const serviceCode = fs.readFileSync(serviceFilePath, 'utf8');
 
-      assert.ok(serviceCode.includes('export async function getVersesByPage(pageNumber: number): Promise<Verse[]>'));
-      assert.ok(serviceCode.includes('export async function getPageWords(pageNumber: number): Promise<Word[]>'));
+      assert.ok(
+        serviceCode.includes(
+          'export async function getVersesByPage(pageNumber: number): Promise<Verse[]>',
+        ),
+      );
+      assert.ok(
+        serviceCode.includes(
+          'export async function getPageWords(pageNumber: number): Promise<Word[]>',
+        ),
+      );
       assert.ok(serviceCode.includes('SELECT * FROM verses'));
       assert.ok(serviceCode.includes('WHERE page_number = ?'));
       assert.ok(serviceCode.includes('ORDER BY id ASC'));
       assert.ok(serviceCode.includes('SELECT * FROM words'));
       assert.ok(serviceCode.includes('ORDER BY chapter_id ASC, verse_number ASC, position ASC'));
-      assert.ok(serviceCode.includes('ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC'));
+      assert.ok(
+        serviceCode.includes(
+          'ORDER BY line_number ASC, chapter_id ASC, verse_number ASC, position ASC',
+        ),
+      );
     });
 
     it('should verify useReadingStore state properties, defaults, and setters contract', () => {
@@ -543,7 +569,11 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.ok(storeCode.includes("setQuranFont: (font: 'hafs' | 'indopak') => void"));
       assert.ok(storeCode.includes('setActiveVerseKey: (key: string | null) => void'));
       assert.ok(storeCode.includes('setIsPlaying: (playing: boolean) => void'));
-      assert.ok(storeCode.includes("setActiveTranslation: (translation: 'makarem' | 'ansarian' | 'both') => void"));
+      assert.ok(
+        storeCode.includes(
+          "setActiveTranslation: (translation: 'makarem' | 'ansarian' | 'both') => void",
+        ),
+      );
 
       // Defaults
       assert.ok(storeCode.includes("viewMode: 'continuous'"));
@@ -554,10 +584,16 @@ describe('Mobile Quran SQLite Database Tests', () => {
 
       // Action implementations
       assert.ok(storeCode.includes('setViewMode: (viewMode) => set({ viewMode })'));
-      assert.ok(storeCode.includes('setQuranFont: (quranFont) => set({ quranFont })'));
-      assert.ok(storeCode.includes('setActiveVerseKey: (activeVerseKey) => set({ activeVerseKey })'));
+      assert.ok(storeCode.includes('setQuranFont: (quranFont)'));
+      assert.ok(
+        storeCode.includes('setActiveVerseKey: (activeVerseKey) => set({ activeVerseKey })'),
+      );
       assert.ok(storeCode.includes('setIsPlaying: (isPlaying) => set({ isPlaying })'));
-      assert.ok(storeCode.includes('setActiveTranslation: (activeTranslation) => set({ activeTranslation })'));
+      assert.ok(
+        storeCode.includes(
+          'setActiveTranslation: (activeTranslation) => set({ activeTranslation })',
+        ),
+      );
     });
   });
 
@@ -570,8 +606,15 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.strictEqual(insight.verse_number, 28);
       assert.ok(insight.contemplative_theme.length > 0);
       assert.ok(insight.linguistic_summary.length > 0);
-      assert.ok(insight.contemplative_theme.includes('پاک‌نهادان') || insight.contemplative_theme.includes('همنشینی'));
-      assert.ok(insight.linguistic_summary.includes('وَٱصْبِرْ') || insight.linguistic_summary.includes('يَدْعُونَ') || insight.linguistic_summary.includes('اخلاص'));
+      assert.ok(
+        insight.contemplative_theme.includes('پاک‌نهادان') ||
+          insight.contemplative_theme.includes('همنشینی'),
+      );
+      assert.ok(
+        insight.linguistic_summary.includes('وَٱصْبِرْ') ||
+          insight.linguistic_summary.includes('يَدْعُونَ') ||
+          insight.linguistic_summary.includes('اخلاص'),
+      );
 
       // Check words breakdown
       assert.strictEqual(insight.words.length, 30);
@@ -607,15 +650,15 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.strictEqual(insight.words.length, 4);
       assert.deepStrictEqual(
         insight.words.map((w) => w.text_uthmani),
-        ['بِسْمِ', 'ٱللَّهِ', 'ٱلرَّحْمَـٰنِ', 'ٱلرَّحِيمِ']
+        ['بِسْمِ', 'ٱللَّهِ', 'ٱلرَّحْمَـٰنِ', 'ٱلرَّحِيمِ'],
       );
       assert.deepStrictEqual(
         insight.words.map((w) => w.translation_fa),
-        ['به نام', 'خداوند', 'بخشنده', 'مهربان']
+        ['به نام', 'خداوند', 'بخشنده', 'مهربان'],
       );
       assert.deepStrictEqual(
         insight.words.map((w) => w.root_arabic),
-        ['سمو', 'اله', 'رحم', 'رحم']
+        ['سمو', 'اله', 'رحم', 'رحم'],
       );
 
       // Check Tafsir excerpts
@@ -635,9 +678,13 @@ describe('Mobile Quran SQLite Database Tests', () => {
         assert.strictEqual(words[i].position, i + 1);
         assert.strictEqual(words[i].verse_key, '18:28');
         assert.ok(typeof words[i].text_uthmani === 'string' && words[i].text_uthmani.length > 0);
-        assert.ok(typeof words[i].translation_fa === 'string' && words[i].translation_fa.length > 0);
+        assert.ok(
+          typeof words[i].translation_fa === 'string' && words[i].translation_fa.length > 0,
+        );
         assert.ok(typeof words[i].root_arabic === 'string' && words[i].root_arabic.length > 0);
-        assert.ok(typeof words[i].part_of_speech === 'string' && words[i].part_of_speech.length > 0);
+        assert.ok(
+          typeof words[i].part_of_speech === 'string' && words[i].part_of_speech.length > 0,
+        );
       }
 
       // Check specific linguistic markers
@@ -687,7 +734,7 @@ describe('Mobile Quran SQLite Database Tests', () => {
       assert.strictEqual(excerptsDynamic.length, 3);
       assert.deepStrictEqual(
         excerptsDynamic.map((t) => t.id),
-        ['nemouneh', 'al-mizan', 'noor']
+        ['nemouneh', 'al-mizan', 'noor'],
       );
       for (const t of excerptsDynamic) {
         assert.ok(t.title.length > 0);
@@ -730,6 +777,15 @@ describe('Mobile Quran SQLite Database Tests', () => {
       clearPersonalReflections(); // Clear memory store to ensure fetch reads from SQLite table
       const fromSqlite = await getPersonalReflection('18:28', memDb);
       assert.strictEqual(fromSqlite, 'تست ذخیره‌سازی در پایگاه داده SQLite');
+
+      // Verify that reflections persist to active SQLite DB by default WITHOUT passing explicit db parameter
+      const activeMemDb = new DatabaseSync(':memory:');
+      setAyahDatabase(activeMemDb);
+      await savePersonalReflection('2:255', 'یادداشت آیت الکرسی پیش‌فرض');
+      clearPersonalReflections();
+      const defaultPersisted = await getPersonalReflection('2:255');
+      assert.strictEqual(defaultPersisted, 'یادداشت آیت الکرسی پیش‌فرض');
+      setAyahDatabase(db); // Restore main db
     });
 
     it('should verify ayahInsightsService.ts and types/quran.ts export contracts', () => {
@@ -774,4 +830,3 @@ describe('Mobile Quran SQLite Database Tests', () => {
     });
   });
 });
-

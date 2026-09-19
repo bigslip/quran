@@ -21,6 +21,7 @@ export interface PlayingVerseInfo {
 class AudioPlayerService {
   private driver: AudioDriver;
   private currentVerse: PlayingVerseInfo | null = null;
+  private currentPlaybackId: number = 0;
 
   constructor(driver?: AudioDriver) {
     this.driver = driver || getDefaultAudioDriver();
@@ -39,8 +40,9 @@ class AudioPlayerService {
     chapterId: number,
     verseNumber: number,
     onFinish?: () => void,
-    onError?: (err: Error) => void
+    onError?: (err: Error) => void,
   ): Promise<void> {
+    const playbackId = ++this.currentPlaybackId;
     const url = getVerseAudioUrl(reciterId, chapterId, verseNumber);
     this.currentVerse = {
       reciterId,
@@ -52,11 +54,15 @@ class AudioPlayerService {
     await this.driver.playSound(
       url,
       () => {
-        onFinish?.();
+        if (this.currentPlaybackId === playbackId) {
+          onFinish?.();
+        }
       },
       (err) => {
-        onError?.(err);
-      }
+        if (this.currentPlaybackId === playbackId) {
+          onError?.(err);
+        }
+      },
     );
   }
 
@@ -69,6 +75,7 @@ class AudioPlayerService {
   }
 
   public async stop(): Promise<void> {
+    this.currentPlaybackId++;
     this.currentVerse = null;
     await this.driver.stopSound();
   }

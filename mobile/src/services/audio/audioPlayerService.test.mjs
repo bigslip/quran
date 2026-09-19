@@ -45,7 +45,7 @@ describe('Audio Player Service Unit & Lifecycle Tests', () => {
     assert.strictEqual(mockDriverCalls[0].action, 'play');
     assert.strictEqual(
       mockDriverCalls[0].url,
-      'https://everyayah.com/data/Parhizgar_48kbps/001001.mp3'
+      'https://everyayah.com/data/Parhizgar_48kbps/001001.mp3',
     );
 
     const current = audioPlayerService.getCurrentlyPlayingVerse();
@@ -88,6 +88,31 @@ describe('Audio Player Service Unit & Lifecycle Tests', () => {
     // Simulate playback finish
     finishCallback();
     assert.strictEqual(finished, true);
+  });
+
+  it('should ignore stale onFinish callback if a new verse was requested before finish', async () => {
+    let verse1Finished = false;
+    let verse2Finished = false;
+
+    // Start Verse 1
+    await audioPlayerService.playVerse(201, 1, 1, () => {
+      verse1Finished = true;
+    });
+    const oldFinishCallback = finishCallback;
+
+    // Rapidly switch to Verse 2 before Verse 1 completes
+    await audioPlayerService.playVerse(201, 1, 2, () => {
+      verse2Finished = true;
+    });
+
+    // Stale completion arrives from Verse 1
+    oldFinishCallback();
+    assert.strictEqual(verse1Finished, false, 'Stale callback must be ignored');
+    assert.strictEqual(verse2Finished, false);
+
+    // Verse 2 finishes
+    finishCallback();
+    assert.strictEqual(verse2Finished, true);
   });
 });
 
@@ -243,6 +268,47 @@ describe('Expo Audio Driver (Modern SDK 57 expo-audio) Tests', () => {
     await driver.stopSound();
     assert.strictEqual(pauseCount, 2);
     assert.strictEqual(driver.isPlaying(), false);
+  });
+
+  it('should rewind player to position 0 when replaying the same URL after completion', async () => {
+    let seekPosition = -1;
+    let playCount = 0;
+    let statusListener = null;
+
+    const mockExpoAudio = {
+      setAudioModeAsync: async () => {},
+      createAudioPlayer: () => ({
+        playing: false,
+        currentTime: 15.4,
+        seekTo: (pos) => {
+          seekPosition = pos;
+        },
+        play: () => {
+          playCount++;
+        },
+        pause: () => {},
+        remove: () => {},
+        addListener: (event, cb) => {
+          if (event === 'playbackStatusUpdate') statusListener = cb;
+          return { remove: () => {} };
+        },
+      }),
+    };
+
+    const driver = createExpoAudioDriver(mockExpoAudio);
+    const url = 'https://everyayah.com/data/Parhizgar_48kbps/001001.mp3';
+
+    // First playback
+    await driver.playSound(url);
+    assert.strictEqual(playCount, 1);
+
+    // Track finishes
+    statusListener({ didJustFinish: true, playing: false });
+
+    // User or repeat loop requests same track again
+    await driver.playSound(url);
+    assert.strictEqual(seekPosition, 0, 'Must rewind to 0 before playing again');
+    assert.strictEqual(playCount, 2);
   });
 });
 

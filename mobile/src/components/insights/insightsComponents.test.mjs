@@ -32,8 +32,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_PATH = path.resolve(__dirname, '../../../../mobile/assets/data/quran.db');
 
-describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
-  const db = new DatabaseSync(DB_PATH);
+describe('Insights Components Logic, Interactive States & Design System Tests', () => {
+  const db = new DatabaseSync(DB_PATH, { readOnly: true });
   setAyahDatabase(db);
 
   describe('Formatting Helpers & Persian Numerals', () => {
@@ -113,21 +113,21 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
     it('formatTafsirPillTitle formats tafsirs into concise source pill labels', () => {
       assert.strictEqual(
         formatTafsirPillTitle({ id: 'nemouneh', author_name: 'مکارم شیرازی (نمونه)' }),
-        'نمونه (مکارم)'
+        'نمونه (مکارم)',
       );
       assert.strictEqual(
         formatTafsirPillTitle({ id: 'al-mizan', author_name: 'علامه طباطبایی (المیزان)' }),
-        'المیزان (طباطبایی)'
+        'المیزان (طباطبایی)',
       );
       assert.strictEqual(
         formatTafsirPillTitle({ id: 'noor', author_name: 'حجت‌الاسلام قرائتی (نور)' }),
-        'نور (قرائتی)'
+        'نور (قرائتی)',
       );
 
       // Fallbacks
       assert.strictEqual(
         formatTafsirPillTitle({ id: 'custom', author_name: 'تفسیر ابوالفتوح رازی' }),
-        'تفسیر ابوالفتوح رازی'
+        'تفسیر ابوالفتوح رازی',
       );
       assert.strictEqual(formatTafsirPillTitle(undefined), '');
     });
@@ -144,39 +144,39 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
     it('verifies minimum touch targets comply with WCAG >= 44x44px', () => {
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.minTouchTarget >= 44,
-        'minTouchTarget must be at least 44px'
+        'minTouchTarget must be at least 44px',
       );
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.activeChipHeight >= 44,
-        'activeChipHeight must be at least 44px'
+        'activeChipHeight must be at least 44px',
       );
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.wordCardMinHeight >= 64,
-        'wordCardMinHeight must be at least 64px'
+        'wordCardMinHeight must be at least 64px',
       );
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.wordButtonMinWidth >= 44,
-        'wordButtonMinWidth must be at least 44px'
+        'wordButtonMinWidth must be at least 44px',
       );
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.wordButtonMinHeight >= 44,
-        'wordButtonMinHeight must be at least 44px'
+        'wordButtonMinHeight must be at least 44px',
       );
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.tafsirPillMinHeight >= 44,
-        'tafsirPillMinHeight must be at least 44px'
+        'tafsirPillMinHeight must be at least 44px',
       );
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.tafsirPillMinWidth >= 44,
-        'tafsirPillMinWidth must be at least 44px'
+        'tafsirPillMinWidth must be at least 44px',
       );
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinHeight >= 44,
-        'reflectionButtonMinHeight must be at least 44px'
+        'reflectionButtonMinHeight must be at least 44px',
       );
       assert.ok(
         INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinWidth >= 44,
-        'reflectionButtonMinWidth must be at least 44px'
+        'reflectionButtonMinWidth must be at least 44px',
       );
     });
 
@@ -251,7 +251,7 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
   describe('AyahScripturePreviewCard Component Source & Contracts', () => {
     const cardSource = fs.readFileSync(
       path.resolve(__dirname, './AyahScripturePreviewCard.tsx'),
-      'utf8'
+      'utf8',
     );
 
     it('verifies component props interface exports and React.memo wrapping', () => {
@@ -331,7 +331,7 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
   describe('WordLinguisticBreakdownCard Component Source & Contracts', () => {
     const wordCardSource = fs.readFileSync(
       path.resolve(__dirname, './WordLinguisticBreakdownCard.tsx'),
-      'utf8'
+      'utf8',
     );
 
     it('verifies component props interface exports and React.memo wrapping', () => {
@@ -412,9 +412,7 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       };
 
       function resolveWordText(word, quranFont) {
-        return quranFont === 'indopak' && word.text_indopak
-          ? word.text_indopak
-          : word.text_uthmani;
+        return quranFont === 'indopak' && word.text_indopak ? word.text_indopak : word.text_uthmani;
       }
 
       assert.strictEqual(resolveWordText(mockWord, 'hafs'), 'بِسْمِ');
@@ -458,16 +456,15 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
         translation_fa: 'راه',
       };
 
-      const a11yLabel = `واژه ${toPersianDigits(mockWord.position)}: ${mockWord.text_uthmani}، معنی: ${mockWord.translation_fa}`;
+      const a11yLabel = `واژه ${toPersianDigits(mockWord.position)}: ${
+        mockWord.text_uthmani
+      }، معنی: ${mockWord.translation_fa}`;
       assert.strictEqual(a11yLabel, 'واژه ۷: صِرَٰطَ، معنی: راه');
     });
   });
 
   describe('TafsirTabContent Component Source & Contracts (Task 3)', () => {
-    const tafsirSource = fs.readFileSync(
-      path.resolve(__dirname, './TafsirTabContent.tsx'),
-      'utf8'
-    );
+    const tafsirSource = fs.readFileSync(path.resolve(__dirname, './TafsirTabContent.tsx'), 'utf8');
 
     it('verifies TafsirTabContentProps interface exports and React.memo wrapping', () => {
       assert.ok(tafsirSource.includes('export interface TafsirTabContentProps'));
@@ -526,7 +523,7 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
   describe('PersonalReflectionCard Component Source & Contracts (Task 3)', () => {
     const reflectionSource = fs.readFileSync(
       path.resolve(__dirname, './PersonalReflectionCard.tsx'),
-      'utf8'
+      'utf8',
     );
 
     it('verifies PersonalReflectionCardProps interface exports and React.memo wrapping', () => {
@@ -545,11 +542,15 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       assert.ok(reflectionSource.includes('colors.borderSubtle'));
       assert.ok(reflectionSource.includes('borderRadius.lg'));
       assert.ok(reflectionSource.includes('یادداشت و تاملات شخصی'));
-      assert.ok(reflectionSource.includes('«برداشت‌ها و تجربیات شخصی خود را در پرتو این آیه ثبت کنید»'));
+      assert.ok(
+        reflectionSource.includes('«برداشت‌ها و تجربیات شخصی خود را در پرتو این آیه ثبت کنید»'),
+      );
     });
 
     it('verifies Multi-line TextInput with RTL formatting and minHeight 100px', () => {
-      assert.ok(reflectionSource.includes('«تامل و برداشت شخصی خود را از این آیه شریفه بنویسید...»'));
+      assert.ok(
+        reflectionSource.includes('«تامل و برداشت شخصی خود را از این آیه شریفه بنویسید...»'),
+      );
       assert.ok(reflectionSource.includes('multiline'));
       assert.ok(reflectionSource.includes("textAlign: 'right'"));
       assert.ok(reflectionSource.includes("writingDirection: 'rtl'"));
@@ -562,7 +563,9 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       assert.ok(reflectionSource.includes('saveButton'));
       assert.ok(reflectionSource.includes('colors.primary'));
       assert.ok(reflectionSource.includes('ذخیره یادداشت'));
-      assert.ok(reflectionSource.includes('INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinHeight'));
+      assert.ok(
+        reflectionSource.includes('INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinHeight'),
+      );
       assert.ok(reflectionSource.includes('INSIGHTS_COMPONENT_CONTRACTS.reflectionButtonMinWidth'));
 
       // Clear button
@@ -699,7 +702,7 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
   describe('AyahInsightsDrawer Sanctuary Sheet Tests (Task 4)', () => {
     const drawerSource = fs.readFileSync(
       path.resolve(__dirname, './AyahInsightsDrawer.tsx'),
-      'utf8'
+      'utf8',
     );
 
     describe('Drawer Formatting & Contracts', () => {
@@ -717,7 +720,10 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
       it('verifies INSIGHTS_DRAWER_TABS contract', () => {
         assert.strictEqual(INSIGHTS_DRAWER_TABS.length, 3);
         assert.deepStrictEqual(INSIGHTS_DRAWER_TABS[0], { id: 'tafsir', label: 'تفسیر و تدبر' });
-        assert.deepStrictEqual(INSIGHTS_DRAWER_TABS[1], { id: 'vocabulary', label: 'تحلیل واژگان' });
+        assert.deepStrictEqual(INSIGHTS_DRAWER_TABS[1], {
+          id: 'vocabulary',
+          label: 'تحلیل واژگان',
+        });
         assert.deepStrictEqual(INSIGHTS_DRAWER_TABS[2], { id: 'reflection', label: 'یادداشت من' });
       });
 
@@ -760,7 +766,7 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
         assert.ok(drawerSource.includes('onRequestClose={onClose}'));
 
         // Backdrop with 65% opacity and touchable dismiss
-        assert.ok(drawerSource.includes('backgroundColor: \'rgba(0, 0, 0, 0.65)\''));
+        assert.ok(drawerSource.includes("backgroundColor: 'rgba(0, 0, 0, 0.65)'"));
         assert.ok(drawerSource.includes('onPress={onClose}'));
         assert.ok(drawerSource.includes('accessibilityLabel="بستن پنجره تدبر"'));
 
@@ -782,8 +788,12 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
         assert.ok(drawerSource.includes("flexDirection: 'row-reverse'"));
 
         // Persian digits Surah & Ayah title
-        assert.ok(drawerSource.includes('formatInsightAyahHeader(chapterNameFa || \'\', verse.verse_number)'));
-        assert.ok(drawerSource.includes('formatJuzAndPageBadge(verse.juz_number, verse.page_number)'));
+        assert.ok(
+          drawerSource.includes("formatInsightAyahHeader(chapterNameFa || '', verse.verse_number)"),
+        );
+        assert.ok(
+          drawerSource.includes('formatJuzAndPageBadge(verse.juz_number, verse.page_number)'),
+        );
 
         // 5 action buttons
         assert.ok(drawerSource.includes('INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinWidth'));
@@ -838,9 +848,9 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
         assert.ok(drawerSource.includes('colors.primary'));
 
         // Conditional rendering: TafsirTabContent vs WordLinguisticBreakdownCard vs PersonalReflectionCard
-        assert.ok(drawerSource.includes("<TafsirTabContent"));
-        assert.ok(drawerSource.includes("<WordLinguisticBreakdownCard"));
-        assert.ok(drawerSource.includes("<PersonalReflectionCard"));
+        assert.ok(drawerSource.includes('<TafsirTabContent'));
+        assert.ok(drawerSource.includes('<WordLinguisticBreakdownCard'));
+        assert.ok(drawerSource.includes('<PersonalReflectionCard'));
 
         // Data integration
         assert.ok(drawerSource.includes('getAyahInsight(verse.verse_key)'));
@@ -894,7 +904,8 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
         assert.ok(copyText.includes('پروردگار خود را'));
 
         const ayahHeader = formatInsightAyahHeader('کهف', mockVerse.verse_number);
-        const shareText = `${mockVerse.text_uthmani}\n\n${mockVerse.translation_fa_makarem}\n(${ayahHeader})`.trim();
+        const shareText =
+          `${mockVerse.text_uthmani}\n\n${mockVerse.translation_fa_makarem}\n(${ayahHeader})`.trim();
         assert.ok(shareText.includes('سوره کهف • آیه ۲۸'));
       });
 
@@ -935,10 +946,7 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
 
   describe('Insights Index & Reader Index Exports Contract', () => {
     it('verifies mobile/src/components/insights/index.ts exports all components and contracts', () => {
-      const indexSource = fs.readFileSync(
-        path.resolve(__dirname, './index.ts'),
-        'utf8'
-      );
+      const indexSource = fs.readFileSync(path.resolve(__dirname, './index.ts'), 'utf8');
 
       assert.ok(indexSource.includes("export * from './insightsContracts'"));
       assert.ok(indexSource.includes("export * from './AyahScripturePreviewCard'"));
@@ -951,7 +959,7 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
     it('verifies mobile/src/components/reader/index.ts exports AyahInsightsDrawer', () => {
       const readerIndexSource = fs.readFileSync(
         path.resolve(__dirname, '../reader/index.ts'),
-        'utf8'
+        'utf8',
       );
 
       assert.ok(readerIndexSource.includes("export * from '../insights/AyahInsightsDrawer'"));
@@ -965,97 +973,94 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
     it('verifies surah/[id].tsx imports and renders AyahInsightsDrawer', () => {
       assert.ok(
         surahScreenSource.includes('AyahInsightsDrawer'),
-        'surah/[id].tsx must reference AyahInsightsDrawer'
+        'surah/[id].tsx must reference AyahInsightsDrawer',
       );
       assert.ok(
         surahScreenSource.includes('import { AyahInsightsDrawer }') ||
-        surahScreenSource.includes('AyahInsightsDrawer,'),
-        'surah/[id].tsx must import AyahInsightsDrawer'
+          surahScreenSource.includes('AyahInsightsDrawer,'),
+        'surah/[id].tsx must import AyahInsightsDrawer',
       );
       assert.ok(
         surahScreenSource.includes('<AyahInsightsDrawer'),
-        'surah/[id].tsx must render <AyahInsightsDrawer in JSX'
+        'surah/[id].tsx must render <AyahInsightsDrawer in JSX',
       );
       assert.ok(
         surahScreenSource.includes('testID="ayah-insights-drawer"'),
-        'AyahInsightsDrawer must have testID="ayah-insights-drawer"'
+        'AyahInsightsDrawer must have testID="ayah-insights-drawer"',
       );
     });
 
     it('verifies state management (selectedInsightVerse, isInsightsOpen) and handlers (handleVerseInsights, handleCloseInsights)', () => {
       assert.ok(
         surahScreenSource.includes('selectedInsightVerse'),
-        'Must define selectedInsightVerse state'
+        'Must define selectedInsightVerse state',
       );
-      assert.ok(
-        surahScreenSource.includes('isInsightsOpen'),
-        'Must define isInsightsOpen state'
-      );
+      assert.ok(surahScreenSource.includes('isInsightsOpen'), 'Must define isInsightsOpen state');
       assert.ok(
         surahScreenSource.includes('handleVerseInsights'),
-        'Must implement handleVerseInsights callback'
+        'Must implement handleVerseInsights callback',
       );
       assert.ok(
         surahScreenSource.includes('handleCloseInsights'),
-        'Must implement handleCloseInsights callback'
+        'Must implement handleCloseInsights callback',
       );
       assert.ok(
         surahScreenSource.includes('setSelectedInsightVerse(verse)'),
-        'handleVerseInsights must set selected insight verse'
+        'handleVerseInsights must set selected insight verse',
       );
       assert.ok(
         surahScreenSource.includes('setIsInsightsOpen(true)'),
-        'handleVerseInsights must open insights drawer'
+        'handleVerseInsights must open insights drawer',
       );
       assert.ok(
         surahScreenSource.includes('setIsInsightsOpen(false)'),
-        'handleCloseInsights must close insights drawer'
+        'handleCloseInsights must close insights drawer',
       );
       assert.ok(
         surahScreenSource.includes('setSelectedInsightVerse(null)'),
-        'handleCloseInsights must reset selected insight verse'
+        'handleCloseInsights must reset selected insight verse',
       );
     });
 
     it('verifies AyahInsightsDrawer prop bindings and callback connections', () => {
       assert.ok(
         surahScreenSource.includes('visible={isInsightsOpen}'),
-        'Must bind visible={isInsightsOpen}'
+        'Must bind visible={isInsightsOpen}',
       );
       assert.ok(
         surahScreenSource.includes('verse={selectedInsightVerse}'),
-        'Must bind verse={selectedInsightVerse}'
+        'Must bind verse={selectedInsightVerse}',
       );
       assert.ok(
         surahScreenSource.includes('chapterNameFa={chapter?.name_fa}'),
-        'Must bind chapterNameFa={chapter?.name_fa}'
+        'Must bind chapterNameFa={chapter?.name_fa}',
       );
       assert.ok(
         surahScreenSource.includes('onClose={handleCloseInsights}'),
-        'Must bind onClose={handleCloseInsights}'
+        'Must bind onClose={handleCloseInsights}',
       );
       assert.ok(
         surahScreenSource.includes('onPlayVerse={handlePlayVerse}'),
-        'Must bind onPlayVerse={handlePlayVerse}'
+        'Must bind onPlayVerse={handlePlayVerse}',
       );
       assert.ok(
         surahScreenSource.includes('onBookmarkVerse={handleBookmarkVerse}'),
-        'Must bind onBookmarkVerse={handleBookmarkVerse}'
+        'Must bind onBookmarkVerse={handleBookmarkVerse}',
       );
       assert.ok(
         surahScreenSource.includes('quranFont={quranFont}'),
-        'Must bind quranFont={quranFont}'
+        'Must bind quranFont={quranFont}',
       );
       assert.ok(
         surahScreenSource.includes('onVerseInsights={handleVerseInsights}'),
-        'ContinuousVerseCard must bind onVerseInsights={handleVerseInsights}'
+        'ContinuousVerseCard must bind onVerseInsights={handleVerseInsights}',
       );
     });
 
     it('verifies isBookmarked derivation from bookmarkedKeys Set and toggle behavior', () => {
       assert.ok(
         surahScreenSource.includes('bookmarkedKeys.has(selectedInsightVerse.verse_key)'),
-        'Must check bookmarkedKeys.has(selectedInsightVerse.verse_key) for isBookmarked'
+        'Must check bookmarkedKeys.has(selectedInsightVerse.verse_key) for isBookmarked',
       );
 
       // Simulation of bookmarkedKeys Set behavior with verse selection
@@ -1137,5 +1142,3 @@ describe('Ayah Insights & Interactive Word Card Tests (Task 2)', () => {
     });
   });
 });
-
-

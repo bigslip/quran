@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import {
   View,
@@ -9,6 +8,8 @@ import {
   Modal,
   StyleSheet,
   ScrollView,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import {
@@ -21,15 +22,7 @@ import {
   Check,
   SearchX,
 } from 'lucide-react-native';
-import {
-  colors,
-  fonts,
-  fontSizes,
-  spacing,
-  borderRadius,
-  rtlRow,
-  rtlTextAlign,
-} from '@/theme';
+import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, rtlTextAlign } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { BookmarkVerseCard } from '@/components/bookmarks/BookmarkVerseCard';
 import {
@@ -38,10 +31,7 @@ import {
   calculateTagCounts,
   SortOptionItem,
 } from '@/components/bookmarks/bookmarkContracts';
-import {
-  useBookmarkStore,
-  selectFilteredBookmarks,
-} from '@/stores/useBookmarkStore';
+import { useBookmarkStore, selectFilteredBookmarks } from '@/stores/useBookmarkStore';
 import { useReadingStore } from '@/stores/useReadingStore';
 import { audioPlayerService } from '@/services/audio/audioPlayerService';
 import { toPersianDigits } from '@/components/catalog/catalogFormatters';
@@ -80,31 +70,33 @@ export default function BookmarksScreen() {
     loadBookmarks();
   }, [loadBookmarks]);
 
-  // Refresh bookmarks on tab focus
+  // Refresh bookmarks on tab focus and stop audio when losing tab focus
   useFocusEffect(
     useCallback(() => {
       loadBookmarks();
-    }, [loadBookmarks])
+      return () => {
+        audioPlayerService.stop();
+        setPlayingVerseKey(null);
+      };
+    }, [loadBookmarks]),
   );
 
   // Stop audio recitation on screen unmount
   useEffect(() => {
     return () => {
       audioPlayerService.stop();
+      setPlayingVerseKey(null);
     };
   }, []);
 
   // Filtered bookmarks derived from store selector
   const filteredBookmarks = useMemo(
     () => selectFilteredBookmarks({ bookmarks, selectedTagId, searchQuery }),
-    [bookmarks, selectedTagId, searchQuery]
+    [bookmarks, selectedTagId, searchQuery],
   );
 
   // Live tag counts map
-  const tagCountMap = useMemo(
-    () => calculateTagCounts(tags, bookmarks),
-    [tags, bookmarks]
-  );
+  const tagCountMap = useMemo(() => calculateTagCounts(tags, bookmarks), [tags, bookmarks]);
 
   // 4-second auto-dismiss for undo snackbar
   useEffect(() => {
@@ -131,19 +123,21 @@ export default function BookmarksScreen() {
           item.chapter_id,
           item.verse_number,
           () => setPlayingVerseKey(null),
-          () => setPlayingVerseKey(null)
+          () => setPlayingVerseKey(null),
         );
       }
     },
-    [playingVerseKey, selectedReciterId]
+    [playingVerseKey, selectedReciterId],
   );
 
   // Deep-link to reader
   const handlePressRead = useCallback(
     (item: HydratedBookmark) => {
+      audioPlayerService.stop();
+      setPlayingVerseKey(null);
       router.push(`/surah/${item.chapter_id}?verse=${item.verse_number}` as any);
     },
-    [router]
+    [router],
   );
 
   // Render individual bookmark card
@@ -160,14 +154,25 @@ export default function BookmarksScreen() {
         availableTags={tags}
       />
     ),
-    [handlePressRead, deleteBookmark, updateNote, setTagsForBookmark, playingVerseKey, handleTogglePlay, tags]
+    [
+      handlePressRead,
+      deleteBookmark,
+      updateNote,
+      setTagsForBookmark,
+      playingVerseKey,
+      handleTogglePlay,
+      tags,
+    ],
   );
 
-  const currentSortLabel =
-    SORT_OPTIONS.find((opt) => opt.id === sortBy)?.label || 'جدیدترین';
+  const currentSortLabel = SORT_OPTIONS.find((opt) => opt.id === sortBy)?.label || 'جدیدترین';
 
   return (
-    <View style={styles.container} testID="bookmarks-screen">
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      testID="bookmarks-screen"
+    >
       <AmbientGlow height={220} />
 
       {/* Top Header: Title, Count Badge, Sort Button */}
@@ -231,15 +236,13 @@ export default function BookmarksScreen() {
         >
           {/* 'All' (همه) Chip */}
           <TouchableOpacity
-            style={[
-              styles.tagFilterChip,
-              selectedTagId === null && styles.tagFilterChipActive,
-            ]}
+            style={[styles.tagFilterChip, selectedTagId === null && styles.tagFilterChipActive]}
             onPress={() => setSelectedTagId(null)}
             activeOpacity={0.7}
             accessibilityRole="button"
             accessibilityLabel="نمایش همه نشانه‌ها"
             testID="tag-filter-all"
+            hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
           >
             <Text
               style={[
@@ -258,27 +261,19 @@ export default function BookmarksScreen() {
             return (
               <TouchableOpacity
                 key={`filter-tag-${tag.id}`}
-                style={[
-                  styles.tagFilterChip,
-                  isActive && styles.tagFilterChipActive,
-                ]}
+                style={[styles.tagFilterChip, isActive && styles.tagFilterChipActive]}
                 onPress={() => setSelectedTagId(isActive ? null : tag.id)}
                 activeOpacity={0.7}
                 accessibilityRole="button"
                 accessibilityLabel={`فیلتر بر اساس برچسب ${tag.name}`}
                 testID={`tag-filter-${tag.id}`}
+                hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
               >
                 <View
-                  style={[
-                    styles.tagColorDot,
-                    { backgroundColor: tag.color || colors.primary },
-                  ]}
+                  style={[styles.tagColorDot, { backgroundColor: tag.color || colors.primary }]}
                 />
                 <Text
-                  style={[
-                    styles.tagFilterChipText,
-                    isActive && styles.tagFilterChipTextActive,
-                  ]}
+                  style={[styles.tagFilterChipText, isActive && styles.tagFilterChipTextActive]}
                 >
                   {tag.name} ({toPersianDigits(count)})
                 </Text>
@@ -299,6 +294,8 @@ export default function BookmarksScreen() {
             recentlyDeleted ? styles.listContentWithSnackbar : null,
           ]}
           showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
           testID="bookmarks-list"
         />
       ) : bookmarks.length === 0 ? (
@@ -309,8 +306,8 @@ export default function BookmarksScreen() {
           </View>
           <Text style={styles.emptyTitle}>هنوز نشانه‌ای ذخیره نکرده‌اید</Text>
           <Text style={styles.emptyDesc}>
-            در حین تلاوت قرآن، با لمس آیکون نشانه می‌توانید آیات دلخواه خود را برای
-            مطالعه، تدبر و دسترسی سریع ذخیره کنید.
+            در حین تلاوت قرآن، با لمس آیکون نشانه می‌توانید آیات دلخواه خود را برای مطالعه، تدبر و
+            دسترسی سریع ذخیره کنید.
           </Text>
           <TouchableOpacity
             style={styles.emptyPrimaryButton}
@@ -398,10 +395,7 @@ export default function BookmarksScreen() {
                 return (
                   <TouchableOpacity
                     key={`sort-opt-${option.id}`}
-                    style={[
-                      styles.sortOptionRow,
-                      isSelected && styles.sortOptionRowActive,
-                    ]}
+                    style={[styles.sortOptionRow, isSelected && styles.sortOptionRowActive]}
                     onPress={async () => {
                       await setSortBy(option.id);
                       setIsSortModalOpen(false);
@@ -412,10 +406,7 @@ export default function BookmarksScreen() {
                     testID={`sort-option-${option.id}`}
                   >
                     <Text
-                      style={[
-                        styles.sortOptionLabel,
-                        isSelected && styles.sortOptionLabelActive,
-                      ]}
+                      style={[styles.sortOptionLabel, isSelected && styles.sortOptionLabelActive]}
                     >
                       {option.label}
                     </Text>
@@ -429,7 +420,7 @@ export default function BookmarksScreen() {
           </View>
         </View>
       </Modal>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

@@ -31,8 +31,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_PATH = path.resolve(__dirname, '../../../../mobile/assets/data/quran.db');
 
-describe('Catalog Components Logic & Data Integrity Tests', () => {
-  const db = new DatabaseSync(DB_PATH);
+describe('Catalog Screen & Audio Drawer Interactive Tests', () => {
+  const db = new DatabaseSync(DB_PATH, { readOnly: true });
 
   describe('Formatting Functions & Helpers (Persian Numerals Default)', () => {
     it('toPersianDigits converts ASCII digits 0-9 to Persian digits', () => {
@@ -85,19 +85,10 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
     });
 
     it('formatJuzStartInfo defaults to Persian numerals', () => {
-      assert.strictEqual(
-        formatJuzStartInfo('فاتحه', '1:1'),
-        'سوره فاتحه • آیه ۱'
-      );
-      assert.strictEqual(
-        formatJuzStartInfo('بقره', '2:142'),
-        'سوره بقره • آیه ۱۴۲'
-      );
+      assert.strictEqual(formatJuzStartInfo('فاتحه', '1:1'), 'سوره فاتحه • آیه ۱');
+      assert.strictEqual(formatJuzStartInfo('بقره', '2:142'), 'سوره بقره • آیه ۱۴۲');
       // Explicit ASCII
-      assert.strictEqual(
-        formatJuzStartInfo('بقره', '2:142', false),
-        'سوره بقره • آیه 142'
-      );
+      assert.strictEqual(formatJuzStartInfo('بقره', '2:142', false), 'سوره بقره • آیه 142');
     });
 
     it('formatJuzPageRange defaults to Persian numerals', () => {
@@ -116,29 +107,41 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
     });
 
     it('formatSurahAccessibilityLabel includes surah number in Persian numerals', () => {
-      const fatihah = { id: 1, name_fa: 'فاتحه', name_arabic: 'الفاتحة', verses_count: 7, revelation_order: 5 };
-      const alaq = { id: 96, name_fa: 'علق', name_arabic: 'العلق', verses_count: 19, revelation_order: 1 };
+      const fatihah = {
+        id: 1,
+        name_fa: 'فاتحه',
+        name_arabic: 'الفاتحة',
+        verses_count: 7,
+        revelation_order: 5,
+      };
+      const alaq = {
+        id: 96,
+        name_fa: 'علق',
+        name_arabic: 'العلق',
+        verses_count: 19,
+        revelation_order: 1,
+      };
 
       // Standard mode
       assert.strictEqual(
         formatSurahAccessibilityLabel(fatihah, false),
-        'سوره ۱، فاتحه، الفاتحة، ۷ آیه'
+        'سوره ۱، فاتحه، الفاتحة، ۷ آیه',
       );
 
       // Revelation order mode (includes canonical ID and revelation rank)
       assert.strictEqual(
         formatSurahAccessibilityLabel(fatihah, true),
-        'سوره ۱، فاتحه، رتبه نزول ۵، الفاتحة، ۷ آیه'
+        'سوره ۱، فاتحه، رتبه نزول ۵، الفاتحة، ۷ آیه',
       );
       assert.strictEqual(
         formatSurahAccessibilityLabel(alaq, true),
-        'سوره ۹۶، علق، رتبه نزول ۱، العلق، ۱۹ آیه'
+        'سوره ۹۶، علق، رتبه نزول ۱، العلق، ۱۹ آیه',
       );
 
       // Explicit ASCII mode
       assert.strictEqual(
         formatSurahAccessibilityLabel(fatihah, false, false),
-        'سوره 1، فاتحه، الفاتحة، 7 آیه'
+        'سوره 1، فاتحه، الفاتحة، 7 آیه',
       );
     });
 
@@ -154,7 +157,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
 
       assert.strictEqual(
         formatJuzAccessibilityLabel(juz1),
-        'جزء ۱، سوره فاتحه • آیه ۱، صفحات ۱ تا ۲۱، ۱۴۸ آیه'
+        'جزء ۱، سوره فاتحه • آیه ۱، صفحات ۱ تا ۲۱، ۱۴۸ آیه',
       );
     });
 
@@ -233,7 +236,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(formatCanonicalSurahHint(fatihah.id), '• شماره سوره: ۱');
       assert.strictEqual(
         formatSurahAccessibilityLabel(fatihah, true),
-        `سوره ۱، ${fatihah.name_fa}، رتبه نزول ۵، الفاتحة، ۷ آیه`
+        `سوره ۱، ${fatihah.name_fa}، رتبه نزول ۵، الفاتحة، ۷ آیه`,
       );
 
       const alaq = db.prepare('SELECT * FROM chapters WHERE id = 96').get();
@@ -244,7 +247,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(formatCanonicalSurahHint(alaq.id), '• شماره سوره: ۹۶');
       assert.strictEqual(
         formatSurahAccessibilityLabel(alaq, true),
-        `سوره ۹۶، ${alaq.name_fa}، رتبه نزول ۱، العلق، ۱۹ آیه`
+        `سوره ۹۶، ${alaq.name_fa}، رتبه نزول ۱، العلق، ۱۹ آیه`,
       );
     });
   });
@@ -303,7 +306,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
         const pageRange = formatJuzPageRange(juz.page_start, juz.page_end);
         assert.strictEqual(
           pageRange,
-          `صفحات ${toPersianDigits(juz.page_start)} تا ${toPersianDigits(juz.page_end)}`
+          `صفحات ${toPersianDigits(juz.page_start)} تا ${toPersianDigits(juz.page_end)}`,
         );
 
         // Navigation Route
@@ -376,12 +379,27 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
 
       assert.strictEqual(minTouchTarget, 44);
       assert.ok(tabSwitcher.minHeight >= minTouchTarget, 'tabSwitcher minHeight satisfies 44px');
-      assert.ok(tabSwitcher.containerMinHeight >= minTouchTarget, 'tabSwitcher containerMinHeight satisfies 44px');
-      assert.ok(tabSwitcher.tabMinHeight >= minTouchTarget, 'tabSwitcher tabMinHeight satisfies 44px');
-      assert.ok(tabSwitcher.tabMinWidth >= minTouchTarget, 'tabSwitcher tabMinWidth satisfies 44px');
+      assert.ok(
+        tabSwitcher.containerMinHeight >= minTouchTarget,
+        'tabSwitcher containerMinHeight satisfies 44px',
+      );
+      assert.ok(
+        tabSwitcher.tabMinHeight >= minTouchTarget,
+        'tabSwitcher tabMinHeight satisfies 44px',
+      );
+      assert.ok(
+        tabSwitcher.tabMinWidth >= minTouchTarget,
+        'tabSwitcher tabMinWidth satisfies 44px',
+      );
 
-      assert.ok(emptyState.clearButtonMinHeight >= minTouchTarget, 'clearButtonMinHeight satisfies 44px');
-      assert.ok(emptyState.clearButtonMinWidth >= minTouchTarget, 'clearButtonMinWidth satisfies 44px');
+      assert.ok(
+        emptyState.clearButtonMinHeight >= minTouchTarget,
+        'clearButtonMinHeight satisfies 44px',
+      );
+      assert.ok(
+        emptyState.clearButtonMinWidth >= minTouchTarget,
+        'clearButtonMinWidth satisfies 44px',
+      );
       assert.strictEqual(emptyState.iconBadgeSize, 64);
     });
 
@@ -389,7 +407,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(CATALOG_TABS.length, 3);
       assert.deepStrictEqual(
         CATALOG_TABS.map((t) => t.id),
-        ['surah', 'juz', 'revelation']
+        ['surah', 'juz', 'revelation'],
       );
 
       const surahTab = CATALOG_TABS.find((t) => t.id === 'surah');
@@ -404,13 +422,19 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
     it('verifies CatalogTabSwitcher root view does not have accessible={true} to keep tabs directly focusable', () => {
       const switcherSource = fs.readFileSync(
         path.resolve(__dirname, './CatalogTabSwitcher.tsx'),
-        'utf8'
+        'utf8',
       );
       // Container View must declare accessibilityRole="tablist"
       assert.ok(switcherSource.includes('accessibilityRole="tablist"'));
       // Container View must NOT have accessible={true} so child tabs are not collapsed/hidden by screen readers
-      assert.doesNotMatch(switcherSource, /<View[^>]*accessible=\{true\}[^>]*accessibilityRole="tablist"/);
-      assert.doesNotMatch(switcherSource, /<View[^>]*accessibilityRole="tablist"[^>]*accessible=\{true\}/);
+      assert.doesNotMatch(
+        switcherSource,
+        /<View[^>]*accessible=\{true\}[^>]*accessibilityRole="tablist"/,
+      );
+      assert.doesNotMatch(
+        switcherSource,
+        /<View[^>]*accessibilityRole="tablist"[^>]*accessible=\{true\}/,
+      );
       // Child TouchableOpacity tabs must have accessibilityRole="tab" and accessible={true}
       assert.ok(switcherSource.includes('accessibilityRole="tab"'));
       assert.ok(switcherSource.includes('accessible={true}'));
@@ -538,7 +562,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.ok(results.some((s) => s.id === 96 && s.revelation_order === 1));
     });
 
-    it('matches transliterated queries with hyphens and apostrophes (yasin -> Ya-Sin, muminun -> Al-Mu\'minun, ali imran -> Ali \'Imran)', () => {
+    it("matches transliterated queries with hyphens and apostrophes (yasin -> Ya-Sin, muminun -> Al-Mu'minun, ali imran -> Ali 'Imran)", () => {
       const yasinResults = filterSurahs(chapters, 'yasin');
       assert.ok(yasinResults.some((s) => s.name_simple === 'Ya-Sin'));
 
@@ -602,7 +626,10 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
     const juzs = rawJuzs.map((j) => ({
       ...j,
       surah_names: j.surah_names_text
-        ? j.surah_names_text.split(',').map((s) => s.trim()).filter(Boolean)
+        ? j.surah_names_text
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
         : [],
     }));
 
@@ -661,7 +688,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(results.length, 3);
       assert.deepStrictEqual(
         results.map((j) => j.juz_number),
-        [1, 2, 3]
+        [1, 2, 3],
       );
     });
 
@@ -670,7 +697,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
         const results = filterJuzs(juzs, surahName);
         assert.ok(
           results.some((j) => j.juz_number === 30),
-          `Searching "${surahName}" should match Juz 30`
+          `Searching "${surahName}" should match Juz 30`,
         );
       }
     });
@@ -680,7 +707,7 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       assert.strictEqual(results.length, 3);
       assert.deepStrictEqual(
         results.map((j) => j.juz_number),
-        [1, 2, 3]
+        [1, 2, 3],
       );
     });
 
@@ -693,7 +720,9 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
   describe('Surahs Screen (surahs.tsx) Integration & State Filtering Tests', () => {
     const surahsById = db.prepare('SELECT * FROM chapters ORDER BY id ASC;').all();
     const surahsByRev = db.prepare('SELECT * FROM chapters ORDER BY revelation_order ASC;').all();
-    const rawJuzs = db.prepare(`
+    const rawJuzs = db
+      .prepare(
+        `
       WITH juz_meta AS (
         SELECT 
           juz_number,
@@ -729,107 +758,106 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       JOIN chapters c ON c.id = v.chapter_id
       LEFT JOIN juz_surahs js ON js.juz_number = jm.juz_number
       ORDER BY jm.juz_number ASC;
-    `).all();
+    `,
+      )
+      .all();
 
     const juzs = rawJuzs.map((j) => ({
       ...j,
       surah_names: j.surah_names_text
-        ? j.surah_names_text.split(',').map((s) => s.trim()).filter(Boolean)
+        ? j.surah_names_text
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
         : [],
     }));
 
     const surahsScreenSource = fs.readFileSync(
       path.resolve(__dirname, '../../app/(tabs)/surahs.tsx'),
-      'utf8'
+      'utf8',
     );
 
     it('verifies surahs.tsx source code contains required layout, headers, components, and virtualization props', () => {
       // 1. Sanctuary Header with AmbientGlow height={220}
       assert.ok(
         surahsScreenSource.includes('<AmbientGlow height={220}'),
-        'surahs.tsx must render AmbientGlow with height={220}'
+        'surahs.tsx must render AmbientGlow with height={220}',
       );
 
       // 2. Title row: "فهرست قرآن" with counter badge
       assert.ok(
         surahsScreenSource.includes('فهرست قرآن'),
-        'surahs.tsx must render Sanctuary title "فهرست قرآن"'
+        'surahs.tsx must render Sanctuary title "فهرست قرآن"',
       );
       assert.ok(
         surahsScreenSource.includes('countBadge'),
-        'surahs.tsx must define countBadge in styles and JSX'
+        'surahs.tsx must define countBadge in styles and JSX',
       );
 
       // 3. SearchBar with real-time query and onClear
-      assert.ok(
-        surahsScreenSource.includes('<SearchBar'),
-        'surahs.tsx must render SearchBar'
-      );
+      assert.ok(surahsScreenSource.includes('<SearchBar'), 'surahs.tsx must render SearchBar');
       assert.ok(
         surahsScreenSource.includes('onClear='),
-        'SearchBar must have onClear prop bound to clear query'
+        'SearchBar must have onClear prop bound to clear query',
       );
 
       // 4. CatalogTabSwitcher with activeTab and onTabChange
       assert.ok(
         surahsScreenSource.includes('<CatalogTabSwitcher'),
-        'surahs.tsx must render CatalogTabSwitcher'
+        'surahs.tsx must render CatalogTabSwitcher',
       );
       assert.ok(
         surahsScreenSource.includes('activeTab={activeTab}'),
-        'CatalogTabSwitcher must bind activeTab state'
+        'CatalogTabSwitcher must bind activeTab state',
       );
       assert.ok(
         surahsScreenSource.includes('onTabChange='),
-        'CatalogTabSwitcher must bind onTabChange handler'
+        'CatalogTabSwitcher must bind onTabChange handler',
       );
 
       // 5. ActivityIndicator for loading state
       assert.ok(
         surahsScreenSource.includes('<ActivityIndicator'),
-        'surahs.tsx must render ActivityIndicator during loading'
+        'surahs.tsx must render ActivityIndicator during loading',
       );
       assert.ok(
         surahsScreenSource.includes('colors.primary'),
-        'ActivityIndicator must use colors.primary'
+        'ActivityIndicator must use colors.primary',
       );
 
       // 6. FlatList with exact performance virtualization props
       assert.ok(
         surahsScreenSource.includes('initialNumToRender={12}'),
-        'FlatList must specify initialNumToRender={12}'
+        'FlatList must specify initialNumToRender={12}',
       );
       assert.ok(
         surahsScreenSource.includes('maxToRenderPerBatch={12}'),
-        'FlatList must specify maxToRenderPerBatch={12}'
+        'FlatList must specify maxToRenderPerBatch={12}',
       );
       assert.ok(
         surahsScreenSource.includes('windowSize={5}'),
-        'FlatList must specify windowSize={5}'
+        'FlatList must specify windowSize={5}',
       );
       assert.ok(
         surahsScreenSource.includes('removeClippedSubviews={true}'),
-        'FlatList must specify removeClippedSubviews={true}'
+        'FlatList must specify removeClippedSubviews={true}',
       );
 
       // 7. CatalogEmptyState rendering on empty results
       assert.ok(
         surahsScreenSource.includes('<CatalogEmptyState'),
-        'FlatList must configure CatalogEmptyState as ListEmptyComponent'
+        'FlatList must configure CatalogEmptyState as ListEmptyComponent',
       );
       assert.ok(
         surahsScreenSource.includes('onClearQuery='),
-        'CatalogEmptyState must receive onClearQuery handler'
+        'CatalogEmptyState must receive onClearQuery handler',
       );
 
       // 8. Navigation handlers to /surah/[id] and first_chapter_id
-      assert.ok(
-        surahsScreenSource.includes('/surah/'),
-        'surahs.tsx must navigate to /surah/[id]'
-      );
+      assert.ok(surahsScreenSource.includes('/surah/'), 'surahs.tsx must navigate to /surah/[id]');
       assert.ok(
         surahsScreenSource.includes('first_chapter_id'),
-        'Juz navigation must target first_chapter_id'
+        'Juz navigation must target first_chapter_id',
       );
     });
 
@@ -923,7 +951,10 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
       // Search by contained Surah "بقره" -> matches Juz 1, 2, and 3
       const filteredBaqarah = filterJuzs(juzs, 'بقره');
       assert.strictEqual(filteredBaqarah.length, 3);
-      assert.deepStrictEqual(filteredBaqarah.map((j) => j.juz_number), [1, 2, 3]);
+      assert.deepStrictEqual(
+        filteredBaqarah.map((j) => j.juz_number),
+        [1, 2, 3],
+      );
       assert.strictEqual(`${toPersianDigits(filteredBaqarah.length)} جزء`, '۳ جزء');
     });
 
@@ -966,4 +997,3 @@ describe('Catalog Components Logic & Data Integrity Tests', () => {
     });
   });
 });
-

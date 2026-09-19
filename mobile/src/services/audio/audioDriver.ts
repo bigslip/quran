@@ -99,11 +99,7 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
         } catch {
           // ignore
         }
-        // Defer onFinish to next tick so native AVQueuePlayer / ExoPlayer settles transition cleanly
-        const cb = activeOnFinish;
-        setTimeout(() => {
-          cb?.();
-        }, 16);
+        activeOnFinish?.();
       }
     });
   };
@@ -115,21 +111,33 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
 
       activeOnFinish = onFinish || null;
       activeOnError = onError || null;
-      hasFinishedCurrent = false;
 
-      // 1. If resuming same audio URL that is already loaded and paused
+      // 1. If resuming or replaying same audio URL that is already loaded
       if (player && currentLoadedUrl === url) {
         try {
+          if (
+            hasFinishedCurrent ||
+            (typeof (player as any).currentTime === 'number' && (player as any).currentTime > 0)
+          ) {
+            if (typeof (player as any).seekTo === 'function') {
+              (player as any).seekTo(0);
+            }
+          }
           if (!player.playing) {
             player.play();
             isSoundPlaying = true;
+            hasFinishedCurrent = false;
             return;
           }
         } catch (e) {
-          console.warn('[AudioDriver:expo-audio] Failed to resume existing player, re-creating:', e);
+          console.warn(
+            '[AudioDriver:expo-audio] Failed to resume/replay existing player, re-creating:',
+            e,
+          );
         }
       }
 
+      hasFinishedCurrent = false;
       currentLoadedUrl = url;
 
       // 2. If player already exists, reuse it via player.replace() to prevent native audio session reset
@@ -141,7 +149,10 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
           console.log('[AudioDriver:expo-audio] Seamlessly replaced track with:', url);
           return;
         } catch (err) {
-          console.warn('[AudioDriver:expo-audio] player.replace failed, falling back to createAudioPlayer:', err);
+          console.warn(
+            '[AudioDriver:expo-audio] player.replace failed, falling back to createAudioPlayer:',
+            err,
+          );
           try {
             player.pause();
             player.remove();
@@ -295,7 +306,7 @@ export function createLegacyExpoAvDriver(AudioModule: any): AudioDriver {
               isSoundPlaying = false;
               onError?.(new Error(status.error));
             }
-          }
+          },
         );
         soundObject = sound;
         isSoundPlaying = true;

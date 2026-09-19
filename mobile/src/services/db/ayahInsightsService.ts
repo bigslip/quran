@@ -36,7 +36,8 @@ export function adaptDatabase(rawDb: any): SQLiteLikeDb {
     return {
       getAll: async <T>(query: string, params: any[] = []) => rawDb.getAllAsync(query, params),
       getFirst: async <T>(query: string, params: any[] = []) => rawDb.getFirstAsync(query, params),
-      run: async (query: string, params: any[] = []) => (rawDb.runAsync ? rawDb.runAsync(query, params) : undefined),
+      run: async (query: string, params: any[] = []) =>
+        rawDb.runAsync ? rawDb.runAsync(query, params) : undefined,
     };
   }
 
@@ -75,7 +76,9 @@ async function getActiveDb(providedDb?: any): Promise<SQLiteLikeDb> {
     }
     throw new Error('No database module');
   } catch (err) {
-    throw new Error('No active database provider found. Call setAyahDatabase(db) or pass db parameter.');
+    throw new Error(
+      'No active database provider found. Call setAyahDatabase(db) or pass db parameter.',
+    );
   }
 }
 
@@ -84,20 +87,22 @@ async function getActiveDb(providedDb?: any): Promise<SQLiteLikeDb> {
  */
 export function normalizeArabicWord(text: string): string {
   if (!text) return '';
-  return text
-    // Remove Quranic signs and pause marks
-    .replace(/[\u0610-\u061A\u06D6-\u06ED\u06DF-\u06E8ۖۗۚۛۜ۝۞ۘۙ]/g, '')
-    // Remove Tashkeel (harakat): fathatan, dammatan, kasratan, fatha, damma, kasra, shadda, sukun
-    .replace(/[\u064B-\u065F\u0670]/g, '')
-    // Normalize Alefs
-    .replace(/[ٱإأآ]/g, 'ا')
-    // Normalize Teh Marbuta
-    .replace(/ة/g, 'ه')
-    // Normalize Alef Maksura
-    .replace(/ى/g, 'ي')
-    // Remove Tatweel
-    .replace(/ـ/g, '')
-    .trim();
+  return (
+    text
+      // Remove Quranic signs and pause marks
+      .replace(/[\u0610-\u061A\u06D6-\u06ED\u06DF-\u06E8ۖۗۚۛۜ۝۞ۘۙ]/g, '')
+      // Remove Tashkeel (harakat): fathatan, dammatan, kasratan, fatha, damma, kasra, shadda, sukun
+      .replace(/[\u064B-\u065F\u0670]/g, '')
+      // Normalize Alefs
+      .replace(/[ٱإأآ]/g, 'ا')
+      // Normalize Teh Marbuta
+      .replace(/ة/g, 'ه')
+      // Normalize Alef Maksura
+      .replace(/ى/g, 'ي')
+      // Remove Tatweel
+      .replace(/ـ/g, '')
+      .trim()
+  );
 }
 
 /**
@@ -105,85 +110,85 @@ export function normalizeArabicWord(text: string): string {
  */
 const CURATED_ROOTS: Record<string, { root: string; lemma: string; pos: string }> = {
   // Surah Al-Fatihah 1:1
-  'بسم': { root: 'سمو', lemma: 'اسم', pos: 'حرف و اسم (جار و مجرور)' },
-  'باسم': { root: 'سمو', lemma: 'اسم', pos: 'حرف و اسم (جار و مجرور)' },
-  'الله': { root: 'اله', lemma: 'الله', pos: 'اسم علم (لفظ جلاله)' },
-  'لله': { root: 'اله', lemma: 'الله', pos: 'اسم علم (لفظ جلاله)' },
-  'اللهم': { root: 'اله', lemma: 'الله', pos: 'اسم علم و حرف ندا' },
-  'الرحمن': { root: 'رحم', lemma: 'رحمان', pos: 'صفت مشبهه (اسم)' },
-  'الرحمان': { root: 'رحم', lemma: 'رحمان', pos: 'صفت مشبهه (اسم)' },
-  'الرحيم': { root: 'رحم', lemma: 'رحيم', pos: 'صفت مشبهه (اسم)' },
+  بسم: { root: 'سمو', lemma: 'اسم', pos: 'حرف و اسم (جار و مجرور)' },
+  باسم: { root: 'سمو', lemma: 'اسم', pos: 'حرف و اسم (جار و مجرور)' },
+  الله: { root: 'اله', lemma: 'الله', pos: 'اسم علم (لفظ جلاله)' },
+  لله: { root: 'اله', lemma: 'الله', pos: 'اسم علم (لفظ جلاله)' },
+  اللهم: { root: 'اله', lemma: 'الله', pos: 'اسم علم و حرف ندا' },
+  الرحمن: { root: 'رحم', lemma: 'رحمان', pos: 'صفت مشبهه (اسم)' },
+  الرحمان: { root: 'رحم', lemma: 'رحمان', pos: 'صفت مشبهه (اسم)' },
+  الرحيم: { root: 'رحم', lemma: 'رحيم', pos: 'صفت مشبهه (اسم)' },
 
   // Surah Al-Kahf 18:28 (Figma Node 1:995 Reference)
-  'واصبر': { root: 'صبر', lemma: 'صبر', pos: 'فعل امر' },
-  'اصبر': { root: 'صبر', lemma: 'صبر', pos: 'فعل امر' },
-  'نفسك': { root: 'نفس', lemma: 'نفس', pos: 'اسم' },
-  'نفس': { root: 'نفس', lemma: 'نفس', pos: 'اسم' },
-  'مع': { root: 'معع', lemma: 'مع', pos: 'ظرف / حرف' },
-  'الذين': { root: 'لذي', lemma: 'الذي', pos: 'اسم موصول' },
-  'يدعون': { root: 'دعو', lemma: 'دعا', pos: 'فعل مضارع' },
-  'ربهم': { root: 'ربب', lemma: 'رب', pos: 'اسم' },
-  'رب': { root: 'ربب', lemma: 'رب', pos: 'اسم' },
-  'بالغداة': { root: 'غدو', lemma: 'غداة', pos: 'اسم (جار و مجرور)' },
-  'الغداة': { root: 'غدو', lemma: 'غداة', pos: 'اسم' },
-  'والعشي': { root: 'عشو', lemma: 'عشي', pos: 'اسم معطوف' },
-  'العشي': { root: 'عشو', lemma: 'عشي', pos: 'اسم' },
-  'يريدون': { root: 'رود', lemma: 'اراد', pos: 'فعل مضارع' },
-  'وجهه': { root: 'وجه', lemma: 'وجه', pos: 'اسم' },
-  'ولا': { root: 'لوا', lemma: 'لا', pos: 'حرف نهی / نفی' },
-  'لا': { root: 'لوا', lemma: 'لا', pos: 'حرف نفی' },
-  'تعد': { root: 'عدو', lemma: 'عدا', pos: 'فعل مضارع مجزوم' },
-  'عيناك': { root: 'عين', lemma: 'عين', pos: 'اسم مثنی' },
-  'عنهم': { root: 'عنن', lemma: 'عن', pos: 'حرف جر و ضمیر' },
-  'عن': { root: 'عنن', lemma: 'عن', pos: 'حرف جر' },
-  'تريد': { root: 'رود', lemma: 'اراد', pos: 'فعل مضارع' },
-  'زينة': { root: 'زين', lemma: 'زينة', pos: 'اسم' },
-  'الحياة': { root: 'حيي', lemma: 'حياة', pos: 'اسم' },
-  'الحيوة': { root: 'حيي', lemma: 'حياة', pos: 'اسم' },
-  'الدنيا': { root: 'دنو', lemma: 'دنيا', pos: 'اسم تفضیل / صفت' },
-  'تطع': { root: 'طوع', lemma: 'اطاع', pos: 'فعل مضارع مجزوم (نهی)' },
-  'من': { root: 'من', lemma: 'من', pos: 'اسم موصول / حرف' },
-  'اغفلنا': { root: 'غفل', lemma: 'اغفل', pos: 'فعل ماضی' },
-  'قلبه': { root: 'قلب', lemma: 'قلب', pos: 'اسم' },
-  'ذكرنا': { root: 'ذكر', lemma: 'ذكر', pos: 'اسم' },
-  'واتبع': { root: 'تبع', lemma: 'اتبع', pos: 'فعل ماضی' },
-  'اتبع': { root: 'تبع', lemma: 'اتبع', pos: 'فعل ماضی' },
-  'هواه': { root: 'هوي', lemma: 'هوى', pos: 'اسم' },
-  'وكان': { root: 'كون', lemma: 'كان', pos: 'فعل ماضی ناقص' },
-  'كان': { root: 'كون', lemma: 'كان', pos: 'فعل ماضی ناقص' },
-  'امره': { root: 'امر', lemma: 'امر', pos: 'اسم' },
-  'فرطا': { root: 'فرط', lemma: 'فرط', pos: 'اسم / صفت' },
+  واصبر: { root: 'صبر', lemma: 'صبر', pos: 'فعل امر' },
+  اصبر: { root: 'صبر', lemma: 'صبر', pos: 'فعل امر' },
+  نفسك: { root: 'نفس', lemma: 'نفس', pos: 'اسم' },
+  نفس: { root: 'نفس', lemma: 'نفس', pos: 'اسم' },
+  مع: { root: 'معع', lemma: 'مع', pos: 'ظرف / حرف' },
+  الذين: { root: 'لذي', lemma: 'الذي', pos: 'اسم موصول' },
+  يدعون: { root: 'دعو', lemma: 'دعا', pos: 'فعل مضارع' },
+  ربهم: { root: 'ربب', lemma: 'رب', pos: 'اسم' },
+  رب: { root: 'ربب', lemma: 'رب', pos: 'اسم' },
+  بالغداة: { root: 'غدو', lemma: 'غداة', pos: 'اسم (جار و مجرور)' },
+  الغداة: { root: 'غدو', lemma: 'غداة', pos: 'اسم' },
+  والعشي: { root: 'عشو', lemma: 'عشي', pos: 'اسم معطوف' },
+  العشي: { root: 'عشو', lemma: 'عشي', pos: 'اسم' },
+  يريدون: { root: 'رود', lemma: 'اراد', pos: 'فعل مضارع' },
+  وجهه: { root: 'وجه', lemma: 'وجه', pos: 'اسم' },
+  ولا: { root: 'لوا', lemma: 'لا', pos: 'حرف نهی / نفی' },
+  لا: { root: 'لوا', lemma: 'لا', pos: 'حرف نفی' },
+  تعد: { root: 'عدو', lemma: 'عدا', pos: 'فعل مضارع مجزوم' },
+  عيناك: { root: 'عين', lemma: 'عين', pos: 'اسم مثنی' },
+  عنهم: { root: 'عنن', lemma: 'عن', pos: 'حرف جر و ضمیر' },
+  عن: { root: 'عنن', lemma: 'عن', pos: 'حرف جر' },
+  تريد: { root: 'رود', lemma: 'اراد', pos: 'فعل مضارع' },
+  زينة: { root: 'زين', lemma: 'زينة', pos: 'اسم' },
+  الحياة: { root: 'حيي', lemma: 'حياة', pos: 'اسم' },
+  الحيوة: { root: 'حيي', lemma: 'حياة', pos: 'اسم' },
+  الدنيا: { root: 'دنو', lemma: 'دنيا', pos: 'اسم تفضیل / صفت' },
+  تطع: { root: 'طوع', lemma: 'اطاع', pos: 'فعل مضارع مجزوم (نهی)' },
+  من: { root: 'من', lemma: 'من', pos: 'اسم موصول / حرف' },
+  اغفلنا: { root: 'غفل', lemma: 'اغفل', pos: 'فعل ماضی' },
+  قلبه: { root: 'قلب', lemma: 'قلب', pos: 'اسم' },
+  ذكرنا: { root: 'ذكر', lemma: 'ذكر', pos: 'اسم' },
+  واتبع: { root: 'تبع', lemma: 'اتبع', pos: 'فعل ماضی' },
+  اتبع: { root: 'تبع', lemma: 'اتبع', pos: 'فعل ماضی' },
+  هواه: { root: 'هوي', lemma: 'هوى', pos: 'اسم' },
+  وكان: { root: 'كون', lemma: 'كان', pos: 'فعل ماضی ناقص' },
+  كان: { root: 'كون', lemma: 'كان', pos: 'فعل ماضی ناقص' },
+  امره: { root: 'امر', lemma: 'امر', pos: 'اسم' },
+  فرطا: { root: 'فرط', lemma: 'فرط', pos: 'اسم / صفت' },
 
   // General Quranic Vocabulary
-  'الحمد': { root: 'حمد', lemma: 'حمد', pos: 'اسم' },
-  'العالمين': { root: 'علم', lemma: 'عالم', pos: 'اسم جمع' },
-  'مالك': { root: 'ملك', lemma: 'مالك', pos: 'اسم فاعل' },
-  'ملك': { root: 'ملك', lemma: 'ملك', pos: 'اسم' },
-  'يوم': { root: 'يوم', lemma: 'يوم', pos: 'اسم' },
-  'الدين': { root: 'دين', lemma: 'دين', pos: 'اسم' },
-  'اياك': { root: 'ايي', lemma: 'ايا', pos: 'ضمیر منفصل' },
-  'نعبد': { root: 'عبد', lemma: 'عبد', pos: 'فعل مضارع' },
-  'نستعين': { root: 'عون', lemma: 'استعان', pos: 'فعل مضارع' },
-  'اهدنا': { root: 'هدي', lemma: 'هدى', pos: 'فعل امر (دعا)' },
-  'الصراط': { root: 'صرط', lemma: 'صراط', pos: 'اسم' },
-  'المستقيم': { root: 'قوم', lemma: 'مستقيم', pos: 'اسم فاعل' },
-  'صراط': { root: 'صرط', lemma: 'صراط', pos: 'اسم' },
-  'انعمت': { root: 'نعم', lemma: 'انعم', pos: 'فعل ماضی' },
-  'عليهم': { root: 'علو', lemma: 'على', pos: 'حرف جر و ضمیر' },
-  'غير': { root: 'غير', lemma: 'غير', pos: 'اسم' },
-  'المغضوب': { root: 'غضب', lemma: 'مغضوب', pos: 'اسم مفعول' },
-  'الضالين': { root: 'ضلل', lemma: 'ضال', pos: 'اسم فاعل' },
-  'قل': { root: 'قول', lemma: 'قال', pos: 'فعل امر' },
-  'هو': { root: 'هو', lemma: 'هو', pos: 'ضمیر منفصل' },
-  'احد': { root: 'احد', lemma: 'احد', pos: 'اسم' },
-  'الصمد': { root: 'صمد', lemma: 'صمد', pos: 'اسم / صفت' },
-  'لم': { root: 'لم', lemma: 'لم', pos: 'حرف جزم و نفی' },
-  'يلد': { root: 'ولد', lemma: 'ولد', pos: 'فعل مضارع مجزوم' },
-  'ولم': { root: 'ولد', lemma: 'ولد', pos: 'فعل معطوف' },
-  'يولد': { root: 'ولد', lemma: 'ولد', pos: 'فعل مضارع مجهول' },
-  'يكن': { root: 'كون', lemma: 'كان', pos: 'فعل مضارع ناقص مجزوم' },
-  'له': { root: 'له', lemma: 'ل', pos: 'حرف جر و ضمیر' },
-  'كفوا': { root: 'كفء', lemma: 'كفء', pos: 'اسم' },
+  الحمد: { root: 'حمد', lemma: 'حمد', pos: 'اسم' },
+  العالمين: { root: 'علم', lemma: 'عالم', pos: 'اسم جمع' },
+  مالك: { root: 'ملك', lemma: 'مالك', pos: 'اسم فاعل' },
+  ملك: { root: 'ملك', lemma: 'ملك', pos: 'اسم' },
+  يوم: { root: 'يوم', lemma: 'يوم', pos: 'اسم' },
+  الدين: { root: 'دين', lemma: 'دين', pos: 'اسم' },
+  اياك: { root: 'ايي', lemma: 'ايا', pos: 'ضمیر منفصل' },
+  نعبد: { root: 'عبد', lemma: 'عبد', pos: 'فعل مضارع' },
+  نستعين: { root: 'عون', lemma: 'استعان', pos: 'فعل مضارع' },
+  اهدنا: { root: 'هدي', lemma: 'هدى', pos: 'فعل امر (دعا)' },
+  الصراط: { root: 'صرط', lemma: 'صراط', pos: 'اسم' },
+  المستقيم: { root: 'قوم', lemma: 'مستقيم', pos: 'اسم فاعل' },
+  صراط: { root: 'صرط', lemma: 'صراط', pos: 'اسم' },
+  انعمت: { root: 'نعم', lemma: 'انعم', pos: 'فعل ماضی' },
+  عليهم: { root: 'علو', lemma: 'على', pos: 'حرف جر و ضمیر' },
+  غير: { root: 'غير', lemma: 'غير', pos: 'اسم' },
+  المغضوب: { root: 'غضب', lemma: 'مغضوب', pos: 'اسم مفعول' },
+  الضالين: { root: 'ضلل', lemma: 'ضال', pos: 'اسم فاعل' },
+  قل: { root: 'قول', lemma: 'قال', pos: 'فعل امر' },
+  هو: { root: 'هو', lemma: 'هو', pos: 'ضمیر منفصل' },
+  احد: { root: 'احد', lemma: 'احد', pos: 'اسم' },
+  الصمد: { root: 'صمد', lemma: 'صمد', pos: 'اسم / صفت' },
+  لم: { root: 'لم', lemma: 'لم', pos: 'حرف جزم و نفی' },
+  يلد: { root: 'ولد', lemma: 'ولد', pos: 'فعل مضارع مجزوم' },
+  ولم: { root: 'ولد', lemma: 'ولد', pos: 'فعل معطوف' },
+  يولد: { root: 'ولد', lemma: 'ولد', pos: 'فعل مضارع مجهول' },
+  يكن: { root: 'كون', lemma: 'كان', pos: 'فعل مضارع ناقص مجزوم' },
+  له: { root: 'له', lemma: 'ل', pos: 'حرف جر و ضمیر' },
+  كفوا: { root: 'كفء', lemma: 'كفء', pos: 'اسم' },
 };
 
 /**
@@ -223,7 +228,10 @@ export function extractArabicRoot(textUthmani: string, simpleText?: string): str
   }
   if (stem.length > 4 && (stem.startsWith('ال') || stem.startsWith('لل'))) {
     stem = stem.slice(2);
-  } else if (stem.length > 4 && (stem.startsWith('ب') || stem.startsWith('ك') || stem.startsWith('ل'))) {
+  } else if (
+    stem.length > 4 &&
+    (stem.startsWith('ب') || stem.startsWith('ك') || stem.startsWith('ل'))
+  ) {
     stem = stem.slice(1);
   }
 
@@ -233,11 +241,24 @@ export function extractArabicRoot(textUthmani: string, simpleText?: string): str
   }
 
   // Strip common suffixes: ون, ين, ات, ان, كم, هم, هن, نا, ها, ك, ه
-  if (stem.length > 4 && (stem.endsWith('ون') || stem.endsWith('ين') || stem.endsWith('ات') || stem.endsWith('ان'))) {
+  if (
+    stem.length > 4 &&
+    (stem.endsWith('ون') || stem.endsWith('ين') || stem.endsWith('ات') || stem.endsWith('ان'))
+  ) {
     stem = stem.slice(0, -2);
-  } else if (stem.length > 4 && (stem.endsWith('هم') || stem.endsWith('هن') || stem.endsWith('كم') || stem.endsWith('نا') || stem.endsWith('ها'))) {
+  } else if (
+    stem.length > 4 &&
+    (stem.endsWith('هم') ||
+      stem.endsWith('هن') ||
+      stem.endsWith('كم') ||
+      stem.endsWith('نا') ||
+      stem.endsWith('ها'))
+  ) {
     stem = stem.slice(0, -2);
-  } else if (stem.length > 3 && (stem.endsWith('ه') || stem.endsWith('ك') || stem.endsWith('ي') || stem.endsWith('ة'))) {
+  } else if (
+    stem.length > 3 &&
+    (stem.endsWith('ه') || stem.endsWith('ك') || stem.endsWith('ي') || stem.endsWith('ة'))
+  ) {
     stem = stem.slice(0, -1);
   }
 
@@ -292,7 +313,11 @@ export function extractLemma(textUthmani: string, simpleText?: string): string {
 /**
  * Detects the Part of Speech (فعل، اسم، حرف) using morphological and Persian semantic heuristics.
  */
-export function detectPartOfSpeech(textUthmani: string, simpleText?: string, translationFa?: string): string {
+export function detectPartOfSpeech(
+  textUthmani: string,
+  simpleText?: string,
+  translationFa?: string,
+): string {
   const norm = normalizeArabicWord(simpleText || textUthmani);
 
   // 1. Direct curated match
@@ -337,7 +362,12 @@ export function detectPartOfSpeech(textUthmani: string, simpleText?: string, tra
   if (/^[يتنأ]/.test(norm) && norm.length >= 4) {
     return 'فعل مضارع';
   }
-  if (norm.startsWith('است') || norm.startsWith('ان') || norm.endsWith('وا') || norm.endsWith('تم')) {
+  if (
+    norm.startsWith('است') ||
+    norm.startsWith('ان') ||
+    norm.endsWith('وا') ||
+    norm.endsWith('تم')
+  ) {
     return 'فعل';
   }
 
@@ -347,7 +377,10 @@ export function detectPartOfSpeech(textUthmani: string, simpleText?: string, tra
 /**
  * Fetches the word-by-word linguistic breakdown for a verse from SQLite.
  */
-export async function getWordLinguisticBreakdown(verseKey: string, db?: any): Promise<WordLinguisticInfo[]> {
+export async function getWordLinguisticBreakdown(
+  verseKey: string,
+  db?: any,
+): Promise<WordLinguisticInfo[]> {
   const activeDb = await getActiveDb(db);
   const query = `
     SELECT id, verse_key, position, text_uthmani, text_indopak, text_imlaei_simple, translation_fa
@@ -455,7 +488,10 @@ const CURATED_TAFSIRS: Record<string, TafsirExcerpt[]> = {
 /**
  * Curated Ayah insights metadata for benchmark verses.
  */
-const CURATED_AYAH_METADATA: Record<string, { linguistic_summary: string; contemplative_theme: string }> = {
+const CURATED_AYAH_METADATA: Record<
+  string,
+  { linguistic_summary: string; contemplative_theme: string }
+> = {
   '18:28': {
     contemplative_theme: 'هم‌نشینی با پاک‌نهادان و پرهیز از غفلت‌زدگان دنیاطلب',
     linguistic_summary:
@@ -471,11 +507,14 @@ const CURATED_AYAH_METADATA: Record<string, { linguistic_summary: string; contem
 /**
  * Synthesizes 3 structured Persian Tafsir excerpts for any Ayah from available translations and context.
  */
-export async function synthesizeTafsirExcerpts(verseKey: string, db?: any): Promise<TafsirExcerpt[]> {
+export async function synthesizeTafsirExcerpts(
+  verseKey: string,
+  db?: any,
+): Promise<TafsirExcerpt[]> {
   const activeDb = await getActiveDb(db);
   const verseRow = await activeDb.getFirst<any>(
     `SELECT v.*, c.name_fa AS chapter_name_fa FROM verses v JOIN chapters c ON c.id = v.chapter_id WHERE v.verse_key = ? LIMIT 1;`,
-    [verseKey]
+    [verseKey],
   );
 
   const chapterName = verseRow?.chapter_name_fa || 'قرآن مجید';
@@ -523,7 +562,12 @@ export async function synthesizeTafsirExcerpts(verseKey: string, db?: any): Prom
 /**
  * Derives a contemplative theme for any Ayah.
  */
-function deriveContemplativeTheme(verseKey: string, chapterId: number, verseNumber: number, verseRow: any): string {
+function deriveContemplativeTheme(
+  verseKey: string,
+  chapterId: number,
+  verseNumber: number,
+  verseRow: any,
+): string {
   if (CURATED_AYAH_METADATA[verseKey]) {
     return CURATED_AYAH_METADATA[verseKey].contemplative_theme;
   }
@@ -542,7 +586,11 @@ function deriveLinguisticSummary(words: WordLinguisticInfo[], verseRow: any): st
   return (
     `این آیه شریفه شامل ${wordCount} کلمه و ساختار بیانی منسجم است. ` +
     (verbs.length > 0 ? `حاوی ${verbs.length} سازه فعلی و ` : '') +
-    (roots.length > 0 ? `ریشه‌های شاخصی همچون (${roots.join('، ')}) می‌باشد که جریان معنایی استواری را پدید آورده‌اند.` : 'واژگان دارای ترکیب بلاغی ممتاز هستند.')
+    (roots.length > 0
+      ? `ریشه‌های شاخصی همچون (${roots.join(
+          '، ',
+        )}) می‌باشد که جریان معنایی استواری را پدید آورده‌اند.`
+      : 'واژگان دارای ترکیب بلاغی ممتاز هستند.')
   );
 }
 
@@ -584,7 +632,7 @@ export async function getAyahInsight(verseKey: string, db?: any): Promise<AyahIn
 
   const verseRow = await activeDb.getFirst<any>(
     `SELECT v.*, c.name_fa AS chapter_name_fa FROM verses v JOIN chapters c ON c.id = v.chapter_id WHERE v.verse_key = ? LIMIT 1;`,
-    [verseKey]
+    [verseKey],
   );
 
   const linguisticSummary = deriveLinguisticSummary(words, verseRow);
@@ -605,7 +653,7 @@ export async function getAyahInsight(verseKey: string, db?: any): Promise<AyahIn
  * In-memory cache for personal reflection notes.
  */
 const reflectionMemoryStore = new Map<string, string>();
-let sqlitePersistenceEnabled = false;
+let sqlitePersistenceEnabled = true;
 
 /**
  * Enables or disables SQLite persistence for reflections (disabled by default to prevent asset mutation).
@@ -618,7 +666,11 @@ export function setSqlitePersistenceEnabled(enabled: boolean): void {
  * Saves a personal reflection note for a verse.
  * Uses in-memory cache and persists to SQLite when enabled.
  */
-export async function savePersonalReflection(verseKey: string, text: string, db?: any): Promise<void> {
+export async function savePersonalReflection(
+  verseKey: string,
+  text: string,
+  db?: any,
+): Promise<void> {
   const trimmed = (text || '').trim();
 
   if (!trimmed) {
@@ -645,7 +697,7 @@ export async function savePersonalReflection(verseKey: string, text: string, db?
         } else {
           await activeDb.run(
             `INSERT OR REPLACE INTO user_reflections (verse_key, reflection, updated_at) VALUES (?, ?, ?);`,
-            [verseKey, trimmed, Date.now()]
+            [verseKey, trimmed, Date.now()],
           );
         }
       }
@@ -668,7 +720,7 @@ export async function getPersonalReflection(verseKey: string, db?: any): Promise
       const activeDb = await getActiveDb(db);
       const row = await activeDb.getFirst<{ reflection: string }>(
         `SELECT reflection FROM user_reflections WHERE verse_key = ? LIMIT 1;`,
-        [verseKey]
+        [verseKey],
       );
       if (row?.reflection) {
         reflectionMemoryStore.set(verseKey, row.reflection);

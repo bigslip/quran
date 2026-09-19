@@ -144,7 +144,11 @@ export const useBookmarkStore = create<BookmarkState>((set, get) => ({
     }
     // Optimistic add
     nextKeys.add(verse.verse_key);
-    set({ bookmarkedKeys: nextKeys });
+    const clearRecentlyDeleted = get().recentlyDeleted?.verse_key === verse.verse_key;
+    set({
+      bookmarkedKeys: nextKeys,
+      ...(clearRecentlyDeleted ? { recentlyDeleted: null } : {}),
+    });
     try {
       await bookmarkService.addBookmark(verse);
       await get().loadBookmarks();
@@ -156,10 +160,18 @@ export const useBookmarkStore = create<BookmarkState>((set, get) => ({
   },
 
   updateNote: async (verseKey, note) => {
+    const trimmed = note.trim();
+    const currentRecentlyDeleted = get().recentlyDeleted;
+    const updatedRecentlyDeleted =
+      currentRecentlyDeleted && currentRecentlyDeleted.verse_key === verseKey
+        ? { ...currentRecentlyDeleted, note: trimmed || undefined }
+        : currentRecentlyDeleted;
+
     set({
       bookmarks: get().bookmarks.map((b) =>
-        b.verse_key === verseKey ? { ...b, note: note.trim() || undefined } : b,
+        b.verse_key === verseKey ? { ...b, note: trimmed || undefined } : b,
       ),
+      recentlyDeleted: updatedRecentlyDeleted,
     });
     try {
       await bookmarkService.updateBookmarkNote(verseKey, note);
