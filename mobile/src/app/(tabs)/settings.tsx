@@ -9,7 +9,6 @@ import {
   useThemeColors,
   themePalettes,
   AppTheme,
-  rtlRow,
   rtlTextAlign,
 } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
@@ -87,6 +86,7 @@ export default function SettingsScreen() {
                 accessible={true}
                 accessibilityRole="button"
                 accessibilityLabel={`فعالسازی تم ${t.title}`}
+                accessibilityState={{ selected: isActive }}
                 style={[
                   styles.themeCard,
                   {
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     minHeight: 56,
   },
   themeCardRow: {
-    flexDirection: rtlRow,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },

@@ -270,7 +270,12 @@ export const DisplayFontSection: React.FC<DisplayFontSectionProps> = React.memo(
           </View>
 
           {/* Live Arabic Preview Box */}
-          <View style={styles.previewContainer}>
+          <View
+            style={[
+              styles.previewContainer,
+              { backgroundColor: themePalettes[currentTheme].surfaceCard },
+            ]}
+          >
             <Text
               testID={`${testID}-preview-text`}
               style={[
@@ -278,6 +283,7 @@ export const DisplayFontSection: React.FC<DisplayFontSectionProps> = React.memo(
                 {
                   fontFamily: arabicFontFamily,
                   fontSize: scaledPreviewFontSize,
+                  color: themePalettes[currentTheme].textPrimary,
                 },
               ]}
             >
@@ -303,6 +309,7 @@ export const DisplayFontSection: React.FC<DisplayFontSectionProps> = React.memo(
               accessible={true}
               accessibilityRole="button"
               accessibilityLabel="فعالسازی تم شبستان"
+              accessibilityState={{ selected: currentTheme === 'dark' }}
             >
               <View
                 style={[
@@ -341,6 +348,7 @@ export const DisplayFontSection: React.FC<DisplayFontSectionProps> = React.memo(
               accessible={true}
               accessibilityRole="button"
               accessibilityLabel="فعالسازی تم شب معنوی"
+              accessibilityState={{ selected: currentTheme === 'emerald' }}
             >
               <View
                 style={[
@@ -379,6 +387,7 @@ export const DisplayFontSection: React.FC<DisplayFontSectionProps> = React.memo(
               accessible={true}
               accessibilityRole="button"
               accessibilityLabel="فعالسازی تم مصحف پوستی"
+              accessibilityState={{ selected: currentTheme === 'sepia' }}
             >
               <View
                 style={[
@@ -417,6 +426,7 @@ export const DisplayFontSection: React.FC<DisplayFontSectionProps> = React.memo(
               accessible={true}
               accessibilityRole="button"
               accessibilityLabel="فعالسازی تم وضوح روز"
+              accessibilityState={{ selected: currentTheme === 'light' }}
             >
               <View
                 style={[
