@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   juzCard: {
     flex: 1,
     minHeight: 110,
-    backgroundColor: colors.surfaceCard,
+    backgroundColor: '#07241c',
     borderRadius: borderRadius.lg,
     borderWidth: 1,
     borderColor: colors.borderSubtle,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   juzCardSelected: {
     borderColor: colors.primary,
     borderWidth: 1.5,
-    backgroundColor: colors.surfaceCardHover,
+    backgroundColor: 'rgba(16, 185, 129, 0.15)',
   },
   cardHeaderRow: {
     flexDirection: rtlRow,

@@ -9,7 +9,7 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import { Plus, Minus, Search, X } from 'lucide-react-native';
+import { Plus, Minus, Search, X, ChevronDown, ArrowRight } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, rtlTextAlign } from '@/theme';
 import { Chapter } from '@/types/quran';
 import { getAllSurahs } from '@/services/db/surahService';
@@ -42,6 +42,7 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
   const [loadedSurahs, setLoadedSurahs] = useState<Chapter[]>(surahs || []);
   const [searchQuery, setSearchQuery] = useState('');
   const [verseInputText, setVerseInputText] = useState(toPersianDigits(selectedVerseNumber));
+  const [isSelectingSurah, setIsSelectingSurah] = useState(false);
 
   // Keep loadedSurahs synchronized if prop updates or fetch via getAllSurahs
   useEffect(() => {
@@ -57,9 +58,7 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
           setLoadedSurahs(res);
         }
       })
-      .catch(() => {
-        // Silently fallback in environments without SQLite provider
-      });
+      .catch(() => {});
 
     return () => {
       isMounted = false;
@@ -119,6 +118,7 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
     if (selectedVerseNumber > chapter.verses_count) {
       onSelectVerse(chapter.verses_count);
     }
+    setIsSelectingSurah(false);
   };
 
   // Filtered Surahs based on Persian name, Arabic title, or ID
@@ -156,16 +156,160 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
     return chips;
   }, [maxVerses]);
 
+  // When selecting Surah: Render full-height Surah Picker mode
+  if (isSelectingSurah) {
+    return (
+      <View style={[styles.container, style]} testID={testID}>
+        {/* Header with Back button */}
+        <View style={styles.surahPickerHeader}>
+          <TouchableOpacity
+            onPress={() => setIsSelectingSurah(false)}
+            style={styles.backButton}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="بازگشت به انتخاب آیه"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <ArrowRight size={18} color={colors.textPrimary} />
+            <Text style={styles.backButtonText}>بازگشت</Text>
+          </TouchableOpacity>
+          <Text style={styles.surahPickerTitle}>انتخاب سوره از مصحف</Text>
+        </View>
+
+        {/* Surah Search Bar */}
+        <View style={styles.searchBarContainer}>
+          <Search size={18} color={colors.textFaded} style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="جستجوی سوره (نام یا شماره)..."
+            placeholderTextColor={colors.textFaded}
+            textAlign={rtlTextAlign}
+            accessible={true}
+            accessibilityLabel="جستجوی سوره"
+            autoFocus
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity
+              onPress={() => setSearchQuery('')}
+              style={styles.clearButton}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="پاک کردن جستجو"
+            >
+              <X size={16} color={colors.textFaded} />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Full-height Surahs List */}
+        <FlatList
+          data={filteredSurahs}
+          keyExtractor={(item) => String(item.id)}
+          keyboardShouldPersistTaps="handled"
+          style={styles.surahListFull}
+          contentContainerStyle={styles.surahListContent}
+          initialNumToRender={15}
+          maxToRenderPerBatch={20}
+          windowSize={7}
+          renderItem={({ item }) => {
+            const isSelected = item.id === selectedChapterId;
+            const itemIsMakki = item.revelation_place === 'makkah';
+
+            return (
+              <TouchableOpacity
+                onPress={() => handleSelectSurah(item)}
+                style={[styles.surahListItem, isSelected && styles.surahListItemSelected]}
+                activeOpacity={0.7}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel={`سوره ${item.name_fa}، شماره ${toPersianDigits(item.id)}`}
+                accessibilityHint="برای انتخاب این سوره ضربه بزنید"
+              >
+                <View style={[styles.surahItemBadge, isSelected && styles.surahItemBadgeSelected]}>
+                  <Text
+                    style={[
+                      styles.surahItemBadgeText,
+                      isSelected && styles.surahItemBadgeTextSelected,
+                    ]}
+                  >
+                    {toPersianDigits(item.id)}
+                  </Text>
+                </View>
+
+                <View style={styles.surahItemDetails}>
+                  <View style={styles.surahItemNameRow}>
+                    <Text
+                      style={[styles.surahItemNameFa, isSelected && styles.surahItemNameFaSelected]}
+                    >
+                      سوره {cleanSurahNameFa(item.name_fa)}
+                    </Text>
+                    <View
+                      style={[
+                        styles.itemRevelationChip,
+                        itemIsMakki ? styles.badgeMakki : styles.badgeMadani,
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.itemRevelationText,
+                          itemIsMakki ? styles.badgeMakkiText : styles.badgeMadaniText,
+                        ]}
+                      >
+                        {itemIsMakki ? 'مکی' : 'مدنی'}
+                      </Text>
+                    </View>
+                  </View>
+                  <Text style={styles.surahItemVerses}>
+                    {toPersianDigits(item.verses_count)} آیه
+                  </Text>
+                </View>
+
+                <Text
+                  style={[
+                    styles.surahItemNameArabic,
+                    isSelected && styles.surahItemNameArabicSelected,
+                  ]}
+                >
+                  {item.name_arabic}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          ListEmptyComponent={
+            <View style={styles.emptySearchContainer}>
+              <Text style={styles.emptySearchText}>سوره‌ای با این مشخصات یافت نشد</Text>
+            </View>
+          }
+        />
+      </View>
+    );
+  }
+
+  // Default: Ayah Selection Mode (Uncluttered, Focused, Spacious)
   return (
     <View style={[styles.container, style]} testID={testID}>
-      {/* Top Section: Currently Selected Surah Header */}
+      {/* Top Section: Currently Selected Surah Header Card */}
       {selectedSurah && (
-        <View style={styles.selectedHeaderCard}>
+        <TouchableOpacity
+          activeOpacity={0.75}
+          onPress={() => setIsSelectingSurah(true)}
+          style={styles.selectedHeaderCard}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={`سوره ${cleanSurahNameFa(
+            selectedSurah.name_fa,
+          )}، برای تغییر سوره ضربه بزنید`}
+        >
           <View style={styles.headerRow}>
+            {/* Start: Surah Number Badge */}
             <View style={styles.surahNumberBadge}>
               <Text style={styles.surahNumberText}>{toPersianDigits(selectedSurah.id)}</Text>
             </View>
 
+            {/* Middle: Surah Titles */}
             <View style={styles.surahTitlesCol}>
               <View style={styles.surahNameRow}>
                 <Text style={styles.surahNameFa}>
@@ -185,16 +329,20 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
                 </View>
               </View>
               <Text style={styles.verseCountSubtitle}>
-                {toPersianDigits(selectedSurah.verses_count)} آیه
+                {toPersianDigits(selectedSurah.verses_count)} آیه • {selectedSurah.name_arabic}
               </Text>
             </View>
 
-            <Text style={styles.surahArabicTitle}>{selectedSurah.name_arabic}</Text>
+            {/* End: Change Surah Pill */}
+            <View style={styles.changeSurahButton}>
+              <Text style={styles.changeSurahButtonText}>تغییر سوره</Text>
+              <ChevronDown size={14} color={colors.primaryLight} style={styles.chevronIcon} />
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       )}
 
-      {/* Ayah Selector: Stepper + Input + Quick Chips */}
+      {/* Ayah Selector Section */}
       <View style={styles.ayahSelectorSection}>
         <Text style={styles.sectionLabel}>انتخاب شماره آیه</Text>
 
@@ -208,10 +356,9 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="کاهش شماره آیه"
-            accessibilityHint="شماره آیه را یکی کاهش می‌دهد"
           >
             <Minus
-              size={20}
+              size={22}
               color={selectedVerseNumber <= 1 ? colors.textFaded : colors.textPrimary}
             />
           </TouchableOpacity>
@@ -229,7 +376,6 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
               maxLength={4}
               accessible={true}
               accessibilityLabel="شماره آیه انتخابی"
-              accessibilityHint={`شماره آیه بین ۱ تا ${toPersianDigits(maxVerses)}`}
             />
             <Text style={styles.ayahInputSuffix}>از {toPersianDigits(maxVerses)}</Text>
           </View>
@@ -246,10 +392,9 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="افزایش شماره آیه"
-            accessibilityHint="شماره آیه را یکی افزایش می‌دهد"
           >
             <Plus
-              size={20}
+              size={22}
               color={selectedVerseNumber >= maxVerses ? colors.textFaded : colors.textPrimary}
             />
           </TouchableOpacity>
@@ -277,115 +422,6 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
           })}
         </View>
       </View>
-
-      {/* Surah Search Bar */}
-      <View style={styles.searchBarContainer}>
-        <Search size={18} color={colors.textFaded} style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="جستجوی سوره (نام یا شماره)..."
-          placeholderTextColor={colors.textFaded}
-          textAlign={rtlTextAlign}
-          accessible={true}
-          accessibilityLabel="جستجوی سوره"
-        />
-        {searchQuery.length > 0 && (
-          <TouchableOpacity
-            onPress={() => setSearchQuery('')}
-            style={styles.clearButton}
-            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel="پاک کردن جستجو"
-          >
-            <X size={16} color={colors.textFaded} />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      {/* Surahs Scrollable List */}
-      <FlatList
-        data={filteredSurahs}
-        keyExtractor={(item) => String(item.id)}
-        keyboardShouldPersistTaps="handled"
-        style={styles.surahList}
-        contentContainerStyle={styles.surahListContent}
-        initialNumToRender={15}
-        maxToRenderPerBatch={20}
-        windowSize={5}
-        renderItem={({ item }) => {
-          const isSelected = item.id === selectedChapterId;
-          const itemIsMakki = item.revelation_place === 'makkah';
-
-          return (
-            <TouchableOpacity
-              onPress={() => handleSelectSurah(item)}
-              style={[styles.surahListItem, isSelected && styles.surahListItemSelected]}
-              activeOpacity={0.7}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityLabel={`سوره ${item.name_fa}، شماره ${toPersianDigits(item.id)}`}
-              accessibilityHint="برای انتخاب این سوره ضربه بزنید"
-            >
-              {/* Start: Number Badge */}
-              <View style={[styles.surahItemBadge, isSelected && styles.surahItemBadgeSelected]}>
-                <Text
-                  style={[
-                    styles.surahItemBadgeText,
-                    isSelected && styles.surahItemBadgeTextSelected,
-                  ]}
-                >
-                  {toPersianDigits(item.id)}
-                </Text>
-              </View>
-
-              {/* Middle: Persian Title & Revelation Badge */}
-              <View style={styles.surahItemDetails}>
-                <View style={styles.surahItemTitleRow}>
-                  <Text
-                    style={[styles.surahItemNameFa, isSelected && styles.surahItemNameFaSelected]}
-                  >
-                    {cleanSurahNameFa(item.name_fa)}
-                  </Text>
-                  <View
-                    style={[
-                      styles.itemRevelationChip,
-                      itemIsMakki ? styles.badgeMakki : styles.badgeMadani,
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.itemRevelationText,
-                        itemIsMakki ? styles.badgeMakkiText : styles.badgeMadaniText,
-                      ]}
-                    >
-                      {itemIsMakki ? 'مکی' : 'مدنی'}
-                    </Text>
-                  </View>
-                </View>
-                <Text style={styles.surahItemVerses}>{toPersianDigits(item.verses_count)} آیه</Text>
-              </View>
-
-              {/* End: Arabic Calligraphy Title */}
-              <Text
-                style={[
-                  styles.surahItemNameArabic,
-                  isSelected && styles.surahItemNameArabicSelected,
-                ]}
-              >
-                {item.name_arabic}
-              </Text>
-            </TouchableOpacity>
-          );
-        }}
-        ListEmptyComponent={
-          <View style={styles.emptySearchContainer}>
-            <Text style={styles.emptySearchText}>سوره‌ای با این مشخصات یافت نشد</Text>
-          </View>
-        }
-      />
     </View>
   );
 };
@@ -395,195 +431,51 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
-  selectedHeaderCard: {
-    backgroundColor: colors.surfaceCard,
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
-  headerRow: {
+  // Surah Picker Mode Styles
+  surahPickerHeader: {
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingBottom: spacing.sm,
+    marginBottom: spacing.xs,
   },
-  surahNumberBadge: {
-    width: 44,
-    height: 44,
-    borderRadius: borderRadius.circle,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1.5,
-    borderColor: colors.goldAccent,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginEnd: spacing.sm,
-  },
-  surahNumberText: {
+  surahPickerTitle: {
     fontFamily: fonts.primaryBold,
     fontSize: fontSizes.md,
     fontWeight: '700',
-    color: colors.goldAccent,
-  },
-  surahTitlesCol: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  surahNameRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  surahNameFa: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.lg,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: rtlTextAlign,
   },
-  revelationBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: borderRadius.pill,
+  backButton: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    backgroundColor: '#0a2e24',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    gap: spacing.xs,
   },
-  revelationBadgeText: {
+  backButtonText: {
     fontFamily: fonts.primary,
     fontSize: fontSizes.xs,
+    color: colors.textSecondary,
     fontWeight: '600',
   },
-  badgeMakki: {
-    backgroundColor: colors.badgeMakki,
-  },
-  badgeMakkiText: {
-    color: colors.badgeMakkiText,
-  },
-  badgeMadani: {
-    backgroundColor: colors.badgeMadani,
-  },
-  badgeMadaniText: {
-    color: colors.badgeMadaniText,
-  },
-  verseCountSubtitle: {
-    fontFamily: fonts.primary,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-    textAlign: rtlTextAlign,
-    marginTop: 2,
-  },
-  surahArabicTitle: {
-    fontFamily: fonts.uthmanicHafs,
-    fontSize: 22,
-    color: colors.primaryLight,
-    textAlign: 'right',
-  },
-  ayahSelectorSection: {
-    backgroundColor: colors.surfaceCard,
+  searchBarContainer: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    backgroundColor: '#07241c',
     borderRadius: borderRadius.lg,
     borderWidth: 1,
     borderColor: colors.borderSubtle,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
-  sectionLabel: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.sm,
-    fontWeight: '600',
-    color: colors.textSecondary,
-    textAlign: rtlTextAlign,
-    marginBottom: spacing.sm,
-  },
-  stepperContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.md,
-    marginBottom: spacing.md,
-  },
-  stepperButton: {
-    width: 44,
-    height: 44,
-    borderRadius: borderRadius.md,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepperButtonDisabled: {
-    opacity: 0.4,
-    borderColor: colors.borderSeparator,
-  },
-  ayahInputWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 110,
-  },
-  ayahInput: {
-    minWidth: 70,
-    minHeight: 44,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1.5,
-    borderColor: colors.primary,
-    borderRadius: borderRadius.md,
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.xl,
-    fontWeight: '700',
-    color: colors.textPrimary,
     paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-  },
-  ayahInputSuffix: {
-    fontFamily: fonts.primary,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-    marginTop: 4,
-  },
-  chipsRow: {
-    flexDirection: rtlRow,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  quickChip: {
-    minHeight: 44,
-    minWidth: 44,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.pill,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  quickChipActive: {
-    backgroundColor: colors.primarySubtle,
-    borderColor: colors.primaryLight,
-  },
-  quickChipText: {
-    fontFamily: fonts.primary,
-    fontSize: fontSizes.xs,
-    fontWeight: '600',
-    color: colors.textFaded,
-  },
-  quickChipTextActive: {
-    color: colors.primaryLight,
-    fontWeight: '700',
-  },
-  searchBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.surfaceFloating,
-    borderRadius: borderRadius.pill,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    height: 48,
-    paddingHorizontal: spacing.md,
+    height: 46,
     marginBottom: spacing.sm,
   },
   searchIcon: {
-    marginEnd: spacing.sm,
+    marginEnd: spacing.xs,
   },
   searchInput: {
     flex: 1,
@@ -593,54 +485,53 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
   },
   clearButton: {
-    width: 44,
-    height: 44,
-    alignItems: 'center',
+    width: 32,
+    height: 32,
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  surahList: {
+  surahListFull: {
     flex: 1,
-    minHeight: 180,
-    maxHeight: 260,
+    width: '100%',
   },
   surahListContent: {
-    paddingBottom: spacing.sm,
+    paddingBottom: spacing.lg,
   },
   surahListItem: {
-    minHeight: 52,
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: colors.surfaceCard,
+    backgroundColor: '#07241c',
+    borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.borderSubtle,
-    borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    marginVertical: 3,
+    paddingHorizontal: spacing.sm,
+    marginBottom: spacing.xs,
+    minHeight: 52,
   },
   surahListItemSelected: {
-    borderColor: colors.primary,
-    backgroundColor: colors.surfaceCardHover,
+    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+    borderColor: colors.borderActive,
   },
   surahItemBadge: {
-    width: 34,
-    height: 34,
+    width: 32,
+    height: 32,
     borderRadius: borderRadius.circle,
-    backgroundColor: colors.surfaceFloating,
+    backgroundColor: '#041610',
     borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    alignItems: 'center',
+    borderColor: colors.borderSubtle,
     justifyContent: 'center',
+    alignItems: 'center',
     marginEnd: spacing.sm,
   },
   surahItemBadgeSelected: {
     borderColor: colors.goldAccent,
-    backgroundColor: colors.goldGlow,
+    backgroundColor: 'rgba(251, 191, 36, 0.15)',
   },
   surahItemBadgeText: {
     fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.xs,
+    fontSize: 12,
     fontWeight: '700',
     color: colors.textSecondary,
   },
@@ -650,8 +541,9 @@ const styles = StyleSheet.create({
   surahItemDetails: {
     flex: 1,
     justifyContent: 'center',
+    marginEnd: spacing.sm,
   },
-  surahItemTitleRow: {
+  surahItemNameRow: {
     flexDirection: rtlRow,
     alignItems: 'center',
     gap: spacing.xs,
@@ -702,5 +594,200 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.sm,
     color: colors.textFaded,
     textAlign: 'center',
+  },
+
+  // Default Ayah Selection Mode Styles
+  selectedHeaderCard: {
+    backgroundColor: '#07241c',
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.borderIridescent,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+  },
+  headerRow: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  surahNumberBadge: {
+    width: 44,
+    height: 44,
+    borderRadius: borderRadius.circle,
+    backgroundColor: '#041610',
+    borderWidth: 1.5,
+    borderColor: colors.goldAccent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginEnd: spacing.md,
+  },
+  surahNumberText: {
+    fontFamily: fonts.primaryBold,
+    fontSize: fontSizes.md,
+    fontWeight: '700',
+    color: colors.goldAccent,
+  },
+  surahTitlesCol: {
+    flex: 1,
+    justifyContent: 'center',
+    marginEnd: spacing.sm,
+  },
+  surahNameRow: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  surahNameFa: {
+    fontFamily: fonts.primaryBold,
+    fontSize: fontSizes.md,
+    fontWeight: '700',
+    color: colors.textPrimary,
+    textAlign: rtlTextAlign,
+  },
+  revelationBadge: {
+    paddingHorizontal: 7,
+    paddingVertical: 1,
+    borderRadius: borderRadius.pill,
+  },
+  badgeMakki: {
+    backgroundColor: colors.badgeMakki,
+  },
+  badgeMakkiText: {
+    color: colors.badgeMakkiText,
+  },
+  badgeMadani: {
+    backgroundColor: colors.badgeMadani,
+  },
+  badgeMadaniText: {
+    color: colors.badgeMadaniText,
+  },
+  revelationBadgeText: {
+    fontFamily: fonts.primary,
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  verseCountSubtitle: {
+    fontFamily: fonts.primary,
+    fontSize: fontSizes.xs,
+    color: colors.textMuted,
+    textAlign: rtlTextAlign,
+    marginTop: 2,
+  },
+  changeSurahButton: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.borderActive,
+    gap: 4,
+  },
+  changeSurahButtonText: {
+    fontFamily: fonts.primary,
+    fontSize: 11,
+    fontWeight: '600',
+    color: colors.primaryLight,
+  },
+  chevronIcon: {
+    marginStart: 2,
+  },
+
+  // Ayah Selector Section
+  ayahSelectorSection: {
+    backgroundColor: '#07241c',
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    padding: spacing.md,
+  },
+  sectionLabel: {
+    fontFamily: fonts.primaryBold,
+    fontSize: fontSizes.sm,
+    fontWeight: '600',
+    color: colors.textSecondary,
+    textAlign: rtlTextAlign,
+    marginBottom: spacing.md,
+  },
+  stepperContainer: {
+    flexDirection: rtlRow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.lg,
+    gap: spacing.md,
+  },
+  stepperButton: {
+    width: 48,
+    height: 48,
+    borderRadius: borderRadius.md,
+    backgroundColor: '#0a2e24',
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  stepperButtonDisabled: {
+    opacity: 0.35,
+  },
+  ayahInputWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 110,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.md,
+    backgroundColor: '#041610',
+    borderRadius: borderRadius.lg,
+    borderWidth: 1.5,
+    borderColor: colors.borderActive,
+  },
+  ayahInput: {
+    fontFamily: fonts.primaryBold,
+    fontSize: 32,
+    fontWeight: '700',
+    color: colors.goldAccent,
+    textAlign: 'center',
+    minHeight: 44,
+    paddingVertical: 0,
+  },
+  ayahInputSuffix: {
+    fontFamily: fonts.primary,
+    fontSize: 11,
+    color: colors.textFaded,
+    marginTop: -2,
+  },
+  chipsRow: {
+    flexDirection: rtlRow,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  quickChip: {
+    flex: 1,
+    minHeight: 44,
+    height: 44,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: 4,
+    borderRadius: borderRadius.md,
+    backgroundColor: '#0a2e24',
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quickChipActive: {
+    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    borderColor: colors.borderActive,
+  },
+  quickChipText: {
+    fontFamily: fonts.primary,
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.textSecondary,
+    textAlign: 'center',
+  },
+  quickChipTextActive: {
+    color: colors.primaryLight,
+    fontWeight: '700',
   },
 });

@@ -217,22 +217,6 @@ export const PageJumpTab: React.FC<PageJumpTabProps> = ({
           })}
         </View>
       </View>
-
-      {/* Live Destination Preview Card */}
-      <View style={styles.previewCard}>
-        <View style={styles.previewHeaderRow}>
-          <View style={styles.previewIconWrapper}>
-            <BookOpen size={18} color={colors.goldAccent} />
-          </View>
-          <Text style={styles.previewPageTitle}>
-            صفحه {toPersianDigits(selectedPageNumber)} از {toPersianDigits(604)}
-          </Text>
-        </View>
-
-        <Text style={styles.previewDescriptionText} numberOfLines={2}>
-          {previewText || `مصحف شریف مدینه عثمان طه • صفحه ${toPersianDigits(selectedPageNumber)}`}
-        </Text>
-      </View>
     </View>
   );
 };
@@ -242,7 +226,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   pageCard: {
-    backgroundColor: colors.surfaceCard,
+    backgroundColor: '#07241c',
     borderRadius: borderRadius.lg,
     borderWidth: 1,
     borderColor: colors.borderSubtle,
@@ -264,16 +248,16 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   pageInput: {
-    minWidth: 100,
-    minHeight: 52,
-    backgroundColor: colors.surfaceFloating,
+    minWidth: 120,
+    minHeight: 56,
+    backgroundColor: '#041610',
     borderWidth: 1.5,
     borderColor: colors.primary,
-    borderRadius: borderRadius.md,
+    borderRadius: borderRadius.lg,
     fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.xxl,
+    fontSize: 32,
     fontWeight: '700',
-    color: colors.primaryLight,
+    color: colors.goldAccent,
     paddingHorizontal: spacing.md,
     paddingVertical: 4,
   },
@@ -293,10 +277,11 @@ const styles = StyleSheet.create({
   stepperButton: {
     minWidth: 54,
     minHeight: 44,
+    height: 44,
     borderRadius: borderRadius.md,
-    backgroundColor: colors.surfaceFloating,
+    backgroundColor: '#0a2e24',
     borderWidth: 1,
-    borderColor: colors.borderIridescent,
+    borderColor: colors.borderSubtle,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.sm,
@@ -315,7 +300,11 @@ const styles = StyleSheet.create({
     color: colors.textFaded,
   },
   milestonesSection: {
-    marginBottom: spacing.md,
+    backgroundColor: '#07241c',
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    padding: spacing.md,
   },
   milestonesSectionTitle: {
     fontFamily: fonts.primaryBold,
@@ -328,23 +317,24 @@ const styles = StyleSheet.create({
   milestonesGrid: {
     flexDirection: rtlRow,
     flexWrap: 'wrap',
-    gap: spacing.sm,
+    gap: spacing.xs,
   },
   milestoneChip: {
     minHeight: 44,
-    minWidth: 44,
-    paddingHorizontal: spacing.md,
+    minWidth: '48%',
+    flex: 1,
+    paddingHorizontal: spacing.sm,
     paddingVertical: spacing.sm,
-    borderRadius: borderRadius.pill,
-    backgroundColor: colors.surfaceCard,
+    borderRadius: borderRadius.md,
+    backgroundColor: '#0a2e24',
     borderWidth: 1,
     borderColor: colors.borderSubtle,
     alignItems: 'center',
     justifyContent: 'center',
   },
   milestoneChipSelected: {
-    backgroundColor: colors.primarySubtle,
-    borderColor: colors.primaryLight,
+    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    borderColor: colors.borderActive,
   },
   milestoneText: {
     fontFamily: fonts.primary,
