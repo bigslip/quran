@@ -6,6 +6,10 @@ export const fonts = {
   // Sacred Quran Texts
   quranHafs: 'UthmanicHafs',
   quranIndoPak: 'IndoPakNastaleeq',
+  // Typography aliases
+  primary: 'Vazirmatn-Regular',
+  primaryBold: 'Vazirmatn-Regular',
+  uthmanicHafs: 'UthmanicHafs',
 } as const;
 
 export const fontSizes = {
