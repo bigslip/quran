@@ -124,14 +124,14 @@ git commit -m "feat(mobile): implement quick jump resolution service for surah, 
   - Shows `جزء X`, starting Surah in Arabic calligraphy and Persian name, and starting Page badge.
   - Tapping selects destination immediately.
 
-- [ ] **Step 1: Implement `SurahAyahJumpTab.tsx`**
-- [ ] **Step 2: Implement `PageJumpTab.tsx`**
-- [ ] **Step 3: Implement `JuzJumpTab.tsx`**
-- [ ] **Step 4: Run typecheck**
+- [x] **Step 1: Implement `SurahAyahJumpTab.tsx`**
+- [x] **Step 2: Implement `PageJumpTab.tsx`**
+- [x] **Step 3: Implement `JuzJumpTab.tsx`**
+- [x] **Step 4: Run typecheck**
 
 Run: `yarn --cwd mobile typecheck`
 
-- [ ] **Step 5: Commit Task 2**
+- [x] **Step 5: Commit Task 2**
 
 ```bash
 git add mobile/src/components/navigation/SurahAyahJumpTab.tsx mobile/src/components/navigation/PageJumpTab.tsx mobile/src/components/navigation/JuzJumpTab.tsx
@@ -158,15 +158,15 @@ git commit -m "feat(mobile): create surah-ayah, page, and juz jump tab component
 - Dynamic destination preview banner (`سوره بقره • آیه ۲۵۵ • صفحه ۴۲ • جزء ۳`).
 - Primary action button: `مشاهده و شروع تلاوت` (minHeight 48px).
 
-- [ ] **Step 1: Implement `QuickJumpModal.tsx`**
-- [ ] **Step 2: Export from `mobile/src/components/navigation/index.ts`**
-- [ ] **Step 3: Write and run component contract tests in `quickJumpModal.test.mjs`**
-- [ ] **Step 4: Run typecheck & test**
+- [x] **Step 1: Implement `QuickJumpModal.tsx`**
+- [x] **Step 2: Export from `mobile/src/components/navigation/index.ts`**
+- [x] **Step 3: Write and run component contract tests in `quickJumpModal.test.mjs`**
+- [x] **Step 4: Run typecheck & test**
 
 Run: `node --test mobile/src/components/navigation/quickJumpModal.test.mjs` Run:
 `yarn --cwd mobile typecheck`
 
-- [ ] **Step 5: Commit Task 3**
+- [x] **Step 5: Commit Task 3**
 
 ```bash
 git add mobile/src/components/navigation/QuickJumpModal.tsx mobile/src/components/navigation/index.ts mobile/src/components/navigation/quickJumpModal.test.mjs
@@ -199,17 +199,17 @@ git commit -m "feat(mobile): implement main QuickJumpModal with keyboard avoidan
     - Navigates via
       `router.push('/surah/${destination.chapterId}?verse=${destination.verseNumber}')`.
 
-- [ ] **Step 1: Update `surah/[id].tsx`**
-- [ ] **Step 2: Add integration tests in `surahReaderQuickJump.test.mjs`**
-- [ ] **Step 3: Run typecheck & tests**
+- [x] **Step 1: Update `surah/[id].tsx`**
+- [x] **Step 2: Add integration tests in `surahReaderDeepLink.test.mjs`**
+- [x] **Step 3: Run typecheck & tests**
 
 Run: `yarn --cwd mobile test` Run: `yarn --cwd mobile typecheck`
 
-- [ ] **Step 4: Commit Task 4**
+- [x] **Step 4: Commit Task 4**
 
 ```bash
-git add mobile/src/app/surah/[id].tsx mobile/src/app/surah/surahReaderQuickJump.test.mjs
-git commit -m "feat(mobile): integrate QuickJumpModal into Surah reader with in-place transitions"
+git add mobile/src/app/surah/[id].tsx mobile/src/app/surah/surahReaderDeepLink.test.mjs
+git commit -m "feat(mobile): integrate quick jump modal and in-place navigation in surah reader"
 ```
 
 ---
@@ -220,6 +220,7 @@ git commit -m "feat(mobile): integrate QuickJumpModal into Surah reader with in-
 
 - Modify: `mobile/src/app/(tabs)/index.tsx`
 - Modify: `mobile/src/app/(tabs)/surahs.tsx`
+- Test: `mobile/src/components/navigation/quickJumpNavigation.test.mjs`
 
 **Features:**
 
@@ -229,23 +230,23 @@ git commit -m "feat(mobile): integrate QuickJumpModal into Surah reader with in-
 - Opens `QuickJumpModal` and navigates directly to the chosen Surah/verse upon destination
   selection.
 
-- [ ] **Step 1: Update `(tabs)/index.tsx`**
-- [ ] **Step 2: Update `(tabs)/surahs.tsx`**
-- [ ] **Step 3: Run typecheck & tests**
+- [x] **Step 1: Update `(tabs)/index.tsx`**
+- [x] **Step 2: Update `(tabs)/surahs.tsx`**
+- [x] **Step 3: Run typecheck & tests**
 
 Run: `yarn --cwd mobile test` Run: `yarn --cwd mobile typecheck`
 
-- [ ] **Step 4: Commit Task 5**
+- [x] **Step 4: Commit Task 5**
 
 ```bash
-git add mobile/src/app/(tabs)/index.tsx mobile/src/app/(tabs)/surahs.tsx
-git commit -m "feat(mobile): enable universal Quick Jump access from Home and Catalog screens"
+git add mobile/src/app/(tabs)/index.tsx mobile/src/app/(tabs)/surahs.tsx mobile/src/components/navigation/quickJumpNavigation.test.mjs
+git commit -m "feat(mobile): integrate universal quick jump triggers in home and catalog screens"
 ```
 
 ---
 
 ### Task 6: Final Verification & Standards Check
 
-- [ ] **Step 1: Run full mobile test suite (`yarn --cwd mobile test`)**
-- [ ] **Step 2: Run TypeScript typecheck (`yarn --cwd mobile typecheck`)**
-- [ ] **Step 3: Run agent check (`yarn --ignore-engines ai:check`)**
+- [x] **Step 1: Run full mobile test suite (`yarn --cwd mobile test`)**
+- [x] **Step 2: Run TypeScript typecheck (`yarn --cwd mobile typecheck`)**
+- [x] **Step 3: Run agent check (`yarn ai:check`)**
