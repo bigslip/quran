@@ -390,12 +390,16 @@ export default function SurahReaderScreen() {
   // Track user drag interaction to prevent auto-scrolling from fighting manual user reading
   const isUserInteractingRef = React.useRef(false);
   const userScrollTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const jumpHighlightTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Clean up user scroll timeout on unmount
+  // Clean up user scroll and jump highlight timeouts on unmount
   useEffect(() => {
     return () => {
       if (userScrollTimeoutRef.current) {
         clearTimeout(userScrollTimeoutRef.current);
+      }
+      if (jumpHighlightTimeoutRef.current) {
+        clearTimeout(jumpHighlightTimeoutRef.current);
       }
     };
   }, []);
@@ -608,8 +612,12 @@ export default function SurahReaderScreen() {
                 viewPosition: 0,
               });
             } catch {}
-            setTimeout(() => {
+            if (jumpHighlightTimeoutRef.current) {
+              clearTimeout(jumpHighlightTimeoutRef.current);
+            }
+            jumpHighlightTimeoutRef.current = setTimeout(() => {
               setHighlightedVerseKey(null);
+              jumpHighlightTimeoutRef.current = null;
             }, 2500);
           }
         } else {
