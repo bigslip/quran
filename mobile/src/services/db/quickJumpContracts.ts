@@ -81,3 +81,24 @@ export function formatDestinationPreview(dest: JumpDestination): string {
   const juzStr = toPersianDigits(dest.juzNumber);
   return `سوره ${surahName} • آیه ${verseStr} • صفحه ${pageStr} • جزء ${juzStr}`;
 }
+
+export type QuickJumpTabId = 'surah_ayah' | 'page' | 'juz';
+
+export interface QuickJumpTabDefinition {
+  id: QuickJumpTabId;
+  label: string;
+}
+
+export const QUICK_JUMP_TABS: QuickJumpTabDefinition[] = [
+  { id: 'surah_ayah', label: 'سوره و آیه' },
+  { id: 'page', label: 'صفحه' },
+  { id: 'juz', label: 'جزء' },
+];
+
+export const QUICK_JUMP_MODAL_CONTRACTS = {
+  minTouchTarget: 44,
+  buttonMinHeight: 48,
+  closeButtonSize: 44,
+  modalTitle: 'پرش سریع به متن قرآن',
+  actionButtonLabel: 'مشاهده و شروع تلاوت',
+} as const;
