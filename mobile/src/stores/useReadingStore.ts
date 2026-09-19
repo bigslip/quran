@@ -1,12 +1,15 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { readingStorage } from './readingStorage.ts';
+import type { AppTheme } from '../theme/colors.ts';
 
 export interface ReadingState {
   lastReadChapterId: number;
   lastReadVerseNumber: number;
   lastReadChapterNameFa: string;
   fontScale: number;
+  /** Active reading theme across the application: 'dark' | 'emerald' | 'sepia' | 'light'. */
+  theme: AppTheme;
   /** Text encoding / orthography standard: 'uthmani' (Madani Uthmani script) vs 'indopak' (Indo-Pakistani script encoding). */
   quranScript: 'uthmani' | 'indopak';
   selectedReciterId: number;
@@ -29,6 +32,7 @@ export interface ReadingState {
 
   setLastRead: (chapterId: number, verseNumber: number, chapterNameFa: string) => void;
   setFontScale: (scale: number) => void;
+  setTheme: (theme: AppTheme) => void;
   /** Updates the Quran text encoding standard ('uthmani' vs 'indopak') and synchronizes display typeface. */
   setQuranScript: (script: 'uthmani' | 'indopak') => void;
   setSelectedReciterId: (id: number) => void;
@@ -58,6 +62,7 @@ export const useReadingStore = create<ReadingState>()(
       lastReadVerseNumber: 1,
       lastReadChapterNameFa: 'فاتحه (گشایش)',
       fontScale: 1.0,
+      theme: 'emerald',
       quranScript: 'uthmani',
       selectedReciterId: 201, // Shahriar Parhizgar default
       showWordByWord: true,
@@ -84,6 +89,7 @@ export const useReadingStore = create<ReadingState>()(
         }),
 
       setFontScale: (scale) => set({ fontScale: Math.max(0.8, Math.min(1.6, scale)) }),
+      setTheme: (theme) => set({ theme }),
 
       setQuranScript: (script) =>
         set({
@@ -139,6 +145,7 @@ export const useReadingStore = create<ReadingState>()(
         lastReadVerseNumber: state.lastReadVerseNumber,
         lastReadChapterNameFa: state.lastReadChapterNameFa,
         fontScale: state.fontScale,
+        theme: state.theme,
         quranScript: state.quranScript,
         selectedReciterId: state.selectedReciterId,
         showWordByWord: state.showWordByWord,
