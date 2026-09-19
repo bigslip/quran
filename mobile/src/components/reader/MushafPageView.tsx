@@ -422,7 +422,6 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
                                   styles.activeVerseHighlight,
                                   {
                                     backgroundColor: colors.primarySubtle,
-                                    color: colors.goldAccent,
                                   },
                                 ]
                               : undefined
@@ -608,8 +607,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xs,
   },
   activeVerseHighlight: {
-    backgroundColor: 'rgba(16, 185, 129, 0.18)',
-    color: colors.goldAccent,
+    backgroundColor: colors.primarySubtle,
+    borderRadius: borderRadius.sm,
   },
   ayahEndMarker: {
     fontFamily: fonts.quranHafs,

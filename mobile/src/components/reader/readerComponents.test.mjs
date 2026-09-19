@@ -773,6 +773,11 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(source.includes('ayahEndMarker'));
       assert.ok(source.includes('formatAyahEndMarker'));
       assert.ok(source.includes('activeVerseHighlight'));
+      const activeVerseStyleMatch = source.match(/activeVerseHighlight:\s*\{([^}]+)\}/);
+      assert.ok(
+        activeVerseStyleMatch && !activeVerseStyleMatch[1].includes('goldAccent'),
+        'MushafPageView activeVerseHighlight must NOT set Arabic text color to goldAccent',
+      );
 
       // 4. In-page Surah Title Cartouche and Bismillah Calligraphy
       assert.ok(source.includes('surahCartoucheContainer'));
@@ -931,6 +936,41 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
       assert.ok(
         source.includes('calculateMushafPageFontSize'),
         'Must use calculateMushafPageFontSize for scaling',
+      );
+    });
+
+    it('verifies MushafPageView active verse highlight preserves high-contrast textPrimary ink without setting Arabic scripture text color to goldAccent', () => {
+      const source = fs.readFileSync(path.resolve(__dirname, './MushafPageView.tsx'), 'utf8');
+
+      // 1. styles.activeVerseHighlight must NOT set color to goldAccent
+      const activeVerseStyleMatch = source.match(/activeVerseHighlight:\s*\{([^}]+)\}/);
+      assert.ok(activeVerseStyleMatch, 'Must define activeVerseHighlight in styles');
+      assert.strictEqual(
+        activeVerseStyleMatch[1].includes('goldAccent'),
+        false,
+        'styles.activeVerseHighlight must NOT set color to goldAccent',
+      );
+      assert.strictEqual(
+        /\bcolor\s*:/.test(activeVerseStyleMatch[1]),
+        false,
+        'styles.activeVerseHighlight must NOT specify text color (retains continuous textPrimary ink)',
+      );
+
+      // 2. Active verse highlight inline style must NOT set color to goldAccent
+      // (Scripture text must remain in crisp high-contrast ink: colors.textPrimary)
+      const activeVerseInlineMatch = source.match(
+        /isVerseActive\s*\?\s*\[\s*styles\.activeVerseHighlight,\s*\{([^}]+)\},?\s*\]/,
+      );
+      assert.ok(activeVerseInlineMatch, 'Must find active verse inline style array');
+      assert.strictEqual(
+        activeVerseInlineMatch[1].includes('goldAccent'),
+        false,
+        'Active verse inline style must NOT set color to goldAccent',
+      );
+      assert.strictEqual(
+        /\bcolor\s*:/.test(activeVerseInlineMatch[1]),
+        false,
+        'Active verse inline style must NOT override text color (retains textPrimary ink)',
       );
     });
   });
