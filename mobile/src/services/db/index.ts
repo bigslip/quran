@@ -6,3 +6,5 @@ export * from './ayahInsightsService';
 export * from './translationService';
 export * from './userDatabase';
 export * from './bookmarkService';
+export * from './quickJumpContracts';
+export * from './quickJumpService';
