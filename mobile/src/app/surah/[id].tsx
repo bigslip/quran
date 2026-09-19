@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { ArrowRight, BookOpen, AlignLeft, SlidersHorizontal } from 'lucide-react-native';
+import { ArrowRight, BookOpen, AlignLeft, SlidersHorizontal, Compass } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import {
@@ -23,13 +23,11 @@ import {
   parseVerseParam,
 } from '@/components/reader';
 import { AyahInsightsDrawer } from '../../components/insights';
+import { QuickJumpModal, QuickJumpTabId } from '@/components/navigation';
 import { Chapter, Verse, Word } from '@/types/quran';
+import { JumpDestination } from '@/services/db/quickJumpContracts';
 import { getSurahById } from '@/services/db/surahService';
-import {
-  getVersesByChapter,
-  getVersesByPage,
-  getPageWords,
-} from '@/services/db/verseService';
+import { getVersesByChapter, getVersesByPage, getPageWords } from '@/services/db/verseService';
 import { useReadingStore } from '@/stores/useReadingStore';
 import { useBookmarkStore } from '@/stores/useBookmarkStore';
 import { audioPlayerService } from '@/services/audio/audioPlayerService';
@@ -52,7 +50,10 @@ export default function SurahReaderScreen() {
   const [highlightedVerseKey, setHighlightedVerseKey] = useState<string | null>(null);
   const [selectedInsightVerse, setSelectedInsightVerse] = useState<Verse | null>(null);
   const [isInsightsOpen, setIsInsightsOpen] = useState(false);
+  const [isQuickJumpOpen, setIsQuickJumpOpen] = useState<boolean>(false);
+  const [quickJumpInitialTab, setQuickJumpInitialTab] = useState<QuickJumpTabId>('surah_ayah');
   const flatListRef = React.useRef<FlatList<Verse>>(null);
+  const handledVerseRef = React.useRef<string | null>(null);
 
   // Bookmark store
   const { bookmarkedKeys, toggleBookmark, loadBookmarks } = useBookmarkStore();
@@ -102,6 +103,7 @@ export default function SurahReaderScreen() {
       setLoading(true);
       verseLayoutsRef.current.clear();
       lastScrolledVerseKeyRef.current = null;
+      handledVerseRef.current = null;
       try {
         const ch = await getSurahById(chapterId);
         const vs = await getVersesByChapter(chapterId, { includeWords: true });
@@ -144,6 +146,10 @@ export default function SurahReaderScreen() {
       const targetVerseNum = parseVerseParam(verse);
       if (targetVerseNum && targetVerseNum > 0) {
         const targetKey = `${chapterId}:${targetVerseNum}`;
+        if (handledVerseRef.current === targetKey) {
+          return;
+        }
+        handledVerseRef.current = targetKey;
         const targetIndex = verses.findIndex((v) => v.verse_number === targetVerseNum);
 
         if (targetIndex >= 0) {
@@ -228,7 +234,9 @@ export default function SurahReaderScreen() {
   const isPlayingRef = React.useRef(isPlaying);
   isPlayingRef.current = isPlaying;
 
-  const verseLayoutsRef = React.useRef<Map<string, { y: number; height: number; index: number }>>(new Map());
+  const verseLayoutsRef = React.useRef<Map<string, { y: number; height: number; index: number }>>(
+    new Map(),
+  );
   const lastScrolledVerseKeyRef = React.useRef<string | null>(null);
 
   // Unload audio on unmount
@@ -286,7 +294,7 @@ export default function SurahReaderScreen() {
         </View>
       );
     },
-    []
+    [],
   );
 
   // Auto-scroll to currently reciting verse in continuous reading mode with exact measured offset
@@ -346,7 +354,11 @@ export default function SurahReaderScreen() {
                 setCurrentPage(nextVerse.page_number);
               }
               if (chapterRef.current) {
-                setLastRead(nextVerse.chapter_id, nextVerse.verse_number, chapterRef.current.name_fa);
+                setLastRead(
+                  nextVerse.chapter_id,
+                  nextVerse.verse_number,
+                  chapterRef.current.name_fa,
+                );
               }
               playAyahAudio(nextVerse.verse_key);
             } else {
@@ -358,10 +370,10 @@ export default function SurahReaderScreen() {
         (error) => {
           console.error('[SurahReader] Audio playback error:', error);
           setIsPlaying(false);
-        }
+        },
       );
     },
-    [selectedReciterId, setActiveVerseKey, setIsPlaying, setLastRead]
+    [selectedReciterId, setActiveVerseKey, setIsPlaying, setLastRead],
   );
 
   // Synchronize audio stream when reciter changes during active playback
@@ -419,7 +431,7 @@ export default function SurahReaderScreen() {
         await playAyahAudio(verse.verse_key);
       }
     },
-    [setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]
+    [setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio],
   );
 
   const handlePlayPause = useCallback(async () => {
@@ -444,7 +456,16 @@ export default function SurahReaderScreen() {
         await playAyahAudio(firstVerse.verse_key);
       }
     }
-  }, [isPlaying, activeVerseKey, verses, chapter, setIsPlaying, setActiveVerseKey, setLastRead, playAyahAudio]);
+  }, [
+    isPlaying,
+    activeVerseKey,
+    verses,
+    chapter,
+    setIsPlaying,
+    setActiveVerseKey,
+    setLastRead,
+    playAyahAudio,
+  ]);
 
   const handleNextAyah = useCallback(async () => {
     if (isRepeating && activeVerseKey) {
@@ -466,7 +487,16 @@ export default function SurahReaderScreen() {
       }
       await playAyahAudio(nextVerse.verse_key);
     }
-  }, [isRepeating, activeVerseKey, verses, chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]);
+  }, [
+    isRepeating,
+    activeVerseKey,
+    verses,
+    chapter,
+    setActiveVerseKey,
+    setIsPlaying,
+    setLastRead,
+    playAyahAudio,
+  ]);
 
   const handlePrevAyah = useCallback(async () => {
     if (!activeVerseKey || verses.length === 0) return;
@@ -484,7 +514,15 @@ export default function SurahReaderScreen() {
       }
       await playAyahAudio(prevVerse.verse_key);
     }
-  }, [activeVerseKey, verses, chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]);
+  }, [
+    activeVerseKey,
+    verses,
+    chapter,
+    setActiveVerseKey,
+    setIsPlaying,
+    setLastRead,
+    playAyahAudio,
+  ]);
 
   const handleToggleRepeat = useCallback(() => {
     setIsRepeating((prev) => !prev);
@@ -506,11 +544,13 @@ export default function SurahReaderScreen() {
         verse_number: verseItem.verse_number,
       });
     },
-    [toggleBookmark, chapterId]
+    [toggleBookmark, chapterId],
   );
 
   const handleShareVerse = useCallback((verse: Verse) => {
-    const textToShare = `${verse.text_uthmani}\n\n${verse.translation_fa_makarem || ''}\n(سوره ${verse.chapter_id}، آیه ${verse.verse_number})`;
+    const textToShare = `${verse.text_uthmani}\n\n${verse.translation_fa_makarem || ''}\n(سوره ${
+      verse.chapter_id
+    }، آیه ${verse.verse_number})`;
     Share.share({ message: textToShare }).catch(() => {});
   }, []);
 
@@ -547,7 +587,46 @@ export default function SurahReaderScreen() {
       }
       await playAyahAudio(verseKey);
     },
-    [chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio]
+    [chapter, setActiveVerseKey, setIsPlaying, setLastRead, playAyahAudio],
+  );
+
+  const handleJumpToDestination = useCallback(
+    (destination: JumpDestination) => {
+      setIsQuickJumpOpen(false);
+      if (destination.chapterId === chapterId) {
+        // Same Surah: in-place jump
+        router.setParams({ verse: String(destination.verseNumber) });
+        handledVerseRef.current = destination.verseKey;
+        if (viewMode === 'continuous') {
+          const targetIndex = verses.findIndex((v) => v.verse_number === destination.verseNumber);
+          if (targetIndex >= 0) {
+            setHighlightedVerseKey(destination.verseKey);
+            try {
+              flatListRef.current?.scrollToIndex({
+                index: targetIndex,
+                animated: true,
+                viewPosition: 0,
+              });
+            } catch {}
+            setTimeout(() => {
+              setHighlightedVerseKey(null);
+            }, 2500);
+          }
+        } else {
+          setCurrentPage(destination.pageNumber);
+          setActiveVerseKey(destination.verseKey);
+        }
+        if (chapter) {
+          setLastRead(chapter.id, destination.verseNumber, chapter.name_fa);
+        }
+      } else {
+        // Different Surah: route transition
+        router.push(
+          `/surah/${destination.chapterId}?verse=${destination.verseNumber}&page=${destination.pageNumber}` as any,
+        );
+      }
+    },
+    [chapterId, chapter, verses, viewMode, router, setLastRead, setActiveVerseKey],
   );
 
   if (loading) {
@@ -577,18 +656,46 @@ export default function SurahReaderScreen() {
           <ArrowRight size={22} color={colors.textPrimary} />
         </TouchableOpacity>
 
-        {/* Title Block: Persian Title & Arabic Calligraphy Subtitle */}
-        <View style={styles.topBarTitleBlock}>
+        {/* Title Block: Persian Title & Arabic Calligraphy Subtitle (Touchable for Quick Jump) */}
+        <TouchableOpacity
+          style={styles.topBarTitleBlock}
+          onPress={() => {
+            setQuickJumpInitialTab('surah_ayah');
+            setIsQuickJumpOpen(true);
+          }}
+          activeOpacity={0.7}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={`سوره ${
+            chapter?.name_fa || ''
+          }، برای پرش سریع به سوره یا آیه دیگر لمس کنید`}
+        >
           <Text style={styles.topBarSurahFa} numberOfLines={1}>
             {chapter?.name_fa}
           </Text>
           <Text style={styles.topBarSurahArabic} numberOfLines={1}>
             {chapter?.name_arabic}
           </Text>
-        </View>
+        </TouchableOpacity>
 
-        {/* Action Controls Toolbar: View Mode Toggle & Reader Settings */}
+        {/* Action Controls Toolbar: Quick Jump, View Mode Toggle & Reader Settings */}
         <View style={styles.topBarActions}>
+          {/* Quick Jump Compass Button (>= 44x44px touch target) */}
+          <TouchableOpacity
+            onPress={() => {
+              setQuickJumpInitialTab('surah_ayah');
+              setIsQuickJumpOpen(true);
+            }}
+            style={styles.navButton}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="پرش سریع به سوره، آیه یا صفحه"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            testID="reader-quick-jump-button"
+          >
+            <Compass size={20} color={colors.textSecondary} />
+          </TouchableOpacity>
+
           {/* Dual-Mode Toggle Button (>= 44x44px touch target) */}
           <TouchableOpacity
             onPress={handleToggleViewMode}
@@ -632,10 +739,7 @@ export default function SurahReaderScreen() {
           CellRendererComponent={CellRenderer}
           onScrollToIndexFailed={(info) => {
             if (flatListRef.current && info.index >= 0 && info.index < verses.length) {
-              const estimatedOffset = Math.max(
-                0,
-                (info.averageItemLength || 120) * info.index
-              );
+              const estimatedOffset = Math.max(0, (info.averageItemLength || 120) * info.index);
               flatListRef.current.scrollToOffset({
                 offset: estimatedOffset,
                 animated: true,
@@ -778,9 +882,23 @@ export default function SurahReaderScreen() {
         onPlayVerse={handlePlayVerse}
         onBookmarkVerse={handleBookmarkVerse}
         onToggleBookmark={handleBookmarkVerse}
-        isBookmarked={selectedInsightVerse ? bookmarkedKeys.has(selectedInsightVerse.verse_key) : false}
+        isBookmarked={
+          selectedInsightVerse ? bookmarkedKeys.has(selectedInsightVerse.verse_key) : false
+        }
         quranFont={quranFont}
         testID="ayah-insights-drawer"
+      />
+
+      {/* Universal Go To Quick Jump Modal */}
+      <QuickJumpModal
+        visible={isQuickJumpOpen}
+        onClose={() => setIsQuickJumpOpen(false)}
+        onJump={handleJumpToDestination}
+        initialChapterId={chapterId}
+        initialVerseNumber={parseVerseParam(verse) || 1}
+        initialPageNumber={currentPage}
+        initialTab={quickJumpInitialTab}
+        testID="reader-quick-jump-modal"
       />
     </View>
   );
