@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,16 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, rtlTextAlign } from '@/theme';
+import {
+  useThemeColors,
+  ColorTheme,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  rtlRow,
+  rtlTextAlign,
+} from '@/theme';
 import { JuzCardInfo, toPersianDigits, cleanSurahNameFa } from '@/services/db/quickJumpContracts';
 import { getAllJuzCards } from '@/services/db/quickJumpService';
 
@@ -40,6 +49,9 @@ export const JuzJumpTab: React.FC<JuzJumpTabProps> = ({
   testID,
   style,
 }) => {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const [cards, setCards] = useState<JuzCardInfo[]>(
     juzCards && juzCards.length > 0 ? juzCards : FALLBACK_JUZ_CARDS,
   );
@@ -145,112 +157,113 @@ export const JuzJumpTab: React.FC<JuzJumpTabProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-  },
-  gridList: {
-    flex: 1,
-  },
-  gridContent: {
-    paddingBottom: spacing.md,
-  },
-  columnWrapper: {
-    justifyContent: 'space-between',
-    gap: spacing.sm,
-    marginBottom: spacing.sm,
-  },
-  juzCard: {
-    flex: 1,
-    minHeight: 110,
-    backgroundColor: '#07241c',
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    padding: spacing.md,
-    justifyContent: 'space-between',
-  },
-  juzCardSelected: {
-    borderColor: colors.primary,
-    borderWidth: 1.5,
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-  },
-  cardHeaderRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: spacing.xs,
-  },
-  juzBadge: {
-    backgroundColor: colors.surfaceFloating,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  juzBadgeSelected: {
-    borderColor: colors.goldAccent,
-    backgroundColor: colors.goldGlow,
-  },
-  juzBadgeText: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.xs,
-    fontWeight: '700',
-    color: colors.goldAccent,
-  },
-  juzBadgeTextSelected: {
-    color: colors.goldAccent,
-  },
-  verseCountPill: {
-    backgroundColor: colors.primarySubtle,
-    borderRadius: borderRadius.pill,
-    paddingHorizontal: 6,
-    paddingVertical: 1,
-  },
-  verseCountPillText: {
-    fontFamily: fonts.primary,
-    fontSize: 10,
-    color: colors.textSecondary,
-    fontWeight: '600',
-  },
-  cardCenter: {
-    marginVertical: spacing.xs,
-    alignItems: 'center',
-  },
-  arabicName: {
-    fontFamily: fonts.uthmanicHafs,
-    fontSize: 18,
-    color: colors.primaryLight,
-    textAlign: 'center',
-    marginBottom: 2,
-  },
-  arabicNameSelected: {
-    color: colors.goldAccent,
-  },
-  persianName: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.xs,
-    fontWeight: '600',
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-  persianNameSelected: {
-    color: colors.primaryLight,
-  },
-  cardFooter: {
-    borderTopWidth: 1,
-    borderTopColor: colors.borderSeparator,
-    paddingTop: spacing.xs,
-    alignItems: 'center',
-  },
-  pageBadgeText: {
-    fontFamily: fonts.primary,
-    fontSize: 10,
-    color: colors.textFaded,
-    textAlign: 'center',
-  },
-});
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      width: '100%',
+    },
+    gridList: {
+      flex: 1,
+    },
+    gridContent: {
+      paddingBottom: spacing.md,
+    },
+    columnWrapper: {
+      justifyContent: 'space-between',
+      gap: spacing.sm,
+      marginBottom: spacing.sm,
+    },
+    juzCard: {
+      flex: 1,
+      minHeight: 110,
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      padding: spacing.md,
+      justifyContent: 'space-between',
+    },
+    juzCardSelected: {
+      borderColor: colors.primary,
+      borderWidth: 1.5,
+      backgroundColor: colors.primarySubtle,
+    },
+    cardHeaderRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: spacing.xs,
+    },
+    juzBadge: {
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: colors.borderIridescent,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 2,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    juzBadgeSelected: {
+      borderColor: colors.goldAccent,
+      backgroundColor: colors.goldGlow,
+    },
+    juzBadgeText: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.xs,
+      fontWeight: '700',
+      color: colors.goldAccent,
+    },
+    juzBadgeTextSelected: {
+      color: colors.goldAccent,
+    },
+    verseCountPill: {
+      backgroundColor: colors.primarySubtle,
+      borderRadius: borderRadius.pill,
+      paddingHorizontal: 6,
+      paddingVertical: 1,
+    },
+    verseCountPillText: {
+      fontFamily: fonts.primary,
+      fontSize: 10,
+      color: colors.textSecondary,
+      fontWeight: '600',
+    },
+    cardCenter: {
+      marginVertical: spacing.xs,
+      alignItems: 'center',
+    },
+    arabicName: {
+      fontFamily: fonts.uthmanicHafs,
+      fontSize: 18,
+      color: colors.primaryLight,
+      textAlign: 'center',
+      marginBottom: 2,
+    },
+    arabicNameSelected: {
+      color: colors.goldAccent,
+    },
+    persianName: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.xs,
+      fontWeight: '600',
+      color: colors.textPrimary,
+      textAlign: 'center',
+    },
+    persianNameSelected: {
+      color: colors.primaryLight,
+    },
+    cardFooter: {
+      borderTopWidth: 1,
+      borderTopColor: colors.borderSeparator,
+      paddingTop: spacing.xs,
+      alignItems: 'center',
+    },
+    pageBadgeText: {
+      fontFamily: fonts.primary,
+      fontSize: 10,
+      color: colors.textFaded,
+      textAlign: 'center',
+    },
+  });

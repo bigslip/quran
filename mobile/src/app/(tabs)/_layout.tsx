@@ -1,17 +1,19 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { BookOpen, ListFilter, Search, Bookmark, Settings } from 'lucide-react-native';
-import { colors, fonts, fontSizes } from '@/theme';
+import { useThemeColors, fonts, fontSizes } from '@/theme';
 
 export default function TabLayout() {
+  const colors = useThemeColors();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textFaded,
+        tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: {
-          backgroundColor: colors.backgroundElevated,
+          backgroundColor: colors.surfaceFloating,
           borderTopColor: colors.borderSubtle,
           borderTopWidth: 1,
           height: 64,

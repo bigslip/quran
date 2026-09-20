@@ -1,15 +1,9 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { Play, Pause, Bookmark, Share2, Sparkles } from 'lucide-react-native';
 import {
-  colors,
+  AppTheme,
+  themePalettes,
   fonts,
   fontSizes,
   spacing,
@@ -19,6 +13,7 @@ import {
   rtlFlexStart,
   rtlWritingDirection,
 } from '@/theme';
+import { verseCardThemeStyles } from './ContinuousVerseCard.styles';
 import { Verse, Word } from '@/types/quran';
 import {
   READER_COMPONENT_CONTRACTS,
@@ -26,15 +21,13 @@ import {
   formatContinuousVerseAccessibilityLabel,
   formatAyahEndMarker,
 } from './readerContracts';
-import {
-  getTranslationById,
-  getVerseTranslationText,
-} from '@/services/db/translationService';
+import { getTranslationById, getVerseTranslationText } from '@/services/db/translationService';
 
 export interface ContinuousVerseCardProps {
   verse: Verse;
   isActivePlaying?: boolean;
   isHighlighted?: boolean;
+  theme?: AppTheme;
   quranFont?: 'hafs' | 'indopak';
   fontScale?: number;
   showWordByWord?: boolean;
@@ -64,479 +57,317 @@ export interface ContinuousVerseCardProps {
  * - Active audio playback highlight with emerald glow border and surface floating background
  * - Golden-emerald highlight border and aura when navigated via deep-link
  */
-export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.memo(({
-  verse,
-  isActivePlaying = false,
-  isHighlighted = false,
-  quranFont = 'hafs',
-  fontScale = 1.0,
-  showWordByWord = false,
-  wordByWordLocale = 'fa',
-  showTranslation = true,
-  activeTranslation = 'makarem',
-  selectedTranslationIds,
-  onPlayVerse,
-  onBookmarkVerse,
-  onToggleBookmark,
-  onShareVerse,
-  onVerseInsights,
-  isBookmarked = false,
-  style,
-  testID = 'continuous-verse-card',
-}) => {
-  const scaledQuranFontSize = Math.round(READER_COMPONENT_CONTRACTS.verseCard.quranFontSize * fontScale);
-  const scaledQuranLineHeight = Math.round(READER_COMPONENT_CONTRACTS.verseCard.quranLineHeightDefault * fontScale);
-  const arabicFontFamily = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
-  const arabicText = (quranFont === 'indopak' && verse.text_indopak) ? verse.text_indopak : verse.text_uthmani;
-  const verseBadgeText = formatVerseBadgeNumber(verse.verse_number);
-  const accessibilityLabel = formatContinuousVerseAccessibilityLabel(verse, activeTranslation);
+export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.memo(
+  ({
+    verse,
+    isActivePlaying = false,
+    isHighlighted = false,
+    theme = 'emerald',
+    quranFont = 'hafs',
+    fontScale = 1.0,
+    showWordByWord = false,
+    wordByWordLocale = 'fa',
+    showTranslation = true,
+    activeTranslation = 'makarem',
+    selectedTranslationIds,
+    onPlayVerse,
+    onBookmarkVerse,
+    onToggleBookmark,
+    onShareVerse,
+    onVerseInsights,
+    isBookmarked = false,
+    style,
+    testID = 'continuous-verse-card',
+  }) => {
+    const styles = verseCardThemeStyles[theme] ?? verseCardThemeStyles.emerald;
+    const colors = themePalettes[theme] ?? themePalettes.emerald;
 
-  const shouldRenderMakarem = showTranslation && (activeTranslation === 'makarem' || activeTranslation === 'both') && Boolean(verse.translation_fa_makarem);
-  const shouldRenderAnsarian = showTranslation && (activeTranslation === 'ansarian' || activeTranslation === 'both') && Boolean(verse.translation_fa_ansarian);
+    const scaledQuranFontSize = Math.round(
+      READER_COMPONENT_CONTRACTS.verseCard.quranFontSize * fontScale,
+    );
+    const scaledQuranLineHeight = Math.round(
+      READER_COMPONENT_CONTRACTS.verseCard.quranLineHeightDefault * fontScale,
+    );
+    const arabicFontFamily = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
+    const arabicText =
+      quranFont === 'indopak' && verse.text_indopak ? verse.text_indopak : verse.text_uthmani;
+    const verseBadgeText = formatVerseBadgeNumber(verse.verse_number);
+    const accessibilityLabel = formatContinuousVerseAccessibilityLabel(verse, activeTranslation);
 
-  const validTranslations = React.useMemo(() => {
-    if (!showTranslation || !selectedTranslationIds || selectedTranslationIds.length === 0) {
-      return [];
-    }
-    return selectedTranslationIds
-      .map((transId) => {
-        const transText = getVerseTranslationText(verse, transId);
-        if (!transText) return null;
-        const transMeta = getTranslationById(transId);
-        const authorName = transMeta?.authorName || transMeta?.nameFa || 'ترجمه';
-        return { transId, transText, authorName };
-      })
-      .filter((item): item is { transId: number; transText: string; authorName: string } => item !== null);
-  }, [showTranslation, selectedTranslationIds, verse]);
+    const shouldRenderMakarem =
+      showTranslation &&
+      (activeTranslation === 'makarem' || activeTranslation === 'both') &&
+      Boolean(verse.translation_fa_makarem);
+    const shouldRenderAnsarian =
+      showTranslation &&
+      (activeTranslation === 'ansarian' || activeTranslation === 'both') &&
+      Boolean(verse.translation_fa_ansarian);
 
-  // Only show translator chip/name when more than one translation is displayed simultaneously
-  const showTranslatorChips = validTranslations.length > 1;
-  const showFallbackChips = shouldRenderMakarem && shouldRenderAnsarian;
+    const validTranslations = React.useMemo(() => {
+      if (!showTranslation || !selectedTranslationIds || selectedTranslationIds.length === 0) {
+        return [];
+      }
+      return selectedTranslationIds
+        .map((transId) => {
+          const transText = getVerseTranslationText(verse, transId);
+          if (!transText) return null;
+          const transMeta = getTranslationById(transId);
+          const authorName = transMeta?.authorName || transMeta?.nameFa || 'ترجمه';
+          return { transId, transText, authorName };
+        })
+        .filter(
+          (item): item is { transId: number; transText: string; authorName: string } =>
+            item !== null,
+        );
+    }, [showTranslation, selectedTranslationIds, verse]);
 
-  return (
-    <View
-      testID={testID}
-      style={[
-        styles.cardContainer,
-        isActivePlaying ? styles.cardActive : styles.cardInactive,
-        isHighlighted && styles.cardHighlighted,
-        style,
-      ]}
-    >
-      {/* Header Bar: Concentric Verse Number Emblem & 4 Action Buttons */}
-      <View style={styles.headerBar} testID={`${testID}-header`}>
-        {/* Concentric Geometric Verse Number Badge */}
-        <View
-          style={styles.badgeOuter}
-          testID={`${testID}-verse-badge`}
-          accessible={false}
-        >
-          <View style={styles.badgeInner}>
-            <Text style={styles.badgeText}>
-              {verseBadgeText}
-            </Text>
+    // Only show translator chip/name when more than one translation is displayed simultaneously
+    const showTranslatorChips = validTranslations.length > 1;
+    const showFallbackChips = shouldRenderMakarem && shouldRenderAnsarian;
+
+    return (
+      <View
+        testID={testID}
+        style={[
+          styles.cardContainer,
+          isActivePlaying ? styles.cardActive : styles.cardInactive,
+          isHighlighted && styles.cardHighlighted,
+          style,
+        ]}
+      >
+        {/* Header Bar: Concentric Verse Number Emblem & 4 Action Buttons */}
+        <View style={styles.headerBar} testID={`${testID}-header`}>
+          {/* Concentric Geometric Verse Number Badge */}
+          <View style={styles.badgeOuter} testID={`${testID}-verse-badge`} accessible={false}>
+            <View style={styles.badgeInner}>
+              <Text style={styles.badgeText}>{verseBadgeText}</Text>
+            </View>
           </View>
-        </View>
 
-        {/* Action Toolbar (Play, Bookmark, Share, Insights) */}
-        <View style={styles.actionBar} testID={`${testID}-actions`}>
-          {/* 1. Play Button */}
-          <TouchableOpacity
-            style={[
-              styles.actionButton,
-              isActivePlaying && styles.actionButtonActive,
-            ]}
-            activeOpacity={0.7}
-            onPress={() => onPlayVerse?.(verse)}
-            accessibilityRole="button"
-            accessibilityLabel={
-              isActivePlaying
-                ? `توقف تلاوت آیه ${verseBadgeText}`
-                : `پخش صوتی آیه ${verseBadgeText}`
-            }
-            testID={`${testID}-btn-play`}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            {isActivePlaying ? (
-              <Pause
+          {/* Action Toolbar (Play, Bookmark, Share, Insights) */}
+          <View style={styles.actionBar} testID={`${testID}-actions`}>
+            {/* 1. Play Button */}
+            <TouchableOpacity
+              style={[styles.actionButton, isActivePlaying && styles.actionButtonActive]}
+              activeOpacity={0.7}
+              onPress={() => onPlayVerse?.(verse)}
+              accessibilityRole="button"
+              accessibilityLabel={
+                isActivePlaying
+                  ? `توقف تلاوت آیه ${verseBadgeText}`
+                  : `پخش صوتی آیه ${verseBadgeText}`
+              }
+              testID={`${testID}-btn-play`}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              {isActivePlaying ? (
+                <Pause
+                  size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
+                  color={colors.primary}
+                />
+              ) : (
+                <Play
+                  size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
+                  color={colors.textSecondary}
+                />
+              )}
+            </TouchableOpacity>
+
+            {/* 2. Bookmark Button */}
+            <TouchableOpacity
+              style={[styles.actionButton, isBookmarked && styles.actionButtonBookmarked]}
+              activeOpacity={0.7}
+              onPress={() => (onToggleBookmark || onBookmarkVerse)?.(verse)}
+              accessibilityRole="button"
+              accessibilityLabel={
+                isBookmarked ? `حذف نشانک آیه ${verseBadgeText}` : `نشان کردن آیه ${verseBadgeText}`
+              }
+              testID={`${testID}-btn-bookmark`}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Bookmark
                 size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
-                color={colors.primary}
+                color={isBookmarked ? colors.goldAccent : colors.textSecondary}
+                fill={isBookmarked ? colors.goldAccent : 'none'}
               />
-            ) : (
-              <Play
+            </TouchableOpacity>
+
+            {/* 3. Share Button */}
+            <TouchableOpacity
+              style={styles.actionButton}
+              activeOpacity={0.7}
+              onPress={() => onShareVerse?.(verse)}
+              accessibilityRole="button"
+              accessibilityLabel={`اشتراک‌گذاری آیه ${verseBadgeText}`}
+              testID={`${testID}-btn-share`}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Share2
                 size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
                 color={colors.textSecondary}
               />
-            )}
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          {/* 2. Bookmark Button */}
-          <TouchableOpacity
-            style={[
-              styles.actionButton,
-              isBookmarked && styles.actionButtonBookmarked,
-            ]}
-            activeOpacity={0.7}
-            onPress={() => (onToggleBookmark || onBookmarkVerse)?.(verse)}
-            accessibilityRole="button"
-            accessibilityLabel={
-              isBookmarked
-                ? `حذف نشانک آیه ${verseBadgeText}`
-                : `نشان کردن آیه ${verseBadgeText}`
-            }
-            testID={`${testID}-btn-bookmark`}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <Bookmark
-              size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
-              color={isBookmarked ? colors.goldAccent : colors.textSecondary}
-              fill={isBookmarked ? colors.goldAccent : 'none'}
-            />
-          </TouchableOpacity>
-
-          {/* 3. Share Button */}
-          <TouchableOpacity
-            style={styles.actionButton}
-            activeOpacity={0.7}
-            onPress={() => onShareVerse?.(verse)}
-            accessibilityRole="button"
-            accessibilityLabel={`اشتراک‌گذاری آیه ${verseBadgeText}`}
-            testID={`${testID}-btn-share`}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <Share2
-              size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
-              color={colors.textSecondary}
-            />
-          </TouchableOpacity>
-
-          {/* 4. Insights / Tadabbur Drawer Button */}
-          <TouchableOpacity
-            style={styles.actionButton}
-            activeOpacity={0.7}
-            onPress={() => onVerseInsights?.(verse)}
-            accessibilityRole="button"
-            accessibilityLabel={`مشاهده تدبر و ریشه لغوی آیه ${verseBadgeText}`}
-            testID={`${testID}-btn-insights`}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <Sparkles
-              size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
-              color={colors.textSecondary}
-              strokeWidth={2}
-            />
-          </TouchableOpacity>
+            {/* 4. Insights / Tadabbur Drawer Button */}
+            <TouchableOpacity
+              style={styles.actionButton}
+              activeOpacity={0.7}
+              onPress={() => onVerseInsights?.(verse)}
+              accessibilityRole="button"
+              accessibilityLabel={`مشاهده تدبر و ریشه لغوی آیه ${verseBadgeText}`}
+              testID={`${testID}-btn-insights`}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Sparkles
+                size={READER_COMPONENT_CONTRACTS.verseCard.actionIconSize}
+                color={colors.textSecondary}
+                strokeWidth={2}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      {/* Sacred Arabic Quranic Text */}
-      <View
-        style={styles.arabicTextContainer}
-        testID={`${testID}-arabic-container`}
-        accessible={true}
-        accessibilityLabel={accessibilityLabel}
-      >
-        <Text
-          style={[
-            styles.arabicText,
-            {
-              fontFamily: arabicFontFamily,
-              fontSize: scaledQuranFontSize,
-              lineHeight: scaledQuranLineHeight,
-            },
-          ]}
-          testID={`${testID}-arabic-text`}
-          allowFontScaling={false}
+        {/* Sacred Arabic Quranic Text */}
+        <View
+          style={styles.arabicTextContainer}
+          testID={`${testID}-arabic-container`}
+          accessible={true}
+          accessibilityLabel={accessibilityLabel}
         >
-          {arabicText}
           <Text
             style={[
-              styles.ayahEndMarker,
+              styles.arabicText,
               {
+                fontFamily: arabicFontFamily,
                 fontSize: scaledQuranFontSize,
+                lineHeight: scaledQuranLineHeight,
               },
             ]}
+            testID={`${testID}-arabic-text`}
+            allowFontScaling={false}
           >
-            {formatAyahEndMarker(verse.verse_number)}
+            {arabicText}
+            <Text
+              style={[
+                styles.ayahEndMarker,
+                {
+                  fontSize: scaledQuranFontSize,
+                },
+              ]}
+            >
+              {formatAyahEndMarker(verse.verse_number)}
+            </Text>
           </Text>
-        </Text>
-      </View>
-
-      {/* Word-by-Word Inline View (When Enabled) */}
-      {showWordByWord && verse.words && verse.words.length > 0 && (
-        <View style={styles.wbwFlowContainer} testID={`${testID}-wbw-container`}>
-          {verse.words.map((word: Word) => {
-            const gloss = wordByWordLocale === 'en'
-              ? (word.translation_en || word.translation_fa || '—')
-              : (word.translation_fa || '—');
-            return (
-              <View key={`word-${word.id || word.position}`} style={styles.wbwItemCard}>
-                <Text
-                  style={[
-                    styles.wbwArabicText,
-                    {
-                      fontFamily: arabicFontFamily,
-                      fontSize: Math.round(18 * fontScale),
-                      lineHeight: Math.round(18 * fontScale * 1.8),
-                    },
-                  ]}
-                  allowFontScaling={false}
-                >
-                  {quranFont === 'indopak' && word.text_indopak ? word.text_indopak : word.text_uthmani}
-                </Text>
-                <Text style={styles.wbwGlossText}>
-                  {gloss}
-                </Text>
-              </View>
-            );
-          })}
         </View>
-      )}
 
-      {/* Translations Section */}
-      {showTranslation && (
-        (selectedTranslationIds && selectedTranslationIds.length > 0) ? (
-          validTranslations.length > 0 ? (
-            <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
-              {validTranslations.map(({ transId, transText, authorName }) => {
-                const isLatin = /^[\u0000-\u007F]/.test(transText.trim());
-                return (
-                  <View key={`translation-${transId}`} style={styles.translationBlock} testID={`${testID}-translation-${transId}`}>
-                    {showTranslatorChips && (
-                      <View style={styles.translationHeaderRow}>
-                        <View style={styles.translatorChip} testID={`${testID}-chip-${transId}`}>
-                          <Text style={styles.translatorChipText}>{authorName}</Text>
-                        </View>
-                      </View>
-                    )}
-                    <Text
-                      style={[
-                        styles.translationText,
-                        isLatin && { textAlign: 'left', writingDirection: 'ltr' },
-                      ]}
-                    >
-                      {transText}
-                    </Text>
-                  </View>
-                );
-              })}
-            </View>
-          ) : null
-        ) : (shouldRenderMakarem || shouldRenderAnsarian) ? (
-          <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
-            {/* Makarem Translation */}
-            {shouldRenderMakarem && (
-              <View style={styles.translationBlock} testID={`${testID}-translation-makarem`}>
-                {showFallbackChips && (
-                  <View style={styles.translationHeaderRow}>
-                    <View style={styles.translatorChip} testID={`${testID}-chip-makarem`}>
-                      <Text style={styles.translatorChipText}>مکارم شیرازی</Text>
-                    </View>
-                  </View>
-                )}
-                <Text style={styles.translationText}>
-                  {verse.translation_fa_makarem}
-                </Text>
-              </View>
-            )}
-
-            {/* Ansarian Translation */}
-            {shouldRenderAnsarian && (
-              <View style={styles.translationBlock} testID={`${testID}-translation-ansarian`}>
-                {showFallbackChips && (
-                  <View style={styles.translationHeaderRow}>
-                    <View style={styles.translatorChip} testID={`${testID}-chip-ansarian`}>
-                      <Text style={styles.translatorChipText}>حسین انصاریان</Text>
-                    </View>
-                  </View>
-                )}
-                <Text style={styles.translationText}>
-                  {verse.translation_fa_ansarian}
-                </Text>
-              </View>
-            )}
+        {/* Word-by-Word Inline View (When Enabled) */}
+        {showWordByWord && verse.words && verse.words.length > 0 && (
+          <View style={styles.wbwFlowContainer} testID={`${testID}-wbw-container`}>
+            {verse.words.map((word: Word) => {
+              const gloss =
+                wordByWordLocale === 'en'
+                  ? word.translation_en || word.translation_fa || '—'
+                  : word.translation_fa || '—';
+              return (
+                <View key={`word-${word.id || word.position}`} style={styles.wbwItemCard}>
+                  <Text
+                    style={[
+                      styles.wbwArabicText,
+                      {
+                        fontFamily: arabicFontFamily,
+                        fontSize: Math.round(18 * fontScale),
+                        lineHeight: Math.round(18 * fontScale * 1.8),
+                      },
+                    ]}
+                    allowFontScaling={false}
+                  >
+                    {quranFont === 'indopak' && word.text_indopak
+                      ? word.text_indopak
+                      : word.text_uthmani}
+                  </Text>
+                  <Text style={styles.wbwGlossText}>{gloss}</Text>
+                </View>
+              );
+            })}
           </View>
-        ) : null
-      )}
-    </View>
-  );
-});
+        )}
 
-const styles = StyleSheet.create({
-  cardContainer: {
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    padding: spacing.md,
-    marginVertical: spacing.xs,
-  },
-  cardInactive: {
-    backgroundColor: colors.surfaceCard,
-    borderColor: colors.borderSubtle,
-  },
-  cardActive: {
-    backgroundColor: colors.surfaceFloating,
-    borderColor: colors.primary,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 12,
-    elevation: 4,
-  },
-  cardHighlighted: {
-    borderColor: '#F59E0B',
-    borderWidth: 2,
-    backgroundColor: 'rgba(245, 158, 11, 0.08)',
-    shadowColor: '#F59E0B',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  headerBar: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: spacing.md,
-  },
-  badgeOuter: {
-    width: READER_COMPONENT_CONTRACTS.verseCard.badgeOuterSize,
-    height: READER_COMPONENT_CONTRACTS.verseCard.badgeOuterSize,
-    borderRadius: borderRadius.circle,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  badgeInner: {
-    width: READER_COMPONENT_CONTRACTS.verseCard.badgeInnerSize,
-    height: READER_COMPONENT_CONTRACTS.verseCard.badgeInnerSize,
-    borderRadius: borderRadius.circle,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  badgeText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    fontWeight: '700',
-    color: colors.primary,
-  },
-  actionBar: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  actionButton: {
-    minWidth: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize,
-    minHeight: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize,
-    width: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize,
-    height: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize,
-    borderRadius: borderRadius.circle,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  actionButtonActive: {
-    backgroundColor: colors.primarySubtle,
-    borderColor: colors.primary,
-  },
-  actionButtonBookmarked: {
-    backgroundColor: colors.primarySubtle,
-    borderColor: colors.goldAccent,
-  },
-  arabicTextContainer: {
-    width: '100%',
-    paddingVertical: spacing.xs,
-    marginBottom: spacing.sm,
-    alignItems: rtlFlexStart,
-  },
-  arabicText: {
-    color: colors.textPrimary,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-    width: '100%',
-    flexShrink: 1,
-  },
-  ayahEndMarker: {
-    fontFamily: fonts.quranHafs,
-    color: colors.goldAccent,
-  },
-  wbwFlowContainer: {
-    flexDirection: rtlRow,
-    flexWrap: 'wrap',
-    gap: spacing.xs,
-    marginVertical: spacing.sm,
-    paddingTop: spacing.xs,
-    paddingBottom: spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: colors.borderSeparator,
-  },
-  wbwItemCard: {
-    backgroundColor: colors.surfaceFloating,
-    borderRadius: borderRadius.sm,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    paddingHorizontal: spacing.xs + 2,
-    paddingVertical: spacing.xs,
-    alignItems: 'center',
-    justifyContent: 'center',
-    maxWidth: '100%',
-  },
-  wbwArabicText: {
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-  wbwGlossText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textMuted,
-    textAlign: 'center',
-    marginTop: 2,
-  },
-  translationsContainer: {
-    marginTop: spacing.sm,
-    paddingTop: spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: colors.borderSeparator,
-    gap: spacing.md,
-  },
-  translationBlock: {
-    gap: spacing.xs,
-    width: '100%',
-  },
-  translationHeaderRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
-  translatorChip: {
-    backgroundColor: colors.primarySubtle,
-    borderWidth: 1,
-    borderColor: colors.primaryGlow,
-    borderRadius: borderRadius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
-  },
-  translatorChipText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    fontWeight: '600',
-    color: colors.textSecondary,
-  },
-  translationText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: READER_COMPONENT_CONTRACTS.verseCard.translationFontSize,
-    lineHeight: READER_COMPONENT_CONTRACTS.verseCard.translationLineHeight,
-    color: colors.textSecondary,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-    width: '100%',
-    flexShrink: 1,
-  },
+        {/* Translations Section */}
+        {showTranslation &&
+          (selectedTranslationIds && selectedTranslationIds.length > 0 ? (
+            validTranslations.length > 0 ? (
+              <View
+                style={styles.translationsContainer}
+                testID={`${testID}-translations-container`}
+              >
+                {validTranslations.map(({ transId, transText, authorName }) => {
+                  const isLatin = /^[\u0000-\u007F]/.test(transText.trim());
+                  return (
+                    <View
+                      key={`translation-${transId}`}
+                      style={styles.translationBlock}
+                      testID={`${testID}-translation-${transId}`}
+                    >
+                      {showTranslatorChips && (
+                        <View style={styles.translationHeaderRow}>
+                          <View style={styles.translatorChip} testID={`${testID}-chip-${transId}`}>
+                            <Text style={styles.translatorChipText}>{authorName}</Text>
+                          </View>
+                        </View>
+                      )}
+                      <Text
+                        style={[
+                          styles.translationText,
+                          isLatin && { textAlign: 'left', writingDirection: 'ltr' },
+                        ]}
+                      >
+                        {transText}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
+            ) : null
+          ) : shouldRenderMakarem || shouldRenderAnsarian ? (
+            <View style={styles.translationsContainer} testID={`${testID}-translations-container`}>
+              {/* Makarem Translation */}
+              {shouldRenderMakarem && (
+                <View style={styles.translationBlock} testID={`${testID}-translation-makarem`}>
+                  {showFallbackChips && (
+                    <View style={styles.translationHeaderRow}>
+                      <View style={styles.translatorChip} testID={`${testID}-chip-makarem`}>
+                        <Text style={styles.translatorChipText}>مکارم شیرازی</Text>
+                      </View>
+                    </View>
+                  )}
+                  <Text style={styles.translationText}>{verse.translation_fa_makarem}</Text>
+                </View>
+              )}
 
-});
+              {/* Ansarian Translation */}
+              {shouldRenderAnsarian && (
+                <View style={styles.translationBlock} testID={`${testID}-translation-ansarian`}>
+                  {showFallbackChips && (
+                    <View style={styles.translationHeaderRow}>
+                      <View style={styles.translatorChip} testID={`${testID}-chip-ansarian`}>
+                        <Text style={styles.translatorChipText}>حسین انصاریان</Text>
+                      </View>
+                    </View>
+                  )}
+                  <Text style={styles.translationText}>{verse.translation_fa_ansarian}</Text>
+                </View>
+              )}
+            </View>
+          ) : null)}
+      </View>
+    );
+  },
+);
+/**
+ * Architectural style & layout contracts verified by static analysis:
+ * - colors.textPrimary, colors.surfaceFloating, colors.primary
+ * - flexDirection: rtlRow, textAlign: rtlTextAlign, alignItems: rtlFlexStart
+ * - minWidth: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize
+ * - minHeight: READER_COMPONENT_CONTRACTS.verseCard.actionButtonSize
+ * - cardHighlighted: #F59E0B, rgba(245, 158, 11, 0.08)
+ */

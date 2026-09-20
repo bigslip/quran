@@ -1,7 +1,16 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Info } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  themePalettes,
+  AppTheme,
+} from '@/theme';
 import { Chapter } from '@/types/quran';
 import { toPersianDigits } from '@/components/catalog';
 import {
@@ -17,6 +26,7 @@ import {
 
 export interface SurahHeaderBannerProps {
   chapter: Chapter;
+  theme?: AppTheme;
   onPressInfo?: (chapter: Chapter) => void;
   style?: StyleProp<ViewStyle>;
   testID?: string;
@@ -38,10 +48,13 @@ export interface SurahHeaderBannerProps {
  */
 export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
   chapter,
+  theme,
   onPressInfo,
   style,
   testID = 'surah-header-banner',
 }) => {
+  const activeColors = useThemeColors();
+  const colors = theme ? themePalettes[theme] ?? activeColors : activeColors;
   const isMakki = chapter.revelation_place === 'makkah';
   const revelationPlaceText = formatRevelationPlace(chapter.revelation_place);
   const revelationOrderText = formatRevelationOrderBadge(chapter.revelation_order);
@@ -55,19 +68,45 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
   };
 
   return (
-    <View testID={testID} style={[styles.outerCard, style]}>
+    <View
+      testID={testID}
+      style={[
+        styles.outerCard,
+        {
+          backgroundColor: colors.surfaceCard,
+          borderColor: colors.borderSubtle,
+        },
+        style,
+      ]}
+    >
       {/* Inner Sanctuary Geometric Frame */}
-      <View style={styles.innerFrame}>
+      <View
+        style={[
+          styles.innerFrame,
+          {
+            backgroundColor: colors.surfaceFloating,
+            borderColor: colors.borderSubtle,
+          },
+        ]}
+      >
         {/* Top Control Bar: Geometric Surah Number Emblem (Right in RTL) & Info Action (Left in RTL) */}
         <View style={styles.topControlBar}>
           {/* Surah Number Emblem Medallion (Right in RTL) */}
           <View
-            style={styles.cornerNumberEmblem}
+            style={[
+              styles.cornerNumberEmblem,
+              {
+                backgroundColor: colors.surfaceCard,
+                borderColor: colors.borderIridescent,
+              },
+            ]}
             testID={`${testID}-number-emblem`}
             accessible={false}
           >
-            <View style={styles.cornerNumberEmblemInner}>
-              <Text style={styles.cornerNumberText}>{toPersianDigits(chapter.id)}</Text>
+            <View style={[styles.cornerNumberEmblemInner, { borderColor: colors.borderSubtle }]}>
+              <Text style={[styles.cornerNumberText, { color: colors.primaryLight }]}>
+                {toPersianDigits(chapter.id)}
+              </Text>
             </View>
           </View>
 
@@ -76,7 +115,13 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
             testID={`${testID}-info-button`}
             activeOpacity={0.7}
             onPress={handleInfoPress}
-            style={styles.infoButton}
+            style={[
+              styles.infoButton,
+              {
+                backgroundColor: colors.surfaceCard,
+                borderColor: colors.borderSubtle,
+              },
+            ]}
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel={accessibilityInfoLabel}
@@ -100,7 +145,7 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
         >
           {/* Sacred Arabic Calligraphic Title */}
           <Text
-            style={styles.arabicTitle}
+            style={[styles.arabicTitle, { color: colors.goldAccent }]}
             testID={`${testID}-arabic-title`}
             allowFontScaling={false}
           >
@@ -108,7 +153,10 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
           </Text>
 
           {/* Persian Surah Title */}
-          <Text style={styles.persianTitle} testID={`${testID}-persian-title`}>
+          <Text
+            style={[styles.persianTitle, { color: colors.textPrimary }]}
+            testID={`${testID}-persian-title`}
+          >
             {formatSurahTitleFa(chapter.name_fa)}
           </Text>
         </View>
@@ -116,19 +164,43 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
         {/* Badges Row: Surah Number, Revelation Place, Revelation Order, Verse Count */}
         <View style={styles.badgesRow} testID={`${testID}-badges-row`} accessible={false}>
           {/* 1. Surah Number Badge */}
-          <View style={styles.badgeChip} testID={`${testID}-badge-number`}>
-            <Text style={styles.badgeChipText}>{surahNumberBadgeText}</Text>
+          <View
+            style={[
+              styles.badgeChip,
+              {
+                backgroundColor: colors.primarySubtle,
+                borderColor: colors.primaryGlow,
+              },
+            ]}
+            testID={`${testID}-badge-number`}
+          >
+            <Text style={[styles.badgeChipText, { color: colors.textSecondary }]}>
+              {surahNumberBadgeText}
+            </Text>
           </View>
 
           {/* 2. Revelation Place Chip (Makki / Madani) */}
           <View
-            style={[styles.badgeChip, isMakki ? styles.badgeMakkiChip : styles.badgeMadaniChip]}
+            style={[
+              styles.badgeChip,
+              isMakki
+                ? [
+                    styles.badgeMakkiChip,
+                    { backgroundColor: colors.badgeMakki, borderColor: colors.goldGlow },
+                  ]
+                : [
+                    styles.badgeMadaniChip,
+                    { backgroundColor: colors.badgeMadani, borderColor: colors.primaryGlow },
+                  ],
+            ]}
             testID={`${testID}-badge-revelation-place`}
           >
             <Text
               style={[
                 styles.badgeChipText,
-                isMakki ? styles.badgeMakkiText : styles.badgeMadaniText,
+                isMakki
+                  ? [styles.badgeMakkiText, { color: colors.badgeMakkiText }]
+                  : [styles.badgeMadaniText, { color: colors.badgeMadaniText }],
               ]}
             >
               {revelationPlaceText}
@@ -136,13 +208,35 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
           </View>
 
           {/* 3. Revelation Order Chip */}
-          <View style={styles.badgeChip} testID={`${testID}-badge-revelation-order`}>
-            <Text style={styles.badgeChipText}>{revelationOrderText}</Text>
+          <View
+            style={[
+              styles.badgeChip,
+              {
+                backgroundColor: colors.primarySubtle,
+                borderColor: colors.primaryGlow,
+              },
+            ]}
+            testID={`${testID}-badge-revelation-order`}
+          >
+            <Text style={[styles.badgeChipText, { color: colors.textSecondary }]}>
+              {revelationOrderText}
+            </Text>
           </View>
 
           {/* 4. Verse Count Badge */}
-          <View style={styles.badgeChip} testID={`${testID}-badge-verses-count`}>
-            <Text style={styles.badgeChipText}>{verseCountText}</Text>
+          <View
+            style={[
+              styles.badgeChip,
+              {
+                backgroundColor: colors.primarySubtle,
+                borderColor: colors.primaryGlow,
+              },
+            ]}
+            testID={`${testID}-badge-verses-count`}
+          >
+            <Text style={[styles.badgeChipText, { color: colors.textSecondary }]}>
+              {verseCountText}
+            </Text>
           </View>
         </View>
       </View>

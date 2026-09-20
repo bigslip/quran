@@ -19,12 +19,11 @@ import {
   rtlRow,
   rtlTextAlign,
   rtlWritingDirection,
+  useThemeColors,
+  themePalettes,
+  AppTheme,
 } from '@/theme';
-import {
-  READER_COMPONENT_CONTRACTS,
-  SettingsTabId,
-  SETTINGS_TABS,
-} from './readerContracts';
+import { READER_COMPONENT_CONTRACTS, SettingsTabId, SETTINGS_TABS } from './readerContracts';
 import {
   DisplayFontSection,
   ReciterSelectionSection,
@@ -38,6 +37,7 @@ export interface ReaderSettingsModalProps {
   visible: boolean;
   onClose: () => void;
   initialTab?: SettingsTabId;
+  theme?: AppTheme;
   testID?: string;
   // Backward compatibility props for reader view & typography
   fontScale?: number;
@@ -76,184 +76,226 @@ export interface ReaderSettingsModalProps {
  *
  * Guarantees WCAG touch targets >= 44x44px, accessibilityRole="tab", and Persian accessibility labels.
  */
-export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.memo(({
-  visible,
-  onClose,
-  initialTab = 'display',
-  testID = 'reader-settings-modal',
-  fontScale,
-  onChangeFontScale,
-  viewMode,
-  onChangeViewMode,
-  quranFont,
-  onChangeQuranFont,
-  activeTranslation,
-  onChangeActiveTranslation,
-  showWordByWord,
-  onToggleWordByWord,
-  showTranslation,
-  onToggleShowTranslation,
-  selectedReciterId,
-  onSelectReciter,
-  selectedTranslationIds,
-  onToggleTranslation,
-  wordByWordLocale,
-  onChangeWordByWordLocale,
-  wordByWordDisplay,
-  onChangeWordByWordDisplay,
-  wordByWordContentType,
-  onChangeWordByWordContentType,
-}) => {
-  const [activeTab, setActiveTab] = useState<SettingsTabId>(initialTab);
+export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.memo(
+  ({
+    visible,
+    onClose,
+    initialTab = 'display',
+    testID = 'reader-settings-modal',
+    fontScale,
+    onChangeFontScale,
+    viewMode,
+    onChangeViewMode,
+    quranFont,
+    onChangeQuranFont,
+    activeTranslation,
+    onChangeActiveTranslation,
+    showWordByWord,
+    onToggleWordByWord,
+    showTranslation,
+    onToggleShowTranslation,
+    selectedReciterId,
+    onSelectReciter,
+    selectedTranslationIds,
+    onToggleTranslation,
+    wordByWordLocale,
+    onChangeWordByWordLocale,
+    wordByWordDisplay,
+    onChangeWordByWordDisplay,
+    wordByWordContentType,
+    onChangeWordByWordContentType,
+    theme,
+  }) => {
+    const activeColors = useThemeColors();
+    const colors = theme ? themePalettes[theme] ?? activeColors : activeColors;
+    const [activeTab, setActiveTab] = useState<SettingsTabId>(initialTab);
 
-  // Synchronize active tab when initialTab changes or modal becomes visible
-  useEffect(() => {
-    if (visible && initialTab) {
-      setActiveTab(initialTab);
-    }
-  }, [visible, initialTab]);
+    // Synchronize active tab when initialTab changes or modal becomes visible
+    useEffect(() => {
+      if (visible && initialTab) {
+        setActiveTab(initialTab);
+      }
+    }, [visible, initialTab]);
 
-  const renderActiveSection = () => {
-    switch (activeTab) {
-      case 'display':
-        return (
-          <DisplayFontSection
-            viewMode={viewMode}
-            onChangeViewMode={onChangeViewMode}
-            quranFont={quranFont}
-            onChangeQuranFont={onChangeQuranFont}
-            fontScale={fontScale}
-            onChangeFontScale={onChangeFontScale}
-            testID={`${testID}-display-section`}
-          />
-        );
-      case 'reciter':
-        return (
-          <ReciterSelectionSection
-            selectedReciterId={selectedReciterId}
-            onSelectReciter={onSelectReciter}
-            testID={`${testID}-reciter-section`}
-          />
-        );
-      case 'translations':
-        return (
-          <TranslationSelectionSection
-            selectedTranslationIds={selectedTranslationIds}
-            onToggleTranslation={onToggleTranslation}
-            testID={`${testID}-translation-section`}
-          />
-        );
-      case 'wbw':
-        return (
-          <WordByWordSection
-            showWordByWord={showWordByWord}
-            onToggleWordByWord={onToggleWordByWord}
-            wordByWordLocale={wordByWordLocale}
-            onChangeWordByWordLocale={onChangeWordByWordLocale}
-            wordByWordDisplay={wordByWordDisplay}
-            onChangeWordByWordDisplay={onChangeWordByWordDisplay}
-            wordByWordContentType={wordByWordContentType}
-            onChangeWordByWordContentType={onChangeWordByWordContentType}
-            testID={`${testID}-wbw-section`}
-          />
-        );
-      default:
-        return null;
-    }
-  };
+    const renderActiveSection = () => {
+      switch (activeTab) {
+        case 'display':
+          return (
+            <DisplayFontSection
+              viewMode={viewMode}
+              onChangeViewMode={onChangeViewMode}
+              quranFont={quranFont}
+              onChangeQuranFont={onChangeQuranFont}
+              fontScale={fontScale}
+              onChangeFontScale={onChangeFontScale}
+              testID={`${testID}-display-section`}
+            />
+          );
+        case 'reciter':
+          return (
+            <ReciterSelectionSection
+              selectedReciterId={selectedReciterId}
+              onSelectReciter={onSelectReciter}
+              testID={`${testID}-reciter-section`}
+            />
+          );
+        case 'translations':
+          return (
+            <TranslationSelectionSection
+              selectedTranslationIds={selectedTranslationIds}
+              onToggleTranslation={onToggleTranslation}
+              testID={`${testID}-translation-section`}
+            />
+          );
+        case 'wbw':
+          return (
+            <WordByWordSection
+              showWordByWord={showWordByWord}
+              onToggleWordByWord={onToggleWordByWord}
+              wordByWordLocale={wordByWordLocale}
+              onChangeWordByWordLocale={onChangeWordByWordLocale}
+              wordByWordDisplay={wordByWordDisplay}
+              onChangeWordByWordDisplay={onChangeWordByWordDisplay}
+              wordByWordContentType={wordByWordContentType}
+              onChangeWordByWordContentType={onChangeWordByWordContentType}
+              testID={`${testID}-wbw-section`}
+            />
+          );
+        default:
+          return null;
+      }
+    };
 
-  return (
-    <Modal
-      testID={testID}
-      visible={visible}
-      transparent={true}
-      animationType="slide"
-      onRequestClose={onClose}
-    >
-      <View style={styles.modalOverlay}>
-        {/* Backdrop dismissable touchable area */}
-        <TouchableWithoutFeedback
-          testID={`${testID}-backdrop`}
-          onPress={onClose}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel="بستن پنجره تنظیمات"
-        >
-          <View style={styles.backdrop} />
-        </TouchableWithoutFeedback>
-
-        {/* Bottom Sheet Card Container */}
-        <View testID={`${testID}-sheet`} style={styles.sheetContainer}>
-          {/* Sheet Header */}
-          <View testID={`${testID}-header`} style={styles.header}>
-            <Text style={styles.headerTitle}>تنظیمات مطالعه قرآن</Text>
-            <TouchableOpacity
-              testID={`${testID}-close`}
-              onPress={onClose}
-              activeOpacity={0.7}
-              style={styles.closeButton}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityLabel="بستن تنظیمات"
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <X
-                size={READER_COMPONENT_CONTRACTS.settingsModal.closeIconSize}
-                color={colors.textSecondary}
-                strokeWidth={2}
-              />
-            </TouchableOpacity>
-          </View>
-
-          {/* 4 Segmented Tab Navigation Bar */}
-          <View testID={`${testID}-tabs`} style={styles.tabsRow}>
-            {SETTINGS_TABS.map((tab) => {
-              const isActive = activeTab === tab.id;
-              return (
-                <TouchableOpacity
-                  key={tab.id}
-                  testID={`${testID}-tab-${tab.id}`}
-                  onPress={() => setActiveTab(tab.id)}
-                  activeOpacity={0.7}
-                  style={[
-                    styles.tabButton,
-                    isActive ? styles.tabButtonActive : styles.tabButtonInactive,
-                  ]}
-                  accessible={true}
-                  accessibilityRole="tab"
-                  accessibilityState={{ selected: isActive }}
-                  accessibilityLabel={tab.label}
-                >
-                  <Text
-                    style={[
-                      styles.tabText,
-                      isActive ? styles.tabTextActive : styles.tabTextInactive,
-                    ]}
-                    numberOfLines={1}
-                    adjustsFontSizeToFit={true}
-                  >
-                    {tab.label}
-                  </Text>
-                  {isActive && <View style={styles.activeIndicator} />}
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-
-          {/* Dynamic Scrollable Section Content */}
-          <ScrollView
-            testID={`${testID}-content`}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
-            keyboardShouldPersistTaps="handled"
+    return (
+      <Modal
+        testID={testID}
+        visible={visible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={onClose}
+      >
+        <View style={styles.modalOverlay}>
+          {/* Backdrop dismissable touchable area */}
+          <TouchableWithoutFeedback
+            testID={`${testID}-backdrop`}
+            onPress={onClose}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="بستن پنجره تنظیمات"
           >
-            {renderActiveSection()}
-          </ScrollView>
+            <View style={styles.backdrop} />
+          </TouchableWithoutFeedback>
+
+          {/* Bottom Sheet Card Container */}
+          <View
+            testID={`${testID}-sheet`}
+            style={[
+              styles.sheetContainer,
+              {
+                backgroundColor: colors.backgroundElevated,
+                borderColor: colors.borderSubtle,
+              },
+            ]}
+          >
+            {/* Sheet Header */}
+            <View
+              testID={`${testID}-header`}
+              style={[styles.header, { borderBottomColor: colors.borderSeparator }]}
+            >
+              <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
+                تنظیمات مطالعه قرآن
+              </Text>
+              <TouchableOpacity
+                testID={`${testID}-close`}
+                onPress={onClose}
+                activeOpacity={0.7}
+                style={styles.closeButton}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="بستن تنظیمات"
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <X
+                  size={READER_COMPONENT_CONTRACTS.settingsModal.closeIconSize}
+                  color={colors.textSecondary}
+                  strokeWidth={2}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* 4 Segmented Tab Navigation Bar */}
+            <View
+              testID={`${testID}-tabs`}
+              style={[
+                styles.tabsRow,
+                {
+                  backgroundColor: colors.surfaceFloating,
+                  borderColor: colors.borderSubtle,
+                },
+              ]}
+            >
+              {SETTINGS_TABS.map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <TouchableOpacity
+                    key={tab.id}
+                    testID={`${testID}-tab-${tab.id}`}
+                    onPress={() => setActiveTab(tab.id)}
+                    activeOpacity={0.7}
+                    style={[
+                      styles.tabButton,
+                      isActive
+                        ? [
+                            styles.tabButtonActive,
+                            {
+                              backgroundColor: colors.primarySubtle,
+                              borderColor: colors.borderActive,
+                            },
+                          ]
+                        : styles.tabButtonInactive,
+                    ]}
+                    accessible={true}
+                    accessibilityRole="tab"
+                    accessibilityState={{ selected: isActive }}
+                    accessibilityLabel={tab.label}
+                  >
+                    <Text
+                      style={[
+                        styles.tabText,
+                        isActive
+                          ? [styles.tabTextActive, { color: colors.primaryLight }]
+                          : [styles.tabTextInactive, { color: colors.textSecondary }],
+                      ]}
+                      numberOfLines={1}
+                      adjustsFontSizeToFit={true}
+                    >
+                      {tab.label}
+                    </Text>
+                    {isActive && (
+                      <View
+                        style={[styles.activeIndicator, { backgroundColor: colors.primaryLight }]}
+                      />
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            {/* Dynamic Scrollable Section Content */}
+            <ScrollView
+              testID={`${testID}-content`}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
+              keyboardShouldPersistTaps="handled"
+            >
+              {renderActiveSection()}
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    </Modal>
-  );
-});
+      </Modal>
+    );
+  },
+);
 
 ReaderSettingsModal.displayName = 'ReaderSettingsModal';
 

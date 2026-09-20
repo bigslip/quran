@@ -26,7 +26,8 @@ import {
   Clock,
 } from 'lucide-react-native';
 import {
-  colors,
+  colors as defaultColors,
+  useThemeColors,
   fonts,
   fontSizes,
   spacing,
@@ -74,6 +75,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
     style,
     testID = 'bookmark-verse-card',
   }) => {
+    const colors = useThemeColors();
     // Reading preferences
     const { quranFont, fontScale, activeTranslation, selectedTranslationIds, selectedReciterId } =
       useReadingStore();
@@ -219,22 +221,43 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
     );
 
     return (
-      <View testID={testID} style={[styles.cardContainer, isPlaying && styles.cardPlaying, style]}>
+      <View
+        testID={testID}
+        style={[
+          styles.cardContainer,
+          { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
+          isPlaying && styles.cardPlaying,
+          style,
+        ]}
+      >
         {/* 1. Header Bar: Chapter Title, Ayah Rosette, and Relative Time */}
         <View style={styles.headerRow} testID={`${testID}-header`}>
           <View style={styles.headerInfoGroup}>
-            <Text style={styles.chapterTitleText} testID={`${testID}-chapter-title`}>
+            <Text
+              style={[styles.chapterTitleText, { color: colors.textPrimary }]}
+              testID={`${testID}-chapter-title`}
+            >
               {chapterTitle}
             </Text>
-            <View style={styles.ayahRosetteBadge} testID={`${testID}-ayah-badge`}>
-              <Text style={styles.ayahRosetteText}>{ayahBadgeText}</Text>
+            <View
+              style={[
+                styles.ayahRosetteBadge,
+                { backgroundColor: colors.goldGlow, borderColor: colors.goldAccent },
+              ]}
+              testID={`${testID}-ayah-badge`}
+            >
+              <Text style={[styles.ayahRosetteText, { color: colors.goldAccent }]}>
+                {ayahBadgeText}
+              </Text>
             </View>
           </View>
 
           {relativeDateText ? (
             <View style={styles.relativeDateGroup} testID={`${testID}-date`}>
               <Clock size={12} color={colors.textFaded} />
-              <Text style={styles.relativeDateText}>{relativeDateText}</Text>
+              <Text style={[styles.relativeDateText, { color: colors.textFaded }]}>
+                {relativeDateText}
+              </Text>
             </View>
           ) : null}
         </View>
@@ -245,6 +268,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
             style={[
               styles.arabicText,
               {
+                color: colors.textPrimary,
                 fontFamily: arabicFontFamily,
                 fontSize: scaledQuranFontSize,
                 lineHeight: scaledQuranLineHeight,
@@ -254,7 +278,12 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
             allowFontScaling={false}
           >
             {arabicText}
-            <Text style={[styles.ayahEndMarker, { fontSize: scaledQuranFontSize }]}>
+            <Text
+              style={[
+                styles.ayahEndMarker,
+                { color: colors.goldAccent, fontSize: scaledQuranFontSize },
+              ]}
+            >
               {formatAyahEndMarker(bookmark.verse_number)}
             </Text>
           </Text>
@@ -262,7 +291,10 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
 
         {/* 3. Persian & English Translation Section */}
         {translations.length > 0 ? (
-          <View style={styles.translationsContainer} testID={`${testID}-translations`}>
+          <View
+            style={[styles.translationsContainer, { borderTopColor: colors.borderSeparator }]}
+            testID={`${testID}-translations`}
+          >
             {translations.map((item) => {
               const isLatin =
                 item.id === 131 ||
@@ -277,13 +309,21 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                         isLatin && styles.translationHeaderRowLatin,
                       ]}
                     >
-                      <View style={styles.translatorChip}>
-                        <Text style={styles.translatorChipText}>{item.title}</Text>
+                      <View
+                        style={[styles.translatorChip, { backgroundColor: colors.primarySubtle }]}
+                      >
+                        <Text style={[styles.translatorChipText, { color: colors.primary }]}>
+                          {item.title}
+                        </Text>
                       </View>
                     </View>
                   ) : null}
                   <Text
-                    style={[styles.translationText, isLatin && styles.translationTextLatin]}
+                    style={[
+                      styles.translationText,
+                      { color: colors.textSecondary },
+                      isLatin && styles.translationTextLatin,
+                    ]}
                     testID={`${testID}-translation-${item.id}`}
                   >
                     {item.text}
@@ -296,9 +336,15 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
 
         {/* 4. User Personal Note Section */}
         {isEditingNote ? (
-          <View style={styles.noteEditorContainer} testID={`${testID}-note-editor`}>
+          <View
+            style={[
+              styles.noteEditorContainer,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderActive },
+            ]}
+            testID={`${testID}-note-editor`}
+          >
             <TextInput
-              style={styles.noteTextInput}
+              style={[styles.noteTextInput, { color: colors.textPrimary }]}
               value={noteInput}
               onChangeText={setNoteInput}
               placeholder="یادداشت خود را اینجا بنویسید..."
@@ -310,7 +356,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
             />
             <View style={styles.noteEditorActions}>
               <TouchableOpacity
-                style={styles.noteSaveButton}
+                style={[styles.noteSaveButton, { backgroundColor: colors.primary }]}
                 onPress={handleSaveNote}
                 activeOpacity={0.7}
                 accessibilityRole="button"
@@ -322,7 +368,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                 <Text style={styles.noteSaveButtonText}>ذخیره</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.noteCancelButton}
+                style={[styles.noteCancelButton, { borderColor: colors.borderSubtle }]}
                 onPress={handleCancelNote}
                 activeOpacity={0.7}
                 accessibilityRole="button"
@@ -330,16 +376,26 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                 testID={`${testID}-btn-cancel-note`}
                 hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
               >
-                <Text style={styles.noteCancelButtonText}>انصراف</Text>
+                <Text style={[styles.noteCancelButtonText, { color: colors.textFaded }]}>
+                  انصراف
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
         ) : bookmark.note ? (
-          <View style={styles.noteContainer} testID={`${testID}-note-container`}>
+          <View
+            style={[
+              styles.noteContainer,
+              { backgroundColor: colors.goldGlow, borderColor: colors.goldAccent },
+            ]}
+            testID={`${testID}-note-container`}
+          >
             <View style={styles.noteHeader}>
               <View style={styles.noteLabelRow}>
                 <Quote size={13} color={colors.goldAccent} />
-                <Text style={styles.noteLabelText}>یادداشت شما</Text>
+                <Text style={[styles.noteLabelText, { color: colors.goldAccent }]}>
+                  یادداشت شما
+                </Text>
               </View>
               <TouchableOpacity
                 style={styles.noteEditIconButton}
@@ -356,7 +412,10 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                 <Edit3 size={15} color={colors.textSecondary} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.noteDisplayText} testID={`${testID}-note-text`}>
+            <Text
+              style={[styles.noteDisplayText, { color: colors.textPrimary }]}
+              testID={`${testID}-note-text`}
+            >
               {bookmark.note}
             </Text>
           </View>
@@ -371,7 +430,9 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
             hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
           >
             <Plus size={13} color={colors.primary} />
-            <Text style={styles.addNotePromptText}>افزودن یادداشت</Text>
+            <Text style={[styles.addNotePromptText, { color: colors.primary }]}>
+              افزودن یادداشت
+            </Text>
           </TouchableOpacity>
         )}
 
@@ -386,19 +447,30 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
               ? bookmark.tags.map((tag) => (
                   <View
                     key={`tag-${tag.id}`}
-                    style={[styles.tagPill, { borderColor: tag.color || colors.primary }]}
+                    style={[
+                      styles.tagPill,
+                      {
+                        borderColor: tag.color || colors.primary,
+                        backgroundColor: colors.surfaceFloating,
+                      },
+                    ]}
                     testID={`${testID}-tag-${tag.id}`}
                   >
                     <View
                       style={[styles.tagColorDot, { backgroundColor: tag.color || colors.primary }]}
                     />
-                    <Text style={styles.tagPillText}>{tag.name}</Text>
+                    <Text style={[styles.tagPillText, { color: colors.textSecondary }]}>
+                      {tag.name}
+                    </Text>
                   </View>
                 ))
               : null}
 
             <TouchableOpacity
-              style={styles.addTagButton}
+              style={[
+                styles.addTagButton,
+                { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+              ]}
               onPress={() => setIsTagModalOpen(true)}
               activeOpacity={0.7}
               accessibilityRole="button"
@@ -407,16 +479,26 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
               hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
             >
               <Plus size={13} color={colors.textSecondary} />
-              <Text style={styles.addTagButtonText}>برچسب</Text>
+              <Text style={[styles.addTagButtonText, { color: colors.textSecondary }]}>برچسب</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
 
         {/* 6. Action Bar: Play, Read in Surah, Share, Delete */}
-        <View style={styles.actionBar} testID={`${testID}-actions`}>
+        <View
+          style={[styles.actionBar, { borderTopColor: colors.borderSeparator }]}
+          testID={`${testID}-actions`}
+        >
           {/* Play Recitation Button */}
           <TouchableOpacity
-            style={[styles.actionIconButton, isPlaying && styles.actionIconButtonActive]}
+            style={[
+              styles.actionIconButton,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+              isPlaying && [
+                styles.actionIconButtonActive,
+                { backgroundColor: colors.primarySubtle, borderColor: colors.primary },
+              ],
+            ]}
             onPress={handleTogglePlay}
             activeOpacity={0.7}
             accessibilityRole="button"
@@ -439,7 +521,10 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
 
           {/* Read in Surah Primary Action */}
           <TouchableOpacity
-            style={styles.readInSurahButton}
+            style={[
+              styles.readInSurahButton,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+            ]}
             onPress={() => onPressRead(bookmark)}
             activeOpacity={0.7}
             accessibilityRole="button"
@@ -447,12 +532,17 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
             testID={`${testID}-btn-read`}
           >
             <BookOpen size={16} color={colors.primary} />
-            <Text style={styles.readInSurahButtonText}>مشاهده در سوره</Text>
+            <Text style={[styles.readInSurahButtonText, { color: colors.primary }]}>
+              مشاهده در سوره
+            </Text>
           </TouchableOpacity>
 
           {/* Share Button */}
           <TouchableOpacity
-            style={styles.actionIconButton}
+            style={[
+              styles.actionIconButton,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+            ]}
             onPress={handleShare}
             activeOpacity={0.7}
             accessibilityRole="button"
@@ -491,11 +581,19 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
           onRequestClose={() => setIsTagModalOpen(false)}
         >
           <View style={styles.modalOverlay}>
-            <View style={styles.modalCard} testID={`${testID}-tag-modal`}>
-              <View style={styles.modalHeader}>
+            <View
+              style={[
+                styles.modalCard,
+                { backgroundColor: colors.backgroundElevated, borderColor: colors.borderSubtle },
+              ]}
+              testID={`${testID}-tag-modal`}
+            >
+              <View style={[styles.modalHeader, { borderBottomColor: colors.borderSeparator }]}>
                 <View style={styles.modalTitleGroup}>
-                  <Text style={styles.modalTitle}>مدیریت برچسب‌ها</Text>
-                  <Text style={styles.modalSubtitle}>
+                  <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>
+                    مدیریت برچسب‌ها
+                  </Text>
+                  <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>
                     {chapterTitle} • {ayahBadgeText}
                   </Text>
                 </View>
@@ -516,7 +614,14 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                   return (
                     <TouchableOpacity
                       key={`modal-tag-${tag.id}`}
-                      style={[styles.tagOptionRow, isSelected && styles.tagOptionRowSelected]}
+                      style={[
+                        styles.tagOptionRow,
+                        { backgroundColor: colors.surfaceFloating },
+                        isSelected && [
+                          styles.tagOptionRowSelected,
+                          { backgroundColor: colors.primarySubtle, borderColor: colors.primary },
+                        ],
+                      ]}
                       onPress={() => handleToggleTag(tag.id)}
                       activeOpacity={0.7}
                       accessibilityRole="checkbox"
@@ -530,7 +635,9 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                             { backgroundColor: tag.color || colors.primary },
                           ]}
                         />
-                        <Text style={styles.tagOptionName}>{tag.name}</Text>
+                        <Text style={[styles.tagOptionName, { color: colors.textPrimary }]}>
+                          {tag.name}
+                        </Text>
                       </View>
 
                       <View style={[styles.tagCheckbox, isSelected && styles.tagCheckboxChecked]}>
@@ -542,7 +649,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
               </ScrollView>
 
               <TouchableOpacity
-                style={styles.modalDoneButton}
+                style={[styles.modalDoneButton, { backgroundColor: colors.primary }]}
                 onPress={() => setIsTagModalOpen(false)}
                 activeOpacity={0.8}
               >
@@ -555,6 +662,8 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
     );
   },
 );
+
+const colors = defaultColors;
 
 const styles = StyleSheet.create({
   cardContainer: {

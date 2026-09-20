@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Modal,
   View,
@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import { X, Compass } from 'lucide-react-native';
 import {
-  colors,
+  useThemeColors,
+  ColorTheme,
   fonts,
   fontSizes,
   spacing,
@@ -72,6 +73,9 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
     surahs,
     testID = 'quick-jump-modal',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
+
     const [activeTab, setActiveTab] = useState<QuickJumpTabId>(initialTab);
     const [selectedChapterId, setSelectedChapterId] = useState<number>(initialChapterId);
     const [selectedVerseNumber, setSelectedVerseNumber] = useState<number>(initialVerseNumber);
@@ -347,167 +351,168 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
 
 QuickJumpModal.displayName = 'QuickJumpModal';
 
-const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFill,
-  },
-  sheetContainer: {
-    backgroundColor: '#041610',
-    borderColor: colors.borderSubtle,
-    borderWidth: 1,
-    borderTopLeftRadius: borderRadius.xl,
-    borderTopRightRadius: borderRadius.xl,
-    paddingTop: spacing.md,
-    paddingHorizontal: spacing.md,
-    paddingBottom: Platform.OS === 'ios' ? spacing.xl : spacing.md,
-    height: '82%',
-    maxHeight: '90%',
-    width: '100%',
-    ...shadows.card,
-  },
-  header: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderSeparator,
-  },
-  headerTitle: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.lg,
-    fontWeight: '700',
-    color: colors.textPrimary,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-  },
-  closeButton: {
-    minWidth: QUICK_JUMP_MODAL_CONTRACTS.closeButtonSize,
-    minHeight: QUICK_JUMP_MODAL_CONTRACTS.closeButtonSize,
-    width: QUICK_JUMP_MODAL_CONTRACTS.closeButtonSize,
-    height: QUICK_JUMP_MODAL_CONTRACTS.closeButtonSize,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: borderRadius.circle,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-  },
-  tabsRow: {
-    flexDirection: rtlRow,
-    backgroundColor: '#07241c',
-    borderRadius: borderRadius.lg,
-    padding: 4,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    marginTop: spacing.sm,
-    marginBottom: spacing.sm,
-    gap: spacing.xs,
-  },
-  tabButton: {
-    flex: 1,
-    minHeight: QUICK_JUMP_MODAL_CONTRACTS.minTouchTarget,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.xs,
-    position: 'relative',
-  },
-  tabButtonActive: {
-    backgroundColor: 'rgba(16, 185, 129, 0.2)',
-    borderColor: colors.borderActive,
-    borderWidth: 1,
-  },
-  tabButtonInactive: {
-    backgroundColor: 'transparent',
-  },
-  tabText: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.xs,
-    textAlign: 'center',
-  },
-  tabTextActive: {
-    color: colors.primaryLight,
-    fontWeight: '700',
-  },
-  tabTextInactive: {
-    color: colors.textSecondary,
-    fontWeight: '500',
-  },
-  activeIndicator: {
-    position: 'absolute',
-    bottom: 3,
-    left: spacing.sm,
-    right: spacing.sm,
-    height: 2,
-    backgroundColor: colors.primary,
-    borderRadius: 1,
-  },
-  tabContentWrapper: {
-    flex: 1,
-    width: '100%',
-    overflow: 'hidden',
-  },
-  footer: {
-    marginTop: spacing.xs,
-    paddingTop: spacing.xs,
-    borderTopWidth: 1,
-    borderTopColor: colors.borderSeparator,
-    gap: spacing.xs,
-    backgroundColor: '#041610',
-  },
-  previewBanner: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#07241c',
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    minHeight: 38,
-  },
-  previewIcon: {
-    marginEnd: spacing.xs,
-  },
-  previewText: {
-    fontFamily: fonts.primary,
-    fontSize: fontSizes.xs,
-    fontWeight: '600',
-    color: colors.textSecondary,
-    textAlign: rtlTextAlign,
-  },
-  actionButton: {
-    minHeight: QUICK_JUMP_MODAL_CONTRACTS.buttonMinHeight,
-    backgroundColor: colors.primary,
-    borderRadius: borderRadius.lg,
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  actionButtonDisabled: {
-    opacity: 0.6,
-  },
-  actionButtonIcon: {
-    marginEnd: spacing.sm,
-  },
-  actionButtonText: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.md,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-});
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    modalOverlay: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    },
+    backdrop: {
+      ...StyleSheet.absoluteFill,
+    },
+    sheetContainer: {
+      backgroundColor: colors.background,
+      borderColor: colors.borderSubtle,
+      borderWidth: 1,
+      borderTopLeftRadius: borderRadius.xl,
+      borderTopRightRadius: borderRadius.xl,
+      paddingTop: spacing.md,
+      paddingHorizontal: spacing.md,
+      paddingBottom: Platform.OS === 'ios' ? spacing.xl : spacing.md,
+      height: '82%',
+      maxHeight: '90%',
+      width: '100%',
+      ...shadows.card,
+    },
+    header: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingBottom: spacing.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.borderSeparator,
+    },
+    headerTitle: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.lg,
+      fontWeight: '700',
+      color: colors.textPrimary,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+    },
+    closeButton: {
+      minWidth: QUICK_JUMP_MODAL_CONTRACTS.closeButtonSize,
+      minHeight: QUICK_JUMP_MODAL_CONTRACTS.closeButtonSize,
+      width: QUICK_JUMP_MODAL_CONTRACTS.closeButtonSize,
+      height: QUICK_JUMP_MODAL_CONTRACTS.closeButtonSize,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: borderRadius.circle,
+      backgroundColor: colors.surfaceCardHover,
+    },
+    tabsRow: {
+      flexDirection: rtlRow,
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.lg,
+      padding: 4,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      marginTop: spacing.sm,
+      marginBottom: spacing.sm,
+      gap: spacing.xs,
+    },
+    tabButton: {
+      flex: 1,
+      minHeight: QUICK_JUMP_MODAL_CONTRACTS.minTouchTarget,
+      height: 44,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: borderRadius.md,
+      paddingHorizontal: spacing.xs,
+      position: 'relative',
+    },
+    tabButtonActive: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.borderActive,
+      borderWidth: 1,
+    },
+    tabButtonInactive: {
+      backgroundColor: 'transparent',
+    },
+    tabText: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.xs,
+      textAlign: 'center',
+    },
+    tabTextActive: {
+      color: colors.primaryLight,
+      fontWeight: '700',
+    },
+    tabTextInactive: {
+      color: colors.textSecondary,
+      fontWeight: '500',
+    },
+    activeIndicator: {
+      position: 'absolute',
+      bottom: 3,
+      left: spacing.sm,
+      right: spacing.sm,
+      height: 2,
+      backgroundColor: colors.primary,
+      borderRadius: 1,
+    },
+    tabContentWrapper: {
+      flex: 1,
+      width: '100%',
+      overflow: 'hidden',
+    },
+    footer: {
+      marginTop: spacing.xs,
+      paddingTop: spacing.xs,
+      borderTopWidth: 1,
+      borderTopColor: colors.borderSeparator,
+      gap: spacing.xs,
+      backgroundColor: colors.background,
+    },
+    previewBanner: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: colors.borderIridescent,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      minHeight: 38,
+    },
+    previewIcon: {
+      marginEnd: spacing.xs,
+    },
+    previewText: {
+      fontFamily: fonts.primary,
+      fontSize: fontSizes.xs,
+      fontWeight: '600',
+      color: colors.textSecondary,
+      textAlign: rtlTextAlign,
+    },
+    actionButton: {
+      minHeight: QUICK_JUMP_MODAL_CONTRACTS.buttonMinHeight,
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.lg,
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 4,
+    },
+    actionButtonDisabled: {
+      opacity: 0.6,
+    },
+    actionButtonIcon: {
+      marginEnd: spacing.sm,
+    },
+    actionButtonText: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.md,
+      fontWeight: '700',
+      color: '#FFFFFF',
+      textAlign: 'center',
+    },
+  });

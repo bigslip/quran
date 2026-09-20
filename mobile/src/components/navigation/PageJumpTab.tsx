@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,16 @@ import {
   ViewStyle,
 } from 'react-native';
 import { BookOpen } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, rtlTextAlign } from '@/theme';
+import {
+  useThemeColors,
+  ColorTheme,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  rtlRow,
+  rtlTextAlign,
+} from '@/theme';
 import { toPersianDigits, parseLocalizedNumber } from '@/services/db/quickJumpContracts';
 
 export interface PageJumpTabProps {
@@ -39,6 +48,9 @@ export const PageJumpTab: React.FC<PageJumpTabProps> = ({
   testID,
   style,
 }) => {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const [pageInputText, setPageInputText] = useState(toPersianDigits(selectedPageNumber));
 
   // Keep input text synchronized with external prop updates
@@ -221,164 +233,165 @@ export const PageJumpTab: React.FC<PageJumpTabProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  pageCard: {
-    backgroundColor: '#07241c',
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    padding: spacing.md,
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  pageCardTitle: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.sm,
-    fontWeight: '600',
-    color: colors.textSecondary,
-    marginBottom: spacing.sm,
-    textAlign: 'center',
-  },
-  inputContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.md,
-  },
-  pageInput: {
-    minWidth: 120,
-    minHeight: 56,
-    backgroundColor: '#041610',
-    borderWidth: 1.5,
-    borderColor: colors.primary,
-    borderRadius: borderRadius.lg,
-    fontFamily: fonts.primaryBold,
-    fontSize: 32,
-    fontWeight: '700',
-    color: colors.goldAccent,
-    paddingHorizontal: spacing.md,
-    paddingVertical: 4,
-  },
-  pageTotalSuffix: {
-    fontFamily: fonts.primary,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-    marginTop: spacing.xs,
-  },
-  steppersRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.sm,
-    width: '100%',
-  },
-  stepperButton: {
-    minWidth: 54,
-    minHeight: 44,
-    height: 44,
-    borderRadius: borderRadius.md,
-    backgroundColor: '#0a2e24',
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.sm,
-  },
-  stepperButtonDisabled: {
-    opacity: 0.35,
-    borderColor: colors.borderSeparator,
-  },
-  stepperButtonText: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.sm,
-    fontWeight: '700',
-    color: colors.textPrimary,
-  },
-  stepperTextDisabled: {
-    color: colors.textFaded,
-  },
-  milestonesSection: {
-    backgroundColor: '#07241c',
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    padding: spacing.md,
-  },
-  milestonesSectionTitle: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.sm,
-    fontWeight: '600',
-    color: colors.textSecondary,
-    textAlign: rtlTextAlign,
-    marginBottom: spacing.sm,
-  },
-  milestonesGrid: {
-    flexDirection: rtlRow,
-    flexWrap: 'wrap',
-    gap: spacing.xs,
-  },
-  milestoneChip: {
-    minHeight: 44,
-    minWidth: '48%',
-    flex: 1,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.md,
-    backgroundColor: '#0a2e24',
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  milestoneChipSelected: {
-    backgroundColor: 'rgba(16, 185, 129, 0.2)',
-    borderColor: colors.borderActive,
-  },
-  milestoneText: {
-    fontFamily: fonts.primary,
-    fontSize: fontSizes.xs,
-    fontWeight: '600',
-    color: colors.textFaded,
-  },
-  milestoneTextSelected: {
-    color: colors.primaryLight,
-    fontWeight: '700',
-  },
-  previewCard: {
-    backgroundColor: colors.surfaceCard,
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    padding: spacing.md,
-  },
-  previewHeaderRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.sm,
-    marginBottom: spacing.xs,
-  },
-  previewIconWrapper: {
-    width: 32,
-    height: 32,
-    borderRadius: borderRadius.circle,
-    backgroundColor: colors.surfaceFloating,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  previewPageTitle: {
-    fontFamily: fonts.primaryBold,
-    fontSize: fontSizes.sm,
-    fontWeight: '700',
-    color: colors.goldAccent,
-    textAlign: rtlTextAlign,
-  },
-  previewDescriptionText: {
-    fontFamily: fonts.primary,
-    fontSize: fontSizes.xs,
-    color: colors.textSecondary,
-    textAlign: rtlTextAlign,
-    lineHeight: 20,
-  },
-});
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
+      width: '100%',
+    },
+    pageCard: {
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      padding: spacing.md,
+      alignItems: 'center',
+      marginBottom: spacing.md,
+    },
+    pageCardTitle: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.sm,
+      fontWeight: '600',
+      color: colors.textSecondary,
+      marginBottom: spacing.sm,
+      textAlign: 'center',
+    },
+    inputContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: spacing.md,
+    },
+    pageInput: {
+      minWidth: 120,
+      minHeight: 56,
+      backgroundColor: colors.background,
+      borderWidth: 1.5,
+      borderColor: colors.primary,
+      borderRadius: borderRadius.lg,
+      fontFamily: fonts.primaryBold,
+      fontSize: 32,
+      fontWeight: '700',
+      color: colors.goldAccent,
+      paddingHorizontal: spacing.md,
+      paddingVertical: 4,
+    },
+    pageTotalSuffix: {
+      fontFamily: fonts.primary,
+      fontSize: fontSizes.xs,
+      color: colors.textFaded,
+      marginTop: spacing.xs,
+    },
+    steppersRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.sm,
+      width: '100%',
+    },
+    stepperButton: {
+      minWidth: 54,
+      minHeight: 44,
+      height: 44,
+      borderRadius: borderRadius.md,
+      backgroundColor: colors.surfaceCardHover,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: spacing.sm,
+    },
+    stepperButtonDisabled: {
+      opacity: 0.35,
+      borderColor: colors.borderSeparator,
+    },
+    stepperButtonText: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.sm,
+      fontWeight: '700',
+      color: colors.textPrimary,
+    },
+    stepperTextDisabled: {
+      color: colors.textFaded,
+    },
+    milestonesSection: {
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      padding: spacing.md,
+    },
+    milestonesSectionTitle: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.sm,
+      fontWeight: '600',
+      color: colors.textSecondary,
+      textAlign: rtlTextAlign,
+      marginBottom: spacing.sm,
+    },
+    milestonesGrid: {
+      flexDirection: rtlRow,
+      flexWrap: 'wrap',
+      gap: spacing.xs,
+    },
+    milestoneChip: {
+      minHeight: 44,
+      minWidth: '48%',
+      flex: 1,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.md,
+      backgroundColor: colors.surfaceCardHover,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    milestoneChipSelected: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.borderActive,
+    },
+    milestoneText: {
+      fontFamily: fonts.primary,
+      fontSize: fontSizes.xs,
+      fontWeight: '600',
+      color: colors.textFaded,
+    },
+    milestoneTextSelected: {
+      color: colors.primaryLight,
+      fontWeight: '700',
+    },
+    previewCard: {
+      backgroundColor: colors.surfaceCard,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: colors.borderIridescent,
+      padding: spacing.md,
+    },
+    previewHeaderRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.sm,
+      marginBottom: spacing.xs,
+    },
+    previewIconWrapper: {
+      width: 32,
+      height: 32,
+      borderRadius: borderRadius.circle,
+      backgroundColor: colors.surfaceFloating,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    previewPageTitle: {
+      fontFamily: fonts.primaryBold,
+      fontSize: fontSizes.sm,
+      fontWeight: '700',
+      color: colors.goldAccent,
+      textAlign: rtlTextAlign,
+    },
+    previewDescriptionText: {
+      fontFamily: fonts.primary,
+      fontSize: fontSizes.xs,
+      color: colors.textSecondary,
+      textAlign: rtlTextAlign,
+      lineHeight: 20,
+    },
+  });

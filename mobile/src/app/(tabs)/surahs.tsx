@@ -10,7 +10,14 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Compass } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import {
+  colors as defaultColors,
+  useThemeColors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+} from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { SearchBar } from '@/components/common/SearchBar';
 import { QuickJumpModal } from '@/components/navigation';
@@ -32,6 +39,7 @@ type CatalogItem = Chapter | Juz;
 
 export default function SurahsScreen() {
   const router = useRouter();
+  const colors = useThemeColors();
   const flatListRef = useRef<FlatList<CatalogItem>>(null);
   const [activeTab, setActiveTab] = useState<CatalogTabId>('surah');
   const [query, setQuery] = useState('');
@@ -152,7 +160,7 @@ export default function SurahsScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <AmbientGlow height={220} />
 
       {/* Sanctuary Header */}
@@ -160,13 +168,18 @@ export default function SurahsScreen() {
         {/* Title row with sanctuary title and counter badge */}
         <View style={styles.titleRow}>
           <View style={styles.titleGroup}>
-            <Text style={styles.title}>فهرست قرآن</Text>
-            <Text style={styles.subtitle}>سوره‌ها و جزءهای کلام‌الله مجید</Text>
+            <Text style={[styles.title, { color: colors.textPrimary }]}>فهرست قرآن</Text>
+            <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+              سوره‌ها و جزءهای کلام‌الله مجید
+            </Text>
           </View>
 
           <View style={styles.headerActions}>
             <TouchableOpacity
-              style={styles.quickJumpButton}
+              style={[
+                styles.quickJumpButton,
+                { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+              ]}
               activeOpacity={0.75}
               onPress={() => setIsQuickJumpOpen(true)}
               accessible={true}
@@ -175,16 +188,23 @@ export default function SurahsScreen() {
               testID="catalog-quick-jump-button"
             >
               <Compass size={16} color={colors.goldAccent} />
-              <Text style={styles.quickJumpButtonText}>پرش سریع</Text>
+              <Text style={[styles.quickJumpButtonText, { color: colors.goldAccent }]}>
+                پرش سریع
+              </Text>
             </TouchableOpacity>
 
             <View
-              style={styles.countBadge}
+              style={[
+                styles.countBadge,
+                { backgroundColor: colors.surfaceFloating, borderColor: colors.borderIridescent },
+              ]}
               accessible={true}
               accessibilityRole="text"
               accessibilityLabel={`تعداد: ${countBadgeText}`}
             >
-              <Text style={styles.countBadgeText}>{countBadgeText}</Text>
+              <Text style={[styles.countBadgeText, { color: colors.goldAccent }]}>
+                {countBadgeText}
+              </Text>
             </View>
           </View>
         </View>
@@ -205,20 +225,29 @@ export default function SurahsScreen() {
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
-          <Text style={styles.loadingText}>در حال بارگذاری فهرست قرآن...</Text>
+          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
+            در حال بارگذاری فهرست قرآن...
+          </Text>
         </View>
       ) : hasError ? (
         <View style={styles.errorContainer}>
-          <Text style={styles.errorTitle}>خطا در بارگذاری اطلاعات</Text>
-          <Text style={styles.errorSubtitle}>امکان بارگذاری فهرست قرآن وجود ندارد</Text>
+          <Text style={[styles.errorTitle, { color: colors.textPrimary }]}>
+            خطا در بارگذاری اطلاعات
+          </Text>
+          <Text style={[styles.errorSubtitle, { color: colors.textSecondary }]}>
+            امکان بارگذاری فهرست قرآن وجود ندارد
+          </Text>
           <TouchableOpacity
-            style={styles.retryButton}
+            style={[
+              styles.retryButton,
+              { backgroundColor: colors.primarySubtle, borderColor: colors.primaryGlow },
+            ]}
             onPress={loadCatalogData}
             activeOpacity={0.8}
             accessibilityRole="button"
             accessibilityLabel="تلاش مجدد"
           >
-            <Text style={styles.retryButtonText}>تلاش مجدد</Text>
+            <Text style={[styles.retryButtonText, { color: colors.primary }]}>تلاش مجدد</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -252,6 +281,8 @@ export default function SurahsScreen() {
     </View>
   );
 }
+
+const colors = defaultColors;
 
 const styles = StyleSheet.create({
   container: {

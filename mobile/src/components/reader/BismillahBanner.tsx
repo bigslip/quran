@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
-import { colors, fonts, spacing } from '@/theme';
+import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { AppTheme, colors, fonts, spacing, themePalettes, useThemeColors } from '@/theme';
 import {
   BISMILLAH_TEXT,
   READER_COMPONENT_CONTRACTS,
@@ -16,24 +10,30 @@ import {
 export interface BismillahBannerProps {
   chapterId: number;
   bismillahPre?: boolean;
+  theme?: AppTheme;
   style?: StyleProp<ViewStyle>;
   testID?: string;
 }
 
 /**
  * BismillahBanner displays the sacred calligraphic Bismillah opening in Hafs script.
- * 
+ *
  * Rules:
  * - Omitted automatically for Surah 9 (At-Tawbah) or when bismillahPre is false.
- * - Rendered in `fonts.quranHafs`, size 24, `colors.goldAccent`, centered.
+ * - Rendered in `fonts.quranHafs`, size 24, dynamic `colors.goldAccent`, centered.
+ * - Dynamic goldAccent ensures WCAG contrast compliance in Light (#D97706) and Sepia (#B45309) modes.
  * - Flanked by ornate Sanctuary horizontal rules and geometric divider dots in `colors.goldGlow`.
  */
 export const BismillahBanner: React.FC<BismillahBannerProps> = ({
   chapterId,
   bismillahPre,
+  theme,
   style,
   testID = 'bismillah-banner',
 }) => {
+  const activeColors = useThemeColors();
+  const colors = theme ? themePalettes[theme] ?? activeColors : activeColors;
+
   if (!shouldRenderBismillah(chapterId, bismillahPre)) {
     return null;
   }
@@ -48,16 +48,16 @@ export const BismillahBanner: React.FC<BismillahBannerProps> = ({
     >
       {/* Ornate Sanctuary Top Divider Rule */}
       <View style={styles.dividerRow} testID={`${testID}-divider-top`}>
-        <View style={styles.dividerLine} />
-        <View style={styles.ornamentDot} />
-        <View style={styles.ornamentDiamond} />
-        <View style={styles.ornamentDot} />
-        <View style={styles.dividerLine} />
+        <View style={[styles.dividerLine, { backgroundColor: colors.goldGlow }]} />
+        <View style={[styles.ornamentDot, { backgroundColor: colors.goldAccent }]} />
+        <View style={[styles.ornamentDiamond, { backgroundColor: colors.goldAccent }]} />
+        <View style={[styles.ornamentDot, { backgroundColor: colors.goldAccent }]} />
+        <View style={[styles.dividerLine, { backgroundColor: colors.goldGlow }]} />
       </View>
 
       {/* Sacred Calligraphic Text */}
       <Text
-        style={styles.bismillahText}
+        style={[styles.bismillahText, { color: colors.goldAccent }]}
         testID={`${testID}-text`}
         allowFontScaling={false}
       >
@@ -66,11 +66,11 @@ export const BismillahBanner: React.FC<BismillahBannerProps> = ({
 
       {/* Ornate Sanctuary Bottom Divider Rule */}
       <View style={styles.dividerRow} testID={`${testID}-divider-bottom`}>
-        <View style={styles.dividerLine} />
-        <View style={styles.ornamentDot} />
-        <View style={styles.ornamentDiamond} />
-        <View style={styles.ornamentDot} />
-        <View style={styles.dividerLine} />
+        <View style={[styles.dividerLine, { backgroundColor: colors.goldGlow }]} />
+        <View style={[styles.ornamentDot, { backgroundColor: colors.goldAccent }]} />
+        <View style={[styles.ornamentDiamond, { backgroundColor: colors.goldAccent }]} />
+        <View style={[styles.ornamentDot, { backgroundColor: colors.goldAccent }]} />
+        <View style={[styles.dividerLine, { backgroundColor: colors.goldGlow }]} />
       </View>
     </View>
   );

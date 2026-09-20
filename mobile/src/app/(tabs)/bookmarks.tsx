@@ -22,7 +22,16 @@ import {
   Check,
   SearchX,
 } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius, rtlRow, rtlTextAlign } from '@/theme';
+import {
+  colors as defaultColors,
+  useThemeColors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  rtlRow,
+  rtlTextAlign,
+} from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { BookmarkVerseCard } from '@/components/bookmarks/BookmarkVerseCard';
 import {
@@ -39,6 +48,7 @@ import type { HydratedBookmark } from '@/types/bookmark';
 
 export default function BookmarksScreen() {
   const router = useRouter();
+  const colors = useThemeColors();
 
   // Bookmark store state & actions
   const {
@@ -152,6 +162,10 @@ export default function BookmarksScreen() {
         isPlaying={playingVerseKey === item.verse_key}
         onTogglePlay={() => handleTogglePlay(item)}
         availableTags={tags}
+        style={{
+          backgroundColor: colors.surfaceCard,
+          borderColor: colors.borderSubtle,
+        }}
       />
     ),
     [
@@ -162,6 +176,8 @@ export default function BookmarksScreen() {
       playingVerseKey,
       handleTogglePlay,
       tags,
+      colors.surfaceCard,
+      colors.borderSubtle,
     ],
   );
 
@@ -169,7 +185,7 @@ export default function BookmarksScreen() {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, { backgroundColor: colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       testID="bookmarks-screen"
     >
@@ -178,16 +194,25 @@ export default function BookmarksScreen() {
       {/* Top Header: Title, Count Badge, Sort Button */}
       <View style={styles.header}>
         <View style={styles.titleGroup}>
-          <Text style={styles.title}>نشانه‌ها و یادداشت‌ها</Text>
-          <View style={styles.countBadge} testID="bookmarks-count-badge">
-            <Text style={styles.countBadgeText}>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>نشانه‌ها و یادداشت‌ها</Text>
+          <View
+            style={[
+              styles.countBadge,
+              { backgroundColor: colors.primarySubtle, borderColor: colors.borderSubtle },
+            ]}
+            testID="bookmarks-count-badge"
+          >
+            <Text style={[styles.countBadgeText, { color: colors.primary }]}>
               {toPersianDigits(filteredBookmarks.length)} آیه
             </Text>
           </View>
         </View>
 
         <TouchableOpacity
-          style={styles.sortButton}
+          style={[
+            styles.sortButton,
+            { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+          ]}
           onPress={() => setIsSortModalOpen(true)}
           activeOpacity={0.7}
           accessibilityRole="button"
@@ -195,16 +220,23 @@ export default function BookmarksScreen() {
           testID="btn-open-sort-modal"
         >
           <SlidersHorizontal size={18} color={colors.primaryLight} />
-          <Text style={styles.sortButtonText}>{currentSortLabel}</Text>
+          <Text style={[styles.sortButtonText, { color: colors.primaryLight }]}>
+            {currentSortLabel}
+          </Text>
         </TouchableOpacity>
       </View>
 
       {/* Search Input Bar */}
       <View style={styles.searchBarContainer}>
-        <View style={styles.searchBar}>
+        <View
+          style={[
+            styles.searchBar,
+            { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+          ]}
+        >
           <Search size={18} color={colors.textFaded} style={styles.searchIcon} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: colors.textPrimary }]}
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder="جستجو در متن آیات، ترجمه و یادداشت‌ها..."
@@ -236,7 +268,14 @@ export default function BookmarksScreen() {
         >
           {/* 'All' (همه) Chip */}
           <TouchableOpacity
-            style={[styles.tagFilterChip, selectedTagId === null && styles.tagFilterChipActive]}
+            style={[
+              styles.tagFilterChip,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+              selectedTagId === null && [
+                styles.tagFilterChipActive,
+                { backgroundColor: colors.primarySubtle, borderColor: colors.primary },
+              ],
+            ]}
             onPress={() => setSelectedTagId(null)}
             activeOpacity={0.7}
             accessibilityRole="button"
@@ -247,7 +286,11 @@ export default function BookmarksScreen() {
             <Text
               style={[
                 styles.tagFilterChipText,
-                selectedTagId === null && styles.tagFilterChipTextActive,
+                { color: colors.textFaded },
+                selectedTagId === null && [
+                  styles.tagFilterChipTextActive,
+                  { color: colors.primary },
+                ],
               ]}
             >
               همه ({toPersianDigits(bookmarks.length)})
@@ -261,7 +304,14 @@ export default function BookmarksScreen() {
             return (
               <TouchableOpacity
                 key={`filter-tag-${tag.id}`}
-                style={[styles.tagFilterChip, isActive && styles.tagFilterChipActive]}
+                style={[
+                  styles.tagFilterChip,
+                  { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+                  isActive && [
+                    styles.tagFilterChipActive,
+                    { backgroundColor: colors.primarySubtle, borderColor: colors.primary },
+                  ],
+                ]}
                 onPress={() => setSelectedTagId(isActive ? null : tag.id)}
                 activeOpacity={0.7}
                 accessibilityRole="button"
@@ -273,7 +323,11 @@ export default function BookmarksScreen() {
                   style={[styles.tagColorDot, { backgroundColor: tag.color || colors.primary }]}
                 />
                 <Text
-                  style={[styles.tagFilterChipText, isActive && styles.tagFilterChipTextActive]}
+                  style={[
+                    styles.tagFilterChipText,
+                    { color: colors.textFaded },
+                    isActive && [styles.tagFilterChipTextActive, { color: colors.primary }],
+                  ]}
                 >
                   {tag.name} ({toPersianDigits(count)})
                 </Text>
@@ -301,16 +355,23 @@ export default function BookmarksScreen() {
       ) : bookmarks.length === 0 ? (
         // Global Empty State: No bookmarks at all
         <View style={styles.emptyContainer} testID="bookmarks-empty-global">
-          <View style={styles.emptyIconHalo}>
+          <View
+            style={[
+              styles.emptyIconHalo,
+              { backgroundColor: colors.goldGlow, borderColor: colors.goldAccent },
+            ]}
+          >
             <Bookmark size={44} color={colors.goldAccent} />
           </View>
-          <Text style={styles.emptyTitle}>هنوز نشانه‌ای ذخیره نکرده‌اید</Text>
-          <Text style={styles.emptyDesc}>
+          <Text style={[styles.emptyTitle, { color: colors.textPrimary }]}>
+            هنوز نشانه‌ای ذخیره نکرده‌اید
+          </Text>
+          <Text style={[styles.emptyDesc, { color: colors.textFaded }]}>
             در حین تلاوت قرآن، با لمس آیکون نشانه می‌توانید آیات دلخواه خود را برای مطالعه، تدبر و
             دسترسی سریع ذخیره کنید.
           </Text>
           <TouchableOpacity
-            style={styles.emptyPrimaryButton}
+            style={[styles.emptyPrimaryButton, { backgroundColor: colors.primary }]}
             onPress={() => router.push('/(tabs)/surahs' as any)}
             activeOpacity={0.8}
             accessibilityRole="button"
@@ -324,15 +385,23 @@ export default function BookmarksScreen() {
       ) : (
         // Filter Empty State: Query or Tag returned 0 matches
         <View style={styles.emptyContainer} testID="bookmarks-empty-filtered">
-          <View style={styles.emptyIconHaloFaded}>
+          <View
+            style={[
+              styles.emptyIconHaloFaded,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+            ]}
+          >
             <SearchX size={44} color={colors.textFaded} />
           </View>
-          <Text style={styles.emptyTitle}>موردی یافت نشد</Text>
-          <Text style={styles.emptyDesc}>
+          <Text style={[styles.emptyTitle, { color: colors.textPrimary }]}>موردی یافت نشد</Text>
+          <Text style={[styles.emptyDesc, { color: colors.textFaded }]}>
             هیچ نشانه‌ای با فیلتر برچسب یا عبارت جستجوی فعلی مطابقت ندارد.
           </Text>
           <TouchableOpacity
-            style={styles.emptySecondaryButton}
+            style={[
+              styles.emptySecondaryButton,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
+            ]}
             onPress={() => {
               setSearchQuery('');
               setSelectedTagId(null);
@@ -342,7 +411,9 @@ export default function BookmarksScreen() {
             accessibilityLabel="پاک کردن فیلترها و جستجو"
             testID="btn-reset-filters"
           >
-            <Text style={styles.emptySecondaryButtonText}>پاک کردن فیلترها</Text>
+            <Text style={[styles.emptySecondaryButtonText, { color: colors.textSecondary }]}>
+              پاک کردن فیلترها
+            </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -350,10 +421,17 @@ export default function BookmarksScreen() {
       {/* Floating Undo Snackbar */}
       {recentlyDeleted ? (
         <View style={styles.snackbarContainer} testID="bookmarks-undo-snackbar">
-          <View style={styles.snackbarContent}>
-            <Text style={styles.snackbarText}>آیه از نشانه‌ها حذف شد</Text>
+          <View
+            style={[
+              styles.snackbarContent,
+              { backgroundColor: colors.surfaceFloating, borderColor: colors.borderActive },
+            ]}
+          >
+            <Text style={[styles.snackbarText, { color: colors.textPrimary }]}>
+              آیه از نشانه‌ها حذف شد
+            </Text>
             <TouchableOpacity
-              style={styles.snackbarUndoButton}
+              style={[styles.snackbarUndoButton, { backgroundColor: colors.primarySubtle }]}
               onPress={undoDelete}
               activeOpacity={0.7}
               accessibilityRole="button"
@@ -361,7 +439,7 @@ export default function BookmarksScreen() {
               testID="btn-undo-delete"
             >
               <RotateCcw size={15} color={colors.primary} />
-              <Text style={styles.snackbarUndoText}>بازگردانی</Text>
+              <Text style={[styles.snackbarUndoText, { color: colors.primary }]}>بازگردانی</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -375,9 +453,17 @@ export default function BookmarksScreen() {
         onRequestClose={() => setIsSortModalOpen(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.modalCard} testID="sort-selector-modal">
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>مرتب‌سازی نشانه‌ها</Text>
+          <View
+            style={[
+              styles.modalCard,
+              { backgroundColor: colors.backgroundElevated, borderColor: colors.borderSubtle },
+            ]}
+            testID="sort-selector-modal"
+          >
+            <View style={[styles.modalHeader, { borderBottomColor: colors.borderSeparator }]}>
+              <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>
+                مرتب‌سازی نشانه‌ها
+              </Text>
               <TouchableOpacity
                 style={styles.modalCloseButton}
                 onPress={() => setIsSortModalOpen(false)}
@@ -395,7 +481,14 @@ export default function BookmarksScreen() {
                 return (
                   <TouchableOpacity
                     key={`sort-opt-${option.id}`}
-                    style={[styles.sortOptionRow, isSelected && styles.sortOptionRowActive]}
+                    style={[
+                      styles.sortOptionRow,
+                      { backgroundColor: colors.surfaceFloating },
+                      isSelected && [
+                        styles.sortOptionRowActive,
+                        { backgroundColor: colors.primarySubtle, borderColor: colors.primary },
+                      ],
+                    ]}
                     onPress={async () => {
                       await setSortBy(option.id);
                       setIsSortModalOpen(false);
@@ -406,7 +499,11 @@ export default function BookmarksScreen() {
                     testID={`sort-option-${option.id}`}
                   >
                     <Text
-                      style={[styles.sortOptionLabel, isSelected && styles.sortOptionLabelActive]}
+                      style={[
+                        styles.sortOptionLabel,
+                        { color: colors.textPrimary },
+                        isSelected && [styles.sortOptionLabelActive, { color: colors.primary }],
+                      ]}
                     >
                       {option.label}
                     </Text>
@@ -423,6 +520,8 @@ export default function BookmarksScreen() {
     </KeyboardAvoidingView>
   );
 }
+
+const colors = defaultColors;
 
 const styles = StyleSheet.create({
   container: {
