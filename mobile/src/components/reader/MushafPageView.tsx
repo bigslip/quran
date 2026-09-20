@@ -7,6 +7,8 @@ import {
   StyleProp,
   ViewStyle,
   ScrollView,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import { ChevronRight, ChevronLeft } from 'lucide-react-native';
 import {
@@ -54,6 +56,12 @@ export interface MushafPageViewProps {
   activeVerseKey?: string | null;
   style?: StyleProp<ViewStyle>;
   testID?: string;
+  onScroll?: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  scrollEventThrottle?: number;
+  onScrollBeginDrag?: () => void;
+  onScrollEndDrag?: () => void;
+  onMomentumScrollEnd?: () => void;
+  onPressPage?: () => void;
 }
 
 // 15-line contract definition for physical layout compatibility
@@ -105,6 +113,12 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
     activeVerseKey,
     style,
     testID = 'mushaf-page-view',
+    onScroll,
+    scrollEventThrottle,
+    onScrollBeginDrag,
+    onScrollEndDrag,
+    onMomentumScrollEnd,
+    onPressPage,
   }) => {
     const colors = themePalettes[theme] ?? emeraldColors;
 
@@ -220,7 +234,9 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
         ]}
       >
         {/* Header Bar: Juz Name, Surah Name, and Page Number */}
-        <View
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onPressPage}
           style={[
             styles.headerBar,
             {
@@ -253,15 +269,22 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
               {formatMushafPageTitle(pageNumber)}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Continuous Quran Page Content with Natural Justification & Reflow */}
         <ScrollView
           testID={`${testID}-lines-scroll`}
           contentContainerStyle={styles.mushafContent}
           showsVerticalScrollIndicator={false}
+          onScroll={onScroll}
+          scrollEventThrottle={scrollEventThrottle ?? 16}
+          onScrollBeginDrag={onScrollBeginDrag}
+          onScrollEndDrag={onScrollEndDrag}
+          onMomentumScrollEnd={onMomentumScrollEnd}
         >
-          <View
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={onPressPage}
             style={[
               styles.mushafFrame,
               {
@@ -451,7 +474,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
                 </View>
               );
             })}
-          </View>
+          </TouchableOpacity>
         </ScrollView>
 
         {/* Bottom Page Navigation Controls (RTL) */}

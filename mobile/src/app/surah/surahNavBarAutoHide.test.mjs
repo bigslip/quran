@@ -156,5 +156,41 @@ describe('Auto-Hiding Top Bar Geometry & Scroll Delta Accumulator', () => {
       true,
       'Must include viewOffset: topBarHeight',
     );
+
+    // 9. mushafPaddingTop animation on mushafContainer
+    assert.strictEqual(
+      surahFileContent.includes('paddingTop: mushafPaddingTop'),
+      true,
+      'mushafContainer must animate paddingTop: mushafPaddingTop',
+    );
+
+    // 10. MushafPageView forwards scroll and tap toggle handlers
+    assert.strictEqual(
+      surahFileContent.includes('onPressPage={handleToggleNavBar}'),
+      true,
+      'MushafPageView must bind onPressPage={handleToggleNavBar}',
+    );
+  });
+
+  it('verifies MushafPageView binds onScroll and onPressPage for reader mode auto-hiding', async () => {
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const fileUrl = new URL(import.meta.url);
+    const mushafFilePath = path.resolve(
+      path.dirname(fileUrl.pathname),
+      '../../components/reader/MushafPageView.tsx',
+    );
+    const mushafFileContent = fs.readFileSync(mushafFilePath, 'utf8');
+
+    assert.strictEqual(
+      mushafFileContent.includes('onScroll={onScroll}'),
+      true,
+      'MushafPageView ScrollView must bind onScroll',
+    );
+    assert.strictEqual(
+      mushafFileContent.includes('onPress={onPressPage}'),
+      true,
+      'MushafPageView must bind onPressPage to allow tap-to-toggle',
+    );
   });
 });
