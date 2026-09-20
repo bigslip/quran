@@ -75,7 +75,6 @@ export default function SurahReaderScreen() {
 
   // Auto-hiding top bar animation & visibility state
   const navAnim = useRef(new Animated.Value(0)).current;
-  const layoutAnim = useRef(new Animated.Value(0)).current;
   const isNavBarVisibleRef = useRef(true);
   const [isNavBarInteractive, setIsNavBarInteractive] = useState(true);
 
@@ -89,82 +88,34 @@ export default function SurahReaderScreen() {
     outputRange: [1, 0],
   });
 
-  const mushafPaddingTop = layoutAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [topBarHeight, Math.max(insets.top, spacing.xs)],
-  });
-
   const hideNavBar = useCallback(() => {
     if (!isNavBarVisibleRef.current) return;
     isNavBarVisibleRef.current = false;
     setIsNavBarInteractive(false);
-    Animated.parallel([
-      Animated.timing(navAnim, {
-        toValue: 1,
-        duration: 200,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(layoutAnim, {
-        toValue: 1,
-        duration: 200,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: false,
-      }),
-    ]).start();
-  }, [navAnim, layoutAnim]);
+    Animated.timing(navAnim, {
+      toValue: 1,
+      duration: 200,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  }, [navAnim]);
 
   const showNavBar = useCallback(() => {
     if (isNavBarVisibleRef.current) return;
     isNavBarVisibleRef.current = true;
     setIsNavBarInteractive(true);
-    Animated.parallel([
-      Animated.timing(navAnim, {
-        toValue: 0,
-        duration: 220,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(layoutAnim, {
-        toValue: 0,
-        duration: 220,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: false,
-      }),
-    ]).start();
-  }, [navAnim, layoutAnim]);
-
-  const handleToggleNavBar = useCallback(() => {
-    if (isNavBarVisibleRef.current) {
-      hideNavBar();
-    } else {
-      showNavBar();
-    }
-  }, [hideNavBar, showNavBar]);
+    Animated.timing(navAnim, {
+      toValue: 0,
+      duration: 220,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  }, [navAnim]);
 
   // Track user drag interaction to prevent auto-scrolling from fighting manual user reading
   const isUserInteractingRef = useRef(false);
   const userScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const jumpHighlightTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleScrollBeginDrag = useCallback(() => {
-    isUserInteractingRef.current = true;
-    if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-  }, []);
-
-  const handleScrollEndDrag = useCallback(() => {
-    if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-    userScrollTimeoutRef.current = setTimeout(() => {
-      isUserInteractingRef.current = false;
-    }, 3000);
-  }, []);
-
-  const handleMomentumScrollEnd = useCallback(() => {
-    if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-    userScrollTimeoutRef.current = setTimeout(() => {
-      isUserInteractingRef.current = false;
-    }, 3000);
-  }, []);
 
   const scrollAccumulatorRef = useRef(createScrollDeltaAccumulator());
 
@@ -707,12 +658,10 @@ export default function SurahReaderScreen() {
 
   // Mushaf Page Navigation Handlers
   const handlePrevPage = useCallback(() => {
-    scrollAccumulatorRef.current.reset(0);
     setCurrentPage((prev) => Math.max(1, prev - 1));
   }, []);
 
   const handleNextPage = useCallback(() => {
-    scrollAccumulatorRef.current.reset(0);
     setCurrentPage((prev) => Math.min(604, prev + 1));
   }, []);
 
@@ -985,20 +934,32 @@ export default function SurahReaderScreen() {
           windowSize={11}
           removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
-          onScrollBeginDrag={handleScrollBeginDrag}
-          onScrollEndDrag={handleScrollEndDrag}
-          onMomentumScrollEnd={handleMomentumScrollEnd}
+          onScrollBeginDrag={() => {
+            isUserInteractingRef.current = true;
+            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+          }}
+          onScrollEndDrag={() => {
+            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+            userScrollTimeoutRef.current = setTimeout(() => {
+              isUserInteractingRef.current = false;
+            }, 3000);
+          }}
+          onMomentumScrollEnd={() => {
+            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+            userScrollTimeoutRef.current = setTimeout(() => {
+              isUserInteractingRef.current = false;
+            }, 3000);
+          }}
         />
       ) : (
-        <Animated.View
+        <View
           style={[
             styles.mushafContainer,
-            { backgroundColor: colors.background, paddingTop: mushafPaddingTop },
+            { backgroundColor: colors.background, paddingTop: topBarHeight },
             activeVerseKey ? styles.mushafWithDock : null,
           ]}
         >
           <MushafPageView
-            key={`mushaf-page-${currentPage}`}
             pageNumber={currentPage}
             verses={pageVerses}
             words={pageWords}
@@ -1010,14 +971,8 @@ export default function SurahReaderScreen() {
             onPrevPage={handlePrevPage}
             onNextPage={handleNextPage}
             onVersePress={handleVersePress}
-            onScroll={handleScroll}
-            scrollEventThrottle={16}
-            onScrollBeginDrag={handleScrollBeginDrag}
-            onScrollEndDrag={handleScrollEndDrag}
-            onMomentumScrollEnd={handleMomentumScrollEnd}
-            onPressPage={handleToggleNavBar}
           />
-        </Animated.View>
+        </View>
       )}
 
       {/* Floating Audio Playback Dock */}
