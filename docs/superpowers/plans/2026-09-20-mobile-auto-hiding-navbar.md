@@ -51,7 +51,7 @@ Node.js Test Runner (`node:test`, `node:assert`), TypeScript.
     object with
     `processScroll(currentY: number, isUserInteracting: boolean, topBarHeight: number, isCurrentlyVisible: boolean): 'hide' | 'show' | 'none'`
 
-- [ ] **Step 1: Write the failing unit test**
+- [x] **Step 1: Write the failing unit test**
 
 ```javascript
 // mobile/src/app/surah/surahNavBarAutoHide.test.mjs
@@ -135,12 +135,12 @@ describe('Auto-Hiding Top Bar Geometry & Scroll Delta Accumulator', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `node --test mobile/src/app/surah/surahNavBarAutoHide.test.mjs` Expected: Failure because
 `mobile/src/utils/scrollAutoHide.ts` does not exist yet.
 
-- [ ] **Step 3: Implement `mobile/src/utils/scrollAutoHide.ts`**
+- [x] **Step 3: Implement `mobile/src/utils/scrollAutoHide.ts`**
 
 ```typescript
 // mobile/src/utils/scrollAutoHide.ts
@@ -231,16 +231,16 @@ export function createScrollDeltaAccumulator(options?: ScrollDeltaAccumulatorOpt
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `node --test mobile/src/app/surah/surahNavBarAutoHide.test.mjs` Expected: 4 passing tests in
 `surahNavBarAutoHide.test.mjs`.
 
-- [ ] **Step 5: Run typecheck**
+- [x] **Step 5: Run typecheck**
 
 Run: `yarn --cwd mobile typecheck` Expected: 0 errors.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add mobile/src/utils/scrollAutoHide.ts mobile/src/app/surah/surahNavBarAutoHide.test.mjs
@@ -268,13 +268,13 @@ git commit -m "feat(mobile): implement scroll delta accumulator and top bar geom
   - Zero-rerender scroll handler on `FlatList`
   - Proper offset adjustments for audio sync and deep link navigation
 
-- [ ] **Step 1: Check existing test baseline before edits**
+- [x] **Step 1: Check existing test baseline before edits**
 
 Run:
 `node --test mobile/src/app/surah/surahReaderDeepLink.test.mjs mobile/src/components/reader/readerComponents.test.mjs`
 Expected: All tests pass.
 
-- [ ] **Step 2: Update `mobile/src/app/surah/[id].tsx`**
+- [x] **Step 2: Update `mobile/src/app/surah/[id].tsx`**
 
 1. Add imports:
    ```typescript
@@ -413,17 +413,17 @@ Expected: All tests pass.
     - When `isSettingsOpen`, `isQuickJumpOpen`, or `isInsightsOpen` changes to `true`.
     - In `handleToggleViewMode` when changing modes.
 
-- [ ] **Step 3: Run unit tests and deep link tests**
+- [x] **Step 3: Run unit tests and deep link tests**
 
 Run:
 `node --test mobile/src/app/surah/surahReaderDeepLink.test.mjs mobile/src/components/reader/readerComponents.test.mjs mobile/src/app/surah/surahNavBarAutoHide.test.mjs`
 Expected: All tests pass.
 
-- [ ] **Step 4: Run typecheck**
+- [x] **Step 4: Run typecheck**
 
 Run: `yarn --cwd mobile typecheck` Expected: 0 errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add mobile/src/app/surah/[id].tsx
@@ -438,7 +438,7 @@ git commit -m "feat(mobile): auto-hide top navigation bar on scroll in surah rea
 
 - Modify: `mobile/src/app/surah/surahNavBarAutoHide.test.mjs` (add integration assertions)
 
-- [ ] **Step 1: Add source contract assertions to `surahNavBarAutoHide.test.mjs`**
+- [x] **Step 1: Add source contract assertions to `surahNavBarAutoHide.test.mjs`**
 
 Verify that `surah/[id].tsx` contains:
 
@@ -449,19 +449,19 @@ Verify that `surah/[id].tsx` contains:
 - `position: 'absolute'` in `styles.topBar`
 - `viewOffset: topBarHeight`
 
-- [ ] **Step 2: Run all 377+ mobile unit tests**
+- [x] **Step 2: Run all 377+ mobile unit tests**
 
 Run: `node --test 'mobile/src/**/*.test.{ts,mjs}'` Expected: All suites pass with 0 failures.
 
-- [ ] **Step 3: Run full TypeScript check**
+- [x] **Step 3: Run full TypeScript check**
 
 Run: `yarn --cwd mobile typecheck` Expected: Clean pass.
 
-- [ ] **Step 4: Verify Expo Metro bundler status**
+- [x] **Step 4: Verify Expo Metro bundler status**
 
 Verify that `http://localhost:8081` bundles cleanly without warnings or errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add mobile/src/app/surah/surahNavBarAutoHide.test.mjs
