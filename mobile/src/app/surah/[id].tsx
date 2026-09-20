@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,12 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Share,
+  Animated,
+  Easing,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import {
@@ -41,10 +46,13 @@ import { useReadingStore } from '@/stores/useReadingStore';
 import { useBookmarkStore } from '@/stores/useBookmarkStore';
 import { audioPlayerService } from '@/services/audio/audioPlayerService';
 import { DEFAULT_RECITER_ID } from '@/services/audio/reciterService';
+import { computeTopBarGeometry, createScrollDeltaAccumulator } from '@/utils/scrollAutoHide';
 
 export default function SurahReaderScreen() {
   const router = useRouter();
   const { theme, colors } = useAppTheme();
+  const insets = useSafeAreaInsets();
+  const { topBarPaddingTop, topBarHeight } = computeTopBarGeometry(insets.top);
   const { id, verse } = useLocalSearchParams<{ id: string; verse?: string }>();
   const chapterId = Number(id) || 1;
 
@@ -64,6 +72,77 @@ export default function SurahReaderScreen() {
   const [quickJumpInitialTab, setQuickJumpInitialTab] = useState<QuickJumpTabId>('surah_ayah');
   const flatListRef = React.useRef<FlatList<Verse>>(null);
   const handledVerseRef = React.useRef<string | null>(null);
+
+  // Auto-hiding top bar animation & visibility state
+  const navAnim = useRef(new Animated.Value(0)).current;
+  const isNavBarVisibleRef = useRef(true);
+  const [isNavBarInteractive, setIsNavBarInteractive] = useState(true);
+
+  const navTranslateY = navAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -topBarHeight],
+  });
+
+  const navOpacity = navAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0],
+  });
+
+  const hideNavBar = useCallback(() => {
+    if (!isNavBarVisibleRef.current) return;
+    isNavBarVisibleRef.current = false;
+    setIsNavBarInteractive(false);
+    Animated.timing(navAnim, {
+      toValue: 1,
+      duration: 200,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  }, [navAnim]);
+
+  const showNavBar = useCallback(() => {
+    if (isNavBarVisibleRef.current) return;
+    isNavBarVisibleRef.current = true;
+    setIsNavBarInteractive(true);
+    Animated.timing(navAnim, {
+      toValue: 0,
+      duration: 220,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  }, [navAnim]);
+
+  // Track user drag interaction to prevent auto-scrolling from fighting manual user reading
+  const isUserInteractingRef = useRef(false);
+  const userScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const jumpHighlightTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const scrollAccumulatorRef = useRef(createScrollDeltaAccumulator());
+
+  const handleScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const currentY = e.nativeEvent.contentOffset.y;
+      const action = scrollAccumulatorRef.current.processScroll(
+        currentY,
+        isUserInteractingRef.current,
+        topBarHeight,
+        isNavBarVisibleRef.current,
+      );
+      if (action === 'hide') {
+        hideNavBar();
+      } else if (action === 'show') {
+        showNavBar();
+      }
+    },
+    [topBarHeight, hideNavBar, showNavBar],
+  );
+
+  // Ensure top navigation bar is visible whenever an overlay/drawer/modal opens
+  useEffect(() => {
+    if (isSettingsOpen || isQuickJumpOpen || isInsightsOpen) {
+      showNavBar();
+    }
+  }, [isSettingsOpen, isQuickJumpOpen, isInsightsOpen, showNavBar]);
 
   // Bookmark store
   const { bookmarkedKeys, toggleBookmark, loadBookmarks } = useBookmarkStore();
@@ -171,6 +250,7 @@ export default function SurahReaderScreen() {
                   index: targetIndex,
                   animated: true,
                   viewPosition: 0,
+                  viewOffset: topBarHeight,
                 });
               } catch {}
             }, 160);
@@ -192,7 +272,7 @@ export default function SurahReaderScreen() {
         }
       }
     }
-  }, [loading, verse, verses, viewMode, chapterId]);
+  }, [loading, verse, verses, viewMode, chapterId, topBarHeight]);
 
   // Load Mushaf page verses & words when currentPage changes
   useEffect(() => {
@@ -219,6 +299,7 @@ export default function SurahReaderScreen() {
 
   // View mode toggle handler with active verse page synchronization
   const handleToggleViewMode = useCallback(() => {
+    showNavBar();
     if (viewMode === 'continuous' && activeVerseKey) {
       const activeVerse = verses.find((v) => v.verse_key === activeVerseKey);
       if (activeVerse && activeVerse.page_number) {
@@ -226,7 +307,7 @@ export default function SurahReaderScreen() {
       }
     }
     setViewMode(viewMode === 'continuous' ? 'mushaf' : 'continuous');
-  }, [viewMode, activeVerseKey, verses, setViewMode]);
+  }, [showNavBar, viewMode, activeVerseKey, verses, setViewMode]);
 
   // Sync references to latest state to avoid stale closures in audio onFinish callbacks
   const versesRef = React.useRef(verses);
@@ -293,7 +374,7 @@ export default function SurahReaderScreen() {
               ) {
                 lastScrolledVerseKeyRef.current = item.verse_key;
                 flatListRef.current?.scrollToOffset({
-                  offset: Math.max(0, layout.y - 16),
+                  offset: Math.max(0, layout.y - topBarHeight - spacing.sm),
                   animated: true,
                 });
               }
@@ -304,7 +385,7 @@ export default function SurahReaderScreen() {
         </View>
       );
     },
-    [],
+    [topBarHeight],
   );
 
   // Auto-scroll to currently reciting verse in continuous reading mode with exact measured offset
@@ -314,7 +395,7 @@ export default function SurahReaderScreen() {
       if (layout) {
         lastScrolledVerseKeyRef.current = activeVerseKey;
         flatListRef.current?.scrollToOffset({
-          offset: Math.max(0, layout.y - 16),
+          offset: Math.max(0, layout.y - topBarHeight - spacing.sm),
           animated: true,
         });
       } else {
@@ -325,6 +406,7 @@ export default function SurahReaderScreen() {
               index: activeIndex,
               animated: true,
               viewPosition: 0,
+              viewOffset: topBarHeight,
             });
           } catch {
             // Handled by onScrollToIndexFailed fallback
@@ -332,7 +414,7 @@ export default function SurahReaderScreen() {
         }
       }
     }
-  }, [activeVerseKey, isPlaying, viewMode, verses]);
+  }, [activeVerseKey, isPlaying, viewMode, verses, topBarHeight]);
 
   // Core audio playback executor
   const playAyahAudio = useCallback(
@@ -396,11 +478,6 @@ export default function SurahReaderScreen() {
       }
     }
   }, [selectedReciterId, isPlaying, activeVerseKey, playAyahAudio]);
-
-  // Track user drag interaction to prevent auto-scrolling from fighting manual user reading
-  const isUserInteractingRef = React.useRef(false);
-  const userScrollTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const jumpHighlightTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Clean up user scroll and jump highlight timeouts on unmount
   useEffect(() => {
@@ -620,6 +697,7 @@ export default function SurahReaderScreen() {
                 index: targetIndex,
                 animated: true,
                 viewPosition: 0,
+                viewOffset: topBarHeight,
               });
             } catch {}
             if (jumpHighlightTimeoutRef.current) {
@@ -644,7 +722,7 @@ export default function SurahReaderScreen() {
         );
       }
     },
-    [chapterId, chapter, verses, viewMode, router, setLastRead, setActiveVerseKey],
+    [chapterId, chapter, verses, viewMode, router, setLastRead, setActiveVerseKey, topBarHeight],
   );
 
   if (loading) {
@@ -663,11 +741,21 @@ export default function SurahReaderScreen() {
       <AmbientGlow height={180} />
 
       {/* Top Bar Navigation (RTL) */}
-      <View
+      <Animated.View
         style={[
           styles.topBar,
-          { backgroundColor: colors.backgroundElevated, borderBottomColor: colors.borderSubtle },
+          {
+            paddingTop: topBarPaddingTop,
+            backgroundColor: colors.backgroundElevated,
+            borderBottomColor: colors.borderSubtle,
+            transform: [{ translateY: navTranslateY }],
+            opacity: navOpacity,
+          },
         ]}
+        pointerEvents={isNavBarInteractive ? 'auto' : 'none'}
+        aria-hidden={!isNavBarInteractive}
+        accessibilityElementsHidden={!isNavBarInteractive}
+        importantForAccessibility={isNavBarInteractive ? 'auto' : 'no-hide-descendants'}
       >
         {/* Leading Action (RTL: Back Button) - balanced width */}
         <View style={styles.topBarLeading}>
@@ -770,7 +858,7 @@ export default function SurahReaderScreen() {
             <SlidersHorizontal size={20} color={colors.textSecondary} />
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
 
       {/* Dual-Mode Content View */}
       {viewMode === 'continuous' ? (
@@ -778,9 +866,11 @@ export default function SurahReaderScreen() {
           ref={flatListRef}
           data={verses}
           keyExtractor={(item) => item.verse_key}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
           contentContainerStyle={[
             styles.versesListContent,
-            { backgroundColor: colors.background },
+            { backgroundColor: colors.background, paddingTop: topBarHeight + spacing.xs },
             activeVerseKey ? styles.versesListWithDock : null,
           ]}
           CellRendererComponent={CellRenderer}
@@ -797,6 +887,7 @@ export default function SurahReaderScreen() {
                     index: info.index,
                     animated: true,
                     viewPosition: 0,
+                    viewOffset: topBarHeight,
                   });
                 } catch {
                   // Ignore index errors if layout is not ready
@@ -863,7 +954,7 @@ export default function SurahReaderScreen() {
         <View
           style={[
             styles.mushafContainer,
-            { backgroundColor: colors.background },
+            { backgroundColor: colors.background, paddingTop: topBarHeight },
             activeVerseKey ? styles.mushafWithDock : null,
           ]}
         >
@@ -977,14 +1068,17 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.sm,
   },
   topBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 54,
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.sm,
     borderBottomWidth: 1,
-    zIndex: 10,
   },
   topBarLeading: {
     minWidth: 96,
