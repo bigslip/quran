@@ -147,6 +147,25 @@ export default function SurahReaderScreen() {
   const userScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const jumpHighlightTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const handleScrollBeginDrag = useCallback(() => {
+    isUserInteractingRef.current = true;
+    if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+  }, []);
+
+  const handleScrollEndDrag = useCallback(() => {
+    if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+    userScrollTimeoutRef.current = setTimeout(() => {
+      isUserInteractingRef.current = false;
+    }, 3000);
+  }, []);
+
+  const handleMomentumScrollEnd = useCallback(() => {
+    if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+    userScrollTimeoutRef.current = setTimeout(() => {
+      isUserInteractingRef.current = false;
+    }, 3000);
+  }, []);
+
   const scrollAccumulatorRef = useRef(createScrollDeltaAccumulator());
 
   const handleScroll = useCallback(
@@ -966,22 +985,9 @@ export default function SurahReaderScreen() {
           windowSize={11}
           removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
-          onScrollBeginDrag={() => {
-            isUserInteractingRef.current = true;
-            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-          }}
-          onScrollEndDrag={() => {
-            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-            userScrollTimeoutRef.current = setTimeout(() => {
-              isUserInteractingRef.current = false;
-            }, 3000);
-          }}
-          onMomentumScrollEnd={() => {
-            if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-            userScrollTimeoutRef.current = setTimeout(() => {
-              isUserInteractingRef.current = false;
-            }, 3000);
-          }}
+          onScrollBeginDrag={handleScrollBeginDrag}
+          onScrollEndDrag={handleScrollEndDrag}
+          onMomentumScrollEnd={handleMomentumScrollEnd}
         />
       ) : (
         <Animated.View
@@ -992,6 +998,7 @@ export default function SurahReaderScreen() {
           ]}
         >
           <MushafPageView
+            key={`mushaf-page-${currentPage}`}
             pageNumber={currentPage}
             verses={pageVerses}
             words={pageWords}
@@ -1005,22 +1012,9 @@ export default function SurahReaderScreen() {
             onVersePress={handleVersePress}
             onScroll={handleScroll}
             scrollEventThrottle={16}
-            onScrollBeginDrag={() => {
-              isUserInteractingRef.current = true;
-              if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-            }}
-            onScrollEndDrag={() => {
-              if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-              userScrollTimeoutRef.current = setTimeout(() => {
-                isUserInteractingRef.current = false;
-              }, 3000);
-            }}
-            onMomentumScrollEnd={() => {
-              if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-              userScrollTimeoutRef.current = setTimeout(() => {
-                isUserInteractingRef.current = false;
-              }, 3000);
-            }}
+            onScrollBeginDrag={handleScrollBeginDrag}
+            onScrollEndDrag={handleScrollEndDrag}
+            onMomentumScrollEnd={handleMomentumScrollEnd}
             onPressPage={handleToggleNavBar}
           />
         </Animated.View>

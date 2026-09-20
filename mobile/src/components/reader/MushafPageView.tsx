@@ -283,6 +283,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
           onMomentumScrollEnd={onMomentumScrollEnd}
         >
           <TouchableOpacity
+            accessible={false}
             activeOpacity={1}
             onPress={onPressPage}
             style={[
