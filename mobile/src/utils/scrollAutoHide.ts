@@ -8,8 +8,8 @@ export interface TopBarGeometry {
   BAR_CONTENT_HEIGHT: number;
 }
 
-export function computeTopBarGeometry(insetsTop: number): TopBarGeometry {
-  const topBarPaddingTop = Math.max(insetsTop, spacing.sm);
+export function computeTopBarGeometry(insetsTop?: number): TopBarGeometry {
+  const topBarPaddingTop = Math.max(insetsTop || 0, spacing.sm);
   const topBarHeight = topBarPaddingTop + BAR_CONTENT_HEIGHT;
   return {
     topBarPaddingTop,

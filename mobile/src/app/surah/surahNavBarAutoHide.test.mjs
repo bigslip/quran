@@ -76,6 +76,22 @@ describe('Auto-Hiding Top Bar Geometry & Scroll Delta Accumulator', () => {
     assert.strictEqual(triggeredAction, 'show');
   });
 
+  it('resets accumulated delta and lastScrollY when reset() is explicitly called', () => {
+    const accumulator = createScrollDeltaAccumulator({ hideThreshold: 30, showThreshold: -20 });
+    const topBarHeight = 100;
+
+    // Accumulate 25px of downward scroll
+    accumulator.processScroll(200, true, topBarHeight, true);
+    accumulator.processScroll(225, true, topBarHeight, true);
+
+    // Call reset(0)
+    accumulator.reset(0);
+
+    // Now scrolling to 20px from 0 should not trigger hide because delta is only 20px (under 30px threshold)
+    const action = accumulator.processScroll(20, true, topBarHeight, true);
+    assert.strictEqual(action, 'none');
+  });
+
   it('verifies static structural contracts in mobile/src/app/surah/[id].tsx', async () => {
     const fs = await import('node:fs');
     const path = await import('node:path');

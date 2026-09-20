@@ -300,6 +300,7 @@ export default function SurahReaderScreen() {
   // View mode toggle handler with active verse page synchronization
   const handleToggleViewMode = useCallback(() => {
     showNavBar();
+    scrollAccumulatorRef.current.reset(0);
     if (viewMode === 'continuous' && activeVerseKey) {
       const activeVerse = verses.find((v) => v.verse_key === activeVerseKey);
       if (activeVerse && activeVerse.page_number) {
