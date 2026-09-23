@@ -37,6 +37,7 @@ interface DataEngineState {
   translationsMap: Map<number, Map<string, any>>;
   translationsList: any;
   tafsirsList: any;
+  tafsirDataCache: Map<number, any>;
   languagesList: any;
   recitersList: any;
   audioTimestampsByChapter: Map<string, any>;
@@ -61,6 +62,7 @@ const state: DataEngineState = {
   translationsMap: new Map(),
   translationsList: null,
   tafsirsList: null,
+  tafsirDataCache: new Map(),
   languagesList: null,
   recitersList: null,
   audioTimestampsByChapter: new Map(),
@@ -237,6 +239,7 @@ export function _resetStateForTesting(): void {
   state.translationsMap.clear();
   state.translationsList = null;
   state.tafsirsList = null;
+  state.tafsirDataCache.clear();
   state.languagesList = null;
   state.recitersList = null;
   state.audioTimestampsByChapter.clear();
@@ -276,6 +279,43 @@ async function getTranslationMap(translationId: number): Promise<Map<string, any
 
   state.translationsMap.set(translationId, map);
   return map;
+}
+
+/** Known Persian Tafsir metadata indexed by ID. */
+const PERSIAN_TAFSIR_META: Record<number, { slug: string; name: string; languageId: number }> = {
+  171: { slug: 'fa-tafsir-nemouneh', name: 'تفسیر نمونه', languageId: 106 },
+  172: { slug: 'fa-tafsir-noor', name: 'تفسیر نور', languageId: 106 },
+};
+
+/** Slug → ID reverse mapping for route resolution. */
+const TAFSIR_SLUG_TO_ID: Record<string, number> = {
+  'fa-tafsir-nemouneh': 171,
+  'fa-tafsir-noor': 172,
+};
+
+/**
+ * Resolve a tafsir identifier (numeric string or slug) to a canonical tafsir ID.
+ * Returns null if not recognized.
+ */
+function resolveTafsirId(idOrSlug: string): number | null {
+  const numeric = Number(idOrSlug);
+  if (!Number.isNaN(numeric) && numeric > 0) return numeric;
+  return TAFSIR_SLUG_TO_ID[idOrSlug] ?? null;
+}
+
+/**
+ * Load a tafsir dataset on-demand into the cache, returning the parsed JSON.
+ * Throws if the tafsir file cannot be found or the ID is not supported.
+ */
+async function getTafsirDataset(tafsirId: number): Promise<any> {
+  if (state.tafsirDataCache.has(tafsirId)) {
+    return state.tafsirDataCache.get(tafsirId);
+  }
+
+  const tafsirPath = await resolveDataFile(`tafsirs/${tafsirId}.json`);
+  const data = JSON.parse(await fs.readFile(tafsirPath, 'utf-8'));
+  state.tafsirDataCache.set(tafsirId, data);
+  return data;
 }
 
 /**
@@ -992,6 +1032,48 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
   if (cleanPath === 'resources/tafsirs') {
     return state.tafsirsList || { tafsirs: [] };
   }
+
+  // -------------------------------------------------------------
+  // 11b. Tafsir by Verse Endpoint
+  // GET tafsirs/:tafsirIdOrSlug/by_ayah/:verseKey
+  // Matches QuranCDN format: { tafsir: { resource_id, slug, text, points, ... } }
+  // -------------------------------------------------------------
+  const tafsirByAyahMatch = /^tafsirs\/([^/]+)\/by_ayah\/(\d+:\d+)$/.exec(cleanPath);
+  if (tafsirByAyahMatch) {
+    const tafsirIdOrSlug = tafsirByAyahMatch[1];
+    const verseKey = tafsirByAyahMatch[2];
+
+    const tafsirId = resolveTafsirId(tafsirIdOrSlug);
+    if (!tafsirId) {
+      throw new Error(`Tafsir not found: ${tafsirIdOrSlug}`);
+    }
+
+    const dataset = await getTafsirDataset(tafsirId);
+    const verseData = dataset.byVerseKey?.[verseKey];
+    const meta = PERSIAN_TAFSIR_META[tafsirId] ?? {
+      slug: dataset.slug || String(tafsirId),
+      name: dataset.name || String(tafsirId),
+      languageId: 106,
+    };
+
+    const verseInfo = verseData
+      ? { id: verseData.verse_number, verse_number: verseData.verse_number, verse_key: verseKey }
+      : { id: 0, verse_number: 0, verse_key: verseKey };
+
+    return {
+      tafsir: {
+        resource_id: tafsirId,
+        resource_name: meta.name,
+        language_id: meta.languageId,
+        slug: meta.slug,
+        translated_name: { name: meta.name, language_name: 'persian' },
+        verses: { [verseKey]: verseInfo },
+        text: verseData?.text ?? '',
+        points: verseData?.points ?? [],
+      },
+    };
+  }
+
 
   if (cleanPath === 'resources/languages') {
     return state.languagesList || { languages: [] };
