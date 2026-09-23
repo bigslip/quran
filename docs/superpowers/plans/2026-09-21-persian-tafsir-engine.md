@@ -51,12 +51,12 @@ download management with frequent-user offline nudging.
 - Consumes: Raw Persian Tafsir verses & points from verified Tanzil/Quran.ir scholarly corpus.
 - Produces: `data/qdc/tafsirs/171.json` and `172.json` with lookup mapping by `verse_key`.
 
-- [ ] **Step 1: Write the failing test for Persian Tafsir dataset structure**
-- [ ] **Step 2: Run test to verify it fails**
-- [ ] **Step 3: Implement ingestion script and register 171 (Nemouneh) & 172 (Noor) in
+- [x] **Step 1: Write the failing test for Persian Tafsir dataset structure**
+- [x] **Step 2: Run test to verify it fails**
+- [x] **Step 3: Implement ingestion script and register 171 (Nemouneh) & 172 (Noor) in
       `tafsirs-list.json`**
-- [ ] **Step 4: Run test to verify it passes**
-- [ ] **Step 5: Commit dataset & ingestion script**
+- [x] **Step 4: Run test to verify it passes**
+- [x] **Step 5: Commit dataset & ingestion script**
 
 ---
 
@@ -65,21 +65,21 @@ download management with frequent-user offline nudging.
 **Files:**
 
 - Modify: `src/utils/localDataEngine.ts`
-- Test: `tests/unit/localDataEngine-tafsir.test.ts`
+- Test: `tests/unit/local-data-engine-tafsir.test.ts`
 
 **Interfaces:**
 
 - Consumes: Clean paths `tafsirs/:idOrSlug/by_ayah/:verseKey` and `download/tafsirs/:slug.db`
 - Produces: `TafsirContentResponse` matching QuranCDN format.
 
-- [ ] **Step 1: Write the failing test for localDataEngine tafsir endpoints**
-- [ ] **Step 2: Run test to verify it fails**
-- [ ] **Step 3: Implement `tafsirs/:id/by_ayah/:verseKey` and SQLite package download endpoint in
+- [x] **Step 1: Write the failing test for localDataEngine tafsir endpoints**
+- [x] **Step 2: Run test to verify it fails**
+- [x] **Step 3: Implement `tafsirs/:id/by_ayah/:verseKey` and SQLite package download endpoint in
       `localDataEngine.ts`**
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 - [ ] **Step 5: Verify via
       `curl http://localhost:3000/api/proxy/content/api/qdc/tafsirs/171/by_ayah/1:1`**
-- [ ] **Step 6: Commit backend endpoint changes**
+- [x] **Step 6: Commit backend endpoint changes**
 
 ---
 
