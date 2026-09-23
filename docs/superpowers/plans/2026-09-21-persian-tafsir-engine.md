@@ -96,11 +96,11 @@ download management with frequent-user offline nudging.
 - Produces: `downloadTafsirDatabase(slug, onProgress)`, `isTafsirDownloaded(slug)`,
   `deleteTafsirDatabase(slug)`, `getDownloadedTafsirDb(slug)`.
 
-- [ ] **Step 1: Write the failing test for Tafsir download management**
-- [ ] **Step 2: Run test to verify it fails**
-- [ ] **Step 3: Implement `tafsirDownloadService.ts`**
-- [ ] **Step 4: Run test to verify it passes**
-- [ ] **Step 5: Commit mobile download service**
+- [x] **Step 1: Write the failing test for Tafsir download management**
+- [x] **Step 2: Run test to verify it fails**
+- [x] **Step 3: Implement `tafsirDownloadService.ts`**
+- [x] **Step 4: Run test to verify it passes**
+- [x] **Step 5: Commit mobile download service**
 
 ---
 
