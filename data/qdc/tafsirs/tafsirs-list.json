@@ -219,6 +219,28 @@
         "name": "Bayan ul Quran",
         "language_name": "english"
       }
+    },
+    {
+      "id": 171,
+      "name": "تفسیر نمونه",
+      "author_name": "آیت‌الله ناصر مکارم شیرازی",
+      "slug": "fa-tafsir-nemouneh",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "تفسیر نمونه",
+        "language_name": "persian"
+      }
+    },
+    {
+      "id": 172,
+      "name": "تفسیر نور",
+      "author_name": "حجت‌الاسلام محسن قرائتی",
+      "slug": "fa-tafsir-noor",
+      "language_name": "persian",
+      "translated_name": {
+        "name": "تفسیر نور",
+        "language_name": "persian"
+      }
     }
   ]
 }
