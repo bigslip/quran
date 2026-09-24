@@ -45,6 +45,7 @@ export interface FileSystemAdapter {
   getInfoAsync(fileUri: string): Promise<{ exists: boolean; size?: number; isDirectory?: boolean }>;
   deleteAsync(fileUri: string, options?: { idempotent?: boolean }): Promise<void>;
   makeDirectoryAsync(dirUri: string, options?: { intermediates?: boolean }): Promise<void>;
+  moveAsync?(options: { from: string; to: string }): Promise<void>;
   downloadAsync?(
     uri: string,
     fileUri: string,
@@ -67,6 +68,10 @@ let currentApiBaseUrl = DEFAULT_API_BASE_URL;
 let customFileSystem: FileSystemAdapter | null = null;
 const customDatabases = new Map<string, SQLiteLikeDb>();
 const openDatabases = new Map<string, SQLiteLikeDb>();
+/** Raw (un-adapted) native SQLite connection objects, keyed by normalized slug. */
+const openRawDatabases = new Map<string, any>();
+/** In-flight open promises to prevent concurrent duplicate openDatabaseAsync calls. */
+const openingDatabases = new Map<string, Promise<SQLiteLikeDb>>();
 const activeDownloads = new Map<string, Promise<string>>();
 const progressListeners = new Map<string, Set<(progress: number) => void>>();
 
@@ -79,13 +84,17 @@ export function setFileSystemForTesting(fs: FileSystemAdapter | null): void {
 
 /**
  * Sets a custom database instance for a given Tafsir slug (for testing).
+ * Stores both the adapted wrapper (for queries) and the raw object (for closeAsync).
  */
 export function setTafsirDatabase(slug: string, db: any): void {
   const clean = normalizeSlug(slug);
   if (db) {
     customDatabases.set(clean, adaptDatabase(db));
+    // Store raw so closeTafsirDatabase can call closeAsync on the original object
+    openRawDatabases.set(clean, db);
   } else {
     customDatabases.delete(clean);
+    openRawDatabases.delete(clean);
   }
 }
 
@@ -103,6 +112,8 @@ export function resetTafsirDownloaderForTesting(): void {
   customFileSystem = null;
   customDatabases.clear();
   openDatabases.clear();
+  openRawDatabases.clear();
+  openingDatabases.clear();
   activeDownloads.clear();
   progressListeners.clear();
   currentApiBaseUrl = DEFAULT_API_BASE_URL;
@@ -110,6 +121,7 @@ export function resetTafsirDownloaderForTesting(): void {
 
 /**
  * Normalizes a Tafsir slug or file name into a canonical lowercase slug without `.db`.
+ * Validates that the result matches the allowed slug pattern.
  */
 function normalizeSlug(slug: string): string {
   if (!slug || typeof slug !== 'string') {
@@ -118,6 +130,11 @@ function normalizeSlug(slug: string): string {
   const clean = slug.trim().toLowerCase().replace(/\.db$/, '');
   if (!clean) {
     throw new Error('A valid Tafsir slug is required');
+  }
+  if (!/^[a-z0-9][a-z0-9_-]*$/.test(clean)) {
+    throw new Error(
+      `A valid Tafsir slug is required (got "${clean}"). Slugs must start with a letter or digit and contain only letters, digits, underscores, or hyphens.`,
+    );
   }
   return clean;
 }
@@ -156,8 +173,12 @@ function resolveFileSystem(): FileSystemAdapter {
  * Returns the directory path where Tafsir SQLite databases are stored (`documentDirectory/SQLite/`).
  */
 function getDatabaseDirectory(fs: FileSystemAdapter): string {
-  const docDir = fs.documentDirectory || '';
-  const base = docDir.endsWith('/') ? docDir : `${docDir}/`;
+  if (!fs.documentDirectory) {
+    throw new Error(
+      'FileSystem.documentDirectory is null. The app may not have storage access or is running in an unsupported environment.',
+    );
+  }
+  const base = fs.documentDirectory.endsWith('/') ? fs.documentDirectory : `${fs.documentDirectory}/`;
   return `${base}SQLite/`;
 }
 
@@ -183,6 +204,7 @@ export function getTafsirDownloadUrl(slug: string): string {
 
 /**
  * Checks whether the complete SQLite database for a given Tafsir is downloaded on-device.
+ * Returns false while a download for the same slug is actively in progress.
  */
 export async function isTafsirDownloaded(slug: string): Promise<boolean> {
   const clean = normalizeSlug(slug);
@@ -190,6 +212,11 @@ export async function isTafsirDownloaded(slug: string): Promise<boolean> {
   // If a mock test database is actively registered, report as downloaded
   if (customDatabases.has(clean)) {
     return true;
+  }
+
+  // A download is in progress — the file may be a partial tmp or not yet renamed
+  if (activeDownloads.has(clean)) {
+    return false;
   }
 
   try {
@@ -231,7 +258,28 @@ export async function getDownloadedTafsirSlugs(): Promise<string[]> {
 }
 
 /**
+ * Broadcasts progress to all registered listeners for a slug.
+ */
+function broadcastProgress(slug: string, fraction: number): void {
+  const clamped = Math.min(1, Math.max(0, fraction));
+  const listeners = progressListeners.get(slug);
+  if (listeners) {
+    for (const listener of listeners) {
+      try {
+        listener(clamped);
+      } catch {
+        // Ignore listener errors
+      }
+    }
+  }
+}
+
+/**
  * Downloads a complete Tafsir SQLite database on-demand with progress tracking.
+ *
+ * Uses an atomic write strategy: downloads to a `.download.tmp` file first, then
+ * renames to the final path only on success. This prevents corrupt databases from
+ * being left behind if the app is killed mid-download.
  *
  * Deduplicates concurrent download requests for the same slug so that multiple
  * callers share the same network operation and progress stream.
@@ -259,41 +307,39 @@ export async function downloadTafsirDatabase(
     return activeDownloads.get(clean)!;
   }
 
-  const broadcastProgress = (fraction: number) => {
-    const clamped = Math.min(1, Math.max(0, fraction));
-    const listeners = progressListeners.get(clean);
-    if (listeners) {
-      for (const listener of listeners) {
-        try {
-          listener(clamped);
-        } catch {
-          // Ignore listener errors
-        }
-      }
-    }
-  };
-
   const downloadPromise = (async (): Promise<string> => {
+    // Short-circuit inside the promise: already fully downloaded — no need to re-download
+    if (await isTafsirDownloaded(clean)) {
+      broadcastProgress(clean, 1.0);
+      return getTafsirDbPath(clean);
+    }
+
+    // Close any open connection before overwriting the underlying file
+    if (openDatabases.has(clean) || openRawDatabases.has(clean)) {
+      await closeTafsirDatabase(clean);
+    }
+
     const fs = resolveFileSystem();
     const targetDir = getDatabaseDirectory(fs);
     const targetPath = getTafsirDbPath(clean);
+    const tmpPath = `${targetPath}.download.tmp`;
     const downloadUrl = getTafsirDownloadUrl(clean);
 
     // Ensure directory exists
     await fs.makeDirectoryAsync(targetDir, { intermediates: true });
 
-    broadcastProgress(0);
+    broadcastProgress(clean, 0);
 
     try {
       if (typeof fs.createDownloadResumable === 'function') {
         const downloadResumable = fs.createDownloadResumable(
           downloadUrl,
-          targetPath,
+          tmpPath,
           {},
           (progress) => {
             if (progress && progress.totalBytesExpectedToWrite > 0) {
               const fraction = progress.totalBytesWritten / progress.totalBytesExpectedToWrite;
-              broadcastProgress(fraction);
+              broadcastProgress(clean, fraction);
             }
           },
         );
@@ -305,7 +351,7 @@ export async function downloadTafsirDatabase(
           );
         }
       } else if (typeof fs.downloadAsync === 'function') {
-        const result = await fs.downloadAsync(downloadUrl, targetPath);
+        const result = await fs.downloadAsync(downloadUrl, tmpPath);
         if (!result || (result.status && result.status !== 200)) {
           throw new Error(
             `Failed to download Tafsir database: HTTP ${result?.status ?? 'unknown'}`,
@@ -315,10 +361,25 @@ export async function downloadTafsirDatabase(
         throw new Error('FileSystem implementation does not support downloading files');
       }
 
-      broadcastProgress(1);
+      // Atomic rename: move tmp → final path
+      if (typeof fs.moveAsync === 'function') {
+        await fs.moveAsync({ from: tmpPath, to: targetPath });
+      } else {
+        // Fallback for adapters that don't implement moveAsync (e.g. legacy test mocks):
+        // the tmp file was written to targetPath directly if the adapter ignores the path arg.
+        // Ensure tmp is cleaned up in case the adapter did write to it separately.
+        try {
+          await fs.deleteAsync(tmpPath, { idempotent: true });
+        } catch {}
+      }
+
+      broadcastProgress(clean, 1);
       return targetPath;
     } catch (err) {
-      // Clean up incomplete or corrupted file on failure
+      // Clean up both tmp and target on failure to prevent corrupt databases
+      try {
+        await fs.deleteAsync(tmpPath, { idempotent: true });
+      } catch {}
       try {
         await fs.deleteAsync(targetPath, { idempotent: true });
       } catch {}
@@ -329,6 +390,7 @@ export async function downloadTafsirDatabase(
     }
   })();
 
+  // Register BEFORE any await so concurrent callers share this promise
   activeDownloads.set(clean, downloadPromise);
   return downloadPromise;
 }
@@ -341,7 +403,7 @@ export async function downloadTafsirDatabase(
 export async function deleteTafsirDatabase(slug: string): Promise<boolean> {
   const clean = normalizeSlug(slug);
 
-  // Close and clean up cached open connection
+  // Close and clean up cached open connection (must happen before fs.deleteAsync)
   await closeTafsirDatabase(clean);
 
   // Remove mock database if set
@@ -366,6 +428,9 @@ export async function deleteTafsirDatabase(slug: string): Promise<boolean> {
 /**
  * Returns an adapted SQLite database instance for a downloaded Tafsir.
  *
+ * Uses an in-flight promise cache to prevent concurrent calls from opening
+ * multiple native connections to the same file.
+ *
  * @throws Error if the database is not downloaded yet
  */
 export async function getDownloadedTafsirDb(slug: string): Promise<SQLiteLikeDb> {
@@ -381,35 +446,66 @@ export async function getDownloadedTafsirDb(slug: string): Promise<SQLiteLikeDb>
     return openDatabases.get(clean)!;
   }
 
-  // 3. Verify downloaded status
+  // 3. In-flight open — return the existing promise to avoid duplicate connections
+  if (openingDatabases.has(clean)) {
+    return openingDatabases.get(clean)!;
+  }
+
+  // 4. Verify downloaded status
   const downloaded = await isTafsirDownloaded(clean);
   if (!downloaded) {
     throw new Error(`Tafsir database for "${slug}" is not downloaded. Please download it first.`);
   }
 
-  // 4. Open with expo-sqlite
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const SQLite = require('expo-sqlite');
-    const fileName = getTafsirDbFileName(clean);
-    const rawDb = await SQLite.openDatabaseAsync(fileName);
-    const adapted = adaptDatabase(rawDb);
-    openDatabases.set(clean, adapted);
-    return adapted;
-  } catch (err: any) {
-    throw new Error(
-      `Failed to open downloaded Tafsir database "${slug}": ${err?.message || String(err)}`,
-    );
-  }
+  // 5. Open with expo-sqlite, deduplicating concurrent callers
+  const openingPromise: Promise<SQLiteLikeDb> = (async () => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const SQLite = require('expo-sqlite');
+      const fileName = getTafsirDbFileName(clean);
+      const rawDb = await SQLite.openDatabaseAsync(fileName);
+      const adapted = adaptDatabase(rawDb);
+      // Store both adapted (for queries) and raw (for closeAsync) connections
+      openDatabases.set(clean, adapted);
+      openRawDatabases.set(clean, rawDb);
+      return adapted;
+    } catch (err: any) {
+      throw new Error(
+        `Failed to open downloaded Tafsir database "${slug}": ${err?.message || String(err)}`,
+      );
+    } finally {
+      openingDatabases.delete(clean);
+    }
+  })();
+
+  openingDatabases.set(clean, openingPromise);
+  return openingPromise;
 }
 
 /**
  * Closes the active SQLite connection for a specific Tafsir database.
+ * Uses the raw native database object to ensure `closeAsync` is correctly forwarded.
  */
 export async function closeTafsirDatabase(slug: string): Promise<void> {
   const clean = normalizeSlug(slug);
+
+  // Close via raw native connection (has the real closeAsync)
+  const rawDb = openRawDatabases.get(clean);
+  if (rawDb) {
+    try {
+      if (typeof rawDb.closeAsync === 'function') {
+        await rawDb.closeAsync();
+      } else if (typeof rawDb.close === 'function') {
+        await rawDb.close();
+      }
+    } catch {}
+    openRawDatabases.delete(clean);
+  }
+
+  // Also attempt close on adapted db (covers custom mock databases with closeAsync)
   const db = openDatabases.get(clean) || customDatabases.get(clean);
-  if (db) {
+  if (db && !rawDb) {
+    // Only attempt if we didn't already close via rawDb (avoid double-close)
     try {
       if (typeof (db as any).closeAsync === 'function') {
         await (db as any).closeAsync();
@@ -417,16 +513,21 @@ export async function closeTafsirDatabase(slug: string): Promise<void> {
         await (db as any).close();
       }
     } catch {}
-    openDatabases.delete(clean);
-    customDatabases.delete(clean);
   }
+
+  openDatabases.delete(clean);
+  customDatabases.delete(clean);
 }
 
 /**
  * Closes all active SQLite connections for downloaded Tafsirs.
  */
 export async function closeAllTafsirDatabases(): Promise<void> {
-  const allSlugs = new Set([...openDatabases.keys(), ...customDatabases.keys()]);
+  const allSlugs = new Set([
+    ...openDatabases.keys(),
+    ...openRawDatabases.keys(),
+    ...customDatabases.keys(),
+  ]);
   for (const slug of Array.from(allSlugs)) {
     await closeTafsirDatabase(slug);
   }

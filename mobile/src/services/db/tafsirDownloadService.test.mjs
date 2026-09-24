@@ -49,7 +49,15 @@ describe('Tafsir Download Service & SQLite Storage Tests (Task 3)', () => {
         }
         mockFiles.delete(uri);
       },
+      moveAsync: async ({ from, to }) => {
+        // Simulate atomic rename: copy entry from → to, remove from
+        if (mockFiles.has(from)) {
+          mockFiles.set(to, mockFiles.get(from));
+          mockFiles.delete(from);
+        }
+      },
       createDownloadResumable: (url, targetPath, options, onProgress) => {
+        // NOTE: targetPath here is the tmpPath passed by the service for atomic writes
         mockResumableCalls.push({ url, targetPath });
         return {
           downloadAsync: async () => {
@@ -67,6 +75,7 @@ describe('Tafsir Download Service & SQLite Storage Tests (Task 3)', () => {
               onProgress({ totalBytesWritten: 10000, totalBytesExpectedToWrite: 10000 });
             }
 
+            // Write to the tmp path (moveAsync will rename it to the final path)
             mockFiles.set(targetPath, { size: 10000 });
             return { status: 200, uri: targetPath };
           },
