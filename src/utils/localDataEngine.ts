@@ -312,10 +312,17 @@ async function getTafsirDataset(tafsirId: number): Promise<any> {
     return state.tafsirDataCache.get(tafsirId);
   }
 
-  const tafsirPath = await resolveDataFile(`tafsirs/${tafsirId}.json`);
-  const data = JSON.parse(await fs.readFile(tafsirPath, 'utf-8'));
-  state.tafsirDataCache.set(tafsirId, data);
-  return data;
+  try {
+    const tafsirPath = await resolveDataFile(`tafsirs/${tafsirId}.json`);
+    const data = JSON.parse(await fs.readFile(tafsirPath, 'utf-8'));
+    state.tafsirDataCache.set(tafsirId, data);
+    return data;
+  } catch (error: any) {
+    if (error?.code === 'ENOENT' || error?.message?.includes('ENOENT')) {
+      throw new Error(`Tafsir not found: ${tafsirId}`);
+    }
+    throw error;
+  }
 }
 
 /**
@@ -1050,15 +1057,21 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
 
     const dataset = await getTafsirDataset(tafsirId);
     const verseData = dataset.byVerseKey?.[verseKey];
+    if (!verseData) {
+      throw new Error(`Verse not found in tafsir: ${verseKey}`);
+    }
+
     const meta = PERSIAN_TAFSIR_META[tafsirId] ?? {
       slug: dataset.slug || String(tafsirId),
       name: dataset.name || String(tafsirId),
       languageId: 106,
     };
 
-    const verseInfo = verseData
-      ? { id: verseData.verse_number, verse_number: verseData.verse_number, verse_key: verseKey }
-      : { id: 0, verse_number: 0, verse_key: verseKey };
+    const verseInfo = {
+      id: verseData.verse_number,
+      verse_number: verseData.verse_number,
+      verse_key: verseKey,
+    };
 
     return {
       tafsir: {
@@ -1068,8 +1081,8 @@ export async function getLocalApiResponse(pathname: string, query: Record<string
         slug: meta.slug,
         translated_name: { name: meta.name, language_name: 'persian' },
         verses: { [verseKey]: verseInfo },
-        text: verseData?.text ?? '',
-        points: verseData?.points ?? [],
+        text: verseData.text ?? '',
+        points: verseData.points ?? [],
       },
     };
   }

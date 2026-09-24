@@ -68,7 +68,21 @@ describe('LocalDataEngine – Tafsir Endpoint (Task 2)', () => {
     expect(response.tafsir.text.length).toBeGreaterThan(0);
   });
 
-  it('should throw for an unknown tafsir ID', async () => {
-    await expect(handleLocalApiRequest('tafsirs/999/by_ayah/1:1', {})).rejects.toThrow();
+  it('should throw clean domain error for an unknown numeric tafsir ID', async () => {
+    await expect(handleLocalApiRequest('tafsirs/999/by_ayah/1:1', {})).rejects.toThrow(
+      'Tafsir not found: 999'
+    );
+  });
+
+  it('should throw clean domain error for an unknown slug tafsir ID', async () => {
+    await expect(handleLocalApiRequest('tafsirs/unknown-tafsir/by_ayah/1:1', {})).rejects.toThrow(
+      'Tafsir not found: unknown-tafsir'
+    );
+  });
+
+  it('should throw error when verse key is not found in tafsir', async () => {
+    await expect(handleLocalApiRequest('tafsirs/171/by_ayah/999:999', {})).rejects.toThrow(
+      'Verse not found in tafsir: 999:999'
+    );
   });
 });

@@ -74,11 +74,10 @@ download management with frequent-user offline nudging.
 
 - [x] **Step 1: Write the failing test for localDataEngine tafsir endpoints**
 - [x] **Step 2: Run test to verify it fails**
-- [x] **Step 3: Implement `tafsirs/:id/by_ayah/:verseKey` and SQLite package download endpoint in
-      `localDataEngine.ts`**
+- [x] **Step 3: Implement `tafsirs/:id/by_ayah/:verseKey` in `localDataEngine.ts` (Note: SQLite download endpoint is implemented in Task 3)**
 - [x] **Step 4: Run test to verify it passes**
 - [ ] **Step 5: Verify via
-      `curl http://localhost:3000/api/proxy/content/api/qdc/tafsirs/171/by_ayah/1:1`**
+      `curl http://localhost:3000/api/proxy/content/api/qdc/tafsirs/171/by_ayah/1:1` (Skipped: no running server available in CI)**
 - [x] **Step 6: Commit backend endpoint changes**
 
 ---
