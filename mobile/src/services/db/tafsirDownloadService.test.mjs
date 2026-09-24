@@ -13,6 +13,7 @@ import {
   setTafsirApiBaseUrl,
   setFileSystemForTesting,
   setTafsirDatabase,
+  setSQLiteForTesting,
   resetTafsirDownloaderForTesting,
   closeTafsirDatabase,
   closeAllTafsirDatabases,
@@ -306,6 +307,69 @@ describe('Tafsir Download Service & SQLite Storage Tests (Task 3)', () => {
       const db2 = await getDownloadedTafsirDb('fa-tafsir-noor');
 
       assert.strictEqual(db1, db2);
+    });
+
+    it('should deduplicate concurrent calls to getDownloadedTafsirDb and open only one native SQLite connection', async () => {
+      const targetPath = getTafsirDbPath('fa-tafsir-nemouneh');
+      mockFiles.set(targetPath, { size: 12000000 });
+
+      let openCount = 0;
+      let closed = false;
+      const fakeRawDb = {
+        getAll: () => [],
+        getFirst: () => null,
+        closeAsync: async () => {
+          closed = true;
+        },
+      };
+
+      setSQLiteForTesting({
+        openDatabaseAsync: async (fileName) => {
+          openCount += 1;
+          // Add a slight delay to simulate async native initialization and expose race conditions
+          await new Promise((resolve) => setTimeout(resolve, 10));
+          return fakeRawDb;
+        },
+      });
+
+      const [db1, db2] = await Promise.all([
+        getDownloadedTafsirDb('fa-tafsir-nemouneh'),
+        getDownloadedTafsirDb('fa-tafsir-nemouneh'),
+      ]);
+
+      assert.strictEqual(db1, db2);
+      assert.strictEqual(openCount, 1, 'Only one native SQLite connection must be opened');
+
+      await closeTafsirDatabase('fa-tafsir-nemouneh');
+      assert.strictEqual(closed, true);
+    });
+
+    it('should await pending openingDatabases before closing or deleting', async () => {
+      const targetPath = getTafsirDbPath('fa-tafsir-nemouneh');
+      mockFiles.set(targetPath, { size: 12000000 });
+
+      let closed = false;
+      const fakeRawDb = {
+        getAll: () => [],
+        getFirst: () => null,
+        closeAsync: async () => {
+          closed = true;
+        },
+      };
+
+      setSQLiteForTesting({
+        openDatabaseAsync: async () => {
+          await new Promise((resolve) => setTimeout(resolve, 20));
+          return fakeRawDb;
+        },
+      });
+
+      const openPromise = getDownloadedTafsirDb('fa-tafsir-nemouneh');
+      // Concurrently close while open is still in-flight
+      await closeTafsirDatabase('fa-tafsir-nemouneh');
+
+      await openPromise;
+      assert.strictEqual(closed, true);
     });
 
     it('should properly close database on closeTafsirDatabase and closeAllTafsirDatabases', async () => {

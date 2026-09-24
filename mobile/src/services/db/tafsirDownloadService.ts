@@ -66,6 +66,7 @@ export interface FileSystemAdapter {
 // Module-level state
 let currentApiBaseUrl = DEFAULT_API_BASE_URL;
 let customFileSystem: FileSystemAdapter | null = null;
+let customSQLite: any = null;
 const customDatabases = new Map<string, SQLiteLikeDb>();
 const openDatabases = new Map<string, SQLiteLikeDb>();
 /** Raw (un-adapted) native SQLite connection objects, keyed by normalized slug. */
@@ -80,6 +81,13 @@ const progressListeners = new Map<string, Set<(progress: number) => void>>();
  */
 export function setFileSystemForTesting(fs: FileSystemAdapter | null): void {
   customFileSystem = fs;
+}
+
+/**
+ * Sets a custom SQLite module (for testing native connection deduplication in Node).
+ */
+export function setSQLiteForTesting(sqlite: any): void {
+  customSQLite = sqlite;
 }
 
 /**
@@ -110,6 +118,7 @@ export function setTafsirApiBaseUrl(url: string): void {
  */
 export function resetTafsirDownloaderForTesting(): void {
   customFileSystem = null;
+  customSQLite = null;
   customDatabases.clear();
   openDatabases.clear();
   openRawDatabases.clear();
@@ -315,7 +324,7 @@ export async function downloadTafsirDatabase(
     }
 
     // Close any open connection before overwriting the underlying file
-    if (openDatabases.has(clean) || openRawDatabases.has(clean)) {
+    if (openDatabases.has(clean) || openRawDatabases.has(clean) || openingDatabases.has(clean)) {
       await closeTafsirDatabase(clean);
     }
 
@@ -403,6 +412,13 @@ export async function downloadTafsirDatabase(
 export async function deleteTafsirDatabase(slug: string): Promise<boolean> {
   const clean = normalizeSlug(slug);
 
+  // If database is currently opening, await completion before closing/deleting
+  if (openingDatabases.has(clean)) {
+    try {
+      await openingDatabases.get(clean)!;
+    } catch {}
+  }
+
   // Close and clean up cached open connection (must happen before fs.deleteAsync)
   await closeTafsirDatabase(clean);
 
@@ -451,17 +467,16 @@ export async function getDownloadedTafsirDb(slug: string): Promise<SQLiteLikeDb>
     return openingDatabases.get(clean)!;
   }
 
-  // 4. Verify downloaded status
-  const downloaded = await isTafsirDownloaded(clean);
-  if (!downloaded) {
-    throw new Error(`Tafsir database for "${slug}" is not downloaded. Please download it first.`);
-  }
-
-  // 5. Open with expo-sqlite, deduplicating concurrent callers
+  // 4. Open with expo-sqlite, deduplicating concurrent callers synchronously
   const openingPromise: Promise<SQLiteLikeDb> = (async () => {
     try {
+      const downloaded = await isTafsirDownloaded(clean);
+      if (!downloaded) {
+        throw new Error(`Tafsir database for "${slug}" is not downloaded. Please download it first.`);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const SQLite = require('expo-sqlite');
+      const SQLite = customSQLite || require('expo-sqlite');
       const fileName = getTafsirDbFileName(clean);
       const rawDb = await SQLite.openDatabaseAsync(fileName);
       const adapted = adaptDatabase(rawDb);
@@ -470,6 +485,9 @@ export async function getDownloadedTafsirDb(slug: string): Promise<SQLiteLikeDb>
       openRawDatabases.set(clean, rawDb);
       return adapted;
     } catch (err: any) {
+      if (err instanceof Error && err.message.startsWith('Tafsir database for "')) {
+        throw err;
+      }
       throw new Error(
         `Failed to open downloaded Tafsir database "${slug}": ${err?.message || String(err)}`,
       );
@@ -488,6 +506,13 @@ export async function getDownloadedTafsirDb(slug: string): Promise<SQLiteLikeDb>
  */
 export async function closeTafsirDatabase(slug: string): Promise<void> {
   const clean = normalizeSlug(slug);
+
+  // If database is currently opening, await completion before closing
+  if (openingDatabases.has(clean)) {
+    try {
+      await openingDatabases.get(clean)!;
+    } catch {}
+  }
 
   // Close via raw native connection (has the real closeAsync)
   const rawDb = openRawDatabases.get(clean);
