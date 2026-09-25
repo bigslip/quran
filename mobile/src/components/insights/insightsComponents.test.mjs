@@ -1352,15 +1352,42 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
       const userDb = await getUserDatabase();
       const cached = await userDb.getFirst(
         'SELECT text, points_json FROM cached_tafsir_verses WHERE tafsir_id = ? AND verse_key = ?',
-        ['171', '3:18'],
+        ['fa-tafsir-nemouneh', '3:18'],
       );
-      assert.ok(cached !== null, 'Tafsir must be persisted to cached_tafsir_verses');
+      assert.ok(cached !== null, 'Tafsir must be persisted to cached_tafsir_verses under canonical slug');
       assert.strictEqual(cached.text, 'تفسیر ذخیره شده در کش');
+    });
+
+    it('getTafsirExcerpts resolves from downloaded SQLite database when offline', async () => {
+      const mockTafsirDb = new DatabaseSync(':memory:');
+      mockTafsirDb.exec(`
+        CREATE TABLE tafsir_verses (
+          verse_key TEXT PRIMARY KEY,
+          text TEXT NOT NULL,
+          points TEXT
+        );
+        INSERT INTO tafsir_verses (verse_key, text, points) VALUES
+          ('112:1', 'متن آفلاین تفسیر نمونه برای اخلاص', '["نکته آفلاین ۱","نکته آفلاین ۲"]');
+      `);
+
+      setTafsirDatabase('fa-tafsir-nemouneh', mockTafsirDb);
+
+      // Mock fetch to throw — ensuring 100% offline resolution from downloaded SQLite
+      globalThis.fetch = async () => {
+        throw new Error('Offline: network must not be accessed');
+      };
+
+      const excerpts = await getTafsirExcerpts('112:1');
+      assert.strictEqual(excerpts.length, 3);
+      const nemouneh = excerpts.find((e) => e.id === 'nemouneh');
+      assert.ok(nemouneh !== undefined);
+      assert.strictEqual(nemouneh.text, 'متن آفلاین تفسیر نمونه برای اخلاص');
+      assert.deepStrictEqual(nemouneh.points, ['نکته آفلاین ۱', 'نکته آفلاین ۲']);
     });
 
     it('getTafsirExcerpts incorporates fetched Tafsir content for Nemouneh and Noor', async () => {
       globalThis.fetch = async (url) => {
-        if (url.includes('/171/')) {
+        if (url.includes('/171/') || url.includes('/171')) {
           return {
             ok: true,
             json: async () => ({
@@ -1374,7 +1401,7 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
             }),
           };
         }
-        if (url.includes('/172/')) {
+        if (url.includes('/172/') || url.includes('/172')) {
           return {
             ok: true,
             json: async () => ({

@@ -1,5 +1,9 @@
 import type { WordLinguisticInfo, TafsirExcerpt, AyahInsight } from '../../types/quran';
-import { isTafsirDownloaded, getDownloadedTafsirDb } from './tafsirDownloadService.ts';
+import {
+  isTafsirDownloaded,
+  getDownloadedTafsirDb,
+  AVAILABLE_DOWNLOADABLE_TAFSIRS,
+} from './tafsirDownloadService.ts';
 
 /**
  * Unified database adapter interface supporting both expo-sqlite and node:sqlite.
@@ -810,6 +814,42 @@ export function resetTafsirForVerseApiBaseUrl(): void {
 }
 
 /**
+ * Resolves numeric ID and canonical slug bi-directionally using AVAILABLE_DOWNLOADABLE_TAFSIRS.
+ */
+function resolveTafsirMeta(tafsirId: number | string): {
+  id: number;
+  slug: string;
+} {
+  const asNumber = Number(tafsirId);
+  const asString = String(tafsirId);
+
+  const matched = AVAILABLE_DOWNLOADABLE_TAFSIRS.find(
+    (t) => (!Number.isNaN(asNumber) && t.id === asNumber) || t.slug === asString,
+  );
+
+  if (matched) {
+    return { id: matched.id, slug: matched.slug };
+  }
+
+  return {
+    id: !Number.isNaN(asNumber) ? asNumber : 0,
+    slug: asString,
+  };
+}
+
+/**
+ * Lazily loads the user database instance for Tafsir cache operations.
+ */
+async function getCachedTafsirUserDb(): Promise<SQLiteLikeDb | null> {
+  try {
+    const { getUserDatabase } = await import('./userDatabase.ts');
+    return await getUserDatabase();
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Resolves Tafsir content for a specific verse using hybrid resolution:
  *  1. If the Tafsir DB is downloaded locally → query SQLite
  *  2. If cached in local SQLite cache table → return cached record
@@ -825,17 +865,32 @@ export async function getTafsirForVerse(
   verseKey: string,
   tafsirId: number | string,
 ): Promise<TafsirContent | null> {
-  const idOrSlug = String(tafsirId);
+  const meta = resolveTafsirMeta(tafsirId);
+  const canonicalSlug = meta.slug;
 
   // Path 1: Local SQLite (downloaded Tafsir DB)
   try {
-    const downloaded = await isTafsirDownloaded(idOrSlug);
+    const downloaded = await isTafsirDownloaded(canonicalSlug);
     if (downloaded) {
-      const db = await getDownloadedTafsirDb(idOrSlug);
-      const row = await db.getFirst<{ text: string; points?: string | string[] }>(
-        'SELECT text, points FROM verses WHERE verse_key = ? LIMIT 1',
-        [verseKey],
-      );
+      const db = await getDownloadedTafsirDb(canonicalSlug);
+      let row: { text: string; points?: string | string[] } | null = null;
+      try {
+        row = await db.getFirst<{ text: string; points?: string | string[] }>(
+          'SELECT text, points FROM tafsir_verses WHERE verse_key = ? LIMIT 1',
+          [verseKey],
+        );
+      } catch {
+        // Fall back to 'verses' table if database uses verses schema
+        try {
+          row = await db.getFirst<{ text: string; points?: string | string[] }>(
+            'SELECT text, points FROM verses WHERE verse_key = ? LIMIT 1',
+            [verseKey],
+          );
+        } catch {
+          row = null;
+        }
+      }
+
       if (row && row.text) {
         let points: string[] = [];
         if (Array.isArray(row.points)) {
@@ -848,8 +903,8 @@ export async function getTafsirForVerse(
           }
         }
         return {
-          resourceId: typeof tafsirId === 'number' ? tafsirId : Number(tafsirId) || 0,
-          slug: idOrSlug,
+          resourceId: meta.id,
+          slug: canonicalSlug,
           text: row.text,
           points,
           languageName: 'fa',
@@ -861,40 +916,42 @@ export async function getTafsirForVerse(
   }
 
   // Path 2: Local SQLite cache table (cached_tafsir_verses in userDatabase)
-  try {
-    const { getUserDatabase } = await import('./userDatabase.ts');
-    const userDb = await getUserDatabase();
-    const cachedRow = await userDb.getFirst<{
-      text: string;
-      points_json: string;
-      language_name: string;
-    }>(
-      'SELECT text, points_json, language_name FROM cached_tafsir_verses WHERE tafsir_id = ? AND verse_key = ? LIMIT 1',
-      [idOrSlug, verseKey],
-    );
-    if (cachedRow && cachedRow.text) {
-      let points: string[] = [];
-      try {
-        points = JSON.parse(cachedRow.points_json);
-      } catch {
-        points = [];
+  const userDb = await getCachedTafsirUserDb();
+  if (userDb) {
+    try {
+      const cachedRow = await userDb.getFirst<{
+        text: string;
+        points_json: string;
+        language_name: string;
+      }>(
+        'SELECT text, points_json, language_name FROM cached_tafsir_verses WHERE (tafsir_id = ? OR tafsir_id = ?) AND verse_key = ? LIMIT 1',
+        [canonicalSlug, String(meta.id), verseKey],
+      );
+      if (cachedRow && cachedRow.text) {
+        let points: string[] = [];
+        try {
+          points = JSON.parse(cachedRow.points_json);
+        } catch {
+          points = [];
+        }
+        return {
+          resourceId: meta.id,
+          slug: canonicalSlug,
+          text: cachedRow.text,
+          points,
+          languageName: cachedRow.language_name || 'fa',
+        };
       }
-      return {
-        resourceId: typeof tafsirId === 'number' ? tafsirId : Number(tafsirId) || 0,
-        slug: idOrSlug,
-        text: cachedRow.text,
-        points,
-        languageName: cachedRow.language_name || 'fa',
-      };
+    } catch {
+      // If cache lookup fails, proceed to API
     }
-  } catch {
-    // If cache lookup fails, proceed to API
   }
 
   // Path 3: Sovereign backend proxy API
   try {
     const base = tafsirForVerseApiBaseUrl.replace(/\/+$/, '');
-    const url = `${base}/api/proxy/content/api/qdc/tafsirs/${encodeURIComponent(idOrSlug)}/by_ayah/${encodeURIComponent(verseKey)}`;
+    const apiIdentifier = typeof tafsirId === 'string' && !/^\d+$/.test(tafsirId) ? tafsirId : String(meta.id || meta.slug);
+    const url = `${base}/api/proxy/content/api/qdc/tafsirs/${encodeURIComponent(apiIdentifier)}/by_ayah/${encodeURIComponent(verseKey)}`;
     const response = await fetch(url);
     if (!response.ok) {
       return null;
@@ -906,22 +963,22 @@ export async function getTafsirForVerse(
     }
     const result: TafsirContent = {
       resourceId:
-        typeof tafsir['resource_id'] === 'number' ? tafsir['resource_id'] : Number(tafsirId) || 0,
-      slug: typeof tafsir['slug'] === 'string' ? tafsir['slug'] : idOrSlug,
+        typeof tafsir['resource_id'] === 'number'
+          ? tafsir['resource_id']
+          : meta.id,
+      slug: typeof tafsir['slug'] === 'string' ? tafsir['slug'] : canonicalSlug,
       text: typeof tafsir['text'] === 'string' ? tafsir['text'] : '',
       points: Array.isArray(tafsir['points']) ? (tafsir['points'] as string[]) : [],
       languageName: typeof tafsir['language_name'] === 'string' ? tafsir['language_name'] : 'fa',
     };
 
-    // Save to local cache table
-    try {
-      const { getUserDatabase } = await import('./userDatabase.ts');
-      const userDb = await getUserDatabase();
-      if (userDb.run) {
+    // Save to local cache table using canonical slug as the key
+    if (userDb && userDb.run) {
+      try {
         await userDb.run(
           'INSERT OR REPLACE INTO cached_tafsir_verses (tafsir_id, verse_key, text, points_json, language_name, cached_at) VALUES (?, ?, ?, ?, ?, ?)',
           [
-            idOrSlug,
+            canonicalSlug,
             verseKey,
             result.text,
             JSON.stringify(result.points),
@@ -929,9 +986,9 @@ export async function getTafsirForVerse(
             Date.now(),
           ],
         );
+      } catch {
+        // Non-fatal if cache save fails
       }
-    } catch {
-      // Non-fatal if cache save fails
     }
 
     return result;
