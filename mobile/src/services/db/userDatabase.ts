@@ -146,10 +146,10 @@ export async function getUserDatabase(): Promise<SQLiteLikeDb> {
         await rawDb.execAsync('PRAGMA foreign_keys = ON;');
       }
     } catch {
-      // Fallback for Node test environments
-      const sqliteModule = 'node:sqlite';
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { DatabaseSync } = (await import(sqliteModule as any)) as any;
+      // Fallback for Node test environments (hidden from Metro bundler AST parser)
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
+      const dynamicImport = new Function('specifier', 'return import(specifier);');
+      const { DatabaseSync } = (await dynamicImport('node:' + 'sqlite')) as any;
       rawDb = new DatabaseSync(':memory:');
     }
 
