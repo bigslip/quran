@@ -56,6 +56,18 @@ async function createParentTables(db: SQLiteLikeDb): Promise<void> {
       updated_at INTEGER NOT NULL
     );
   `);
+
+  await db.run!(`
+    CREATE TABLE IF NOT EXISTS cached_tafsir_verses (
+      tafsir_id TEXT NOT NULL,
+      verse_key TEXT NOT NULL,
+      text TEXT NOT NULL,
+      points_json TEXT NOT NULL,
+      language_name TEXT NOT NULL,
+      cached_at INTEGER NOT NULL,
+      PRIMARY KEY (tafsir_id, verse_key)
+    );
+  `);
 }
 
 async function createChildTables(db: SQLiteLikeDb): Promise<void> {
@@ -121,14 +133,24 @@ export async function getUserDatabase(): Promise<SQLiteLikeDb> {
   }
 
   initPromise = (async (): Promise<SQLiteLikeDb> => {
-    // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-    const SQLite = require('expo-sqlite');
-    const rawDb = await SQLite.openDatabaseAsync(USER_DB_NAME);
-
-    // Modern WAL and foreign key configuration
-    if (rawDb.execAsync) {
-      await rawDb.execAsync('PRAGMA journal_mode = WAL;');
-      await rawDb.execAsync('PRAGMA foreign_keys = ON;');
+    let rawDb: any = null;
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const SQLite = typeof require !== 'undefined' ? require('expo-sqlite') : null;
+      if (!SQLite) {
+        throw new Error('Expo SQLite not available');
+      }
+      rawDb = await SQLite.openDatabaseAsync(USER_DB_NAME);
+      if (rawDb.execAsync) {
+        await rawDb.execAsync('PRAGMA journal_mode = WAL;');
+        await rawDb.execAsync('PRAGMA foreign_keys = ON;');
+      }
+    } catch {
+      // Fallback for Node test environments
+      const sqliteModule = 'node:sqlite';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { DatabaseSync } = (await import(sqliteModule as any)) as any;
+      rawDb = new DatabaseSync(':memory:');
     }
 
     const adapted = adaptDatabase(rawDb);

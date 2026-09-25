@@ -1,4 +1,4 @@
-import { describe, it } from 'node:test';
+import { describe, it, afterEach } from 'node:test';
 import assert from 'node:assert';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,7 +26,19 @@ import {
   savePersonalReflection,
   getPersonalReflection,
   clearPersonalReflections,
+  getTafsirForVerse,
+  getTafsirExcerpts,
+  setTafsirForVerseApiBaseUrl,
+  resetTafsirForVerseApiBaseUrl,
 } from '../../services/db/ayahInsightsService.ts';
+import {
+  setTafsirDatabase,
+  resetTafsirDownloaderForTesting,
+} from '../../services/db/tafsirDownloadService.ts';
+import {
+  getUserDatabase,
+  resetUserDatabaseForTesting,
+} from '../../services/db/userDatabase.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1141,4 +1153,254 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
       assert.strictEqual(selectedInsightVerse, null);
     });
   });
+
+  describe('getTafsirForVerse — Hybrid Tafsir Resolution (Task 4)', () => {
+    // Store the original global fetch so we can restore it
+    const originalFetch = globalThis.fetch;
+
+    afterEach(() => {
+      globalThis.fetch = originalFetch;
+      resetTafsirForVerseApiBaseUrl();
+      resetTafsirDownloaderForTesting();
+      resetUserDatabaseForTesting();
+    });
+
+    it('getTafsirForVerse is a function exported from ayahInsightsService', () => {
+      assert.strictEqual(typeof getTafsirForVerse, 'function');
+    });
+
+    it('returns normalized TafsirContent when backend API responds with valid tafsir data', async () => {
+      const mockPayload = {
+        tafsir: {
+          resource_id: 171,
+          slug: 'fa-tafsir-nemouneh',
+          text: 'متن تفسیر نمونه برای آیه ۲۸ سوره کهف',
+          points: ['نکته اول', 'نکته دوم', 'نکته سوم'],
+          language_name: 'fa',
+        },
+      };
+
+      globalThis.fetch = async (url) => ({
+        ok: true,
+        json: async () => mockPayload,
+      });
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+      const result = await getTafsirForVerse('18:28', 171);
+
+      assert.ok(result !== null, 'result must not be null');
+      assert.strictEqual(result.resourceId, 171);
+      assert.strictEqual(result.slug, 'fa-tafsir-nemouneh');
+      assert.ok(result.text.includes('تفسیر نمونه'));
+      assert.deepStrictEqual(result.points, ['نکته اول', 'نکته دوم', 'نکته سوم']);
+      assert.strictEqual(result.languageName, 'fa');
+    });
+
+    it('builds the correct API URL for numeric tafsirId and slug-style tafsirId', async () => {
+      const capturedUrls = [];
+
+      globalThis.fetch = async (url) => {
+        capturedUrls.push(url);
+        return { ok: true, json: async () => ({ tafsir: { resource_id: 172, slug: 'fa-tafsir-noor', text: 'test', points: [], language_name: 'fa' } }) };
+      };
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+
+      await getTafsirForVerse('1:1', 172);
+      assert.ok(
+        capturedUrls[0].includes('/api/proxy/content/api/qdc/tafsirs/172/by_ayah/1%3A1') ||
+          capturedUrls[0].includes('/api/proxy/content/api/qdc/tafsirs/172/by_ayah/1:1'),
+        `URL should contain tafsir ID and verse key, got: ${capturedUrls[0]}`,
+      );
+
+      await getTafsirForVerse('18:28', 'fa-tafsir-noor');
+      assert.ok(
+        capturedUrls[1].includes('/api/proxy/content/api/qdc/tafsirs/fa-tafsir-noor/by_ayah/'),
+        `URL should contain slug, got: ${capturedUrls[1]}`,
+      );
+    });
+
+    it('returns null when the API responds with a non-OK HTTP status', async () => {
+      globalThis.fetch = async () => ({ ok: false, status: 404, json: async () => ({}) });
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+      const result = await getTafsirForVerse('2:255', 171);
+      assert.strictEqual(result, null);
+    });
+
+    it('returns null when the API response body has no tafsir field', async () => {
+      globalThis.fetch = async () => ({
+        ok: true,
+        json: async () => ({ error: 'not found' }),
+      });
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+      const result = await getTafsirForVerse('1:1', 171);
+      assert.strictEqual(result, null);
+    });
+
+    it('returns null when fetch throws a network error', async () => {
+      globalThis.fetch = async () => {
+        throw new Error('Network error');
+      };
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+      const result = await getTafsirForVerse('18:28', 'fa-tafsir-nemouneh');
+      assert.strictEqual(result, null);
+    });
+
+    it('normalizes missing optional fields (points defaults to [], languageName defaults to fa)', async () => {
+      globalThis.fetch = async () => ({
+        ok: true,
+        json: async () => ({
+          tafsir: {
+            resource_id: 171,
+            slug: 'fa-tafsir-nemouneh',
+            text: 'متن تفسیر',
+            // no points, no language_name
+          },
+        }),
+      });
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+      const result = await getTafsirForVerse('1:1', 171);
+
+      assert.ok(result !== null);
+      assert.deepStrictEqual(result.points, []);
+      assert.strictEqual(result.languageName, 'fa');
+    });
+
+    it('local SQLite stub (not-downloaded) correctly falls through to backend API path', async () => {
+      // Ensure no tafsir is registered as downloaded (resetTafsirDownloaderForTesting is called in afterEach)
+      let apiFetched = false;
+
+      globalThis.fetch = async () => {
+        apiFetched = true;
+        return {
+          ok: true,
+          json: async () => ({
+            tafsir: { resource_id: 171, slug: 'fa-tafsir-nemouneh', text: 'متن', points: ['نکته'], language_name: 'fa' },
+          }),
+        };
+      };
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+      const result = await getTafsirForVerse('18:28', 171);
+
+      assert.strictEqual(apiFetched, true, 'API must be called when tafsir is not downloaded locally');
+      assert.ok(result !== null);
+      assert.strictEqual(result.resourceId, 171);
+    });
+
+    it('queries local SQLite database when Tafsir is downloaded', async () => {
+      const mockTafsirDb = new DatabaseSync(':memory:');
+      mockTafsirDb.exec(`
+        CREATE TABLE verses (
+          verse_key TEXT PRIMARY KEY,
+          text TEXT NOT NULL,
+          points TEXT
+        );
+        INSERT INTO verses (verse_key, text, points) VALUES
+          ('1:1', 'متن محلی تفسیر نمونه', '["نکته محلی ۱","نکته محلی ۲"]');
+      `);
+
+      setTafsirDatabase('fa-tafsir-nemouneh', mockTafsirDb);
+
+      const result = await getTafsirForVerse('1:1', 'fa-tafsir-nemouneh');
+      assert.ok(result !== null, 'result must not be null');
+      assert.strictEqual(result.text, 'متن محلی تفسیر نمونه');
+      assert.deepStrictEqual(result.points, ['نکته محلی ۱', 'نکته محلی ۲']);
+    });
+
+    it('returns cached Tafsir verse from local SQLite cache table before querying API', async () => {
+      const userDb = await getUserDatabase();
+      await userDb.run(
+        'INSERT OR REPLACE INTO cached_tafsir_verses (tafsir_id, verse_key, text, points_json, language_name, cached_at) VALUES (?, ?, ?, ?, ?, ?)',
+        ['171', '2:255', 'متن کش شده آیه الکرسی', '["نکته کش"]', 'fa', Date.now()],
+      );
+
+      let apiCalled = false;
+      globalThis.fetch = async () => {
+        apiCalled = true;
+        throw new Error('API should not be called');
+      };
+
+      const result = await getTafsirForVerse('2:255', 171);
+      assert.strictEqual(apiCalled, false, 'API must not be called when present in cache table');
+      assert.ok(result !== null);
+      assert.strictEqual(result.text, 'متن کش شده آیه الکرسی');
+      assert.deepStrictEqual(result.points, ['نکته کش']);
+    });
+
+    it('saves fetched API response to local SQLite cache table', async () => {
+      globalThis.fetch = async () => ({
+        ok: true,
+        json: async () => ({
+          tafsir: {
+            resource_id: 171,
+            slug: 'fa-tafsir-nemouneh',
+            text: 'تفسیر ذخیره شده در کش',
+            points: ['نکته ذخیره شده'],
+            language_name: 'fa',
+          },
+        }),
+      });
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+      await getTafsirForVerse('3:18', 171);
+
+      const userDb = await getUserDatabase();
+      const cached = await userDb.getFirst(
+        'SELECT text, points_json FROM cached_tafsir_verses WHERE tafsir_id = ? AND verse_key = ?',
+        ['171', '3:18'],
+      );
+      assert.ok(cached !== null, 'Tafsir must be persisted to cached_tafsir_verses');
+      assert.strictEqual(cached.text, 'تفسیر ذخیره شده در کش');
+    });
+
+    it('getTafsirExcerpts incorporates fetched Tafsir content for Nemouneh and Noor', async () => {
+      globalThis.fetch = async (url) => {
+        if (url.includes('/171/')) {
+          return {
+            ok: true,
+            json: async () => ({
+              tafsir: {
+                resource_id: 171,
+                slug: 'fa-tafsir-nemouneh',
+                text: 'نمونه آنلاین',
+                points: ['نکته نمونه'],
+                language_name: 'fa',
+              },
+            }),
+          };
+        }
+        if (url.includes('/172/')) {
+          return {
+            ok: true,
+            json: async () => ({
+              tafsir: {
+                resource_id: 172,
+                slug: 'fa-tafsir-noor',
+                text: 'نور آنلاین',
+                points: ['نکته نور'],
+                language_name: 'fa',
+              },
+            }),
+          };
+        }
+        return { ok: false };
+      };
+
+      setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
+      const excerpts = await getTafsirExcerpts('112:1');
+      assert.strictEqual(excerpts.length, 3);
+      const nemouneh = excerpts.find((e) => e.id === 'nemouneh');
+      const noor = excerpts.find((e) => e.id === 'noor');
+      assert.strictEqual(nemouneh.text, 'نمونه آنلاین');
+      assert.deepStrictEqual(nemouneh.points, ['نکته نمونه']);
+      assert.strictEqual(noor.text, 'نور آنلاین');
+      assert.deepStrictEqual(noor.points, ['نکته نور']);
+    });
+  });
 });
+
