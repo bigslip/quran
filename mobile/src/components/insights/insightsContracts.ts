@@ -124,7 +124,11 @@ export function formatInsightAyahHeader(surahName: string, verseNumber: number):
  * Formats a Tafsir excerpt into a concise pill label for the source selector:
  * e.g. "نمونه (مکارم)", "المیزان (طباطبایی)", "نور (قرائتی)".
  */
-export function formatTafsirPillTitle(tafsir?: { id?: string; author_name?: string; title?: string }): string {
+export function formatTafsirPillTitle(tafsir?: {
+  id?: string;
+  author_name?: string;
+  title?: string;
+}): string {
   if (!tafsir) return '';
   const id = (tafsir.id || '').toLowerCase();
   const author = tafsir.author_name || '';
@@ -156,11 +160,14 @@ export function formatReflectionCharCount(count: number): string {
  * e.g. (15, 297) -> "صفحه ۲۹۷ • جزء ۱۵".
  */
 export function formatJuzAndPageBadge(juz?: number, page?: number): string {
-  const pagePart = typeof page === 'number' && !Number.isNaN(page) ? `صفحه ${toPersianDigits(page)}` : '';
-  const juzPart = typeof juz === 'number' && !Number.isNaN(juz) ? `جزء ${toPersianDigits(juz)}` : '';
+  const pagePart =
+    typeof page === 'number' && !Number.isNaN(page) ? `صفحه ${toPersianDigits(page)}` : '';
+  const juzPart =
+    typeof juz === 'number' && !Number.isNaN(juz) ? `جزء ${toPersianDigits(juz)}` : '';
   if (pagePart && juzPart) {
     return `${pagePart} • ${juzPart}`;
   }
   return pagePart || juzPart || '';
 }
 
+export * from './tafsirNudgeContracts.ts';

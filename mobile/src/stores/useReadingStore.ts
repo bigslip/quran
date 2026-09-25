@@ -30,6 +30,10 @@ export interface ReadingState {
   wordByWordDisplay: 'inline' | 'tooltip';
   wordByWordContentType: ('translation' | 'transliteration')[];
 
+  // Tafsir offline usage nudge state
+  tafsirOpenCount: number;
+  isTafsirNudgeDismissed: boolean;
+
   setLastRead: (chapterId: number, verseNumber: number, chapterNameFa: string) => void;
   setFontScale: (scale: number) => void;
   setTheme: (theme: AppTheme) => void;
@@ -53,6 +57,11 @@ export interface ReadingState {
   setWordByWordLocale: (locale: 'fa' | 'en') => void;
   setWordByWordDisplay: (display: 'inline' | 'tooltip') => void;
   setWordByWordContentType: (types: ('translation' | 'transliteration')[]) => void;
+
+  // Tafsir offline usage nudge actions
+  incrementTafsirOpenCount: () => void;
+  dismissTafsirNudge: () => void;
+  resetTafsirNudge: () => void;
 }
 
 export const useReadingStore = create<ReadingState>()(
@@ -80,6 +89,10 @@ export const useReadingStore = create<ReadingState>()(
       wordByWordLocale: 'fa',
       wordByWordDisplay: 'inline',
       wordByWordContentType: ['translation'],
+
+      // Tafsir offline usage nudge defaults
+      tafsirOpenCount: 0,
+      isTafsirNudgeDismissed: false,
 
       setLastRead: (chapterId, verseNumber, chapterNameFa) =>
         set({
@@ -135,6 +148,12 @@ export const useReadingStore = create<ReadingState>()(
       setWordByWordLocale: (locale) => set({ wordByWordLocale: locale }),
       setWordByWordDisplay: (display) => set({ wordByWordDisplay: display }),
       setWordByWordContentType: (types) => set({ wordByWordContentType: types }),
+
+      // Tafsir offline usage nudge actions
+      incrementTafsirOpenCount: () =>
+        set((state) => ({ tafsirOpenCount: (state.tafsirOpenCount || 0) + 1 })),
+      dismissTafsirNudge: () => set({ isTafsirNudgeDismissed: true }),
+      resetTafsirNudge: () => set({ tafsirOpenCount: 0, isTafsirNudgeDismissed: false }),
     }),
     {
       name: 'quran-reading-store',
@@ -157,6 +176,8 @@ export const useReadingStore = create<ReadingState>()(
         wordByWordLocale: state.wordByWordLocale,
         wordByWordDisplay: state.wordByWordDisplay,
         wordByWordContentType: state.wordByWordContentType,
+        tafsirOpenCount: state.tafsirOpenCount,
+        isTafsirNudgeDismissed: state.isTafsirNudgeDismissed,
       }),
     },
   ),
