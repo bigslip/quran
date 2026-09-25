@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions, @typescript-eslint/naming-convention, no-restricted-syntax, no-await-in-loop, max-lines, react-func/max-lines-per-function, prefer-template */
 import type { Tag, BookmarkRow, HydratedBookmark } from '../../types/bookmark.ts';
 
-import { adaptDatabase, type SQLiteLikeDb } from './ayahInsightsService.ts';
+import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
 import { getUserDatabase } from './userDatabase.ts';
 
 let customScriptureDb: SQLiteLikeDb | null = null;

@@ -7,7 +7,7 @@ import {
   formatDownloadProgressFa,
   formatTotalStorageFa,
   getTafsirItemState,
-} from './settingsContracts.ts';
+} from '../../components/settings/settingsContracts.ts';
 import { AVAILABLE_DOWNLOADABLE_TAFSIRS } from '../../services/db/tafsirDownloadService.ts';
 
 describe('Settings Offline Tafsir Manager UI Contracts & Logic Tests', () => {
@@ -42,14 +42,8 @@ describe('Settings Offline Tafsir Manager UI Contracts & Logic Tests', () => {
         SETTINGS_TAFSIR_CONTRACTS.downloadActionLabel,
         'دانلود برای استفاده آفلاین',
       );
-      assert.strictEqual(
-        SETTINGS_TAFSIR_CONTRACTS.deleteActionLabel,
-        'حذف فایل آفلاین',
-      );
-      assert.strictEqual(
-        SETTINGS_TAFSIR_CONTRACTS.downloadedBadgeLabel,
-        'بارگیری‌شده',
-      );
+      assert.strictEqual(SETTINGS_TAFSIR_CONTRACTS.deleteActionLabel, 'حذف فایل آفلاین');
+      assert.strictEqual(SETTINGS_TAFSIR_CONTRACTS.downloadedBadgeLabel, 'بارگیری‌شده');
     });
 
     it('exposes all authentic Persian Tafsirs in the manager', () => {

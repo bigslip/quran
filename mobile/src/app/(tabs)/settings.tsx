@@ -35,7 +35,7 @@ import {
   formatDownloadProgressFa,
   formatTotalStorageFa,
   getTafsirItemState,
-} from './settingsContracts';
+} from '@/components/settings/settingsContracts';
 
 interface ThemeCardData {
   id: AppTheme;
@@ -144,25 +144,21 @@ export default function SettingsScreen() {
   };
 
   const handleDelete = (slug: string, name: string) => {
-    Alert.alert(
-      'حذف فایل تفسیر',
-      `آیا از حذف داده‌های آفلاین «${name}» اطمینان دارید؟`,
-      [
-        { text: 'انصراف', style: 'cancel' },
-        {
-          text: 'حذف',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await deleteTafsirDatabase(slug);
-              await refreshTafsirStatus();
-            } catch (err) {
-              console.warn('Tafsir deletion failed:', err);
-            }
-          },
+    Alert.alert('حذف فایل تفسیر', `آیا از حذف داده‌های آفلاین «${name}» اطمینان دارید؟`, [
+      { text: 'انصراف', style: 'cancel' },
+      {
+        text: 'حذف',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteTafsirDatabase(slug);
+            await refreshTafsirStatus();
+          } catch (err) {
+            console.warn('Tafsir deletion failed:', err);
+          }
         },
-      ],
-    );
+      },
+    ]);
   };
 
   return (

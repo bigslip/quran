@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions, no-restricted-syntax, no-await-in-loop */
-import { adaptDatabase, type SQLiteLikeDb } from './ayahInsightsService.ts';
+import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
 
 const USER_DB_NAME = 'quran_user.db';
 let userDbInstance: SQLiteLikeDb | null = null;

@@ -5,14 +5,10 @@ import {
   AVAILABLE_DOWNLOADABLE_TAFSIRS,
 } from './tafsirDownloadService.ts';
 
-/**
- * Unified database adapter interface supporting both expo-sqlite and node:sqlite.
- */
-export interface SQLiteLikeDb {
-  getAll<T = any>(query: string, params?: any[]): Promise<T[]> | T[];
-  getFirst<T = any>(query: string, params?: any[]): Promise<T | null> | T | null;
-  run?(query: string, params?: any[]): Promise<any> | any;
-}
+import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
+
+export type { SQLiteLikeDb };
+export { adaptDatabase };
 
 let customDatabaseInstance: any = null;
 
@@ -21,44 +17,6 @@ let customDatabaseInstance: any = null;
  */
 export function setAyahDatabase(db: any): void {
   customDatabaseInstance = db;
-}
-
-/**
- * Wraps raw database instances (expo-sqlite or node:sqlite) into a unified interface.
- */
-export function adaptDatabase(rawDb: any): SQLiteLikeDb {
-  if (!rawDb) {
-    throw new Error('Database instance is required');
-  }
-
-  // If already adapted
-  if (typeof rawDb.getAll === 'function' && typeof rawDb.getFirst === 'function') {
-    return rawDb;
-  }
-
-  // expo-sqlite modern API
-  if (typeof rawDb.getAllAsync === 'function') {
-    return {
-      getAll: async <T>(query: string, params: any[] = []) => rawDb.getAllAsync(query, params),
-      getFirst: async <T>(query: string, params: any[] = []) => rawDb.getFirstAsync(query, params),
-      run: async (query: string, params: any[] = []) =>
-        rawDb.runAsync ? rawDb.runAsync(query, params) : undefined,
-    };
-  }
-
-  // node:sqlite DatabaseSync API
-  if (typeof rawDb.prepare === 'function') {
-    return {
-      getAll: <T>(query: string, params: any[] = []) => rawDb.prepare(query).all(...params) as T[],
-      getFirst: <T>(query: string, params: any[] = []) => {
-        const row = rawDb.prepare(query).get(...params);
-        return (row ?? null) as T | null;
-      },
-      run: (query: string, params: any[] = []) => rawDb.prepare(query).run(...params),
-    };
-  }
-
-  throw new Error('Unsupported database instance type');
 }
 
 /**
@@ -950,8 +908,13 @@ export async function getTafsirForVerse(
   // Path 3: Sovereign backend proxy API
   try {
     const base = tafsirForVerseApiBaseUrl.replace(/\/+$/, '');
-    const apiIdentifier = typeof tafsirId === 'string' && !/^\d+$/.test(tafsirId) ? tafsirId : String(meta.id || meta.slug);
-    const url = `${base}/api/proxy/content/api/qdc/tafsirs/${encodeURIComponent(apiIdentifier)}/by_ayah/${encodeURIComponent(verseKey)}`;
+    const apiIdentifier =
+      typeof tafsirId === 'string' && !/^\d+$/.test(tafsirId)
+        ? tafsirId
+        : String(meta.id || meta.slug);
+    const url = `${base}/api/proxy/content/api/qdc/tafsirs/${encodeURIComponent(
+      apiIdentifier,
+    )}/by_ayah/${encodeURIComponent(verseKey)}`;
     const response = await fetch(url);
     if (!response.ok) {
       return null;
@@ -962,10 +925,7 @@ export async function getTafsirForVerse(
       return null;
     }
     const result: TafsirContent = {
-      resourceId:
-        typeof tafsir['resource_id'] === 'number'
-          ? tafsir['resource_id']
-          : meta.id,
+      resourceId: typeof tafsir['resource_id'] === 'number' ? tafsir['resource_id'] : meta.id,
       slug: typeof tafsir['slug'] === 'string' ? tafsir['slug'] : canonicalSlug,
       text: typeof tafsir['text'] === 'string' ? tafsir['text'] : '',
       points: Array.isArray(tafsir['points']) ? (tafsir['points'] as string[]) : [],

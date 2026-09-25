@@ -1,4 +1,4 @@
-import { adaptDatabase, type SQLiteLikeDb } from './ayahInsightsService.ts';
+import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
 import type { JumpDestination, JuzCardInfo } from './quickJumpContracts.ts';
 
 let customDatabaseInstance: any = null;

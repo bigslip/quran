@@ -1,4 +1,4 @@
-import { toPersianDigits } from '../../components/catalog/catalogFormatters.ts';
+import { toPersianDigits } from '../catalog/catalogFormatters.ts';
 
 /**
  * Dimensions, layout standards, and touch targets for Settings Tafsir Manager.

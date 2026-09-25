@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions, @typescript-eslint/no-explicit-any, @typescript-eslint/naming-convention, no-restricted-syntax, no-await-in-loop */
-import { adaptDatabase, type SQLiteLikeDb } from './ayahInsightsService.ts';
+import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
 
 /**
  * Metadata for authentic Persian Quran Tafsirs available for on-demand download.
@@ -187,7 +187,9 @@ function getDatabaseDirectory(fs: FileSystemAdapter): string {
       'FileSystem.documentDirectory is null. The app may not have storage access or is running in an unsupported environment.',
     );
   }
-  const base = fs.documentDirectory.endsWith('/') ? fs.documentDirectory : `${fs.documentDirectory}/`;
+  const base = fs.documentDirectory.endsWith('/')
+    ? fs.documentDirectory
+    : `${fs.documentDirectory}/`;
   return `${base}SQLite/`;
 }
 
@@ -472,7 +474,9 @@ export async function getDownloadedTafsirDb(slug: string): Promise<SQLiteLikeDb>
     try {
       const downloaded = await isTafsirDownloaded(clean);
       if (!downloaded) {
-        throw new Error(`Tafsir database for "${slug}" is not downloaded. Please download it first.`);
+        throw new Error(
+          `Tafsir database for "${slug}" is not downloaded. Please download it first.`,
+        );
       }
 
       // eslint-disable-next-line @typescript-eslint/no-require-imports

@@ -9,3 +9,4 @@ export * from './bookmarkService';
 export * from './quickJumpContracts';
 export * from './quickJumpService';
 export * from './tafsirDownloadService';
+export * from './databaseAdapter';
