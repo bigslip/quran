@@ -74,10 +74,12 @@ download management with frequent-user offline nudging.
 
 - [x] **Step 1: Write the failing test for localDataEngine tafsir endpoints**
 - [x] **Step 2: Run test to verify it fails**
-- [x] **Step 3: Implement `tafsirs/:id/by_ayah/:verseKey` in `localDataEngine.ts` (Note: SQLite download endpoint is implemented in Task 3)**
+- [x] **Step 3: Implement `tafsirs/:id/by_ayah/:verseKey` in `localDataEngine.ts` (Note: SQLite
+      download endpoint is implemented in Task 3)**
 - [x] **Step 4: Run test to verify it passes**
 - [ ] **Step 5: Verify via
-      `curl http://localhost:3000/api/proxy/content/api/qdc/tafsirs/171/by_ayah/1:1` (Skipped: no running server available in CI)**
+      `curl http://localhost:3000/api/proxy/content/api/qdc/tafsirs/171/by_ayah/1:1` (Skipped: no
+      running server available in CI)**
 - [x] **Step 6: Commit backend endpoint changes**
 
 ---
@@ -116,12 +118,12 @@ download management with frequent-user offline nudging.
 - Produces: `getTafsirExcerpts(verseKey)` returning real authentic Tafsir excerpts for Nemouneh,
   Noor, and Al-Mizan.
 
-- [ ] **Step 1: Write the failing test for hybrid Tafsir fetching and caching**
-- [ ] **Step 2: Run test to verify it fails**
-- [ ] **Step 3: Implement hybrid resolution (Downloaded SQLite -> Local Cache Table -> Sovereign
+- [x] **Step 1: Write the failing test for hybrid Tafsir fetching and caching**
+- [x] **Step 2: Run test to verify it fails**
+- [x] **Step 3: Implement hybrid resolution (Downloaded SQLite -> Local Cache Table -> Sovereign
       API)**
-- [ ] **Step 4: Run test to verify it passes**
-- [ ] **Step 5: Commit hybrid resolution changes**
+- [x] **Step 4: Run test to verify it passes**
+- [x] **Step 5: Commit hybrid resolution changes**
 
 ---
 
@@ -137,12 +139,12 @@ download management with frequent-user offline nudging.
 - Consumes: `tafsirDownloadService` methods and active download states.
 - Produces: UI cards for downloading, tracking progress, and removing offline Tafsirs.
 
-- [ ] **Step 1: Write failing UI test for Settings Tafsir download section**
-- [ ] **Step 2: Run test to verify it fails**
-- [ ] **Step 3: Implement «دانلود تفاسیر برای استفاده آفلاین» section with progress bar and delete
+- [x] **Step 1: Write failing UI test for Settings Tafsir download section**
+- [x] **Step 2: Run test to verify it fails**
+- [x] **Step 3: Implement «دانلود تفاسیر برای استفاده آفلاین» section with progress bar and delete
       button**
-- [ ] **Step 4: Run test to verify it passes**
-- [ ] **Step 5: Commit settings screen updates**
+- [x] **Step 4: Run test to verify it passes**
+- [x] **Step 5: Commit settings screen updates**
 
 ---
 
@@ -159,11 +161,11 @@ download management with frequent-user offline nudging.
 - Consumes: `tafsirUsageCount`, `isDownloaded`, and banner dismissal state.
 - Produces: Elegant dismissible banner with one-tap link to Settings.
 
-- [ ] **Step 1: Write failing test for usage count tracking and banner visibility**
-- [ ] **Step 2: Run test to verify it fails**
-- [ ] **Step 3: Implement usage tracker in store and render banner in `TafsirTabContent.tsx`**
-- [ ] **Step 4: Run test to verify it passes**
-- [ ] **Step 5: Commit frequent-user prompt**
+- [x] **Step 1: Write failing test for usage count tracking and banner visibility**
+- [x] **Step 2: Run test to verify it fails**
+- [x] **Step 3: Implement usage tracker in store and render banner in `TafsirTabContent.tsx`**
+- [x] **Step 4: Run test to verify it passes**
+- [x] **Step 5: Commit frequent-user prompt**
 
 ---
 
@@ -176,6 +178,6 @@ download management with frequent-user offline nudging.
 - Run: Web test suite `yarn test`
 - Verify: Expo bundler port 8081 & Next.js server port 3000
 
-- [ ] **Step 1: Run all test suites and confirm 0 errors**
-- [ ] **Step 2: Test live API calls and verify complete authenticity of Persian Tafsir text**
-- [ ] **Step 3: Commit final verification**
+- [x] **Step 1: Run all test suites and confirm 0 errors**
+- [x] **Step 2: Test live API calls and verify complete authenticity of Persian Tafsir text**
+- [x] **Step 3: Commit final verification**
