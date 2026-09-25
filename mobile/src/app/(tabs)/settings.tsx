@@ -1,6 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch, ScrollView } from 'react-native';
-import { Check } from 'lucide-react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Switch,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
+import { Check, Download, Trash2, HardDrive } from 'lucide-react-native';
 import {
   fonts,
   fontSizes,
@@ -13,6 +21,20 @@ import {
 } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { useReadingStore } from '@/stores/useReadingStore';
+import {
+  AVAILABLE_DOWNLOADABLE_TAFSIRS,
+  isTafsirDownloaded,
+  downloadTafsirDatabase,
+  deleteTafsirDatabase,
+  getDownloadedTafsirSize,
+} from '@/services/db';
+import {
+  SETTINGS_TAFSIR_CONTRACTS,
+  formatTafsirSizeFa,
+  formatDownloadProgressFa,
+  formatTotalStorageFa,
+  getTafsirItemState,
+} from './settingsContracts';
 
 interface ThemeCardData {
   id: AppTheme;
@@ -60,6 +82,70 @@ export default function SettingsScreen() {
     theme,
     setTheme,
   } = useReadingStore();
+
+  // Offline Tafsir state
+  const [downloadedSlugs, setDownloadedSlugs] = React.useState<string[]>([]);
+  const [downloadProgress, setDownloadProgress] = React.useState<Record<string, number>>({});
+  const [activeDownloads, setActiveDownloads] = React.useState<Set<string>>(new Set());
+  const [totalStorageBytes, setTotalStorageBytes] = React.useState<number>(0);
+
+  const refreshTafsirStatus = React.useCallback(async () => {
+    try {
+      const downloaded: string[] = [];
+      let totalBytes = 0;
+      for (const t of AVAILABLE_DOWNLOADABLE_TAFSIRS) {
+        const isDone = await isTafsirDownloaded(t.slug);
+        if (isDone) {
+          downloaded.push(t.slug);
+          const size = await getDownloadedTafsirSize(t.slug);
+          totalBytes += size;
+        }
+      }
+      setDownloadedSlugs(downloaded);
+      setTotalStorageBytes(totalBytes);
+    } catch {
+      // Non-fatal status check error
+    }
+  }, []);
+
+  React.useEffect(() => {
+    refreshTafsirStatus();
+  }, [refreshTafsirStatus]);
+
+  const handleDownload = async (slug: string) => {
+    if (activeDownloads.has(slug)) return;
+    setActiveDownloads((prev) => new Set(prev).add(slug));
+    setDownloadProgress((prev) => ({ ...prev, [slug]: 0 }));
+
+    try {
+      await downloadTafsirDatabase(slug, (p) => {
+        setDownloadProgress((prev) => ({ ...prev, [slug]: p }));
+      });
+      await refreshTafsirStatus();
+    } catch (err) {
+      console.warn('Tafsir download failed:', err);
+    } finally {
+      setActiveDownloads((prev) => {
+        const next = new Set(prev);
+        next.delete(slug);
+        return next;
+      });
+      setDownloadProgress((prev) => {
+        const next = { ...prev };
+        delete next[slug];
+        return next;
+      });
+    }
+  };
+
+  const handleDelete = async (slug: string) => {
+    try {
+      await deleteTafsirDatabase(slug);
+      await refreshTafsirStatus();
+    } catch (err) {
+      console.warn('Tafsir deletion failed:', err);
+    }
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -253,7 +339,148 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* 3. About Section */}
+        {/* 3. Offline Tafsirs Manager Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeaderRow}>
+            <Text style={[styles.sectionHeading, { color: colors.primary }]}>
+              {SETTINGS_TAFSIR_CONTRACTS.sectionTitle}
+            </Text>
+            {totalStorageBytes > 0 && (
+              <View style={styles.storageBadge}>
+                <HardDrive size={12} color={colors.textFaded} />
+                <Text style={[styles.storageBadgeText, { color: colors.textFaded }]}>
+                  {formatTotalStorageFa(totalStorageBytes)}
+                </Text>
+              </View>
+            )}
+          </View>
+
+          {AVAILABLE_DOWNLOADABLE_TAFSIRS.map((tafsir) => {
+            const state = getTafsirItemState(tafsir.slug, downloadedSlugs, activeDownloads);
+            const progress = downloadProgress[tafsir.slug] || 0;
+
+            return (
+              <View
+                key={tafsir.slug}
+                testID={`tafsir-card-${tafsir.slug}`}
+                style={[
+                  styles.tafsirCard,
+                  {
+                    backgroundColor: colors.surfaceCard,
+                    borderColor: colors.borderSubtle,
+                  },
+                ]}
+              >
+                <View style={styles.tafsirCardContent}>
+                  {/* Left: Action Button / Progress */}
+                  <View style={styles.tafsirActionGroup}>
+                    {state === 'downloading' && (
+                      <View style={styles.progressContainer}>
+                        <ActivityIndicator size="small" color={colors.primary} />
+                        <Text style={[styles.progressText, { color: colors.primary }]}>
+                          {formatDownloadProgressFa(progress)}
+                        </Text>
+                      </View>
+                    )}
+
+                    {state === 'downloaded' && (
+                      <TouchableOpacity
+                        testID={`tafsir-delete-btn-${tafsir.slug}`}
+                        onPress={() => handleDelete(tafsir.slug)}
+                        accessible={true}
+                        accessibilityRole="button"
+                        accessibilityLabel={`${SETTINGS_TAFSIR_CONTRACTS.deleteActionLabel} ${tafsir.name}`}
+                        style={[
+                          styles.actionButton,
+                          styles.deleteButton,
+                          {
+                            backgroundColor: colors.surfaceFloating,
+                            borderColor: colors.borderSubtle,
+                          },
+                        ]}
+                      >
+                        <Trash2 size={18} color={colors.error} />
+                      </TouchableOpacity>
+                    )}
+
+                    {state === 'not_downloaded' && (
+                      <TouchableOpacity
+                        testID={`tafsir-download-btn-${tafsir.slug}`}
+                        onPress={() => handleDownload(tafsir.slug)}
+                        accessible={true}
+                        accessibilityRole="button"
+                        accessibilityLabel={`${SETTINGS_TAFSIR_CONTRACTS.downloadActionLabel} ${tafsir.name}`}
+                        style={[
+                          styles.actionButton,
+                          styles.downloadButton,
+                          {
+                            backgroundColor: colors.primary,
+                          },
+                        ]}
+                      >
+                        <Download size={18} color={colors.textInverse} />
+                        <Text style={[styles.downloadButtonText, { color: colors.textInverse }]}>
+                          دانلود
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+
+                  {/* Right: Info */}
+                  <View style={styles.tafsirInfoGroup}>
+                    <View style={styles.tafsirTitleRow}>
+                      {state === 'downloaded' && (
+                        <View
+                          style={[
+                            styles.downloadedPill,
+                            {
+                              backgroundColor: colors.surfaceFloating,
+                              borderColor: colors.primary,
+                            },
+                          ]}
+                        >
+                          <Check size={10} color={colors.primary} />
+                          <Text style={[styles.downloadedPillText, { color: colors.primary }]}>
+                            {SETTINGS_TAFSIR_CONTRACTS.downloadedBadgeLabel}
+                          </Text>
+                        </View>
+                      )}
+                      <Text style={[styles.tafsirName, { color: colors.textPrimary }]}>
+                        {tafsir.name}
+                      </Text>
+                    </View>
+                    <Text style={[styles.tafsirAuthor, { color: colors.textSecondary }]}>
+                      {tafsir.authorName}
+                    </Text>
+                    <Text style={[styles.tafsirSize, { color: colors.textFaded }]}>
+                      حجم بسته: {formatTafsirSizeFa(tafsir.approximateSizeMb)}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Progress Bar when downloading */}
+                {state === 'downloading' && (
+                  <View
+                    testID={`tafsir-progress-${tafsir.slug}`}
+                    style={[styles.progressBarTrack, { backgroundColor: colors.surfaceFloating }]}
+                  >
+                    <View
+                      style={[
+                        styles.progressBarFill,
+                        {
+                          backgroundColor: colors.primary,
+                          width: `${Math.round(progress * 100)}%`,
+                        },
+                      ]}
+                    />
+                  </View>
+                )}
+              </View>
+            );
+          })}
+        </View>
+
+        {/* 4. About Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionHeading, { color: colors.primary }]}>درباره سامانه</Text>
           <View
@@ -431,5 +658,121 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'right',
     marginTop: spacing.xs,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  storageBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  storageBadgeText: {
+    fontFamily: fonts.uiRegular,
+    fontSize: 11,
+  },
+  tafsirCard: {
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    minHeight: SETTINGS_TAFSIR_CONTRACTS.cardMinHeight,
+    borderWidth: 1,
+    gap: spacing.sm,
+  },
+  tafsirCardContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  tafsirActionGroup: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 44,
+    minHeight: 44,
+  },
+  actionButton: {
+    minWidth: SETTINGS_TAFSIR_CONTRACTS.actionButtonMinWidth,
+    minHeight: SETTINGS_TAFSIR_CONTRACTS.actionButtonMinHeight,
+    borderRadius: borderRadius.pill,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  downloadButton: {
+    flexDirection: 'row',
+    paddingHorizontal: spacing.md,
+    gap: spacing.xs,
+  },
+  downloadButtonText: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.xs,
+    fontWeight: '700',
+  },
+  deleteButton: {
+    paddingHorizontal: spacing.sm,
+    borderWidth: 1,
+  },
+  progressContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    minWidth: 44,
+    minHeight: 44,
+  },
+  progressText: {
+    fontFamily: fonts.uiRegular,
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  tafsirInfoGroup: {
+    flex: 1,
+    alignItems: 'flex-end',
+    marginLeft: spacing.md,
+    gap: 2,
+  },
+  tafsirTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  tafsirName: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.sm,
+    fontWeight: '700',
+    textAlign: 'right',
+  },
+  tafsirAuthor: {
+    fontFamily: fonts.uiRegular,
+    fontSize: 11,
+    textAlign: 'right',
+  },
+  tafsirSize: {
+    fontFamily: fonts.uiRegular,
+    fontSize: 10,
+    textAlign: 'right',
+  },
+  downloadedPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing.xs + 2,
+    paddingVertical: 2,
+    borderRadius: borderRadius.pill,
+    borderWidth: 1,
+    gap: 3,
+  },
+  downloadedPillText: {
+    fontFamily: fonts.uiRegular,
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  progressBarTrack: {
+    height: SETTINGS_TAFSIR_CONTRACTS.progressBarHeight,
+    borderRadius: borderRadius.pill,
+    overflow: 'hidden',
+    width: '100%',
+  },
+  progressBarFill: {
+    height: '100%',
+    borderRadius: borderRadius.pill,
   },
 });
