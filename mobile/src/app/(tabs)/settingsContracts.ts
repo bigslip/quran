@@ -40,7 +40,7 @@ export function formatTotalStorageFa(totalBytes: number): string {
   if (totalBytes <= 0) {
     return '۰ مگابایت';
   }
-  const megabytes = Math.round(totalBytes / (1024 * 1024));
+  const megabytes = Math.max(1, Math.round(totalBytes / (1024 * 1024)));
   return `${toPersianDigits(megabytes)} مگابایت`;
 }
 

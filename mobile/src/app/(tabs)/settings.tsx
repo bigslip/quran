@@ -7,6 +7,7 @@ import {
   Switch,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { Check, Download, Trash2, HardDrive } from 'lucide-react-native';
 import {
@@ -124,6 +125,10 @@ export default function SettingsScreen() {
       await refreshTafsirStatus();
     } catch (err) {
       console.warn('Tafsir download failed:', err);
+      Alert.alert(
+        'خطا در بارگیری تفسیر',
+        'دریافت فایل تفسیر با خطا مواجه شد. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.',
+      );
     } finally {
       setActiveDownloads((prev) => {
         const next = new Set(prev);
@@ -138,13 +143,26 @@ export default function SettingsScreen() {
     }
   };
 
-  const handleDelete = async (slug: string) => {
-    try {
-      await deleteTafsirDatabase(slug);
-      await refreshTafsirStatus();
-    } catch (err) {
-      console.warn('Tafsir deletion failed:', err);
-    }
+  const handleDelete = (slug: string, name: string) => {
+    Alert.alert(
+      'حذف فایل تفسیر',
+      `آیا از حذف داده‌های آفلاین «${name}» اطمینان دارید؟`,
+      [
+        { text: 'انصراف', style: 'cancel' },
+        {
+          text: 'حذف',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteTafsirDatabase(slug);
+              await refreshTafsirStatus();
+            } catch (err) {
+              console.warn('Tafsir deletion failed:', err);
+            }
+          },
+        },
+      ],
+    );
   };
 
   return (
@@ -386,7 +404,7 @@ export default function SettingsScreen() {
                     {state === 'downloaded' && (
                       <TouchableOpacity
                         testID={`tafsir-delete-btn-${tafsir.slug}`}
-                        onPress={() => handleDelete(tafsir.slug)}
+                        onPress={() => handleDelete(tafsir.slug, tafsir.name)}
                         accessible={true}
                         accessibilityRole="button"
                         accessibilityLabel={`${SETTINGS_TAFSIR_CONTRACTS.deleteActionLabel} ${tafsir.name}`}
