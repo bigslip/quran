@@ -51,12 +51,23 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
     const incrementTafsirOpenCount = useReadingStore((state) => state.incrementTafsirOpenCount);
     const dismissTafsirNudge = useReadingStore((state) => state.dismissTafsirNudge);
 
+    // Call useRouter at component top-level to comply with React Rules of Hooks
+    let router: any = null;
+    try {
+      router = useRouter();
+    } catch {
+      // In isolated test environments where router context is not mounted, fail gracefully
+    }
+
     const [isAllTafsirDownloaded, setIsAllTafsirDownloaded] = useState<boolean>(false);
 
-    // Increment usage count upon mounting or entering the Tafsir tab
+    // Increment usage count upon mounting or entering the Tafsir tab,
+    // only if the nudge is not already dismissed
     useEffect(() => {
-      incrementTafsirOpenCount();
-    }, [incrementTafsirOpenCount]);
+      if (!isTafsirNudgeDismissed) {
+        incrementTafsirOpenCount();
+      }
+    }, [incrementTafsirOpenCount, isTafsirNudgeDismissed]);
 
     // Check if all authentic downloadable Persian Tafsirs are downloaded
     useEffect(() => {
@@ -88,13 +99,10 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
     });
 
     const handleNavigateSettings = useCallback(() => {
-      try {
-        const router = useRouter();
+      if (router && typeof router.push === 'function') {
         router.push(TAFSIR_NUDGE_BANNER_CONTRACTS.settingsRoute as any);
-      } catch {
-        // In non-router or test environments, fail gracefully
       }
-    }, []);
+    }, [router]);
 
     return (
       <View style={[styles.container, style]} testID={testID}>
