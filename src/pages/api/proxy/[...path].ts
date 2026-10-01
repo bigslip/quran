@@ -1,3 +1,5 @@
+import fs from 'fs';
+import pathModule from 'path';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { getLocalApiResponse } from '@/utils/localDataEngine';
@@ -12,8 +14,25 @@ export const config = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { path } = req.query;
-  const pathString = Array.isArray(path) ? path.join('/') : path || req.url || '';
+  const { path: queryPath } = req.query;
+  const pathString = Array.isArray(queryPath) ? queryPath.join('/') : queryPath || req.url || '';
+
+  // Handle binary SQLite downloads for mobile offline engines
+  const downloadMatch = /(?:^|\/)download\/tafsirs\/([^/]+\.db)$/.exec(pathString);
+  if (downloadMatch) {
+    const fileName = pathModule.basename(downloadMatch[1]);
+    const filePath = pathModule.join(process.cwd(), 'data/qdc/download/tafsirs', fileName);
+    if (fs.existsSync(filePath)) {
+      const stat = fs.statSync(filePath);
+      res.setHeader('Content-Type', 'application/x-sqlite3');
+      res.setHeader('Content-Length', stat.size);
+      res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      const fileStream = fs.createReadStream(filePath);
+      return fileStream.pipe(res);
+    }
+    return res.status(404).json({ error: 'Database not found' });
+  }
 
   try {
     const data = await getLocalApiResponse(pathString, req.query);
@@ -21,8 +40,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json(data);
   } catch (error: any) {
     console.error(`Local proxy error for ${pathString}:`, error?.message || error);
-    return res.status(404).json({ error: 'Resource not found', message: error?.message || 'Not found' });
+    return res
+      .status(404)
+      .json({ error: 'Resource not found', message: error?.message || 'Not found' });
   }
 }
-
-
