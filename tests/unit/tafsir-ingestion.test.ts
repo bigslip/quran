@@ -112,7 +112,7 @@ describe('Tafsir Ingestion & Canonical Datasets', () => {
     expect(verseEighteenTwentyEight.verse_key).toBe('18:28');
     expect(verseEighteenTwentyEight.verse_number).toBe(28);
     expect(verseEighteenTwentyEight.chapter_id).toBe(18);
-    expect(verseEighteenTwentyEight.text).toContain('ارزش همنشین');
+    expect(verseEighteenTwentyEight.text).toContain('ثروتمندان');
     expect(verseEighteenTwentyEight.points.length).toBeGreaterThanOrEqual(2);
   });
 });
