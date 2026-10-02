@@ -3,6 +3,7 @@ import {
   isTafsirDownloaded,
   getDownloadedTafsirDb,
   AVAILABLE_DOWNLOADABLE_TAFSIRS,
+  resolveDefaultApiBaseUrl,
 } from './tafsirDownloadService.ts';
 
 import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
@@ -753,7 +754,7 @@ export interface TafsirContent {
 }
 
 /** Base URL for the sovereign backend proxy API (overridable for testing). */
-let tafsirForVerseApiBaseUrl = 'https://quran.ir';
+let tafsirForVerseApiBaseUrl = resolveDefaultApiBaseUrl();
 
 /**
  * Overrides the base URL used by getTafsirForVerse for API calls.
@@ -768,7 +769,7 @@ export function setTafsirForVerseApiBaseUrl(url: string): void {
  * Call in afterEach / test teardown.
  */
 export function resetTafsirForVerseApiBaseUrl(): void {
-  tafsirForVerseApiBaseUrl = 'https://quran.ir';
+  tafsirForVerseApiBaseUrl = resolveDefaultApiBaseUrl();
 }
 
 /**

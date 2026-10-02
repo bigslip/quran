@@ -38,6 +38,35 @@ export const AVAILABLE_DOWNLOADABLE_TAFSIRS: DownloadableTafsirInfo[] = [
 export const DEFAULT_API_BASE_URL = 'https://quran.ir';
 
 /**
+ * Resolves the default API base URL for downloading and querying Tafsirs:
+ * 1. Explicit environment variable EXPO_PUBLIC_API_URL
+ * 2. In development under Expo Go/Dev Client, derives the dev machine host IP from Constants.hostUri
+ * 3. Falls back to https://quran.ir for production and non-Expo environments
+ */
+export function resolveDefaultApiBaseUrl(): string {
+  if (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_API_URL) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+    const Constants = require('expo-constants')?.default || require('expo-constants');
+    const hostUri =
+      Constants?.expoConfig?.hostUri ||
+      Constants?.manifest2?.extra?.expoGo?.debuggerHost ||
+      Constants?.manifest?.debuggerHost;
+    if (hostUri && typeof hostUri === 'string') {
+      const host = hostUri.split(':')[0];
+      if (host) {
+        return `http://${host}:3000`;
+      }
+    }
+  } catch {
+    // Ignore in non-Expo or Node test environments
+  }
+  return DEFAULT_API_BASE_URL;
+}
+
+/**
  * Abstraction over Expo FileSystem to facilitate clean unit testing in Node environments.
  */
 export interface FileSystemAdapter {
@@ -64,7 +93,7 @@ export interface FileSystemAdapter {
 }
 
 // Module-level state
-let currentApiBaseUrl = DEFAULT_API_BASE_URL;
+let currentApiBaseUrl = resolveDefaultApiBaseUrl();
 let customFileSystem: FileSystemAdapter | null = null;
 let customSQLite: any = null;
 const customDatabases = new Map<string, SQLiteLikeDb>();
