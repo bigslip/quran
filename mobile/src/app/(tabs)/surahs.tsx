@@ -321,18 +321,16 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   quickJumpButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.goldAccent,
   },
   titleGroup: {
     alignItems: 'flex-start',
   },
   title: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xl,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: 'right',
   },
@@ -355,9 +353,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   countBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xs,
-    fontWeight: '700',
     color: colors.goldAccent,
   },
   loadingContainer: {
@@ -379,9 +376,8 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   errorTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: 'center',
   },
@@ -405,9 +401,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   retryButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.primary,
   },
   listContent: {

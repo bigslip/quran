@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
 import type { WordLinguisticInfo } from '../../types/quran';
 import {
@@ -36,108 +29,101 @@ export interface WordLinguisticBreakdownCardProps {
  * - Active highlight state with emerald border and floating surface.
  * - Complies with touch target contracts (minHeight: 64px, >= 44x44px target).
  */
-export const WordLinguisticBreakdownCard: React.FC<WordLinguisticBreakdownCardProps> = React.memo(({
-  word,
-  isActive,
-  onPress,
-  quranFont = 'hafs',
-  style,
-  testID = 'word-linguistic-breakdown-card',
-}) => {
-  const fontName = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
-  const wordArabic =
-    quranFont === 'indopak' && word.text_indopak
-      ? word.text_indopak
-      : word.text_uthmani;
+export const WordLinguisticBreakdownCard: React.FC<WordLinguisticBreakdownCardProps> = React.memo(
+  ({
+    word,
+    isActive,
+    onPress,
+    quranFont = 'hafs',
+    style,
+    testID = 'word-linguistic-breakdown-card',
+  }) => {
+    const fontName = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
+    const wordArabic =
+      quranFont === 'indopak' && word.text_indopak ? word.text_indopak : word.text_uthmani;
 
-  const a11yLabel = `واژه ${toPersianDigits(word.position)}: ${word.text_uthmani}، معنی: ${word.translation_fa || 'بدون ترجمه'}`;
+    const a11yLabel = `واژه ${toPersianDigits(word.position)}: ${word.text_uthmani}، معنی: ${
+      word.translation_fa || 'بدون ترجمه'
+    }`;
 
-  return (
-    <TouchableOpacity
-      testID={testID}
-      onPress={onPress}
-      activeOpacity={0.7}
-      accessible={true}
-      accessibilityRole="button"
-      accessibilityState={{ selected: isActive }}
-      accessibilityLabel={a11yLabel}
-      style={[
-        styles.card,
-        isActive ? styles.cardActive : styles.cardInactive,
-        style,
-      ]}
-    >
-      <View style={styles.contentRow}>
-        {/* Right Section: Position Badge + Sacred Arabic Word */}
-        <View style={styles.rightSection}>
-          <View
-            style={[
-              styles.positionBadge,
-              isActive ? styles.positionBadgeActive : styles.positionBadgeInactive,
-            ]}
-            testID={`${testID}-position-badge`}
-          >
+    return (
+      <TouchableOpacity
+        testID={testID}
+        onPress={onPress}
+        activeOpacity={0.7}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityState={{ selected: isActive }}
+        accessibilityLabel={a11yLabel}
+        style={[styles.card, isActive ? styles.cardActive : styles.cardInactive, style]}
+      >
+        <View style={styles.contentRow}>
+          {/* Right Section: Position Badge + Sacred Arabic Word */}
+          <View style={styles.rightSection}>
+            <View
+              style={[
+                styles.positionBadge,
+                isActive ? styles.positionBadgeActive : styles.positionBadgeInactive,
+              ]}
+              testID={`${testID}-position-badge`}
+            >
+              <Text
+                style={[
+                  styles.positionBadgeText,
+                  isActive ? styles.positionBadgeTextActive : styles.positionBadgeTextInactive,
+                ]}
+              >
+                {toPersianDigits(word.position)}
+              </Text>
+            </View>
+
             <Text
               style={[
-                styles.positionBadgeText,
-                isActive ? styles.positionBadgeTextActive : styles.positionBadgeTextInactive,
+                styles.arabicWordText,
+                { fontFamily: fontName },
+                isActive ? styles.arabicWordTextActive : styles.arabicWordTextInactive,
               ]}
+              testID={`${testID}-arabic-word`}
+              allowFontScaling={false}
             >
-              {toPersianDigits(word.position)}
+              {wordArabic}
             </Text>
           </View>
 
-          <Text
-            style={[
-              styles.arabicWordText,
-              { fontFamily: fontName },
-              isActive ? styles.arabicWordTextActive : styles.arabicWordTextInactive,
-            ]}
-            testID={`${testID}-arabic-word`}
-            allowFontScaling={false}
-          >
-            {wordArabic}
-          </Text>
-        </View>
+          {/* Middle Section: Linguistic Chips (Root & POS) */}
+          <View style={styles.middleSection} testID={`${testID}-chips-section`}>
+            <View style={styles.rootChip} testID={`${testID}-root-chip`}>
+              <Text style={styles.rootChipText}>
+                {`ریشه: ${formatArabicRoot(word.root_arabic)}`}
+              </Text>
+            </View>
 
-        {/* Middle Section: Linguistic Chips (Root & POS) */}
-        <View style={styles.middleSection} testID={`${testID}-chips-section`}>
-          <View style={styles.rootChip} testID={`${testID}-root-chip`}>
-            <Text style={styles.rootChipText}>
-              {`ریشه: ${formatArabicRoot(word.root_arabic)}`}
-            </Text>
+            <View
+              style={[styles.posBadge, isActive ? styles.posBadgeActive : styles.posBadgeInactive]}
+              testID={`${testID}-pos-badge`}
+            >
+              <Text style={styles.posBadgeText}>{formatPartOfSpeechFa(word.part_of_speech)}</Text>
+            </View>
           </View>
 
-          <View
-            style={[
-              styles.posBadge,
-              isActive ? styles.posBadgeActive : styles.posBadgeInactive,
-            ]}
-            testID={`${testID}-pos-badge`}
-          >
-            <Text style={styles.posBadgeText}>
-              {formatPartOfSpeechFa(word.part_of_speech)}
+          {/* Left Section: Persian Gloss Meaning */}
+          <View style={styles.leftSection}>
+            <Text
+              style={[
+                styles.glossText,
+                isActive ? styles.glossTextActive : styles.glossTextInactive,
+              ]}
+              testID={`${testID}-gloss`}
+              numberOfLines={2}
+            >
+              {word.translation_fa || '—'}
             </Text>
           </View>
         </View>
-
-        {/* Left Section: Persian Gloss Meaning */}
-        <View style={styles.leftSection}>
-          <Text
-            style={[
-              styles.glossText,
-              isActive ? styles.glossTextActive : styles.glossTextInactive,
-            ]}
-            testID={`${testID}-gloss`}
-            numberOfLines={2}
-          >
-            {word.translation_fa || '—'}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-});
+      </TouchableOpacity>
+    );
+  },
+);
 
 WordLinguisticBreakdownCard.displayName = 'WordLinguisticBreakdownCard';
 
@@ -189,9 +175,8 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
   },
   positionBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xs,
-    fontWeight: '700',
   },
   positionBadgeTextActive: {
     color: colors.primaryLight,
@@ -201,16 +186,14 @@ const styles = StyleSheet.create({
   },
   arabicWordText: {
     fontSize: 22,
-    lineHeight: 32,
+    lineHeight: 40,
     textAlign: 'right',
   },
   arabicWordTextActive: {
     color: colors.goldAccent,
-    fontWeight: '700',
   },
   arabicWordTextInactive: {
     color: colors.textPrimary,
-    fontWeight: '400',
   },
   middleSection: {
     flexDirection: 'row-reverse',
@@ -246,10 +229,9 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
   },
   posBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
     color: colors.primaryLight,
-    fontWeight: '600',
   },
   leftSection: {
     flex: 1,
@@ -258,17 +240,16 @@ const styles = StyleSheet.create({
     paddingLeft: spacing.xs,
   },
   glossText: {
-    fontFamily: fonts.uiRegular,
     fontSize: fontSizes.sm,
     lineHeight: 20,
     textAlign: 'left',
   },
   glossTextActive: {
+    fontFamily: fonts.uiMedium,
     color: colors.textPrimary,
-    fontWeight: '500',
   },
   glossTextInactive: {
+    fontFamily: fonts.uiRegular,
     color: colors.textSecondary,
-    fontWeight: '400',
   },
 });

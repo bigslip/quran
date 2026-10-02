@@ -329,9 +329,8 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.borderSeparator,
   },
   headerTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.lg,
-    fontWeight: '600',
     color: colors.textPrimary,
     textAlign: rtlTextAlign,
     writingDirection: rtlWritingDirection,
@@ -374,17 +373,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   tabText: {
-    fontFamily: fonts.uiRegular,
     fontSize: fontSizes.xs,
     textAlign: 'center',
   },
   tabTextActive: {
+    fontFamily: fonts.uiBold,
     color: colors.primaryLight,
-    fontWeight: '700',
   },
   tabTextInactive: {
+    fontFamily: fonts.uiRegular,
     color: colors.textSecondary,
-    fontWeight: '400',
   },
   activeIndicator: {
     position: 'absolute',

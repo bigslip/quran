@@ -1123,7 +1123,7 @@ const styles = StyleSheet.create({
   },
   topBarSurahFa: {
     fontFamily: fonts.uiBold,
-    fontSize: fontSizes.md - 1,
+    fontSize: fontSizes.sm,
   },
   topBarSubtitleRow: {
     flexDirection: rtlRow,
@@ -1135,10 +1135,11 @@ const styles = StyleSheet.create({
   topBarSurahArabic: {
     fontFamily: fonts.quranHafs,
     fontSize: 16,
-    lineHeight: 20,
+    lineHeight: 28,
   },
   topBarSurahMetaDivider: {
-    fontSize: 10,
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.xxs,
     marginHorizontal: 1,
   },
   topBarSurahMetaText: {

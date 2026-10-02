@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { Juz } from '@/types/quran';
@@ -27,12 +20,7 @@ export interface JuzCardItemProps {
   testID?: string;
 }
 
-export const JuzCardItem: React.FC<JuzCardItemProps> = ({
-  juz,
-  onPress,
-  style,
-  testID,
-}) => {
+export const JuzCardItem: React.FC<JuzCardItemProps> = ({ juz, onPress, style, testID }) => {
   const router = useRouter();
 
   const handlePress = () => {
@@ -44,10 +32,7 @@ export const JuzCardItem: React.FC<JuzCardItemProps> = ({
   };
 
   const juzBadgeText = formatJuzBadge(juz.juz_number);
-  const startInfoText = formatJuzStartInfo(
-    juz.first_surah_name_fa,
-    juz.first_verse_key
-  );
+  const startInfoText = formatJuzStartInfo(juz.first_surah_name_fa, juz.first_verse_key);
   const pageRangeText = formatJuzPageRange(juz.page_start, juz.page_end);
   const ayahCountText = formatAyahCount(juz.verses_count);
   const accessibilityLabelText = formatJuzAccessibilityLabel(juz);
@@ -83,11 +68,7 @@ export const JuzCardItem: React.FC<JuzCardItemProps> = ({
       {/* Bottom Snippet: Arabic Preview in Uthmanic Hafs */}
       {Boolean(juz.preview_text) && (
         <View style={styles.previewContainer}>
-          <Text
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            style={styles.previewText}
-          >
+          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.previewText}>
             {juz.preview_text}
           </Text>
         </View>
@@ -125,9 +106,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   juzBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.goldAccent,
   },
   ayahPill: {
@@ -141,9 +121,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   ayahPillText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.textSecondary,
   },
   middleRow: {
@@ -153,9 +132,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   startInfoText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.md,
-    fontWeight: '600',
     color: colors.textPrimary,
   },
   pageRangeText: {

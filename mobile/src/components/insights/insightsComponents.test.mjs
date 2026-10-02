@@ -35,10 +35,7 @@ import {
   setTafsirDatabase,
   resetTafsirDownloaderForTesting,
 } from '../../services/db/tafsirDownloadService.ts';
-import {
-  getUserDatabase,
-  resetUserDatabaseForTesting,
-} from '../../services/db/userDatabase.ts';
+import { getUserDatabase, resetUserDatabaseForTesting } from '../../services/db/userDatabase.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -323,7 +320,7 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
       assert.ok(cardSource.includes('colors.primarySubtle'));
       assert.ok(cardSource.includes('colors.primary'));
       assert.ok(cardSource.includes('scriptureWordActive'));
-      assert.ok(cardSource.includes("fontWeight: '700'"));
+      assert.ok(cardSource.includes('colors.primaryLight'));
 
       // Quran font switching (hafs vs indopak)
       assert.ok(cardSource.includes('fonts.quranIndoPak'));
@@ -1201,7 +1198,18 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
 
       globalThis.fetch = async (url) => {
         capturedUrls.push(url);
-        return { ok: true, json: async () => ({ tafsir: { resource_id: 172, slug: 'fa-tafsir-noor', text: 'test', points: [], language_name: 'fa' } }) };
+        return {
+          ok: true,
+          json: async () => ({
+            tafsir: {
+              resource_id: 172,
+              slug: 'fa-tafsir-noor',
+              text: 'test',
+              points: [],
+              language_name: 'fa',
+            },
+          }),
+        };
       };
 
       setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
@@ -1279,7 +1287,13 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
         return {
           ok: true,
           json: async () => ({
-            tafsir: { resource_id: 171, slug: 'fa-tafsir-nemouneh', text: 'متن', points: ['نکته'], language_name: 'fa' },
+            tafsir: {
+              resource_id: 171,
+              slug: 'fa-tafsir-nemouneh',
+              text: 'متن',
+              points: ['نکته'],
+              language_name: 'fa',
+            },
           }),
         };
       };
@@ -1287,7 +1301,11 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
       setTafsirForVerseApiBaseUrl('https://mock.quran.ir');
       const result = await getTafsirForVerse('18:28', 171);
 
-      assert.strictEqual(apiFetched, true, 'API must be called when tafsir is not downloaded locally');
+      assert.strictEqual(
+        apiFetched,
+        true,
+        'API must be called when tafsir is not downloaded locally',
+      );
       assert.ok(result !== null);
       assert.strictEqual(result.resourceId, 171);
     });
@@ -1354,7 +1372,10 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
         'SELECT text, points_json FROM cached_tafsir_verses WHERE tafsir_id = ? AND verse_key = ?',
         ['fa-tafsir-nemouneh', '3:18'],
       );
-      assert.ok(cached !== null, 'Tafsir must be persisted to cached_tafsir_verses under canonical slug');
+      assert.ok(
+        cached !== null,
+        'Tafsir must be persisted to cached_tafsir_verses under canonical slug',
+      );
       assert.strictEqual(cached.text, 'تفسیر ذخیره شده در کش');
     });
 
@@ -1430,4 +1451,3 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
     });
   });
 });
-

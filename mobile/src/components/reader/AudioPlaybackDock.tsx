@@ -275,9 +275,8 @@ const styles = StyleSheet.create({
     minHeight: READER_COMPONENT_CONTRACTS.minTouchTarget,
   },
   ayahTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '600',
     color: colors.textPrimary,
     textAlign: 'right',
   },

@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import {
   CATALOG_COMPONENT_CONTRACTS,
@@ -31,11 +24,7 @@ export const CatalogTabSwitcher: React.FC<CatalogTabSwitcherProps> = ({
   testID = 'catalog-tab-switcher',
 }: CatalogTabSwitcherProps) => {
   return (
-    <View
-      testID={testID}
-      style={[styles.container, style]}
-      accessibilityRole="tablist"
-    >
+    <View testID={testID} style={[styles.container, style]} accessibilityRole="tablist">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
         return (
@@ -44,20 +33,14 @@ export const CatalogTabSwitcher: React.FC<CatalogTabSwitcherProps> = ({
             testID={`${testID}-${tab.id}`}
             activeOpacity={0.8}
             onPress={() => onTabChange(tab.id)}
-            style={[
-              styles.tabButton,
-              isActive && styles.activeTabButton,
-            ]}
+            style={[styles.tabButton, isActive && styles.activeTabButton]}
             accessible={true}
             accessibilityRole="tab"
             accessibilityState={{ selected: isActive }}
             accessibilityLabel={tab.label}
           >
             <Text
-              style={[
-                styles.tabText,
-                isActive ? styles.activeTabText : styles.inactiveTabText,
-              ]}
+              style={[styles.tabText, isActive ? styles.activeTabText : styles.inactiveTabText]}
               numberOfLines={1}
             >
               {tab.label}
@@ -98,16 +81,15 @@ const styles = StyleSheet.create({
     borderColor: colors.goldAccent,
   },
   tabText: {
-    fontFamily: fonts.uiRegular,
     fontSize: fontSizes.sm,
     textAlign: 'center',
   },
   activeTabText: {
+    fontFamily: fonts.uiBold,
     color: colors.goldAccent,
-    fontWeight: '700',
   },
   inactiveTabText: {
+    fontFamily: fonts.uiMedium,
     color: colors.textSecondary,
-    fontWeight: '500',
   },
 });

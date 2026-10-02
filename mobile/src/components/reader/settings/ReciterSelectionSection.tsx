@@ -1,11 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Search, X, Check } from 'lucide-react-native';
 import {
   colors,
@@ -41,173 +35,177 @@ type StyleFilter = 'all' | ReciterStyle;
  * 3. Interactive reciter cards with Persian names, style badges, and active checkmarks.
  * 4. WCAG touch targets >= 44x44px.
  */
-export const ReciterSelectionSection: React.FC<ReciterSelectionSectionProps> = React.memo(({
-  selectedReciterId: propSelectedReciterId,
-  onSelectReciter: propOnSelectReciter,
-  testID = 'reciter-selection-section',
-}) => {
-  const store = useReadingStore();
-  const activeReciterId = propSelectedReciterId ?? store.selectedReciterId;
-  const handleSelect = propOnSelectReciter ?? store.setSelectedReciterId;
+export const ReciterSelectionSection: React.FC<ReciterSelectionSectionProps> = React.memo(
+  ({
+    selectedReciterId: propSelectedReciterId,
+    onSelectReciter: propOnSelectReciter,
+    testID = 'reciter-selection-section',
+  }) => {
+    const store = useReadingStore();
+    const activeReciterId = propSelectedReciterId ?? store.selectedReciterId;
+    const handleSelect = propOnSelectReciter ?? store.setSelectedReciterId;
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedStyle, setSelectedStyle] = useState<StyleFilter>('all');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedStyle, setSelectedStyle] = useState<StyleFilter>('all');
 
-  const filteredReciters = useMemo(() => {
-    return searchReciters(searchQuery, selectedStyle);
-  }, [searchQuery, selectedStyle]);
+    const filteredReciters = useMemo(() => {
+      return searchReciters(searchQuery, selectedStyle);
+    }, [searchQuery, selectedStyle]);
 
-  const styleFilterOptions: { key: StyleFilter; label: string }[] = [
-    { key: 'all', label: 'همه' },
-    { key: 'Murattal', label: 'ترتیل' },
-    { key: 'Mujawwad', label: 'تحقیق' },
-  ];
+    const styleFilterOptions: { key: StyleFilter; label: string }[] = [
+      { key: 'all', label: 'همه' },
+      { key: 'Murattal', label: 'ترتیل' },
+      { key: 'Mujawwad', label: 'تحقیق' },
+    ];
 
-  return (
-    <View testID={testID} style={styles.container}>
-      <Text style={styles.sectionTitle}>انتخاب قاری قرآن</Text>
+    return (
+      <View testID={testID} style={styles.container}>
+        <Text style={styles.sectionTitle}>انتخاب قاری قرآن</Text>
 
-      {/* Search Bar */}
-      <View style={styles.searchBar}>
-        <Search size={18} color={colors.textFaded} style={styles.searchIcon} />
-        <TextInput
-          testID={`${testID}-search-input`}
-          style={styles.searchInput}
-          placeholder="جستجوی نام قاری (فارسی یا انگلیسی)..."
-          placeholderTextColor={colors.textFaded}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          autoCorrect={false}
-          returnKeyType="search"
-          accessible={true}
-          accessibilityLabel="جستجوی نام قاری"
-        />
-        {searchQuery.length > 0 && (
-          <TouchableOpacity
-            testID={`${testID}-search-clear`}
-            onPress={() => setSearchQuery('')}
-            style={styles.clearButton}
+        {/* Search Bar */}
+        <View style={styles.searchBar}>
+          <Search size={18} color={colors.textFaded} style={styles.searchIcon} />
+          <TextInput
+            testID={`${testID}-search-input`}
+            style={styles.searchInput}
+            placeholder="جستجوی نام قاری (فارسی یا انگلیسی)..."
+            placeholderTextColor={colors.textFaded}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            autoCorrect={false}
+            returnKeyType="search"
             accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel="پاک کردن متن جستجو"
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <X size={16} color={colors.textSecondary} />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      {/* Recitation Style Filter Pills */}
-      <View style={styles.filterPillsRow}>
-        {styleFilterOptions.map((opt) => {
-          const isActive = selectedStyle === opt.key;
-          return (
+            accessibilityLabel="جستجوی نام قاری"
+          />
+          {searchQuery.length > 0 && (
             <TouchableOpacity
-              key={opt.key}
-              testID={`${testID}-style-filter-${opt.key}`}
-              onPress={() => setSelectedStyle(opt.key)}
-              activeOpacity={0.7}
-              style={[
-                styles.pillButton,
-                isActive ? styles.pillButtonActive : styles.pillButtonInactive,
-              ]}
+              testID={`${testID}-search-clear`}
+              onPress={() => setSearchQuery('')}
+              style={styles.clearButton}
               accessible={true}
               accessibilityRole="button"
-              accessibilityLabel={`فیلتر سبک تلاوت ${opt.label}`}
+              accessibilityLabel="پاک کردن متن جستجو"
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
-              <Text
-                style={[
-                  styles.pillText,
-                  isActive ? styles.pillTextActive : styles.pillTextInactive,
-                ]}
-              >
-                {opt.label}
-              </Text>
+              <X size={16} color={colors.textSecondary} />
             </TouchableOpacity>
-          );
-        })}
-      </View>
+          )}
+        </View>
 
-      {/* Reciters List */}
-      <View testID={`${testID}-list`} style={styles.recitersList}>
-        {filteredReciters.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>قاری مورد نظر یافت نشد.</Text>
-          </View>
-        ) : (
-          filteredReciters.map((reciter) => {
-            const isSelected = reciter.id === activeReciterId;
+        {/* Recitation Style Filter Pills */}
+        <View style={styles.filterPillsRow}>
+          {styleFilterOptions.map((opt) => {
+            const isActive = selectedStyle === opt.key;
             return (
               <TouchableOpacity
-                key={reciter.id}
-                testID={`${testID}-item-${reciter.id}`}
-                onPress={() => handleSelect(reciter.id)}
+                key={opt.key}
+                testID={`${testID}-style-filter-${opt.key}`}
+                onPress={() => setSelectedStyle(opt.key)}
                 activeOpacity={0.7}
                 style={[
-                  styles.reciterCard,
-                  isSelected ? styles.reciterCardSelected : styles.reciterCardUnselected,
+                  styles.pillButton,
+                  isActive ? styles.pillButtonActive : styles.pillButtonInactive,
                 ]}
                 accessible={true}
                 accessibilityRole="button"
-                accessibilityLabel={`${reciter.nameFa}، سبک ${reciter.styleFa}${isSelected ? '، انتخاب شده' : ''}`}
-                accessibilityState={{ selected: isSelected }}
+                accessibilityLabel={`فیلتر سبک تلاوت ${opt.label}`}
               >
-                {/* Checkmark or Selection Emblem */}
-                <View style={styles.checkboxContainer}>
-                  {isSelected ? (
-                    <View style={styles.activeCheckBadge}>
-                      <Check size={16} color={colors.primaryLight} strokeWidth={2.5} />
-                    </View>
-                  ) : (
-                    <View style={styles.inactiveCheckBadge} />
-                  )}
-                </View>
-
-                {/* Reciter Metadata */}
-                <View style={styles.reciterInfo}>
-                  <View style={styles.nameRow}>
-                    <Text
-                      style={[
-                        styles.reciterNameFa,
-                        isSelected ? styles.nameSelected : styles.nameUnselected,
-                      ]}
-                      numberOfLines={1}
-                    >
-                      {reciter.nameFa}
-                    </Text>
-                    {/* Style Chip */}
-                    <View
-                      style={[
-                        styles.styleChip,
-                        reciter.style === 'Murattal'
-                          ? styles.styleChipMurattal
-                          : styles.styleChipMujawwad,
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          styles.styleChipText,
-                          reciter.style === 'Murattal'
-                            ? styles.styleChipTextMurattal
-                            : styles.styleChipTextMujawwad,
-                        ]}
-                      >
-                        {reciter.styleFa}
-                      </Text>
-                    </View>
-                  </View>
-                  <Text style={styles.reciterNameEn} numberOfLines={1}>
-                    {reciter.name}
-                  </Text>
-                </View>
+                <Text
+                  style={[
+                    styles.pillText,
+                    isActive ? styles.pillTextActive : styles.pillTextInactive,
+                  ]}
+                >
+                  {opt.label}
+                </Text>
               </TouchableOpacity>
             );
-          })
-        )}
+          })}
+        </View>
+
+        {/* Reciters List */}
+        <View testID={`${testID}-list`} style={styles.recitersList}>
+          {filteredReciters.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>قاری مورد نظر یافت نشد.</Text>
+            </View>
+          ) : (
+            filteredReciters.map((reciter) => {
+              const isSelected = reciter.id === activeReciterId;
+              return (
+                <TouchableOpacity
+                  key={reciter.id}
+                  testID={`${testID}-item-${reciter.id}`}
+                  onPress={() => handleSelect(reciter.id)}
+                  activeOpacity={0.7}
+                  style={[
+                    styles.reciterCard,
+                    isSelected ? styles.reciterCardSelected : styles.reciterCardUnselected,
+                  ]}
+                  accessible={true}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${reciter.nameFa}، سبک ${reciter.styleFa}${
+                    isSelected ? '، انتخاب شده' : ''
+                  }`}
+                  accessibilityState={{ selected: isSelected }}
+                >
+                  {/* Checkmark or Selection Emblem */}
+                  <View style={styles.checkboxContainer}>
+                    {isSelected ? (
+                      <View style={styles.activeCheckBadge}>
+                        <Check size={16} color={colors.primaryLight} strokeWidth={2.5} />
+                      </View>
+                    ) : (
+                      <View style={styles.inactiveCheckBadge} />
+                    )}
+                  </View>
+
+                  {/* Reciter Metadata */}
+                  <View style={styles.reciterInfo}>
+                    <View style={styles.nameRow}>
+                      <Text
+                        style={[
+                          styles.reciterNameFa,
+                          isSelected ? styles.nameSelected : styles.nameUnselected,
+                        ]}
+                        numberOfLines={1}
+                      >
+                        {reciter.nameFa}
+                      </Text>
+                      {/* Style Chip */}
+                      <View
+                        style={[
+                          styles.styleChip,
+                          reciter.style === 'Murattal'
+                            ? styles.styleChipMurattal
+                            : styles.styleChipMujawwad,
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.styleChipText,
+                            reciter.style === 'Murattal'
+                              ? styles.styleChipTextMurattal
+                              : styles.styleChipTextMujawwad,
+                          ]}
+                        >
+                          {reciter.styleFa}
+                        </Text>
+                      </View>
+                    </View>
+                    <Text style={styles.reciterNameEn} numberOfLines={1}>
+                      {reciter.name}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          )}
+        </View>
       </View>
-    </View>
-  );
-});
+    );
+  },
+);
 
 ReciterSelectionSection.displayName = 'ReciterSelectionSection';
 
@@ -217,8 +215,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   sectionTitle: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '600',
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
     color: colors.goldAccent,
     textAlign: rtlTextAlign,
@@ -278,13 +275,12 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
   },
   pillText: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '500',
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
   },
   pillTextActive: {
+    fontFamily: fonts.uiBold,
     color: colors.textPrimary,
-    fontWeight: '700',
   },
   pillTextInactive: {
     color: colors.textSecondary,
@@ -343,22 +339,21 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   reciterNameFa: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '600',
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.sm,
     textAlign: rtlTextAlign,
     writingDirection: rtlWritingDirection,
   },
   nameSelected: {
+    fontFamily: fonts.uiBold,
     color: colors.primaryLight,
-    fontWeight: '700',
   },
   nameUnselected: {
     color: colors.textPrimary,
   },
   reciterNameEn: {
     fontFamily: fonts.uiRegular,
-    fontSize: 11,
+    fontSize: fontSizes.xs,
     color: colors.textFaded,
     textAlign: rtlTextAlign,
     marginTop: 1,

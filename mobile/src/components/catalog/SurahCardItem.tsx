@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { Chapter } from '@/types/quran';
@@ -66,19 +59,9 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
       {/* Start Section: Geometric Number Badge + Persian Info */}
       <View style={styles.startSection}>
         {/* Geometric Surah Badge */}
-        <View
-          style={[
-            styles.badgeOuter,
-            isRevelationOrder && styles.badgeOuterRevelation,
-          ]}
-        >
+        <View style={[styles.badgeOuter, isRevelationOrder && styles.badgeOuterRevelation]}>
           <View style={styles.badgeInner}>
-            <Text
-              style={[
-                styles.badgeText,
-                isRevelationOrder && styles.badgeTextRevelation,
-              ]}
-            >
+            <Text style={[styles.badgeText, isRevelationOrder && styles.badgeTextRevelation]}>
               {badgeNumber}
             </Text>
           </View>
@@ -90,16 +73,10 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
             <Text style={styles.persianTitle}>{surah.name_fa}</Text>
             {/* Makki / Madani Chip Badge */}
             <View
-              style={[
-                styles.chipBadge,
-                isMakki ? styles.chipBadgeMakki : styles.chipBadgeMadani,
-              ]}
+              style={[styles.chipBadge, isMakki ? styles.chipBadgeMakki : styles.chipBadgeMadani]}
             >
               <Text
-                style={[
-                  styles.chipText,
-                  isMakki ? styles.chipTextMakki : styles.chipTextMadani,
-                ]}
+                style={[styles.chipText, isMakki ? styles.chipTextMakki : styles.chipTextMadani]}
               >
                 {revelationLabel}
               </Text>
@@ -109,9 +86,7 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
           <View style={styles.subtitleRow}>
             <Text style={styles.subtitleText}>{surah.name_simple}</Text>
             {isRevelationOrder && (
-              <Text style={styles.revelationRankHint}>
-                {canonicalSurahHint}
-              </Text>
+              <Text style={styles.revelationRankHint}>{canonicalSurahHint}</Text>
             )}
           </View>
         </View>
@@ -171,9 +146,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   badgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.primaryLight,
   },
   badgeTextRevelation: {
@@ -190,9 +164,8 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   persianTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '600',
     color: colors.textPrimary,
   },
   chipBadge: {
@@ -212,9 +185,8 @@ const styles = StyleSheet.create({
     borderColor: colors.primaryGlow,
   },
   chipText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.textSecondary,
   },
   chipTextMakki: {

@@ -699,9 +699,8 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   chapterTitleText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '700',
     color: colors.textPrimary,
   },
   ayahRosetteBadge: {
@@ -713,9 +712,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(245, 158, 11, 0.3)',
   },
   ayahRosetteText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.goldAccent,
   },
   relativeDateGroup: {
@@ -803,9 +801,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   noteLabelText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: 12,
-    fontWeight: '600',
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
     color: colors.goldAccent,
   },
   noteEditIconButton: {
@@ -833,7 +830,7 @@ const styles = StyleSheet.create({
   },
   addNotePromptText: {
     fontFamily: fonts.uiRegular,
-    fontSize: 12,
+    fontSize: fontSizes.xs,
     color: colors.primaryLight,
   },
   noteEditorContainer: {
@@ -867,9 +864,8 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.sm,
   },
   noteSaveButtonText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: 13,
-    fontWeight: '700',
+    fontFamily: fonts.uiBold,
+    fontSize: fontSizes.sm,
     color: '#041410',
   },
   noteCancelButton: {
@@ -881,7 +877,7 @@ const styles = StyleSheet.create({
   },
   noteCancelButtonText: {
     fontFamily: fonts.uiRegular,
-    fontSize: 13,
+    fontSize: fontSizes.sm,
     color: colors.textFaded,
   },
   tagsSection: {
@@ -973,9 +969,8 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.xs,
   },
   readInSurahButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.primary,
   },
   modalOverlay: {
@@ -1007,9 +1002,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: 'right',
   },
@@ -1082,9 +1076,8 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   modalDoneButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: '#041410',
   },
 });

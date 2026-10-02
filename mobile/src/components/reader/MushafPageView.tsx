@@ -565,16 +565,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerMetaText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.sm,
-    fontWeight: '600',
     color: colors.textSecondary,
     textAlign: 'center',
   },
   headerSurahText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '700',
     color: colors.goldAccent,
     textAlign: 'center',
   },
@@ -643,7 +641,6 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   surahCartoucheTitle: {
-    fontWeight: '700',
     color: colors.goldAccent,
     textAlign: 'center',
   },
@@ -713,9 +710,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   pageIndicatorText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.sm,
-    fontWeight: '600',
     color: colors.textSecondary,
   },
 });

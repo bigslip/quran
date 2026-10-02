@@ -309,9 +309,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   themeTitleText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.primaryLight,
     textAlign: 'right',
   },
@@ -352,17 +351,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   pillButtonText: {
-    fontFamily: fonts.uiRegular,
     fontSize: fontSizes.sm,
     textAlign: 'center',
   },
   pillButtonTextActive: {
+    fontFamily: fonts.uiBold,
     color: colors.primaryLight,
-    fontWeight: '700',
   },
   pillButtonTextInactive: {
+    fontFamily: fonts.uiMedium,
     color: colors.textSecondary,
-    fontWeight: '500',
   },
   // Exegesis Sanctuary Card
   exegesisCard: {
@@ -388,16 +386,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   authorBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.goldAccent,
     textAlign: 'right',
   },
   tafsirTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.lg,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: 'right',
     lineHeight: 28,
@@ -421,9 +417,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   takeawaysTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '700',
     color: colors.goldAccent,
     textAlign: 'right',
   },
@@ -497,9 +492,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nudgeTitleText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: 'right',
   },
@@ -532,9 +526,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nudgeCtaButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xs,
-    fontWeight: '700',
     color: colors.textInverse,
     textAlign: 'center',
   },

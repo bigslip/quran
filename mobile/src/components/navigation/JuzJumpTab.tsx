@@ -212,7 +212,6 @@ const createStyles = (colors: ColorTheme) =>
     juzBadgeText: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.xs,
-      fontWeight: '700',
       color: colors.goldAccent,
     },
     juzBadgeTextSelected: {
@@ -225,10 +224,9 @@ const createStyles = (colors: ColorTheme) =>
       paddingVertical: 1,
     },
     verseCountPillText: {
-      fontFamily: fonts.primary,
-      fontSize: 10,
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xxs,
       color: colors.textSecondary,
-      fontWeight: '600',
     },
     cardCenter: {
       marginVertical: spacing.xs,
@@ -247,7 +245,6 @@ const createStyles = (colors: ColorTheme) =>
     persianName: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.xs,
-      fontWeight: '600',
       color: colors.textPrimary,
       textAlign: 'center',
     },
@@ -262,7 +259,7 @@ const createStyles = (colors: ColorTheme) =>
     },
     pageBadgeText: {
       fontFamily: fonts.primary,
-      fontSize: 10,
+      fontSize: fontSizes.xxs,
       color: colors.textFaded,
       textAlign: 'center',
     },

@@ -1,11 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Search, X, Check } from 'lucide-react-native';
 import {
   colors,
@@ -23,10 +17,7 @@ import {
   searchTranslations,
   TranslationItem,
 } from '@/services/db/translationService';
-import {
-  READER_COMPONENT_CONTRACTS,
-  formatSelectedTranslationsCount,
-} from '../readerContracts';
+import { READER_COMPONENT_CONTRACTS, formatSelectedTranslationsCount } from '../readerContracts';
 
 export interface TranslationSelectionSectionProps {
   selectedTranslationIds?: number[];
@@ -44,183 +35,180 @@ type LanguageFilter = 'all' | 'fa' | 'en';
  * 4. Multi-selection checkboxes enforcing at least 1 translation remains selected.
  * 5. WCAG touch targets >= 44x44px.
  */
-export const TranslationSelectionSection: React.FC<TranslationSelectionSectionProps> = React.memo(({
-  selectedTranslationIds: propSelectedTranslationIds,
-  onToggleTranslation: propOnToggleTranslation,
-  testID = 'translation-selection-section',
-}) => {
-  const store = useReadingStore();
-  const activeTranslationIds = propSelectedTranslationIds ?? store.selectedTranslationIds;
-  const toggleTranslation = propOnToggleTranslation ?? store.toggleSelectedTranslationId;
+export const TranslationSelectionSection: React.FC<TranslationSelectionSectionProps> = React.memo(
+  ({
+    selectedTranslationIds: propSelectedTranslationIds,
+    onToggleTranslation: propOnToggleTranslation,
+    testID = 'translation-selection-section',
+  }) => {
+    const store = useReadingStore();
+    const activeTranslationIds = propSelectedTranslationIds ?? store.selectedTranslationIds;
+    const toggleTranslation = propOnToggleTranslation ?? store.toggleSelectedTranslationId;
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState<LanguageFilter>('all');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedLanguage, setSelectedLanguage] = useState<LanguageFilter>('all');
 
-  const filteredTranslations = useMemo(() => {
-    return searchTranslations(searchQuery, selectedLanguage);
-  }, [searchQuery, selectedLanguage]);
+    const filteredTranslations = useMemo(() => {
+      return searchTranslations(searchQuery, selectedLanguage);
+    }, [searchQuery, selectedLanguage]);
 
-  const languageFilterOptions: { key: LanguageFilter; label: string }[] = [
-    { key: 'all', label: 'همه' },
-    { key: 'fa', label: 'فارسی' },
-    { key: 'en', label: 'انگلیسی' },
-  ];
+    const languageFilterOptions: { key: LanguageFilter; label: string }[] = [
+      { key: 'all', label: 'همه' },
+      { key: 'fa', label: 'فارسی' },
+      { key: 'en', label: 'انگلیسی' },
+    ];
 
-  const handleToggle = (id: number) => {
-    const isSelected = activeTranslationIds.includes(id);
-    // Enforce at least 1 translation remains selected
-    if (isSelected && activeTranslationIds.length <= 1) {
-      return;
-    }
-    toggleTranslation(id);
-  };
+    const handleToggle = (id: number) => {
+      const isSelected = activeTranslationIds.includes(id);
+      // Enforce at least 1 translation remains selected
+      if (isSelected && activeTranslationIds.length <= 1) {
+        return;
+      }
+      toggleTranslation(id);
+    };
 
-  return (
-    <View testID={testID} style={styles.container}>
-      {/* Header and Selected Count Badge */}
-      <View style={styles.headerRow}>
-        <Text style={styles.sectionTitle}>انتخاب ترجمه‌های قرآن</Text>
-        <View style={styles.counterBadge}>
-          <Text testID={`${testID}-count-badge`} style={styles.counterBadgeText}>
-            {formatSelectedTranslationsCount(activeTranslationIds.length)}
-          </Text>
+    return (
+      <View testID={testID} style={styles.container}>
+        {/* Header and Selected Count Badge */}
+        <View style={styles.headerRow}>
+          <Text style={styles.sectionTitle}>انتخاب ترجمه‌های قرآن</Text>
+          <View style={styles.counterBadge}>
+            <Text testID={`${testID}-count-badge`} style={styles.counterBadgeText}>
+              {formatSelectedTranslationsCount(activeTranslationIds.length)}
+            </Text>
+          </View>
         </View>
-      </View>
 
-      {/* Search Bar */}
-      <View style={styles.searchBar}>
-        <Search size={18} color={colors.textFaded} style={styles.searchIcon} />
-        <TextInput
-          testID={`${testID}-search-input`}
-          style={styles.searchInput}
-          placeholder="جستجوی ترجمه یا نام مترجم..."
-          placeholderTextColor={colors.textFaded}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          autoCorrect={false}
-          returnKeyType="search"
-          accessible={true}
-          accessibilityLabel="جستجوی ترجمه یا مترجم"
-        />
-        {searchQuery.length > 0 && (
-          <TouchableOpacity
-            testID={`${testID}-search-clear`}
-            onPress={() => setSearchQuery('')}
-            style={styles.clearButton}
+        {/* Search Bar */}
+        <View style={styles.searchBar}>
+          <Search size={18} color={colors.textFaded} style={styles.searchIcon} />
+          <TextInput
+            testID={`${testID}-search-input`}
+            style={styles.searchInput}
+            placeholder="جستجوی ترجمه یا نام مترجم..."
+            placeholderTextColor={colors.textFaded}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            autoCorrect={false}
+            returnKeyType="search"
             accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel="پاک کردن جستجو"
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <X size={16} color={colors.textSecondary} />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      {/* Language Filter Pills */}
-      <View style={styles.filterPillsRow}>
-        {languageFilterOptions.map((opt) => {
-          const isActive = selectedLanguage === opt.key;
-          return (
+            accessibilityLabel="جستجوی ترجمه یا مترجم"
+          />
+          {searchQuery.length > 0 && (
             <TouchableOpacity
-              key={opt.key}
-              testID={`${testID}-lang-filter-${opt.key}`}
-              onPress={() => setSelectedLanguage(opt.key)}
-              activeOpacity={0.7}
-              style={[
-                styles.pillButton,
-                isActive ? styles.pillButtonActive : styles.pillButtonInactive,
-              ]}
+              testID={`${testID}-search-clear`}
+              onPress={() => setSearchQuery('')}
+              style={styles.clearButton}
               accessible={true}
               accessibilityRole="button"
-              accessibilityLabel={`فیلتر زبان ${opt.label}`}
+              accessibilityLabel="پاک کردن جستجو"
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
-              <Text
-                style={[
-                  styles.pillText,
-                  isActive ? styles.pillTextActive : styles.pillTextInactive,
-                ]}
-              >
-                {opt.label}
-              </Text>
+              <X size={16} color={colors.textSecondary} />
             </TouchableOpacity>
-          );
-        })}
-      </View>
+          )}
+        </View>
 
-      {/* Translations List */}
-      <View testID={`${testID}-list`} style={styles.translationsList}>
-        {filteredTranslations.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>ترجمه‌ای با این مشخصات یافت نشد.</Text>
-          </View>
-        ) : (
-          filteredTranslations.map((translation) => {
-            const isSelected = activeTranslationIds.includes(translation.id);
-            const isSoleSelected = isSelected && activeTranslationIds.length <= 1;
-
+        {/* Language Filter Pills */}
+        <View style={styles.filterPillsRow}>
+          {languageFilterOptions.map((opt) => {
+            const isActive = selectedLanguage === opt.key;
             return (
               <TouchableOpacity
-                key={translation.id}
-                testID={`${testID}-item-${translation.id}`}
-                onPress={() => handleToggle(translation.id)}
+                key={opt.key}
+                testID={`${testID}-lang-filter-${opt.key}`}
+                onPress={() => setSelectedLanguage(opt.key)}
                 activeOpacity={0.7}
                 style={[
-                  styles.translationCard,
-                  isSelected ? styles.translationCardSelected : styles.translationCardUnselected,
+                  styles.pillButton,
+                  isActive ? styles.pillButtonActive : styles.pillButtonInactive,
                 ]}
                 accessible={true}
-                accessibilityRole="checkbox"
-                accessibilityLabel={`${translation.nameFa}، مترجم: ${translation.authorName}، زبان ${translation.languageNameFa}${isSelected ? '، انتخاب شده' : ''}`}
-                accessibilityState={{ checked: isSelected }}
+                accessibilityRole="button"
+                accessibilityLabel={`فیلتر زبان ${opt.label}`}
               >
-                {/* Multi-selection Checkbox */}
-                <View style={styles.checkboxContainer}>
-                  {isSelected ? (
-                    <View
-                      style={[
-                        styles.checkedBox,
-                        isSoleSelected && styles.checkedBoxLocked,
-                      ]}
-                    >
-                      <Check size={16} color={colors.primaryLight} strokeWidth={2.5} />
-                    </View>
-                  ) : (
-                    <View style={styles.uncheckedBox} />
-                  )}
-                </View>
-
-                {/* Translation Info */}
-                <View style={styles.translationInfo}>
-                  <View style={styles.titleRow}>
-                    <Text
-                      style={[
-                        styles.translationName,
-                        isSelected ? styles.nameSelected : styles.nameUnselected,
-                      ]}
-                      numberOfLines={1}
-                    >
-                      {translation.nameFa}
-                    </Text>
-                    {/* Language Badge */}
-                    <View style={styles.langBadge}>
-                      <Text style={styles.langBadgeText}>
-                        {translation.languageNameFa}
-                      </Text>
-                    </View>
-                  </View>
-                  <Text style={styles.authorName} numberOfLines={1}>
-                    مترجم: {translation.authorName}
-                  </Text>
-                </View>
+                <Text
+                  style={[
+                    styles.pillText,
+                    isActive ? styles.pillTextActive : styles.pillTextInactive,
+                  ]}
+                >
+                  {opt.label}
+                </Text>
               </TouchableOpacity>
             );
-          })
-        )}
+          })}
+        </View>
+
+        {/* Translations List */}
+        <View testID={`${testID}-list`} style={styles.translationsList}>
+          {filteredTranslations.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>ترجمه‌ای با این مشخصات یافت نشد.</Text>
+            </View>
+          ) : (
+            filteredTranslations.map((translation) => {
+              const isSelected = activeTranslationIds.includes(translation.id);
+              const isSoleSelected = isSelected && activeTranslationIds.length <= 1;
+
+              return (
+                <TouchableOpacity
+                  key={translation.id}
+                  testID={`${testID}-item-${translation.id}`}
+                  onPress={() => handleToggle(translation.id)}
+                  activeOpacity={0.7}
+                  style={[
+                    styles.translationCard,
+                    isSelected ? styles.translationCardSelected : styles.translationCardUnselected,
+                  ]}
+                  accessible={true}
+                  accessibilityRole="checkbox"
+                  accessibilityLabel={`${translation.nameFa}، مترجم: ${
+                    translation.authorName
+                  }، زبان ${translation.languageNameFa}${isSelected ? '، انتخاب شده' : ''}`}
+                  accessibilityState={{ checked: isSelected }}
+                >
+                  {/* Multi-selection Checkbox */}
+                  <View style={styles.checkboxContainer}>
+                    {isSelected ? (
+                      <View style={[styles.checkedBox, isSoleSelected && styles.checkedBoxLocked]}>
+                        <Check size={16} color={colors.primaryLight} strokeWidth={2.5} />
+                      </View>
+                    ) : (
+                      <View style={styles.uncheckedBox} />
+                    )}
+                  </View>
+
+                  {/* Translation Info */}
+                  <View style={styles.translationInfo}>
+                    <View style={styles.titleRow}>
+                      <Text
+                        style={[
+                          styles.translationName,
+                          isSelected ? styles.nameSelected : styles.nameUnselected,
+                        ]}
+                        numberOfLines={1}
+                      >
+                        {translation.nameFa}
+                      </Text>
+                      {/* Language Badge */}
+                      <View style={styles.langBadge}>
+                        <Text style={styles.langBadgeText}>{translation.languageNameFa}</Text>
+                      </View>
+                    </View>
+                    <Text style={styles.authorName} numberOfLines={1}>
+                      مترجم: {translation.authorName}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          )}
+        </View>
       </View>
-    </View>
-  );
-});
+    );
+  },
+);
 
 TranslationSelectionSection.displayName = 'TranslationSelectionSection';
 
@@ -236,8 +224,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   sectionTitle: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '600',
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
     color: colors.goldAccent,
     textAlign: rtlTextAlign,
@@ -252,9 +239,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(251, 191, 36, 0.3)',
   },
   counterBadgeText: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '500',
-    fontSize: 11,
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
     color: colors.goldAccent,
   },
   searchBar: {
@@ -310,13 +296,12 @@ const styles = StyleSheet.create({
     borderColor: colors.borderSubtle,
   },
   pillText: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '500',
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
   },
   pillTextActive: {
+    fontFamily: fonts.uiBold,
     color: colors.textPrimary,
-    fontWeight: '700',
   },
   pillTextInactive: {
     color: colors.textSecondary,
@@ -378,22 +363,21 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   translationName: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '600',
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.sm,
     textAlign: rtlTextAlign,
     writingDirection: rtlWritingDirection,
   },
   nameSelected: {
+    fontFamily: fonts.uiBold,
     color: colors.primaryLight,
-    fontWeight: '700',
   },
   nameUnselected: {
     color: colors.textPrimary,
   },
   authorName: {
     fontFamily: fonts.uiRegular,
-    fontSize: 11,
+    fontSize: fontSizes.xs,
     color: colors.textFaded,
     textAlign: rtlTextAlign,
     marginTop: 1,

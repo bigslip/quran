@@ -21,9 +21,8 @@ export default function TabLayout() {
           paddingTop: 8,
         },
         tabBarLabelStyle: {
-          fontFamily: fonts.uiRegular,
+          fontFamily: fonts.uiMedium,
           fontSize: fontSizes.xs,
-          fontWeight: '600',
         },
       }}
     >

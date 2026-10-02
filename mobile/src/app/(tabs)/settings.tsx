@@ -536,9 +536,8 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.md,
   },
   title: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xl,
-    fontWeight: '700',
     textAlign: rtlTextAlign,
   },
   section: {
@@ -547,9 +546,8 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   sectionHeading: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     textAlign: rtlTextAlign,
   },
   themeCard: {
@@ -573,14 +571,13 @@ const styles = StyleSheet.create({
     marginLeft: spacing.md,
   },
   themeTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     textAlign: 'right',
   },
   themeSubtitle: {
     fontFamily: fonts.uiRegular,
-    fontSize: 11,
+    fontSize: fontSizes.xs,
     lineHeight: 16,
     textAlign: 'right',
     marginTop: 2,
@@ -595,9 +592,8 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   activeBadgeText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: 10,
-    fontWeight: '700',
+    fontFamily: fonts.uiBold,
+    fontSize: fontSizes.xxs,
   },
   inactiveDot: {
     width: 16,
@@ -629,13 +625,12 @@ const styles = StyleSheet.create({
     marginRight: spacing.md,
   },
   settingLabel: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.sm,
-    fontWeight: '600',
   },
   settingSubLabel: {
     fontFamily: fonts.uiRegular,
-    fontSize: 11,
+    fontSize: fontSizes.xs,
     marginTop: 2,
   },
   scriptSelector: {
@@ -658,9 +653,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   appName: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
   },
   appVersion: {
     fontFamily: fonts.uiRegular,
@@ -668,7 +662,7 @@ const styles = StyleSheet.create({
   },
   appDesc: {
     fontFamily: fonts.uiRegular,
-    fontSize: 12,
+    fontSize: fontSizes.xs,
     lineHeight: 20,
     textAlign: 'right',
     marginTop: spacing.xs,
@@ -685,7 +679,7 @@ const styles = StyleSheet.create({
   },
   storageBadgeText: {
     fontFamily: fonts.uiRegular,
-    fontSize: 11,
+    fontSize: fontSizes.xs,
   },
   tafsirCard: {
     borderRadius: borderRadius.lg,
@@ -718,9 +712,8 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   downloadButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xs,
-    fontWeight: '700',
   },
   deleteButton: {
     paddingHorizontal: spacing.sm,
@@ -734,9 +727,8 @@ const styles = StyleSheet.create({
     minHeight: 44,
   },
   progressText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: 11,
-    fontWeight: '700',
+    fontFamily: fonts.uiBold,
+    fontSize: fontSizes.xs,
   },
   tafsirInfoGroup: {
     flex: 1,
@@ -750,19 +742,18 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   tafsirName: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     textAlign: 'right',
   },
   tafsirAuthor: {
     fontFamily: fonts.uiRegular,
-    fontSize: 11,
+    fontSize: fontSizes.xs,
     textAlign: 'right',
   },
   tafsirSize: {
     fontFamily: fonts.uiRegular,
-    fontSize: 10,
+    fontSize: fontSizes.xxs,
     textAlign: 'right',
   },
   downloadedPill: {
@@ -775,9 +766,8 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   downloadedPillText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: 10,
-    fontWeight: '700',
+    fontFamily: fonts.uiBold,
+    fontSize: fontSizes.xxs,
   },
   progressBarTrack: {
     height: SETTINGS_TAFSIR_CONTRACTS.progressBarHeight,

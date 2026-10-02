@@ -455,7 +455,6 @@ const createStyles = (colors: ColorTheme) =>
     surahPickerTitle: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.md,
-      fontWeight: '700',
       color: colors.textPrimary,
       textAlign: rtlTextAlign,
     },
@@ -471,10 +470,9 @@ const createStyles = (colors: ColorTheme) =>
       gap: spacing.xs,
     },
     backButtonText: {
-      fontFamily: fonts.primary,
+      fontFamily: fonts.uiMedium,
       fontSize: fontSizes.xs,
       color: colors.textSecondary,
-      fontWeight: '600',
     },
     searchBarContainer: {
       flexDirection: rtlRow,
@@ -544,8 +542,7 @@ const createStyles = (colors: ColorTheme) =>
     },
     surahItemBadgeText: {
       fontFamily: fonts.primaryBold,
-      fontSize: 12,
-      fontWeight: '700',
+      fontSize: fontSizes.xs,
       color: colors.textSecondary,
     },
     surahItemBadgeTextSelected: {
@@ -564,7 +561,6 @@ const createStyles = (colors: ColorTheme) =>
     surahItemNameFa: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.sm,
-      fontWeight: '600',
       color: colors.textPrimary,
       textAlign: rtlTextAlign,
     },
@@ -577,13 +573,12 @@ const createStyles = (colors: ColorTheme) =>
       borderRadius: borderRadius.pill,
     },
     itemRevelationText: {
-      fontFamily: fonts.primary,
-      fontSize: 10,
-      fontWeight: '600',
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xxs,
     },
     surahItemVerses: {
       fontFamily: fonts.primary,
-      fontSize: 10,
+      fontSize: fontSizes.xxs,
       color: colors.textFaded,
       textAlign: rtlTextAlign,
       marginTop: 2,
@@ -637,7 +632,6 @@ const createStyles = (colors: ColorTheme) =>
     surahNumberText: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.md,
-      fontWeight: '700',
       color: colors.goldAccent,
     },
     surahTitlesCol: {
@@ -653,7 +647,6 @@ const createStyles = (colors: ColorTheme) =>
     surahNameFa: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.md,
-      fontWeight: '700',
       color: colors.textPrimary,
       textAlign: rtlTextAlign,
     },
@@ -675,9 +668,8 @@ const createStyles = (colors: ColorTheme) =>
       color: colors.badgeMadaniText,
     },
     revelationBadgeText: {
-      fontFamily: fonts.primary,
-      fontSize: 10,
-      fontWeight: '600',
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xxs,
     },
     verseCountSubtitle: {
       fontFamily: fonts.primary,
@@ -698,9 +690,8 @@ const createStyles = (colors: ColorTheme) =>
       gap: 4,
     },
     changeSurahButtonText: {
-      fontFamily: fonts.primary,
-      fontSize: 11,
-      fontWeight: '600',
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
       color: colors.primaryLight,
     },
     chevronIcon: {
@@ -718,7 +709,6 @@ const createStyles = (colors: ColorTheme) =>
     sectionLabel: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.sm,
-      fontWeight: '600',
       color: colors.textSecondary,
       textAlign: rtlTextAlign,
       marginBottom: spacing.md,
@@ -756,8 +746,7 @@ const createStyles = (colors: ColorTheme) =>
     },
     ayahInput: {
       fontFamily: fonts.primaryBold,
-      fontSize: 32,
-      fontWeight: '700',
+      fontSize: fontSizes.display,
       color: colors.goldAccent,
       textAlign: 'center',
       minHeight: 44,
@@ -765,7 +754,7 @@ const createStyles = (colors: ColorTheme) =>
     },
     ayahInputSuffix: {
       fontFamily: fonts.primary,
-      fontSize: 11,
+      fontSize: fontSizes.xs,
       color: colors.textFaded,
       marginTop: -2,
     },
@@ -793,14 +782,13 @@ const createStyles = (colors: ColorTheme) =>
       borderColor: colors.borderActive,
     },
     quickChipText: {
-      fontFamily: fonts.primary,
-      fontSize: 12,
-      fontWeight: '500',
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
       color: colors.textSecondary,
       textAlign: 'center',
     },
     quickChipTextActive: {
+      fontFamily: fonts.uiBold,
       color: colors.primaryLight,
-      fontWeight: '700',
     },
   });

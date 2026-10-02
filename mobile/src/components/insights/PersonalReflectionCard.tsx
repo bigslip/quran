@@ -11,10 +11,7 @@ import {
 } from 'react-native';
 import { BookOpen, Check, Trash2 } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
-import {
-  INSIGHTS_COMPONENT_CONTRACTS,
-  formatReflectionCharCount,
-} from './insightsContracts';
+import { INSIGHTS_COMPONENT_CONTRACTS, formatReflectionCharCount } from './insightsContracts';
 
 export interface PersonalReflectionCardProps {
   verseKey: string;
@@ -28,143 +25,145 @@ export interface PersonalReflectionCardProps {
  * PersonalReflectionCard provides a dedicated sanctuary journal card where
  * readers can write, update, clear, and save personal contemplation notes on an Ayah.
  */
-export const PersonalReflectionCard: React.FC<PersonalReflectionCardProps> = React.memo(({
-  verseKey,
-  initialReflection = '',
-  onSaveReflection,
-  style,
-  testID = 'personal-reflection-card',
-}) => {
-  const [note, setNote] = useState<string>(initialReflection);
-  const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [isSaved, setIsSaved] = useState<boolean>(false);
+export const PersonalReflectionCard: React.FC<PersonalReflectionCardProps> = React.memo(
+  ({
+    verseKey,
+    initialReflection = '',
+    onSaveReflection,
+    style,
+    testID = 'personal-reflection-card',
+  }) => {
+    const [note, setNote] = useState<string>(initialReflection);
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+    const [isSaved, setIsSaved] = useState<boolean>(false);
 
-  // Synchronize internal note state whenever verseKey or initialReflection prop changes
-  useEffect(() => {
-    setNote(initialReflection);
-    setIsSaved(false);
-  }, [verseKey, initialReflection]);
-
-  const handleChangeText = useCallback((text: string) => {
-    setNote(text);
-    if (isSaved) {
+    // Synchronize internal note state whenever verseKey or initialReflection prop changes
+    useEffect(() => {
+      setNote(initialReflection);
       setIsSaved(false);
-    }
-  }, [isSaved]);
+    }, [verseKey, initialReflection]);
 
-  const handleSave = useCallback(async () => {
-    if (isSaving) return;
-    try {
-      setIsSaving(true);
-      await onSaveReflection(note);
-      setIsSaved(true);
-    } catch {
+    const handleChangeText = useCallback(
+      (text: string) => {
+        setNote(text);
+        if (isSaved) {
+          setIsSaved(false);
+        }
+      },
+      [isSaved],
+    );
+
+    const handleSave = useCallback(async () => {
+      if (isSaving) return;
+      try {
+        setIsSaving(true);
+        await onSaveReflection(note);
+        setIsSaved(true);
+      } catch {
+        setIsSaved(false);
+      } finally {
+        setIsSaving(false);
+      }
+    }, [note, isSaving, onSaveReflection]);
+
+    const handleClear = useCallback(() => {
+      setNote('');
       setIsSaved(false);
-    } finally {
-      setIsSaving(false);
-    }
-  }, [note, isSaving, onSaveReflection]);
+    }, []);
 
-  const handleClear = useCallback(() => {
-    setNote('');
-    setIsSaved(false);
-  }, []);
+    const hasContent = note.length > 0;
 
-  const hasContent = note.length > 0;
-
-  return (
-    <View style={[styles.card, style]} testID={testID}>
-      {/* Header: Title with Icon & Subtitle */}
-      <View style={styles.header} testID={`${testID}-header`}>
-        <View style={styles.titleRow}>
-          <View style={styles.headerIconWrapper}>
-            <BookOpen size={18} color={colors.goldAccent} />
-          </View>
-          <Text style={styles.titleText}>یادداشت و تاملات شخصی</Text>
-        </View>
-        <Text style={styles.subtitleText}>
-          «برداشت‌ها و تجربیات شخصی خود را در پرتو این آیه ثبت کنید»
-        </Text>
-      </View>
-
-      {/* Multi-line TextInput with RTL formatting */}
-      <TextInput
-        testID={`${testID}-input`}
-        style={styles.input}
-        value={note}
-        onChangeText={handleChangeText}
-        placeholder="«تامل و برداشت شخصی خود را از این آیه شریفه بنویسید...»"
-        placeholderTextColor={colors.textFaded}
-        multiline
-        textAlignVertical="top"
-        textAlign="right"
-        accessible={true}
-        accessibilityLabel="متن یادداشت و تامل شخصی"
-      />
-
-      {/* Action Row: Character Counter, Status Badge, Clear and Save Buttons */}
-      <View style={styles.actionRow} testID={`${testID}-action-row`}>
-        {/* Character Count */}
-        <Text style={styles.charCountText} testID={`${testID}-char-count`}>
-          {formatReflectionCharCount(note.length)}
-        </Text>
-
-        {/* Actions Group */}
-        <View style={styles.actionsGroup}>
-          {/* Status Badge (rendered on successful save) */}
-          {isSaved && (
-            <View style={styles.statusBadge} testID={`${testID}-status-badge`}>
-              <Check size={12} color={colors.primaryLight} />
-              <Text style={styles.statusBadgeText}>ذخیره شد</Text>
+    return (
+      <View style={[styles.card, style]} testID={testID}>
+        {/* Header: Title with Icon & Subtitle */}
+        <View style={styles.header} testID={`${testID}-header`}>
+          <View style={styles.titleRow}>
+            <View style={styles.headerIconWrapper}>
+              <BookOpen size={18} color={colors.goldAccent} />
             </View>
-          )}
+            <Text style={styles.titleText}>یادداشت و تاملات شخصی</Text>
+          </View>
+          <Text style={styles.subtitleText}>
+            «برداشت‌ها و تجربیات شخصی خود را در پرتو این آیه ثبت کنید»
+          </Text>
+        </View>
 
-          {/* Clear Button (rendered when text is present) */}
-          {hasContent && (
+        {/* Multi-line TextInput with RTL formatting */}
+        <TextInput
+          testID={`${testID}-input`}
+          style={styles.input}
+          value={note}
+          onChangeText={handleChangeText}
+          placeholder="«تامل و برداشت شخصی خود را از این آیه شریفه بنویسید...»"
+          placeholderTextColor={colors.textFaded}
+          multiline
+          textAlignVertical="top"
+          textAlign="right"
+          accessible={true}
+          accessibilityLabel="متن یادداشت و تامل شخصی"
+        />
+
+        {/* Action Row: Character Counter, Status Badge, Clear and Save Buttons */}
+        <View style={styles.actionRow} testID={`${testID}-action-row`}>
+          {/* Character Count */}
+          <Text style={styles.charCountText} testID={`${testID}-char-count`}>
+            {formatReflectionCharCount(note.length)}
+          </Text>
+
+          {/* Actions Group */}
+          <View style={styles.actionsGroup}>
+            {/* Status Badge (rendered on successful save) */}
+            {isSaved && (
+              <View style={styles.statusBadge} testID={`${testID}-status-badge`}>
+                <Check size={12} color={colors.primaryLight} />
+                <Text style={styles.statusBadgeText}>ذخیره شد</Text>
+              </View>
+            )}
+
+            {/* Clear Button (rendered when text is present) */}
+            {hasContent && (
+              <TouchableOpacity
+                testID={`${testID}-clear-button`}
+                onPress={handleClear}
+                disabled={isSaving}
+                activeOpacity={0.7}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="پاک کردن یادداشت"
+                style={styles.clearButton}
+              >
+                <Trash2 size={16} color={colors.textFaded} />
+                <Text style={styles.clearButtonText}>پاک کردن</Text>
+              </TouchableOpacity>
+            )}
+
+            {/* Save Button */}
             <TouchableOpacity
-              testID={`${testID}-clear-button`}
-              onPress={handleClear}
+              testID={`${testID}-save-button`}
+              onPress={handleSave}
               disabled={isSaving}
-              activeOpacity={0.7}
+              activeOpacity={0.8}
               accessible={true}
               accessibilityRole="button"
-              accessibilityLabel="پاک کردن یادداشت"
-              style={styles.clearButton}
+              accessibilityLabel="ذخیره یادداشت"
+              accessibilityState={{ disabled: isSaving }}
+              style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
             >
-              <Trash2 size={16} color={colors.textFaded} />
-              <Text style={styles.clearButtonText}>پاک کردن</Text>
+              {isSaving ? (
+                <ActivityIndicator size="small" color={colors.textInverse} />
+              ) : (
+                <>
+                  <Check size={16} color={colors.textInverse} />
+                  <Text style={styles.saveButtonText}>ذخیره یادداشت</Text>
+                </>
+              )}
             </TouchableOpacity>
-          )}
-
-          {/* Save Button */}
-          <TouchableOpacity
-            testID={`${testID}-save-button`}
-            onPress={handleSave}
-            disabled={isSaving}
-            activeOpacity={0.8}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel="ذخیره یادداشت"
-            accessibilityState={{ disabled: isSaving }}
-            style={[
-              styles.saveButton,
-              isSaving && styles.saveButtonDisabled,
-            ]}
-          >
-            {isSaving ? (
-              <ActivityIndicator size="small" color={colors.textInverse} />
-            ) : (
-              <>
-                <Check size={16} color={colors.textInverse} />
-                <Text style={styles.saveButtonText}>ذخیره یادداشت</Text>
-              </>
-            )}
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  );
-});
+    );
+  },
+);
 
 PersonalReflectionCard.displayName = 'PersonalReflectionCard';
 
@@ -191,9 +190,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.lg,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: 'right',
   },
@@ -248,9 +246,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xs,
   },
   statusBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.primaryLight,
   },
   clearButton: {
@@ -286,9 +283,8 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   saveButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.textInverse,
   },
 });

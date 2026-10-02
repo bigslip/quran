@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
 import type { WordLinguisticInfo } from '../../types/quran';
 import {
@@ -39,138 +32,137 @@ export interface AyahScripturePreviewCardProps {
  * - Full accessibility and minimum touch target compliance (>= 44x44px).
  * - Persian translation text display below the sacred scripture.
  */
-export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> = React.memo(({
-  verseKey,
-  textUthmani,
-  textIndopak,
-  translationFa,
-  words,
-  activeWordPosition,
-  onSelectWord,
-  quranFont = 'hafs',
-  style,
-  testID = 'ayah-scripture-preview-card',
-}) => {
-  // Resolve active word from linguistic words array or default to first
-  const activeWord =
-    words.find((w) => w.position === activeWordPosition) || words[0] || null;
+export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> = React.memo(
+  ({
+    verseKey,
+    textUthmani,
+    textIndopak,
+    translationFa,
+    words,
+    activeWordPosition,
+    onSelectWord,
+    quranFont = 'hafs',
+    style,
+    testID = 'ayah-scripture-preview-card',
+  }) => {
+    // Resolve active word from linguistic words array or default to first
+    const activeWord = words.find((w) => w.position === activeWordPosition) || words[0] || null;
 
-  const fontName = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
+    const fontName = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
 
-  const activeWordText = activeWord
-    ? quranFont === 'indopak' && activeWord.text_indopak
-      ? activeWord.text_indopak
-      : activeWord.text_uthmani
-    : '';
+    const activeWordText = activeWord
+      ? quranFont === 'indopak' && activeWord.text_indopak
+        ? activeWord.text_indopak
+        : activeWord.text_uthmani
+      : '';
 
-  return (
-    <View style={[styles.container, style]} testID={testID}>
-      {/* Active Word Banner Chip */}
-      {activeWord && (
-        <View
-          style={styles.activeBanner}
-          testID={`${testID}-active-banner`}
-          accessible={true}
-          accessibilityRole="summary"
-          accessibilityLabel={`واژه فعال: ${activeWord.text_uthmani}، معنی: ${activeWord.translation_fa}`}
-        >
-          <View style={styles.activeBannerTopRow}>
-            {/* Calligraphic Sacred Word */}
-            <Text
-              style={[styles.activeWordCalligraphy, { fontFamily: fontName }]}
-              testID={`${testID}-banner-word`}
-              allowFontScaling={false}
-            >
-              {activeWordText}
-            </Text>
-
-            {/* Linguistic Tags: Position, Root, POS */}
-            <View style={styles.badgeRow}>
-              <View style={styles.positionBadge} testID={`${testID}-banner-position`}>
-                <Text style={styles.positionBadgeText}>
-                  {formatWordPositionBadge(activeWord.position)}
-                </Text>
-              </View>
-
-              <View style={styles.rootChip} testID={`${testID}-banner-root`}>
-                <Text style={styles.rootChipText}>
-                  {`ریشه: ${formatArabicRoot(activeWord.root_arabic)}`}
-                </Text>
-              </View>
-
-              <View style={styles.posBadge} testID={`${testID}-banner-pos`}>
-                <Text style={styles.posBadgeText}>
-                  {formatPartOfSpeechFa(activeWord.part_of_speech)}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Persian Gloss Translation */}
-          {Boolean(activeWord.translation_fa) && (
-            <Text style={styles.activeGlossText} testID={`${testID}-banner-gloss`}>
-              {activeWord.translation_fa}
-            </Text>
-          )}
-        </View>
-      )}
-
-      {/* Interactive Arabic Scripture Text Flow */}
-      <View
-        style={styles.scriptureFlowContainer}
-        testID={`${testID}-scripture-flow`}
-        accessible={false}
-      >
-        {words.map((word) => {
-          const isActive = word.position === activeWordPosition;
-          const wordText =
-            quranFont === 'indopak' && word.text_indopak
-              ? word.text_indopak
-              : word.text_uthmani;
-
-          return (
-            <TouchableOpacity
-              key={`${verseKey}-${word.position}-${word.id || ''}`}
-              testID={`${testID}-word-${word.position}`}
-              onPress={() => onSelectWord(word.position)}
-              activeOpacity={0.7}
-              hitSlop={INSIGHTS_COMPONENT_CONTRACTS.wordHitSlop}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityState={{ selected: isActive }}
-              accessibilityLabel={`واژه ${toPersianDigits(word.position)}: ${wordText}`}
-              style={[
-                styles.wordButton,
-                isActive ? styles.wordButtonActive : styles.wordButtonInactive,
-              ]}
-            >
+    return (
+      <View style={[styles.container, style]} testID={testID}>
+        {/* Active Word Banner Chip */}
+        {activeWord && (
+          <View
+            style={styles.activeBanner}
+            testID={`${testID}-active-banner`}
+            accessible={true}
+            accessibilityRole="summary"
+            accessibilityLabel={`واژه فعال: ${activeWord.text_uthmani}، معنی: ${activeWord.translation_fa}`}
+          >
+            <View style={styles.activeBannerTopRow}>
+              {/* Calligraphic Sacred Word */}
               <Text
-                style={[
-                  styles.scriptureWordText,
-                  { fontFamily: fontName },
-                  isActive ? styles.scriptureWordActive : styles.scriptureWordInactive,
-                ]}
+                style={[styles.activeWordCalligraphy, { fontFamily: fontName }]}
+                testID={`${testID}-banner-word`}
                 allowFontScaling={false}
               >
-                {wordText}
+                {activeWordText}
               </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
 
-      {/* Persian Translation Text Below Scripture */}
-      {Boolean(translationFa) && (
-        <View style={styles.translationContainer} testID={`${testID}-translation-container`}>
-          <View style={styles.divider} />
-          <Text style={styles.translationText} testID={`${testID}-translation`}>
-            {translationFa}
-          </Text>
+              {/* Linguistic Tags: Position, Root, POS */}
+              <View style={styles.badgeRow}>
+                <View style={styles.positionBadge} testID={`${testID}-banner-position`}>
+                  <Text style={styles.positionBadgeText}>
+                    {formatWordPositionBadge(activeWord.position)}
+                  </Text>
+                </View>
+
+                <View style={styles.rootChip} testID={`${testID}-banner-root`}>
+                  <Text style={styles.rootChipText}>
+                    {`ریشه: ${formatArabicRoot(activeWord.root_arabic)}`}
+                  </Text>
+                </View>
+
+                <View style={styles.posBadge} testID={`${testID}-banner-pos`}>
+                  <Text style={styles.posBadgeText}>
+                    {formatPartOfSpeechFa(activeWord.part_of_speech)}
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Persian Gloss Translation */}
+            {Boolean(activeWord.translation_fa) && (
+              <Text style={styles.activeGlossText} testID={`${testID}-banner-gloss`}>
+                {activeWord.translation_fa}
+              </Text>
+            )}
+          </View>
+        )}
+
+        {/* Interactive Arabic Scripture Text Flow */}
+        <View
+          style={styles.scriptureFlowContainer}
+          testID={`${testID}-scripture-flow`}
+          accessible={false}
+        >
+          {words.map((word) => {
+            const isActive = word.position === activeWordPosition;
+            const wordText =
+              quranFont === 'indopak' && word.text_indopak ? word.text_indopak : word.text_uthmani;
+
+            return (
+              <TouchableOpacity
+                key={`${verseKey}-${word.position}-${word.id || ''}`}
+                testID={`${testID}-word-${word.position}`}
+                onPress={() => onSelectWord(word.position)}
+                activeOpacity={0.7}
+                hitSlop={INSIGHTS_COMPONENT_CONTRACTS.wordHitSlop}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityState={{ selected: isActive }}
+                accessibilityLabel={`واژه ${toPersianDigits(word.position)}: ${wordText}`}
+                style={[
+                  styles.wordButton,
+                  isActive ? styles.wordButtonActive : styles.wordButtonInactive,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.scriptureWordText,
+                    { fontFamily: fontName },
+                    isActive ? styles.scriptureWordActive : styles.scriptureWordInactive,
+                  ]}
+                  allowFontScaling={false}
+                >
+                  {wordText}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
-      )}
-    </View>
-  );
-});
+
+        {/* Persian Translation Text Below Scripture */}
+        {Boolean(translationFa) && (
+          <View style={styles.translationContainer} testID={`${testID}-translation-container`}>
+            <View style={styles.divider} />
+            <Text style={styles.translationText} testID={`${testID}-translation`}>
+              {translationFa}
+            </Text>
+          </View>
+        )}
+      </View>
+    );
+  },
+);
 
 AyahScripturePreviewCard.displayName = 'AyahScripturePreviewCard';
 
@@ -245,10 +237,9 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   posBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
     color: colors.primaryLight,
-    fontWeight: '600',
   },
   activeGlossText: {
     fontFamily: fonts.uiRegular,
@@ -292,11 +283,9 @@ const styles = StyleSheet.create({
   },
   scriptureWordActive: {
     color: colors.primaryLight,
-    fontWeight: '700',
   },
   scriptureWordInactive: {
     color: colors.textPrimary,
-    fontWeight: '400',
   },
   translationContainer: {
     marginTop: spacing.sm,

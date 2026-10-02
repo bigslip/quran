@@ -330,9 +330,8 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   heroTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.jumbo,
-    fontWeight: '700',
     color: colors.textPrimary,
     marginTop: spacing.xs,
   },
@@ -354,10 +353,9 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   continueBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
     color: colors.primary,
-    fontWeight: '600',
   },
   lastReadTime: {
     fontFamily: fonts.uiRegular,
@@ -374,9 +372,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   surahNameFa: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xl,
-    fontWeight: '700',
     color: colors.textPrimary,
   },
   verseLocation: {
@@ -415,9 +412,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   sectionTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '600',
     color: colors.textPrimary,
   },
   quickSurahsRow: {
@@ -436,14 +432,13 @@ const styles = StyleSheet.create({
     minWidth: 90,
   },
   quickSurahName: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.textPrimary,
   },
   quickSurahDesc: {
     fontFamily: fonts.uiRegular,
-    fontSize: 10,
+    fontSize: fontSizes.xxs,
     color: colors.textFaded,
     marginTop: 2,
   },
@@ -488,10 +483,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   listenButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
     color: colors.primary,
-    fontWeight: '600',
   },
   gridContainer: {
     flexDirection: 'row',
@@ -509,15 +503,14 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   gridItemTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: colors.textPrimary,
     marginTop: spacing.xs,
   },
   gridItemDesc: {
     fontFamily: fonts.uiRegular,
-    fontSize: 11,
+    fontSize: fontSizes.xs,
     color: colors.textFaded,
   },
   quickJumpButton: {
@@ -546,9 +539,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   quickJumpTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: rtlTextAlign,
   },

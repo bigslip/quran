@@ -63,5 +63,7 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.sm,
     color: colors.textPrimary,
     paddingVertical: 0,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
 });

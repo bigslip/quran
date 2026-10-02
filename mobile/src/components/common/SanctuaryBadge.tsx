@@ -22,7 +22,7 @@ export const SanctuaryBadge: React.FC<SanctuaryBadgeProps> = ({ label }) => {
           duration: 1000,
           useNativeDriver: true,
         }),
-      ])
+      ]),
     ).start();
   }, [pulseAnim]);
 
@@ -58,9 +58,8 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   text: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xs,
     color: colors.textSecondary,
-    fontWeight: '600',
   },
 });

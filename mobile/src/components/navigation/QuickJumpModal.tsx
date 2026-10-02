@@ -386,7 +386,6 @@ const createStyles = (colors: ColorTheme) =>
     headerTitle: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.lg,
-      fontWeight: '700',
       color: colors.textPrimary,
       textAlign: rtlTextAlign,
       writingDirection: rtlWritingDirection,
@@ -431,17 +430,16 @@ const createStyles = (colors: ColorTheme) =>
       backgroundColor: 'transparent',
     },
     tabText: {
-      fontFamily: fonts.primaryBold,
       fontSize: fontSizes.xs,
       textAlign: 'center',
     },
     tabTextActive: {
+      fontFamily: fonts.uiBold,
       color: colors.primaryLight,
-      fontWeight: '700',
     },
     tabTextInactive: {
+      fontFamily: fonts.uiMedium,
       color: colors.textSecondary,
-      fontWeight: '500',
     },
     activeIndicator: {
       position: 'absolute',
@@ -481,9 +479,8 @@ const createStyles = (colors: ColorTheme) =>
       marginEnd: spacing.xs,
     },
     previewText: {
-      fontFamily: fonts.primary,
+      fontFamily: fonts.uiMedium,
       fontSize: fontSizes.xs,
-      fontWeight: '600',
       color: colors.textSecondary,
       textAlign: rtlTextAlign,
     },
@@ -511,7 +508,6 @@ const createStyles = (colors: ColorTheme) =>
     actionButtonText: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.md,
-      fontWeight: '700',
       color: '#FFFFFF',
       textAlign: 'center',
     },

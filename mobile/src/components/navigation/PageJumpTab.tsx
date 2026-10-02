@@ -250,7 +250,6 @@ const createStyles = (colors: ColorTheme) =>
     pageCardTitle: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.sm,
-      fontWeight: '600',
       color: colors.textSecondary,
       marginBottom: spacing.sm,
       textAlign: 'center',
@@ -268,8 +267,7 @@ const createStyles = (colors: ColorTheme) =>
       borderColor: colors.primary,
       borderRadius: borderRadius.lg,
       fontFamily: fonts.primaryBold,
-      fontSize: 32,
-      fontWeight: '700',
+      fontSize: fontSizes.display,
       color: colors.goldAccent,
       paddingHorizontal: spacing.md,
       paddingVertical: 4,
@@ -306,7 +304,6 @@ const createStyles = (colors: ColorTheme) =>
     stepperButtonText: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.sm,
-      fontWeight: '700',
       color: colors.textPrimary,
     },
     stepperTextDisabled: {
@@ -322,7 +319,6 @@ const createStyles = (colors: ColorTheme) =>
     milestonesSectionTitle: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.sm,
-      fontWeight: '600',
       color: colors.textSecondary,
       textAlign: rtlTextAlign,
       marginBottom: spacing.sm,
@@ -350,14 +346,13 @@ const createStyles = (colors: ColorTheme) =>
       borderColor: colors.borderActive,
     },
     milestoneText: {
-      fontFamily: fonts.primary,
+      fontFamily: fonts.uiRegular,
       fontSize: fontSizes.xs,
-      fontWeight: '600',
       color: colors.textFaded,
     },
     milestoneTextSelected: {
+      fontFamily: fonts.uiBold,
       color: colors.primaryLight,
-      fontWeight: '700',
     },
     previewCard: {
       backgroundColor: colors.surfaceCard,
@@ -383,7 +378,6 @@ const createStyles = (colors: ColorTheme) =>
     previewPageTitle: {
       fontFamily: fonts.primaryBold,
       fontSize: fontSizes.sm,
-      fontWeight: '700',
       color: colors.goldAccent,
       textAlign: rtlTextAlign,
     },

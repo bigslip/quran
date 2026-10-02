@@ -6,6 +6,8 @@ import { READER_COMPONENT_CONTRACTS } from './readerContracts.ts';
 
 const fonts = {
   uiRegular: 'Vazirmatn-Regular',
+  uiMedium: 'Vazirmatn-Medium',
+  uiBold: 'Vazirmatn-Bold',
   quranHafs: 'UthmanicHafs',
 } as const;
 
@@ -80,9 +82,8 @@ export function buildVerseCardStyles(c: ColorTheme) {
       justifyContent: 'center',
     } as ViewStyle,
     badgeText: {
-      fontFamily: fonts.uiRegular,
+      fontFamily: fonts.uiBold,
       fontSize: fontSizes.sm,
-      fontWeight: '700',
       color: c.primary,
     } as TextStyle,
     actionBar: {
@@ -185,9 +186,8 @@ export function buildVerseCardStyles(c: ColorTheme) {
       paddingVertical: 2,
     } as ViewStyle,
     translatorChipText: {
-      fontFamily: fonts.uiRegular,
+      fontFamily: fonts.uiMedium,
       fontSize: fontSizes.xs,
-      fontWeight: '600',
       color: c.textSecondary,
     } as TextStyle,
     translationText: {

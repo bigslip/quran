@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Search } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { CATALOG_COMPONENT_CONTRACTS } from './catalogFormatters';
@@ -25,20 +18,13 @@ export const CatalogEmptyState: React.FC<CatalogEmptyStateProps> = ({
   testID = 'catalog-empty-state',
 }) => {
   const trimmedQuery = query.trim();
-  const titleText = trimmedQuery
-    ? `موردی برای «${trimmedQuery}» یافت نشد`
-    : 'موردی یافت نشد';
+  const titleText = trimmedQuery ? `موردی برای «${trimmedQuery}» یافت نشد` : 'موردی یافت نشد';
 
   return (
     <View testID={testID} style={[styles.container, style]}>
       {/* Centered Emerald Circular Badge with Search Icon */}
       <View style={styles.iconBadge}>
-        <Search
-          size={28}
-          color={colors.primary}
-          strokeWidth={2}
-          testID={`${testID}-search-icon`}
-        />
+        <Search size={28} color={colors.primary} strokeWidth={2} testID={`${testID}-search-icon`} />
       </View>
 
       {/* Main Title */}
@@ -88,9 +74,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   title: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.lg,
-    fontWeight: '600',
     color: colors.textPrimary,
     textAlign: 'center',
     marginBottom: spacing.xs,
@@ -115,9 +100,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   clearButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '600',
     color: colors.primary,
   },
 });

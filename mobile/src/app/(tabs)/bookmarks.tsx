@@ -542,9 +542,8 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   title: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xl,
-    fontWeight: '700',
     color: colors.textPrimary,
   },
   countBadge: {
@@ -556,9 +555,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(16, 185, 129, 0.25)',
   },
   countBadgeText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.primary,
   },
   sortButton: {
@@ -574,9 +572,8 @@ const styles = StyleSheet.create({
     minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
   },
   sortButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.xs,
-    fontWeight: '600',
     color: colors.primaryLight,
   },
   searchBarContainer: {
@@ -641,8 +638,8 @@ const styles = StyleSheet.create({
     color: colors.textFaded,
   },
   tagFilterChipTextActive: {
+    fontFamily: fonts.uiBold,
     color: colors.primary,
-    fontWeight: '700',
   },
   tagColorDot: {
     width: 8,
@@ -686,9 +683,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   emptyTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '700',
     color: colors.textPrimary,
   },
   emptyDesc: {
@@ -710,9 +706,8 @@ const styles = StyleSheet.create({
     minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
   },
   emptyPrimaryButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    fontWeight: '700',
     color: '#041410',
   },
   emptySecondaryButton: {
@@ -728,9 +723,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   emptySecondaryButtonText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     fontSize: fontSizes.sm,
-    fontWeight: '600',
     color: colors.textSecondary,
   },
   snackbarContainer: {
@@ -772,9 +766,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(16, 185, 129, 0.12)',
   },
   snackbarUndoText: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xs,
-    fontWeight: '700',
     color: colors.primary,
   },
   modalOverlay: {
@@ -802,9 +795,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   modalTitle: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: rtlTextAlign,
   },
@@ -839,7 +831,7 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
   },
   sortOptionLabelActive: {
+    fontFamily: fonts.uiBold,
     color: colors.primary,
-    fontWeight: '700',
   },
 });

@@ -107,9 +107,8 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   title: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xl,
-    fontWeight: '700',
     color: colors.textPrimary,
     textAlign: 'right',
   },
@@ -131,9 +130,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   surahInfo: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.xs,
-    fontWeight: '700',
     color: colors.primary,
   },
   verseKey: {

@@ -468,8 +468,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   sectionTitle: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '600',
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
     color: colors.goldAccent,
     textAlign: rtlTextAlign,
@@ -499,15 +498,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   segmentText: {
-    fontFamily: fonts.uiRegular,
     fontSize: fontSizes.xs,
     textAlign: 'center',
   },
   segmentTextActive: {
+    fontFamily: fonts.uiBold,
     color: colors.textPrimary,
-    fontWeight: '700',
   },
   segmentTextInactive: {
+    fontFamily: fonts.uiRegular,
     color: colors.textSecondary,
   },
   themeSegmentButton: {
@@ -536,17 +535,16 @@ const styles = StyleSheet.create({
     borderColor: '#ffffff',
   },
   themeSegmentText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs - 1,
+    fontSize: fontSizes.xs,
     textAlign: 'center',
   },
   themeSegmentTextActive: {
+    fontFamily: fonts.uiBold,
     color: colors.textPrimary,
-    fontWeight: '700',
   },
   themeSegmentTextInactive: {
+    fontFamily: fonts.uiRegular,
     color: colors.textSecondary,
-    fontWeight: '400',
   },
   stepperRow: {
     flexDirection: rtlRow,
@@ -577,8 +575,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   percentageText: {
-    fontFamily: fonts.uiRegular,
-    fontWeight: '700',
+    fontFamily: fonts.uiBold,
     fontSize: fontSizes.md,
     color: colors.textPrimary,
     textAlign: 'center',
