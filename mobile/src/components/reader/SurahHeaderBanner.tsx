@@ -37,7 +37,7 @@ export interface SurahHeaderBannerProps {
  *
  * Features:
  * - Sacred Arabic calligraphic title in `fonts.quranHafs` (size 32) in `colors.goldAccent`.
- * - Persian title (`name_fa`) in bold `fonts.uiRegular` (size 16) with high-contrast `colors.textPrimary`.
+ * - Persian title (`name_fa`) in `fonts.uiBold` (size 16) with high-contrast `colors.textPrimary`.
  * - Metadata badges row with Persian digits:
  *   1. Surah number badge
  *   2. Revelation place chip (`مکی` / `مدنی`) styled with theme tokens
