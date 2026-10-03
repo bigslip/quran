@@ -83,11 +83,6 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
 
     const handleTabChange = useCallback((tab: InsightDrawerTabId) => {
       setActiveTab(tab);
-      if (tab === 'vocabulary') {
-        setIsScriptureCollapsed(false);
-      } else {
-        setIsScriptureCollapsed(true);
-      }
     }, []);
 
     // Load Ayah insights and personal reflection from database
@@ -99,7 +94,7 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
       let isMounted = true;
       setLoading(true);
       setActiveWordPosition(1);
-      setIsScriptureCollapsed(activeTab !== 'vocabulary');
+      setIsScriptureCollapsed(true);
 
       async function loadData() {
         if (!verse) return;
