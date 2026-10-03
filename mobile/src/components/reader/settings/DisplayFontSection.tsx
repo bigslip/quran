@@ -477,25 +477,26 @@ const styles = StyleSheet.create({
   },
   segmentedRow: {
     flexDirection: rtlRow,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: borderRadius.lg,
-    padding: spacing.xs,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
+    alignItems: 'center',
+    gap: spacing.xs,
   },
   segmentButton: {
     flex: 1,
     minHeight: 44,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: borderRadius.md,
+    borderRadius: borderRadius.pill,
     paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderWidth: 1.5,
   },
   segmentButtonActive: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primarySubtle,
+    borderColor: colors.primary,
   },
   segmentButtonInactive: {
-    backgroundColor: 'transparent',
+    backgroundColor: colors.surfaceCardHover,
+    borderColor: colors.borderSubtle,
   },
   segmentText: {
     fontSize: fontSizes.xs,
@@ -503,10 +504,10 @@ const styles = StyleSheet.create({
   },
   segmentTextActive: {
     fontFamily: fonts.uiBold,
-    color: colors.textPrimary,
+    color: colors.primaryLight,
   },
   segmentTextInactive: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     color: colors.textSecondary,
   },
   themeSegmentButton: {
@@ -514,15 +515,17 @@ const styles = StyleSheet.create({
     minHeight: 44,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: borderRadius.md,
+    borderRadius: borderRadius.pill,
     paddingVertical: spacing.xs,
     paddingHorizontal: 2,
     gap: 4,
+    borderWidth: 1.5,
+    borderColor: colors.borderSubtle,
+    backgroundColor: colors.surfaceCardHover,
   },
   themeSegmentButtonActive: {
-    backgroundColor: colors.primary,
-    borderWidth: 1,
-    borderColor: colors.borderActive,
+    backgroundColor: colors.primarySubtle,
+    borderColor: colors.primary,
   },
   themeSwatchDot: {
     width: 12,
@@ -540,10 +543,10 @@ const styles = StyleSheet.create({
   },
   themeSegmentTextActive: {
     fontFamily: fonts.uiBold,
-    color: colors.textPrimary,
+    color: colors.primaryLight,
   },
   themeSegmentTextInactive: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     color: colors.textSecondary,
   },
   stepperRow: {

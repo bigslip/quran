@@ -224,16 +224,7 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.mem
             </View>
 
             {/* 4 Segmented Tab Navigation Bar */}
-            <View
-              testID={`${testID}-tabs`}
-              style={[
-                styles.tabsRow,
-                {
-                  backgroundColor: colors.surfaceFloating,
-                  borderColor: colors.borderSubtle,
-                },
-              ]}
-            >
+            <View testID={`${testID}-tabs`} style={styles.tabsRow} accessibilityRole="tablist">
               {SETTINGS_TABS.map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
@@ -249,10 +240,16 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.mem
                             styles.tabButtonActive,
                             {
                               backgroundColor: colors.primarySubtle,
-                              borderColor: colors.borderActive,
+                              borderColor: colors.primary,
                             },
                           ]
-                        : styles.tabButtonInactive,
+                        : [
+                            styles.tabButtonInactive,
+                            {
+                              backgroundColor: colors.surfaceCardHover,
+                              borderColor: colors.borderSubtle,
+                            },
+                          ],
                     ]}
                     accessible={true}
                     accessibilityRole="tab"
@@ -271,11 +268,6 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.mem
                     >
                       {tab.label}
                     </Text>
-                    {isActive && (
-                      <View
-                        style={[styles.activeIndicator, { backgroundColor: colors.primaryLight }]}
-                      />
-                    )}
                   </TouchableOpacity>
                 );
               })}
@@ -346,14 +338,10 @@ const styles = StyleSheet.create({
   },
   tabsRow: {
     flexDirection: rtlRow,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: borderRadius.lg,
-    padding: spacing.xs,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    marginTop: spacing.md,
-    marginBottom: spacing.md,
+    alignItems: 'center',
     gap: spacing.xs,
+    marginTop: spacing.sm,
+    marginBottom: spacing.md,
   },
   tabButton: {
     flex: 1,
@@ -361,16 +349,18 @@ const styles = StyleSheet.create({
     height: 44,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: borderRadius.md,
+    borderRadius: borderRadius.pill,
     paddingHorizontal: spacing.xs,
-    position: 'relative',
+    paddingVertical: spacing.xs,
+    borderWidth: 1.5,
   },
   tabButtonActive: {
     backgroundColor: colors.primarySubtle,
-    borderColor: colors.borderActive,
+    borderColor: colors.primary,
   },
   tabButtonInactive: {
-    backgroundColor: 'transparent',
+    backgroundColor: colors.surfaceCardHover,
+    borderColor: colors.borderSubtle,
   },
   tabText: {
     fontSize: fontSizes.xs,
@@ -381,17 +371,8 @@ const styles = StyleSheet.create({
     color: colors.primaryLight,
   },
   tabTextInactive: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     color: colors.textSecondary,
-  },
-  activeIndicator: {
-    position: 'absolute',
-    bottom: 3,
-    left: spacing.sm,
-    right: spacing.sm,
-    height: 2,
-    backgroundColor: colors.primaryLight,
-    borderRadius: 1,
   },
   scrollContent: {
     paddingTop: spacing.xs,

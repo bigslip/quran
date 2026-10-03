@@ -357,25 +357,26 @@ const styles = StyleSheet.create({
   },
   segmentedRow: {
     flexDirection: rtlRow,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: borderRadius.lg,
-    padding: spacing.xs,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
+    alignItems: 'center',
+    gap: spacing.xs,
   },
   segmentButton: {
     flex: 1,
     minHeight: 44,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: borderRadius.md,
+    borderRadius: borderRadius.pill,
     paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderWidth: 1.5,
   },
   segmentButtonActive: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primarySubtle,
+    borderColor: colors.primary,
   },
   segmentButtonInactive: {
-    backgroundColor: 'transparent',
+    backgroundColor: colors.surfaceCardHover,
+    borderColor: colors.borderSubtle,
   },
   segmentText: {
     fontSize: fontSizes.xs,
@@ -383,10 +384,10 @@ const styles = StyleSheet.create({
   },
   segmentTextActive: {
     fontFamily: fonts.uiBold,
-    color: colors.textPrimary,
+    color: colors.primaryLight,
   },
   segmentTextInactive: {
-    fontFamily: fonts.uiRegular,
+    fontFamily: fonts.uiMedium,
     color: colors.textSecondary,
   },
   checkboxesColumn: {

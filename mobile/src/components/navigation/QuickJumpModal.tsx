@@ -260,7 +260,6 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
                     >
                       {tab.label}
                     </Text>
-                    {isActive && <View style={styles.activeIndicator} />}
                   </TouchableOpacity>
                 );
               })}
@@ -402,14 +401,10 @@ const createStyles = (colors: ColorTheme) =>
     },
     tabsRow: {
       flexDirection: rtlRow,
-      backgroundColor: colors.surfaceFloating,
-      borderRadius: borderRadius.lg,
-      padding: 4,
-      borderWidth: 1,
-      borderColor: colors.borderSubtle,
+      alignItems: 'center',
+      gap: spacing.sm,
       marginTop: spacing.sm,
       marginBottom: spacing.sm,
-      gap: spacing.xs,
     },
     tabButton: {
       flex: 1,
@@ -417,20 +412,21 @@ const createStyles = (colors: ColorTheme) =>
       height: 44,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: borderRadius.md,
+      borderRadius: borderRadius.pill,
       paddingHorizontal: spacing.xs,
-      position: 'relative',
+      paddingVertical: spacing.xs,
+      borderWidth: 1.5,
     },
     tabButtonActive: {
       backgroundColor: colors.primarySubtle,
-      borderColor: colors.borderActive,
-      borderWidth: 1,
+      borderColor: colors.primary,
     },
     tabButtonInactive: {
-      backgroundColor: 'transparent',
+      backgroundColor: colors.surfaceCardHover,
+      borderColor: colors.borderSubtle,
     },
     tabText: {
-      fontSize: fontSizes.xs,
+      fontSize: fontSizes.sm,
       textAlign: 'center',
     },
     tabTextActive: {
@@ -440,15 +436,6 @@ const createStyles = (colors: ColorTheme) =>
     tabTextInactive: {
       fontFamily: fonts.uiMedium,
       color: colors.textSecondary,
-    },
-    activeIndicator: {
-      position: 'absolute',
-      bottom: 3,
-      left: spacing.sm,
-      right: spacing.sm,
-      height: 2,
-      backgroundColor: colors.primary,
-      borderRadius: 1,
     },
     tabContentWrapper: {
       flex: 1,
