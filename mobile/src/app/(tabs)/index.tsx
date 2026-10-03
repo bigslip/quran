@@ -10,6 +10,7 @@ import {
   Award,
   Compass,
   Sparkles,
+  ArrowLeft,
 } from 'lucide-react-native';
 import {
   useThemeColors,
@@ -27,6 +28,8 @@ import { SanctuaryCard } from '@/components/common/SanctuaryCard';
 import { SearchBar } from '@/components/common/SearchBar';
 import { QuickJumpModal } from '@/components/navigation';
 import { JumpDestination } from '@/services/db/quickJumpContracts';
+import { searchQuran, searchChapters } from '@/services/db/searchService';
+import { SearchResult, Chapter } from '@/types/quran';
 import { useReadingStore } from '@/stores/useReadingStore';
 
 export default function HomeScreen() {
@@ -34,6 +37,9 @@ export default function HomeScreen() {
   const colors = useThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [quickResults, setQuickResults] = useState<SearchResult[]>([]);
+  const [quickChapters, setQuickChapters] = useState<Chapter[]>([]);
+  const [isSearchingQuick, setIsSearchingQuick] = useState(false);
   const [greeting, setGreeting] = useState('روز بخیر');
   const [isQuickJumpOpen, setIsQuickJumpOpen] = useState(false);
 
@@ -48,6 +54,63 @@ export default function HomeScreen() {
     },
     [router],
   );
+
+  const handleSearchSubmit = useCallback(() => {
+    const trimmed = searchQuery.trim();
+    if (trimmed.length > 0) {
+      router.push({
+        pathname: '/(tabs)/search',
+        params: { q: trimmed },
+      } as any);
+    } else {
+      router.push('/(tabs)/search' as any);
+    }
+  }, [searchQuery, router]);
+
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery('');
+    setQuickResults([]);
+    setQuickChapters([]);
+    setIsSearchingQuick(false);
+  }, []);
+
+  // Quick live search when typing >= 2 characters on Home screen
+  useEffect(() => {
+    const trimmed = searchQuery.trim();
+    if (trimmed.length < 2) {
+      setQuickResults([]);
+      setQuickChapters([]);
+      setIsSearchingQuick(false);
+      return;
+    }
+
+    let isMounted = true;
+    setIsSearchingQuick(true);
+    const timer = setTimeout(async () => {
+      try {
+        const [verses, chapters] = await Promise.all([
+          searchQuran(trimmed, 3),
+          searchChapters(trimmed, 2).catch(() => []),
+        ]);
+        if (isMounted) {
+          setQuickResults(verses);
+          setQuickChapters(chapters);
+          setIsSearchingQuick(false);
+        }
+      } catch {
+        if (isMounted) {
+          setQuickResults([]);
+          setQuickChapters([]);
+          setIsSearchingQuick(false);
+        }
+      }
+    }, 200);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -83,11 +146,73 @@ export default function HomeScreen() {
         {/* Search Command Bar */}
         <View style={styles.searchSection}>
           <SearchBar
+            testID="home-search-bar"
             value={searchQuery}
             onChangeText={setSearchQuery}
+            onSubmitEditing={handleSearchSubmit}
+            onClear={handleClearSearch}
             placeholder="جستجوی سوره، آیه، کلمه..."
           />
+
+          {/* Quick Search Preview Panel */}
+          {searchQuery.trim().length >= 2 && (
+            <View style={styles.quickSearchResultsPanel} testID="home-quick-search-results">
+              {quickChapters.length > 0 && (
+                <View style={styles.quickChaptersRow}>
+                  {quickChapters.map((chapter) => (
+                    <TouchableOpacity
+                      key={`home-chap-${chapter.id}`}
+                      style={styles.quickChapterChip}
+                      onPress={() => router.push(`/surah/${chapter.id}` as any)}
+                      activeOpacity={0.75}
+                      testID={`home-quick-chapter-${chapter.id}`}
+                    >
+                      <BookOpen size={14} color={colors.primary} />
+                      <Text style={styles.quickChapterText}>
+                        سوره {chapter.name_fa} ({chapter.id})
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+
+              {quickResults.map((verse) => (
+                <TouchableOpacity
+                  key={`home-verse-${verse.verse_key}`}
+                  style={styles.quickVerseCard}
+                  onPress={() =>
+                    router.push(`/surah/${verse.chapter_id}?verse=${verse.verse_number}` as any)
+                  }
+                  activeOpacity={0.75}
+                  testID={`home-quick-verse-${verse.verse_key}`}
+                >
+                  <View style={styles.quickVerseHeader}>
+                    <Text style={styles.quickVerseSurah}>
+                      {verse.chapter_name_fa} • آیه {verse.verse_number}
+                    </Text>
+                    <Text style={styles.quickVerseKey}>{verse.verse_key}</Text>
+                  </View>
+                  <Text style={styles.quickVerseTranslation} numberOfLines={2}>
+                    {verse.translation_fa}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+
+              <TouchableOpacity
+                style={styles.viewAllResultsButton}
+                onPress={handleSearchSubmit}
+                activeOpacity={0.8}
+                testID="home-view-all-search-results"
+              >
+                <Text style={styles.viewAllResultsText}>
+                  مشاهده همه نتایج برای «{searchQuery.trim()}»
+                </Text>
+                <ArrowLeft size={16} color={colors.primary} />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
+
 
         {/* Continue Reading Card */}
         <SanctuaryCard
@@ -338,7 +463,82 @@ const createStyles = (colors: ColorTheme) =>
   searchSection: {
     marginBottom: spacing.lg,
   },
+  quickSearchResultsPanel: {
+    backgroundColor: colors.surfaceCard,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    marginTop: spacing.sm,
+    gap: spacing.sm,
+  },
+  quickChaptersRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
+  quickChapterChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: colors.surfaceFloating,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    borderRadius: borderRadius.pill,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    minHeight: 36,
+  },
+  quickChapterText: {
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
+    color: colors.textPrimary,
+  },
+  quickVerseCard: {
+    backgroundColor: colors.surfaceFloating,
+    borderRadius: borderRadius.md,
+    padding: spacing.sm,
+    gap: 4,
+  },
+  quickVerseHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  quickVerseSurah: {
+    fontFamily: fonts.uiBold,
+    fontSize: fontSizes.xs,
+    color: colors.primary,
+  },
+  quickVerseKey: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.xs,
+    color: colors.textFaded,
+  },
+  quickVerseTranslation: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.xs,
+    color: colors.textSecondary,
+    lineHeight: 18,
+    textAlign: 'right',
+  },
+  viewAllResultsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.xs,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderSeparator,
+    minHeight: 40,
+  },
+  viewAllResultsText: {
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
+    color: colors.primary,
+  },
   continueCard: {
+
     marginBottom: spacing.xl,
   },
   continueHeader: {

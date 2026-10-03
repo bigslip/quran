@@ -1,4 +1,4 @@
-import type { SearchResult } from '../../types/quran.ts';
+import type { SearchResult, Chapter } from '../../types/quran.ts';
 
 let customDb: any = null;
 
@@ -70,6 +70,49 @@ export async function searchQuran(searchTerm: string, limit: number = 30): Promi
     return await db.getAllAsync(query, [sanitized, limit]);
   } else if (typeof db.prepare === 'function') {
     return db.prepare(query).all(sanitized, limit);
+  }
+  return [];
+}
+
+/**
+ * Searches Surahs by Persian name, Arabic name, English name, or chapter number.
+ */
+export async function searchChapters(searchTerm: string, limit: number = 5): Promise<Chapter[]> {
+  if (!searchTerm || !searchTerm.trim()) return [];
+  const clean = searchTerm.trim();
+
+  // Convert Persian numbers to English if any
+  const asciiNum = clean.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+  const parsedId = parseInt(asciiNum, 10);
+  const isNumeric = !isNaN(parsedId) && parsedId >= 1 && parsedId <= 114;
+
+  let db = customDb;
+  if (!db) {
+    const dbModule = await import('./database.ts');
+    db = await dbModule.getDatabase();
+  }
+
+  const normalized = normalizeSearchQuery(clean);
+  const pattern = `%${normalized}%`;
+
+  const query = `
+    SELECT id, slug, name_simple, name_arabic, name_fa, name_en, revelation_place, revelation_order, bismillah_pre, verses_count, pages_start, pages_end
+    FROM chapters
+    WHERE name_fa LIKE ? OR name_arabic LIKE ? OR name_simple LIKE ? ${isNumeric ? 'OR id = ?' : ''}
+    ORDER BY 
+      CASE WHEN id = ? THEN 1 WHEN name_fa LIKE ? THEN 2 ELSE 3 END,
+      id ASC
+    LIMIT ?;
+  `;
+
+  const params = isNumeric
+    ? [pattern, pattern, pattern, parsedId, parsedId, `${normalized}%`, limit]
+    : [pattern, pattern, pattern, -1, `${normalized}%`, limit];
+
+  if (typeof db.getAllAsync === 'function') {
+    return await db.getAllAsync(query, params);
+  } else if (typeof db.prepare === 'function') {
+    return db.prepare(query).all(...params);
   }
   return [];
 }

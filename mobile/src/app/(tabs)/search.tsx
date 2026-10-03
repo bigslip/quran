@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { BookOpen, ChevronLeft } from 'lucide-react-native';
 import {
   useThemeColors,
   type ColorTheme,
@@ -11,28 +12,91 @@ import {
 } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { SearchBar } from '@/components/common/SearchBar';
-import { searchQuran } from '@/services/db/searchService';
-import { SearchResult } from '@/types/quran';
+import { searchQuran, searchChapters } from '@/services/db/searchService';
+import { SearchResult, Chapter } from '@/types/quran';
 
 export default function SearchScreen() {
   const router = useRouter();
   const colors = useThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const params = useLocalSearchParams<{ q?: string }>();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [matchedChapters, setMatchedChapters] = useState<Chapter[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSearch = async (text: string) => {
+  const handleSearch = useCallback(async (text: string) => {
     setQuery(text);
-    if (text.trim().length > 1) {
+    const cleanText = text.trim();
+    if (cleanText.length > 1) {
+      setIsLoading(true);
       try {
-        const res = await searchQuran(text);
-        setResults(res);
+        const [verses, chapters] = await Promise.all([
+          searchQuran(cleanText),
+          searchChapters(cleanText, 3).catch(() => []),
+        ]);
+        setResults(verses);
+        setMatchedChapters(chapters);
       } catch {
         setResults([]);
+        setMatchedChapters([]);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       setResults([]);
+      setMatchedChapters([]);
+      setIsLoading(false);
     }
+  }, []);
+
+  // Synchronize route query param from Home screen or deep links
+  useEffect(() => {
+    if (params.q && typeof params.q === 'string' && params.q.trim().length > 0) {
+      const initial = params.q.trim();
+      setQuery(initial);
+      handleSearch(initial);
+    }
+  }, [params.q, handleSearch]);
+
+  const renderHeader = () => {
+    if (matchedChapters.length === 0) return null;
+
+    return (
+      <View style={styles.chaptersSection}>
+        <Text style={styles.sectionSubtitle}>سوره‌های منطبق ({matchedChapters.length})</Text>
+        {matchedChapters.map((chapter) => (
+          <TouchableOpacity
+            key={`chap-${chapter.id}`}
+            style={styles.chapterCard}
+            onPress={() => router.push(`/surah/${chapter.id}` as any)}
+            activeOpacity={0.75}
+            testID={`search-chapter-${chapter.id}`}
+          >
+            <View style={styles.chapterIconWrapper}>
+              <BookOpen size={18} color={colors.primary} />
+            </View>
+            <View style={styles.chapterInfo}>
+              <Text style={styles.chapterNameFa}>
+                سوره {chapter.name_fa}
+              </Text>
+              <Text style={styles.chapterDetails}>
+                شماره {chapter.id} • {chapter.verses_count} آیه • {chapter.revelation_place === 'makkah' ? 'مکی' : 'مدنی'}
+              </Text>
+            </View>
+            <View style={styles.chapterArabicWrapper}>
+              <Text style={styles.chapterNameArabic}>{chapter.name_arabic}</Text>
+              <ChevronLeft size={16} color={colors.textFaded} />
+            </View>
+          </TouchableOpacity>
+        ))}
+        {results.length > 0 && (
+          <Text style={[styles.sectionSubtitle, { marginTop: spacing.md }]}>
+            آیات منطبق ({results.length})
+          </Text>
+        )}
+      </View>
+    );
   };
 
   return (
@@ -41,8 +105,12 @@ export default function SearchScreen() {
       <View style={styles.header}>
         <Text style={styles.title}>جستجوی هوشمند در قرآن</Text>
         <SearchBar
+          testID="search-screen-search-bar"
           value={query}
           onChangeText={handleSearch}
+          onSubmitEditing={() => handleSearch(query)}
+          onClear={() => handleSearch('')}
+          autoFocus={Boolean(params.q)}
           placeholder="جستجو در متن آیات، ترجمه فارسی یا کلمات..."
         />
       </View>
@@ -53,11 +121,14 @@ export default function SearchScreen() {
         contentContainerStyle={styles.resultsList}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
+        ListHeaderComponent={renderHeader}
         ListEmptyComponent={
-          query.length > 1 ? (
-            <Text style={styles.emptyText}>
-              موردی برای «{query}» یافت نشد.
-            </Text>
+          query.trim().length > 1 ? (
+            matchedChapters.length === 0 && !isLoading ? (
+              <Text style={styles.emptyText}>
+                موردی برای «{query}» یافت نشد.
+              </Text>
+            ) : null
           ) : (
             <Text style={styles.hintText}>
               عبارت مورد نظر خود را برای جستجوی فوری تایپ کنید.
@@ -71,6 +142,7 @@ export default function SearchScreen() {
               router.push(`/surah/${item.chapter_id}?verse=${item.verse_number}` as any)
             }
             activeOpacity={0.75}
+            testID={`search-result-${item.verse_key}`}
           >
             <View style={styles.resultHeader}>
               <Text style={styles.surahInfo}>
@@ -113,6 +185,60 @@ const createStyles = (colors: ColorTheme) =>
       paddingHorizontal: spacing.lg,
       paddingBottom: 32,
       gap: spacing.sm,
+    },
+    chaptersSection: {
+      gap: spacing.xs,
+      marginBottom: spacing.xs,
+    },
+    sectionSubtitle: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.textMuted,
+      textAlign: 'right',
+      marginBottom: spacing.xs,
+    },
+    chapterCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.surfaceCard,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      gap: spacing.sm,
+    },
+    chapterIconWrapper: {
+      width: 36,
+      height: 36,
+      borderRadius: borderRadius.circle,
+      backgroundColor: colors.primaryGlow,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    chapterInfo: {
+      flex: 1,
+      alignItems: 'flex-start',
+    },
+    chapterNameFa: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.textPrimary,
+    },
+    chapterDetails: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xxs,
+      color: colors.textFaded,
+      marginTop: 2,
+    },
+    chapterArabicWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+    },
+    chapterNameArabic: {
+      fontFamily: fonts.quranHafs,
+      fontSize: 18,
+      color: colors.goldAccent,
     },
     resultCard: {
       backgroundColor: colors.surfaceCard,
@@ -158,3 +284,4 @@ const createStyles = (colors: ColorTheme) =>
       marginTop: 40,
     },
   });
+
