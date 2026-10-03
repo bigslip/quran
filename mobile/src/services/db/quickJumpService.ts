@@ -3,6 +3,7 @@ import type { JumpDestination, JuzCardInfo } from './quickJumpContracts.ts';
 
 let customDatabaseInstance: any = null;
 let cachedJuzCards: JuzCardInfo[] | null = null;
+const cachedAyahDestinations = new Map<string, JumpDestination>();
 
 /**
  * Sets a custom database instance (e.g. Node DatabaseSync in tests or custom provider).
@@ -10,6 +11,7 @@ let cachedJuzCards: JuzCardInfo[] | null = null;
 export function setQuickJumpDatabase(db: SQLiteLikeDb | any | null): void {
   customDatabaseInstance = db;
   cachedJuzCards = null;
+  cachedAyahDestinations.clear();
 }
 
 /**
@@ -18,6 +20,67 @@ export function setQuickJumpDatabase(db: SQLiteLikeDb | any | null): void {
 export function resetQuickJumpDatabaseForTesting(): void {
   customDatabaseInstance = null;
   cachedJuzCards = null;
+  cachedAyahDestinations.clear();
+}
+
+/**
+ * Returns a cached destination synchronously if available.
+ */
+export function getCachedAyahDestination(
+  chapterId: number,
+  verseNumber: number,
+): JumpDestination | null {
+  const clampedChapterId = Math.min(114, Math.max(1, Math.floor(chapterId) || 1));
+  const clampedVerseNumber = Math.max(1, Math.floor(verseNumber) || 1);
+  return cachedAyahDestinations.get(`${clampedChapterId}:${clampedVerseNumber}`) || null;
+}
+
+/**
+ * Pre-warms in-memory cache for all 114 Surahs' opening verse (Ayah 1) in a single batch query.
+ */
+export async function prewarmSurahOpeningDestinations(): Promise<void> {
+  if (cachedAyahDestinations.size >= 114) return;
+  try {
+    const db = await getActiveDb();
+    const rows = await db.getAll<{
+      chapter_id: number;
+      verse_number: number;
+      verse_key: string;
+      page_number: number;
+      juz_number: number;
+      name_arabic: string;
+      name_fa: string;
+      verses_count: number;
+    }>(
+      `SELECT 
+        v.chapter_id,
+        v.verse_number,
+        v.verse_key,
+        v.page_number,
+        v.juz_number,
+        c.name_arabic,
+        c.name_fa,
+        c.verses_count
+      FROM verses v
+      JOIN chapters c ON c.id = v.chapter_id
+      WHERE v.verse_number = 1
+      ORDER BY v.chapter_id ASC;`,
+    );
+    for (const r of rows) {
+      cachedAyahDestinations.set(`${r.chapter_id}:1`, {
+        chapterId: r.chapter_id,
+        verseNumber: 1,
+        pageNumber: r.page_number,
+        juzNumber: r.juz_number,
+        verseKey: r.verse_key,
+        chapterNameArabic: r.name_arabic,
+        chapterNameFa: r.name_fa,
+        totalVerses: r.verses_count,
+      });
+    }
+  } catch {
+    // Graceful fallback
+  }
 }
 
 /**
@@ -50,8 +113,16 @@ export async function resolveAyahDestination(
   chapterId: number,
   verseNumber: number,
 ): Promise<JumpDestination> {
-  const db = await getActiveDb();
   const clampedChapterId = Math.min(114, Math.max(1, Math.floor(chapterId) || 1));
+  const rawVerseNumber = Math.max(1, Math.floor(verseNumber) || 1);
+  const tentativeKey = `${clampedChapterId}:${rawVerseNumber}`;
+
+  const tentativeCached = cachedAyahDestinations.get(tentativeKey);
+  if (tentativeCached) {
+    return tentativeCached;
+  }
+
+  const db = await getActiveDb();
 
   const chapter = await db.getFirst<{
     id: number;
@@ -66,10 +137,16 @@ export async function resolveAyahDestination(
     throw new Error(`Chapter not found for id: ${clampedChapterId}`);
   }
 
-  const clampedVerseNumber = Math.min(
-    chapter.verses_count,
-    Math.max(1, Math.floor(verseNumber) || 1),
-  );
+  const clampedVerseNumber = Math.min(chapter.verses_count, rawVerseNumber);
+  const cacheKey = `${clampedChapterId}:${clampedVerseNumber}`;
+
+  const cached = cachedAyahDestinations.get(cacheKey);
+  if (cached) {
+    if (cacheKey !== tentativeKey) {
+      cachedAyahDestinations.set(tentativeKey, cached);
+    }
+    return cached;
+  }
 
   const verse = await db.getFirst<{
     id: number;
@@ -87,7 +164,7 @@ export async function resolveAyahDestination(
     throw new Error(`Verse not found for ${clampedChapterId}:${clampedVerseNumber}`);
   }
 
-  return {
+  const result: JumpDestination = {
     chapterId: clampedChapterId,
     verseNumber: clampedVerseNumber,
     pageNumber: verse.page_number,
@@ -97,6 +174,9 @@ export async function resolveAyahDestination(
     chapterNameFa: chapter.name_fa,
     totalVerses: chapter.verses_count,
   };
+
+  cachedAyahDestinations.set(cacheKey, result);
+  return result;
 }
 
 /**

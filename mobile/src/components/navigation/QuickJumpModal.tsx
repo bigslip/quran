@@ -35,6 +35,8 @@ import {
   resolveAyahDestination,
   resolvePageDestination,
   resolveJuzDestination,
+  getCachedAyahDestination,
+  prewarmSurahOpeningDestinations,
 } from '@/services/db/quickJumpService';
 import { SurahAyahJumpTab } from './SurahAyahJumpTab';
 import { PageJumpTab } from './PageJumpTab';
@@ -90,6 +92,7 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
         setSelectedChapterId(initialChapterId);
         setSelectedVerseNumber(initialVerseNumber);
         setSelectedPageNumber(initialPageNumber);
+        prewarmSurahOpeningDestinations().catch(() => {});
       }
     }, [visible, initialTab, initialChapterId, initialVerseNumber, initialPageNumber]);
 
@@ -187,29 +190,62 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
       }
     };
 
-    // Direct jump handler with explicit chapter/verse
-    const handleDirectJump = async (chapterId?: number, verseNumber: number = 1) => {
+    // Direct jump handler with explicit chapter/verse: instant dismissal & zero lag
+    const handleDirectJump = (
+      chapterId?: number,
+      verseNumber: number = 1,
+      chapter?: Chapter,
+    ) => {
+      // 1. Immediately dismiss modal so there is zero UI freeze or animation lag
+      onClose();
+
       if (typeof chapterId === 'number') {
-        try {
-          const target = await resolveAyahDestination(chapterId, verseNumber);
-          onJump(target);
-          onClose();
-          return;
-        } catch {
-          onJump({
-            chapterId,
-            verseNumber,
-            pageNumber: 1,
-            juzNumber: 1,
-            verseKey: `${chapterId}:${verseNumber}`,
-            chapterNameArabic: '',
-            chapterNameFa: '',
-            totalVerses: 286,
-          });
-          onClose();
+        // Fast path: Check synchronous in-memory cache
+        const cached = getCachedAyahDestination(chapterId, verseNumber);
+        if (cached) {
+          onJump(cached);
           return;
         }
+
+        // Optimistic path: If chapter is available and verse is 1, jump immediately without waiting for SQLite
+        if (chapter && verseNumber === 1) {
+          const optimisticTarget: JumpDestination = {
+            chapterId: chapter.id,
+            verseNumber: 1,
+            pageNumber: chapter.pages_start ?? 1,
+            juzNumber: 1,
+            verseKey: `${chapter.id}:1`,
+            chapterNameArabic: chapter.name_arabic,
+            chapterNameFa: chapter.name_fa,
+            totalVerses: chapter.verses_count,
+          };
+          onJump(optimisticTarget);
+
+          // Background query to ensure cache is primed
+          resolveAyahDestination(chapterId, verseNumber).catch(() => {});
+          return;
+        }
+
+        // Async path if not yet cached
+        resolveAyahDestination(chapterId, verseNumber)
+          .then((target) => {
+            onJump(target);
+          })
+          .catch(() => {
+            onJump({
+              chapterId,
+              verseNumber,
+              pageNumber: 1,
+              juzNumber: 1,
+              verseKey: `${chapterId}:${verseNumber}`,
+              chapterNameArabic: '',
+              chapterNameFa: '',
+              totalVerses: 286,
+            });
+          });
+        return;
       }
+
       handleJump();
     };
 

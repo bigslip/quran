@@ -35,11 +35,112 @@ export interface SurahAyahJumpTabProps {
   selectedVerseNumber: number;
   onSelectSurah: (chapterId: number) => void;
   onSelectVerse: (verseNumber: number) => void;
-  onConfirmJump?: (chapterId?: number, verseNumber?: number) => void;
+  onConfirmJump?: (chapterId?: number, verseNumber?: number, chapter?: Chapter) => void;
   surahs?: Chapter[];
   testID?: string;
   style?: StyleProp<ViewStyle>;
 }
+
+interface SurahListItemProps {
+  item: Chapter;
+  isSelected: boolean;
+  isTuning: boolean;
+  selectedVerseNumber: number;
+  onPress: () => void;
+  onLongPress: () => void;
+  styles: ReturnType<typeof createStyles>;
+  colors: ColorTheme;
+}
+
+const SurahListItem = React.memo<SurahListItemProps>(
+  ({ item, isSelected, isTuning, selectedVerseNumber, onPress, onLongPress, styles, colors }) => {
+    const itemIsMakki = item.revelation_place === 'makkah';
+
+    return (
+      <TouchableOpacity
+        onPress={onPress}
+        onLongPress={onLongPress}
+        delayLongPress={350}
+        style={[styles.surahListItem, isSelected && styles.surahListItemSelected]}
+        activeOpacity={0.7}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel={`سوره ${item.name_fa}، شماره ${toPersianDigits(item.id)}`}
+        accessibilityHint="برای باز کردن سوره ضربه بزنید، یا برای انتخاب شماره آیه انگشت خود را نگه دارید"
+        testID={`quick-jump-surah-item-${item.id}`}
+      >
+        {/* Surah Number Badge */}
+        <View style={[styles.surahItemBadge, isSelected && styles.surahItemBadgeSelected]}>
+          <Text
+            style={[styles.surahItemBadgeText, isSelected && styles.surahItemBadgeTextSelected]}
+          >
+            {toPersianDigits(item.id)}
+          </Text>
+        </View>
+
+        {/* Surah Title & Details */}
+        <View style={styles.surahItemDetails}>
+          <View style={styles.surahItemNameRow}>
+            <Text style={[styles.surahItemNameFa, isSelected && styles.surahItemNameFaSelected]}>
+              سوره {cleanSurahNameFa(item.name_fa)}
+            </Text>
+            <View
+              style={[
+                styles.itemRevelationChip,
+                itemIsMakki ? styles.badgeMakki : styles.badgeMadani,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.itemRevelationText,
+                  itemIsMakki ? styles.badgeMakkiText : styles.badgeMadaniText,
+                ]}
+              >
+                {itemIsMakki ? 'مکی' : 'مدنی'}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.surahItemVerses}>{toPersianDigits(item.verses_count)} آیه</Text>
+        </View>
+
+        {/* Arabic Calligraphy & Selection / Arrow Indicator */}
+        <View style={styles.surahItemEnd}>
+          <Text
+            style={[styles.surahItemNameArabic, isSelected && styles.surahItemNameArabicSelected]}
+          >
+            {item.name_arabic}
+          </Text>
+          {isSelected && isTuning ? (
+            <View style={styles.tuningBadge}>
+              <Text style={styles.tuningBadgeText}>
+                آیه {toPersianDigits(selectedVerseNumber)}
+              </Text>
+            </View>
+          ) : isSelected ? (
+            <View style={styles.selectedCheckmark}>
+              <Text style={styles.selectedCheckmarkText}>✓</Text>
+            </View>
+          ) : (
+            <ArrowRight
+              size={14}
+              color={colors.textFaded}
+              style={[styles.rowArrow, { transform: [{ scaleX: isRTL ? -1 : 1 }] }]}
+            />
+          )}
+        </View>
+      </TouchableOpacity>
+    );
+  },
+  (prev, next) => {
+    return (
+      prev.isSelected === next.isSelected &&
+      prev.isTuning === next.isTuning &&
+      prev.selectedVerseNumber === next.selectedVerseNumber &&
+      prev.item.id === next.item.id &&
+      prev.colors === next.colors
+    );
+  },
+);
 
 export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
   selectedChapterId,
@@ -130,10 +231,11 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
 
   // Handle single tap: immediately opens the Surah starting from verse 1
   const handleSelectSurah = (chapter: Chapter) => {
-    onSelectSurah(chapter.id);
-    onSelectVerse(1);
     if (onConfirmJump) {
-      onConfirmJump(chapter.id, 1);
+      onConfirmJump(chapter.id, 1, chapter);
+    } else {
+      onSelectSurah(chapter.id);
+      onSelectVerse(1);
     }
   };
 
@@ -382,100 +484,33 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
         keyboardShouldPersistTaps="handled"
         style={styles.surahListFull}
         contentContainerStyle={styles.surahListContent}
-        initialNumToRender={15}
-        maxToRenderPerBatch={20}
-        windowSize={7}
+        initialNumToRender={18}
+        maxToRenderPerBatch={25}
+        windowSize={5}
+        getItemLayout={(_data, index) => ({
+          length: 54,
+          offset: 54 * index,
+          index,
+        })}
         renderItem={({ item }) => {
           const isSelected = item.id === selectedChapterId;
-          const itemIsMakki = item.revelation_place === 'makkah';
-
           return (
-            <TouchableOpacity
+            <SurahListItem
+              item={item}
+              isSelected={isSelected}
+              isTuning={isAyahTuningOpen}
+              selectedVerseNumber={selectedVerseNumber}
               onPress={() => {
                 if (isSelected && isAyahTuningOpen) {
-                  onConfirmJump?.(item.id, selectedVerseNumber);
+                  onConfirmJump?.(item.id, selectedVerseNumber, item);
                 } else {
                   handleSelectSurah(item);
                 }
               }}
               onLongPress={() => handleSurahLongPress(item)}
-              delayLongPress={350}
-              style={[styles.surahListItem, isSelected && styles.surahListItemSelected]}
-              activeOpacity={0.7}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityLabel={`سوره ${item.name_fa}، شماره ${toPersianDigits(item.id)}`}
-              accessibilityHint="برای باز کردن سوره ضربه بزنید، یا برای انتخاب شماره آیه انگشت خود را نگه دارید"
-              testID={`quick-jump-surah-item-${item.id}`}
-            >
-              {/* Surah Number Badge */}
-              <View style={[styles.surahItemBadge, isSelected && styles.surahItemBadgeSelected]}>
-                <Text
-                  style={[
-                    styles.surahItemBadgeText,
-                    isSelected && styles.surahItemBadgeTextSelected,
-                  ]}
-                >
-                  {toPersianDigits(item.id)}
-                </Text>
-              </View>
-
-              {/* Surah Title & Details */}
-              <View style={styles.surahItemDetails}>
-                <View style={styles.surahItemNameRow}>
-                  <Text
-                    style={[styles.surahItemNameFa, isSelected && styles.surahItemNameFaSelected]}
-                  >
-                    سوره {cleanSurahNameFa(item.name_fa)}
-                  </Text>
-                  <View
-                    style={[
-                      styles.itemRevelationChip,
-                      itemIsMakki ? styles.badgeMakki : styles.badgeMadani,
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.itemRevelationText,
-                        itemIsMakki ? styles.badgeMakkiText : styles.badgeMadaniText,
-                      ]}
-                    >
-                      {itemIsMakki ? 'مکی' : 'مدنی'}
-                    </Text>
-                  </View>
-                </View>
-                <Text style={styles.surahItemVerses}>{toPersianDigits(item.verses_count)} آیه</Text>
-              </View>
-
-              {/* Arabic Calligraphy & Selection / Arrow Indicator */}
-              <View style={styles.surahItemEnd}>
-                <Text
-                  style={[
-                    styles.surahItemNameArabic,
-                    isSelected && styles.surahItemNameArabicSelected,
-                  ]}
-                >
-                  {item.name_arabic}
-                </Text>
-                {isSelected && isAyahTuningOpen ? (
-                  <View style={styles.tuningBadge}>
-                    <Text style={styles.tuningBadgeText}>
-                      آیه {toPersianDigits(selectedVerseNumber)}
-                    </Text>
-                  </View>
-                ) : isSelected ? (
-                  <View style={styles.selectedCheckmark}>
-                    <Text style={styles.selectedCheckmarkText}>✓</Text>
-                  </View>
-                ) : (
-                  <ArrowRight
-                    size={14}
-                    color={colors.textFaded}
-                    style={[styles.rowArrow, { transform: [{ scaleX: isRTL ? -1 : 1 }] }]}
-                  />
-                )}
-              </View>
-            </TouchableOpacity>
+              styles={styles}
+              colors={colors}
+            />
           );
         }}
         ListEmptyComponent={

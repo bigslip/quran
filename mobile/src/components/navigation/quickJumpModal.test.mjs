@@ -265,7 +265,7 @@ describe('QuickJumpModal Architecture, Contracts & Integration Tests', () => {
         'Must default to Ayah 1 (beginning) when switching Surahs',
       );
       assert.ok(
-        surahTabSource.includes('onConfirmJump(chapter.id, 1)'),
+        surahTabSource.includes('onConfirmJump(chapter.id, 1'),
         'Must trigger direct open on single tap',
       );
     });
