@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { AppTheme, colors, fonts, spacing, themePalettes, useThemeColors } from '@/theme';
+import { AppTheme, fonts, spacing, themePalettes, useThemeColors, type ColorTheme } from '@/theme';
 import {
   BISMILLAH_TEXT,
   READER_COMPONENT_CONTRACTS,
@@ -33,6 +33,7 @@ export const BismillahBanner: React.FC<BismillahBannerProps> = ({
 }) => {
   const activeColors = useThemeColors();
   const colors = theme ? themePalettes[theme] ?? activeColors : activeColors;
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   if (!shouldRenderBismillah(chapterId, bismillahPre)) {
     return null;
@@ -76,8 +77,9 @@ export const BismillahBanner: React.FC<BismillahBannerProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     minHeight: READER_COMPONENT_CONTRACTS.bismillah.minHeight,
     paddingVertical: spacing.lg,
     paddingHorizontal: spacing.xl,

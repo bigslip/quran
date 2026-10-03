@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,15 @@ import {
   ViewStyle,
 } from 'react-native';
 import { BookOpen, Check, Trash2 } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  type ColorTheme,
+} from '../../theme';
 import {
   INSIGHTS_COMPONENT_CONTRACTS,
   formatReflectionCharCount,
@@ -37,6 +45,9 @@ export const PersonalReflectionCard: React.FC<PersonalReflectionCardProps> = Rea
     style,
     testID = 'personal-reflection-card',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
+
     const [note, setNote] = useState<string>(initialReflection);
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [isSaved, setIsSaved] = useState<boolean>(false);
@@ -172,8 +183,9 @@ export const PersonalReflectionCard: React.FC<PersonalReflectionCardProps> = Rea
 
 PersonalReflectionCard.displayName = 'PersonalReflectionCard';
 
-const styles = StyleSheet.create({
-  card: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    card: {
     backgroundColor: colors.surfaceCard,
     borderRadius: borderRadius.lg,
     borderWidth: 1,

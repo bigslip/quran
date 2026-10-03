@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import {
@@ -12,8 +12,8 @@ import {
   Sparkles,
 } from 'lucide-react-native';
 import {
-  colors as defaultColors,
   useThemeColors,
+  type ColorTheme,
   fonts,
   fontSizes,
   spacing,
@@ -32,6 +32,7 @@ import { useReadingStore } from '@/stores/useReadingStore';
 export default function HomeScreen() {
   const router = useRouter();
   const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const [searchQuery, setSearchQuery] = useState('');
   const [greeting, setGreeting] = useState('روز بخیر');
   const [isQuickJumpOpen, setIsQuickJumpOpen] = useState(false);
@@ -121,7 +122,7 @@ export default function HomeScreen() {
               activeOpacity={0.8}
               onPress={() => router.push(`/surah/${lastReadChapterId}` as any)}
             >
-              <Play size={20} color="#ffffff" fill="#ffffff" />
+              <Play size={20} color={colors.textInverse} fill={colors.textInverse} />
             </TouchableOpacity>
           </View>
 
@@ -307,13 +308,12 @@ export default function HomeScreen() {
   );
 }
 
-const colors = defaultColors;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
   scrollContent: {
     paddingTop: 54,
     paddingBottom: 40,

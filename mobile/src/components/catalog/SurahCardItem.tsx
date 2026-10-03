@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  type ColorTheme,
+} from '@/theme';
 import { Chapter } from '@/types/quran';
 import {
   formatSurahBadgeNumber,
@@ -29,6 +37,8 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
   testID,
 }) => {
   const router = useRouter();
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const handlePress = () => {
     if (onPress) {
@@ -101,8 +111,9 @@ export const SurahCardItem: React.FC<SurahCardItemProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     minHeight: CATALOG_COMPONENT_CONTRACTS.surahCard.minHeight,
     minWidth: CATALOG_COMPONENT_CONTRACTS.surahCard.minWidth,
     flexDirection: 'row',

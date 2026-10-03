@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Search } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  type ColorTheme,
+} from '@/theme';
 import { CATALOG_COMPONENT_CONTRACTS } from './catalogFormatters';
 
 export interface CatalogEmptyStateProps {
@@ -17,6 +25,9 @@ export const CatalogEmptyState: React.FC<CatalogEmptyStateProps> = ({
   style,
   testID = 'catalog-empty-state',
 }) => {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const trimmedQuery = query.trim();
   const titleText = trimmedQuery ? `موردی برای «${trimmedQuery}» یافت نشد` : 'موردی یافت نشد';
 
@@ -54,8 +65,9 @@ export const CatalogEmptyState: React.FC<CatalogEmptyStateProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     minHeight: CATALOG_COMPONENT_CONTRACTS.emptyState.minHeight,
     alignItems: 'center',
     justifyContent: 'center',

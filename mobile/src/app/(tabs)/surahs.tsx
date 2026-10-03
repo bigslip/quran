@@ -11,8 +11,8 @@ import {
 import { useRouter } from 'expo-router';
 import { Compass } from 'lucide-react-native';
 import {
-  colors as defaultColors,
   useThemeColors,
+  type ColorTheme,
   fonts,
   fontSizes,
   spacing,
@@ -40,6 +40,7 @@ type CatalogItem = Chapter | Juz;
 export default function SurahsScreen() {
   const router = useRouter();
   const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const flatListRef = useRef<FlatList<CatalogItem>>(null);
   const [activeTab, setActiveTab] = useState<CatalogTabId>('surah');
   const [query, setQuery] = useState('');
@@ -282,13 +283,12 @@ export default function SurahsScreen() {
   );
 }
 
-const colors = defaultColors;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
   header: {
     paddingTop: 54,
     paddingHorizontal: spacing.lg,

@@ -10,6 +10,8 @@ import {
   rtlRow,
   rtlTextAlign,
   rtlWritingDirection,
+  useThemeColors,
+  type ColorTheme,
 } from '@/theme';
 import { useReadingStore } from '@/stores/useReadingStore';
 import {
@@ -41,6 +43,8 @@ export const ReciterSelectionSection: React.FC<ReciterSelectionSectionProps> = R
     onSelectReciter: propOnSelectReciter,
     testID = 'reciter-selection-section',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
     const store = useReadingStore();
     const activeReciterId = propSelectedReciterId ?? store.selectedReciterId;
     const handleSelect = propOnSelectReciter ?? store.setSelectedReciterId;
@@ -209,126 +213,127 @@ export const ReciterSelectionSection: React.FC<ReciterSelectionSectionProps> = R
 
 ReciterSelectionSection.displayName = 'ReciterSelectionSection';
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    marginBottom: spacing.xl,
-  },
-  sectionTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
-    color: colors.goldAccent,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-    marginBottom: spacing.sm,
-  },
-  searchBar: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    minHeight: 44,
-    paddingHorizontal: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  searchIcon: {
-    marginHorizontal: spacing.xs,
-  },
-  searchInput: {
-    flex: 1,
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textPrimary,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-    minHeight: 44,
-    paddingVertical: 0,
-  },
-  clearButton: {
-    minHeight: 44,
-    minWidth: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  filterPillsRow: {
-    flexDirection: rtlRow,
-    gap: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  pillButton: {
-    minHeight: 44,
-    minWidth: 44,
-    paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.pill,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-  },
-  pillButtonActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  pillButtonInactive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    borderColor: colors.borderSubtle,
-  },
-  pillText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-  },
-  pillTextActive: {
-    fontFamily: fonts.uiBold,
-    color: colors.textPrimary,
-  },
-  pillTextInactive: {
-    color: colors.textSecondary,
-  },
-  recitersList: {
-    gap: spacing.xs,
-  },
-  reciterCard: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.sm,
-    minHeight: 52,
-    borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderWidth: 1,
-  },
-  reciterCardSelected: {
-    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-    borderColor: colors.primary,
-  },
-  reciterCardUnselected: {
-    backgroundColor: colors.surfaceCard,
-    borderColor: colors.borderSubtle,
-  },
-  checkboxContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: 44,
-    minWidth: 32,
-  },
-  activeCheckBadge: {
-    width: 24,
-    height: 24,
-    borderRadius: borderRadius.sm,
-    backgroundColor: 'rgba(16, 185, 129, 0.25)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.primary,
-  },
-  inactiveCheckBadge: {
-    width: 24,
-    height: 24,
-    borderRadius: borderRadius.sm,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
+      width: '100%',
+      marginBottom: spacing.xl,
+    },
+    sectionTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.goldAccent,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+      marginBottom: spacing.sm,
+    },
+    searchBar: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      minHeight: 44,
+      paddingHorizontal: spacing.sm,
+      marginBottom: spacing.md,
+    },
+    searchIcon: {
+      marginHorizontal: spacing.xs,
+    },
+    searchInput: {
+      flex: 1,
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textPrimary,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+      minHeight: 44,
+      paddingVertical: 0,
+    },
+    clearButton: {
+      minHeight: 44,
+      minWidth: 44,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    filterPillsRow: {
+      flexDirection: rtlRow,
+      gap: spacing.sm,
+      marginBottom: spacing.md,
+    },
+    pillButton: {
+      minHeight: 44,
+      minWidth: 44,
+      paddingHorizontal: spacing.md,
+      borderRadius: borderRadius.pill,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+    },
+    pillButtonActive: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    pillButtonInactive: {
+      backgroundColor: colors.surfaceCardHover,
+      borderColor: colors.borderSubtle,
+    },
+    pillText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+    },
+    pillTextActive: {
+      fontFamily: fonts.uiBold,
+      color: colors.textInverse,
+    },
+    pillTextInactive: {
+      color: colors.textSecondary,
+    },
+    recitersList: {
+      gap: spacing.xs,
+    },
+    reciterCard: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.sm,
+      minHeight: 52,
+      borderRadius: borderRadius.md,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      borderWidth: 1,
+    },
+    reciterCardSelected: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.primary,
+    },
+    reciterCardUnselected: {
+      backgroundColor: colors.surfaceCard,
+      borderColor: colors.borderSubtle,
+    },
+    checkboxContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: 44,
+      minWidth: 32,
+    },
+    activeCheckBadge: {
+      width: 24,
+      height: 24,
+      borderRadius: borderRadius.sm,
+      backgroundColor: colors.primaryGlow,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    inactiveCheckBadge: {
+      width: 24,
+      height: 24,
+      borderRadius: borderRadius.sm,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+    },
   reciterInfo: {
     flex: 1,
     justifyContent: 'center',

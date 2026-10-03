@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Minus, Plus } from 'lucide-react-native';
 import {
@@ -11,6 +11,8 @@ import {
   rtlTextAlign,
   rtlWritingDirection,
   AppTheme,
+  ColorTheme,
+  emeraldColors,
   themePalettes,
 } from '@/theme';
 import { useReadingStore } from '@/stores/useReadingStore';
@@ -66,6 +68,9 @@ export const DisplayFontSection: React.FC<DisplayFontSectionProps> = React.memo(
 
     const currentTheme = propTheme ?? store.theme;
     const setTheme = propOnChangeTheme ?? store.setTheme;
+
+    const colors = themePalettes[currentTheme] ?? emeraldColors;
+    const styles = useMemo(() => createStyles(colors), [colors]);
 
     const {
       minScale,
@@ -460,8 +465,9 @@ export const DisplayFontSection: React.FC<DisplayFontSectionProps> = React.memo(
 
 DisplayFontSection.displayName = 'DisplayFontSection';
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     width: '100%',
   },
   sectionBlock: {
@@ -553,7 +559,7 @@ const styles = StyleSheet.create({
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    backgroundColor: colors.surfaceCard,
     borderRadius: borderRadius.lg,
     borderWidth: 1,
     borderColor: colors.borderSubtle,
@@ -564,7 +570,9 @@ const styles = StyleSheet.create({
     minHeight: 44,
     minWidth: 44,
     borderRadius: borderRadius.md,
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: colors.surfaceCardHover,
+    borderColor: colors.borderSubtle,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

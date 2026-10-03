@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  type ColorTheme,
+} from '@/theme';
 import {
   CATALOG_COMPONENT_CONTRACTS,
   CATALOG_TABS,
@@ -23,6 +31,9 @@ export const CatalogTabSwitcher: React.FC<CatalogTabSwitcherProps> = ({
   style,
   testID = 'catalog-tab-switcher',
 }: CatalogTabSwitcherProps) => {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View testID={testID} style={[styles.container, style]} accessibilityRole="tablist">
       {tabs.map((tab) => {
@@ -52,8 +63,9 @@ export const CatalogTabSwitcher: React.FC<CatalogTabSwitcherProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     minHeight: CATALOG_COMPONENT_CONTRACTS.tabSwitcher.containerMinHeight,
     flexDirection: 'row',
     alignItems: 'center',

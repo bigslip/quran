@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Search, X, Check } from 'lucide-react-native';
 import {
-  colors,
+  useThemeColors,
+  type ColorTheme,
   fonts,
   fontSizes,
   spacing,
@@ -41,6 +42,8 @@ export const TranslationSelectionSection: React.FC<TranslationSelectionSectionPr
     onToggleTranslation: propOnToggleTranslation,
     testID = 'translation-selection-section',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
     const store = useReadingStore();
     const activeTranslationIds = propSelectedTranslationIds ?? store.selectedTranslationIds;
     const toggleTranslation = propOnToggleTranslation ?? store.toggleSelectedTranslationId;
@@ -212,198 +215,199 @@ export const TranslationSelectionSection: React.FC<TranslationSelectionSectionPr
 
 TranslationSelectionSection.displayName = 'TranslationSelectionSection';
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    marginBottom: spacing.xl,
-  },
-  headerRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: spacing.sm,
-  },
-  sectionTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
-    color: colors.goldAccent,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-  },
-  counterBadge: {
-    backgroundColor: 'rgba(251, 191, 36, 0.12)',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.pill,
-    borderWidth: 1,
-    borderColor: 'rgba(251, 191, 36, 0.3)',
-  },
-  counterBadgeText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.goldAccent,
-  },
-  searchBar: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    minHeight: 44,
-    paddingHorizontal: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  searchIcon: {
-    marginHorizontal: spacing.xs,
-  },
-  searchInput: {
-    flex: 1,
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textPrimary,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-    minHeight: 44,
-    paddingVertical: 0,
-  },
-  clearButton: {
-    minHeight: 44,
-    minWidth: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  filterPillsRow: {
-    flexDirection: rtlRow,
-    gap: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  pillButton: {
-    minHeight: 44,
-    minWidth: 44,
-    paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.pill,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-  },
-  pillButtonActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  pillButtonInactive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    borderColor: colors.borderSubtle,
-  },
-  pillText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-  },
-  pillTextActive: {
-    fontFamily: fonts.uiBold,
-    color: colors.textPrimary,
-  },
-  pillTextInactive: {
-    color: colors.textSecondary,
-  },
-  translationsList: {
-    gap: spacing.xs,
-  },
-  translationCard: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.sm,
-    minHeight: 52,
-    borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderWidth: 1,
-  },
-  translationCardSelected: {
-    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-    borderColor: colors.primary,
-  },
-  translationCardUnselected: {
-    backgroundColor: colors.surfaceCard,
-    borderColor: colors.borderSubtle,
-  },
-  checkboxContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: 44,
-    minWidth: 32,
-  },
-  checkedBox: {
-    width: 22,
-    height: 22,
-    borderRadius: borderRadius.sm,
-    backgroundColor: 'rgba(16, 185, 129, 0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.primary,
-  },
-  checkedBoxLocked: {
-    opacity: 0.8,
-  },
-  uncheckedBox: {
-    width: 22,
-    height: 22,
-    borderRadius: borderRadius.sm,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
-  },
-  translationInfo: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  titleRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  translationName: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.sm,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-  },
-  nameSelected: {
-    fontFamily: fonts.uiBold,
-    color: colors.primaryLight,
-  },
-  nameUnselected: {
-    color: colors.textPrimary,
-  },
-  authorName: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-    textAlign: rtlTextAlign,
-    marginTop: 1,
-  },
-  langBadge: {
-    paddingHorizontal: spacing.xs,
-    paddingVertical: 2,
-    borderRadius: borderRadius.sm,
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    borderWidth: 0.5,
-    borderColor: colors.borderSubtle,
-  },
-  langBadgeText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: 10,
-    color: colors.textSecondary,
-  },
-  emptyContainer: {
-    paddingVertical: spacing.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-    textAlign: 'center',
-  },
-});
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
+      width: '100%',
+      marginBottom: spacing.xl,
+    },
+    headerRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: spacing.sm,
+    },
+    sectionTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.goldAccent,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+    },
+    counterBadge: {
+      backgroundColor: 'rgba(251, 191, 36, 0.12)',
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.pill,
+      borderWidth: 1,
+      borderColor: 'rgba(251, 191, 36, 0.3)',
+    },
+    counterBadgeText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.goldAccent,
+    },
+    searchBar: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      minHeight: 44,
+      paddingHorizontal: spacing.sm,
+      marginBottom: spacing.md,
+    },
+    searchIcon: {
+      marginHorizontal: spacing.xs,
+    },
+    searchInput: {
+      flex: 1,
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textPrimary,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+      minHeight: 44,
+      paddingVertical: 0,
+    },
+    clearButton: {
+      minHeight: 44,
+      minWidth: 44,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    filterPillsRow: {
+      flexDirection: rtlRow,
+      gap: spacing.sm,
+      marginBottom: spacing.md,
+    },
+    pillButton: {
+      minHeight: 44,
+      minWidth: 44,
+      paddingHorizontal: spacing.md,
+      borderRadius: borderRadius.pill,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+    },
+    pillButtonActive: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    pillButtonInactive: {
+      backgroundColor: colors.surfaceCardHover,
+      borderColor: colors.borderSubtle,
+    },
+    pillText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+    },
+    pillTextActive: {
+      fontFamily: fonts.uiBold,
+      color: colors.textInverse,
+    },
+    pillTextInactive: {
+      color: colors.textSecondary,
+    },
+    translationsList: {
+      gap: spacing.xs,
+    },
+    translationCard: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.sm,
+      minHeight: 52,
+      borderRadius: borderRadius.md,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      borderWidth: 1,
+    },
+    translationCardSelected: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.primary,
+    },
+    translationCardUnselected: {
+      backgroundColor: colors.surfaceCard,
+      borderColor: colors.borderSubtle,
+    },
+    checkboxContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: 44,
+      minWidth: 32,
+    },
+    checkedBox: {
+      width: 22,
+      height: 22,
+      borderRadius: borderRadius.sm,
+      backgroundColor: colors.primaryGlow,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    checkedBoxLocked: {
+      opacity: 0.8,
+    },
+    uncheckedBox: {
+      width: 22,
+      height: 22,
+      borderRadius: borderRadius.sm,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+    },
+    translationInfo: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    titleRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
+    translationName: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.sm,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+    },
+    nameSelected: {
+      fontFamily: fonts.uiBold,
+      color: colors.primaryLight,
+    },
+    nameUnselected: {
+      color: colors.textPrimary,
+    },
+    authorName: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textFaded,
+      textAlign: rtlTextAlign,
+      marginTop: 1,
+    },
+    langBadge: {
+      paddingHorizontal: spacing.xs,
+      paddingVertical: 2,
+      borderRadius: borderRadius.sm,
+      backgroundColor: colors.surfaceFloating,
+      borderWidth: 0.5,
+      borderColor: colors.borderSubtle,
+    },
+    langBadgeText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: 10,
+      color: colors.textSecondary,
+    },
+    emptyContainer: {
+      paddingVertical: spacing.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    emptyText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textFaded,
+      textAlign: 'center',
+    },
+  });

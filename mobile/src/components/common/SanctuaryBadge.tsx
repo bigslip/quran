@@ -1,12 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import { colors, borderRadius, spacing, fonts, fontSizes } from '@/theme';
+import {
+  colors,
+  borderRadius,
+  spacing,
+  fonts,
+  fontSizes,
+  useThemeColors,
+  type ColorTheme,
+} from '@/theme';
 
 interface SanctuaryBadgeProps {
   label: string;
 }
 
 export const SanctuaryBadge: React.FC<SanctuaryBadgeProps> = ({ label }) => {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -34,8 +44,9 @@ export const SanctuaryBadge: React.FC<SanctuaryBadgeProps> = ({ label }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,

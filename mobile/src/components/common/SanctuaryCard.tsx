@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, ViewProps } from 'react-native';
-import { colors, borderRadius, spacing } from '@/theme';
+import { borderRadius, spacing, useThemeColors, type ColorTheme } from '@/theme';
 
 interface SanctuaryCardProps extends ViewProps {
   children: React.ReactNode;
@@ -13,6 +13,9 @@ export const SanctuaryCard: React.FC<SanctuaryCardProps> = ({
   style,
   ...props
 }) => {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View
       style={[
@@ -27,7 +30,8 @@ export const SanctuaryCard: React.FC<SanctuaryCardProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
   card: {
     backgroundColor: colors.surfaceCard,
     borderRadius: borderRadius.lg,

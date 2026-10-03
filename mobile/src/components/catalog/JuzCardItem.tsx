@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '@/theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  type ColorTheme,
+} from '@/theme';
 import { Juz } from '@/types/quran';
 import {
   formatJuzBadge,
@@ -22,6 +30,8 @@ export interface JuzCardItemProps {
 
 export const JuzCardItem: React.FC<JuzCardItemProps> = ({ juz, onPress, style, testID }) => {
   const router = useRouter();
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const handlePress = () => {
     if (onPress) {
@@ -77,8 +87,9 @@ export const JuzCardItem: React.FC<JuzCardItemProps> = ({ juz, onPress, style, t
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     minHeight: CATALOG_COMPONENT_CONTRACTS.juzCard.minHeight,
     minWidth: CATALOG_COMPONENT_CONTRACTS.juzCard.minWidth,
     backgroundColor: colors.surfaceCard,

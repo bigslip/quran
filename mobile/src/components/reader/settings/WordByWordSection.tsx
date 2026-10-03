@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native';
 import { Check } from 'lucide-react-native';
 import {
-  colors,
+  useThemeColors,
+  type ColorTheme,
   fonts,
   fontSizes,
   spacing,
@@ -46,6 +47,8 @@ export const WordByWordSection: React.FC<WordByWordSectionProps> = React.memo(
     onChangeWordByWordContentType: propOnChangeWordByWordContentType,
     testID = 'word-by-word-section',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
     const store = useReadingStore();
 
     const isWbwActive = propShowWordByWord ?? store.showWordByWord;
@@ -91,7 +94,7 @@ export const WordByWordSection: React.FC<WordByWordSectionProps> = React.memo(
               testID={`${testID}-master-switch`}
               value={isWbwActive}
               onValueChange={toggleWbw}
-              trackColor={{ false: 'rgba(255, 255, 255, 0.15)', true: colors.primary }}
+              trackColor={{ false: colors.borderSubtle, true: colors.primary }}
               thumbColor={isWbwActive ? colors.textPrimary : colors.textFaded}
               accessibilityLabel="فعال‌سازی نمایش واژه به واژه"
             />
@@ -299,145 +302,146 @@ export const WordByWordSection: React.FC<WordByWordSectionProps> = React.memo(
 
 WordByWordSection.displayName = 'WordByWordSection';
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    marginBottom: spacing.xl,
-  },
-  masterToggleRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: spacing.sm,
-    backgroundColor: colors.surfaceCard,
-    borderRadius: borderRadius.lg,
-    padding: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    minHeight: 64,
-  },
-  masterLabelContainer: {
-    flex: 1,
-  },
-  masterTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
-    color: colors.textPrimary,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-  },
-  masterSubtitle: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textSecondary,
-    textAlign: rtlTextAlign,
-    marginTop: 2,
-  },
-  switchTouchArea: {
-    minHeight: 44,
-    minWidth: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  subOptionsContainer: {
-    marginTop: spacing.md,
-    gap: spacing.lg,
-  },
-  subOptionsDisabled: {
-    opacity: 0.38,
-  },
-  optionBlock: {},
-  optionTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.xs,
-    color: colors.goldAccent,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-    marginBottom: spacing.xs,
-  },
-  segmentedRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  segmentButton: {
-    flex: 1,
-    minHeight: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: borderRadius.pill,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderWidth: 1.5,
-  },
-  segmentButtonActive: {
-    backgroundColor: colors.primarySubtle,
-    borderColor: colors.primary,
-  },
-  segmentButtonInactive: {
-    backgroundColor: colors.surfaceCardHover,
-    borderColor: colors.borderSubtle,
-  },
-  segmentText: {
-    fontSize: fontSizes.xs,
-    textAlign: 'center',
-  },
-  segmentTextActive: {
-    fontFamily: fonts.uiBold,
-    color: colors.primaryLight,
-  },
-  segmentTextInactive: {
-    fontFamily: fonts.uiMedium,
-    color: colors.textSecondary,
-  },
-  checkboxesColumn: {
-    gap: spacing.xs,
-  },
-  checkboxRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.sm,
-    minHeight: 48,
-    borderRadius: borderRadius.md,
-    backgroundColor: colors.surfaceCard,
-    paddingHorizontal: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-  },
-  checkboxIconWrapper: {
-    minHeight: 44,
-    minWidth: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  checkedBox: {
-    width: 22,
-    height: 22,
-    borderRadius: borderRadius.sm,
-    backgroundColor: 'rgba(16, 185, 129, 0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.primary,
-  },
-  uncheckedBox: {
-    width: 22,
-    height: 22,
-    borderRadius: borderRadius.sm,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
-  },
-  checkboxLabel: {
-    fontSize: fontSizes.sm,
-    textAlign: rtlTextAlign,
-    writingDirection: rtlWritingDirection,
-  },
-  labelActive: {
-    fontFamily: fonts.uiBold,
-    color: colors.textPrimary,
-  },
-  labelInactive: {
-    fontFamily: fonts.uiRegular,
-    color: colors.textSecondary,
-  },
-});
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
+      width: '100%',
+      marginBottom: spacing.xl,
+    },
+    masterToggleRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: spacing.sm,
+      backgroundColor: colors.surfaceCard,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      minHeight: 64,
+    },
+    masterLabelContainer: {
+      flex: 1,
+    },
+    masterTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.textPrimary,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+    },
+    masterSubtitle: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textSecondary,
+      textAlign: rtlTextAlign,
+      marginTop: 2,
+    },
+    switchTouchArea: {
+      minHeight: 44,
+      minWidth: 44,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    subOptionsContainer: {
+      marginTop: spacing.md,
+      gap: spacing.lg,
+    },
+    subOptionsDisabled: {
+      opacity: 0.38,
+    },
+    optionBlock: {},
+    optionTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xs,
+      color: colors.goldAccent,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+      marginBottom: spacing.xs,
+    },
+    segmentedRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.xs,
+    },
+    segmentButton: {
+      flex: 1,
+      minHeight: 44,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: borderRadius.pill,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderWidth: 1.5,
+    },
+    segmentButtonActive: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.primary,
+    },
+    segmentButtonInactive: {
+      backgroundColor: colors.surfaceCardHover,
+      borderColor: colors.borderSubtle,
+    },
+    segmentText: {
+      fontSize: fontSizes.xs,
+      textAlign: 'center',
+    },
+    segmentTextActive: {
+      fontFamily: fonts.uiBold,
+      color: colors.primaryLight,
+    },
+    segmentTextInactive: {
+      fontFamily: fonts.uiMedium,
+      color: colors.textSecondary,
+    },
+    checkboxesColumn: {
+      gap: spacing.xs,
+    },
+    checkboxRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.sm,
+      minHeight: 48,
+      borderRadius: borderRadius.md,
+      backgroundColor: colors.surfaceCard,
+      paddingHorizontal: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+    },
+    checkboxIconWrapper: {
+      minHeight: 44,
+      minWidth: 32,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    checkedBox: {
+      width: 22,
+      height: 22,
+      borderRadius: borderRadius.sm,
+      backgroundColor: colors.primaryGlow,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    uncheckedBox: {
+      width: 22,
+      height: 22,
+      borderRadius: borderRadius.sm,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+    },
+    checkboxLabel: {
+      fontSize: fontSizes.sm,
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
+    },
+    labelActive: {
+      fontFamily: fonts.uiBold,
+      color: colors.textPrimary,
+    },
+    labelInactive: {
+      fontFamily: fonts.uiRegular,
+      color: colors.textSecondary,
+    },
+  });

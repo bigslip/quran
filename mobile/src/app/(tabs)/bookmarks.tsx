@@ -23,8 +23,8 @@ import {
   SearchX,
 } from 'lucide-react-native';
 import {
-  colors as defaultColors,
   useThemeColors,
+  type ColorTheme,
   fonts,
   fontSizes,
   spacing,
@@ -49,6 +49,7 @@ import type { HydratedBookmark } from '@/types/bookmark';
 export default function BookmarksScreen() {
   const router = useRouter();
   const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   // Bookmark store state & actions
   const {
@@ -378,7 +379,7 @@ export default function BookmarksScreen() {
             accessibilityLabel="مشاهده فهرست سوره‌ها"
             testID="btn-explore-surahs"
           >
-            <BookOpen size={18} color="#041410" />
+            <BookOpen size={18} color={colors.textInverse} />
             <Text style={styles.emptyPrimaryButtonText}>مشاهده سوره‌ها</Text>
           </TouchableOpacity>
         </View>
@@ -521,13 +522,12 @@ export default function BookmarksScreen() {
   );
 }
 
-const colors = defaultColors;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
   header: {
     flexDirection: rtlRow,
     alignItems: 'center',
@@ -708,7 +708,7 @@ const styles = StyleSheet.create({
   emptyPrimaryButtonText: {
     fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    color: '#041410',
+    color: colors.textInverse,
   },
   emptySecondaryButton: {
     paddingHorizontal: spacing.lg,
@@ -738,7 +738,7 @@ const styles = StyleSheet.create({
     flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#062019',
+    backgroundColor: colors.surfaceFloating,
     borderRadius: BOOKMARK_COMPONENT_CONTRACTS.undoSnackbar.borderRadius,
     borderWidth: 1,
     borderColor: colors.borderActive,
@@ -779,7 +779,7 @@ const styles = StyleSheet.create({
   },
   modalCard: {
     width: '100%',
-    backgroundColor: '#062019',
+    backgroundColor: colors.surfaceCard,
     borderRadius: borderRadius.xl,
     borderWidth: 1,
     borderColor: colors.borderSubtle,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Modal,
   View,
@@ -22,6 +22,7 @@ import {
   useThemeColors,
   themePalettes,
   AppTheme,
+  type ColorTheme,
 } from '@/theme';
 import { READER_COMPONENT_CONTRACTS, SettingsTabId, SETTINGS_TABS } from './readerContracts';
 import {
@@ -108,6 +109,7 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.mem
   }) => {
     const activeColors = useThemeColors();
     const colors = theme ? themePalettes[theme] ?? activeColors : activeColors;
+    const styles = useMemo(() => createStyles(colors), [colors]);
     const [activeTab, setActiveTab] = useState<SettingsTabId>(initialTab);
 
     // Synchronize active tab when initialTab changes or modal becomes visible
@@ -128,6 +130,7 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.mem
               onChangeQuranFont={onChangeQuranFont}
               fontScale={fontScale}
               onChangeFontScale={onChangeFontScale}
+              theme={theme}
               testID={`${testID}-display-section`}
             />
           );
@@ -291,8 +294,9 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = React.mem
 
 ReaderSettingsModal.displayName = 'ReaderSettingsModal';
 
-const styles = StyleSheet.create({
-  modalOverlay: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    modalOverlay: {
     flex: 1,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.65)',

@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Search, X } from 'lucide-react-native';
-import { colors, borderRadius, spacing, fonts, fontSizes } from '@/theme';
+import {
+  colors,
+  borderRadius,
+  spacing,
+  fonts,
+  fontSizes,
+  useThemeColors,
+  type ColorTheme,
+} from '@/theme';
 
 interface SearchBarProps {
   value: string;
@@ -16,6 +24,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = 'جستجو در قرآن (سوره، آیه، ترجمه)...',
   onClear,
 }) => {
+  const colors = useThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.container}>
       <Search size={18} color={colors.textFaded} style={styles.icon} />
@@ -42,7 +53,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',

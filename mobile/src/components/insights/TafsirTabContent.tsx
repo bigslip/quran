@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,15 @@ import {
 } from 'react-native';
 import { Sparkles, DownloadCloud, Check, X } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  type ColorTheme,
+} from '../../theme';
 import type { TafsirExcerpt } from '../../types/quran';
 import {
   INSIGHTS_COMPONENT_CONTRACTS,
@@ -49,6 +57,9 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
     style,
     testID = 'tafsir-tab-content',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
+
     // Resolve active tafsir or default to the first available excerpt
     const activeTafsir = tafsirs.find((t) => t.id === selectedTafsirId) || tafsirs[0] || null;
 
@@ -431,8 +442,9 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
 
 TafsirTabContent.displayName = 'TafsirTabContent';
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     width: '100%',
     gap: spacing.md,
   },

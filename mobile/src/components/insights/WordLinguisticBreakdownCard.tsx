@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  type ColorTheme,
+} from '../../theme';
 import type { WordLinguisticInfo } from '../../types/quran';
 import {
   INSIGHTS_COMPONENT_CONTRACTS,
@@ -38,6 +46,9 @@ export const WordLinguisticBreakdownCard: React.FC<WordLinguisticBreakdownCardPr
     style,
     testID = 'word-linguistic-breakdown-card',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
+
     const fontName = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
     const wordArabic =
       quranFont === 'indopak' && word.text_indopak ? word.text_indopak : word.text_uthmani;
@@ -127,8 +138,9 @@ export const WordLinguisticBreakdownCard: React.FC<WordLinguisticBreakdownCardPr
 
 WordLinguisticBreakdownCard.displayName = 'WordLinguisticBreakdownCard';
 
-const styles = StyleSheet.create({
-  card: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    card: {
     minHeight: INSIGHTS_COMPONENT_CONTRACTS.wordCardMinHeight,
     minWidth: INSIGHTS_COMPONENT_CONTRACTS.minTouchTarget,
     borderRadius: borderRadius.lg,

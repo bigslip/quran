@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  useThemeColors,
+  type ColorTheme,
+} from '../../theme';
 import type { WordLinguisticInfo } from '../../types/quran';
 import {
   INSIGHTS_COMPONENT_CONTRACTS,
@@ -51,6 +59,9 @@ export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> =
     style,
     testID = 'ayah-scripture-preview-card',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
+
     // Resolve active word from linguistic words array or default to first
     const activeWord = words.find((w) => w.position === activeWordPosition) || words[0] || null;
 
@@ -225,8 +236,9 @@ export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> =
 
 AyahScripturePreviewCard.displayName = 'AyahScripturePreviewCard';
 
-const styles = StyleSheet.create({
-  container: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    container: {
     backgroundColor: colors.surfaceCard,
     borderColor: colors.borderSubtle,
     borderWidth: 1,

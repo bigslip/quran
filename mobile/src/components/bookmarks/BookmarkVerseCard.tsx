@@ -26,8 +26,8 @@ import {
   Clock,
 } from 'lucide-react-native';
 import {
-  colors as defaultColors,
   useThemeColors,
+  type ColorTheme,
   fonts,
   fontSizes,
   spacing,
@@ -76,6 +76,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
     testID = 'bookmark-verse-card',
   }) => {
     const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
     // Reading preferences
     const { quranFont, fontScale, activeTranslation, selectedTranslationIds, selectedReciterId } =
       useReadingStore();
@@ -364,7 +365,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                 testID={`${testID}-btn-save-note`}
                 hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
               >
-                <Check size={16} color="#041410" />
+                <Check size={16} color={colors.textInverse} />
                 <Text style={styles.noteSaveButtonText}>ذخیره</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -641,7 +642,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                       </View>
 
                       <View style={[styles.tagCheckbox, isSelected && styles.tagCheckboxChecked]}>
-                        {isSelected ? <Check size={14} color="#041410" strokeWidth={3} /> : null}
+                        {isSelected ? <Check size={14} color={colors.textInverse} strokeWidth={3} /> : null}
                       </View>
                     </TouchableOpacity>
                   );
@@ -663,10 +664,9 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
   },
 );
 
-const colors = defaultColors;
-
-const styles = StyleSheet.create({
-  cardContainer: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    cardContainer: {
     borderRadius: BOOKMARK_COMPONENT_CONTRACTS.card.borderRadius,
     borderWidth: BOOKMARK_COMPONENT_CONTRACTS.card.borderWidth,
     borderColor: BOOKMARK_COMPONENT_CONTRACTS.card.borderColor,
@@ -866,7 +866,7 @@ const styles = StyleSheet.create({
   noteSaveButtonText: {
     fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    color: '#041410',
+    color: colors.textInverse,
   },
   noteCancelButton: {
     paddingHorizontal: spacing.md,
@@ -983,7 +983,7 @@ const styles = StyleSheet.create({
   modalCard: {
     width: '100%',
     maxHeight: '75%',
-    backgroundColor: '#062019',
+    backgroundColor: colors.surfaceCard,
     borderRadius: borderRadius.xl,
     borderWidth: 1,
     borderColor: colors.borderSubtle,
@@ -1078,6 +1078,6 @@ const styles = StyleSheet.create({
   modalDoneButtonText: {
     fontFamily: fonts.uiBold,
     fontSize: fontSizes.sm,
-    color: '#041410',
+    color: colors.textInverse,
   },
 });

@@ -85,7 +85,7 @@ export const darkColors: ColorTheme = {
 
 export const sepiaColors: ColorTheme = {
   primary: '#059669',
-  primaryLight: '#10b981',
+  primaryLight: '#047857',
   primaryDark: '#047857',
   primarySubtle: 'rgba(5, 150, 105, 0.12)',
   primaryGlow: 'rgba(5, 150, 105, 0.22)',
@@ -122,7 +122,7 @@ export const sepiaColors: ColorTheme = {
 
 export const lightColors: ColorTheme = {
   primary: '#059669',
-  primaryLight: '#10b981',
+  primaryLight: '#059669',
   primaryDark: '#047857',
   primarySubtle: 'rgba(5, 150, 105, 0.10)',
   primaryGlow: 'rgba(5, 150, 105, 0.20)',

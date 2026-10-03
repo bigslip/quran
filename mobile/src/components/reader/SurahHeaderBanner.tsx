@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Info } from 'lucide-react-native';
 import {
@@ -10,6 +10,7 @@ import {
   useThemeColors,
   themePalettes,
   AppTheme,
+  type ColorTheme,
 } from '@/theme';
 import { Chapter } from '@/types/quran';
 import { toPersianDigits } from '@/components/catalog';
@@ -55,6 +56,7 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
 }) => {
   const activeColors = useThemeColors();
   const colors = theme ? themePalettes[theme] ?? activeColors : activeColors;
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const isMakki = chapter.revelation_place === 'makkah';
   const revelationPlaceText = formatRevelationPlace(chapter.revelation_place);
   const revelationOrderText = formatRevelationOrderBadge(chapter.revelation_order);
@@ -244,8 +246,9 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  outerCard: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    outerCard: {
     backgroundColor: colors.surfaceCard,
     borderRadius: borderRadius.xl,
     borderWidth: READER_COMPONENT_CONTRACTS.surahHeader.containerBorderWidth,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Modal,
   View,
@@ -13,7 +13,16 @@ import {
   ViewStyle,
 } from 'react-native';
 import { Copy, Share2, Bookmark, Play, X } from 'lucide-react-native';
-import { colors, fonts, fontSizes, spacing, borderRadius, shadows } from '../../theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  spacing,
+  borderRadius,
+  shadows,
+  useThemeColors,
+  type ColorTheme,
+} from '../../theme';
 import type { Verse, AyahInsight } from '../../types/quran';
 import {
   INSIGHTS_COMPONENT_CONTRACTS,
@@ -72,6 +81,9 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
     style,
     testID = 'ayah-insights-drawer',
   }) => {
+    const colors = useThemeColors();
+    const styles = useMemo(() => createStyles(colors), [colors]);
+
     const [activeTab, setActiveTab] = useState<InsightDrawerTabId>('tafsir');
     const [isScriptureCollapsed, setIsScriptureCollapsed] = useState<boolean>(true);
     const [activeWordPosition, setActiveWordPosition] = useState<number>(1);
@@ -444,8 +456,9 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
 
 AyahInsightsDrawer.displayName = 'AyahInsightsDrawer';
 
-const styles = StyleSheet.create({
-  modalOverlay: {
+const createStyles = (colors: ColorTheme) =>
+  StyleSheet.create({
+    modalOverlay: {
     flex: 1,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.65)',
