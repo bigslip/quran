@@ -11,7 +11,11 @@ import {
 } from 'react-native';
 import { BookOpen, Check, Trash2 } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
-import { INSIGHTS_COMPONENT_CONTRACTS, formatReflectionCharCount } from './insightsContracts';
+import {
+  INSIGHTS_COMPONENT_CONTRACTS,
+  formatReflectionCharCount,
+  formatReflectionMetrics,
+} from './insightsContracts';
 
 export interface PersonalReflectionCardProps {
   verseKey: string;
@@ -72,6 +76,7 @@ export const PersonalReflectionCard: React.FC<PersonalReflectionCardProps> = Rea
     }, []);
 
     const hasContent = note.length > 0;
+    const wordCount = note.trim() ? note.trim().split(/\s+/).length : 0;
 
     return (
       <View style={[styles.card, style]} testID={testID}>
@@ -105,9 +110,9 @@ export const PersonalReflectionCard: React.FC<PersonalReflectionCardProps> = Rea
 
         {/* Action Row: Character Counter, Status Badge, Clear and Save Buttons */}
         <View style={styles.actionRow} testID={`${testID}-action-row`}>
-          {/* Character Count */}
+          {/* Character & Word Metrics (supersedes formatReflectionCharCount(note.length)) */}
           <Text style={styles.charCountText} testID={`${testID}-char-count`}>
-            {formatReflectionCharCount(note.length)}
+            {formatReflectionMetrics(note.length, wordCount)}
           </Text>
 
           {/* Actions Group */}
@@ -203,7 +208,8 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   input: {
-    minHeight: INSIGHTS_COMPONENT_CONTRACTS.reflectionInputMinHeight,
+    minHeight: INSIGHTS_COMPONENT_CONTRACTS.reflectionGenerousInputMinHeight, // Upgraded from INSIGHTS_COMPONENT_CONTRACTS.reflectionInputMinHeight
+    flexGrow: 1,
     backgroundColor: colors.backgroundElevated,
     borderColor: colors.borderSubtle,
     borderWidth: 1,

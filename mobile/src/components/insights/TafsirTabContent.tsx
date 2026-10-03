@@ -8,11 +8,18 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import { Sparkles, DownloadCloud, X } from 'lucide-react-native';
+import { Sparkles, DownloadCloud, Check, X } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
 import type { TafsirExcerpt } from '../../types/quran';
-import { INSIGHTS_COMPONENT_CONTRACTS, formatTafsirPillTitle } from './insightsContracts';
+import {
+  INSIGHTS_COMPONENT_CONTRACTS,
+  formatTafsirPillTitle,
+  splitTafsirParagraphs,
+  TAFSIR_READING_FONT_SCALES,
+  type TafsirFontSizeLevel,
+} from './insightsContracts';
+import { toPersianDigits } from '../catalog/catalogFormatters';
 import { TAFSIR_NUDGE_BANNER_CONTRACTS, shouldShowTafsirNudgeBanner } from './tafsirNudgeContracts';
 import { useReadingStore } from '../../stores/useReadingStore';
 import {
@@ -60,6 +67,60 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
     }
 
     const [isAllTafsirDownloaded, setIsAllTafsirDownloaded] = useState<boolean>(false);
+    const [fontSizeLevel, setFontSizeLevel] = useState<TafsirFontSizeLevel>('comfortable');
+    const currentScale = TAFSIR_READING_FONT_SCALES[fontSizeLevel];
+
+    const handleDecreaseFontSize = useCallback(() => {
+      setFontSizeLevel((prev) => {
+        if (prev === 'large') return 'comfortable';
+        if (prev === 'comfortable') return 'standard';
+        return prev;
+      });
+    }, []);
+
+    const handleIncreaseFontSize = useCallback(() => {
+      setFontSizeLevel((prev) => {
+        if (prev === 'standard') return 'comfortable';
+        if (prev === 'comfortable') return 'large';
+        return prev;
+      });
+    }, []);
+
+    const [downloadedMap, setDownloadedMap] = useState<Record<string, boolean>>({});
+
+    useEffect(() => {
+      let isMounted = true;
+      async function checkStatuses() {
+        const statuses: Record<string, boolean> = {};
+        for (const tafsir of tafsirs) {
+          const id = (tafsir.id || '').toLowerCase();
+          let slug: string | null = null;
+          if (id.includes('nemouneh') || id === '171') {
+            slug = 'fa-tafsir-nemouneh';
+          } else if (id.includes('noor') || id === '172') {
+            slug = 'fa-tafsir-noor';
+          }
+          if (slug) {
+            try {
+              statuses[tafsir.id] = await isTafsirDownloaded(slug);
+            } catch {
+              statuses[tafsir.id] = false;
+            }
+          } else {
+            statuses[tafsir.id] = false;
+          }
+        }
+        if (isMounted) {
+          setDownloadedMap(statuses);
+        }
+      }
+      checkStatuses();
+      return () => {
+        isMounted = false;
+      };
+    }, [tafsirs]);
+
+    const tafsirParagraphs = activeTafsir?.text ? splitTafsirParagraphs(activeTafsir.text) : [];
 
     // Increment usage count upon mounting or entering the Tafsir tab,
     // only if the nudge is not already dismissed
@@ -210,18 +271,91 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
                       isActive ? styles.pillButtonActive : styles.pillButtonInactive,
                     ]}
                   >
-                    <Text
-                      style={[
-                        styles.pillButtonText,
-                        isActive ? styles.pillButtonTextActive : styles.pillButtonTextInactive,
-                      ]}
-                    >
-                      {pillLabel}
-                    </Text>
+                    <View style={styles.pillContentRow}>
+                      {downloadedMap[tafsir.id] ? (
+                        <Check size={12} color={isActive ? colors.primaryLight : colors.primary} />
+                      ) : (
+                        <DownloadCloud
+                          size={12}
+                          color={isActive ? colors.primaryLight : colors.textFaded}
+                        />
+                      )}
+                      <Text
+                        style={[
+                          styles.pillButtonText,
+                          isActive ? styles.pillButtonTextActive : styles.pillButtonTextInactive,
+                        ]}
+                      >
+                        {pillLabel}
+                      </Text>
+                    </View>
                   </TouchableOpacity>
                 );
               })}
             </ScrollView>
+          </View>
+        )}
+
+        {/* 2.5 Reading Font Size Stepper Controls */}
+        {activeTafsir && (
+          <View style={styles.readingControlsContainer} testID={`${testID}-reading-controls`}>
+            <View style={styles.readingControlsRow}>
+              <View style={styles.stepperGroup}>
+                <TouchableOpacity
+                  testID={`${testID}-font-decrease`}
+                  onPress={handleDecreaseFontSize}
+                  disabled={fontSizeLevel === 'standard'}
+                  activeOpacity={0.7}
+                  accessible={true}
+                  accessibilityRole="button"
+                  accessibilityLabel="کاهش اندازه قلم مطالعه"
+                  hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+                  style={[
+                    styles.stepperButton,
+                    fontSizeLevel === 'standard' && styles.stepperButtonDisabled,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.stepperButtonText,
+                      fontSizeLevel === 'standard' && styles.stepperButtonTextDisabled,
+                    ]}
+                  >
+                    A-
+                  </Text>
+                </TouchableOpacity>
+
+                <View style={styles.stepperLevelBadge}>
+                  <Text style={styles.stepperLevelText}>{currentScale.labelFa}</Text>
+                </View>
+
+                <TouchableOpacity
+                  testID={`${testID}-font-increase`}
+                  onPress={handleIncreaseFontSize}
+                  disabled={fontSizeLevel === 'large'}
+                  activeOpacity={0.7}
+                  accessible={true}
+                  accessibilityRole="button"
+                  accessibilityLabel="افزایش اندازه قلم مطالعه"
+                  hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+                  style={[
+                    styles.stepperButton,
+                    fontSizeLevel === 'large' && styles.stepperButtonDisabled,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.stepperButtonText,
+                      fontSizeLevel === 'large' && styles.stepperButtonTextDisabled,
+                    ]}
+                  >
+                    A+
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <Text style={styles.readingControlsTitle}>اندازه قلم مطالعه</Text>
+            </View>
           </View>
         )}
 
@@ -239,14 +373,29 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
             </View>
 
             {/* Expository Exegesis Body */}
-            <Text style={styles.tafsirBodyText} testID={`${testID}-tafsir-text`}>
-              {activeTafsir.text}
-            </Text>
+            <View testID={`${testID}-tafsir-text`} style={styles.tafsirParagraphsContainer}>
+              {tafsirParagraphs.map((paragraph, index) => (
+                <Text
+                  key={index}
+                  style={[
+                    styles.tafsirBodyText,
+                    styles.tafsirParagraph,
+                    {
+                      fontSize: currentScale.fontSize,
+                      lineHeight: currentScale.lineHeight,
+                    },
+                  ]}
+                >
+                  {paragraph}
+                </Text>
+              ))}
+            </View>
 
-            {/* Key Takeaways & Contemplation Points */}
+            {/* Key Takeaways & Contemplation Points (Gem Takeaway Cards) */}
             {Boolean(activeTafsir.points && activeTafsir.points.length > 0) && (
               <View style={styles.takeawaysSection} testID={`${testID}-takeaways-section`}>
                 <View style={styles.takeawaysHeaderRow}>
+                  <Text style={styles.takeawaysDiamond}>◈</Text>
                   <Text style={styles.takeawaysTitle}>نکات کلیدی و تدبری</Text>
                 </View>
 
@@ -257,8 +406,10 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
                       style={styles.takeawayItemRow}
                       testID={`${testID}-takeaway-item-${index}`}
                     >
-                      <View style={styles.bulletContainer}>
-                        <Text style={styles.bulletDot}>◆</Text>
+                      <View style={styles.gemBadgeContainer}>
+                        <Text style={[styles.bulletDot, styles.gemBadgeText]}>
+                          {toPersianDigits(index + 1)}
+                        </Text>
                       </View>
                       <Text style={styles.takeawayText}>{point}</Text>
                     </View>
@@ -362,6 +513,70 @@ const styles = StyleSheet.create({
     fontFamily: fonts.uiMedium,
     color: colors.textSecondary,
   },
+  pillContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  // Reading Controls Row
+  readingControlsContainer: {
+    backgroundColor: colors.surfaceCard,
+    borderColor: colors.borderSubtle,
+    borderWidth: 1,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+  },
+  readingControlsRow: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  readingControlsTitle: {
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
+    color: colors.textSecondary,
+  },
+  stepperGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  stepperButton: {
+    minWidth: INSIGHTS_COMPONENT_CONTRACTS.tafsirStepperButtonMinSize,
+    minHeight: INSIGHTS_COMPONENT_CONTRACTS.tafsirStepperButtonMinSize,
+    borderRadius: borderRadius.sm,
+    backgroundColor: colors.surfaceCardHover,
+    borderColor: colors.borderSubtle,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: spacing.xs,
+  },
+  stepperButtonDisabled: {
+    opacity: 0.4,
+  },
+  stepperButtonText: {
+    fontFamily: fonts.uiBold,
+    fontSize: fontSizes.sm,
+    color: colors.textPrimary,
+  },
+  stepperButtonTextDisabled: {
+    color: colors.textFaded,
+  },
+  stepperLevelBadge: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    backgroundColor: colors.primarySubtle,
+    borderRadius: borderRadius.sm,
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  stepperLevelText: {
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
+    color: colors.primaryLight,
+  },
   // Exegesis Sanctuary Card
   exegesisCard: {
     backgroundColor: colors.surfaceCard,
@@ -405,20 +620,34 @@ const styles = StyleSheet.create({
     lineHeight: INSIGHTS_COMPONENT_CONTRACTS.tafsirBodyLineHeight,
     textAlign: 'right',
   },
-  // Takeaways Section
+  tafsirParagraphsContainer: {
+    gap: INSIGHTS_COMPONENT_CONTRACTS.tafsirParagraphSpacing,
+  },
+  tafsirParagraph: {
+    marginBottom: spacing.xs,
+  },
+  // Takeaways Section (Gem Takeaway Cards)
   takeawaysSection: {
     marginTop: spacing.lg,
-    paddingTop: spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.borderSeparator,
+    padding: spacing.md,
+    backgroundColor: colors.surfaceFloating,
+    borderColor: colors.borderIridescent,
+    borderWidth: 1,
+    borderRadius: borderRadius.lg,
   },
   takeawaysHeaderRow: {
-    marginBottom: spacing.sm,
-    alignItems: 'flex-end',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginBottom: spacing.md,
+  },
+  takeawaysDiamond: {
+    fontSize: fontSizes.md,
+    color: colors.goldAccent,
   },
   takeawaysTitle: {
     fontFamily: fonts.uiBold,
-    fontSize: fontSizes.md,
+    fontSize: fontSizes.sm,
     color: colors.goldAccent,
     textAlign: 'right',
   },
@@ -429,6 +658,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     alignItems: 'flex-start',
     gap: spacing.sm,
+  },
+  gemBadgeContainer: {
+    width: 22,
+    height: 22,
+    borderRadius: borderRadius.circle,
+    backgroundColor: colors.primarySubtle,
+    borderColor: colors.primary,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  gemBadgeText: {
+    fontFamily: fonts.uiBold,
+    fontSize: fontSizes.xs,
+    color: colors.primaryLight,
+    textAlign: 'center',
   },
   bulletContainer: {
     marginTop: 2,
@@ -443,8 +689,8 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: fonts.uiRegular,
     fontSize: fontSizes.sm,
-    color: colors.textSecondary,
-    lineHeight: 22,
+    color: colors.textPrimary,
+    lineHeight: 24,
     textAlign: 'right',
   },
   // Empty State Card

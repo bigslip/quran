@@ -35,6 +35,21 @@ export const INSIGHTS_COMPONENT_CONTRACTS = {
   tabSwitcherMinHeight: 44,
   tabButtonMinHeight: 44,
   tabButtonMinWidth: 44,
+
+  // New Ergonomic Redesign Contracts
+  drawerExpandedSheetHeightPercent: 0.93,
+  compactScriptureBannerMinHeight: 46,
+  compactScriptureFontSize: 18,
+  compactScriptureLineHeight: 32,
+  tafsirStepperButtonMinSize: 44,
+  tafsirParagraphSpacing: 16,
+  tafsirStandardFontSize: 15,
+  tafsirStandardLineHeight: 27,
+  tafsirComfortableFontSize: 17,
+  tafsirComfortableLineHeight: 31,
+  tafsirLargeFontSize: 20,
+  tafsirLargeLineHeight: 36,
+  reflectionGenerousInputMinHeight: 200,
 } as const;
 
 /**
@@ -168,6 +183,51 @@ export function formatJuzAndPageBadge(juz?: number, page?: number): string {
     return `${pagePart} • ${juzPart}`;
   }
   return pagePart || juzPart || '';
+}
+
+export type TafsirFontSizeLevel = 'standard' | 'comfortable' | 'large';
+
+export const TAFSIR_READING_FONT_SCALES: Record<
+  TafsirFontSizeLevel,
+  {
+    fontSize: number;
+    lineHeight: number;
+    labelFa: string;
+  }
+> = {
+  standard: { fontSize: 15, lineHeight: 27, labelFa: 'استاندارد' },
+  comfortable: { fontSize: 17, lineHeight: 31, labelFa: 'خوانا' },
+  large: { fontSize: 20, lineHeight: 36, labelFa: 'بزرگ' },
+};
+
+/**
+ * Splits raw exegesis text into semantic paragraphs.
+ */
+export function splitTafsirParagraphs(text?: string): string[] {
+  if (!text || typeof text !== 'string') return [];
+  const normalized = text.replace(/\r\n/g, '\n').trim();
+  if (!normalized) return [];
+
+  return normalized
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0);
+}
+
+/**
+ * Formats character count and word count into Persian numeral notation:
+ * e.g. (42, 8) -> "۴۲ نویسه • ۸ کلمه"
+ */
+export function formatReflectionMetrics(charCount: number, wordCount: number): string {
+  const safeChars = Math.max(
+    0,
+    typeof charCount === 'number' && !Number.isNaN(charCount) ? charCount : 0,
+  );
+  const safeWords = Math.max(
+    0,
+    typeof wordCount === 'number' && !Number.isNaN(wordCount) ? wordCount : 0,
+  );
+  return `${toPersianDigits(safeChars)} نویسه • ${toPersianDigits(safeWords)} کلمه`;
 }
 
 export * from './tafsirNudgeContracts.ts';

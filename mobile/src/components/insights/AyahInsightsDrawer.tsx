@@ -73,12 +73,22 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
     testID = 'ayah-insights-drawer',
   }) => {
     const [activeTab, setActiveTab] = useState<InsightDrawerTabId>('tafsir');
+    const [isScriptureCollapsed, setIsScriptureCollapsed] = useState<boolean>(true);
     const [activeWordPosition, setActiveWordPosition] = useState<number>(1);
     const [selectedTafsirId, setSelectedTafsirId] = useState<string>('nemouneh');
     const [insight, setInsight] = useState<AyahInsight | null>(null);
     const [reflectionNote, setReflectionNote] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
     const [isCopied, setIsCopied] = useState<boolean>(false);
+
+    const handleTabChange = useCallback((tab: InsightDrawerTabId) => {
+      setActiveTab(tab);
+      if (tab === 'vocabulary') {
+        setIsScriptureCollapsed(false);
+      } else {
+        setIsScriptureCollapsed(true);
+      }
+    }, []);
 
     // Load Ayah insights and personal reflection from database
     useEffect(() => {
@@ -89,6 +99,7 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
       let isMounted = true;
       setLoading(true);
       setActiveWordPosition(1);
+      setIsScriptureCollapsed(activeTab !== 'vocabulary');
 
       async function loadData() {
         if (!verse) return;
@@ -338,6 +349,8 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
               activeWordPosition={activeWordPosition}
               onSelectWord={setActiveWordPosition}
               quranFont={quranFont}
+              isCollapsed={isScriptureCollapsed}
+              onToggleCollapse={() => setIsScriptureCollapsed((prev) => !prev)}
               style={styles.scripturePreview}
             />
 
@@ -353,7 +366,7 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
                   <TouchableOpacity
                     key={tab.id}
                     testID={`${testID}-tab-${tab.id}`}
-                    onPress={() => setActiveTab(tab.id)}
+                    onPress={() => handleTabChange(tab.id)}
                     activeOpacity={0.7}
                     accessible={true}
                     accessibilityRole="tab"
@@ -454,7 +467,9 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xs,
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.xl,
-    maxHeight: '90%',
+    height: '92%',
+    maxHeight: '94%', // maxHeight: '90%' expanded to 94%
+    flexDirection: 'column',
     ...shadows.card,
   },
   dragHandleContainer: {
@@ -558,7 +573,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   scrollBody: {
-    maxHeight: 400,
+    flex: 1,
   },
   scrollBodyContent: {
     paddingVertical: spacing.xs,

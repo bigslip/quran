@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { ChevronDown, ChevronUp } from 'lucide-react-native';
 import { colors, fonts, fontSizes, spacing, borderRadius } from '../../theme';
 import type { WordLinguisticInfo } from '../../types/quran';
 import {
@@ -19,6 +20,8 @@ export interface AyahScripturePreviewCardProps {
   activeWordPosition: number;
   onSelectWord: (position: number) => void;
   quranFont?: 'hafs' | 'indopak';
+  isCollapsed?: boolean;
+  onToggleCollapse?: () => void;
   style?: StyleProp<ViewStyle>;
   testID?: string;
 }
@@ -31,6 +34,7 @@ export interface AyahScripturePreviewCardProps {
  * - Interactive Arabic Scripture flow: RTL wrap (`flexDirection: 'row-reverse'`) with emerald highlight for active word.
  * - Full accessibility and minimum touch target compliance (>= 44x44px).
  * - Persian translation text display below the sacred scripture.
+ * - Sleek collapsible mode for maximizing exegesis reading sanctuary height.
  */
 export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> = React.memo(
   ({
@@ -42,6 +46,8 @@ export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> =
     activeWordPosition,
     onSelectWord,
     quranFont = 'hafs',
+    isCollapsed = false,
+    onToggleCollapse,
     style,
     testID = 'ayah-scripture-preview-card',
   }) => {
@@ -56,8 +62,61 @@ export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> =
         : activeWord.text_uthmani
       : '';
 
+    if (isCollapsed) {
+      const scripturePreviewText =
+        quranFont === 'indopak' && textIndopak ? textIndopak : textUthmani;
+
+      return (
+        <View style={[styles.compactContainer, style]} testID={`${testID}-compact`}>
+          <TouchableOpacity
+            testID={`${testID}-expand-button`}
+            onPress={onToggleCollapse}
+            activeOpacity={0.7}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="نمایش متن و ترجمه کامل آیه"
+            style={styles.compactExpandButton}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <ChevronDown size={16} color={colors.primaryLight} />
+            <Text style={styles.compactExpandText}>مشاهده متن کامل آیه</Text>
+          </TouchableOpacity>
+
+          <Text
+            style={[styles.compactScriptureText, { fontFamily: fontName }]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            testID={`${testID}-compact-text`}
+            allowFontScaling={false}
+          >
+            {scripturePreviewText}
+          </Text>
+        </View>
+      );
+    }
+
     return (
       <View style={[styles.container, style]} testID={testID}>
+        {/* Collapse Control Header (rendered when onToggleCollapse is provided) */}
+        {Boolean(onToggleCollapse) && (
+          <View style={styles.expandedHeaderRow}>
+            <TouchableOpacity
+              testID={`${testID}-collapse-button`}
+              onPress={onToggleCollapse}
+              activeOpacity={0.7}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="بستن متن آیه"
+              style={styles.collapseButton}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <ChevronUp size={16} color={colors.primaryLight} />
+              <Text style={styles.collapseButtonText}>بستن آیه</Text>
+            </TouchableOpacity>
+            <Text style={styles.expandedHeaderTitle}>متن و ترجمه کامل آیه</Text>
+          </View>
+        )}
+
         {/* Active Word Banner Chip */}
         {activeWord && (
           <View
@@ -299,6 +358,64 @@ const styles = StyleSheet.create({
     fontFamily: fonts.uiRegular,
     fontSize: INSIGHTS_COMPONENT_CONTRACTS.translationFontSize,
     lineHeight: INSIGHTS_COMPONENT_CONTRACTS.translationLineHeight,
+    color: colors.textSecondary,
+    textAlign: 'right',
+  },
+  // Compact Scripture Banner Styles
+  compactContainer: {
+    minHeight: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureBannerMinHeight,
+    backgroundColor: colors.surfaceFloating,
+    borderColor: colors.borderSubtle,
+    borderWidth: 1,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.sm,
+  },
+  compactExpandButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    minHeight: INSIGHTS_COMPONENT_CONTRACTS.minTouchTarget,
+    paddingHorizontal: spacing.xs,
+  },
+  compactExpandText: {
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
+    color: colors.primaryLight,
+  },
+  compactScriptureText: {
+    flex: 1,
+    fontSize: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureFontSize,
+    lineHeight: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureLineHeight,
+    color: colors.goldAccent,
+    textAlign: 'right',
+  },
+  // Expanded Scripture Header Styles
+  expandedHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: spacing.xs,
+  },
+  collapseButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    minHeight: INSIGHTS_COMPONENT_CONTRACTS.minTouchTarget,
+    paddingHorizontal: spacing.xs,
+  },
+  collapseButtonText: {
+    fontFamily: fonts.uiMedium,
+    fontSize: fontSizes.xs,
+    color: colors.primaryLight,
+  },
+  expandedHeaderTitle: {
+    fontFamily: fonts.uiRegular,
+    fontSize: fontSizes.xs,
     color: colors.textSecondary,
     textAlign: 'right',
   },

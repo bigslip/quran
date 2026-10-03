@@ -15,6 +15,9 @@ import {
   formatTafsirPillTitle,
   formatReflectionCharCount,
   formatJuzAndPageBadge,
+  formatReflectionMetrics,
+  splitTafsirParagraphs,
+  TAFSIR_READING_FONT_SCALES,
 } from './insightsContracts.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
 import { colors } from '../../theme/colors.ts';
@@ -1448,6 +1451,199 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
       assert.deepStrictEqual(nemouneh.points, ['نکته نمونه']);
       assert.strictEqual(noor.text, 'نور آنلاین');
       assert.deepStrictEqual(noor.points, ['نکته نور']);
+    });
+  });
+
+  describe('Ayah Insight & Tafsir Redesign Tests (Sanctuary Reading Architecture)', () => {
+    const previewSource = fs.readFileSync(
+      path.resolve(__dirname, './AyahScripturePreviewCard.tsx'),
+      'utf8',
+    );
+    const tafsirSource = fs.readFileSync(path.resolve(__dirname, './TafsirTabContent.tsx'), 'utf8');
+    const reflectionSource = fs.readFileSync(
+      path.resolve(__dirname, './PersonalReflectionCard.tsx'),
+      'utf8',
+    );
+    const drawerSource = fs.readFileSync(
+      path.resolve(__dirname, './AyahInsightsDrawer.tsx'),
+      'utf8',
+    );
+
+    describe('splitTafsirParagraphs Helper', () => {
+      it('returns empty array for empty, undefined or invalid input', () => {
+        assert.deepStrictEqual(splitTafsirParagraphs(undefined), []);
+        assert.deepStrictEqual(splitTafsirParagraphs(''), []);
+        assert.deepStrictEqual(splitTafsirParagraphs('   '), []);
+      });
+
+      it('splits text on double newlines and normalizes carriage returns', () => {
+        const text =
+          'پاراگراف اول در باب رحمت الهی.\r\n\r\nپاراگراف دوم در بیان مصادیق آن.\n\nپاراگراف سوم.';
+        const paragraphs = splitTafsirParagraphs(text);
+        assert.strictEqual(paragraphs.length, 3);
+        assert.strictEqual(paragraphs[0], 'پاراگراف اول در باب رحمت الهی.');
+        assert.strictEqual(paragraphs[1], 'پاراگراف دوم در بیان مصادیق آن.');
+        assert.strictEqual(paragraphs[2], 'پاراگراف سوم.');
+      });
+
+      it('trims whitespace and ignores redundant consecutive empty newlines', () => {
+        const text = '\n\n  پاراگراف الف  \n\n\n\n  پاراگراف ب  \n\n';
+        const paragraphs = splitTafsirParagraphs(text);
+        assert.strictEqual(paragraphs.length, 2);
+        assert.strictEqual(paragraphs[0], 'پاراگراف الف');
+        assert.strictEqual(paragraphs[1], 'پاراگراف ب');
+      });
+    });
+
+    describe('formatReflectionMetrics Helper', () => {
+      it('formats character count and word count with Persian numerals', () => {
+        assert.strictEqual(formatReflectionMetrics(42, 8), '۴۲ نویسه • ۸ کلمه');
+        assert.strictEqual(formatReflectionMetrics(0, 0), '۰ نویسه • ۰ کلمه');
+        assert.strictEqual(formatReflectionMetrics(214, 38), '۲۱۴ نویسه • ۳۸ کلمه');
+      });
+
+      it('handles negative or invalid counts safely', () => {
+        assert.strictEqual(formatReflectionMetrics(-5, -2), '۰ نویسه • ۰ کلمه');
+        assert.strictEqual(formatReflectionMetrics(NaN, NaN), '۰ نویسه • ۰ کلمه');
+      });
+    });
+
+    describe('TAFSIR_READING_FONT_SCALES & Contracts', () => {
+      it('defines standard, comfortable and large scales with balanced line-heights', () => {
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.standard.fontSize, 15);
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.standard.lineHeight, 27);
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.standard.labelFa, 'استاندارد');
+
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.comfortable.fontSize, 17);
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.comfortable.lineHeight, 31);
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.comfortable.labelFa, 'خوانا');
+
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.large.fontSize, 20);
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.large.lineHeight, 36);
+        assert.strictEqual(TAFSIR_READING_FONT_SCALES.large.labelFa, 'بزرگ');
+      });
+
+      it('verifies redesign component contracts', () => {
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.compactScriptureBannerMinHeight, 46);
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.compactScriptureFontSize, 18);
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.compactScriptureLineHeight, 32);
+        assert.ok(INSIGHTS_COMPONENT_CONTRACTS.tafsirStepperButtonMinSize >= 44);
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.tafsirParagraphSpacing, 16);
+        assert.strictEqual(INSIGHTS_COMPONENT_CONTRACTS.reflectionGenerousInputMinHeight, 200);
+      });
+    });
+
+    describe('AyahScripturePreviewCard Collapsible Architecture', () => {
+      it('verifies isCollapsed and onToggleCollapse props and icons', () => {
+        assert.ok(previewSource.includes('isCollapsed?: boolean;'));
+        assert.ok(previewSource.includes('onToggleCollapse?: () => void;'));
+        assert.ok(previewSource.includes('ChevronDown'));
+        assert.ok(previewSource.includes('ChevronUp'));
+      });
+
+      it('verifies compact mode rendering and accessibility attributes', () => {
+        assert.ok(previewSource.includes('compactContainer'));
+        assert.ok(previewSource.includes('compactExpandButton'));
+        assert.ok(previewSource.includes('compactScriptureText'));
+        assert.ok(previewSource.includes('accessibilityLabel="نمایش متن و ترجمه کامل آیه"'));
+        assert.ok(previewSource.includes('مشاهده متن کامل آیه'));
+      });
+
+      it('verifies expanded header collapse button when onToggleCollapse is provided', () => {
+        assert.ok(previewSource.includes('expandedHeaderRow'));
+        assert.ok(previewSource.includes('collapseButton'));
+        assert.ok(previewSource.includes('accessibilityLabel="بستن متن آیه"'));
+      });
+    });
+
+    describe('TafsirTabContent Redesign Features', () => {
+      it('verifies reading font size stepper controls and accessibility labels', () => {
+        assert.ok(tafsirSource.includes('readingControlsContainer'));
+        assert.ok(tafsirSource.includes('handleDecreaseFontSize'));
+        assert.ok(tafsirSource.includes('handleIncreaseFontSize'));
+        assert.ok(tafsirSource.includes('accessibilityLabel="کاهش اندازه قلم مطالعه"'));
+        assert.ok(tafsirSource.includes('accessibilityLabel="افزایش اندازه قلم مطالعه"'));
+        assert.ok(tafsirSource.includes('اندازه قلم مطالعه'));
+      });
+
+      it('verifies multi-paragraph rendering with relaxed line-height', () => {
+        assert.ok(tafsirSource.includes('splitTafsirParagraphs'));
+        assert.ok(tafsirSource.includes('tafsirParagraphsContainer'));
+        assert.ok(tafsirSource.includes('currentScale.fontSize'));
+        assert.ok(tafsirSource.includes('currentScale.lineHeight'));
+      });
+
+      it('verifies gem takeaway cards with diamond header and Persian numbered badges', () => {
+        assert.ok(tafsirSource.includes('takeawaysDiamond'));
+        assert.ok(tafsirSource.includes('◈'));
+        assert.ok(tafsirSource.includes('gemBadgeContainer'));
+        assert.ok(tafsirSource.includes('gemBadgeText'));
+        assert.ok(tafsirSource.includes('toPersianDigits(index + 1)'));
+      });
+
+      it('verifies source selector download status indicator badges', () => {
+        assert.ok(tafsirSource.includes('downloadedMap'));
+        assert.ok(tafsirSource.includes('pillContentRow'));
+        assert.ok(tafsirSource.includes('DownloadCloud'));
+        assert.ok(tafsirSource.includes('Check'));
+      });
+
+      it('simulates 3-step reading font scale stepping logic', () => {
+        let level = 'comfortable';
+        const decrease = () => {
+          if (level === 'large') level = 'comfortable';
+          else if (level === 'comfortable') level = 'standard';
+        };
+        const increase = () => {
+          if (level === 'standard') level = 'comfortable';
+          else if (level === 'comfortable') level = 'large';
+        };
+
+        assert.strictEqual(level, 'comfortable');
+        decrease();
+        assert.strictEqual(level, 'standard');
+        decrease(); // clamped
+        assert.strictEqual(level, 'standard');
+
+        increase();
+        assert.strictEqual(level, 'comfortable');
+        increase();
+        assert.strictEqual(level, 'large');
+        increase(); // clamped
+        assert.strictEqual(level, 'large');
+      });
+    });
+
+    describe('PersonalReflectionCard Generous Editor', () => {
+      it('verifies reflectionGenerousInputMinHeight and flexGrow: 1', () => {
+        assert.ok(
+          reflectionSource.includes(
+            'INSIGHTS_COMPONENT_CONTRACTS.reflectionGenerousInputMinHeight',
+          ),
+        );
+        assert.ok(reflectionSource.includes('flexGrow: 1'));
+      });
+
+      it('verifies formatReflectionMetrics rendering with characters and words', () => {
+        assert.ok(reflectionSource.includes('formatReflectionMetrics(note.length, wordCount)'));
+        assert.ok(reflectionSource.includes('wordCount'));
+      });
+    });
+
+    describe('AyahInsightsDrawer Full-Height Architecture', () => {
+      it('verifies sheetContainer height: 92%, maxHeight: 94%, and scrollBody flex: 1', () => {
+        assert.ok(drawerSource.includes("height: '92%'"));
+        assert.ok(drawerSource.includes("maxHeight: '94%'"));
+        assert.ok(drawerSource.includes('flex: 1'));
+      });
+
+      it('verifies isScriptureCollapsed state management and handler', () => {
+        assert.ok(drawerSource.includes('isScriptureCollapsed'));
+        assert.ok(drawerSource.includes('setIsScriptureCollapsed'));
+        assert.ok(drawerSource.includes('handleTabChange'));
+        assert.ok(drawerSource.includes('isCollapsed={isScriptureCollapsed}'));
+        assert.ok(drawerSource.includes('onToggleCollapse='));
+      });
     });
   });
 });
