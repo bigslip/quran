@@ -242,4 +242,34 @@ describe('QuickJumpModal Architecture, Contracts & Integration Tests', () => {
       assert.ok(indexSource.includes('JuzJumpTabProps'));
     });
   });
+
+  describe('SurahAyahJumpTab Surah-First Browsing Architecture', () => {
+    const surahTabSource = fs.readFileSync(path.resolve(__dirname, 'SurahAyahJumpTab.tsx'), 'utf8');
+
+    it('renders search bar at the top for instant filtering', () => {
+      assert.ok(surahTabSource.includes('testID="quick-jump-surah-search-input"'));
+      assert.ok(surahTabSource.includes('searchBarContainer'));
+    });
+
+    it('renders hero 114 Surahs FlatList directly without modal sub-screens', () => {
+      assert.ok(surahTabSource.includes('styles.surahListFull'));
+      assert.ok(surahTabSource.includes('quick-jump-surah-item-'));
+      assert.ok(surahTabSource.includes('FlatList'));
+      // No two-phase isSelectingSurah hiding the list
+      assert.ok(!surahTabSource.includes('isSelectingSurah'));
+    });
+
+    it('defaults verse to 1 on Surah selection', () => {
+      assert.ok(
+        surahTabSource.includes('onSelectVerse(1)'),
+        'Must default to Ayah 1 (beginning) when switching Surahs',
+      );
+    });
+
+    it('provides compact active Surah & Ayah tuning toolbar', () => {
+      assert.ok(surahTabSource.includes('activeSurahBar'));
+      assert.ok(surahTabSource.includes('compactAyahControls'));
+      assert.ok(surahTabSource.includes('quickAyahChips'));
+    });
+  });
 });

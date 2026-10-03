@@ -278,6 +278,7 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
                     setSelectedVerseNumber(verseNumber);
                   }}
                   surahs={surahs}
+                  onConfirmJump={handleJump}
                   testID={`${testID}-surah-ayah-tab`}
                 />
               )}
