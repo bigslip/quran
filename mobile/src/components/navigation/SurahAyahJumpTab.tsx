@@ -9,7 +9,7 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import { Plus, Minus, Search, X, ChevronDown, ArrowRight } from 'lucide-react-native';
+import { Plus, Minus, Search, X, ChevronDown, ArrowRight, Sparkles } from 'lucide-react-native';
 import {
   useThemeColors,
   ColorTheme,
@@ -19,6 +19,7 @@ import {
   borderRadius,
   rtlRow,
   rtlTextAlign,
+  isRTL,
 } from '@/theme';
 import { Chapter } from '@/types/quran';
 import { getAllSurahs } from '@/services/db/surahService';
@@ -34,7 +35,7 @@ export interface SurahAyahJumpTabProps {
   selectedVerseNumber: number;
   onSelectSurah: (chapterId: number) => void;
   onSelectVerse: (verseNumber: number) => void;
-  onConfirmJump?: () => void;
+  onConfirmJump?: (chapterId?: number, verseNumber?: number) => void;
   surahs?: Chapter[];
   testID?: string;
   style?: StyleProp<ViewStyle>;
@@ -57,6 +58,7 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [verseInputText, setVerseInputText] = useState(toPersianDigits(selectedVerseNumber));
   const [isAyahTuningOpen, setIsAyahTuningOpen] = useState(false);
+  const [showGestureHint, setShowGestureHint] = useState(true);
 
   // Keep loadedSurahs synchronized if prop updates or fetch via getAllSurahs
   useEffect(() => {
@@ -126,16 +128,22 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
     }
   };
 
-  // Handle Surah selection: default to verse 1 (beginning) as requested
+  // Handle single tap: immediately opens the Surah starting from verse 1
   const handleSelectSurah = (chapter: Chapter) => {
-    if (chapter.id === selectedChapterId) {
-      // If already selected, allow one-tap jump confirmation if handler provided
-      onConfirmJump?.();
-      return;
-    }
     onSelectSurah(chapter.id);
-    // When switching Surahs, default to starting from the beginning (Ayah 1)
     onSelectVerse(1);
+    if (onConfirmJump) {
+      onConfirmJump(chapter.id, 1);
+    }
+  };
+
+  // Handle long press: selects the Surah and reveals the Ayah tuning controls
+  const handleSurahLongPress = (chapter: Chapter) => {
+    onSelectSurah(chapter.id);
+    if (chapter.id !== selectedChapterId) {
+      onSelectVerse(1);
+    }
+    setIsAyahTuningOpen(true);
   };
 
   // Filtered Surahs based on Persian name, Arabic title, or ID
@@ -202,6 +210,29 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
           </TouchableOpacity>
         )}
       </View>
+
+      {/* Educational Gesture Guidance Banner */}
+      {showGestureHint && (
+        <View style={styles.gestureHintBanner} testID="quick-jump-gesture-hint">
+          <View style={styles.gestureHintContent}>
+            <Sparkles size={13} color={colors.goldAccent} style={styles.gestureHintIcon} />
+            <Text style={styles.gestureHintText}>
+              <Text style={styles.gestureHintHighlight}>لمس سوره:</Text> شروع فوری از ابتدا •{' '}
+              <Text style={styles.gestureHintHighlight}>نگه داشتن:</Text> انتخاب شماره آیه
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => setShowGestureHint(false)}
+            style={styles.gestureHintDismiss}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="بستن راهنما"
+          >
+            <X size={13} color={colors.textFaded} />
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* 2. Compact Active Surah & Ayah Tuning Toolbar */}
       {selectedSurah && (
@@ -294,27 +325,51 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
             </View>
           </View>
 
-          {/* Optional Expanded Quick Ayah Chips */}
+          {/* Expanded Quick Ayah Chips & Direct Jump CTA */}
           {isAyahTuningOpen && (
-            <View style={styles.chipsRow}>
-              {quickAyahChips.map((chip) => {
-                const isSelected = selectedVerseNumber === chip.value;
-                return (
-                  <TouchableOpacity
-                    key={`${chip.label}-${chip.value}`}
-                    onPress={() => onSelectVerse(chip.value)}
-                    style={[styles.quickChip, isSelected && styles.quickChipActive]}
-                    hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
-                    accessible={true}
-                    accessibilityRole="button"
-                    accessibilityLabel={`انتخاب سریع ${chip.label}`}
-                  >
-                    <Text style={[styles.quickChipText, isSelected && styles.quickChipTextActive]}>
-                      {chip.label}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
+            <View style={styles.tuningDrawer}>
+              <View style={styles.chipsRow}>
+                {quickAyahChips.map((chip) => {
+                  const isChipSelected = selectedVerseNumber === chip.value;
+                  return (
+                    <TouchableOpacity
+                      key={`${chip.label}-${chip.value}`}
+                      onPress={() => onSelectVerse(chip.value)}
+                      style={[styles.quickChip, isChipSelected && styles.quickChipActive]}
+                      hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+                      accessible={true}
+                      accessibilityRole="button"
+                      accessibilityLabel={`انتخاب سریع ${chip.label}`}
+                    >
+                      <Text
+                        style={[styles.quickChipText, isChipSelected && styles.quickChipTextActive]}
+                      >
+                        {chip.label}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+
+              <TouchableOpacity
+                onPress={() => onConfirmJump?.(selectedSurah.id, selectedVerseNumber)}
+                style={styles.directAyahJumpBtn}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel={`پرش به سوره ${selectedSurah.name_fa} آیه ${toPersianDigits(
+                  selectedVerseNumber,
+                )}`}
+                testID="quick-jump-confirm-ayah-btn"
+              >
+                <Text style={styles.directAyahJumpBtnText}>
+                  پرش به آیه {toPersianDigits(selectedVerseNumber)}
+                </Text>
+                <ArrowRight
+                  size={14}
+                  color="#FFFFFF"
+                  style={[styles.directAyahJumpIcon, { transform: [{ scaleX: isRTL ? -1 : 1 }] }]}
+                />
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -336,13 +391,21 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
 
           return (
             <TouchableOpacity
-              onPress={() => handleSelectSurah(item)}
+              onPress={() => {
+                if (isSelected && isAyahTuningOpen) {
+                  onConfirmJump?.(item.id, selectedVerseNumber);
+                } else {
+                  handleSelectSurah(item);
+                }
+              }}
+              onLongPress={() => handleSurahLongPress(item)}
+              delayLongPress={350}
               style={[styles.surahListItem, isSelected && styles.surahListItemSelected]}
               activeOpacity={0.7}
               accessible={true}
               accessibilityRole="button"
               accessibilityLabel={`سوره ${item.name_fa}، شماره ${toPersianDigits(item.id)}`}
-              accessibilityHint="برای انتخاب این سوره ضربه بزنید"
+              accessibilityHint="برای باز کردن سوره ضربه بزنید، یا برای انتخاب شماره آیه انگشت خود را نگه دارید"
               testID={`quick-jump-surah-item-${item.id}`}
             >
               {/* Surah Number Badge */}
@@ -394,12 +457,22 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
                 >
                   {item.name_arabic}
                 </Text>
-                {isSelected ? (
+                {isSelected && isAyahTuningOpen ? (
+                  <View style={styles.tuningBadge}>
+                    <Text style={styles.tuningBadgeText}>
+                      آیه {toPersianDigits(selectedVerseNumber)}
+                    </Text>
+                  </View>
+                ) : isSelected ? (
                   <View style={styles.selectedCheckmark}>
                     <Text style={styles.selectedCheckmarkText}>✓</Text>
                   </View>
                 ) : (
-                  <ArrowRight size={14} color={colors.textFaded} style={styles.rowArrow} />
+                  <ArrowRight
+                    size={14}
+                    color={colors.textFaded}
+                    style={[styles.rowArrow, { transform: [{ scaleX: isRTL ? -1 : 1 }] }]}
+                  />
                 )}
               </View>
             </TouchableOpacity>
@@ -448,6 +521,46 @@ const createStyles = (colors: ColorTheme) =>
       height: 32,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+
+    // Educational Gesture Hint Banner
+    gestureHintBanner: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      paddingVertical: 6,
+      paddingHorizontal: spacing.sm,
+      marginBottom: spacing.xs,
+    },
+    gestureHintContent: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      flex: 1,
+      gap: 6,
+    },
+    gestureHintIcon: {
+      marginTop: 1,
+    },
+    gestureHintText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xxs,
+      color: colors.textSecondary,
+      textAlign: rtlTextAlign,
+      flex: 1,
+    },
+    gestureHintHighlight: {
+      fontFamily: fonts.uiBold,
+      color: colors.goldAccent,
+    },
+    gestureHintDismiss: {
+      padding: 4,
+      borderRadius: borderRadius.circle,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
 
     // Active Surah & Ayah Tuning Bar
@@ -601,6 +714,32 @@ const createStyles = (colors: ColorTheme) =>
       fontFamily: fonts.uiBold,
       color: colors.primaryLight,
     },
+    tuningDrawer: {
+      marginTop: spacing.xs,
+      paddingTop: spacing.xs,
+      borderTopWidth: 1,
+      borderTopColor: colors.borderSeparator,
+    },
+    directAyahJumpBtn: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.md,
+      paddingVertical: 7,
+      paddingHorizontal: spacing.md,
+      marginTop: spacing.xs,
+      minHeight: 40,
+      gap: 6,
+    },
+    directAyahJumpBtnText: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xs,
+      color: '#FFFFFF',
+    },
+    directAyahJumpIcon: {
+      marginStart: 2,
+    },
 
     // 114 Surahs Scrollable List
     surahListFull: {
@@ -725,6 +864,20 @@ const createStyles = (colors: ColorTheme) =>
       fontSize: 11,
       fontWeight: 'bold',
       lineHeight: 13,
+    },
+    tuningBadge: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.borderActive,
+      borderWidth: 1,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: borderRadius.pill,
+      marginStart: 4,
+    },
+    tuningBadgeText: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xxs,
+      color: colors.primaryLight,
     },
     rowArrow: {
       opacity: 0.5,

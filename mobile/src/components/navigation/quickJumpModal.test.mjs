@@ -259,10 +259,14 @@ describe('QuickJumpModal Architecture, Contracts & Integration Tests', () => {
       assert.ok(!surahTabSource.includes('isSelectingSurah'));
     });
 
-    it('defaults verse to 1 on Surah selection', () => {
+    it('defaults verse to 1 on Surah selection and opens immediately on single tap', () => {
       assert.ok(
         surahTabSource.includes('onSelectVerse(1)'),
         'Must default to Ayah 1 (beginning) when switching Surahs',
+      );
+      assert.ok(
+        surahTabSource.includes('onConfirmJump(chapter.id, 1)'),
+        'Must trigger direct open on single tap',
       );
     });
 
@@ -270,6 +274,21 @@ describe('QuickJumpModal Architecture, Contracts & Integration Tests', () => {
       assert.ok(surahTabSource.includes('activeSurahBar'));
       assert.ok(surahTabSource.includes('compactAyahControls'));
       assert.ok(surahTabSource.includes('quickAyahChips'));
+      assert.ok(surahTabSource.includes('testID="quick-jump-confirm-ayah-btn"'));
+    });
+
+    it('enables long press on Surah item to activate Ayah tuning', () => {
+      assert.ok(surahTabSource.includes('onLongPress'));
+      assert.ok(surahTabSource.includes('handleSurahLongPress'));
+      assert.ok(surahTabSource.includes('delayLongPress'));
+      assert.ok(surahTabSource.includes('setIsAyahTuningOpen(true)'));
+    });
+
+    it('renders educational gesture guidance banner for discoverability', () => {
+      assert.ok(surahTabSource.includes('testID="quick-jump-gesture-hint"'));
+      assert.ok(surahTabSource.includes('gestureHintBanner'));
+      assert.ok(surahTabSource.includes('showGestureHint'));
+      assert.ok(surahTabSource.includes('Sparkles'));
     });
   });
 });

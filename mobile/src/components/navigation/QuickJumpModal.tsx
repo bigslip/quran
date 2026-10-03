@@ -187,6 +187,32 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
       }
     };
 
+    // Direct jump handler with explicit chapter/verse
+    const handleDirectJump = async (chapterId?: number, verseNumber: number = 1) => {
+      if (typeof chapterId === 'number') {
+        try {
+          const target = await resolveAyahDestination(chapterId, verseNumber);
+          onJump(target);
+          onClose();
+          return;
+        } catch {
+          onJump({
+            chapterId,
+            verseNumber,
+            pageNumber: 1,
+            juzNumber: 1,
+            verseKey: `${chapterId}:${verseNumber}`,
+            chapterNameArabic: '',
+            chapterNameFa: '',
+            totalVerses: 286,
+          });
+          onClose();
+          return;
+        }
+      }
+      handleJump();
+    };
+
     const previewString = destination
       ? formatDestinationPreview(destination)
       : 'در حال بارگذاری مقصد...';
@@ -278,7 +304,7 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
                     setSelectedVerseNumber(verseNumber);
                   }}
                   surahs={surahs}
-                  onConfirmJump={handleJump}
+                  onConfirmJump={handleDirectJump}
                   testID={`${testID}-surah-ayah-tab`}
                 />
               )}
