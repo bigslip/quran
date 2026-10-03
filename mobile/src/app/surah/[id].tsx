@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -726,6 +726,39 @@ export default function SurahReaderScreen() {
     [chapterId, chapter, verses, viewMode, router, setLastRead, setActiveVerseKey, topBarHeight],
   );
 
+  // Contextual reading subtitle for centerpiece navigation pill (Juz, Ayahs, Revelation)
+  const topBarSubtitleText = useMemo(() => {
+    const juzNumber =
+      viewMode === 'mushaf' && pageVerses.length > 0
+        ? pageVerses[0]?.juz_number
+        : verses[0]?.juz_number;
+
+    const parts: string[] = [];
+
+    if (viewMode === 'mushaf') {
+      parts.push(`صفحه ${toPersianDigits(currentPage)}`);
+      if (juzNumber) {
+        parts.push(`جزء ${toPersianDigits(juzNumber)}`);
+      }
+    } else {
+      if (juzNumber) {
+        parts.push(`جزء ${toPersianDigits(juzNumber)}`);
+      }
+      if (chapter?.verses_count) {
+        parts.push(`${toPersianDigits(chapter.verses_count)} آیه`);
+      }
+      if (chapter?.revelation_place) {
+        parts.push(chapter.revelation_place === 'makkah' ? 'مکی' : 'مدنی');
+      }
+    }
+
+    if (parts.length === 0) {
+      return chapter ? `سوره ${toPersianDigits(chapter.id)}` : '';
+    }
+
+    return parts.join(' • ');
+  }, [viewMode, pageVerses, verses, currentPage, chapter]);
+
   if (loading) {
     return (
       <View style={[styles.center, { backgroundColor: colors.background }]}>
@@ -793,6 +826,7 @@ export default function SurahReaderScreen() {
           accessible={true}
           accessibilityRole="button"
           accessibilityLabel="پرش سریع به سوره، آیه یا صفحه"
+          accessibilityHint={chapter?.name_arabic ? `سوره مبارکه ${chapter?.name_arabic}` : undefined}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           {/* Primary Row: Compass + Persian Surah Title + Dropdown Chevron */}
@@ -804,23 +838,20 @@ export default function SurahReaderScreen() {
             <ChevronDown size={13} color={colors.goldAccent} style={styles.pillChevron} />
           </View>
 
-          {/* Subtitle Row: Sacred Arabic calligraphy & Revelation metadata */}
+          {/* Subtitle Row: Contextual reading metadata (Juz, Verses, Revelation / Page) */}
           <View style={styles.topBarSubtitleRow}>
-            <Text
-              style={[styles.topBarSurahArabic, { color: colors.goldAccent }]}
-              numberOfLines={1}
-            >
-              {chapter?.name_arabic}
-            </Text>
-            <Text style={[styles.topBarSurahMetaDivider, { color: colors.textMuted }]}>•</Text>
             <Text
               style={[styles.topBarSurahMetaText, { color: colors.textSecondary }]}
               numberOfLines={1}
             >
-              {toPersianDigits(chapter?.id || 1)} (
-              {chapter?.revelation_place === 'makkah' ? 'مکی' : 'مدنی'})
+              {topBarSubtitleText}
             </Text>
           </View>
+
+          {/* Accessible Arabic title reference for screen readers & test contract */}
+          {chapter?.name_arabic ? (
+            <Text style={styles.srOnly}>{chapter?.name_arabic}</Text>
+          ) : null}
         </TouchableOpacity>
 
         {/* Trailing Controls Toolbar (RTL): Dual-Mode Toggle & Settings */}
@@ -1101,7 +1132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 5,
+    paddingVertical: 4,
     paddingHorizontal: spacing.sm,
     marginHorizontal: spacing.xs,
     borderRadius: borderRadius.md,
@@ -1123,7 +1154,8 @@ const styles = StyleSheet.create({
   },
   topBarSurahFa: {
     fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
+    fontSize: 14,
+    lineHeight: 19,
   },
   topBarSubtitleRow: {
     flexDirection: rtlRow,
@@ -1144,7 +1176,15 @@ const styles = StyleSheet.create({
   },
   topBarSurahMetaText: {
     fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
+    fontSize: 11,
+    lineHeight: 15,
+  },
+  srOnly: {
+    position: 'absolute',
+    width: 1,
+    height: 1,
+    opacity: 0,
+    overflow: 'hidden',
   },
   topBarActions: {
     minWidth: 96,
