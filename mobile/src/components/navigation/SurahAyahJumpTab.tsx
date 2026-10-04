@@ -35,7 +35,12 @@ export interface SurahAyahJumpTabProps {
   selectedVerseNumber: number;
   onSelectSurah: (chapterId: number) => void;
   onSelectVerse: (verseNumber: number) => void;
-  onConfirmJump?: (chapterId?: number, verseNumber?: number, chapter?: Chapter) => void;
+  onConfirmJump?: (
+    chapterId?: number,
+    verseNumber?: number,
+    chapter?: Chapter,
+    isAyahSelected?: boolean,
+  ) => void;
   surahs?: Chapter[];
   testID?: string;
   style?: StyleProp<ViewStyle>;
@@ -229,10 +234,10 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
     }
   };
 
-  // Handle single tap: immediately opens the Surah starting from verse 1
+  // Handle single tap: immediately opens the Surah starting from verse 1 (without auto-scrolling past Bismillah)
   const handleSelectSurah = (chapter: Chapter) => {
     if (onConfirmJump) {
-      onConfirmJump(chapter.id, 1, chapter);
+      onConfirmJump(chapter.id, 1, chapter, false);
     } else {
       onSelectSurah(chapter.id);
       onSelectVerse(1);
@@ -454,7 +459,7 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
               </View>
 
               <TouchableOpacity
-                onPress={() => onConfirmJump?.(selectedSurah.id, selectedVerseNumber)}
+                onPress={() => onConfirmJump?.(selectedSurah.id, selectedVerseNumber, selectedSurah, true)}
                 style={styles.directAyahJumpBtn}
                 accessible={true}
                 accessibilityRole="button"
@@ -502,7 +507,7 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
               selectedVerseNumber={selectedVerseNumber}
               onPress={() => {
                 if (isSelected && isAyahTuningOpen) {
-                  onConfirmJump?.(item.id, selectedVerseNumber, item);
+                  onConfirmJump?.(item.id, selectedVerseNumber, item, true);
                 } else {
                   handleSelectSurah(item);
                 }

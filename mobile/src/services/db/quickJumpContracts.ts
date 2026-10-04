@@ -13,6 +13,8 @@ export interface JumpDestination {
   chapterNameArabic: string;
   chapterNameFa: string;
   totalVerses: number;
+  isAyahSelected?: boolean;
+  autoScroll?: boolean;
 }
 
 export interface JuzCardInfo {

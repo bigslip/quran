@@ -185,7 +185,12 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
       }
 
       if (target) {
-        onJump(target);
+        const isAyahExplicit = activeTab !== 'surah_ayah' || selectedVerseNumber > 1;
+        onJump({
+          ...target,
+          isAyahSelected: isAyahExplicit,
+          autoScroll: isAyahExplicit,
+        });
         onClose();
       }
     };
@@ -195,15 +200,22 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
       chapterId?: number,
       verseNumber: number = 1,
       chapter?: Chapter,
+      isAyahSelected: boolean = false,
     ) => {
       // 1. Immediately dismiss modal so there is zero UI freeze or animation lag
       onClose();
 
       if (typeof chapterId === 'number') {
+        const shouldAutoScroll = isAyahSelected || verseNumber > 1;
+
         // Fast path: Check synchronous in-memory cache
         const cached = getCachedAyahDestination(chapterId, verseNumber);
         if (cached) {
-          onJump(cached);
+          onJump({
+            ...cached,
+            isAyahSelected: shouldAutoScroll,
+            autoScroll: shouldAutoScroll,
+          });
           return;
         }
 
@@ -218,6 +230,8 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
             chapterNameArabic: chapter.name_arabic,
             chapterNameFa: chapter.name_fa,
             totalVerses: chapter.verses_count,
+            isAyahSelected: shouldAutoScroll,
+            autoScroll: shouldAutoScroll,
           };
           onJump(optimisticTarget);
 
@@ -229,7 +243,11 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
         // Async path if not yet cached
         resolveAyahDestination(chapterId, verseNumber)
           .then((target) => {
-            onJump(target);
+            onJump({
+              ...target,
+              isAyahSelected: shouldAutoScroll,
+              autoScroll: shouldAutoScroll,
+            });
           })
           .catch(() => {
             onJump({
@@ -241,6 +259,8 @@ export const QuickJumpModal: React.FC<QuickJumpModalProps> = React.memo(
               chapterNameArabic: '',
               chapterNameFa: '',
               totalVerses: 286,
+              isAyahSelected: shouldAutoScroll,
+              autoScroll: shouldAutoScroll,
             });
           });
         return;

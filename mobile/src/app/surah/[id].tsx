@@ -53,7 +53,11 @@ export default function SurahReaderScreen() {
   const { theme, colors } = useAppTheme();
   const insets = useSafeAreaInsets();
   const { topBarPaddingTop, topBarHeight } = computeTopBarGeometry(insets.top);
-  const { id, verse } = useLocalSearchParams<{ id: string; verse?: string }>();
+  const { id, verse, autoScroll } = useLocalSearchParams<{ id: string; verse?: string }>() as {
+    id: string;
+    verse?: string;
+    autoScroll?: string;
+  };
   const chapterId = Number(id) || 1;
 
   // Local state
@@ -232,6 +236,10 @@ export default function SurahReaderScreen() {
   // Handle verse deep-linking auto-scroll and highlight aura in continuous mode
   useEffect(() => {
     if (!loading && verse && verses.length > 0) {
+      if (autoScroll === 'false') {
+        // When selecting a new Surah without choosing an Ayah, do not auto-scroll so the Bismillah header is shown
+        return;
+      }
       const targetVerseNum = parseVerseParam(verse);
       if (targetVerseNum && targetVerseNum > 0) {
         const targetKey = `${chapterId}:${targetVerseNum}`;
@@ -272,7 +280,14 @@ export default function SurahReaderScreen() {
         }
       }
     }
-  }, [loading, verse, verses, viewMode, chapterId, topBarHeight]);
+  }, [loading, verse, autoScroll, verses, viewMode, chapterId, topBarHeight]);
+
+  // When opening a new Surah without choosing an Ayah, ensure continuous reader starts at offset 0 (showing Bismillah)
+  useEffect(() => {
+    if (!loading && autoScroll === 'false' && viewMode === 'continuous') {
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
+    }
+  }, [loading, autoScroll, viewMode, chapterId]);
 
   // Load Mushaf page verses & words when currentPage changes
   useEffect(() => {
@@ -685,41 +700,59 @@ export default function SurahReaderScreen() {
   const handleJumpToDestination = useCallback(
     (destination: JumpDestination) => {
       setIsQuickJumpOpen(false);
+      const shouldAutoScroll =
+        destination.autoScroll !== false && destination.isAyahSelected !== false;
       if (destination.chapterId === chapterId) {
         // Same Surah: in-place jump
         router.setParams({ verse: String(destination.verseNumber) });
         handledVerseRef.current = destination.verseKey;
-        if (viewMode === 'continuous') {
-          const targetIndex = verses.findIndex((v) => v.verse_number === destination.verseNumber);
-          if (targetIndex >= 0) {
-            setHighlightedVerseKey(destination.verseKey);
-            try {
-              flatListRef.current?.scrollToIndex({
-                index: targetIndex,
-                animated: true,
-                viewPosition: 0,
-                viewOffset: topBarHeight,
-              });
-            } catch {}
-            if (jumpHighlightTimeoutRef.current) {
-              clearTimeout(jumpHighlightTimeoutRef.current);
+        if (shouldAutoScroll) {
+          if (viewMode === 'continuous') {
+            const targetIndex = verses.findIndex((v) => v.verse_number === destination.verseNumber);
+            if (targetIndex >= 0) {
+              setHighlightedVerseKey(destination.verseKey);
+              try {
+                flatListRef.current?.scrollToIndex({
+                  index: targetIndex,
+                  animated: true,
+                  viewPosition: 0,
+                  viewOffset: topBarHeight,
+                });
+              } catch {}
+              if (jumpHighlightTimeoutRef.current) {
+                clearTimeout(jumpHighlightTimeoutRef.current);
+              }
+              jumpHighlightTimeoutRef.current = setTimeout(() => {
+                setHighlightedVerseKey(null);
+                jumpHighlightTimeoutRef.current = null;
+              }, 2500);
             }
-            jumpHighlightTimeoutRef.current = setTimeout(() => {
-              setHighlightedVerseKey(null);
-              jumpHighlightTimeoutRef.current = null;
-            }, 2500);
+          } else {
+            setCurrentPage(destination.pageNumber);
+            setActiveVerseKey(destination.verseKey);
+          }
+          if (chapter) {
+            setLastRead(chapter.id, destination.verseNumber, chapter.name_fa);
           }
         } else {
-          setCurrentPage(destination.pageNumber);
-          setActiveVerseKey(destination.verseKey);
-        }
-        if (chapter) {
-          setLastRead(chapter.id, destination.verseNumber, chapter.name_fa);
+          // Surah selected without choosing an Ayah: scroll to top (offset 0) to show Bismillah and header
+          if (viewMode === 'continuous') {
+            flatListRef.current?.scrollToOffset({
+              offset: 0,
+              animated: true,
+            });
+          } else {
+            setCurrentPage(chapter?.pages_start ?? 1);
+          }
+          if (chapter) {
+            setLastRead(chapter.id, 1, chapter.name_fa);
+          }
         }
       } else {
         // Different Surah: route transition
+        const targetRoute = `/surah/${destination.chapterId}?verse=${destination.verseNumber}&page=${destination.pageNumber}`;
         router.push(
-          `/surah/${destination.chapterId}?verse=${destination.verseNumber}&page=${destination.pageNumber}` as any,
+          (shouldAutoScroll ? targetRoute : `${targetRoute}&autoScroll=false`) as any,
         );
       }
     },

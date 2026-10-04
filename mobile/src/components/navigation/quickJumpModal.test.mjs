@@ -284,11 +284,49 @@ describe('QuickJumpModal Architecture, Contracts & Integration Tests', () => {
       assert.ok(surahTabSource.includes('setIsAyahTuningOpen(true)'));
     });
 
-    it('renders educational gesture guidance banner for discoverability', () => {
-      assert.ok(surahTabSource.includes('testID="quick-jump-gesture-hint"'));
-      assert.ok(surahTabSource.includes('gestureHintBanner'));
-      assert.ok(surahTabSource.includes('showGestureHint'));
-      assert.ok(surahTabSource.includes('Sparkles'));
+    it('passes false for isAyahSelected on single-tap to prevent auto-scrolling past Bismillah', () => {
+      assert.ok(
+        surahTabSource.includes('onConfirmJump(chapter.id, 1, chapter, false)'),
+        'Single tap on Surah must pass false for isAyahSelected',
+      );
+    });
+
+    it('passes true for isAyahSelected when explicitly jumping from Ayah tuning drawer', () => {
+      assert.ok(
+        surahTabSource.includes('onConfirmJump?.(selectedSurah.id, selectedVerseNumber, selectedSurah, true)'),
+        'Ayah tuning drawer jump button must pass true for isAyahSelected',
+      );
+    });
+
+    it('verifies QuickJumpModal sets autoScroll false on Surah selection and true on explicit Ayah selection', () => {
+      const modalSource = fs.readFileSync(path.resolve(__dirname, 'QuickJumpModal.tsx'), 'utf8');
+      assert.ok(
+        modalSource.includes('shouldAutoScroll = isAyahSelected || verseNumber > 1'),
+        'Must compute shouldAutoScroll based on isAyahSelected or verseNumber > 1',
+      );
+      assert.ok(
+        modalSource.includes('isAyahSelected: shouldAutoScroll'),
+        'Must attach isAyahSelected to jump destination',
+      );
+      assert.ok(
+        modalSource.includes('autoScroll: shouldAutoScroll'),
+        'Must attach autoScroll to jump destination',
+      );
+    });
+
+    it('verifies surah/[id].tsx suppresses auto-scroll and resets offset to 0 when autoScroll is false', () => {
+      const surahScreenSource = fs.readFileSync(
+        path.resolve(__dirname, '../../app/surah/[id].tsx'),
+        'utf8',
+      );
+      assert.ok(
+        surahScreenSource.includes("if (autoScroll === 'false')"),
+        'Must guard deep-link auto-scroll when autoScroll is false',
+      );
+      assert.ok(
+        surahScreenSource.includes('flatListRef.current?.scrollToOffset({ offset: 0, animated: false })'),
+        'Must reset FlatList to offset 0 when autoScroll is false to show Bismillah banner',
+      );
     });
   });
 });

@@ -54,8 +54,9 @@ export default function SurahsScreen() {
   const handleQuickJump = useCallback(
     (destination: JumpDestination) => {
       setIsQuickJumpOpen(false);
+      const targetRoute = `/surah/${destination.chapterId}?verse=${destination.verseNumber}&page=${destination.pageNumber}`;
       router.push(
-        `/surah/${destination.chapterId}?verse=${destination.verseNumber}&page=${destination.pageNumber}` as any,
+        (destination.autoScroll === false ? `${targetRoute}&autoScroll=false` : targetRoute) as any,
       );
     },
     [router],
