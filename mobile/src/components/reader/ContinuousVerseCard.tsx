@@ -22,6 +22,7 @@ import {
   formatAyahEndMarker,
 } from './readerContracts';
 import { getTranslationById, getVerseTranslationText } from '@/services/db/translationService';
+import { normalizeQuranArabic } from '@/utils/arabicTextSanitizer';
 
 export interface ContinuousVerseCardProps {
   verse: Verse;
@@ -89,8 +90,9 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
       READER_COMPONENT_CONTRACTS.verseCard.quranLineHeightDefault * fontScale,
     );
     const arabicFontFamily = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
-    const arabicText =
+    const rawArabicText =
       quranFont === 'indopak' && verse.text_indopak ? verse.text_indopak : verse.text_uthmani;
+    const arabicText = quranFont === 'hafs' ? normalizeQuranArabic(rawArabicText) : rawArabicText;
     const verseBadgeText = formatVerseBadgeNumber(verse.verse_number);
     const accessibilityLabel = formatContinuousVerseAccessibilityLabel(verse, activeTranslation);
 
@@ -283,7 +285,7 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
                   >
                     {quranFont === 'indopak' && word.text_indopak
                       ? word.text_indopak
-                      : word.text_uthmani}
+                      : normalizeQuranArabic(word.text_uthmani)}
                   </Text>
                   <Text style={styles.wbwGlossText}>{gloss}</Text>
                 </View>

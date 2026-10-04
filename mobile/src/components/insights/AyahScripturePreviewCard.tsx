@@ -18,6 +18,7 @@ import {
   formatWordPositionBadge,
 } from './insightsContracts';
 import { toPersianDigits } from '../catalog/catalogFormatters';
+import { normalizeQuranArabic } from '@/utils/arabicTextSanitizer';
 
 export interface AyahScripturePreviewCardProps {
   verseKey: string;
@@ -67,15 +68,19 @@ export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> =
 
     const fontName = quranFont === 'indopak' ? fonts.quranIndoPak : fonts.quranHafs;
 
-    const activeWordText = activeWord
+    const rawActiveWordText = activeWord
       ? quranFont === 'indopak' && activeWord.text_indopak
         ? activeWord.text_indopak
         : activeWord.text_uthmani
       : '';
+    const activeWordText =
+      quranFont === 'hafs' ? normalizeQuranArabic(rawActiveWordText) : rawActiveWordText;
 
     if (isCollapsed) {
-      const scripturePreviewText =
+      const rawScripturePreview =
         quranFont === 'indopak' && textIndopak ? textIndopak : textUthmani;
+      const scripturePreviewText =
+        quranFont === 'hafs' ? normalizeQuranArabic(rawScripturePreview) : rawScripturePreview;
 
       return (
         <View style={[styles.compactContainer, style]} testID={`${testID}-compact`}>
@@ -186,8 +191,9 @@ export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> =
         >
           {words.map((word) => {
             const isActive = word.position === activeWordPosition;
-            const wordText =
+            const rawWord =
               quranFont === 'indopak' && word.text_indopak ? word.text_indopak : word.text_uthmani;
+            const wordText = quranFont === 'hafs' ? normalizeQuranArabic(rawWord) : rawWord;
 
             return (
               <TouchableOpacity
@@ -239,196 +245,197 @@ AyahScripturePreviewCard.displayName = 'AyahScripturePreviewCard';
 const createStyles = (colors: ColorTheme) =>
   StyleSheet.create({
     container: {
-    backgroundColor: colors.surfaceCard,
-    borderColor: colors.borderSubtle,
-    borderWidth: 1,
-    borderRadius: INSIGHTS_COMPONENT_CONTRACTS.cardBorderRadius,
-    padding: spacing.lg,
-  },
-  activeBanner: {
-    minHeight: INSIGHTS_COMPONENT_CONTRACTS.activeChipHeight,
-    backgroundColor: colors.surfaceFloating,
-    borderColor: colors.borderIridescent,
-    borderWidth: 1,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
-  activeBannerTopRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  activeWordCalligraphy: {
-    fontSize: INSIGHTS_COMPONENT_CONTRACTS.activeBannerFontSize,
-    lineHeight: INSIGHTS_COMPONENT_CONTRACTS.activeBannerLineHeight,
-    color: colors.goldAccent,
-    textAlign: 'right',
-  },
-  badgeRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    gap: 6,
-    flexWrap: 'wrap',
-  },
-  positionBadge: {
-    backgroundColor: colors.surfaceCardHover,
-    borderColor: colors.borderSubtle,
-    borderWidth: 1,
-    borderRadius: borderRadius.sm,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
-  positionBadgeText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textMuted,
-  },
-  rootChip: {
-    backgroundColor: colors.surfaceCardHover,
-    borderColor: colors.borderSubtle,
-    borderWidth: 1,
-    borderRadius: borderRadius.sm,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
-  rootChipText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textMuted,
-  },
-  posBadge: {
-    backgroundColor: colors.primarySubtle,
-    borderColor: colors.primary,
-    borderWidth: 1,
-    borderRadius: borderRadius.sm,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
-  posBadgeText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.primaryLight,
-  },
-  activeGlossText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    lineHeight: 22,
-    color: colors.textSecondary,
-    textAlign: 'right',
-    marginTop: spacing.xs,
-  },
-  scriptureFlowContainer: {
-    flexDirection: 'row-reverse',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: spacing.sm,
-  },
-  wordButton: {
-    minWidth: INSIGHTS_COMPONENT_CONTRACTS.wordButtonMinWidth,
-    minHeight: INSIGHTS_COMPONENT_CONTRACTS.wordButtonMinHeight,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    margin: spacing.xs,
-    borderRadius: borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  wordButtonActive: {
-    backgroundColor: colors.primarySubtle,
-    borderColor: colors.primary,
-    borderWidth: INSIGHTS_COMPONENT_CONTRACTS.activeWordBorderWidth,
-  },
-  wordButtonInactive: {
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
-    borderWidth: INSIGHTS_COMPONENT_CONTRACTS.activeWordBorderWidth,
-  },
-  scriptureWordText: {
-    fontSize: INSIGHTS_COMPONENT_CONTRACTS.scriptureFontSize,
-    lineHeight: INSIGHTS_COMPONENT_CONTRACTS.scriptureLineHeight,
-    textAlign: 'center',
-  },
-  scriptureWordActive: {
-    color: colors.primaryLight,
-  },
-  scriptureWordInactive: {
-    color: colors.textPrimary,
-  },
-  translationContainer: {
-    marginTop: spacing.sm,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: colors.borderSeparator,
-    marginBottom: spacing.md,
-  },
-  translationText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: INSIGHTS_COMPONENT_CONTRACTS.translationFontSize,
-    lineHeight: INSIGHTS_COMPONENT_CONTRACTS.translationLineHeight,
-    color: colors.textSecondary,
-    textAlign: 'right',
-  },
-  // Compact Scripture Banner Styles
-  compactContainer: {
-    minHeight: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureBannerMinHeight,
-    backgroundColor: colors.surfaceFloating,
-    borderColor: colors.borderSubtle,
-    borderWidth: 1,
-    borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: spacing.sm,
-  },
-  compactExpandButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    minHeight: INSIGHTS_COMPONENT_CONTRACTS.minTouchTarget,
-    paddingHorizontal: spacing.xs,
-  },
-  compactExpandText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.primaryLight,
-  },
-  compactScriptureText: {
-    flex: 1,
-    fontSize: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureFontSize,
-    lineHeight: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureLineHeight,
-    color: colors.goldAccent,
-    textAlign: 'right',
-  },
-  // Expanded Scripture Header Styles
-  expandedHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: spacing.xs,
-  },
-  collapseButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    minHeight: INSIGHTS_COMPONENT_CONTRACTS.minTouchTarget,
-    paddingHorizontal: spacing.xs,
-  },
-  collapseButtonText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.primaryLight,
-  },
-  expandedHeaderTitle: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textSecondary,
-    textAlign: 'right',
-  },
-});
+      backgroundColor: colors.surfaceCard,
+      borderColor: colors.borderSubtle,
+      borderWidth: 1,
+      borderRadius: INSIGHTS_COMPONENT_CONTRACTS.cardBorderRadius,
+      padding: spacing.lg,
+    },
+    activeBanner: {
+      minHeight: INSIGHTS_COMPONENT_CONTRACTS.activeChipHeight,
+      backgroundColor: colors.surfaceFloating,
+      borderColor: colors.borderIridescent,
+      borderWidth: 1,
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+    },
+    activeBannerTopRow: {
+      flexDirection: 'row-reverse',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+    },
+    activeWordCalligraphy: {
+      fontSize: INSIGHTS_COMPONENT_CONTRACTS.activeBannerFontSize,
+      lineHeight: INSIGHTS_COMPONENT_CONTRACTS.activeBannerLineHeight,
+      color: colors.goldAccent,
+      textAlign: 'right',
+    },
+    badgeRow: {
+      flexDirection: 'row-reverse',
+      alignItems: 'center',
+      gap: 6,
+      flexWrap: 'wrap',
+    },
+    positionBadge: {
+      backgroundColor: colors.surfaceCardHover,
+      borderColor: colors.borderSubtle,
+      borderWidth: 1,
+      borderRadius: borderRadius.sm,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+    },
+    positionBadgeText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textMuted,
+    },
+    rootChip: {
+      backgroundColor: colors.surfaceCardHover,
+      borderColor: colors.borderSubtle,
+      borderWidth: 1,
+      borderRadius: borderRadius.sm,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+    },
+    rootChipText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textMuted,
+    },
+    posBadge: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.primary,
+      borderWidth: 1,
+      borderRadius: borderRadius.sm,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+    },
+    posBadgeText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primaryLight,
+    },
+    activeGlossText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      lineHeight: 22,
+      color: colors.textSecondary,
+      textAlign: 'right',
+      marginTop: spacing.xs,
+    },
+    scriptureFlowContainer: {
+      flexDirection: 'row-reverse',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: spacing.sm,
+    },
+    wordButton: {
+      minWidth: INSIGHTS_COMPONENT_CONTRACTS.wordButtonMinWidth,
+      minHeight: INSIGHTS_COMPONENT_CONTRACTS.wordButtonMinHeight,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      margin: spacing.xs,
+      borderRadius: borderRadius.md,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    wordButtonActive: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.primary,
+      borderWidth: INSIGHTS_COMPONENT_CONTRACTS.activeWordBorderWidth,
+    },
+    wordButtonInactive: {
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+      borderWidth: INSIGHTS_COMPONENT_CONTRACTS.activeWordBorderWidth,
+    },
+    scriptureWordText: {
+      fontSize: INSIGHTS_COMPONENT_CONTRACTS.scriptureFontSize,
+      lineHeight: INSIGHTS_COMPONENT_CONTRACTS.scriptureLineHeight,
+      textAlign: 'center',
+    },
+    scriptureWordActive: {
+      color: colors.primaryLight,
+    },
+    scriptureWordInactive: {
+      color: colors.textPrimary,
+    },
+    translationContainer: {
+      marginTop: spacing.sm,
+    },
+    divider: {
+      height: 1,
+      backgroundColor: colors.borderSeparator,
+      marginBottom: spacing.md,
+    },
+    translationText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: INSIGHTS_COMPONENT_CONTRACTS.translationFontSize,
+      lineHeight: INSIGHTS_COMPONENT_CONTRACTS.translationLineHeight,
+      color: colors.textSecondary,
+      textAlign: 'justify',
+      writingDirection: 'rtl',
+    },
+    // Compact Scripture Banner Styles
+    compactContainer: {
+      minHeight: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureBannerMinHeight,
+      backgroundColor: colors.surfaceFloating,
+      borderColor: colors.borderSubtle,
+      borderWidth: 1,
+      borderRadius: borderRadius.md,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: spacing.sm,
+    },
+    compactExpandButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      minHeight: INSIGHTS_COMPONENT_CONTRACTS.minTouchTarget,
+      paddingHorizontal: spacing.xs,
+    },
+    compactExpandText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primaryLight,
+    },
+    compactScriptureText: {
+      flex: 1,
+      fontSize: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureFontSize,
+      lineHeight: INSIGHTS_COMPONENT_CONTRACTS.compactScriptureLineHeight,
+      color: colors.goldAccent,
+      textAlign: 'right',
+    },
+    // Expanded Scripture Header Styles
+    expandedHeaderRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: spacing.xs,
+    },
+    collapseButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      minHeight: INSIGHTS_COMPONENT_CONTRACTS.minTouchTarget,
+      paddingHorizontal: spacing.xs,
+    },
+    collapseButtonText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primaryLight,
+    },
+    expandedHeaderTitle: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textSecondary,
+      textAlign: 'right',
+    },
+  });

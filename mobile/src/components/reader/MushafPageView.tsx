@@ -22,6 +22,7 @@ import {
 } from '@/theme';
 import { Verse, Word } from '@/types/quran';
 import { toPersianDigits } from '@/components/catalog';
+import { normalizeQuranArabic } from '@/utils/arabicTextSanitizer';
 import {
   BISMILLAH_TEXT,
   READER_COMPONENT_CONTRACTS,
@@ -408,7 +409,7 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
                         .map((w) =>
                           quranFont === 'indopak' && w.text_indopak
                             ? w.text_indopak
-                            : w.text_uthmani,
+                            : normalizeQuranArabic(w.text_uthmani),
                         )
                         .join(' ');
 
