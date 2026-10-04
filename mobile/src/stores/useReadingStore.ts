@@ -7,6 +7,11 @@ export interface ReadingState {
   lastReadChapterId: number;
   lastReadVerseNumber: number;
   lastReadChapterNameFa: string;
+  lastReadSurah?: number;
+  lastReadAyah?: number;
+  lastReadPage?: number;
+  lastReadJuz?: number;
+  lastReadTimestamp?: number;
   fontScale: number;
   /** Active reading theme across the application: 'dark' | 'emerald' | 'sepia' | 'light'. */
   theme: AppTheme;
@@ -34,7 +39,13 @@ export interface ReadingState {
   tafsirOpenCount: number;
   isTafsirNudgeDismissed: boolean;
 
-  setLastRead: (chapterId: number, verseNumber: number, chapterNameFa: string) => void;
+  setLastRead: (
+    chapterId: number,
+    verseNumber: number,
+    chapterNameFa: string,
+    pageNumber?: number,
+    juzNumber?: number,
+  ) => void;
   setFontScale: (scale: number) => void;
   setTheme: (theme: AppTheme) => void;
   /** Updates the Quran text encoding standard ('uthmani' vs 'indopak') and synchronizes display typeface. */
@@ -70,6 +81,11 @@ export const useReadingStore = create<ReadingState>()(
       lastReadChapterId: 1,
       lastReadVerseNumber: 1,
       lastReadChapterNameFa: 'فاتحه (گشایش)',
+      lastReadSurah: 1,
+      lastReadAyah: 1,
+      lastReadPage: 1,
+      lastReadJuz: 1,
+      lastReadTimestamp: Date.now(),
       fontScale: 1.0,
       theme: 'emerald',
       quranScript: 'uthmani',
@@ -94,12 +110,17 @@ export const useReadingStore = create<ReadingState>()(
       tafsirOpenCount: 0,
       isTafsirNudgeDismissed: false,
 
-      setLastRead: (chapterId, verseNumber, chapterNameFa) =>
-        set({
+      setLastRead: (chapterId, verseNumber, chapterNameFa, pageNumber, juzNumber) =>
+        set((state) => ({
           lastReadChapterId: chapterId,
+          lastReadSurah: chapterId,
           lastReadVerseNumber: verseNumber,
+          lastReadAyah: verseNumber,
           lastReadChapterNameFa: chapterNameFa,
-        }),
+          lastReadPage: pageNumber ?? state.lastReadPage ?? 1,
+          lastReadJuz: juzNumber ?? state.lastReadJuz ?? 1,
+          lastReadTimestamp: Date.now(),
+        })),
 
       setFontScale: (scale) => set({ fontScale: Math.max(0.8, Math.min(1.6, scale)) }),
       setTheme: (theme) => set({ theme }),
@@ -163,6 +184,11 @@ export const useReadingStore = create<ReadingState>()(
         lastReadChapterId: state.lastReadChapterId,
         lastReadVerseNumber: state.lastReadVerseNumber,
         lastReadChapterNameFa: state.lastReadChapterNameFa,
+        lastReadSurah: state.lastReadSurah,
+        lastReadAyah: state.lastReadAyah,
+        lastReadPage: state.lastReadPage,
+        lastReadJuz: state.lastReadJuz,
+        lastReadTimestamp: state.lastReadTimestamp,
         fontScale: state.fontScale,
         theme: state.theme,
         quranScript: state.quranScript,
@@ -182,3 +208,26 @@ export const useReadingStore = create<ReadingState>()(
     },
   ),
 );
+
+export { initWidgetSyncSubscriber } from '../services/widgets/widgetSyncService.ts';
+
+// Automatically subscribe widget synchronizer outside unit test runs
+if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'test') {
+  try {
+    if (typeof queueMicrotask === 'function') {
+      queueMicrotask(() => {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const {
+            initWidgetSyncSubscriber: initSubscriber,
+          } = require('../services/widgets/widgetSyncService.ts');
+          initSubscriber?.();
+        } catch {
+          // Ignore in dynamic bundlers if resolution is deferred
+        }
+      });
+    }
+  } catch {
+    // Ignore in non-standard runtimes
+  }
+}
