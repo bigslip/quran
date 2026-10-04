@@ -12,6 +12,7 @@ import {
   rtlTextAlign,
   rtlFlexStart,
   rtlWritingDirection,
+  isLatinText,
 } from '@/theme';
 import { verseCardThemeStyles } from './ContinuousVerseCard.styles';
 import { Verse, Word } from '@/types/quran';
@@ -303,7 +304,7 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
                 testID={`${testID}-translations-container`}
               >
                 {validTranslations.map(({ transId, transText, authorName }) => {
-                  const isLatin = /^[\u0000-\u007F]/.test(transText.trim());
+                  const isLatin = transId === 131 || isLatinText(transText);
                   return (
                     <View
                       key={`translation-${transId}`}
@@ -311,7 +312,9 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
                       testID={`${testID}-translation-${transId}`}
                     >
                       {showTranslatorChips && (
-                        <View style={styles.translationHeaderRow}>
+                        <View
+                          style={[styles.translationHeaderRow, isLatin && { flexDirection: 'row' }]}
+                        >
                           <View style={styles.translatorChip} testID={`${testID}-chip-${transId}`}>
                             <Text style={styles.translatorChipText}>{authorName}</Text>
                           </View>

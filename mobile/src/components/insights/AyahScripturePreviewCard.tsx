@@ -9,6 +9,8 @@ import {
   borderRadius,
   useThemeColors,
   type ColorTheme,
+  rtlTextAlign,
+  rtlWritingDirection,
 } from '../../theme';
 import type { WordLinguisticInfo } from '../../types/quran';
 import {
@@ -377,8 +379,8 @@ const createStyles = (colors: ColorTheme) =>
       fontSize: INSIGHTS_COMPONENT_CONTRACTS.translationFontSize,
       lineHeight: INSIGHTS_COMPONENT_CONTRACTS.translationLineHeight,
       color: colors.textSecondary,
-      textAlign: 'justify',
-      writingDirection: 'rtl',
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
     },
     // Compact Scripture Banner Styles
     compactContainer: {

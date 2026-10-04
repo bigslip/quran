@@ -32,3 +32,21 @@ export const rtlFlexEnd: 'flex-start' | 'flex-end' = 'flex-start';
 
 /** Safe writing direction: 'rtl' on iOS; undefined on Android to avoid triggering layout inversion. */
 export const rtlWritingDirection: 'rtl' | undefined = Platform.OS === 'ios' ? 'rtl' : undefined;
+
+/**
+ * Detects whether a string is predominantly Right-to-Left (Persian, Arabic).
+ * If the string contains any Persian/Arabic Unicode characters, it is classified as RTL.
+ */
+export const isRTLText = (text: string | null | undefined): boolean => {
+  if (!text) return true;
+  return /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
+};
+
+/**
+ * Detects whether a string is Latin/Left-to-Right (e.g. English translation).
+ * Returns true only if it contains Latin characters and no Arabic/Persian letters.
+ */
+export const isLatinText = (text: string | null | undefined): boolean => {
+  if (!text) return false;
+  return !isRTLText(text) && /[a-zA-Z]/.test(text);
+};

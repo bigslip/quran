@@ -195,7 +195,7 @@ export function buildVerseCardStyles(c: ColorTheme) {
       fontSize: READER_COMPONENT_CONTRACTS.verseCard.translationFontSize,
       lineHeight: READER_COMPONENT_CONTRACTS.verseCard.translationLineHeight,
       color: c.textSecondary,
-      textAlign: 'justify',
+      textAlign: rtlTextAlign,
       writingDirection: rtlWritingDirection,
       width: '100%',
       flexShrink: 1,

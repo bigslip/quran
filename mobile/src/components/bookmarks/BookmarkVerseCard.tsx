@@ -34,6 +34,8 @@ import {
   borderRadius,
   rtlRow,
   rtlTextAlign,
+  rtlWritingDirection,
+  isLatinText,
 } from '../../theme/index.ts';
 import type { HydratedBookmark, Tag } from '../../types/bookmark.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
@@ -299,10 +301,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
             testID={`${testID}-translations`}
           >
             {translations.map((item) => {
-              const isLatin =
-                item.id === 131 ||
-                (/^[\u0000-\u007F\u2018-\u201F]/.test(item.text.trim()) &&
-                  (/[a-zA-Z]/.test(item.text) || !/[\u0600-\u06FF]/.test(item.text)));
+              const isLatin = item.id === 131 || isLatinText(item.text);
               return (
                 <View key={`trans-${item.id}`} style={styles.translationBlock}>
                   {showTranslatorChips ? (
@@ -778,8 +777,8 @@ const createStyles = (colors: ColorTheme) =>
       fontSize: BOOKMARK_COMPONENT_CONTRACTS.card.translationFontSize,
       lineHeight: BOOKMARK_COMPONENT_CONTRACTS.card.translationLineHeight,
       color: colors.textSecondary,
-      textAlign: 'justify',
-      writingDirection: 'rtl',
+      textAlign: rtlTextAlign,
+      writingDirection: rtlWritingDirection,
     },
     translationTextLatin: {
       textAlign: 'left',

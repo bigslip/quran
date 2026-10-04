@@ -36,14 +36,14 @@ describe('Arabic Text Sanitizer & Typography Normalization Tests', () => {
     assert.strictEqual(normalizeQuranArabic(cleanText), cleanText);
   });
 
-  it('verifies translationText has textAlign: "justify" across all reader card styles', () => {
+  it('verifies translationText has textAlign: rtlTextAlign across all reader card styles', () => {
     const cardStylesSource = fs.readFileSync(
       path.resolve(__dirname, '../components/reader/ContinuousVerseCard.styles.ts'),
       'utf8',
     );
     assert.ok(
-      cardStylesSource.includes("textAlign: 'justify'"),
-      'ContinuousVerseCard translationText must be justified',
+      cardStylesSource.includes('textAlign: rtlTextAlign'),
+      'ContinuousVerseCard translationText must be right-aligned (RTL)',
     );
 
     const previewSource = fs.readFileSync(
@@ -51,8 +51,8 @@ describe('Arabic Text Sanitizer & Typography Normalization Tests', () => {
       'utf8',
     );
     assert.ok(
-      previewSource.includes("textAlign: 'justify'"),
-      'AyahScripturePreviewCard translationText must be justified',
+      previewSource.includes('textAlign: rtlTextAlign'),
+      'AyahScripturePreviewCard translationText must be right-aligned (RTL)',
     );
 
     const bookmarkSource = fs.readFileSync(
@@ -60,9 +60,33 @@ describe('Arabic Text Sanitizer & Typography Normalization Tests', () => {
       'utf8',
     );
     assert.ok(
-      bookmarkSource.includes("textAlign: 'justify'"),
-      'BookmarkVerseCard translationText must be justified',
+      bookmarkSource.includes('textAlign: rtlTextAlign'),
+      'BookmarkVerseCard translationText must be right-aligned (RTL)',
     );
+  });
+
+  it('correctly classifies Persian translations as RTL even when starting with punctuation or parenthesis', () => {
+    const rtlSource = fs.readFileSync(path.resolve(__dirname, '../theme/rtl.ts'), 'utf8');
+    assert.ok(rtlSource.includes('isRTLText'), 'rtl.ts must export isRTLText');
+    assert.ok(rtlSource.includes('isLatinText'), 'rtl.ts must export isLatinText');
+
+    const isRTLText = (t) => /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/.test(t);
+    const isLatinText = (t) => !isRTLText(t) && /[a-zA-Z]/.test(t);
+
+    // Standard Persian translations
+    assert.strictEqual(isRTLText('به نام خداوند بخشنده مهربان'), true);
+    assert.strictEqual(isLatinText('به نام خداوند بخشنده مهربان'), false);
+
+    // Persian translations starting with ASCII punctuation or parentheses (e.g. Makarem 1:3, 1:4, 2:3)
+    assert.strictEqual(isRTLText('(خداوندی که) بخشنده و بخشایشگر است'), true);
+    assert.strictEqual(isLatinText('(خداوندی که) بخشنده و بخشایشگر است'), false);
+    assert.strictEqual(isRTLText('«محکم» [= صریح و روشن‌] است؛'), true);
+    assert.strictEqual(isLatinText('«محکم» [= صریح و روشن‌] است؛'), false);
+
+    // English translations
+    assert.strictEqual(isRTLText('In the name of Allah, the Entirely Merciful'), false);
+    assert.strictEqual(isLatinText('In the name of Allah, the Entirely Merciful'), true);
+    assert.strictEqual(isLatinText('(Allah) who is the Entirely Merciful'), true);
   });
 
   it('verifies UthmanicHafs.ttf binary font has glyph 249 advance=0 and points to sukun (glyph 108)', () => {
