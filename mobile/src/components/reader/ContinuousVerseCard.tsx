@@ -13,6 +13,7 @@ import {
   rtlFlexStart,
   rtlWritingDirection,
   isLatinText,
+  formatRTLText,
 } from '@/theme';
 import { verseCardThemeStyles } from './ContinuousVerseCard.styles';
 import { Verse, Word } from '@/types/quran';
@@ -326,7 +327,7 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
                           isLatin && { textAlign: 'left', writingDirection: 'ltr' },
                         ]}
                       >
-                        {transText}
+                        {formatRTLText(transText)}
                       </Text>
                     </View>
                   );
@@ -345,7 +346,9 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
                       </View>
                     </View>
                   )}
-                  <Text style={styles.translationText}>{verse.translation_fa_makarem}</Text>
+                  <Text style={styles.translationText}>
+                    {formatRTLText(verse.translation_fa_makarem)}
+                  </Text>
                 </View>
               )}
 
@@ -359,7 +362,9 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
                       </View>
                     </View>
                   )}
-                  <Text style={styles.translationText}>{verse.translation_fa_ansarian}</Text>
+                  <Text style={styles.translationText}>
+                    {formatRTLText(verse.translation_fa_ansarian)}
+                  </Text>
                 </View>
               )}
             </View>

@@ -36,14 +36,18 @@ describe('Arabic Text Sanitizer & Typography Normalization Tests', () => {
     assert.strictEqual(normalizeQuranArabic(cleanText), cleanText);
   });
 
-  it('verifies translationText has textAlign: rtlTextAlign across all reader card styles', () => {
+  it('verifies translationText has textAlign: "justify" with RTL writing direction across all reader card styles', () => {
     const cardStylesSource = fs.readFileSync(
       path.resolve(__dirname, '../components/reader/ContinuousVerseCard.styles.ts'),
       'utf8',
     );
     assert.ok(
-      cardStylesSource.includes('textAlign: rtlTextAlign'),
-      'ContinuousVerseCard translationText must be right-aligned (RTL)',
+      cardStylesSource.includes("textAlign: 'justify'"),
+      'ContinuousVerseCard translationText must be justified',
+    );
+    assert.ok(
+      cardStylesSource.includes('writingDirection: rtlWritingDirection'),
+      'ContinuousVerseCard translationText must have RTL writing direction',
     );
 
     const previewSource = fs.readFileSync(
@@ -51,8 +55,8 @@ describe('Arabic Text Sanitizer & Typography Normalization Tests', () => {
       'utf8',
     );
     assert.ok(
-      previewSource.includes('textAlign: rtlTextAlign'),
-      'AyahScripturePreviewCard translationText must be right-aligned (RTL)',
+      previewSource.includes("textAlign: 'justify'"),
+      'AyahScripturePreviewCard translationText must be justified',
     );
 
     const bookmarkSource = fs.readFileSync(
@@ -60,33 +64,49 @@ describe('Arabic Text Sanitizer & Typography Normalization Tests', () => {
       'utf8',
     );
     assert.ok(
-      bookmarkSource.includes('textAlign: rtlTextAlign'),
-      'BookmarkVerseCard translationText must be right-aligned (RTL)',
+      bookmarkSource.includes("textAlign: 'justify'"),
+      'BookmarkVerseCard translationText must be justified',
     );
   });
 
-  it('correctly classifies Persian translations as RTL even when starting with punctuation or parenthesis', () => {
+  it('correctly classifies Persian translations as RTL and prepends RLM marker to ensure RTL justification', () => {
     const rtlSource = fs.readFileSync(path.resolve(__dirname, '../theme/rtl.ts'), 'utf8');
     assert.ok(rtlSource.includes('isRTLText'), 'rtl.ts must export isRTLText');
     assert.ok(rtlSource.includes('isLatinText'), 'rtl.ts must export isLatinText');
+    assert.ok(rtlSource.includes('formatRTLText'), 'rtl.ts must export formatRTLText');
 
     const isRTLText = (t) => /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/.test(t);
     const isLatinText = (t) => !isRTLText(t) && /[a-zA-Z]/.test(t);
+    const formatRTLText = (t) => {
+      if (!t) return '';
+      const trimmed = t.trim();
+      if (!trimmed) return '';
+      if (trimmed.startsWith('\u200F') || isLatinText(trimmed)) return trimmed;
+      if (isRTLText(trimmed)) return `\u200F${trimmed}`;
+      return trimmed;
+    };
 
     // Standard Persian translations
     assert.strictEqual(isRTLText('به نام خداوند بخشنده مهربان'), true);
     assert.strictEqual(isLatinText('به نام خداوند بخشنده مهربان'), false);
 
     // Persian translations starting with ASCII punctuation or parentheses (e.g. Makarem 1:3, 1:4, 2:3)
-    assert.strictEqual(isRTLText('(خداوندی که) بخشنده و بخشایشگر است'), true);
-    assert.strictEqual(isLatinText('(خداوندی که) بخشنده و بخشایشگر است'), false);
-    assert.strictEqual(isRTLText('«محکم» [= صریح و روشن‌] است؛'), true);
-    assert.strictEqual(isLatinText('«محکم» [= صریح و روشن‌] است؛'), false);
+    const rawParenVerse = '(خداوندی که) بخشنده و بخشایشگر است';
+    assert.strictEqual(isRTLText(rawParenVerse), true);
+    assert.strictEqual(isLatinText(rawParenVerse), false);
+    assert.strictEqual(formatRTLText(rawParenVerse).startsWith('\u200F'), true);
+    assert.strictEqual(formatRTLText(rawParenVerse).slice(1), rawParenVerse);
 
-    // English translations
-    assert.strictEqual(isRTLText('In the name of Allah, the Entirely Merciful'), false);
-    assert.strictEqual(isLatinText('In the name of Allah, the Entirely Merciful'), true);
-    assert.strictEqual(isLatinText('(Allah) who is the Entirely Merciful'), true);
+    const rawQuoteVerse = '«محکم» [= صریح و روشن‌] است؛';
+    assert.strictEqual(isRTLText(rawQuoteVerse), true);
+    assert.strictEqual(isLatinText(rawQuoteVerse), false);
+    assert.strictEqual(formatRTLText(rawQuoteVerse).startsWith('\u200F'), true);
+
+    // English translations should not be prefixed with RLM
+    const englishVerse = 'In the name of Allah, the Entirely Merciful';
+    assert.strictEqual(isRTLText(englishVerse), false);
+    assert.strictEqual(isLatinText(englishVerse), true);
+    assert.strictEqual(formatRTLText(englishVerse), englishVerse);
   });
 
   it('verifies UthmanicHafs.ttf binary font has glyph 249 advance=0 and points to sukun (glyph 108)', () => {

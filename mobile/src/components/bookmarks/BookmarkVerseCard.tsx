@@ -36,6 +36,7 @@ import {
   rtlTextAlign,
   rtlWritingDirection,
   isLatinText,
+  formatRTLText,
 } from '../../theme/index.ts';
 import type { HydratedBookmark, Tag } from '../../types/bookmark.ts';
 import { toPersianDigits } from '../catalog/catalogFormatters.ts';
@@ -328,7 +329,7 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                     ]}
                     testID={`${testID}-translation-${item.id}`}
                   >
-                    {item.text}
+                    {formatRTLText(item.text)}
                   </Text>
                 </View>
               );
@@ -777,7 +778,7 @@ const createStyles = (colors: ColorTheme) =>
       fontSize: BOOKMARK_COMPONENT_CONTRACTS.card.translationFontSize,
       lineHeight: BOOKMARK_COMPONENT_CONTRACTS.card.translationLineHeight,
       color: colors.textSecondary,
-      textAlign: rtlTextAlign,
+      textAlign: 'justify',
       writingDirection: rtlWritingDirection,
     },
     translationTextLatin: {

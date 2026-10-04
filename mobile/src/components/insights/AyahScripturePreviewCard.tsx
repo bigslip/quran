@@ -11,6 +11,7 @@ import {
   type ColorTheme,
   rtlTextAlign,
   rtlWritingDirection,
+  formatRTLText,
 } from '../../theme';
 import type { WordLinguisticInfo } from '../../types/quran';
 import {
@@ -233,7 +234,7 @@ export const AyahScripturePreviewCard: React.FC<AyahScripturePreviewCardProps> =
           <View style={styles.translationContainer} testID={`${testID}-translation-container`}>
             <View style={styles.divider} />
             <Text style={styles.translationText} testID={`${testID}-translation`}>
-              {translationFa}
+              {formatRTLText(translationFa)}
             </Text>
           </View>
         )}
@@ -379,7 +380,7 @@ const createStyles = (colors: ColorTheme) =>
       fontSize: INSIGHTS_COMPONENT_CONTRACTS.translationFontSize,
       lineHeight: INSIGHTS_COMPONENT_CONTRACTS.translationLineHeight,
       color: colors.textSecondary,
-      textAlign: rtlTextAlign,
+      textAlign: 'justify',
       writingDirection: rtlWritingDirection,
     },
     // Compact Scripture Banner Styles
