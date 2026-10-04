@@ -1,16 +1,18 @@
-import { Platform, I18nManager } from 'react-native';
+// Safely resolve I18nManager without breaking Node.js test environments
+let isRtlNative = false;
+try {
+  if (typeof require === 'function') {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const rn = require('react-native');
+    if (rn?.I18nManager) {
+      isRtlNative = Boolean(rn.I18nManager.isRTL);
+    }
+  }
+} catch {
+  isRtlNative = false;
+}
 
-/**
- * Single source of truth for bidirectional layout in the Quran.ir mobile app.
- *
- * To ensure 100% deterministic layout across both iOS (which operates in standard LTR coordinate
- * space in Expo Go) and Android, Quran.ir manages its own RTL layout explicitly:
- * - In standard (LTR) coordinate space, 'row-reverse' places child 0 on the physical RIGHT.
- * - For Arabic and Persian text, React Native's Fabric TextLayoutManager on Android automatically
- *   swaps ALIGN_OPPOSITE for RTL scripts (TextDirectionHeuristics.FIRSTSTRONG_LTR.isRtl == true).
- *   Therefore, 'left' maps to Gravity.RIGHT on Android, while 'right' aligns to physical right on iOS.
- */
-export const isRTL: boolean = Boolean(I18nManager.isRTL);
+export const isRTL: boolean = isRtlNative;
 
 /** Flex direction that always flows Right-to-Left (first child on the physical right). */
 export const rtlRow: 'row' | 'row-reverse' = 'row-reverse';
