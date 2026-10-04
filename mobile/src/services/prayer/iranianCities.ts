@@ -1,0 +1,270 @@
+/**
+ * Provincial capitals of Iran with geographical coordinates and elevations.
+ * Default city is Tehran (35.70° N, 51.42° E).
+ */
+
+export interface IranianCity {
+  id: string;
+  nameFa: string;
+  nameEn: string;
+  latitude: number;
+  longitude: number;
+  elevation: number;
+}
+
+export const IRANIAN_PROVINCIAL_CAPITALS: IranianCity[] = [
+  {
+    id: 'tehran',
+    nameFa: 'تهران',
+    nameEn: 'Tehran',
+    latitude: 35.7,
+    longitude: 51.42,
+    elevation: 1200,
+  },
+  {
+    id: 'mashhad',
+    nameFa: 'مشهد',
+    nameEn: 'Mashhad',
+    latitude: 36.3,
+    longitude: 59.6,
+    elevation: 999,
+  },
+  {
+    id: 'isfahan',
+    nameFa: 'اصفهان',
+    nameEn: 'Isfahan',
+    latitude: 32.65,
+    longitude: 51.67,
+    elevation: 1574,
+  },
+  {
+    id: 'tabriz',
+    nameFa: 'تبریز',
+    nameEn: 'Tabriz',
+    latitude: 38.08,
+    longitude: 46.29,
+    elevation: 1361,
+  },
+  {
+    id: 'shiraz',
+    nameFa: 'شیراز',
+    nameEn: 'Shiraz',
+    latitude: 29.61,
+    longitude: 52.54,
+    elevation: 1540,
+  },
+  {
+    id: 'qom',
+    nameFa: 'قم',
+    nameEn: 'Qom',
+    latitude: 34.64,
+    longitude: 50.88,
+    elevation: 933,
+  },
+  {
+    id: 'ahvaz',
+    nameFa: 'اهواز',
+    nameEn: 'Ahvaz',
+    latitude: 31.32,
+    longitude: 48.68,
+    elevation: 20,
+  },
+  {
+    id: 'kermanshah',
+    nameFa: 'کرمانشاه',
+    nameEn: 'Kermanshah',
+    latitude: 34.33,
+    longitude: 47.08,
+    elevation: 1374,
+  },
+  {
+    id: 'rasht',
+    nameFa: 'رشت',
+    nameEn: 'Rasht',
+    latitude: 37.28,
+    longitude: 49.58,
+    elevation: 5,
+  },
+  {
+    id: 'kerman',
+    nameFa: 'کرمان',
+    nameEn: 'Kerman',
+    latitude: 30.29,
+    longitude: 57.06,
+    elevation: 1756,
+  },
+  {
+    id: 'zahedan',
+    nameFa: 'زاهدان',
+    nameEn: 'Zahedan',
+    latitude: 29.5,
+    longitude: 60.86,
+    elevation: 1378,
+  },
+  {
+    id: 'hamadan',
+    nameFa: 'همدان',
+    nameEn: 'Hamadan',
+    latitude: 34.8,
+    longitude: 48.51,
+    elevation: 1850,
+  },
+  {
+    id: 'yazd',
+    nameFa: 'یزد',
+    nameEn: 'Yazd',
+    latitude: 31.89,
+    longitude: 54.37,
+    elevation: 1216,
+  },
+  {
+    id: 'ardabil',
+    nameFa: 'اردبیل',
+    nameEn: 'Ardabil',
+    latitude: 38.25,
+    longitude: 48.3,
+    elevation: 1351,
+  },
+  {
+    id: 'bandar-abbas',
+    nameFa: 'بندرعباس',
+    nameEn: 'Bandar Abbas',
+    latitude: 27.19,
+    longitude: 56.28,
+    elevation: 10,
+  },
+  {
+    id: 'arak',
+    nameFa: 'اراک',
+    nameEn: 'Arak',
+    latitude: 34.09,
+    longitude: 49.7,
+    elevation: 1750,
+  },
+  {
+    id: 'zanjan',
+    nameFa: 'زنجان',
+    nameEn: 'Zanjan',
+    latitude: 36.68,
+    longitude: 48.48,
+    elevation: 1638,
+  },
+  {
+    id: 'sanandaj',
+    nameFa: 'سنندج',
+    nameEn: 'Sanandaj',
+    latitude: 35.31,
+    longitude: 47.0,
+    elevation: 1538,
+  },
+  {
+    id: 'qazvin',
+    nameFa: 'قزوین',
+    nameEn: 'Qazvin',
+    latitude: 36.27,
+    longitude: 50.0,
+    elevation: 1297,
+  },
+  {
+    id: 'khorramabad',
+    nameFa: 'خرم‌آباد',
+    nameEn: 'Khorramabad',
+    latitude: 33.49,
+    longitude: 48.35,
+    elevation: 1148,
+  },
+  {
+    id: 'gorgan',
+    nameFa: 'گرگان',
+    nameEn: 'Gorgan',
+    latitude: 36.84,
+    longitude: 54.44,
+    elevation: 155,
+  },
+  {
+    id: 'sari',
+    nameFa: 'ساری',
+    nameEn: 'Sari',
+    latitude: 36.57,
+    longitude: 53.06,
+    elevation: 43,
+  },
+  {
+    id: 'bojnord',
+    nameFa: 'بجنورد',
+    nameEn: 'Bojnord',
+    latitude: 37.47,
+    longitude: 57.33,
+    elevation: 1070,
+  },
+  {
+    id: 'birjand',
+    nameFa: 'بیرجند',
+    nameEn: 'Birjand',
+    latitude: 32.87,
+    longitude: 59.22,
+    elevation: 1491,
+  },
+  {
+    id: 'bushehr',
+    nameFa: 'بوشهر',
+    nameEn: 'Bushehr',
+    latitude: 28.97,
+    longitude: 50.84,
+    elevation: 10,
+  },
+  {
+    id: 'ilam',
+    nameFa: 'ایلام',
+    nameEn: 'Ilam',
+    latitude: 33.64,
+    longitude: 46.42,
+    elevation: 1337,
+  },
+  {
+    id: 'shahr-e-kord',
+    nameFa: 'شهرکرد',
+    nameEn: 'Shahr-e Kord',
+    latitude: 32.33,
+    longitude: 50.86,
+    elevation: 2070,
+  },
+  {
+    id: 'semnan',
+    nameFa: 'سمنان',
+    nameEn: 'Semnan',
+    latitude: 35.58,
+    longitude: 53.39,
+    elevation: 1138,
+  },
+  {
+    id: 'yasuj',
+    nameFa: 'یاسوج',
+    nameEn: 'Yasuj',
+    latitude: 30.67,
+    longitude: 51.59,
+    elevation: 1870,
+  },
+  {
+    id: 'urmia',
+    nameFa: 'ارومیه',
+    nameEn: 'Urmia',
+    latitude: 37.55,
+    longitude: 45.08,
+    elevation: 1332,
+  },
+  {
+    id: 'karaj',
+    nameFa: 'کرج',
+    nameEn: 'Karaj',
+    latitude: 35.83,
+    longitude: 50.99,
+    elevation: 1312,
+  },
+];
+
+export const DEFAULT_CITY: IranianCity = IRANIAN_PROVINCIAL_CAPITALS[0];
+
+export function getCityById(id: string): IranianCity | undefined {
+  return IRANIAN_PROVINCIAL_CAPITALS.find((city) => city.id === id);
+}
