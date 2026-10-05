@@ -620,6 +620,8 @@ export function WidgetSettingsSection() {
                     activeOpacity={0.7}
                     accessible={true}
                     accessibilityRole="button"
+                    accessibilityState={{ selected: isSelected }}
+                    accessibilityLabel={item.nameFa}
                   >
                     {isSelected && <Check size={16} color={colors.primary} />}
                     <Text

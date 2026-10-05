@@ -12,6 +12,10 @@ export interface AudioDriver {
   isPlaying: () => boolean;
 }
 
+if (typeof (globalThis as any).__DEV__ === 'undefined') {
+  (globalThis as any).__DEV__ = process.env.NODE_ENV !== 'production';
+}
+
 /**
  * Mock driver used for unit tests and environments where native audio is unavailable.
  */
@@ -91,7 +95,9 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
         }
         activeOnError?.(new Error(status.error));
       } else if (status.didJustFinish && !hasFinishedCurrent) {
-        console.log('[AudioDriver:expo-audio] Playback finished for:', currentLoadedUrl);
+        if (__DEV__) {
+          console.log('[AudioDriver:expo-audio] Playback finished for:', currentLoadedUrl);
+        }
         hasFinishedCurrent = true;
         isSoundPlaying = false;
         try {
@@ -106,7 +112,9 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
 
   return {
     playSound: async (url: string, onFinish?: () => void, onError?: (err: Error) => void) => {
-      console.log('[AudioDriver:expo-audio] playSound called with url:', url);
+      if (__DEV__) {
+        console.log('[AudioDriver:expo-audio] playSound called with url:', url);
+      }
       await ensureMode();
 
       activeOnFinish = onFinish || null;
@@ -146,7 +154,9 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
           player.replace(url);
           player.play();
           isSoundPlaying = true;
-          console.log('[AudioDriver:expo-audio] Seamlessly replaced track with:', url);
+          if (__DEV__) {
+            console.log('[AudioDriver:expo-audio] Seamlessly replaced track with:', url);
+          }
           return;
         } catch (err) {
           console.warn(
@@ -174,7 +184,9 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
 
         player.play();
         isSoundPlaying = true;
-        console.log('[AudioDriver:expo-audio] Successfully started playback for:', url);
+        if (__DEV__) {
+          console.log('[AudioDriver:expo-audio] Successfully started playback for:', url);
+        }
       } catch (err: any) {
         isSoundPlaying = false;
         console.error('[AudioDriver:expo-audio] Failed to create or play audio:', err);
@@ -373,7 +385,9 @@ export function getDefaultAudioDriver(): AudioDriver {
     const expoAudio = require('expo-audio');
     const mod = expoAudio.createAudioPlayer ? expoAudio : expoAudio.default;
     if (mod && typeof mod.createAudioPlayer === 'function') {
-      console.log('[AudioDriver] Successfully initialized modern expo-audio driver');
+      if (__DEV__) {
+        console.log('[AudioDriver] Successfully initialized modern expo-audio driver');
+      }
       defaultDriver = createExpoAudioDriver(mod);
       return defaultDriver;
     }
@@ -387,7 +401,9 @@ export function getDefaultAudioDriver(): AudioDriver {
     const expoAv = require('expo-av');
     const mod = expoAv.Audio || expoAv.default?.Audio;
     if (mod && typeof mod.Sound?.createAsync === 'function') {
-      console.log('[AudioDriver] Successfully initialized legacy expo-av driver');
+      if (__DEV__) {
+        console.log('[AudioDriver] Successfully initialized legacy expo-av driver');
+      }
       defaultDriver = createLegacyExpoAvDriver(mod);
       return defaultDriver;
     }

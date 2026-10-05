@@ -630,8 +630,10 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                       ]}
                       onPress={() => handleToggleTag(tag.id)}
                       activeOpacity={0.7}
+                      accessible={true}
                       accessibilityRole="checkbox"
                       accessibilityState={{ checked: isSelected }}
+                      accessibilityLabel={tag.name}
                       testID={`${testID}-modal-tag-${tag.id}`}
                     >
                       <View style={styles.tagOptionInfo}>
@@ -660,6 +662,9 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
                 style={[styles.modalDoneButton, { backgroundColor: colors.primary }]}
                 onPress={() => setIsTagModalOpen(false)}
                 activeOpacity={0.8}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="تأیید و بستن"
               >
                 <Text style={styles.modalDoneButtonText}>تأیید و بستن</Text>
               </TouchableOpacity>

@@ -232,8 +232,9 @@ export default function BookmarksScreen() {
           ]}
           onPress={() => setIsSortModalOpen(true)}
           activeOpacity={0.7}
+          accessible={true}
           accessibilityRole="button"
-          accessibilityLabel={`مرتب‌سازی: ${currentSortLabel}`}
+          accessibilityLabel="مرتب‌سازی نشانک‌ها"
           testID="btn-open-sort-modal"
         >
           <SlidersHorizontal size={18} color={colors.primaryLight} />
@@ -295,7 +296,9 @@ export default function BookmarksScreen() {
             ]}
             onPress={() => setSelectedTagId(null)}
             activeOpacity={0.7}
+            accessible={true}
             accessibilityRole="button"
+            accessibilityState={{ selected: selectedTagId === null }}
             accessibilityLabel="نمایش همه نشانه‌ها"
             testID="tag-filter-all"
             hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
@@ -316,7 +319,7 @@ export default function BookmarksScreen() {
 
           {/* Individual Tag Chips */}
           {tags.map((tag) => {
-            const isActive = selectedTagId === tag.id;
+            const isSelected = selectedTagId === tag.id;
             const count = tagCountMap.get(tag.id) || 0;
             return (
               <TouchableOpacity
@@ -324,14 +327,16 @@ export default function BookmarksScreen() {
                 style={[
                   styles.tagFilterChip,
                   { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
-                  isActive && [
+                  isSelected && [
                     styles.tagFilterChipActive,
                     { backgroundColor: colors.primarySubtle, borderColor: colors.primary },
                   ],
                 ]}
-                onPress={() => setSelectedTagId(isActive ? null : tag.id)}
+                onPress={() => setSelectedTagId(isSelected ? null : tag.id)}
                 activeOpacity={0.7}
+                accessible={true}
                 accessibilityRole="button"
+                accessibilityState={{ selected: isSelected }}
                 accessibilityLabel={`فیلتر بر اساس برچسب ${tag.name}`}
                 testID={`tag-filter-${tag.id}`}
                 hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
@@ -343,7 +348,7 @@ export default function BookmarksScreen() {
                   style={[
                     styles.tagFilterChipText,
                     { color: colors.textFaded },
-                    isActive && [styles.tagFilterChipTextActive, { color: colors.primary }],
+                    isSelected && [styles.tagFilterChipTextActive, { color: colors.primary }],
                   ]}
                 >
                   {tag.name} ({toPersianDigits(count)})
@@ -424,8 +429,9 @@ export default function BookmarksScreen() {
               setSelectedTagId(null);
             }}
             activeOpacity={0.8}
+            accessible={true}
             accessibilityRole="button"
-            accessibilityLabel="پاک کردن فیلترها و جستجو"
+            accessibilityLabel="پاک کردن فیلترها"
             testID="btn-reset-filters"
           >
             <Text style={[styles.emptySecondaryButtonText, { color: colors.textSecondary }]}>
@@ -511,8 +517,10 @@ export default function BookmarksScreen() {
                       setIsSortModalOpen(false);
                     }}
                     activeOpacity={0.7}
+                    accessible={true}
                     accessibilityRole="radio"
                     accessibilityState={{ selected: isSelected }}
+                    accessibilityLabel={option.label}
                     testID={`sort-option-${option.id}`}
                   >
                     <Text

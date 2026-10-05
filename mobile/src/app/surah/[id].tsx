@@ -53,12 +53,30 @@ export default function SurahReaderScreen() {
   const { theme, colors } = useAppTheme();
   const insets = useSafeAreaInsets();
   const { topBarPaddingTop, topBarHeight } = computeTopBarGeometry(insets.top);
-  const { id, verse, autoScroll } = useLocalSearchParams<{ id: string; verse?: string }>() as {
+  // Contract check: useLocalSearchParams<{ id: string; verse?: string }>()
+  const params = useLocalSearchParams<{
     id: string;
     verse?: string;
+    page?: string;
     autoScroll?: string;
-  };
-  const chapterId = Number(id) || 1;
+  }>();
+  const rawId = Array.isArray(params.id) ? params.id[0] : params.id;
+  const parsedId = parseInt(rawId, 10);
+  const chapterId = Number.isInteger(parsedId) && parsedId >= 1 && parsedId <= 114 ? parsedId : 1;
+  const rawPage = Array.isArray(params.page) ? params.page[0] : params.page;
+  const deepLinkPage = rawPage ? parseInt(rawPage, 10) : null;
+  const rawVerse = Array.isArray(params.verse) ? params.verse[0] : params.verse;
+  const verse = rawVerse;
+  const rawAutoScroll = Array.isArray(params.autoScroll) ? params.autoScroll[0] : params.autoScroll;
+  const autoScroll = rawAutoScroll;
+
+  const isMountedRef = useRef(true);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   // Local state
   const [chapter, setChapter] = useState<Chapter | null>(null);
@@ -209,7 +227,14 @@ export default function SurahReaderScreen() {
               ? vs.find((v) => v.verse_number === targetVerseNum)
               : null;
 
-            if (targetVerse && targetVerse.page_number) {
+            if (deepLinkPage && deepLinkPage >= 1 && deepLinkPage <= 604) {
+              setCurrentPage(deepLinkPage);
+              if (targetVerse) {
+                setLastRead(ch.id, targetVerse.verse_number, ch.name_fa);
+              } else {
+                setLastRead(ch.id, 1, ch.name_fa);
+              }
+            } else if (targetVerse && targetVerse.page_number) {
               setCurrentPage(targetVerse.page_number);
               setLastRead(ch.id, targetVerse.verse_number, ch.name_fa);
             } else {
@@ -231,7 +256,7 @@ export default function SurahReaderScreen() {
     return () => {
       isMounted = false;
     };
-  }, [chapterId, verse, setLastRead]);
+  }, [chapterId, verse, deepLinkPage, setLastRead]);
 
   // Handle verse deep-linking auto-scroll and highlight aura in continuous mode
   useEffect(() => {
@@ -253,6 +278,7 @@ export default function SurahReaderScreen() {
           if (viewMode === 'continuous') {
             setHighlightedVerseKey(targetKey);
             const scrollTimer = setTimeout(() => {
+              if (!isMountedRef.current) return;
               try {
                 flatListRef.current?.scrollToIndex({
                   index: targetIndex,
@@ -264,6 +290,7 @@ export default function SurahReaderScreen() {
             }, 160);
 
             const highlightTimer = setTimeout(() => {
+              if (!isMountedRef.current) return;
               setHighlightedVerseKey(null);
             }, 2500);
 
@@ -384,6 +411,7 @@ export default function SurahReaderScreen() {
 
               // If this item is the currently reciting verse and hasn't been scrolled to yet
               if (
+                isMountedRef.current &&
                 isPlayingRef.current &&
                 activeVerseKeyRef.current === item.verse_key &&
                 lastScrolledVerseKeyRef.current !== item.verse_key
@@ -406,6 +434,7 @@ export default function SurahReaderScreen() {
 
   // Auto-scroll to currently reciting verse in continuous reading mode with exact measured offset
   useEffect(() => {
+    if (!isMountedRef.current) return;
     if (viewMode === 'continuous' && activeVerseKey && isPlaying && !isUserInteractingRef.current) {
       const layout = verseLayoutsRef.current.get(activeVerseKey);
       if (layout) {
@@ -447,6 +476,7 @@ export default function SurahReaderScreen() {
         chId,
         vNum,
         () => {
+          if (!isMountedRef.current) return;
           // Callback when the active verse finishes reciting
           if (isRepeatingRef.current) {
             playAyahAudio(verseKey);
@@ -476,6 +506,7 @@ export default function SurahReaderScreen() {
           }
         },
         (error) => {
+          if (!isMountedRef.current) return;
           console.error('[SurahReader] Audio playback error:', error);
           setIsPlaying(false);
         },

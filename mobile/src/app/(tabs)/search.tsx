@@ -110,6 +110,9 @@ export default function SearchScreen() {
             style={styles.chapterCard}
             onPress={() => router.push(`/surah/${chapter.id}` as any)}
             activeOpacity={0.75}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel={`سوره ${chapter.name_fa}، شماره ${chapter.id}`}
             testID={`search-chapter-${chapter.id}`}
           >
             <View style={styles.chapterIconWrapper}>
@@ -176,6 +179,9 @@ export default function SearchScreen() {
               router.push(`/surah/${item.chapter_id}?verse=${item.verse_number}` as any)
             }
             activeOpacity={0.75}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel={`سوره ${item.chapter_name_fa}، آیه ${item.verse_number}`}
             testID={`search-result-${item.verse_key}`}
           >
             <View style={styles.resultHeader}>

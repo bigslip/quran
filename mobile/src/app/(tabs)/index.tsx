@@ -168,6 +168,10 @@ export default function HomeScreen() {
                       style={styles.quickChapterChip}
                       onPress={() => router.push(`/surah/${chapter.id}` as any)}
                       activeOpacity={0.75}
+                      accessible={true}
+                      accessibilityRole="button"
+                      accessibilityLabel={`سوره ${chapter.name_fa}`}
+                      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                       testID={`home-quick-chapter-${chapter.id}`}
                     >
                       <BookOpen size={14} color={colors.primary} />
@@ -187,6 +191,9 @@ export default function HomeScreen() {
                     router.push(`/surah/${verse.chapter_id}?verse=${verse.verse_number}` as any)
                   }
                   activeOpacity={0.75}
+                  accessible={true}
+                  accessibilityRole="button"
+                  accessibilityLabel={`سوره ${verse.chapter_name_fa}، آیه ${verse.verse_number}`}
                   testID={`home-quick-verse-${verse.verse_key}`}
                 >
                   <View style={styles.quickVerseHeader}>
@@ -205,6 +212,9 @@ export default function HomeScreen() {
                 style={styles.viewAllResultsButton}
                 onPress={handleSearchSubmit}
                 activeOpacity={0.8}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="مشاهده همه نتایج جستجو"
                 testID="home-view-all-search-results"
               >
                 <Text style={styles.viewAllResultsText}>
@@ -248,6 +258,9 @@ export default function HomeScreen() {
               ]}
               activeOpacity={0.8}
               onPress={() => router.push(`/surah/${lastReadChapterId}` as any)}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={`ادامه تلاوت سوره ${lastReadChapterNameFa}، آیه ${lastReadVerseNumber}`}
             >
               <Play size={20} color={colors.textInverse} fill={colors.textInverse} />
             </TouchableOpacity>
@@ -313,6 +326,10 @@ export default function HomeScreen() {
               ]}
               onPress={() => router.push(`/surah/${s.id}` as any)}
               activeOpacity={0.7}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={`سوره ${s.name}`}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Text style={[styles.quickSurahName, { color: colors.textPrimary }]}>
                 سوره {s.name}
@@ -343,7 +360,18 @@ export default function HomeScreen() {
             <Text style={[styles.dailyAyahRef, { color: colors.textFaded }]}>
               سوره رعد • آیه ۲۸
             </Text>
-            <TouchableOpacity style={styles.listenButton}>
+            <TouchableOpacity
+              style={styles.listenButton}
+              onPress={() =>
+                router.push({
+                  pathname: '/surah/[id]',
+                  params: { id: '13', verse: '28', autoScroll: 'true' },
+                } as any)
+              }
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="استماع تلاوت سوره رعد، آیه ۲۸"
+            >
               <Play size={14} color={colors.primary} />
               <Text style={[styles.listenButtonText, { color: colors.primary }]}>استماع</Text>
             </TouchableOpacity>
@@ -363,6 +391,9 @@ export default function HomeScreen() {
             ]}
             activeOpacity={0.75}
             onPress={() => router.push('/surahs')}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="فهرست ۱۱۴ سوره، فهرست ترتیبی و نزول"
           >
             <BookOpen size={24} color={colors.primary} />
             <Text style={[styles.gridItemTitle, { color: colors.textPrimary }]}>
@@ -379,6 +410,9 @@ export default function HomeScreen() {
               { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
             ]}
             activeOpacity={0.75}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="رادیو ۲۴ ساعته، پخش زنده تلاوت قرآن"
           >
             <Radio size={24} color={colors.goldAccent} />
             <Text style={[styles.gridItemTitle, { color: colors.textPrimary }]}>
@@ -395,6 +429,9 @@ export default function HomeScreen() {
               { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
             ]}
             activeOpacity={0.75}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="قاریان برگزیده، اساتید ایرانی و جهان اسلام"
           >
             <Mic size={24} color="#38bdf8" />
             <Text style={[styles.gridItemTitle, { color: colors.textPrimary }]}>
@@ -411,6 +448,9 @@ export default function HomeScreen() {
               { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
             ]}
             activeOpacity={0.75}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="برنامه‌های آموزشی، تجوید و تفسیر کاربردی"
           >
             <Award size={24} color="#ec4899" />
             <Text style={[styles.gridItemTitle, { color: colors.textPrimary }]}>
