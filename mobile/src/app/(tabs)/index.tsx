@@ -32,6 +32,15 @@ import { searchQuran, searchChapters } from '@/services/db/searchService';
 import { SearchResult, Chapter } from '@/types/quran';
 import { useReadingStore } from '@/stores/useReadingStore';
 
+const quickSurahs = [
+  { id: 36, name: 'یس', desc: 'قلب قرآن' },
+  { id: 55, name: 'الرحمن', desc: 'عروس قرآن' },
+  { id: 56, name: 'واقعه', desc: 'سوره برکت' },
+  { id: 67, name: 'ملک', desc: 'نجات‌بخش' },
+  { id: 18, name: 'کهف', desc: 'جمعه‌ها' },
+  { id: 114, name: 'ناس', desc: 'پناه‌گاه' },
+];
+
 export default function HomeScreen() {
   const router = useRouter();
   const colors = useThemeColors();
@@ -43,7 +52,9 @@ export default function HomeScreen() {
   const [greeting, setGreeting] = useState('روز بخیر');
   const [isQuickJumpOpen, setIsQuickJumpOpen] = useState(false);
 
-  const { lastReadChapterId, lastReadVerseNumber, lastReadChapterNameFa } = useReadingStore();
+  const lastReadChapterId = useReadingStore((s) => s.lastReadChapterId);
+  const lastReadVerseNumber = useReadingStore((s) => s.lastReadVerseNumber);
+  const lastReadChapterNameFa = useReadingStore((s) => s.lastReadChapterNameFa);
 
   const handleQuickJump = useCallback(
     (destination: JumpDestination) => {
@@ -120,15 +131,6 @@ export default function HomeScreen() {
     else if (hour >= 17 && hour < 21) setGreeting('عصر بخیر');
     else setGreeting('شامگاه بخیر');
   }, []);
-
-  const quickSurahs = [
-    { id: 36, name: 'یس', desc: 'قلب قرآن' },
-    { id: 55, name: 'الرحمن', desc: 'عروس قرآن' },
-    { id: 56, name: 'واقعه', desc: 'سوره برکت' },
-    { id: 67, name: 'ملک', desc: 'نجات‌بخش' },
-    { id: 18, name: 'کهف', desc: 'جمعه‌ها' },
-    { id: 114, name: 'ناس', desc: 'پناه‌گاه' },
-  ];
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -213,7 +215,6 @@ export default function HomeScreen() {
             </View>
           )}
         </View>
-
 
         {/* Continue Reading Card */}
         <SanctuaryCard
@@ -440,316 +441,315 @@ const createStyles = (colors: ColorTheme) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-  scrollContent: {
-    paddingTop: 54,
-    paddingBottom: 40,
-    paddingHorizontal: spacing.lg,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: spacing.lg,
-  },
-  greetingText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textMuted,
-    marginTop: spacing.sm,
-  },
-  heroTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.jumbo,
-    color: colors.textPrimary,
-    marginTop: spacing.xs,
-  },
-  searchSection: {
-    marginBottom: spacing.lg,
-  },
-  quickSearchResultsPanel: {
-    backgroundColor: colors.surfaceCard,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    borderRadius: borderRadius.lg,
-    padding: spacing.md,
-    marginTop: spacing.sm,
-    gap: spacing.sm,
-  },
-  quickChaptersRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.xs,
-  },
-  quickChapterChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    borderRadius: borderRadius.pill,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    minHeight: 36,
-  },
-  quickChapterText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.textPrimary,
-  },
-  quickVerseCard: {
-    backgroundColor: colors.surfaceFloating,
-    borderRadius: borderRadius.md,
-    padding: spacing.sm,
-    gap: 4,
-  },
-  quickVerseHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  quickVerseSurah: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.xs,
-    color: colors.primary,
-  },
-  quickVerseKey: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-  },
-  quickVerseTranslation: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textSecondary,
-    lineHeight: 18,
-    textAlign: 'right',
-  },
-  viewAllResultsButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.xs,
-    paddingVertical: spacing.xs,
-    borderTopWidth: 1,
-    borderTopColor: colors.borderSeparator,
-    minHeight: 40,
-  },
-  viewAllResultsText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.primary,
-  },
-  continueCard: {
-
-    marginBottom: spacing.xl,
-  },
-  continueHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  continueBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  continueBadgeText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.primary,
-  },
-  lastReadTime: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-  },
-  continueBody: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  continueInfo: {
-    alignItems: 'flex-start',
-  },
-  surahNameFa: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.xl,
-    color: colors.textPrimary,
-  },
-  verseLocation: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textSecondary,
-    marginTop: 2,
-  },
-  playButton: {
-    width: 48,
-    height: 48,
-    borderRadius: borderRadius.circle,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  progressBarBg: {
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    overflow: 'hidden',
-  },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: colors.primary,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: spacing.md,
-  },
-  sectionTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.md,
-    color: colors.textPrimary,
-  },
-  quickSurahsRow: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    paddingBottom: spacing.lg,
-  },
-  quickSurahPill: {
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    borderRadius: borderRadius.lg,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    alignItems: 'center',
-    minWidth: 90,
-  },
-  quickSurahName: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
-    color: colors.textPrimary,
-  },
-  quickSurahDesc: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xxs,
-    color: colors.textFaded,
-    marginTop: 2,
-  },
-  dailyAyahCard: {
-    marginBottom: spacing.xl,
-  },
-  dailyAyahArabic: {
-    fontFamily: fonts.quranHafs,
-    fontSize: 22,
-    color: colors.textPrimary,
-    textAlign: 'center',
-    lineHeight: 40,
-    marginBottom: spacing.sm,
-  },
-  dailyAyahTranslation: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: spacing.md,
-  },
-  dailyAyahFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: colors.borderSeparator,
-    paddingTop: spacing.sm,
-  },
-  dailyAyahRef: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-  },
-  listenButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 44,
-    minWidth: 44,
-    gap: 4,
-  },
-  listenButtonText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.primary,
-  },
-  gridContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.md,
-  },
-  gridItem: {
-    width: '47.5%',
-    backgroundColor: colors.surfaceCard,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    borderRadius: borderRadius.lg,
-    padding: spacing.md,
-    alignItems: 'flex-start',
-    gap: spacing.xs,
-  },
-  gridItemTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
-    color: colors.textPrimary,
-    marginTop: spacing.xs,
-  },
-  gridItemDesc: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-  },
-  quickJumpButton: {
-    minHeight: 44,
-    marginBottom: spacing.xl,
-  },
-  quickJumpCard: {
-    padding: spacing.md,
-  },
-  quickJumpRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  quickJumpIconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: borderRadius.circle,
-    backgroundColor: 'rgba(212, 175, 55, 0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(212, 175, 55, 0.25)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  quickJumpInfo: {
-    flex: 1,
-  },
-  quickJumpTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.md,
-    color: colors.textPrimary,
-    textAlign: rtlTextAlign,
-  },
-  quickJumpSubtitle: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textSecondary,
-    marginTop: 2,
-    textAlign: rtlTextAlign,
-  },
-});
+    scrollContent: {
+      paddingTop: 54,
+      paddingBottom: 40,
+      paddingHorizontal: spacing.lg,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: spacing.lg,
+    },
+    greetingText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textMuted,
+      marginTop: spacing.sm,
+    },
+    heroTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.jumbo,
+      color: colors.textPrimary,
+      marginTop: spacing.xs,
+    },
+    searchSection: {
+      marginBottom: spacing.lg,
+    },
+    quickSearchResultsPanel: {
+      backgroundColor: colors.surfaceCard,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      marginTop: spacing.sm,
+      gap: spacing.sm,
+    },
+    quickChaptersRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.xs,
+    },
+    quickChapterChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      backgroundColor: colors.surfaceFloating,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      borderRadius: borderRadius.pill,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      minHeight: 36,
+    },
+    quickChapterText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.textPrimary,
+    },
+    quickVerseCard: {
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.md,
+      padding: spacing.sm,
+      gap: 4,
+    },
+    quickVerseHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    quickVerseSurah: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xs,
+      color: colors.primary,
+    },
+    quickVerseKey: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textFaded,
+    },
+    quickVerseTranslation: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textSecondary,
+      lineHeight: 18,
+      textAlign: 'right',
+    },
+    viewAllResultsButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.xs,
+      paddingVertical: spacing.xs,
+      borderTopWidth: 1,
+      borderTopColor: colors.borderSeparator,
+      minHeight: 40,
+    },
+    viewAllResultsText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primary,
+    },
+    continueCard: {
+      marginBottom: spacing.xl,
+    },
+    continueHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.md,
+    },
+    continueBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+    },
+    continueBadgeText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primary,
+    },
+    lastReadTime: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textFaded,
+    },
+    continueBody: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.md,
+    },
+    continueInfo: {
+      alignItems: 'flex-start',
+    },
+    surahNameFa: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xl,
+      color: colors.textPrimary,
+    },
+    verseLocation: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textSecondary,
+      marginTop: 2,
+    },
+    playButton: {
+      width: 48,
+      height: 48,
+      borderRadius: borderRadius.circle,
+      backgroundColor: colors.primary,
+      alignItems: 'center',
+      justifyContent: 'center',
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.4,
+      shadowRadius: 8,
+      elevation: 4,
+    },
+    progressBarBg: {
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      overflow: 'hidden',
+    },
+    progressBarFill: {
+      height: '100%',
+      backgroundColor: colors.primary,
+    },
+    sectionHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: spacing.md,
+    },
+    sectionTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.md,
+      color: colors.textPrimary,
+    },
+    quickSurahsRow: {
+      flexDirection: 'row',
+      gap: spacing.sm,
+      paddingBottom: spacing.lg,
+    },
+    quickSurahPill: {
+      backgroundColor: colors.surfaceFloating,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      borderRadius: borderRadius.lg,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      alignItems: 'center',
+      minWidth: 90,
+    },
+    quickSurahName: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.textPrimary,
+    },
+    quickSurahDesc: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xxs,
+      color: colors.textFaded,
+      marginTop: 2,
+    },
+    dailyAyahCard: {
+      marginBottom: spacing.xl,
+    },
+    dailyAyahArabic: {
+      fontFamily: fonts.quranHafs,
+      fontSize: 22,
+      color: colors.textPrimary,
+      textAlign: 'center',
+      lineHeight: 40,
+      marginBottom: spacing.sm,
+    },
+    dailyAyahTranslation: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      lineHeight: 22,
+      marginBottom: spacing.md,
+    },
+    dailyAyahFooter: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderTopWidth: 1,
+      borderTopColor: colors.borderSeparator,
+      paddingTop: spacing.sm,
+    },
+    dailyAyahRef: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textFaded,
+    },
+    listenButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 44,
+      minWidth: 44,
+      gap: 4,
+    },
+    listenButtonText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primary,
+    },
+    gridContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.md,
+    },
+    gridItem: {
+      width: '47.5%',
+      backgroundColor: colors.surfaceCard,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      alignItems: 'flex-start',
+      gap: spacing.xs,
+    },
+    gridItemTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.textPrimary,
+      marginTop: spacing.xs,
+    },
+    gridItemDesc: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textFaded,
+    },
+    quickJumpButton: {
+      minHeight: 44,
+      marginBottom: spacing.xl,
+    },
+    quickJumpCard: {
+      padding: spacing.md,
+    },
+    quickJumpRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.md,
+    },
+    quickJumpIconContainer: {
+      width: 44,
+      height: 44,
+      borderRadius: borderRadius.circle,
+      backgroundColor: 'rgba(212, 175, 55, 0.12)',
+      borderWidth: 1,
+      borderColor: 'rgba(212, 175, 55, 0.25)',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    quickJumpInfo: {
+      flex: 1,
+    },
+    quickJumpTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.md,
+      color: colors.textPrimary,
+      textAlign: rtlTextAlign,
+    },
+    quickJumpSubtitle: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textSecondary,
+      marginTop: 2,
+      textAlign: rtlTextAlign,
+    },
+  });

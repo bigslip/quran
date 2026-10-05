@@ -75,6 +75,22 @@ export default function BookmarksScreen() {
   // Local state
   const [isSortModalOpen, setIsSortModalOpen] = useState(false);
   const [playingVerseKey, setPlayingVerseKey] = useState<string | null>(null);
+  const [localSearchText, setLocalSearchText] = useState(searchQuery);
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(localSearchText);
+      setSearchQuery(localSearchText);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [localSearchText, setSearchQuery]);
+
+  const handleClearSearch = useCallback(() => {
+    setLocalSearchText('');
+    setDebouncedSearchQuery('');
+    setSearchQuery('');
+  }, [setSearchQuery]);
 
   // Load bookmarks on mount
   useEffect(() => {
@@ -100,10 +116,10 @@ export default function BookmarksScreen() {
     };
   }, []);
 
-  // Filtered bookmarks derived from store selector
+  // Filtered bookmarks derived from store selector using debounced search text
   const filteredBookmarks = useMemo(
-    () => selectFilteredBookmarks({ bookmarks, selectedTagId, searchQuery }),
-    [bookmarks, selectedTagId, searchQuery],
+    () => selectFilteredBookmarks({ bookmarks, selectedTagId, searchQuery: debouncedSearchQuery }),
+    [bookmarks, selectedTagId, debouncedSearchQuery],
   );
 
   // Live tag counts map
@@ -238,17 +254,17 @@ export default function BookmarksScreen() {
           <Search size={18} color={colors.textFaded} style={styles.searchIcon} />
           <TextInput
             style={[styles.searchInput, { color: colors.textPrimary }]}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
+            value={localSearchText}
+            onChangeText={setLocalSearchText}
             placeholder="جستجو در متن آیات، ترجمه و یادداشت‌ها..."
             placeholderTextColor={colors.textFaded}
             textAlign="right"
             testID="bookmarks-search-input"
           />
-          {searchQuery ? (
+          {localSearchText ? (
             <TouchableOpacity
               style={styles.clearSearchButton}
-              onPress={() => setSearchQuery('')}
+              onPress={handleClearSearch}
               accessibilityRole="button"
               accessibilityLabel="پاک کردن جستجو"
               testID="btn-clear-search"
@@ -528,310 +544,310 @@ const createStyles = (colors: ColorTheme) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-  header: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 54,
-    paddingHorizontal: spacing.md,
-    paddingBottom: spacing.sm,
-  },
-  titleGroup: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  title: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.xl,
-    color: colors.textPrimary,
-  },
-  countBadge: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
-    borderRadius: borderRadius.pill,
-    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.25)',
-  },
-  countBadgeText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.primary,
-  },
-  sortButton: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 8,
-    borderRadius: borderRadius.md,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
-  },
-  sortButtonText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.primaryLight,
-  },
-  searchBarContainer: {
-    paddingHorizontal: spacing.md,
-    marginBottom: spacing.xs,
-  },
-  searchBar: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    backgroundColor: colors.surfaceFloating,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    paddingHorizontal: spacing.sm,
-    height: 44,
-  },
-  searchIcon: {
-    marginHorizontal: 4,
-  },
-  searchInput: {
-    flex: 1,
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textPrimary,
-    paddingVertical: 0,
-  },
-  clearSearchButton: {
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tagFilterBar: {
-    paddingVertical: spacing.xs,
-    marginBottom: spacing.xs,
-  },
-  tagFilterContent: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    paddingHorizontal: spacing.md,
-    gap: spacing.xs,
-  },
-  tagFilterChip: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: spacing.md,
-    paddingVertical: 7,
-    borderRadius: borderRadius.pill,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    minHeight: 34,
-  },
-  tagFilterChipActive: {
-    backgroundColor: 'rgba(16, 185, 129, 0.16)',
-    borderColor: colors.primary,
-  },
-  tagFilterChipText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textFaded,
-  },
-  tagFilterChipTextActive: {
-    fontFamily: fonts.uiBold,
-    color: colors.primary,
-  },
-  tagColorDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  listContent: {
-    paddingHorizontal: spacing.md,
-    paddingBottom: spacing.mega,
-  },
-  listContentWithSnackbar: {
-    paddingBottom: spacing.mega + 60,
-  },
-  emptyContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.mega,
-    gap: spacing.sm,
-  },
-  emptyIconHalo: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(245, 158, 11, 0.3)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.sm,
-  },
-  emptyIconHaloFaded: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    backgroundColor: 'rgba(148, 163, 184, 0.08)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(148, 163, 184, 0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.sm,
-  },
-  emptyTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.md,
-    color: colors.textPrimary,
-  },
-  emptyDesc: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textFaded,
-    textAlign: 'center',
-    lineHeight: 24,
-  },
-  emptyPrimaryButton: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: spacing.xs,
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: 12,
-    borderRadius: borderRadius.md,
-    marginTop: spacing.md,
-    minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
-  },
-  emptyPrimaryButtonText: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
-    color: colors.textInverse,
-  },
-  emptySecondaryButton: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: 10,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    backgroundColor: colors.surfaceFloating,
-    marginTop: spacing.md,
-    minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptySecondaryButtonText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.sm,
-    color: colors.textSecondary,
-  },
-  snackbarContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: spacing.md,
-    right: spacing.md,
-    zIndex: 99,
-  },
-  snackbarContent: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: colors.surfaceFloating,
-    borderRadius: BOOKMARK_COMPONENT_CONTRACTS.undoSnackbar.borderRadius,
-    borderWidth: 1,
-    borderColor: colors.borderActive,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    minHeight: BOOKMARK_COMPONENT_CONTRACTS.undoSnackbar.minHeight,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 8,
-  },
-  snackbarText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textPrimary,
-  },
-  snackbarUndoButton: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 6,
-    borderRadius: borderRadius.sm,
-    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-  },
-  snackbarUndoText: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.xs,
-    color: colors.primary,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: spacing.lg,
-  },
-  modalCard: {
-    width: '100%',
-    backgroundColor: colors.surfaceCard,
-    borderRadius: borderRadius.xl,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    padding: spacing.md,
-  },
-  modalHeader: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderSeparator,
-    marginBottom: spacing.sm,
-  },
-  modalTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.md,
-    color: colors.textPrimary,
-    textAlign: rtlTextAlign,
-  },
-  modalCloseButton: {
-    width: 44,
-    height: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sortOptionsContainer: {
-    gap: spacing.xs,
-  },
-  sortOptionRow: {
-    flexDirection: rtlRow,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.md,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
-  },
-  sortOptionRowActive: {
-    backgroundColor: 'rgba(16, 185, 129, 0.14)',
-    borderColor: colors.primary,
-  },
-  sortOptionLabel: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textPrimary,
-  },
-  sortOptionLabelActive: {
-    fontFamily: fonts.uiBold,
-    color: colors.primary,
-  },
-});
+    header: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingTop: 54,
+      paddingHorizontal: spacing.md,
+      paddingBottom: spacing.sm,
+    },
+    titleGroup: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
+    title: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xl,
+      color: colors.textPrimary,
+    },
+    countBadge: {
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 2,
+      borderRadius: borderRadius.pill,
+      backgroundColor: 'rgba(16, 185, 129, 0.12)',
+      borderWidth: 1,
+      borderColor: 'rgba(16, 185, 129, 0.25)',
+    },
+    countBadgeText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primary,
+    },
+    sortButton: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: 6,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 8,
+      borderRadius: borderRadius.md,
+      backgroundColor: colors.surfaceFloating,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
+    },
+    sortButtonText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primaryLight,
+    },
+    searchBarContainer: {
+      paddingHorizontal: spacing.md,
+      marginBottom: spacing.xs,
+    },
+    searchBar: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      paddingHorizontal: spacing.sm,
+      height: 44,
+    },
+    searchIcon: {
+      marginHorizontal: 4,
+    },
+    searchInput: {
+      flex: 1,
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textPrimary,
+      paddingVertical: 0,
+    },
+    clearSearchButton: {
+      width: 32,
+      height: 32,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    tagFilterBar: {
+      paddingVertical: spacing.xs,
+      marginBottom: spacing.xs,
+    },
+    tagFilterContent: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      paddingHorizontal: spacing.md,
+      gap: spacing.xs,
+    },
+    tagFilterChip: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: 6,
+      paddingHorizontal: spacing.md,
+      paddingVertical: 7,
+      borderRadius: borderRadius.pill,
+      backgroundColor: colors.surfaceFloating,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      minHeight: 34,
+    },
+    tagFilterChipActive: {
+      backgroundColor: 'rgba(16, 185, 129, 0.16)',
+      borderColor: colors.primary,
+    },
+    tagFilterChipText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textFaded,
+    },
+    tagFilterChipTextActive: {
+      fontFamily: fonts.uiBold,
+      color: colors.primary,
+    },
+    tagColorDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+    },
+    listContent: {
+      paddingHorizontal: spacing.md,
+      paddingBottom: spacing.mega,
+    },
+    listContentWithSnackbar: {
+      paddingBottom: spacing.mega + 60,
+    },
+    emptyContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: spacing.mega,
+      gap: spacing.sm,
+    },
+    emptyIconHalo: {
+      width: 88,
+      height: 88,
+      borderRadius: 44,
+      backgroundColor: 'rgba(245, 158, 11, 0.1)',
+      borderWidth: 1.5,
+      borderColor: 'rgba(245, 158, 11, 0.3)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: spacing.sm,
+    },
+    emptyIconHaloFaded: {
+      width: 88,
+      height: 88,
+      borderRadius: 44,
+      backgroundColor: 'rgba(148, 163, 184, 0.08)',
+      borderWidth: 1.5,
+      borderColor: 'rgba(148, 163, 184, 0.2)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: spacing.sm,
+    },
+    emptyTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.md,
+      color: colors.textPrimary,
+    },
+    emptyDesc: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textFaded,
+      textAlign: 'center',
+      lineHeight: 24,
+    },
+    emptyPrimaryButton: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: spacing.xs,
+      backgroundColor: colors.primary,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: 12,
+      borderRadius: borderRadius.md,
+      marginTop: spacing.md,
+      minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
+    },
+    emptyPrimaryButtonText: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.textInverse,
+    },
+    emptySecondaryButton: {
+      paddingHorizontal: spacing.lg,
+      paddingVertical: 10,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      backgroundColor: colors.surfaceFloating,
+      marginTop: spacing.md,
+      minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    emptySecondaryButtonText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.sm,
+      color: colors.textSecondary,
+    },
+    snackbarContainer: {
+      position: 'absolute',
+      bottom: 20,
+      left: spacing.md,
+      right: spacing.md,
+      zIndex: 99,
+    },
+    snackbarContent: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: BOOKMARK_COMPONENT_CONTRACTS.undoSnackbar.borderRadius,
+      borderWidth: 1,
+      borderColor: colors.borderActive,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      minHeight: BOOKMARK_COMPONENT_CONTRACTS.undoSnackbar.minHeight,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.35,
+      shadowRadius: 10,
+      elevation: 8,
+    },
+    snackbarText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textPrimary,
+    },
+    snackbarUndoButton: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      gap: 4,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 6,
+      borderRadius: borderRadius.sm,
+      backgroundColor: 'rgba(16, 185, 129, 0.12)',
+    },
+    snackbarUndoText: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xs,
+      color: colors.primary,
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: spacing.lg,
+    },
+    modalCard: {
+      width: '100%',
+      backgroundColor: colors.surfaceCard,
+      borderRadius: borderRadius.xl,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      padding: spacing.md,
+    },
+    modalHeader: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingBottom: spacing.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.borderSeparator,
+      marginBottom: spacing.sm,
+    },
+    modalTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.md,
+      color: colors.textPrimary,
+      textAlign: rtlTextAlign,
+    },
+    modalCloseButton: {
+      width: 44,
+      height: 44,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    sortOptionsContainer: {
+      gap: spacing.xs,
+    },
+    sortOptionRow: {
+      flexDirection: rtlRow,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 12,
+      paddingHorizontal: spacing.md,
+      borderRadius: borderRadius.md,
+      backgroundColor: colors.surfaceFloating,
+      borderWidth: 1,
+      borderColor: 'transparent',
+      minHeight: BOOKMARK_COMPONENT_CONTRACTS.minTouchTarget,
+    },
+    sortOptionRowActive: {
+      backgroundColor: 'rgba(16, 185, 129, 0.14)',
+      borderColor: colors.primary,
+    },
+    sortOptionLabel: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textPrimary,
+    },
+    sortOptionLabelActive: {
+      fontFamily: fonts.uiBold,
+      color: colors.primary,
+    },
+  });

@@ -52,7 +52,10 @@ type PreviewTab = 'prayer' | 'daily-ayah' | 'last-read';
 
 export function WidgetSettingsSection() {
   const colors = useThemeColors();
-  const { lastReadSurah, lastReadAyah, lastReadPage, lastReadJuz } = useReadingStore();
+  const lastReadSurah = useReadingStore((s) => s.lastReadSurah);
+  const lastReadAyah = useReadingStore((s) => s.lastReadAyah);
+  const lastReadPage = useReadingStore((s) => s.lastReadPage);
+  const lastReadJuz = useReadingStore((s) => s.lastReadJuz);
 
   const [selectedCity, setSelectedCity] = useState<IranianCity>(DEFAULT_CITY);
   const [activeTab, setActiveTab] = useState<PreviewTab>('prayer');

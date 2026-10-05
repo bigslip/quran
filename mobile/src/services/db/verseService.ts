@@ -6,7 +6,7 @@ import { Verse, Word } from '@/types/quran';
  */
 export async function getVersesByChapter(
   chapterId: number,
-  options: { includeWords?: boolean; limit?: number; offset?: number } = {}
+  options: { includeWords?: boolean; limit?: number; offset?: number } = {},
 ): Promise<Verse[]> {
   const db = await getDatabase();
   const { includeWords = true, limit = 300, offset = 0 } = options;
@@ -66,7 +66,15 @@ export async function getAyahByKey(verseKey: string): Promise<Verse | null> {
 /**
  * Fetches all verses for a given Mushaf page (1..604) with hydrated word-by-word data.
  */
-export async function getVersesByPage(pageNumber: number): Promise<Verse[]> {
+export async function getVersesByPage(pageNumber: number): Promise<Verse[]>;
+export async function getVersesByPage(
+  pageNumber: number,
+  options?: { includeWords?: boolean },
+): Promise<Verse[]>;
+export async function getVersesByPage(
+  pageNumber: number,
+  options?: { includeWords?: boolean },
+): Promise<Verse[]> {
   const db = await getDatabase();
   const query = `
     SELECT * FROM verses
@@ -75,7 +83,7 @@ export async function getVersesByPage(pageNumber: number): Promise<Verse[]> {
   `;
   const verses = await db.getAllAsync<Verse>(query, [pageNumber]);
 
-  if (verses.length > 0) {
+  if (options?.includeWords !== false && verses.length > 0) {
     const wordsQuery = `
       SELECT * FROM words
       WHERE page_number = ?

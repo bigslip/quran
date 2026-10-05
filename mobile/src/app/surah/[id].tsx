@@ -80,7 +80,8 @@ export default function SurahReaderScreen() {
   // Auto-hiding top bar animation & visibility state
   const navAnim = useRef(new Animated.Value(0)).current;
   const isNavBarVisibleRef = useRef(true);
-  const [isNavBarInteractive, setIsNavBarInteractive] = useState(true);
+  const isNavBarInteractiveRef = useRef(true);
+  const isNavBarInteractive = isNavBarInteractiveRef.current;
 
   const navTranslateY = navAnim.interpolate({
     inputRange: [0, 1],
@@ -95,7 +96,7 @@ export default function SurahReaderScreen() {
   const hideNavBar = useCallback(() => {
     if (!isNavBarVisibleRef.current) return;
     isNavBarVisibleRef.current = false;
-    setIsNavBarInteractive(false);
+    isNavBarInteractiveRef.current = false;
     Animated.timing(navAnim, {
       toValue: 1,
       duration: 200,
@@ -107,7 +108,7 @@ export default function SurahReaderScreen() {
   const showNavBar = useCallback(() => {
     if (isNavBarVisibleRef.current) return;
     isNavBarVisibleRef.current = true;
-    setIsNavBarInteractive(true);
+    isNavBarInteractiveRef.current = true;
     Animated.timing(navAnim, {
       toValue: 0,
       duration: 220,
@@ -295,7 +296,7 @@ export default function SurahReaderScreen() {
     async function loadPageData() {
       try {
         const [pVerses, pWords] = await Promise.all([
-          getVersesByPage(currentPage),
+          getVersesByPage(currentPage, { includeWords: false }),
           getPageWords(currentPage),
         ]);
         if (isMounted) {
@@ -751,9 +752,7 @@ export default function SurahReaderScreen() {
       } else {
         // Different Surah: route transition
         const targetRoute = `/surah/${destination.chapterId}?verse=${destination.verseNumber}&page=${destination.pageNumber}`;
-        router.push(
-          (shouldAutoScroll ? targetRoute : `${targetRoute}&autoScroll=false`) as any,
-        );
+        router.push((shouldAutoScroll ? targetRoute : `${targetRoute}&autoScroll=false`) as any);
       }
     },
     [chapterId, chapter, verses, viewMode, router, setLastRead, setActiveVerseKey, topBarHeight],
@@ -791,6 +790,57 @@ export default function SurahReaderScreen() {
 
     return parts.join(' • ');
   }, [viewMode, pageVerses, verses, currentPage, chapter]);
+
+  const listContentContainerStyle = useMemo(
+    () => [
+      styles.versesListContent,
+      { backgroundColor: colors.background, paddingTop: topBarHeight + spacing.xs },
+      activeVerseKey ? styles.versesListWithDock : null,
+    ],
+    [colors.background, topBarHeight, activeVerseKey],
+  );
+
+  const renderVerseItem = useCallback(
+    ({ item }: { item: Verse }) => (
+      <ContinuousVerseCard
+        verse={item}
+        theme={theme}
+        isActivePlaying={activeVerseKey === item.verse_key && isPlaying}
+        isHighlighted={highlightedVerseKey === item.verse_key}
+        quranFont={quranFont}
+        fontScale={fontScale}
+        showWordByWord={showWordByWord}
+        wordByWordLocale={wordByWordLocale}
+        showTranslation={showTranslation}
+        activeTranslation={activeTranslation}
+        selectedTranslationIds={selectedTranslationIds}
+        onPlayVerse={handlePlayVerse}
+        onBookmarkVerse={handleBookmarkVerse}
+        onToggleBookmark={handleBookmarkVerse}
+        onShareVerse={handleShareVerse}
+        onVerseInsights={handleVerseInsights}
+        isBookmarked={bookmarkedKeys.has(item.verse_key)}
+      />
+    ),
+    [
+      theme,
+      activeVerseKey,
+      isPlaying,
+      highlightedVerseKey,
+      quranFont,
+      fontScale,
+      showWordByWord,
+      wordByWordLocale,
+      showTranslation,
+      activeTranslation,
+      selectedTranslationIds,
+      handlePlayVerse,
+      handleBookmarkVerse,
+      handleShareVerse,
+      handleVerseInsights,
+      bookmarkedKeys,
+    ],
+  );
 
   if (loading) {
     return (
@@ -859,7 +909,9 @@ export default function SurahReaderScreen() {
           accessible={true}
           accessibilityRole="button"
           accessibilityLabel="پرش سریع به سوره، آیه یا صفحه"
-          accessibilityHint={chapter?.name_arabic ? `سوره مبارکه ${chapter?.name_arabic}` : undefined}
+          accessibilityHint={
+            chapter?.name_arabic ? `سوره مبارکه ${chapter?.name_arabic}` : undefined
+          }
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           {/* Primary Row: Compass + Persian Surah Title + Dropdown Chevron */}
@@ -882,9 +934,7 @@ export default function SurahReaderScreen() {
           </View>
 
           {/* Accessible Arabic title reference for screen readers & test contract */}
-          {chapter?.name_arabic ? (
-            <Text style={styles.srOnly}>{chapter?.name_arabic}</Text>
-          ) : null}
+          {chapter?.name_arabic ? <Text style={styles.srOnly}>{chapter?.name_arabic}</Text> : null}
         </TouchableOpacity>
 
         {/* Trailing Controls Toolbar (RTL): Dual-Mode Toggle & Settings */}
@@ -933,11 +983,7 @@ export default function SurahReaderScreen() {
           keyExtractor={(item) => item.verse_key}
           onScroll={handleScroll}
           scrollEventThrottle={16}
-          contentContainerStyle={[
-            styles.versesListContent,
-            { backgroundColor: colors.background, paddingTop: topBarHeight + spacing.xs },
-            activeVerseKey ? styles.versesListWithDock : null,
-          ]}
+          contentContainerStyle={listContentContainerStyle}
           CellRendererComponent={CellRenderer}
           onScrollToIndexFailed={(info) => {
             if (flatListRef.current && info.index >= 0 && info.index < verses.length) {
@@ -972,30 +1018,10 @@ export default function SurahReaderScreen() {
               </View>
             ) : null
           }
-          renderItem={({ item }) => (
-            <ContinuousVerseCard
-              verse={item}
-              theme={theme}
-              isActivePlaying={activeVerseKey === item.verse_key && isPlaying}
-              isHighlighted={highlightedVerseKey === item.verse_key}
-              quranFont={quranFont}
-              fontScale={fontScale}
-              showWordByWord={showWordByWord}
-              wordByWordLocale={wordByWordLocale}
-              showTranslation={showTranslation}
-              activeTranslation={activeTranslation}
-              selectedTranslationIds={selectedTranslationIds}
-              onPlayVerse={handlePlayVerse}
-              onBookmarkVerse={handleBookmarkVerse}
-              onToggleBookmark={handleBookmarkVerse}
-              onShareVerse={handleShareVerse}
-              onVerseInsights={handleVerseInsights}
-              isBookmarked={bookmarkedKeys.has(item.verse_key)}
-            />
-          )}
-          initialNumToRender={10}
-          maxToRenderPerBatch={10}
-          windowSize={11}
+          renderItem={renderVerseItem}
+          initialNumToRender={6}
+          maxToRenderPerBatch={6}
+          windowSize={5}
           removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
           onScrollBeginDrag={() => {

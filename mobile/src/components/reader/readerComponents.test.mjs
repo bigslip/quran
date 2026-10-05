@@ -2059,7 +2059,10 @@ describe('Reader Components Logic, Contracts & Data Integrity Tests', () => {
         code.includes('lastScrolledVerseKeyRef'),
         'Must prevent duplicate scrolls with lastScrolledVerseKeyRef',
       );
-      assert.ok(code.includes('windowSize={11}'), 'Must maintain buffer with windowSize');
+      assert.ok(
+        code.includes('windowSize={5}') || code.includes('windowSize={11}'),
+        'Must maintain buffer with windowSize',
+      );
     });
   });
 

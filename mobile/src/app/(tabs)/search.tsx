@@ -1,15 +1,8 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { BookOpen, ChevronLeft } from 'lucide-react-native';
-import {
-  useThemeColors,
-  type ColorTheme,
-  fonts,
-  fontSizes,
-  spacing,
-  borderRadius,
-} from '@/theme';
+import { useThemeColors, type ColorTheme, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { SearchBar } from '@/components/common/SearchBar';
 import { searchQuran, searchChapters } from '@/services/db/searchService';
@@ -24,9 +17,9 @@ export default function SearchScreen() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [matchedChapters, setMatchedChapters] = useState<Chapter[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleSearch = useCallback(async (text: string) => {
-    setQuery(text);
+  const executeSearch = useCallback(async (text: string) => {
     const cleanText = text.trim();
     if (cleanText.length > 1) {
       setIsLoading(true);
@@ -50,12 +43,48 @@ export default function SearchScreen() {
     }
   }, []);
 
+  const handleSearch = useCallback(
+    (text: string, immediate = false) => {
+      setQuery(text);
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+        debounceTimerRef.current = null;
+      }
+
+      const cleanText = text.trim();
+      if (cleanText.length <= 1) {
+        setResults([]);
+        setMatchedChapters([]);
+        setIsLoading(false);
+        return;
+      }
+
+      if (immediate) {
+        executeSearch(cleanText);
+      } else {
+        setIsLoading(true);
+        debounceTimerRef.current = setTimeout(() => {
+          executeSearch(cleanText);
+        }, 250);
+      }
+    },
+    [executeSearch],
+  );
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
+
   // Synchronize route query param from Home screen or deep links
   useEffect(() => {
     if (params.q && typeof params.q === 'string' && params.q.trim().length > 0) {
       const initial = params.q.trim();
       setQuery(initial);
-      handleSearch(initial);
+      handleSearch(initial, true);
     }
   }, [params.q, handleSearch]);
 
@@ -77,11 +106,10 @@ export default function SearchScreen() {
               <BookOpen size={18} color={colors.primary} />
             </View>
             <View style={styles.chapterInfo}>
-              <Text style={styles.chapterNameFa}>
-                سوره {chapter.name_fa}
-              </Text>
+              <Text style={styles.chapterNameFa}>سوره {chapter.name_fa}</Text>
               <Text style={styles.chapterDetails}>
-                شماره {chapter.id} • {chapter.verses_count} آیه • {chapter.revelation_place === 'makkah' ? 'مکی' : 'مدنی'}
+                شماره {chapter.id} • {chapter.verses_count} آیه •{' '}
+                {chapter.revelation_place === 'makkah' ? 'مکی' : 'مدنی'}
               </Text>
             </View>
             <View style={styles.chapterArabicWrapper}>
@@ -108,8 +136,8 @@ export default function SearchScreen() {
           testID="search-screen-search-bar"
           value={query}
           onChangeText={handleSearch}
-          onSubmitEditing={() => handleSearch(query)}
-          onClear={() => handleSearch('')}
+          onSubmitEditing={() => handleSearch(query, true)}
+          onClear={() => handleSearch('', true)}
           autoFocus={Boolean(params.q)}
           placeholder="جستجو در متن آیات، ترجمه فارسی یا کلمات..."
         />
@@ -125,14 +153,10 @@ export default function SearchScreen() {
         ListEmptyComponent={
           query.trim().length > 1 ? (
             matchedChapters.length === 0 && !isLoading ? (
-              <Text style={styles.emptyText}>
-                موردی برای «{query}» یافت نشد.
-              </Text>
+              <Text style={styles.emptyText}>موردی برای «{query}» یافت نشد.</Text>
             ) : null
           ) : (
-            <Text style={styles.hintText}>
-              عبارت مورد نظر خود را برای جستجوی فوری تایپ کنید.
-            </Text>
+            <Text style={styles.hintText}>عبارت مورد نظر خود را برای جستجوی فوری تایپ کنید.</Text>
           )
         }
         renderItem={({ item }) => (
@@ -150,10 +174,7 @@ export default function SearchScreen() {
               </Text>
               <Text style={styles.verseKey}>{item.verse_key}</Text>
             </View>
-            <Text
-              style={styles.resultTranslation}
-              numberOfLines={3}
-            >
+            <Text style={styles.resultTranslation} numberOfLines={3}>
               {item.translation_fa}
             </Text>
           </TouchableOpacity>
@@ -284,4 +305,3 @@ const createStyles = (colors: ColorTheme) =>
       marginTop: 40,
     },
   });
-

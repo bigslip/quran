@@ -82,8 +82,11 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
     const colors = useThemeColors();
     const styles = useMemo(() => createStyles(colors), [colors]);
     // Reading preferences
-    const { quranFont, fontScale, activeTranslation, selectedTranslationIds, selectedReciterId } =
-      useReadingStore();
+    const quranFont = useReadingStore((s) => s.quranFont);
+    const fontScale = useReadingStore((s) => s.fontScale);
+    const activeTranslation = useReadingStore((s) => s.activeTranslation);
+    const selectedTranslationIds = useReadingStore((s) => s.selectedTranslationIds);
+    const selectedReciterId = useReadingStore((s) => s.selectedReciterId);
 
     // All tags from store if availableTags prop not explicitly provided
     const storeTags = useBookmarkStore((state) => state.tags);

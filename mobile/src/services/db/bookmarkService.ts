@@ -308,10 +308,61 @@ export async function addBookmark(params: {
     }
   }
 
-  const items = await getAllHydratedBookmarks('date_desc');
-  const found = items.find((b) => b.verse_key === params.verse_key);
-  if (!found) {
+  const bookmarkRow = await userDb.getFirst<BookmarkRow>(
+    `SELECT 
+      b.id, b.verse_key, b.chapter_id, b.verse_number, b.note, b.created_at, b.updated_at,
+      GROUP_CONCAT(t.id) AS tag_ids,
+      GROUP_CONCAT(t.name) AS tag_names,
+      GROUP_CONCAT(t.color) AS tag_colors
+    FROM user_bookmarks b
+    LEFT JOIN bookmark_tag_map m ON m.bookmark_id = b.id
+    LEFT JOIN user_tags t ON t.id = m.tag_id
+    WHERE b.verse_key = ?
+    GROUP BY b.id;`,
+    [params.verse_key],
+  );
+
+  if (!bookmarkRow) {
     throw new Error('Failed to retrieve newly inserted bookmark');
   }
-  return found;
+
+  const quranDb = await resolveQuranDatabase();
+  const sc =
+    (await quranDb.getFirst<any>(
+      `SELECT 
+        v.verse_key, v.text_uthmani, v.text_indopak,
+        v.translation_fa_makarem, v.translation_fa_ansarian, v.translation_en_saheeh,
+        v.page_number, v.juz_number,
+        c.name_fa AS chapter_name_fa, c.name_arabic AS chapter_name_arabic
+      FROM verses v
+      JOIN chapters c ON c.id = v.chapter_id
+      WHERE v.verse_key = ?;`,
+      [params.verse_key],
+    )) || {};
+
+  const tags = parseBookmarkTags(
+    bookmarkRow.tag_ids,
+    bookmarkRow.tag_names,
+    bookmarkRow.tag_colors,
+  );
+
+  return {
+    id: bookmarkRow.id,
+    verse_key: bookmarkRow.verse_key,
+    chapter_id: bookmarkRow.chapter_id,
+    verse_number: bookmarkRow.verse_number,
+    note: bookmarkRow.note || undefined,
+    tags,
+    created_at: bookmarkRow.created_at,
+    updated_at: bookmarkRow.updated_at,
+    text_uthmani: sc.text_uthmani || '',
+    text_indopak: sc.text_indopak || undefined,
+    translation_fa_makarem: sc.translation_fa_makarem || '',
+    translation_fa_ansarian: sc.translation_fa_ansarian || '',
+    translation_en_saheeh: sc.translation_en_saheeh || '',
+    page_number: sc.page_number || 1,
+    juz_number: sc.juz_number || 1,
+    chapter_name_fa: sc.chapter_name_fa || '',
+    chapter_name_arabic: sc.chapter_name_arabic || '',
+  };
 }

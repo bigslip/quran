@@ -16,7 +16,7 @@ export const THEME_GLOW_CONFIG: Record<AppTheme, { centerColor: string; centerOp
   light: { centerColor: '#059669', centerOpacity: 0.04 },
 };
 
-export const AmbientGlow: React.FC<AmbientGlowProps> = ({ height = 260 }) => {
+export const AmbientGlow: React.FC<AmbientGlowProps> = React.memo(({ height = 260 }) => {
   const { theme, colors } = useAppTheme();
   const glowConfig = THEME_GLOW_CONFIG[theme] ?? THEME_GLOW_CONFIG.emerald;
 
@@ -46,7 +46,7 @@ export const AmbientGlow: React.FC<AmbientGlowProps> = ({ height = 260 }) => {
       </Svg>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

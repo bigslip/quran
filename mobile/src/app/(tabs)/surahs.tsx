@@ -10,14 +10,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Compass } from 'lucide-react-native';
-import {
-  useThemeColors,
-  type ColorTheme,
-  fonts,
-  fontSizes,
-  spacing,
-  borderRadius,
-} from '@/theme';
+import { useThemeColors, type ColorTheme, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { SearchBar } from '@/components/common/SearchBar';
 import { QuickJumpModal } from '@/components/navigation';
@@ -161,6 +154,13 @@ export default function SurahsScreen() {
     [activeTab, handleSurahPress, handleJuzPress],
   );
 
+  const getItemLayout = useMemo(() => {
+    if (activeTab === 'surah' || activeTab === 'revelation') {
+      return (_data: any, index: number) => ({ length: 80, offset: 80 * index, index });
+    }
+    return undefined;
+  }, [activeTab]);
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <AmbientGlow height={220} />
@@ -258,6 +258,7 @@ export default function SurahsScreen() {
           data={filteredData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
+          getItemLayout={getItemLayout}
           contentContainerStyle={[
             styles.listContent,
             filteredData.length === 0 && styles.listContentEmpty,
@@ -290,129 +291,129 @@ const createStyles = (colors: ColorTheme) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-  header: {
-    paddingTop: 54,
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
-    gap: spacing.md,
-    zIndex: 1,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  quickJumpButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 44,
-    minWidth: 44,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: 'rgba(212, 175, 55, 0.3)',
-    borderRadius: borderRadius.pill,
-    gap: 6,
-  },
-  quickJumpButtonText: {
-    fontFamily: fonts.uiMedium,
-    fontSize: fontSizes.xs,
-    color: colors.goldAccent,
-  },
-  titleGroup: {
-    alignItems: 'flex-start',
-  },
-  title: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.xl,
-    color: colors.textPrimary,
-    textAlign: 'right',
-  },
-  subtitle: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textSecondary,
-    marginTop: 2,
-    textAlign: 'right',
-  },
-  countBadge: {
-    backgroundColor: colors.surfaceFloating,
-    borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    borderRadius: borderRadius.pill,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    minHeight: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  countBadgeText: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.xs,
-    color: colors.goldAccent,
-  },
-  loadingContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.md,
-  },
-  loadingText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textSecondary,
-  },
-  errorContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.xl,
-    gap: spacing.sm,
-  },
-  errorTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.md,
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-  errorSubtitle: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: spacing.sm,
-  },
-  retryButton: {
-    backgroundColor: colors.primarySubtle,
-    borderWidth: 1,
-    borderColor: colors.primaryGlow,
-    borderRadius: borderRadius.pill,
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
-    minHeight: 44,
-    minWidth: 120,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  retryButtonText: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
-    color: colors.primary,
-  },
-  listContent: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xs,
-    paddingBottom: 36,
-  },
-  listContentEmpty: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-});
+    header: {
+      paddingTop: 54,
+      paddingHorizontal: spacing.lg,
+      paddingBottom: spacing.sm,
+      gap: spacing.md,
+      zIndex: 1,
+    },
+    titleRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    headerActions: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
+    quickJumpButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 44,
+      minWidth: 44,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      backgroundColor: colors.surfaceFloating,
+      borderWidth: 1,
+      borderColor: 'rgba(212, 175, 55, 0.3)',
+      borderRadius: borderRadius.pill,
+      gap: 6,
+    },
+    quickJumpButtonText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.goldAccent,
+    },
+    titleGroup: {
+      alignItems: 'flex-start',
+    },
+    title: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xl,
+      color: colors.textPrimary,
+      textAlign: 'right',
+    },
+    subtitle: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textSecondary,
+      marginTop: 2,
+      textAlign: 'right',
+    },
+    countBadge: {
+      backgroundColor: colors.surfaceFloating,
+      borderWidth: 1,
+      borderColor: colors.borderIridescent,
+      borderRadius: borderRadius.pill,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      minHeight: 28,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    countBadgeText: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xs,
+      color: colors.goldAccent,
+    },
+    loadingContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.md,
+    },
+    loadingText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textSecondary,
+    },
+    errorContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: spacing.xl,
+      gap: spacing.sm,
+    },
+    errorTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.md,
+      color: colors.textPrimary,
+      textAlign: 'center',
+    },
+    errorSubtitle: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginBottom: spacing.sm,
+    },
+    retryButton: {
+      backgroundColor: colors.primarySubtle,
+      borderWidth: 1,
+      borderColor: colors.primaryGlow,
+      borderRadius: borderRadius.pill,
+      paddingHorizontal: spacing.xl,
+      paddingVertical: spacing.md,
+      minHeight: 44,
+      minWidth: 120,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    retryButtonText: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.primary,
+    },
+    listContent: {
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.xs,
+      paddingBottom: 36,
+    },
+    listContentEmpty: {
+      flexGrow: 1,
+      justifyContent: 'center',
+    },
+  });

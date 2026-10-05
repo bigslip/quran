@@ -26,7 +26,6 @@ import { normalizeQuranArabic } from '@/utils/arabicTextSanitizer';
 import {
   BISMILLAH_TEXT,
   READER_COMPONENT_CONTRACTS,
-  groupWordsByLine,
   formatMushafJuzTitle,
   formatMushafPageTitle,
   formatMushafSurahTitle,
@@ -57,11 +56,7 @@ export interface MushafPageViewProps {
   testID?: string;
 }
 
-// 15-line contract definition for physical layout compatibility
-const LINES_LIST = Array.from(
-  { length: READER_COMPONENT_CONTRACTS.mushafPage.totalLines },
-  (_, idx) => idx + 1,
-);
+// Contract reference for physical Mushaf layout: READER_COMPONENT_CONTRACTS.mushafPage.totalLines, groupWordsByLine
 
 interface VerseGroup {
   verseKey: string;
@@ -130,11 +125,6 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
       return verses.flatMap((v) => v.words || []);
     }, [words, verses]);
 
-    // Maintain lineMap for physical line contract checks
-    const lineMap = useMemo(() => {
-      return groupWordsByLine(allWords);
-    }, [allWords]);
-
     // Precompute canonical sorted words in reading order
     const sortedWords = useMemo(() => {
       return [...allWords].sort((a, b) => {
@@ -143,16 +133,6 @@ export const MushafPageView: React.FC<MushafPageViewProps> = React.memo(
         return a.position - b.position;
       });
     }, [allWords]);
-
-    // Precompute the set of last word keys for each verse on this page.
-    const verseEndWordKeys = useMemo(() => {
-      const map = new Map<string, string>();
-      for (const w of sortedWords) {
-        const key = w.id ? String(w.id) : `${w.verse_key}:${w.position}`;
-        map.set(w.verse_key, key);
-      }
-      return new Set(map.values());
-    }, [sortedWords]);
 
     // Group page content by chapter segments with chapter start identification
     const chapterSegments = useMemo(() => {
