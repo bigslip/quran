@@ -18,25 +18,34 @@ export default function SearchScreen() {
   const [matchedChapters, setMatchedChapters] = useState<Chapter[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const searchSeqRef = useRef(0);
 
   const executeSearch = useCallback(async (text: string) => {
     const cleanText = text.trim();
     if (cleanText.length > 1) {
+      const currentSeq = ++searchSeqRef.current;
       setIsLoading(true);
       try {
         const [verses, chapters] = await Promise.all([
           searchQuran(cleanText),
           searchChapters(cleanText, 3).catch(() => []),
         ]);
-        setResults(verses);
-        setMatchedChapters(chapters);
+        if (searchSeqRef.current === currentSeq) {
+          setResults(verses);
+          setMatchedChapters(chapters);
+        }
       } catch {
-        setResults([]);
-        setMatchedChapters([]);
+        if (searchSeqRef.current === currentSeq) {
+          setResults([]);
+          setMatchedChapters([]);
+        }
       } finally {
-        setIsLoading(false);
+        if (searchSeqRef.current === currentSeq) {
+          setIsLoading(false);
+        }
       }
     } else {
+      searchSeqRef.current++;
       setResults([]);
       setMatchedChapters([]);
       setIsLoading(false);
@@ -53,6 +62,7 @@ export default function SearchScreen() {
 
       const cleanText = text.trim();
       if (cleanText.length <= 1) {
+        searchSeqRef.current++;
         setResults([]);
         setMatchedChapters([]);
         setIsLoading(false);

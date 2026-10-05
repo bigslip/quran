@@ -154,13 +154,6 @@ export default function SurahsScreen() {
     [activeTab, handleSurahPress, handleJuzPress],
   );
 
-  const getItemLayout = useMemo(() => {
-    if (activeTab === 'surah' || activeTab === 'revelation') {
-      return (_data: any, index: number) => ({ length: 80, offset: 80 * index, index });
-    }
-    return undefined;
-  }, [activeTab]);
-
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <AmbientGlow height={220} />
@@ -258,7 +251,6 @@ export default function SurahsScreen() {
           data={filteredData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          getItemLayout={getItemLayout}
           contentContainerStyle={[
             styles.listContent,
             filteredData.length === 0 && styles.listContentEmpty,

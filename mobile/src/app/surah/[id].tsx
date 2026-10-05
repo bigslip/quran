@@ -80,8 +80,7 @@ export default function SurahReaderScreen() {
   // Auto-hiding top bar animation & visibility state
   const navAnim = useRef(new Animated.Value(0)).current;
   const isNavBarVisibleRef = useRef(true);
-  const isNavBarInteractiveRef = useRef(true);
-  const isNavBarInteractive = isNavBarInteractiveRef.current;
+  const [isNavBarInteractive, setIsNavBarInteractive] = useState(true);
 
   const navTranslateY = navAnim.interpolate({
     inputRange: [0, 1],
@@ -96,7 +95,7 @@ export default function SurahReaderScreen() {
   const hideNavBar = useCallback(() => {
     if (!isNavBarVisibleRef.current) return;
     isNavBarVisibleRef.current = false;
-    isNavBarInteractiveRef.current = false;
+    setIsNavBarInteractive(false);
     Animated.timing(navAnim, {
       toValue: 1,
       duration: 200,
@@ -108,7 +107,7 @@ export default function SurahReaderScreen() {
   const showNavBar = useCallback(() => {
     if (isNavBarVisibleRef.current) return;
     isNavBarVisibleRef.current = true;
-    isNavBarInteractiveRef.current = true;
+    setIsNavBarInteractive(true);
     Animated.timing(navAnim, {
       toValue: 0,
       duration: 220,
@@ -1020,7 +1019,7 @@ export default function SurahReaderScreen() {
           }
           renderItem={renderVerseItem}
           initialNumToRender={6}
-          maxToRenderPerBatch={6}
+          maxToRenderPerBatch={8}
           windowSize={5}
           removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
