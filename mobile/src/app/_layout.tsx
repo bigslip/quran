@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, StyleSheet, I18nManager } from 'react-native';
 import { useAppTheme } from '@/theme';
+import { initWidgetSyncSubscriber } from '@/services/widgets/widgetSyncService.ts';
 
 // Ensure native RTL mirroring is disabled; Quran.ir manages its own bidirectional presentation
 I18nManager.allowRTL(false);
@@ -32,6 +33,11 @@ export default function RootLayout() {
     UthmanicHafs: require('../../assets/fonts/UthmanicHafs.ttf'),
     IndoPakNastaleeq: require('../../assets/fonts/IndoPakNastaleeq.ttf'),
   });
+
+  useEffect(() => {
+    const unsubscribe = initWidgetSyncSubscriber();
+    return () => unsubscribe?.();
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {

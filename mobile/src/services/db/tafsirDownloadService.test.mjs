@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { DatabaseSync } from 'node:sqlite';
 import {
   downloadTafsirDatabase,
+  downloadTafsir,
   isTafsirDownloaded,
   deleteTafsirDatabase,
   getDownloadedTafsirDb,
@@ -71,13 +72,13 @@ describe('Tafsir Download Service & SQLite Storage Tests (Task 3)', () => {
 
             // Simulate progress ticks: 25%, 50%, 75%, 100%
             if (onProgress) {
-              onProgress({ totalBytesWritten: 2500, totalBytesExpectedToWrite: 10000 });
-              onProgress({ totalBytesWritten: 5000, totalBytesExpectedToWrite: 10000 });
-              onProgress({ totalBytesWritten: 10000, totalBytesExpectedToWrite: 10000 });
+              onProgress({ totalBytesWritten: 2500000, totalBytesExpectedToWrite: 10000000 });
+              onProgress({ totalBytesWritten: 5000000, totalBytesExpectedToWrite: 10000000 });
+              onProgress({ totalBytesWritten: 10000000, totalBytesExpectedToWrite: 10000000 });
             }
 
             // Write to the tmp path (moveAsync will rename it to the final path)
-            mockFiles.set(targetPath, { size: 10000 });
+            mockFiles.set(targetPath, { size: 10000000 });
             return { status: 200, uri: targetPath };
           },
         };
@@ -173,7 +174,7 @@ describe('Tafsir Download Service & SQLite Storage Tests (Task 3)', () => {
 
       // Check size
       const size = await getDownloadedTafsirSize('fa-tafsir-nemouneh');
-      assert.strictEqual(size, 10000);
+      assert.strictEqual(size, 10000000);
     });
 
     it('should deduplicate concurrent downloads for the same slug', async () => {
@@ -211,6 +212,56 @@ describe('Tafsir Download Service & SQLite Storage Tests (Task 3)', () => {
       await assert.rejects(() => downloadTafsirDatabase('fa-tafsir-nemouneh'), /HTTP 404/i);
       const isDown = await isTafsirDownloaded('fa-tafsir-nemouneh');
       assert.strictEqual(isDown, false);
+    });
+
+    it('should reject and clean up file if downloaded file size is less than 100 KB', async () => {
+      // Mock returns a small corrupt/captive portal HTML file (50 KB)
+      const targetPath = getTafsirDbPath('fa-tafsir-nemouneh');
+      const tmpPath = `${targetPath}.download.tmp`;
+
+      mockFs.createDownloadResumable = (url, path) => ({
+        downloadAsync: async () => {
+          mockFiles.set(path, { size: 50 * 1024 }); // 50 KB < 100 KB
+          return { status: 200, uri: path };
+        },
+      });
+
+      await assert.rejects(
+        () => downloadTafsirDatabase('fa-tafsir-nemouneh'),
+        /corrupt or too small/i,
+      );
+
+      // Both tmp and target should have been cleaned up
+      assert.strictEqual(mockFiles.has(tmpPath), false);
+      assert.strictEqual(mockFiles.has(targetPath), false);
+      assert.strictEqual(await isTafsirDownloaded('fa-tafsir-nemouneh'), false);
+    });
+
+    it('should reject and clean up file when download exceeds timeout', async () => {
+      const targetPath = getTafsirDbPath('fa-tafsir-nemouneh');
+      const tmpPath = `${targetPath}.download.tmp`;
+
+      // Mock a stalled download
+      mockFs.createDownloadResumable = (url, path) => ({
+        downloadAsync: async () => {
+          mockFiles.set(path, { size: 500 * 1024 });
+          // Hang for 200ms
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          return { status: 200, uri: path };
+        },
+      });
+
+      await assert.rejects(
+        () => downloadTafsirDatabase('fa-tafsir-nemouneh', undefined, { timeoutMs: 50 }),
+        /timed out/i,
+      );
+
+      assert.strictEqual(mockFiles.has(tmpPath), false);
+      assert.strictEqual(mockFiles.has(targetPath), false);
+    });
+
+    it('should export downloadTafsir as an alias to downloadTafsirDatabase', () => {
+      assert.strictEqual(downloadTafsir, downloadTafsirDatabase);
     });
   });
 

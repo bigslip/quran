@@ -14,68 +14,77 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
   if (dbInstance) {
     return dbInstance;
   }
-  
+
   if (initPromise) {
     return initPromise;
   }
 
   initPromise = (async (): Promise<SQLite.SQLiteDatabase> => {
-    let db: SQLite.SQLiteDatabase | null = null;
-    let isValid = false;
-
     try {
-      db = await SQLite.openDatabaseAsync(DB_NAME);
-      const test = await db.getFirstAsync<{ count: number }>(
-        "SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='chapters';"
-      );
-      if (test && test.count > 0) {
-        const row = await db.getFirstAsync<{ count: number }>("SELECT count(*) as count FROM chapters;");
-        if (row && row.count === 114) {
-          isValid = true;
-        }
-      }
-    } catch {
-      isValid = false;
-    }
+      let db: SQLite.SQLiteDatabase | null = null;
+      let isValid = false;
 
-    if (!isValid) {
-      if (db) {
-        try {
-          await db.closeAsync();
-        } catch {}
-      }
-
-      // Try expo-sqlite's built-in asset import first with forceOverwrite
       try {
-        await SQLite.importDatabaseFromAssetAsync(DB_NAME, {
-          assetId: require('../../../assets/data/quran.db'),
-          forceOverwrite: true,
-        });
-      } catch (importErr) {
-        console.warn('importDatabaseFromAssetAsync fallback to manual copy:', importErr);
-        // Fallback to manual FileSystem copy
-        const dbDir = `${FileSystem.documentDirectory}SQLite/`;
-        const dbPath = `${dbDir}${DB_NAME}`;
-        await FileSystem.makeDirectoryAsync(dbDir, { intermediates: true });
-        const asset = await Asset.fromModule(require('../../../assets/data/quran.db')).downloadAsync();
-        if (asset.localUri) {
-          await FileSystem.copyAsync({
-            from: asset.localUri,
-            to: dbPath,
-          });
+        db = await SQLite.openDatabaseAsync(DB_NAME);
+        const test = await db.getFirstAsync<{ count: number }>(
+          "SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name='chapters';",
+        );
+        if (test && test.count > 0) {
+          const row = await db.getFirstAsync<{ count: number }>(
+            'SELECT count(*) as count FROM chapters;',
+          );
+          if (row && row.count === 114) {
+            isValid = true;
+          }
         }
+      } catch {
+        isValid = false;
       }
 
-      // Re-open database after import
-      db = await SQLite.openDatabaseAsync(DB_NAME);
-    }
+      if (!isValid) {
+        if (db) {
+          try {
+            await db.closeAsync();
+          } catch {}
+        }
 
-    if (!db) {
-      throw new Error('Failed to initialize SQLite database');
-    }
+        // Try expo-sqlite's built-in asset import first with forceOverwrite
+        try {
+          await SQLite.importDatabaseFromAssetAsync(DB_NAME, {
+            assetId: require('../../../assets/data/quran.db'),
+            forceOverwrite: true,
+          });
+        } catch (importErr) {
+          console.warn('importDatabaseFromAssetAsync fallback to manual copy:', importErr);
+          // Fallback to manual FileSystem copy
+          const dbDir = `${FileSystem.documentDirectory}SQLite/`;
+          const dbPath = `${dbDir}${DB_NAME}`;
+          await FileSystem.makeDirectoryAsync(dbDir, { intermediates: true });
+          const asset = await Asset.fromModule(
+            require('../../../assets/data/quran.db'),
+          ).downloadAsync();
+          if (asset.localUri) {
+            await FileSystem.copyAsync({
+              from: asset.localUri,
+              to: dbPath,
+            });
+          }
+        }
 
-    dbInstance = db;
-    return dbInstance;
+        // Re-open database after import
+        db = await SQLite.openDatabaseAsync(DB_NAME);
+      }
+
+      if (!db) {
+        throw new Error('Failed to initialize SQLite database');
+      }
+
+      dbInstance = db;
+      return dbInstance;
+    } catch (err) {
+      initPromise = null;
+      throw err;
+    }
   })();
 
   return initPromise;

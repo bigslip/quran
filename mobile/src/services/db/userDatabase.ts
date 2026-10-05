@@ -3,6 +3,7 @@ import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
 
 const USER_DB_NAME = 'quran_user.db';
 let userDbInstance: SQLiteLikeDb | null = null;
+let rawDbInstance: any = null;
 let initPromise: Promise<SQLiteLikeDb> | null = null;
 let isInitialized = false;
 
@@ -15,12 +16,14 @@ export const PRESET_TAGS = [
 ] as const;
 
 export function setUserDatabase(db: SQLiteLikeDb | any | null): void {
+  rawDbInstance = db || null;
   userDbInstance = db ? adaptDatabase(db) : null;
   initPromise = null;
   isInitialized = false;
 }
 
 export function resetUserDatabaseForTesting(): void {
+  rawDbInstance = null;
   userDbInstance = null;
   initPromise = null;
   isInitialized = false;
@@ -133,38 +136,52 @@ export async function getUserDatabase(): Promise<SQLiteLikeDb> {
   }
 
   initPromise = (async (): Promise<SQLiteLikeDb> => {
-    let rawDb: any = null;
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const SQLite = typeof require !== 'undefined' ? require('expo-sqlite') : null;
-      if (!SQLite) {
-        throw new Error('Expo SQLite not available');
+      let rawDb: any = null;
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const SQLite = typeof require !== 'undefined' ? require('expo-sqlite') : null;
+        if (!SQLite) {
+          throw new Error('Expo SQLite not available');
+        }
+        rawDb = await SQLite.openDatabaseAsync(USER_DB_NAME);
+        if (rawDb.execAsync) {
+          await rawDb.execAsync('PRAGMA journal_mode = WAL;');
+          await rawDb.execAsync('PRAGMA foreign_keys = ON;');
+        }
+      } catch {
+        // Fallback for Node test environments (hidden from Metro bundler AST parser)
+        // eslint-disable-next-line @typescript-eslint/no-implied-eval
+        const dynamicImport = new Function('specifier', 'return import(specifier);');
+        const { DatabaseSync } = (await dynamicImport('node:' + 'sqlite')) as any;
+        rawDb = new DatabaseSync(':memory:');
       }
-      rawDb = await SQLite.openDatabaseAsync(USER_DB_NAME);
-      if (rawDb.execAsync) {
-        await rawDb.execAsync('PRAGMA journal_mode = WAL;');
-        await rawDb.execAsync('PRAGMA foreign_keys = ON;');
-      }
-    } catch {
-      // Fallback for Node test environments (hidden from Metro bundler AST parser)
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
-      const dynamicImport = new Function('specifier', 'return import(specifier);');
-      const { DatabaseSync } = (await dynamicImport('node:' + 'sqlite')) as any;
-      rawDb = new DatabaseSync(':memory:');
+
+      rawDbInstance = rawDb;
+      const adapted = adaptDatabase(rawDb);
+      await initUserTables(adapted);
+      isInitialized = true;
+
+      userDbInstance = adapted;
+      return userDbInstance;
+    } catch (err) {
+      initPromise = null;
+      throw err;
     }
-
-    const adapted = adaptDatabase(rawDb);
-    await initUserTables(adapted);
-    isInitialized = true;
-
-    userDbInstance = adapted;
-    return userDbInstance;
   })();
 
   return initPromise;
 }
 
 export async function closeUserDatabase(): Promise<void> {
+  if (rawDbInstance) {
+    if (typeof rawDbInstance.closeAsync === 'function') {
+      await rawDbInstance.closeAsync();
+    } else if (typeof rawDbInstance.close === 'function') {
+      rawDbInstance.close();
+    }
+  }
+  rawDbInstance = null;
   userDbInstance = null;
   initPromise = null;
   isInitialized = false;

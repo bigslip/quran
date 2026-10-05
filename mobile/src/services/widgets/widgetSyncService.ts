@@ -32,6 +32,9 @@ export const IOS_APP_GROUP_ID = 'group.ir.quran.app';
 /** Module-level synchronous cache for instant UI and widget preview access */
 let cachedWidgetData: WidgetSharedData | null = null;
 
+/** Active widget synchronizer teardown function to eliminate listener leaks */
+let activeSyncTeardown: (() => void) | null = null;
+
 export interface SyncWidgetDataOptions {
   force?: boolean;
   date?: Date;
@@ -281,6 +284,16 @@ export async function syncWidgetData(
  * Returns an unsubscribe/cleanup function.
  */
 export function initWidgetSyncSubscriber(options?: { debounceMs?: number }): () => void {
+  // If a subscriber is already active, invoke its teardown to prevent duplicate listeners
+  if (activeSyncTeardown) {
+    try {
+      activeSyncTeardown();
+    } catch {
+      // Ignore teardown errors
+    }
+    activeSyncTeardown = null;
+  }
+
   const debounceMs = options?.debounceMs ?? 300;
   let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -338,12 +351,18 @@ export function initWidgetSyncSubscriber(options?: { debounceMs?: number }): () 
     // Ignore in Node.js or environments without AppState
   }
 
-  return () => {
+  const compoundTeardown = () => {
     unsubscribeStore?.();
     appStateSubscription?.remove?.();
     if (debounceTimer) {
       clearTimeout(debounceTimer);
       debounceTimer = null;
     }
+    if (activeSyncTeardown === compoundTeardown) {
+      activeSyncTeardown = null;
+    }
   };
+
+  activeSyncTeardown = compoundTeardown;
+  return compoundTeardown;
 }

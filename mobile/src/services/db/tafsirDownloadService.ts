@@ -89,8 +89,15 @@ export interface FileSystemAdapter {
     downloadAsync(): Promise<{ uri: string; status: number } | undefined>;
     pauseAsync?(): Promise<any>;
     resumeAsync?(): Promise<any>;
+    cancelAsync?(): Promise<any>;
   };
 }
+
+/** Network timeout for downloading a complete Tafsir database (45 seconds) */
+export const TAFSIR_DOWNLOAD_TIMEOUT_MS = 45000;
+
+/** Minimum acceptable downloaded Tafsir SQLite database file size (100 KB) */
+export const MIN_TAFSIR_FILE_SIZE_BYTES = 100 * 1024;
 
 // Module-level state
 let currentApiBaseUrl = resolveDefaultApiBaseUrl();
@@ -331,6 +338,7 @@ function broadcastProgress(slug: string, fraction: number): void {
 export async function downloadTafsirDatabase(
   slug: string,
   onProgress?: (progress: number) => void,
+  options?: { timeoutMs?: number },
 ): Promise<string> {
   const clean = normalizeSlug(slug);
 
@@ -364,41 +372,78 @@ export async function downloadTafsirDatabase(
     const targetPath = getTafsirDbPath(clean);
     const tmpPath = `${targetPath}.download.tmp`;
     const downloadUrl = getTafsirDownloadUrl(clean);
+    const timeoutMs = options?.timeoutMs ?? TAFSIR_DOWNLOAD_TIMEOUT_MS;
 
     // Ensure directory exists
     await fs.makeDirectoryAsync(targetDir, { intermediates: true });
 
     broadcastProgress(clean, 0);
 
-    try {
-      if (typeof fs.createDownloadResumable === 'function') {
-        const downloadResumable = fs.createDownloadResumable(
-          downloadUrl,
-          tmpPath,
-          {},
-          (progress) => {
-            if (progress && progress.totalBytesExpectedToWrite > 0) {
-              const fraction = progress.totalBytesWritten / progress.totalBytesExpectedToWrite;
-              broadcastProgress(clean, fraction);
-            }
-          },
-        );
+    let timeoutTimer: ReturnType<typeof setTimeout> | null = null;
+    let resumableInstance: any = null;
 
-        const result = await downloadResumable.downloadAsync();
-        if (!result || (result.status && result.status !== 200)) {
-          throw new Error(
-            `Failed to download Tafsir database: HTTP ${result?.status ?? 'unknown'}`,
-          );
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutTimer = setTimeout(async () => {
+        try {
+          if (typeof resumableInstance?.cancelAsync === 'function') {
+            await resumableInstance.cancelAsync();
+          } else if (typeof resumableInstance?.pauseAsync === 'function') {
+            await resumableInstance.pauseAsync();
+          }
+        } catch {
+          // Ignore cancellation errors
         }
-      } else if (typeof fs.downloadAsync === 'function') {
-        const result = await fs.downloadAsync(downloadUrl, tmpPath);
-        if (!result || (result.status && result.status !== 200)) {
-          throw new Error(
-            `Failed to download Tafsir database: HTTP ${result?.status ?? 'unknown'}`,
+        reject(new Error(`Tafsir download timed out after ${timeoutMs / 1000}s: ${clean}`));
+      }, timeoutMs);
+    });
+
+    try {
+      const executeDownload = async (): Promise<void> => {
+        if (typeof fs.createDownloadResumable === 'function') {
+          const downloadResumable = fs.createDownloadResumable(
+            downloadUrl,
+            tmpPath,
+            {},
+            (progress) => {
+              if (progress && progress.totalBytesExpectedToWrite > 0) {
+                const fraction = progress.totalBytesWritten / progress.totalBytesExpectedToWrite;
+                broadcastProgress(clean, fraction);
+              }
+            },
           );
+          resumableInstance = downloadResumable;
+
+          const result = await downloadResumable.downloadAsync();
+          if (!result || (result.status && result.status !== 200)) {
+            throw new Error(
+              `Failed to download Tafsir database: HTTP ${result?.status ?? 'unknown'}`,
+            );
+          }
+        } else if (typeof fs.downloadAsync === 'function') {
+          const result = await fs.downloadAsync(downloadUrl, tmpPath);
+          if (!result || (result.status && result.status !== 200)) {
+            throw new Error(
+              `Failed to download Tafsir database: HTTP ${result?.status ?? 'unknown'}`,
+            );
+          }
+        } else {
+          throw new Error('FileSystem implementation does not support downloading files');
         }
-      } else {
-        throw new Error('FileSystem implementation does not support downloading files');
+      };
+
+      await Promise.race([executeDownload(), timeoutPromise]);
+
+      if (timeoutTimer) {
+        clearTimeout(timeoutTimer);
+        timeoutTimer = null;
+      }
+
+      // Verify the downloaded temporary file size and integrity
+      const info = await fs.getInfoAsync(tmpPath);
+      if (info && info.size !== undefined && info.size < MIN_TAFSIR_FILE_SIZE_BYTES) {
+        throw new Error(
+          `Downloaded Tafsir database file is corrupt or too small (${info.size} bytes). Minimum required size is 100 KB.`,
+        );
       }
 
       // Atomic rename: move tmp → final path
@@ -416,6 +461,10 @@ export async function downloadTafsirDatabase(
       broadcastProgress(clean, 1);
       return targetPath;
     } catch (err) {
+      if (timeoutTimer) {
+        clearTimeout(timeoutTimer);
+        timeoutTimer = null;
+      }
       // Clean up both tmp and target on failure to prevent corrupt databases
       try {
         await fs.deleteAsync(tmpPath, { idempotent: true });
@@ -434,6 +483,9 @@ export async function downloadTafsirDatabase(
   activeDownloads.set(clean, downloadPromise);
   return downloadPromise;
 }
+
+/** Alias conforming to downloadTafsir specification */
+export const downloadTafsir = downloadTafsirDatabase;
 
 /**
  * Deletes a downloaded Tafsir database from disk and closes any active connections.

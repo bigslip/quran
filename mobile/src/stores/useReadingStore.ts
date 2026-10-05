@@ -208,26 +208,3 @@ export const useReadingStore = create<ReadingState>()(
     },
   ),
 );
-
-export { initWidgetSyncSubscriber } from '../services/widgets/widgetSyncService.ts';
-
-// Automatically subscribe widget synchronizer outside unit test runs
-if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'test') {
-  try {
-    if (typeof queueMicrotask === 'function') {
-      queueMicrotask(() => {
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
-          const {
-            initWidgetSyncSubscriber: initSubscriber,
-          } = require('../services/widgets/widgetSyncService.ts');
-          initSubscriber?.();
-        } catch {
-          // Ignore in dynamic bundlers if resolution is deferred
-        }
-      });
-    }
-  } catch {
-    // Ignore in non-standard runtimes
-  }
-}

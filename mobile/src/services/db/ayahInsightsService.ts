@@ -7,6 +7,7 @@ import {
 } from './tafsirDownloadService.ts';
 
 import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
+import { getUserDatabase } from './userDatabase.ts';
 
 export type { SQLiteLikeDb };
 export { adaptDatabase };
@@ -676,9 +677,9 @@ export async function savePersonalReflection(
     reflectionMemoryStore.set(verseKey, trimmed);
   }
 
-  if (sqlitePersistenceEnabled || (db && db !== customDatabaseInstance)) {
+  if (sqlitePersistenceEnabled || db) {
     try {
-      const activeDb = await getActiveDb(db);
+      const activeDb: SQLiteLikeDb = db ? adaptDatabase(db) : await getUserDatabase();
       // Best-effort table creation and persistence for writable databases
       if (activeDb.run) {
         await activeDb.run(`
@@ -712,9 +713,9 @@ export async function getPersonalReflection(verseKey: string, db?: any): Promise
     return reflectionMemoryStore.get(verseKey) ?? null;
   }
 
-  if (sqlitePersistenceEnabled || (db && db !== customDatabaseInstance)) {
+  if (sqlitePersistenceEnabled || db) {
     try {
-      const activeDb = await getActiveDb(db);
+      const activeDb: SQLiteLikeDb = db ? adaptDatabase(db) : await getUserDatabase();
       const row = await activeDb.getFirst<{ reflection: string }>(
         `SELECT reflection FROM user_reflections WHERE verse_key = ? LIMIT 1;`,
         [verseKey],
