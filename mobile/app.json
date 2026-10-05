@@ -14,6 +14,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ir.quran.app",
+      "buildNumber": "1",
       "infoPlist": {
         "UIBackgroundModes": ["audio"]
       }
@@ -23,7 +24,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#041410"
       },
-      "package": "ir.quran.app"
+      "package": "ir.quran.app",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.WAKE_LOCK"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -36,6 +43,8 @@
         {
           "fonts": [
             "./assets/fonts/Vazirmatn-Regular.ttf",
+            "./assets/fonts/Vazirmatn-Medium.ttf",
+            "./assets/fonts/Vazirmatn-Bold.ttf",
             "./assets/fonts/UthmanicHafs.ttf",
             "./assets/fonts/IndoPakNastaleeq.ttf"
           ]
