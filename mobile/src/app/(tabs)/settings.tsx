@@ -36,6 +36,7 @@ import {
   formatTotalStorageFa,
   getTafsirItemState,
 } from '@/components/settings/settingsContracts';
+import { WidgetSettingsSection } from '@/components/settings/WidgetSettingsSection';
 
 interface ThemeCardData {
   id: AppTheme;
@@ -494,7 +495,10 @@ export default function SettingsScreen() {
           })}
         </View>
 
-        {/* 4. About Section */}
+        {/* 4. Home Screen Widgets & Live Previewer */}
+        <WidgetSettingsSection />
+
+        {/* 5. About Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionHeading, { color: colors.primary }]}>درباره سامانه</Text>
           <View
