@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "build:db": "node ../scripts/mobile/build-sqlite-db.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --test 'src/**/*.test.{ts,mjs}'"
+    "test": "node --test 'src/**/*.test.{ts,mjs}' 'plugins/**/*.test.{ts,mjs}'"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^3.1.1",
