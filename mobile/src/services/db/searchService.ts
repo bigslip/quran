@@ -1,8 +1,9 @@
 import type { SearchResult, Chapter } from '../../types/quran.ts';
+import type { SQLiteLikeDb } from './databaseAdapter.ts';
 
-let customDb: any = null;
+let customDb: SQLiteLikeDb | any | null = null;
 
-export function setSearchDatabase(db: any): void {
+export function setSearchDatabase(db: SQLiteLikeDb | any | null): void {
   customDb = db;
 }
 

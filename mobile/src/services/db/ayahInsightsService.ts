@@ -12,12 +12,12 @@ import { getUserDatabase } from './userDatabase.ts';
 export type { SQLiteLikeDb };
 export { adaptDatabase };
 
-let customDatabaseInstance: any = null;
+let customDatabaseInstance: SQLiteLikeDb | any | null = null;
 
 /**
  * Sets a custom database instance (e.g. Node DatabaseSync in tests or custom provider).
  */
-export function setAyahDatabase(db: any): void {
+export function setAyahDatabase(db: SQLiteLikeDb | any | null): void {
   customDatabaseInstance = db;
 }
 

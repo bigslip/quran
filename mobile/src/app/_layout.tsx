@@ -7,6 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, StyleSheet, I18nManager } from 'react-native';
 import { useAppTheme } from '@/theme';
 import { initWidgetSyncSubscriber } from '@/services/widgets/widgetSyncService.ts';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 
 // Ensure native RTL mirroring is disabled; Quran.ir manages its own bidirectional presentation
 I18nManager.allowRTL(false);
@@ -50,24 +51,26 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <View style={[styles.root, styles.container, { backgroundColor: colors.background }]}>
-        <StatusBar
-          style={isDark ? 'light' : 'dark'}
-          backgroundColor={colors.background}
-          translucent={true}
-        />
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: colors.background },
-          }}
-        >
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="surah/[id]" options={{ presentation: 'card' }} />
-        </Stack>
-      </View>
-    </SafeAreaProvider>
+    <ErrorBoundary testID="root-error-boundary">
+      <SafeAreaProvider>
+        <View style={[styles.root, styles.container, { backgroundColor: colors.background }]}>
+          <StatusBar
+            style={isDark ? 'light' : 'dark'}
+            backgroundColor={colors.background}
+            translucent={true}
+          />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: colors.background },
+            }}
+          >
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="surah/[id]" options={{ presentation: 'card' }} />
+          </Stack>
+        </View>
+      </SafeAreaProvider>
+    </ErrorBoundary>
   );
 }
 

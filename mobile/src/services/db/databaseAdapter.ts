@@ -4,8 +4,8 @@
  * Unified database adapter interface supporting both expo-sqlite and node:sqlite.
  */
 export interface SQLiteLikeDb {
-  getAll<T = any>(query: string, params?: any[]): Promise<T[]> | T[];
-  getFirst<T = any>(query: string, params?: any[]): Promise<T | null> | T | null;
+  getAll<T = unknown>(query: string, params?: any[]): Promise<T[]> | T[];
+  getFirst<T = unknown>(query: string, params?: any[]): Promise<T | null> | T | null;
   run?(query: string, params?: any[]): Promise<any> | any;
 }
 

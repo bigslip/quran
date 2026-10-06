@@ -6,7 +6,7 @@ import { getUserDatabase } from './userDatabase.ts';
 
 let customScriptureDb: SQLiteLikeDb | null = null;
 
-export function setScriptureDatabase(db: any): void {
+export function setScriptureDatabase(db: SQLiteLikeDb | any | null): void {
   customScriptureDb = db ? adaptDatabase(db) : null;
 }
 
@@ -220,7 +220,7 @@ export async function getAllHydratedBookmarks(
   for (let i = 0; i < verseKeys.length; i += CHUNK_SIZE) {
     const chunk = verseKeys.slice(i, i + CHUNK_SIZE);
     const placeholders = chunk.map(() => '?').join(',');
-    const scriptureRows = await quranDb.getAll(
+    const scriptureRows = await quranDb.getAll<any>(
       `SELECT 
         v.verse_key, v.text_uthmani, v.text_indopak,
         v.translation_fa_makarem, v.translation_fa_ansarian, v.translation_en_saheeh,
