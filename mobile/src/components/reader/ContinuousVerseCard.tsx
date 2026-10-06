@@ -111,18 +111,16 @@ export const ContinuousVerseCard: React.FC<ContinuousVerseCardProps> = React.mem
       if (!showTranslation || !selectedTranslationIds || selectedTranslationIds.length === 0) {
         return [];
       }
-      return selectedTranslationIds
-        .map((transId) => {
-          const transText = getVerseTranslationText(verse, transId);
-          if (!transText) return null;
+      const list: { transId: number; transText: string; authorName: string }[] = [];
+      for (const transId of selectedTranslationIds) {
+        const transText = getVerseTranslationText(verse, transId);
+        if (transText) {
           const transMeta = getTranslationById(transId);
           const authorName = transMeta?.authorName || transMeta?.nameFa || 'ترجمه';
-          return { transId, transText, authorName };
-        })
-        .filter(
-          (item): item is { transId: number; transText: string; authorName: string } =>
-            item !== null,
-        );
+          list.push({ transId, transText, authorName });
+        }
+      }
+      return list;
     }, [showTranslation, selectedTranslationIds, verse]);
 
     // Only show translator chip/name when more than one translation is displayed simultaneously

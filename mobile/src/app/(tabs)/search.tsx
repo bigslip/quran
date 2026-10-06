@@ -28,7 +28,6 @@ export default function SearchScreen() {
   const executeSearch = useCallback(async (text: string) => {
     const cleanText = text.trim();
     if (cleanText.length > 1) {
-      addRecentSearch(cleanText);
       const currentSeq = ++searchSeqRef.current;
       setIsLoading(true);
       try {
@@ -114,7 +113,12 @@ export default function SearchScreen() {
           <TouchableOpacity
             key={`chap-${chapter.id}`}
             style={styles.chapterCard}
-            onPress={() => router.push(`/surah/${chapter.id}` as any)}
+            onPress={() => {
+              if (query.trim().length > 1) {
+                addRecentSearch(query.trim());
+              }
+              router.push(`/surah/${chapter.id}` as any);
+            }}
             activeOpacity={0.75}
             accessible={true}
             accessibilityRole="button"
@@ -155,7 +159,13 @@ export default function SearchScreen() {
           testID="search-screen-search-bar"
           value={query}
           onChangeText={handleSearch}
-          onSubmitEditing={() => handleSearch(query, true)}
+          onSubmitEditing={() => {
+            const cleanText = query.trim();
+            if (cleanText.length > 1) {
+              addRecentSearch(cleanText);
+            }
+            handleSearch(query, true);
+          }}
           onClear={() => handleSearch('', true)}
           autoFocus={Boolean(params.q)}
           placeholder="جستجو در متن آیات، ترجمه فارسی یا کلمات..."
@@ -227,9 +237,12 @@ export default function SearchScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.resultCard}
-            onPress={() =>
-              router.push(`/surah/${item.chapter_id}?verse=${item.verse_number}` as any)
-            }
+            onPress={() => {
+              if (query.trim().length > 1) {
+                addRecentSearch(query.trim());
+              }
+              router.push(`/surah/${item.chapter_id}?verse=${item.verse_number}` as any);
+            }}
             activeOpacity={0.75}
             accessible={true}
             accessibilityRole="button"

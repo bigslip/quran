@@ -81,68 +81,54 @@ export const TafsirTabContent: React.FC<TafsirTabContentProps> = React.memo(
     const [isAllTafsirDownloaded, setIsAllTafsirDownloaded] = useState<boolean>(false);
     const storedFontScale = useReadingStore((state) => state.tafsirFontScale);
     const setStoredFontScale = useReadingStore((state) => state.setTafsirFontScale);
-    const [fontSizeLevel, setFontSizeLevel] = useState<TafsirFontSizeLevel>(
-      storedFontScale || 'comfortable',
-    );
+    const fontSizeLevel = storedFontScale || 'comfortable';
     const currentScale = TAFSIR_READING_FONT_SCALES[fontSizeLevel];
 
-    // Keep local state in sync if store changes externally
-    useEffect(() => {
-      if (storedFontScale && storedFontScale !== fontSizeLevel) {
-        setFontSizeLevel(storedFontScale);
-      }
-    }, [storedFontScale]);
-
     const handleDecreaseFontSize = useCallback(() => {
-      setFontSizeLevel((prev) => {
-        let next: TafsirFontSizeLevel = prev;
-        if (prev === 'large') next = 'comfortable';
-        else if (prev === 'comfortable') next = 'standard';
-        if (next !== prev) {
-          setStoredFontScale(next);
-        }
-        return next;
-      });
-    }, [setStoredFontScale]);
+      let next: TafsirFontSizeLevel = fontSizeLevel;
+      if (fontSizeLevel === 'large') next = 'comfortable';
+      else if (fontSizeLevel === 'comfortable') next = 'standard';
+      if (next !== fontSizeLevel) {
+        setStoredFontScale(next);
+      }
+    }, [fontSizeLevel, setStoredFontScale]);
 
     const handleIncreaseFontSize = useCallback(() => {
-      setFontSizeLevel((prev) => {
-        let next: TafsirFontSizeLevel = prev;
-        if (prev === 'standard') next = 'comfortable';
-        else if (prev === 'comfortable') next = 'large';
-        if (next !== prev) {
-          setStoredFontScale(next);
-        }
-        return next;
-      });
-    }, [setStoredFontScale]);
+      let next: TafsirFontSizeLevel = fontSizeLevel;
+      if (fontSizeLevel === 'standard') next = 'comfortable';
+      else if (fontSizeLevel === 'comfortable') next = 'large';
+      if (next !== fontSizeLevel) {
+        setStoredFontScale(next);
+      }
+    }, [fontSizeLevel, setStoredFontScale]);
 
     const [downloadedMap, setDownloadedMap] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
       let isMounted = true;
       async function checkStatuses() {
-        const statuses: Record<string, boolean> = {};
-        for (const tafsir of tafsirs) {
-          const id = (tafsir.id || '').toLowerCase();
-          let slug: string | null = null;
-          if (id.includes('nemouneh') || id === '171') {
-            slug = 'fa-tafsir-nemouneh';
-          } else if (id.includes('noor') || id === '172') {
-            slug = 'fa-tafsir-noor';
-          }
-          if (slug) {
-            try {
-              statuses[tafsir.id] = await isTafsirDownloaded(slug);
-            } catch {
-              statuses[tafsir.id] = false;
+        const entries = await Promise.all(
+          tafsirs.map(async (tafsir) => {
+            const id = (tafsir.id || '').toLowerCase();
+            let slug: string | null = null;
+            if (id.includes('nemouneh') || id === '171') {
+              slug = 'fa-tafsir-nemouneh';
+            } else if (id.includes('noor') || id === '172') {
+              slug = 'fa-tafsir-noor';
             }
-          } else {
-            statuses[tafsir.id] = false;
-          }
-        }
+            if (slug) {
+              try {
+                const isDown = await isTafsirDownloaded(slug);
+                return [tafsir.id, isDown] as const;
+              } catch {
+                return [tafsir.id, false] as const;
+              }
+            }
+            return [tafsir.id, false] as const;
+          }),
+        );
         if (isMounted) {
-          setDownloadedMap(statuses);
+          setDownloadedMap(Object.fromEntries(entries));
         }
       }
       checkStatuses();

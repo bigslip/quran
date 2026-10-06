@@ -49,8 +49,15 @@ export default function HomeScreen() {
   const [quickResults, setQuickResults] = useState<SearchResult[]>([]);
   const [quickChapters, setQuickChapters] = useState<Chapter[]>([]);
   const [isSearchingQuick, setIsSearchingQuick] = useState(false);
-  const [greeting, setGreeting] = useState('روز بخیر');
   const [isQuickJumpOpen, setIsQuickJumpOpen] = useState(false);
+
+  const greeting = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour >= 4 && hour < 12) return 'صبح بخیر';
+    if (hour >= 12 && hour < 17) return 'روز بخیر';
+    if (hour >= 17 && hour < 21) return 'عصر بخیر';
+    return 'شامگاه بخیر';
+  }, []);
 
   const lastReadChapterId = useReadingStore((s) => s.lastReadChapterId);
   const lastReadVerseNumber = useReadingStore((s) => s.lastReadVerseNumber);
@@ -123,14 +130,6 @@ export default function HomeScreen() {
       clearTimeout(timer);
     };
   }, [searchQuery]);
-
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour >= 4 && hour < 12) setGreeting('صبح بخیر');
-    else if (hour >= 12 && hour < 17) setGreeting('روز بخیر');
-    else if (hour >= 17 && hour < 21) setGreeting('عصر بخیر');
-    else setGreeting('شامگاه بخیر');
-  }, []);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>

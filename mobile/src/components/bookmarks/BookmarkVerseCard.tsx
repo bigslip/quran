@@ -580,97 +580,99 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
         </View>
 
         {/* Tag Selection Modal */}
-        <Modal
-          visible={isTagModalOpen}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setIsTagModalOpen(false)}
-        >
-          <View style={styles.modalOverlay}>
-            <View
-              style={[
-                styles.modalCard,
-                { backgroundColor: colors.backgroundElevated, borderColor: colors.borderSubtle },
-              ]}
-              testID={`${testID}-tag-modal`}
-            >
-              <View style={[styles.modalHeader, { borderBottomColor: colors.borderSeparator }]}>
-                <View style={styles.modalTitleGroup}>
-                  <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>
-                    مدیریت برچسب‌ها
-                  </Text>
-                  <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>
-                    {chapterTitle} • {ayahBadgeText}
-                  </Text>
+        {isTagModalOpen ? (
+          <Modal
+            visible={isTagModalOpen}
+            transparent
+            animationType="fade"
+            onRequestClose={() => setIsTagModalOpen(false)}
+          >
+            <View style={styles.modalOverlay}>
+              <View
+                style={[
+                  styles.modalCard,
+                  { backgroundColor: colors.backgroundElevated, borderColor: colors.borderSubtle },
+                ]}
+                testID={`${testID}-tag-modal`}
+              >
+                <View style={[styles.modalHeader, { borderBottomColor: colors.borderSeparator }]}>
+                  <View style={styles.modalTitleGroup}>
+                    <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>
+                      مدیریت برچسب‌ها
+                    </Text>
+                    <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>
+                      {chapterTitle} • {ayahBadgeText}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.modalCloseButton}
+                    onPress={() => setIsTagModalOpen(false)}
+                    accessibilityRole="button"
+                    accessibilityLabel="بستن پنجره برچسب‌ها"
+                    testID={`${testID}-btn-close-tags`}
+                  >
+                    <X size={20} color={colors.textFaded} />
+                  </TouchableOpacity>
                 </View>
+
+                <ScrollView style={styles.tagOptionsList}>
+                  {tagList.map((tag) => {
+                    const isSelected = currentTagIdSet.has(tag.id);
+                    return (
+                      <TouchableOpacity
+                        key={`modal-tag-${tag.id}`}
+                        style={[
+                          styles.tagOptionRow,
+                          { backgroundColor: colors.surfaceFloating },
+                          isSelected && [
+                            styles.tagOptionRowSelected,
+                            { backgroundColor: colors.primarySubtle, borderColor: colors.primary },
+                          ],
+                        ]}
+                        onPress={() => handleToggleTag(tag.id)}
+                        activeOpacity={0.7}
+                        accessible={true}
+                        accessibilityRole="checkbox"
+                        accessibilityState={{ checked: isSelected }}
+                        accessibilityLabel={tag.name}
+                        testID={`${testID}-modal-tag-${tag.id}`}
+                      >
+                        <View style={styles.tagOptionInfo}>
+                          <View
+                            style={[
+                              styles.tagColorDotLarge,
+                              { backgroundColor: tag.color || colors.primary },
+                            ]}
+                          />
+                          <Text style={[styles.tagOptionName, { color: colors.textPrimary }]}>
+                            {tag.name}
+                          </Text>
+                        </View>
+
+                        <View style={[styles.tagCheckbox, isSelected && styles.tagCheckboxChecked]}>
+                          {isSelected ? (
+                            <Check size={14} color={colors.textInverse} strokeWidth={3} />
+                          ) : null}
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </ScrollView>
+
                 <TouchableOpacity
-                  style={styles.modalCloseButton}
+                  style={[styles.modalDoneButton, { backgroundColor: colors.primary }]}
                   onPress={() => setIsTagModalOpen(false)}
+                  activeOpacity={0.8}
+                  accessible={true}
                   accessibilityRole="button"
-                  accessibilityLabel="بستن پنجره برچسب‌ها"
-                  testID={`${testID}-btn-close-tags`}
+                  accessibilityLabel="تأیید و بستن"
                 >
-                  <X size={20} color={colors.textFaded} />
+                  <Text style={styles.modalDoneButtonText}>تأیید و بستن</Text>
                 </TouchableOpacity>
               </View>
-
-              <ScrollView style={styles.tagOptionsList}>
-                {tagList.map((tag) => {
-                  const isSelected = currentTagIdSet.has(tag.id);
-                  return (
-                    <TouchableOpacity
-                      key={`modal-tag-${tag.id}`}
-                      style={[
-                        styles.tagOptionRow,
-                        { backgroundColor: colors.surfaceFloating },
-                        isSelected && [
-                          styles.tagOptionRowSelected,
-                          { backgroundColor: colors.primarySubtle, borderColor: colors.primary },
-                        ],
-                      ]}
-                      onPress={() => handleToggleTag(tag.id)}
-                      activeOpacity={0.7}
-                      accessible={true}
-                      accessibilityRole="checkbox"
-                      accessibilityState={{ checked: isSelected }}
-                      accessibilityLabel={tag.name}
-                      testID={`${testID}-modal-tag-${tag.id}`}
-                    >
-                      <View style={styles.tagOptionInfo}>
-                        <View
-                          style={[
-                            styles.tagColorDotLarge,
-                            { backgroundColor: tag.color || colors.primary },
-                          ]}
-                        />
-                        <Text style={[styles.tagOptionName, { color: colors.textPrimary }]}>
-                          {tag.name}
-                        </Text>
-                      </View>
-
-                      <View style={[styles.tagCheckbox, isSelected && styles.tagCheckboxChecked]}>
-                        {isSelected ? (
-                          <Check size={14} color={colors.textInverse} strokeWidth={3} />
-                        ) : null}
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-
-              <TouchableOpacity
-                style={[styles.modalDoneButton, { backgroundColor: colors.primary }]}
-                onPress={() => setIsTagModalOpen(false)}
-                activeOpacity={0.8}
-                accessible={true}
-                accessibilityRole="button"
-                accessibilityLabel="تأیید و بستن"
-              >
-                <Text style={styles.modalDoneButtonText}>تأیید و بستن</Text>
-              </TouchableOpacity>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        ) : null}
       </View>
     );
   },

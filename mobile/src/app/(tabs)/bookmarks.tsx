@@ -92,11 +92,6 @@ export default function BookmarksScreen() {
     setSearchQuery('');
   }, [setSearchQuery]);
 
-  // Load bookmarks on mount
-  useEffect(() => {
-    loadBookmarks();
-  }, [loadBookmarks]);
-
   // Refresh bookmarks on tab focus and stop audio when losing tab focus
   useFocusEffect(
     useCallback(() => {

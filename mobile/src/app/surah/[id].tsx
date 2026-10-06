@@ -176,36 +176,34 @@ export default function SurahReaderScreen() {
     }
   }, [bookmarkedKeys.size, loadBookmarks]);
 
-  // Zustand reading store
-  const {
-    viewMode,
-    setViewMode,
-    quranFont,
-    setQuranFont,
-    fontScale,
-    setFontScale,
-    showWordByWord,
-    toggleWordByWord,
-    showTranslation,
-    toggleTranslation,
-    activeTranslation,
-    setActiveTranslation,
-    activeVerseKey,
-    setActiveVerseKey,
-    isPlaying,
-    setIsPlaying,
-    setLastRead,
-    selectedReciterId,
-    setSelectedReciterId,
-    selectedTranslationIds,
-    toggleSelectedTranslationId,
-    wordByWordLocale,
-    setWordByWordLocale,
-    wordByWordDisplay,
-    setWordByWordDisplay,
-    wordByWordContentType,
-    setWordByWordContentType,
-  } = useReadingStore();
+  // Zustand reading store - atomic selectors
+  const viewMode = useReadingStore((s) => s.viewMode);
+  const setViewMode = useReadingStore((s) => s.setViewMode);
+  const quranFont = useReadingStore((s) => s.quranFont);
+  const setQuranFont = useReadingStore((s) => s.setQuranFont);
+  const fontScale = useReadingStore((s) => s.fontScale);
+  const setFontScale = useReadingStore((s) => s.setFontScale);
+  const showWordByWord = useReadingStore((s) => s.showWordByWord);
+  const toggleWordByWord = useReadingStore((s) => s.toggleWordByWord);
+  const showTranslation = useReadingStore((s) => s.showTranslation);
+  const toggleTranslation = useReadingStore((s) => s.toggleTranslation);
+  const activeTranslation = useReadingStore((s) => s.activeTranslation);
+  const setActiveTranslation = useReadingStore((s) => s.setActiveTranslation);
+  const activeVerseKey = useReadingStore((s) => s.activeVerseKey);
+  const setActiveVerseKey = useReadingStore((s) => s.setActiveVerseKey);
+  const isPlaying = useReadingStore((s) => s.isPlaying);
+  const setIsPlaying = useReadingStore((s) => s.setIsPlaying);
+  const setLastRead = useReadingStore((s) => s.setLastRead);
+  const selectedReciterId = useReadingStore((s) => s.selectedReciterId);
+  const setSelectedReciterId = useReadingStore((s) => s.setSelectedReciterId);
+  const selectedTranslationIds = useReadingStore((s) => s.selectedTranslationIds);
+  const toggleSelectedTranslationId = useReadingStore((s) => s.toggleSelectedTranslationId);
+  const wordByWordLocale = useReadingStore((s) => s.wordByWordLocale);
+  const setWordByWordLocale = useReadingStore((s) => s.setWordByWordLocale);
+  const wordByWordDisplay = useReadingStore((s) => s.wordByWordDisplay);
+  const setWordByWordDisplay = useReadingStore((s) => s.setWordByWordDisplay);
+  const wordByWordContentType = useReadingStore((s) => s.wordByWordContentType);
+  const setWordByWordContentType = useReadingStore((s) => s.setWordByWordContentType);
 
   // Load Chapter & full chapter verses
   useEffect(() => {
@@ -216,8 +214,10 @@ export default function SurahReaderScreen() {
       lastScrolledVerseKeyRef.current = null;
       handledVerseRef.current = null;
       try {
-        const ch = await getSurahById(chapterId);
-        const vs = await getVersesByChapter(chapterId, { includeWords: true });
+        const [ch, vs] = await Promise.all([
+          getSurahById(chapterId),
+          getVersesByChapter(chapterId, { includeWords: true }),
+        ]);
         if (isMounted) {
           setChapter(ch);
           setVerses(vs);

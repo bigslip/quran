@@ -93,14 +93,22 @@ export default function SettingsScreen() {
 
   const refreshTafsirStatus = React.useCallback(async () => {
     try {
+      const results = await Promise.all(
+        AVAILABLE_DOWNLOADABLE_TAFSIRS.map(async (t) => {
+          const isDone = await isTafsirDownloaded(t.slug);
+          if (isDone) {
+            const size = await getDownloadedTafsirSize(t.slug);
+            return { slug: t.slug, size };
+          }
+          return null;
+        }),
+      );
       const downloaded: string[] = [];
       let totalBytes = 0;
-      for (const t of AVAILABLE_DOWNLOADABLE_TAFSIRS) {
-        const isDone = await isTafsirDownloaded(t.slug);
-        if (isDone) {
-          downloaded.push(t.slug);
-          const size = await getDownloadedTafsirSize(t.slug);
-          totalBytes += size;
+      for (const res of results) {
+        if (res) {
+          downloaded.push(res.slug);
+          totalBytes += res.size;
         }
       }
       setDownloadedSlugs(downloaded);
