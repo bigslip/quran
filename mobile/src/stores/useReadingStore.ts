@@ -39,6 +39,12 @@ export interface ReadingState {
   tafsirOpenCount: number;
   isTafsirNudgeDismissed: boolean;
 
+  // Tafsir font scale persistence
+  tafsirFontScale: 'standard' | 'comfortable' | 'large';
+
+  // Recent searches history
+  recentSearches: string[];
+
   setLastRead: (
     chapterId: number,
     verseNumber: number,
@@ -73,6 +79,13 @@ export interface ReadingState {
   incrementTafsirOpenCount: () => void;
   dismissTafsirNudge: () => void;
   resetTafsirNudge: () => void;
+
+  // Tafsir font scale actions
+  setTafsirFontScale: (scale: 'standard' | 'comfortable' | 'large') => void;
+
+  // Recent searches history actions
+  addRecentSearch: (query: string) => void;
+  clearRecentSearches: () => void;
 }
 
 export const useReadingStore = create<ReadingState>()(
@@ -109,6 +122,12 @@ export const useReadingStore = create<ReadingState>()(
       // Tafsir offline usage nudge defaults
       tafsirOpenCount: 0,
       isTafsirNudgeDismissed: false,
+
+      // Tafsir font scale defaults
+      tafsirFontScale: 'comfortable',
+
+      // Recent searches defaults
+      recentSearches: [],
 
       setLastRead: (chapterId, verseNumber, chapterNameFa, pageNumber, juzNumber) =>
         set((state) => ({
@@ -175,6 +194,20 @@ export const useReadingStore = create<ReadingState>()(
         set((state) => ({ tafsirOpenCount: (state.tafsirOpenCount || 0) + 1 })),
       dismissTafsirNudge: () => set({ isTafsirNudgeDismissed: true }),
       resetTafsirNudge: () => set({ tafsirOpenCount: 0, isTafsirNudgeDismissed: false }),
+
+      // Tafsir font scale actions
+      setTafsirFontScale: (scale) => set({ tafsirFontScale: scale }),
+
+      // Recent searches history actions
+      addRecentSearch: (query: string) => {
+        const trimmed = query.trim();
+        if (!trimmed || trimmed.length < 2) return;
+        set((state) => {
+          const filtered = (state.recentSearches || []).filter((q) => q !== trimmed);
+          return { recentSearches: [trimmed, ...filtered].slice(0, 5) };
+        });
+      },
+      clearRecentSearches: () => set({ recentSearches: [] }),
     }),
     {
       name: 'quran-reading-store',
@@ -204,6 +237,8 @@ export const useReadingStore = create<ReadingState>()(
         wordByWordContentType: state.wordByWordContentType,
         tafsirOpenCount: state.tafsirOpenCount,
         isTafsirNudgeDismissed: state.isTafsirNudgeDismissed,
+        tafsirFontScale: state.tafsirFontScale,
+        recentSearches: state.recentSearches,
       }),
     },
   ),

@@ -99,6 +99,7 @@ export interface WordLinguisticInfo {
 export interface TafsirExcerpt {
   id: string;
   author_name: string; // 'مکارم شیرازی (نمونه)' | 'علامه طباطبایی (المیزان)' | 'حجت‌الاسلام قرائتی (نور)'
+  name?: string;
   title: string;
   text: string;
   points?: string[];

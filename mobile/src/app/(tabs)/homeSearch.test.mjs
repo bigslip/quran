@@ -34,11 +34,13 @@ describe('Home Screen Search Bar & Navigation Contracts', () => {
       'SearchBarProps must include testID prop',
     );
     assert.ok(
-      searchBarSource.includes('search-bar-submit-button') || searchBarSource.includes('submit-button'),
+      searchBarSource.includes('search-bar-submit-button') ||
+        searchBarSource.includes('submit-button'),
       'SearchBar must render an interactive submit button on the search icon',
     );
     assert.ok(
-      searchBarSource.includes('search-bar-clear-button') || searchBarSource.includes('clear-button'),
+      searchBarSource.includes('search-bar-clear-button') ||
+        searchBarSource.includes('clear-button'),
       'SearchBar must render an interactive clear button when text is present',
     );
   });
@@ -49,7 +51,7 @@ describe('Home Screen Search Bar & Navigation Contracts', () => {
       'HomeScreen must bind SearchBar onSubmitEditing to handleSearchSubmit',
     );
     assert.ok(
-      homeSource.includes("router.push({") && homeSource.includes("pathname: '/(tabs)/search'"),
+      homeSource.includes('router.push({') && homeSource.includes("pathname: '/(tabs)/search'"),
       'HomeScreen handleSearchSubmit must navigate to /(tabs)/search with route params',
     );
     assert.ok(
@@ -82,6 +84,22 @@ describe('Home Screen Search Bar & Navigation Contracts', () => {
     assert.ok(
       searchSource.includes('matchedChapters'),
       'SearchScreen must render matching chapters when available',
+    );
+    assert.ok(
+      searchSource.includes('recentSearches'),
+      'SearchScreen must read recentSearches from useReadingStore',
+    );
+    assert.ok(
+      searchSource.includes('search-clear-history-button'),
+      'SearchScreen must include clear history button with testID search-clear-history-button',
+    );
+    assert.ok(
+      searchSource.includes('search-recent-chip-'),
+      'SearchScreen must render recent chips with testID prefix search-recent-chip-',
+    );
+    assert.ok(
+      searchSource.includes('addRecentSearch(cleanText)'),
+      'SearchScreen must record search query via addRecentSearch',
     );
   });
 

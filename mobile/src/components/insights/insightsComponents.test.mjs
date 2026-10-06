@@ -1612,6 +1612,30 @@ describe('Insights Components Logic, Interactive States & Design System Tests', 
         increase(); // clamped
         assert.strictEqual(level, 'large');
       });
+
+      it('verifies Tafsir font scale subscription and Share button on active Tafsir card', () => {
+        assert.ok(
+          tafsirSource.includes('useReadingStore((state) => state.tafsirFontScale)'),
+          'Must read tafsirFontScale from useReadingStore',
+        );
+        assert.ok(
+          tafsirSource.includes('useReadingStore((state) => state.setTafsirFontScale)'),
+          'Must get setTafsirFontScale from useReadingStore',
+        );
+        assert.ok(
+          tafsirSource.includes('testID="tafsir-share-button"'),
+          'Must render Share button with testID="tafsir-share-button"',
+        );
+        assert.ok(
+          tafsirSource.includes('Share2'),
+          'Must render Share2 icon from lucide-react-native',
+        );
+        assert.ok(tafsirSource.includes('Share.share('), 'Must trigger Share.share on press');
+        assert.ok(
+          tafsirSource.includes('accessibilityLabel="اشتراک‌گذاری تفسیر"'),
+          'Must include Persian accessibilityLabel',
+        );
+      });
     });
 
     describe('PersonalReflectionCard Generous Editor', () => {

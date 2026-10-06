@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { BookOpen, ChevronLeft } from 'lucide-react-native';
+import { BookOpen, ChevronLeft, Clock } from 'lucide-react-native';
 import { useThemeColors, type ColorTheme, fonts, fontSizes, spacing, borderRadius } from '@/theme';
 import { AmbientGlow } from '@/components/common/AmbientGlow';
 import { SearchBar } from '@/components/common/SearchBar';
 import { searchQuran, searchChapters } from '@/services/db/searchService';
 import { SearchResult, Chapter } from '@/types/quran';
+import { useReadingStore } from '@/stores/useReadingStore';
 
 export default function SearchScreen() {
   const router = useRouter();
@@ -20,9 +21,14 @@ export default function SearchScreen() {
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchSeqRef = useRef(0);
 
+  const recentSearches = useReadingStore((state) => state.recentSearches || []);
+  const addRecentSearch = useReadingStore((state) => state.addRecentSearch);
+  const clearRecentSearches = useReadingStore((state) => state.clearRecentSearches);
+
   const executeSearch = useCallback(async (text: string) => {
     const cleanText = text.trim();
     if (cleanText.length > 1) {
+      addRecentSearch(cleanText);
       const currentSeq = ++searchSeqRef.current;
       setIsLoading(true);
       try {
@@ -169,7 +175,53 @@ export default function SearchScreen() {
               <Text style={styles.emptyText}>موردی برای «{query}» یافت نشد.</Text>
             ) : null
           ) : (
-            <Text style={styles.hintText}>عبارت مورد نظر خود را برای جستجوی فوری تایپ کنید.</Text>
+            <View style={styles.emptyContainer}>
+              {recentSearches.length > 0 && (
+                <View style={styles.recentSearchesSection}>
+                  <View style={styles.recentSearchesHeaderRow}>
+                    <TouchableOpacity
+                      testID="search-clear-history-button"
+                      onPress={clearRecentSearches}
+                      activeOpacity={0.7}
+                      accessible={true}
+                      accessibilityRole="button"
+                      accessibilityLabel="پاک کردن تاریخچه جستجو"
+                      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                      style={styles.clearHistoryButton}
+                    >
+                      <Text style={styles.clearHistoryText}>پاک کردن</Text>
+                    </TouchableOpacity>
+
+                    <View style={styles.recentSearchesTitleWrapper}>
+                      <Clock size={16} color={colors.primary} />
+                      <Text style={styles.recentSearchesTitle}>جستجوهای اخیر</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.recentChipsContainer}>
+                    {recentSearches.map((chipText, index) => (
+                      <TouchableOpacity
+                        key={`recent-${index}-${chipText}`}
+                        testID={`search-recent-chip-${index}`}
+                        onPress={() => {
+                          setQuery(chipText);
+                          handleSearch(chipText, true);
+                        }}
+                        activeOpacity={0.7}
+                        accessible={true}
+                        accessibilityRole="button"
+                        accessibilityLabel={`جستجوی مجدد ${chipText}`}
+                        style={styles.recentChip}
+                      >
+                        <Text style={styles.recentChipText}>{chipText}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              )}
+
+              <Text style={styles.hintText}>عبارت مورد نظر خود را برای جستجوی فوری تایپ کنید.</Text>
+            </View>
           )
         }
         renderItem={({ item }) => (
@@ -306,6 +358,64 @@ const createStyles = (colors: ColorTheme) =>
       lineHeight: 22,
       textAlign: 'right',
     },
+    emptyContainer: {
+      gap: spacing.lg,
+    },
+    recentSearchesSection: {
+      backgroundColor: colors.surfaceCard,
+      borderColor: colors.borderSubtle,
+      borderWidth: 1,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      gap: spacing.sm,
+      marginTop: spacing.md,
+    },
+    recentSearchesHeaderRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    recentSearchesTitleWrapper: {
+      flexDirection: 'row-reverse',
+      alignItems: 'center',
+      gap: spacing.xs,
+    },
+    recentSearchesTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.xs,
+      color: colors.textSecondary,
+    },
+    clearHistoryButton: {
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 4,
+      borderRadius: borderRadius.sm,
+    },
+    clearHistoryText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xxs,
+      color: colors.textFaded,
+    },
+    recentChipsContainer: {
+      flexDirection: 'row-reverse',
+      flexWrap: 'wrap',
+      gap: spacing.xs,
+    },
+    recentChip: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.primary,
+      borderWidth: 1,
+      borderRadius: borderRadius.pill,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      minHeight: 36,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    recentChipText: {
+      fontFamily: fonts.uiMedium,
+      fontSize: fontSizes.xs,
+      color: colors.primaryLight,
+    },
     emptyText: {
       fontFamily: fonts.uiRegular,
       fontSize: fontSizes.sm,
@@ -318,6 +428,6 @@ const createStyles = (colors: ColorTheme) =>
       fontSize: fontSizes.sm,
       color: colors.textFaded,
       textAlign: 'center',
-      marginTop: 40,
+      marginTop: 20,
     },
   });
