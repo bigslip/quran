@@ -1,19 +1,15 @@
 import React from 'react';
 
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { useSelector, shallowEqual } from 'react-redux';
 
-import LanguageDrawer from './LanguageDrawer/LanguageDrawer';
 import MobileStickyItemsBar from './MobileStickyItemsBar';
 import styles from './Navbar.module.scss';
 import NavbarBody from './NavbarBody';
-import NavigationDrawer from './NavigationDrawer/NavigationDrawer';
-import SearchDrawer from './SearchDrawer/SearchDrawer';
-import SettingsDrawer from './SettingsDrawer/SettingsDrawer';
 
 import { useOnboarding } from '@/components/Onboarding/OnboardingProvider';
 import useDebounceNavbarVisibility from '@/hooks/useDebounceNavbarVisibility';
-import { selectIsBannerVisible } from '@/redux/slices/banner';
 import {
   selectIsLanguageDrawerOpen,
   selectIsNavigationDrawerOpen,
@@ -21,10 +17,25 @@ import {
   selectNavbar,
 } from '@/redux/slices/navbar';
 
+const SearchModal = dynamic(() => import('./SearchModal/SearchModal'), {
+  ssr: false,
+});
+
+const LanguageModal = dynamic(() => import('./LanguageModal/LanguageModal'), {
+  ssr: false,
+});
+
+const SettingsDrawer = dynamic(() => import('./SettingsDrawer/SettingsDrawer'), {
+  ssr: false,
+});
+
+const NavigationDrawer = dynamic(() => import('./NavigationDrawer/NavigationDrawer'), {
+  ssr: false,
+});
+
 const Navbar = () => {
   const { isActive } = useOnboarding();
   const { isVisible: isNavbarVisible } = useSelector(selectNavbar, shallowEqual);
-  const isBannerVisible = useSelector(selectIsBannerVisible);
   const isNavigationDrawerOpen = useSelector(selectIsNavigationDrawerOpen);
   const isSettingsDrawerOpen = useSelector(selectIsSettingsDrawerOpen);
   const isLanguageDrawerOpen = useSelector(selectIsLanguageDrawerOpen);
@@ -43,13 +54,13 @@ const Navbar = () => {
         data-testid="navbar"
         data-isvisible={showNavbar}
       >
-        <NavbarBody isBannerVisible={isBannerVisible} />
+        <NavbarBody />
       </nav>
-      {/* Drawers rendered outside nav to avoid transform containment issues */}
-      <SearchDrawer />
+      {/* Modals and Drawers rendered outside nav to avoid transform containment issues */}
+      <SearchModal />
+      <LanguageModal />
       <SettingsDrawer />
       <NavigationDrawer />
-      <LanguageDrawer />
     </>
   );
 };

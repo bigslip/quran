@@ -19,15 +19,16 @@ const FONT_SIZE_CLASS_MAP = {
 type Props = {
   text?: string;
   className?: string;
-};
+} & React.HTMLAttributes<HTMLParagraphElement>;
 
-const InlineWordByWord: React.FC<Props> = ({ text, className }) => {
+const InlineWordByWord: React.FC<Props> = ({ text, className, ...props }) => {
   const wordByWordFontScale = useSelector(selectWordByWordFontScale, shallowEqual);
 
   return (
     <p
       className={classNames(styles.word, className, FONT_SIZE_CLASS_MAP[wordByWordFontScale])}
       dir="auto"
+      {...props}
     >
       {text}
     </p>

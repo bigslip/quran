@@ -4,7 +4,7 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable max-lines */
 
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -18,7 +18,7 @@ import { getLanguageDataById } from '@/utils/locale';
 import { getFootnote } from 'src/api';
 import Footnote from 'types/Footnote';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   shouldShowReference?: boolean;
   translationFontScale: number;
   text: string;
@@ -38,6 +38,7 @@ const TranslationText: React.FC<Props> = ({
   reference,
   chapterName,
   className,
+  ...props
 }) => {
   const { t, lang } = useTranslation('quran-reader');
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +54,16 @@ const TranslationText: React.FC<Props> = ({
     dl: t('footnote-dl'),
   };
 
+  const isMountedRef = useRef(true);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const resetFootnote = () => {
+    if (!isMountedRef.current) return;
     setFootnote(null);
     setSubFootnote(null);
     setIsLoading(false);
@@ -121,12 +131,14 @@ const TranslationText: React.FC<Props> = ({
           setIsLoading(true);
           getFootnote(footNoteId)
             .then((res) => {
-              if (res.status !== 500) {
+              if (isMountedRef.current && res.status !== 500) {
                 setFootnote(res.footNote);
               }
             })
             .finally(() => {
-              setIsLoading(false);
+              if (isMountedRef.current) {
+                setIsLoading(false);
+              }
             });
         }
       } else if (footnote && footnote.id === footnoteText) {
@@ -167,6 +179,7 @@ const TranslationText: React.FC<Props> = ({
     <div
       className={classNames(styles[`translation-font-size-${translationFontScale}`], className)}
       translate="no"
+      {...props}
     >
       <TranslationAndReference
         text={text}

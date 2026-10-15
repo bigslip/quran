@@ -3,6 +3,8 @@ import { useCallback, useContext } from 'react';
 import { useSelector } from '@xstate/react';
 import useTranslation from 'next-translate/useTranslation';
 
+import styles from './AudioPlaybackRateMenu.module.scss';
+
 import PopoverMenu from '@/dls/PopoverMenu/PopoverMenu';
 import Spinner from '@/dls/Spinner/Spinner';
 import usePersistPreferenceGroup from '@/hooks/auth/usePersistPreferenceGroup';
@@ -60,7 +62,7 @@ const AudioPlaybackRateMenu = ({ onBack }) => {
       if (isLoading) {
         return <Spinner />;
       }
-      return <CheckIcon />;
+      return <CheckIcon className={styles.activeCheckIcon} />;
     }
     return <span />;
   };
@@ -75,7 +77,7 @@ const AudioPlaybackRateMenu = ({ onBack }) => {
         onPlaybackRateSelected(playbackRate);
       }}
     >
-      {getPlaybackRateLabel(playbackRate)}
+      <span className={styles.rateLabel}>{getPlaybackRateLabel(playbackRate)}</span>
     </PopoverMenu.Item>
   ));
   return (
@@ -95,3 +97,4 @@ const AudioPlaybackRateMenu = ({ onBack }) => {
 };
 
 export default AudioPlaybackRateMenu;
+

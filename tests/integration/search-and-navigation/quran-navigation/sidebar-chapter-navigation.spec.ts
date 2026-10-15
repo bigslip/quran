@@ -137,7 +137,7 @@ test.describe('Navigation Sidebar Route Regressions', () => {
 
       await Promise.all([
         page.waitForURL(/\/$/),
-        page.getByTitle('Quran.com').nth(1).click({ force: true }),
+        page.getByTitle('Quran.ir').nth(1).click({ force: true }),
       ]);
 
       await expect(page).toHaveURL(/\/$/);

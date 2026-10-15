@@ -1,6 +1,8 @@
 {
   "default-translations": "Përkthimet e parazgjedhura",
-  "filter": "filtër",
+  "filter": {
+    "languages-placeholder": "Zgjidhni një gjuhë"
+  },
   "language-filter-label": "Kërkoni të gjitha përkthimet e një gjuhe",
   "language-select": "Zgjidhni një gjuhë",
   "reset": "rivendosur",

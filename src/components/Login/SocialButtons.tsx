@@ -13,11 +13,11 @@ import { makeAppleLoginUrl, makeFacebookLoginUrl, makeGoogleLoginUrl } from '@/u
 import { logButtonClick } from '@/utils/eventLogger';
 import AuthType from 'types/auth/AuthType';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   redirect?: string;
 }
 
-const SocialButtons: FC<Props> = ({ redirect }) => {
+const SocialButtons: FC<Props> = ({ redirect, ...props }) => {
   const { t } = useTranslation('login');
 
   const onSocialButtonClick = (type: AuthType) => {
@@ -25,7 +25,12 @@ const SocialButtons: FC<Props> = ({ redirect }) => {
   };
 
   return (
-    <div className={styles.authButtons}>
+    <div
+      role="group"
+      aria-label={t('continue-with-social')}
+      className={styles.authButtons}
+      {...props}
+    >
       <Button
         href={makeGoogleLoginUrl(redirect)}
         prefix={<GoogleIcon />}

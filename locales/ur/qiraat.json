@@ -1,4 +1,5 @@
 {
   "description": "آیت کی مختلف قرأت (مختلف ریڈنگز) کو دریافت کریں۔ {{ayahNumber}} سورہ کا {{surahName}}",
+  "juncture-selection": "مقام کا انتخاب",
   "title": "قرأت {{surahName}} - {{ayahNumber}}"
 }

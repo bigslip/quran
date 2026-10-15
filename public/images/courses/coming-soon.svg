@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#061a14" />
+      <stop offset="50%" stop-color="#0a2e23" />
+      <stop offset="100%" stop-color="#04120e" />
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#059669" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#04120e" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <pattern id="starPattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M30 0 L37 23 L60 30 L37 37 L30 60 L23 37 L0 30 L23 23 Z" fill="none" stroke="#10b981" stroke-opacity="0.07" stroke-width="1" />
+      <circle cx="30" cy="30" r="1.5" fill="#10b981" fill-opacity="0.12" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#bgGrad)" />
+  <rect width="100%" height="100%" fill="url(#starPattern)" />
+  <rect width="100%" height="100%" fill="url(#glowGrad)" />
+
+  <!-- Geometric Decorative Frame -->
+  <g transform="translate(400, 185)">
+    <!-- Outer concentric rings with dashes -->
+    <circle r="120" fill="none" stroke="#10b981" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4 6" />
+    <circle r="100" fill="none" stroke="#34d399" stroke-opacity="0.25" stroke-width="1.5" />
+    <circle r="85" fill="#06281e" fill-opacity="0.6" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="1" />
+
+    <!-- 8-Point Star Geometry -->
+    <g stroke="url(#emeraldGrad)" stroke-width="1.5" fill="none" opacity="0.6">
+      <rect x="-45" y="-45" width="90" height="90" rx="4" />
+      <rect x="-45" y="-45" width="90" height="90" rx="4" transform="rotate(45)" stroke="url(#goldGrad)" />
+    </g>
+
+    <!-- Quran Book / Lantern Stylized Motif -->
+    <g transform="translate(0, -5)">
+      <!-- Stylized Open Book / Pages -->
+      <path d="M-28 12 C-14 4 -4 14 0 16 C4 14 14 4 28 12 L24 -12 C12 -18 4 -12 0 -10 C-4 -12 -12 -18 -24 -12 Z" fill="#042017" stroke="url(#goldGrad)" stroke-width="1.5" />
+      <!-- Center Ribbon -->
+      <path d="M0 -10 L0 22 L3 19 L6 22 L6 10" fill="url(#goldGrad)" opacity="0.8" />
+      <!-- Radiant Rays -->
+      <line x1="0" y1="-28" x2="0" y2="-22" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+      <line x1="-15" y1="-24" x2="-10" y2="-19" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="15" y1="-24" x2="10" y2="-19" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" />
+    </g>
+  </g>
+
+  <!-- Typography & Badge -->
+  <g transform="translate(400, 345)" text-anchor="middle">
+    <!-- Capsule Pill -->
+    <rect x="-95" y="-22" width="190" height="36" rx="18" fill="#082b20" stroke="#10b981" stroke-width="1" stroke-opacity="0.4" />
+    <circle cx="-68" cy="-4" r="3.5" fill="#10b981" />
+    <text x="-52" y="1" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#34d399" letter-spacing="1">به زودی • COMING SOON</text>
+  </g>
+
+  <g transform="translate(400, 400)" text-anchor="middle">
+    <text font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="500" fill="#94a3b8" opacity="0.85">دوره‌ها و برنامه‌های جدید در دست آماده‌سازی است</text>
+  </g>
+</svg>

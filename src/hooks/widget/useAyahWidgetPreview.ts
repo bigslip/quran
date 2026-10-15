@@ -55,7 +55,7 @@ const useAyahWidgetPreview = ({
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('allow', 'clipboard-write');
     iframe.setAttribute('loading', 'lazy');
-    iframe.setAttribute('title', 'Quran.com embed preview');
+    iframe.setAttribute('title', 'Quran.ir embed preview');
     iframe.style.border = '0';
     iframe.style.borderRadius = '12px';
     iframe.style.maxWidth = '100%';
@@ -84,7 +84,7 @@ const useAyahWidgetPreview = ({
     iframe.addEventListener('error', handleLoaded);
     iframe.addEventListener('load', requestResize);
     window.addEventListener('message', handleMessage);
-    window.addEventListener('resize', requestResize);
+    window.addEventListener('resize', requestResize, { passive: true });
 
     containerEl.appendChild(iframe);
     requestResize();

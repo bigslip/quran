@@ -79,7 +79,11 @@ const TextArea: React.FC<Props> = ({
 
   const content = (
     <>
-      {label && <p className={styles.label}>{label}</p>}
+      {label && (
+        <label htmlFor={id} className={styles.label}>
+          {label}
+        </label>
+      )}
       <div
         className={classNames(styles.container, containerClassName, {
           [styles.disabled]: disabled,
@@ -97,6 +101,7 @@ const TextArea: React.FC<Props> = ({
             [styles.rtlTextArea]: shouldFlipOnRTL,
           })}
           required={isRequired}
+          aria-invalid={type === TextAreaType.Error ? true : undefined}
           dir="auto"
           id={id}
           rows={SIZE_TO_COLS[size]}

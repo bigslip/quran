@@ -4,5 +4,18 @@
   "read": "اقرأ",
   "reciter-desc": "استمع وحمّل تلاوة جميلة للقرآن الكريم بصوت القارئ {{reciterName}} .",
   "reciters-desc": "استمع وحمّل تلاوات جميلة للقرآن الكريم بصوت مجموعة من القرّاء.",
-  "search-chapter": "ابحث عن سورة"
+  "search-chapter": "ابحث عن سورة",
+  "sanctuary-badge": "موسوعة التلاوات القرآنية",
+  "hero-title": "مشاهير قراء القرآن الكريم",
+  "hero-subtitle": "استمع إلى التلاوات العذبة المرتلة والمجودة بأصوات كبار القراء",
+  "search-placeholder": "ابحث عن قارئ، رواية أو أسلوب...",
+  "filter-all": "جميع القراء",
+  "filter-available": "التلاوات المتاحة",
+  "filter-murattal": "مرتل",
+  "filter-mujawwad": "مجود",
+  "badge-available": "تلاوة كاملة",
+  "badge-coming-soon": "قريباً",
+  "unavailable-tooltip": "التسجيلات الصوتية لهذا القارئ ستتوفر قريباً.",
+  "filter-reciters-aria": "تصفية القراء",
+  "no-results": "لم يتم العثور على أي قارئ مطابق للبحث."
 }

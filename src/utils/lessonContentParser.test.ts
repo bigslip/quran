@@ -4,26 +4,26 @@ import { parseContentChunks, parseQuranUrl } from './lessonContentParser';
 
 describe('lessonContentParser', () => {
   describe('parseQuranUrl', () => {
-    it('parses supported quran.com URL formats', () => {
-      expect(parseQuranUrl('https://quran.com/2/255')).toEqual({ chapter: 2, from: 255 });
-      expect(parseQuranUrl('https://quran.com/2/255-257')).toEqual({
+    it('parses supported quran.ir URL formats', () => {
+      expect(parseQuranUrl('https://quran.ir/2/255')).toEqual({ chapter: 2, from: 255 });
+      expect(parseQuranUrl('https://quran.ir/2/255-257')).toEqual({
         chapter: 2,
         from: 255,
         to: 257,
       });
-      expect(parseQuranUrl('https://quran.com/2:255')).toEqual({ chapter: 2, from: 255 });
-      expect(parseQuranUrl('https://quran.com/2:255-257')).toEqual({
+      expect(parseQuranUrl('https://quran.ir/2:255')).toEqual({ chapter: 2, from: 255 });
+      expect(parseQuranUrl('https://quran.ir/2:255-257')).toEqual({
         chapter: 2,
         from: 255,
         to: 257,
       });
-      expect(parseQuranUrl('https://quran.com/2-255')).toEqual({ chapter: 2, from: 255 });
-      expect(parseQuranUrl('https://ar.quran.com/2:255')).toEqual({ chapter: 2, from: 255 });
+      expect(parseQuranUrl('https://quran.ir/2-255')).toEqual({ chapter: 2, from: 255 });
+      expect(parseQuranUrl('https://ar.quran.ir/2:255')).toEqual({ chapter: 2, from: 255 });
     });
 
-    it('rejects non-quran.com hosts', () => {
-      expect(parseQuranUrl('https://quran.com.evil.com/2:255')).toBeNull();
-      expect(parseQuranUrl('https://notquran.com/2:255')).toBeNull();
+    it('rejects non-quran.ir hosts', () => {
+      expect(parseQuranUrl('https://quran.ir.evil.com/2:255')).toBeNull();
+      expect(parseQuranUrl('https://notquran.ir/2:255')).toBeNull();
       expect(parseQuranUrl('not-a-url')).toBeNull();
     });
   });
@@ -38,7 +38,7 @@ describe('lessonContentParser', () => {
 
     it('replaces eligible quran blockquotes and keeps surrounding html', () => {
       const html =
-        '<p>Before</p><blockquote><a href="https://quran.com/18:1-2">Ayah</a></blockquote><p>After</p>';
+        '<p>Before</p><blockquote><a href="https://quran.ir/18:1-2">Ayah</a></blockquote><p>After</p>';
       const chunks = parseContentChunks(html);
 
       expect(chunks).toHaveLength(3);
@@ -46,14 +46,14 @@ describe('lessonContentParser', () => {
       expect(chunks[1]).toMatchObject({
         type: 'verse',
         reference: { chapter: 18, from: 1, to: 2 },
-        originalHtml: '<blockquote><a href="https://quran.com/18:1-2">Ayah</a></blockquote>',
+        originalHtml: '<blockquote><a href="https://quran.ir/18:1-2">Ayah</a></blockquote>',
       });
       expect(chunks[2]).toMatchObject({ type: 'html' });
     });
 
     it('keeps non-quran blockquotes inside html chunks between verse widgets', () => {
       const html =
-        '<p>Start</p><blockquote><a href="https://example.com/a">Nope</a></blockquote><blockquote><a href="https://quran.com/1:1">Yes</a></blockquote><p>End</p>';
+        '<p>Start</p><blockquote><a href="https://example.com/a">Nope</a></blockquote><blockquote><a href="https://quran.ir/1:1">Yes</a></blockquote><p>End</p>';
       const chunks = parseContentChunks(html);
 
       expect(chunks).toHaveLength(3);
@@ -70,7 +70,7 @@ describe('lessonContentParser', () => {
 
     it('parses first quran link when a blockquote has multiple links', () => {
       const html =
-        '<blockquote><a href="https://example.com/a">x</a><a href="https://quran.com/2:1">first</a><a href="https://quran.com/2:2">second</a></blockquote>';
+        '<blockquote><a href="https://example.com/a">x</a><a href="https://quran.ir/2:1">first</a><a href="https://quran.ir/2:2">second</a></blockquote>';
       const chunks = parseContentChunks(html);
 
       expect(chunks).toHaveLength(1);

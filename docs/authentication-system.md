@@ -5,7 +5,7 @@ handling.
 
 ## Overview
 
-This document outlines the comprehensive authentication flows implemented in the Quran.com frontend
+This document outlines the comprehensive authentication flows implemented in the Quran.ir frontend
 application. The system uses React Context with useReducer for state management, integrated with SWR
 for data fetching.
 

@@ -42,13 +42,16 @@ const TopActions: React.FC<TopActionsProps> = ({
     [isTranslationView],
   );
 
+  const handleOpenShareModal = useCallback(() => onOpenModalChange(true), [onOpenModalChange]);
+  const handleCloseShareModal = useCallback(() => onOpenModalChange(false), [onOpenModalChange]);
+
   return (
     <>
       <div className={classNames(styles.actionContainer, className)}>
         <ActionButtons
           verse={verse}
           isTranslationView={isTranslationView}
-          openShareModal={() => onOpenModalChange(true)}
+          openShareModal={handleOpenShareModal}
           hasTranslationsButton={!isTranslationView}
           shouldUseModalZIndex={shouldUseModalZIndex}
         />
@@ -56,11 +59,11 @@ const TopActions: React.FC<TopActionsProps> = ({
 
       <ShareQuranModal
         isOpen={isShareModalOpen}
-        onClose={() => onOpenModalChange(false)}
+        onClose={handleCloseShareModal}
         verse={verse}
       />
     </>
   );
 };
 
-export default TopActions;
+export default React.memo(TopActions);

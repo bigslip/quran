@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import { useContext, useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
@@ -9,11 +8,13 @@ import { useSelector } from 'react-redux';
 
 import styles from './SidebarNavigation.module.scss';
 
+import { LoadingState } from '@/components/ui';
 import Link from '@/dls/Link/Link';
 import useChapterIdsByUrlPath from '@/hooks/useChapterId';
 import { SCROLL_TO_NEAREST_ELEMENT, useScrollToElement } from '@/hooks/useScrollToElement';
 import { selectLastReadVerseKey } from '@/redux/slices/QuranReader/readingTracker';
 import { selectIsReadingByRevelationOrder } from '@/redux/slices/revelationOrder';
+import { RootState } from '@/redux/RootState';
 import NavigationItemType from '@/types/NavigationItemType';
 import SearchQuerySource from '@/types/SearchQuerySource';
 import { logEmptySearchResults, logTextSearchQuery } from '@/utils/eventLogger';
@@ -56,7 +57,9 @@ const SurahList: React.FC<Props> = ({
   selectedChapterId: externalSelectedChapterId,
 }) => {
   const { t, lang } = useTranslation('common');
-  const lastReadVerseKey = useSelector(selectLastReadVerseKey);
+  const lastReadChapterId = useSelector(
+    (state: RootState) => selectLastReadVerseKey(state)?.chapterId,
+  );
   const isReadingByRevelationOrder = useSelector(selectIsReadingByRevelationOrder);
   const router = useRouter();
   const chaptersData = useContext(DataContext);
@@ -64,22 +67,21 @@ const SurahList: React.FC<Props> = ({
   const chapterIds = useChapterIdsByUrlPath(lang);
   const urlChapterId = chapterIds && chapterIds.length > 0 ? chapterIds[0] : null;
 
-  // Use external selectedChapterId if provided, otherwise use internal state
-  const [internalCurrentChapterId, setInternalCurrentChapterId] = useState(urlChapterId);
-  const currentChapterId = externalSelectedChapterId || internalCurrentChapterId;
+  const [loadingChapterId, setLoadingChapterId] = useState<string | null>(null);
+  const currentChapterId =
+    externalSelectedChapterId || lastReadChapterId || urlChapterId;
 
   useEffect(() => {
-    if (!externalSelectedChapterId) {
-      setInternalCurrentChapterId(lastReadVerseKey.chapterId);
-    }
-  }, [lastReadVerseKey, externalSelectedChapterId]);
-
-  useEffect(() => {
-    // when the user navigates to a new chapter, update the current chapter id
-    if (!externalSelectedChapterId) {
-      setInternalCurrentChapterId(urlChapterId);
-    }
-  }, [urlChapterId, externalSelectedChapterId]);
+    const handleRouteChange = () => {
+      setLoadingChapterId(null);
+    };
+    router.events?.on('routeChangeComplete', handleRouteChange);
+    router.events?.on('routeChangeError', handleRouteChange);
+    return () => {
+      router.events?.off('routeChangeComplete', handleRouteChange);
+      router.events?.off('routeChangeError', handleRouteChange);
+    };
+  }, [router.events]);
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -124,11 +126,24 @@ const SurahList: React.FC<Props> = ({
   }, [currentChapterId, scrollTo]);
 
   const navigateAndHandleAfterNavigation = (href: string, chapterId: string) => {
-    router.push(href).then(() => {
+    if (router.asPath === href || router.pathname === href) {
       if (onAfterNavigationItemRouted) {
         onAfterNavigationItemRouted(chapterId, NavigationItemType.CHAPTER);
       }
-    });
+      return;
+    }
+    setLoadingChapterId(chapterId);
+    router
+      .push(href)
+      .then(() => {
+        setLoadingChapterId(null);
+        if (onAfterNavigationItemRouted) {
+          onAfterNavigationItemRouted(chapterId, NavigationItemType.CHAPTER);
+        }
+      })
+      .catch(() => {
+        setLoadingChapterId(null);
+      });
   };
 
   // Handle when user press `Enter` in input box
@@ -136,7 +151,7 @@ const SurahList: React.FC<Props> = ({
     e.preventDefault();
     const firstFilteredChapter = filteredChapters[0];
     if (firstFilteredChapter) {
-      const href = getSurahNavigationUrl(firstFilteredChapter.id);
+      const href = getSurahNavigationUrl(firstFilteredChapter.slug || firstFilteredChapter.id);
       navigateAndHandleAfterNavigation(href, firstFilteredChapter.id.toString());
     }
   };
@@ -167,7 +182,9 @@ const SurahList: React.FC<Props> = ({
       <div className={styles.listContainer}>
         <div className={styles.list}>
           {filteredChapters.map((chapter) => {
-            const href = getSurahNavigationUrl(chapter.id);
+            const href = getSurahNavigationUrl(chapter.slug || chapter.id);
+            const isSelected = chapter.id.toString() === currentChapterId;
+            const isLoading = chapter.id.toString() === loadingChapterId;
             return (
               <Link
                 key={chapter.id}
@@ -176,13 +193,18 @@ const SurahList: React.FC<Props> = ({
                 onClick={(e) => handleChapterClick(e, href, chapter.id.toString())}
               >
                 <div
-                  ref={chapter.id.toString() === currentChapterId ? selectedChapterRef : null}
+                  ref={isSelected ? selectedChapterRef : null}
                   className={classNames(styles.listItem, {
-                    [styles.selectedItem]: chapter.id.toString() === currentChapterId,
+                    [styles.selectedItem]: isSelected,
+                    [styles.loadingItem]: isLoading,
                   })}
                 >
                   <span className={styles.chapterNumber}>{chapter.localizedId}</span>
-                  <span translate="no">{chapter.transliteratedName}</span>
+                  {isLoading ? (
+                    <LoadingState label={chapter.transliteratedName} variant="Drive" />
+                  ) : (
+                    <span translate="no">{chapter.transliteratedName}</span>
+                  )}
                 </div>
               </Link>
             );

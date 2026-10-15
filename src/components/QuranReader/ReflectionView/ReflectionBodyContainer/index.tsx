@@ -1,4 +1,6 @@
 /* eslint-disable max-lines */
+import classNames from 'classnames';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
@@ -57,7 +59,7 @@ type ReflectionBodyProps = {
   isModal?: boolean;
   showEndActions?: boolean;
   showTabs?: boolean;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const ReflectionBodyContainer = ({
   render,
@@ -68,6 +70,8 @@ const ReflectionBodyContainer = ({
   isModal = false,
   showEndActions = true,
   showTabs = true,
+  className,
+  ...props
 }: ReflectionBodyProps) => {
   const [selectedChapterId, setSelectedChapterId] = useState(initialChapterId);
   const [selectedVerseNumber, setSelectedVerseNumber] = useState(initialVerseNumber);
@@ -205,7 +209,7 @@ const ReflectionBodyContainer = ({
   );
 
   const body = (
-    <div className={styles.tabsContainerWrapper}>
+    <div className={classNames(className, styles.tabsContainerWrapper)} {...props}>
       {showTabs && (
         <Tabs
           tabs={getReflectionTabs(t, isModal)}

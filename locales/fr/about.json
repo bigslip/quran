@@ -11,11 +11,11 @@
     "zekr": "<0>Zekr</0>: Un outil d'étude du Coran open-source pour parcourir et rechercher dans le Coran"
   },
   "global-effort": {
-    "desc": "Des millions de personnes du monde entier comptent sur Quran.com comme principale ressource numérique du Coran. Que ce soit pour réciter, méditer, mémoriser ou étudier, ils partagent un objectif commun : un désir sincère de se connecter aux paroles d'Allah.\\nDans notre développement continu, nous restons déterminés à faire en sorte que Quran.com reste un espace fiable, accessible et magnifiquement conçu pour quiconque cherche à s'engager avec le Coran.",
+    "desc": "Des millions de personnes du monde entier comptent sur Quran.ir comme principale ressource numérique du Coran. Que ce soit pour réciter, méditer, mémoriser ou étudier, ils partagent un objectif commun : un désir sincère de se connecter aux paroles d'Allah.\\nDans notre développement continu, nous restons déterminés à faire en sorte que Quran.ir reste un espace fiable, accessible et magnifiquement conçu pour quiconque cherche à s'engager avec le Coran.",
     "title": "Un Effort Mondial"
   },
   "key-features": {
-    "desc": "Quran.com est conçu pour accompagner chaque étape de l'apprentissage du Coran, de la lecture et de la mémorisation, à l'étude et à la méditation. Nos fonctionnalités comprennent :",
+    "desc": "Quran.ir est conçu pour accompagner chaque étape de l'apprentissage du Coran, de la lecture et de la mémorisation, à l'étude et à la méditation. Nos fonctionnalités comprennent :",
     "features": [
       "Interface Ergonomique du Coran – Une expérience de lecture claire et intuitive sur n’importe quel appareil.",
       "Traductions Multiples & Tafsir – Accès aux traductions dans plusieurs langues, ainsi qu'au tafsir.",
@@ -29,13 +29,13 @@
     ],
     "title": "Principales Fonctionnalités & Offres"
   },
-  "main-description": "Depuis sa création en 1995, Quran.com s'est engagé à rendre le Coran accessible à tous d'une manière claire, authentique et facile à comprendre. Chaque jour, des millions de personnes dans le monde entier se tournent vers Quran.com pour lire, écouter, étudier et méditer sur le Coran, qu'ils soient des étudiants de longue date, des érudits, ou qu'ils commencent tout juste leur voyage.",
+  "main-description": "Depuis sa création en 1995, Quran.ir s'est engagé à rendre le Coran accessible à tous d'une manière claire, authentique et facile à comprendre. Chaque jour, des millions de personnes dans le monde entier se tournent vers Quran.ir pour lire, écouter, étudier et méditer sur le Coran, qu'ils soient des étudiants de longue date, des érudits, ou qu'ils commencent tout juste leur voyage.",
   "our-mission": {
     "desc": "Le Coran est destiné à être lu, compris et médité. Notre mission est de supprimer les obstacles à l’accès et de responsabiliser les individus et les communautés en offrant une expérience Coranique fiable, bien conçue et profondément enrichissante. Notre objectif est de servir de source fiable pour quiconque cherche à s’engager avec le Coran, guidé par les principes d’exactitude, de clarté et de sincérité.",
     "title": "Notre mission"
   },
   "who-we-are": {
-    "desc": "Quran.com est un waqf (dotation religieuse), créé en tant que bien d’intérêt public pour garantir le Coran accessible à tous, gratuitement et sans intérêts commerciaux. Il est géré par <link>Quran.Foundation</link>, une organisation à but non lucratif 501(c)(3), qui soutient et développe Quran.com dans le cadre de sa mission de fournir au monde des ressources Coraniques authentiques et de haute qualité. Notre engagement est de servir le Coran et ses lecteurs avec excellence, sincérité et responsabilité.",
+    "desc": "Quran.ir est un waqf (dotation religieuse), créé en tant que bien d’intérêt public pour garantir le Coran accessible à tous, gratuitement et sans intérêts commerciaux. Il est géré par <link>Quran.Foundation</link>, une organisation à but non lucratif 501(c)(3), qui soutient et développe Quran.ir dans le cadre de sa mission de fournir au monde des ressources Coraniques authentiques et de haute qualité. Notre engagement est de servir le Coran et ses lecteurs avec excellence, sincérité et responsabilité.",
     "title": "À propos de nous"
   }
 }

@@ -1,45 +1,51 @@
 @use 'src/styles/breakpoints';
-
-.surahName {
-  line-height: normal;
-  font-family: 'surahnames' !important;
-  font-size: calc(2.5 * var(--font-size-jumbo-px));
-  margin-inline-start: -20px;
-  [dir='rtl'] & {
-    margin-inline-start: 0;
-  }
-  @include breakpoints.smallerThanTablet {
-    font-size: calc(1.2 * var(--font-size-jumbo));
-    padding-inline-end: var(--spacing-medium-px);
-    margin-inline-start: -15px;
-    [dir='rtl'] & {
-      margin-inline-start: 0;
-    }
-  }
-}
-
-.surahInfo {
-  display: flex;
-  flex-direction: row;
-  gap: var(--spacing-medium);
-  align-items: center;
-  justify-content: space-between;
-  @include breakpoints.smallerThanTablet {
-    align-items: center;
-    inline-size: 100%;
-  }
-  @include breakpoints.tablet {
-    font-size: var(--font-size-large-px);
-  }
-}
+@use 'src/styles/theme';
 
 .chapterCard {
-  @include breakpoints.smallerThanTablet {
-    padding: calc(var(--spacing-small-px) + var(--spacing-micro-px)) var(--spacing-small-px)
-      calc(var(--spacing-small-px) + var(--spacing-micro-px)) var(--spacing-medium-px);
-  }
+  background-color: var(--color-surface-card);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-iridescent);
+  border-radius: var(--border-radius-rounded);
+  padding: var(--spacing-medium-px) var(--spacing-large-px);
   block-size: 100%;
   box-sizing: border-box;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    border-color var(--transition-fast) ease, background-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px) scale(1.015);
+      background-color: var(--color-surface-card-hover);
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-card-hover);
+
+      .numberBadge {
+        background-color: var(--color-primary);
+        color: #070a13;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 16px var(--color-primary);
+      }
+
+      .continueReading {
+        background-color: var(--color-primary-subtle);
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+        box-shadow: 0 0 12px var(--color-primary-subtle);
+      }
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    padding: var(--spacing-small-px) var(--spacing-medium-px);
+  }
 }
 
 .surahContainer {
@@ -47,55 +53,131 @@
   flex-direction: column;
   block-size: 100%;
   justify-content: space-between;
+  gap: var(--spacing-medium-px);
+
   @include breakpoints.smallerThanTablet {
-    justify-content: start;
-    align-items: center;
-    flex-direction: row;
+    gap: var(--spacing-small-px);
   }
 }
 
-.translatedName {
-  color: var(--color-text-faded-new);
-  @include breakpoints.smallerThanTablet {
-    display: block;
+.topSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.numberBadge {
+  inline-size: 34px;
+  block-size: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface-floating);
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  border-radius: var(--border-radius-small-px);
+  transform: rotate(45deg);
+  color: var(--color-accent-gold);
+  box-shadow: 0 0 12px var(--color-accent-gold-subtle);
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast) ease, color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease;
+
+  & > span {
+    transform: rotate(-45deg);
     font-size: var(--font-size-xsmall-px);
+    font-weight: var(--font-weight-bold);
   }
 }
 
-.continueReading {
+.surahName {
+  line-height: normal;
+  font-family: 'surahnames' !important;
+  font-size: calc(2.4 * var(--font-size-jumbo-px));
+  color: var(--color-text-primary);
+  opacity: 0.95;
+  filter: drop-shadow(0 0 16px var(--color-accent-gold-subtle));
+
+  @include breakpoints.smallerThanTablet {
+    font-size: calc(1.5 * var(--font-size-jumbo));
+  }
+}
+
+.surahInfo {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--spacing-micro);
-  color: var(--color-text-faded-new);
-  @include breakpoints.smallerThanTablet {
-    font-size: var(--spacing-medium-px);
-  }
-  @include breakpoints.tablet {
-    font-size: var(--font-size-normal-px);
-  }
+  justify-content: space-between;
+  gap: var(--spacing-small-px);
+}
+
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .transliteratedName {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-medium-px);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: 0.04em;
+}
+
+.translatedName {
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.continueReading {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-xxsmall-px);
+  padding-inline: var(--spacing-medium-px);
+  padding-block: var(--spacing-xxsmall2-px);
+  background-color: var(--color-surface-floating);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-iridescent);
+  border-radius: var(--border-radius-pill);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xsmall-px);
   font-weight: var(--font-weight-semibold);
-  @include breakpoints.smallerThanTablet {
-    font-size: var(--font-size-small-px);
-  }
+  transition: background-color var(--transition-fast) ease, border-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease, color var(--transition-fast) ease;
+}
+
+.verseLabel {
+  color: var(--color-text-secondary);
+}
+
+.verseValue {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
 }
 
 .beginButton {
-  border-radius: var(--border-radius-rounded);
-  @include breakpoints.tablet {
-    font-size: var(--font-size-normal-px);
-    padding: var(--spacing-small-px) var(--spacing-medium-px);
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+  color: #070a13;
+  font-weight: var(--font-weight-bold);
+  border: 1px solid rgba(217, 119, 6, 0.4);
+  box-shadow: 0 0 16px rgba(217, 119, 6, 0.25);
+
+  &:hover {
+    filter: brightness(1.15);
+    box-shadow: 0 0 24px rgba(217, 119, 6, 0.4);
   }
 }
 
 .continueReadingArrowIcon {
+  display: inline-flex;
+  align-items: center;
+
   svg {
-    @include breakpoints.smallerThanTablet {
-      inline-size: 12px !important;
-      block-size: 12px !important;
-    }
+    inline-size: 10px !important;
+    block-size: 10px !important;
+    fill: currentColor !important;
   }
 }

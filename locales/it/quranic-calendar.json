@@ -19,19 +19,19 @@
       "question": "Come funziona il programma?"
     },
     {
-      "answer": "Per niente. Il punto di partenza di questo programma è di impegnarsi con i significati del Corano attraverso qualsiasi lingua (traduzione) con cui ti trovi a tuo agio. Quran.com offre traduzioni in molte lingue per renderlo accessibile a tutti. Il nostro obiettivo è ispirare i partecipanti a continuare a salire di livello di anno in anno.",
+      "answer": "Per niente. Il punto di partenza di questo programma è di impegnarsi con i significati del Corano attraverso qualsiasi lingua (traduzione) con cui ti trovi a tuo agio. Quran.ir offre traduzioni in molte lingue per renderlo accessibile a tutti. Il nostro obiettivo è ispirare i partecipanti a continuare a salire di livello di anno in anno.",
       "question": "Per partecipare è necessario saper leggere l'arabo?"
     },
     {
-      "answer": "Ogni settimana, l'assegnazione di lettura aggiornata sarà disponibile su Quran.com/calendar. Puoi leggere direttamente su Quran.com, dove un link dedicato ti porterà direttamente alla lettura principale della settimana. \\n \\n Puoi anche aprire il PDF in inglese e stamparlo a casa. Contiene una traduzione fluida adattata principalmente dall'opera di MAS Abdel Haleem. Il documento di ogni settimana è diviso in sette parti, rendendo più facile distribuire la lettura durante la settimana se preferisci. Ci sono brevi introduzioni alle sure, intestazioni e note per chiarire alcuni punti essenziali e ogni parte giornaliera ha una domanda di riflessione e un'azione suggerita.",
+      "answer": "Ogni settimana, l'assegnazione di lettura aggiornata sarà disponibile su Quran.ir/calendar. Puoi leggere direttamente su Quran.ir, dove un link dedicato ti porterà direttamente alla lettura principale della settimana. \\n \\n Puoi anche aprire il PDF in inglese e stamparlo a casa. Contiene una traduzione fluida adattata principalmente dall'opera di MAS Abdel Haleem. Il documento di ogni settimana è diviso in sette parti, rendendo più facile distribuire la lettura durante la settimana se preferisci. Ci sono brevi introduzioni alle sure, intestazioni e note per chiarire alcuni punti essenziali e ogni parte giornaliera ha una domanda di riflessione e un'azione suggerita.",
       "question": "Dove trovo le letture settimanali assegnate?"
     },
     {
-      "answer": "Hai diverse opzioni per restare in carreggiata. Ti consigliamo vivamente di iscriverti per ricevere email con gli incarichi di lettura settimanali allegati. Abbiamo anche creato canali della community su Telegram e WhatsApp che conterranno promemoria e incoraggiamenti. Basta cliccare sui pulsanti di tua scelta su Quran.com/calendar per iscriverti. Puoi scegliere tutti e tre se lo desideri.",
+      "answer": "Hai diverse opzioni per restare in carreggiata. Ti consigliamo vivamente di iscriverti per ricevere email con gli incarichi di lettura settimanali allegati. Abbiamo anche creato canali della community su Telegram e WhatsApp che conterranno promemoria e incoraggiamenti. Basta cliccare sui pulsanti di tua scelta su Quran.ir/calendar per iscriverti. Puoi scegliere tutti e tre se lo desideri.",
       "question": "Come posso ricevere promemoria di lettura settimanali?"
     },
     {
-      "answer": "Su Quran.com, vai al menu delle impostazioni per: \\n • Regolare le dimensioni e gli stili dei caratteri \\n • Passare dalla modalità chiara, scura e seppia \\n • Scegliere tra più traduzioni disponibili \\n \\n In questo modo chiunque può partecipare nella lingua che capisce meglio e con una traduzione chiara e informativa.",
+      "answer": "Su Quran.ir, vai al menu delle impostazioni per: \\n • Regolare le dimensioni e gli stili dei caratteri \\n • Passare dalla modalità chiara, scura e seppia \\n • Scegliere tra più traduzioni disponibili \\n \\n In questo modo chiunque può partecipare nella lingua che capisce meglio e con una traduzione chiara e informativa.",
       "question": "Come posso personalizzare la mia esperienza di lettura?"
     },
     {
@@ -88,6 +88,7 @@
   "marked-as-completed": "Questa settimana è stata contrassegnata come completata con successo!",
   "month": "Mese",
   "my-progress": "I miei progressi",
+  "no-faq-items": "Nessuna FAQ disponibile.",
   "progress-subtitle": "Sentiti libero di tornare indietro e completare le settimane che hai saltato!",
   "quran-calendar-description": "Un piano di lettura strutturato per completare il Corano in un anno. Costruisci coerenza, approfondisci la tua comprensione e rimani sulla buona strada, senza sentirti sopraffatto.",
   "quran-calendar-title": "Il Corano in un anno: un semplice piano per leggere e comprendere l'intero Corano",

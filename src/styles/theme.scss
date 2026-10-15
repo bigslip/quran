@@ -79,6 +79,8 @@
 
   --font-family-figtree: 'Figtree', sans-serif;
   --font-family-kitab: 'Kitab', 'UthmanicHafs', 'Figtree', sans-serif;
+  --font-family-vazirmatn: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
 
   --border-radius-sharp: 0;
   --border-radius-pill: 20rem;
@@ -124,6 +126,9 @@
   --transition-slow: 0.6s;
 
   --icon-size-small: 15px;
+
+  // Modern Spiritual Sanctuary Tokens
+  --backdrop-filter-frosted: blur(16px) saturate(180%);
 
   @include shades.shades-dangerous;
   @include light.mode;

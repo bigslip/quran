@@ -7,23 +7,33 @@ import styles from './Filter.module.scss';
 import Combobox from '@/dls/Forms/Combobox';
 import AvailableLanguage from 'types/AvailableLanguage';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   onLanguageChange: (languageIsoCode: string[]) => void;
   selectedLanguages: string;
   languages: AvailableLanguage[];
 }
 
 const LanguagesFilter: React.FC<Props> = memo(
-  ({ languages, selectedLanguages, onLanguageChange }) => {
+  ({ languages, selectedLanguages, onLanguageChange, className, ...props }) => {
     const { t } = useTranslation('search');
+
+    const selectedLanguageList = useMemo(
+      () => (selectedLanguages ? selectedLanguages.split(',').filter(Boolean) : []),
+      [selectedLanguages],
+    );
+
     /*
       We need to only pick the languages that exist in the list of available languages
       to avoid selecting non-existent items since the languages can come from the URL path
       which the user can edit to enter invalid values.
     */
-    const matchedLanguages = languages
-      .filter((language) => selectedLanguages.split(',').includes(language.isoCode))
-      .map((language) => language.isoCode);
+    const matchedLanguages = useMemo(
+      () =>
+        languages
+          .filter((language) => selectedLanguageList.includes(language.isoCode))
+          .map((language) => language.isoCode),
+      [languages, selectedLanguageList],
+    );
 
     const languagesItems = useMemo(
       () =>
@@ -37,13 +47,13 @@ const LanguagesFilter: React.FC<Props> = memo(
     );
 
     return (
-      <div className={styles.comboboxItems}>
+      <div className={[styles.comboboxItems, className].filter(Boolean).join(' ')} {...props}>
         <Combobox
           isMultiSelect
           id="languagesFilter"
           value={matchedLanguages}
           items={languagesItems}
-          onChange={onLanguageChange}
+          onChange={(newValues: string[]) => onLanguageChange(newValues)}
           placeholder={t('language-select')}
         />
       </div>

@@ -282,35 +282,51 @@ const ReadingView = ({
     [startingVerseHighlightVerseKey],
   );
 
-  const itemContentRenderer = (pageIndex: number) => {
-    if (pageIndex === pagesCount) {
-      const pageVerses = mushafPageToVersesMap[lastReadPageNumber];
-      const lastVerse = pageVerses?.[pageVerses.length - 1];
-      if (!lastVerse) return null;
+  const itemContentRenderer = useCallback(
+    (pageIndex: number) => {
+      if (pageIndex === pagesCount) {
+        const pageVerses = mushafPageToVersesMap[lastReadPageNumber];
+        const lastVerse = pageVerses?.[pageVerses.length - 1];
+        if (!lastVerse) return null;
+
+        return (
+          <EndOfScrollingControls
+            quranReaderDataType={quranReaderDataType}
+            lastVerse={lastVerse}
+            initialData={initialData}
+          />
+        );
+      }
 
       return (
-        <EndOfScrollingControls
-          quranReaderDataType={quranReaderDataType}
-          lastVerse={lastVerse}
+        <PageContainer
+          pagesVersesRange={pagesVersesRange}
+          quranReaderStyles={quranReaderStyles}
+          reciterId={reciterId}
+          lang={lang}
+          wordByWordLocale={wordByWordLocale}
+          pageIndex={pageIndex}
+          setMushafPageToVersesMap={setMushafPageToVersesMap}
           initialData={initialData}
+          readingPreference={readingPreference}
         />
       );
-    }
-
-    return (
-      <PageContainer
-        pagesVersesRange={pagesVersesRange}
-        quranReaderStyles={quranReaderStyles}
-        reciterId={reciterId}
-        lang={lang}
-        wordByWordLocale={wordByWordLocale}
-        pageIndex={pageIndex}
-        setMushafPageToVersesMap={setMushafPageToVersesMap}
-        initialData={initialData}
-        readingPreference={readingPreference}
-      />
-    );
-  };
+    },
+    [
+      pagesCount,
+      mushafPageToVersesMap,
+      lastReadPageNumber,
+      quranReaderDataType,
+      initialData,
+      pagesVersesRange,
+      quranReaderStyles,
+      reciterId,
+      lang,
+      wordByWordLocale,
+      setMushafPageToVersesMap,
+      readingPreference,
+    ],
+  );
 
   if (hasError) {
     return <Error />;

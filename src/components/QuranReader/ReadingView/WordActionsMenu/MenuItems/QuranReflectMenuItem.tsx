@@ -1,12 +1,19 @@
 import React, { useRef, useState } from 'react';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 
-import ContentModal from '@/components/dls/ContentModal/ContentModal';
 import PopoverMenu from '@/components/dls/PopoverMenu/PopoverMenu';
-import ReflectionBodyContainer from '@/components/QuranReader/ReflectionView/ReflectionBodyContainer';
 import IconContainer, { IconColor, IconSize } from '@/dls/IconContainer/IconContainer';
+
+const ContentModal = dynamic(() => import('@/components/dls/ContentModal/ContentModal'), {
+  ssr: false,
+});
+const ReflectionBodyContainer = dynamic(
+  () => import('@/components/QuranReader/ReflectionView/ReflectionBodyContainer'),
+  { ssr: false },
+);
 import ChatIcon from '@/icons/chat.svg';
 import GraduationCapIcon from '@/icons/graduation-cap.svg';
 import ContentType from '@/types/QuranReflect/ContentType';

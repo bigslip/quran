@@ -3,15 +3,15 @@
 .logoWrapper {
   display: flex;
   align-self: center;
+  align-items: center;
   justify-content: flex-start;
   block-size: var(--spacing-medium2-px);
 
   & > svg {
     margin-block-start: 1px;
     inline-size: auto;
-
-    & > path {
-      fill: var(--color-text-default);
-    }
+    block-size: 24px;
+    color: var(--color-text-default);
+    fill: currentColor;
   }
 }

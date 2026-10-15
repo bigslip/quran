@@ -9,7 +9,7 @@
 .container {
   // Avoid external margins on virtualized items; they can cause spacer/measurement
   // drift when items are recycled and trigger visible scroll jumps.
-  padding-block-end: var(--spacing-large-px);
+  padding-block-end: var(--spacing-xlarge-px);
   // Prevent end-of-list wide items (EndOfScrollingControls) from stretching
   // nearby page containers in the virtualized range.
   inline-size: fit-content;
@@ -22,10 +22,16 @@
   &::after {
     content: '';
     position: absolute;
-    inset-inline: 0;
+    inset-inline: 8%;
     inset-block-end: calc(var(--spacing-large-px) / 1.25);
     block-size: 1px;
-    background: var(--color-borders-hairline);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-border-subtle, var(--color-borders-hairline)) 25%,
+      var(--color-border-subtle, var(--color-borders-hairline)) 75%,
+      transparent 100%
+    );
   }
 }
 

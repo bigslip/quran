@@ -29,14 +29,14 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           <h2>END USER SOFTWARE LICENSE AND TERMS OF SERVICE AGREEMENT</h2>
           <p>
             THIS TERMS OF SERVICE AGREEMENT IS A LEGAL AND BINDING AGREEMENT BETWEEN YOU
-            ("YOU,""YOUR" OR "YOURSELF") AND Quran.com ("OUR,""US,""WE" OR " Quran.com"), WHICH
+            ("YOU,""YOUR" OR "YOURSELF") AND Quran.ir ("OUR,""US,""WE" OR " Quran.ir"), WHICH
             GOVERNS YOUR USE OF OUR MOBILE APPLICATIONS, WEBSITES AND ALL INTERNET-BASED SERVICE
             TOGETHER WITH ALL INFORMATION, CONTENT, PRODUCTS, MATERIALS AND SERVICES MADE AVAILABLE
             TO YOU THROUGH THE SAME BY US AND/OR THIRD PARTIES (COLLECTIVELY,"THE SERVICE").
           </p>
           <p>
             PLEASE READ THIS AGREEMENT CAREFULLY BEFORE USING THE SERVICE. BY CLICKING THE "ACCEPT"
-            BUTTON, DOWNLOADING OR USING THE Quran.com MOBILE APPLICATION, (THE "MOBILE
+            BUTTON, DOWNLOADING OR USING THE Quran.ir MOBILE APPLICATION, (THE "MOBILE
             APPLICATION"), REGISTERING FOR AN ACCOUNT ON THE SERVICE, OR OTHERWISE ACCESSING THE
             SERVICE, OR ANY COMPONENT THEREOF, IN ANY MANNER WHATSOEVER, YOU ARE CONSENTING TO
             BECOME A PARTY TO THIS AGREEMENT AND AGREEING TO BE BOUND BY AND COMPLY WITH THE TERMS
@@ -44,18 +44,18 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <p>
             IF YOU DO NOT AGREE TO THE TERMS OF THIS AGREEMENT, DO NOT CLICK THE "ACCEPT" BUTTON AND
-            YOU MAY NOT USE THE Quran.com MOBILE APPLICATION TO WHICH THIS AGREEMENT APPLIES.
-            Quran.com is provided and managed by Quran Foundation, Inc. Anytime Quran.com is
+            YOU MAY NOT USE THE Quran.ir MOBILE APPLICATION TO WHICH THIS AGREEMENT APPLIES.
+            Quran.ir is provided and managed by Quran Foundation, Inc. Anytime Quran.ir is
             mentioned it is also referring to Quran Foundation, Inc.
           </p>
           <h2>0. GENERAL</h2>
           <p>
-            0.1 Quran.com HAS A 0 TOLERANCE POLICY FOR ABUSIVE, SEXUAL, OR QUESTIONABLE CONTENT.
+            0.1 Quran.ir HAS A 0 TOLERANCE POLICY FOR ABUSIVE, SEXUAL, OR QUESTIONABLE CONTENT.
             ABUSIVE USERS OR USERS WHO POST SAID CONTENT WILL BE PERMANENTLY BANNED.
           </p>
           <p>
             0.2 The opinions and ideas expressed by users are solely their own and do not
-            necessarily reflect the views of Quran.com or Quran Foundation, Inc.
+            necessarily reflect the views of Quran.ir or Quran Foundation, Inc.
           </p>
           <p>
             0.3 By posting your notes and reflections on QuranReflect you are agreeing to
@@ -63,17 +63,17 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <h2>1. SERVICE (GENERAL).</h2>
           <p>
-            1.1 The Service shall include, without limitation (i) the Quran.com Mobile Application,
-            together with various other Quran.com powered mobile applications and certain
+            1.1 The Service shall include, without limitation (i) the Quran.ir Mobile Application,
+            together with various other Quran.ir powered mobile applications and certain
             third-party integrated mobile device software applications, and including any software
             code, scripts, interfaces, graphics, displays, text, documentation and other components;
             (ii) any updates, modifications or enhancements to the items listed in subsection (i);
             and (iii) any of the Internet-based, interactive information services, general and
-            personalized content, and interactive tools provided by Quran.com that may be used or
+            personalized content, and interactive tools provided by Quran.ir that may be used or
             accessible by means of the Mobile Application or via our websites.
           </p>
           <p>
-            1.2 The Mobile Application, is licensed, not sold, to you by Quran.com. Your use of the
+            1.2 The Mobile Application, is licensed, not sold, to you by Quran.ir. Your use of the
             Mobile Application must be made in strictly in accordance with this Agreement and the
             applicable usage rules established by any third party mobile device platform or service
             provider or the third party from whom you are downloading the Mobile Application (as
@@ -88,7 +88,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <p>
             1.3 Our websites, each of which I subject to the terms and conditions of this Agreement,
-            include those found at http://quran.com, without limitation.
+            include those found at http://quran.ir, without limitation.
           </p>
           <p>
             1.4 As part of the Service, we use a diverse range of proprietary and authorized third
@@ -115,16 +115,16 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           <p>
             1.6 We recommend you retain a copy of this Agreement in either electronic or tangible
             format for your subsequent reference. You can access a web-based version of this
-            Agreement by visiting quran.com/terms-and-conditions.
+            Agreement by visiting quran.ir/terms-and-conditions.
           </p>
           <p>
             1.7 This Agreement and your use of the Service is conditioned upon your agreement with
             the terms of our Privacy Policy. You can access a web based version of our Privacy
-            Policy by visiting https://quran.com/privacy
+            Policy by visiting https://quran.ir/privacy
           </p>
           <h2>2. MOBILE APPLICATION LICENSE GRANT AND RESTRICTIONS ON USE OF THE SERVICE.</h2>
           <p>
-            2.1 Quran.com grants You a revocable, non-exclusive, non-transferrable, limited right to
+            2.1 Quran.ir grants You a revocable, non-exclusive, non-transferrable, limited right to
             install and use the Mobile Application on a single mobile telephone or device controlled
             by you (each a "Mobile Device"), and to access and use the Service on such Mobile Device
             or via our websites strictly in accordance with the terms and conditions of this
@@ -137,7 +137,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             the Mobile Application or Service; (iii) violate any applicable laws, rules or
             regulations in connection with your access or use of the Service; (iv) remove, alter or
             obscure any proprietary notice (including any notice of copyright or trademark) of
-            Quran.com or its affiliates, partners, suppliers or the licensors of the Service or
+            Quran.ir or its affiliates, partners, suppliers or the licensors of the Service or
             otherwise obscure or modify the any manner in which the Service is displayed by means of
             the Mobile Application or our websites; (v) install, use or permit the Mobile
             Application to exist on more than one Mobile Device at a time or on any other mobile
@@ -151,7 +151,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             compiling a collection of listings or data for any purpose (including, without
             limitation, for use by a listing product or listing service that is, directly or
             indirectly, competitive with or in any way a substitute for any services offered by
-            Quran.com) other than one authorized pursuant to this Agreement; (ix) use the Service to
+            Quran.ir) other than one authorized pursuant to this Agreement; (ix) use the Service to
             send automated queries or to send any unsolicited commercial e-mail; (x) use the Service
             to attempt to interfere with the proper functioning and display of the proper operation
             and usage of the Service or our websites by any other authorized users and third
@@ -161,12 +161,12 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           <p>
             2.3 You agree that you will not use the Service for any revenue generating endeavor,
             commercial enterprise, or other purpose for which it is not designed or intended (except
-            that Quran.com and its affiliates and their respective employees are expressly permitted
-            to use the Service for the internal business purposes of Quran.com and its affiliates).
+            that Quran.ir and its affiliates and their respective employees are expressly permitted
+            to use the Service for the internal business purposes of Quran.ir and its affiliates).
             By using the Service, you agree you will not copy, reproduce, alter, modify, create
             derivative works from, rent, lease, loan, sell, distribute or publicly display any of
             the Content (except for your own personal, non commercial use) accessed by the Service
-            without the prior written consent of Quran.com. In addition, you will not use the
+            without the prior written consent of Quran.ir. In addition, you will not use the
             Content for any unauthorized non-commercial marketing and promotional campaigns, target
             or mass solicitation campaigns or political campaigning. YOU ACKNOWLEDGE THAT YOUR USE
             OF THE SERVICE TO ENABLE THE TRANSMISSION OF UNSOLICITED VOICE MESSAGES, FACSIMILES OR
@@ -175,7 +175,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <p>
             2.4 Some or all of the Service may be provided by an affiliate or subsidiary of
-            Quran.com or a third party, and you may be subject to both this Agreement and the terms
+            Quran.ir or a third party, and you may be subject to both this Agreement and the terms
             of service of that third party. Certain portions of the Service may utilize or include
             third party software that is subject to open source and third party license terms
             ("Third Party Software"). You acknowledge and agree that your right to use such Third
@@ -190,18 +190,18 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             available" software.
           </p>
           <p>
-            2.5 Quran.com does not warrant that the Service will be compatible or interoperable with
+            2.5 Quran.ir does not warrant that the Service will be compatible or interoperable with
             your Mobile Device or any other piece of hardware, software, equipment or device
             installed on or used in connection with your Mobile Device or used to otherwise access
-            our websites. You acknowledge and agree that Quran.com and its affiliates, partners,
+            our websites. You acknowledge and agree that Quran.ir and its affiliates, partners,
             suppliers and licensors shall have no liability to you for any losses suffered resulting
             from or arising in connection with compatibility or interoperability problems.
           </p>
           <p>
             2.6 You acknowledge that you are responsible for addressing any third party claims
-            relating to your use of the Service, and agree to notify Quran.com of any third party
+            relating to your use of the Service, and agree to notify Quran.ir of any third party
             claims relating to the Service of which you become aware. Furthermore, you hereby
-            release Quran.com from any liability resulting from your use of the Service, including,
+            release Quran.ir from any liability resulting from your use of the Service, including,
             without limitation, the following: (i) any product liability claims; (ii) any claim that
             the Service fails to conform to any applicable legal or regulatory requirement; and
             (iii) any claim arising under consumer protection or similar legislation.
@@ -218,7 +218,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             States law.
           </p>
           <p>
-            2.8 You acknowledge that Quran.com may from time to time issue upgraded versions of the
+            2.8 You acknowledge that Quran.ir may from time to time issue upgraded versions of the
             Service, and may automatically electronically upgrade the version of the Mobile
             Application that you are using on your Mobile Device. You consent to such automatic
             upgrading on your Mobile Device, and agree that this Agreement will apply to all such
@@ -237,7 +237,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           <p>
             3.1 You acknowledge and understand that certain portions of the Service may require and
             utilize phone service, internet access, data access or text messaging capability. Except
-            as otherwise noted, Quran.com does not charge for the use of Service, but carrier rates
+            as otherwise noted, Quran.ir does not charge for the use of Service, but carrier rates
             for phone, internet, data and text messaging may apply and you are responsible for any
             such charges, as well as, internet and pay any service fees associated with such access.
             In addition, you must provide all equipment necessary to make such connection to the
@@ -247,7 +247,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             3.2 The functional use of the Service may be dependent on the data related to your
             geographic location and geopositional data, and you acknowledge and agree that your
             failure to provide (or make accessible) that data may limit the functionality of the
-            Service. Quran.com makes no warranty with respect to the accuracy of Service provided to
+            Service. Quran.ir makes no warranty with respect to the accuracy of Service provided to
             you in reliance on location and geopositional data provided by you, the Mobile
             Application or via your Mobile Device or our websites.
           </p>
@@ -263,7 +263,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             of the law, of this Agreement or is unacceptable to us in our sole discretion.
           </p>
           <p>
-            3.4 You may be required to register and create an account ("Account") with Quran.com in
+            3.4 You may be required to register and create an account ("Account") with Quran.ir in
             order to use the Mobile Application and certain features of the Service. Information
             gathered through the registration process and information related to your account will
             be subject to this Agreement, as well as to our Privacy Policy. You represent and
@@ -292,27 +292,27 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <p>
             3.5 You are under no obligation to use or continue to use the Service and may
-            temporarily or permanently cease use of the Service without notice to Quran.com.
+            temporarily or permanently cease use of the Service without notice to Quran.ir.
           </p>
           <h2>4. PRIVACY POLICY.</h2>
           <p>
             4.1 Certain personal information and other information provided by you in the use of the
             Service may be stored on your Mobile Device and/or device used to access our websites
-            even if such information is not collected by Quran.com. It is your responsibility to
+            even if such information is not collected by Quran.ir. It is your responsibility to
             maintain the security of your Mobile Device or other device (i.e. home computer) from
             unauthorized access.
           </p>
           <p>
             4.2 Use of any personal information or other information about you collected by
-            Quran.com through, or in connection with, the Service is subject to our Privacy Policy,
+            Quran.ir through, or in connection with, the Service is subject to our Privacy Policy,
             which Privacy Policy is incorporated into this Agreement by this reference.
           </p>
           <p>
             4.3 The Service is designed for adults of legal age (18 years and over) and access to
             content provided by advertisers or other third parties may not be suitable for children.
-            Quran.com does not knowingly collect personal information from children through the
+            Quran.ir does not knowingly collect personal information from children through the
             Service; for questions about our online Privacy Policy for children you can find our
-            privacy policy located at https://quran.com/privacy.
+            privacy policy located at https://quran.ir/privacy.
           </p>
           <h2>5. INTELLECTUAL PROPERTY NOTICE.</h2>
           <p>
@@ -321,17 +321,17 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             software, music, sound, and other files contained therein or related thereto, (ii) the
             source and object code of the Service, (iii) the format, directories, queries,
             algorithms, structure and organization of the Service, and/or accessed using the
-            Service, (iv) the Quran.com company names, logos, and all related products and service
+            Service, (iv) the Quran.ir company names, logos, and all related products and service
             names, design marks and slogans, and (v) any and all copyrights, patents, trademarks,
             trade secrets, publicity rights and other intellectual property rights associated
             therewith (collectively, the "Intellectual Property,"), are the sole property of
-            Quran.com, its wholly-owned subsidiaries, affiliates, licensors, suppliers or other
+            Quran.ir, its wholly-owned subsidiaries, affiliates, licensors, suppliers or other
             third parties. Except as expressly and unambiguously provided herein, you do not
-            possess, and Quran.com does not grant to you, any express or implied rights (whether by
+            possess, and Quran.ir does not grant to you, any express or implied rights (whether by
             implication, estoppel or other legal theory) in or to any Intellectual Property (or the
             unauthorized use of the Intellectual Property) and all such rights are retained by
-            Quran.com, its subsidiaries, parent companies, affiliates and/or any third party owner
-            of such rights. You acknowledge and agree that you, and not Quran.com or any third party
+            Quran.ir, its subsidiaries, parent companies, affiliates and/or any third party owner
+            of such rights. You acknowledge and agree that you, and not Quran.ir or any third party
             mobile device platform or service provider, shall be solely responsible for the
             investigation, defense, settlement and discharge of any intellectual property
             infringement claim or suit, or any other harm or damages resulting from your use of or
@@ -339,7 +339,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <h2>6. CONTENT LICENSE FROM YOU.</h2>
           <p>
-            6.1 Quran.com may, but is not obligated to, offer interactive features that allow users
+            6.1 Quran.ir may, but is not obligated to, offer interactive features that allow users
             to, among other things, submit or post content ("User Generated Content") or links to
             third party content on areas of the Service accessible and viewable by other users of
             the Service and the public. You represent and agree that all User Generated Content or
@@ -348,7 +348,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             infringing or otherwise unlawful conduct, or otherwise be obscene, objectionable or in
             poor taste, and that you have obtained all necessary rights, licenses or clearances. By
             submitting or posting any User Generated Content on, through or in connection with the
-            Service, you hereby grant to Quran.com a limited license to use, modify, delete from,
+            Service, you hereby grant to Quran.ir a limited license to use, modify, delete from,
             add to, publicly perform, publicly display, reproduce, and distribute such User
             Generated Content fully-paid and royalty free in all forms and formats of media now know
             or in the future created, including, without limitation, distributing part or all of the
@@ -358,14 +358,14 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             submitted or posted on through or in connection with the Service, subject to the limited
             license herein. We reserve the right not to post or publish any User Generated Content,
             and to delete, remove or edit any User Generated Content, at any time in its sole
-            discretion without notice or liability. Quran.com has the right, but not the obligation,
+            discretion without notice or liability. Quran.ir has the right, but not the obligation,
             to monitor any information and User Generated Content submitted or posted by you or
             otherwise available on the Service, to investigate any reported or apparent violation of
-            this Agreement, and to take any action that Quran.com in its sole discretion deems
+            this Agreement, and to take any action that Quran.ir in its sole discretion deems
             appropriate. You acknowledge and agree that any User Generated Content provided by you
             shall be made public. You acknowledge that (i) you have no expectation of privacy in any
             User Generated Content, and (ii) no confidential, fiduciary, contractually implied or
-            other relationship is created between you and Quran.com by reason of your transmitting
+            other relationship is created between you and Quran.ir by reason of your transmitting
             User Generated Content to any area of the Service.
           </p>
           <h2>7. THIRD PARTY PROVIDER CONTENT AND SERVICES.</h2>
@@ -389,19 +389,19 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             hyperlinks to access these Other Sites, you will leave the Service and your browser will
             be re-directed to the Other Sites. The Other Sites may have their own terms of use and
             privacy policy and those Other Sites may have different practices and requirements than
-            the Service. Quran.com may not have knowledge of, and is not responsible for, the
+            the Service. Quran.ir may not have knowledge of, and is not responsible for, the
             content, information, services, products or advertisements presented by any Other Site
-            which you use at your own risk. Quran.com does not warrant or make any representation
+            which you use at your own risk. Quran.ir does not warrant or make any representation
             regarding the legality, accuracy, quality or authenticity of content, information,
             services or products presented by Other Sites. The hyperlinks to Other Sites do not
-            constitute an endorsement by Quran.com of any Other Site(s) or resources, or their
+            constitute an endorsement by Quran.ir of any Other Site(s) or resources, or their
             content, information, services or products. The Service is only providing these links to
             you as a convenience. The terms of use and privacy policy of any Other Sites shall apply
-            to your access and use of them. Quran.com accepts no responsibility for the content or
+            to your access and use of them. Quran.ir accepts no responsibility for the content or
             conduct of Other Sites
           </p>
           <p>
-            7.3 Quran.com makes no representations whatsoever concerning (1) the information,
+            7.3 Quran.ir makes no representations whatsoever concerning (1) the information,
             software or other material appearing on, or accessible through, any Third Party Provider
             Content and Services or Other Sites (including without limitation, any advertisement for
             products or services), (2) the performance or operation of any Third Party Provider
@@ -412,7 +412,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             Party Provider Content and Services or Other Sites (including, without limitation, the
             quality, safety and legality of such products or services or the sale thereof), or (4)
             the sellers of any products or services advertised or sold on or through any Third Party
-            Content Provider Service or Other Sites. Quran.com shall not be responsible or liable,
+            Content Provider Service or Other Sites. Quran.ir shall not be responsible or liable,
             directly or indirectly, for any damage or loss caused or alleged to be caused by, or in
             connection with your use of Third Party Provider Content and Services or Other Sites or
             your reliance on any such Third Party Content Provider content, goods or services,
@@ -447,11 +447,11 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             material contained in any externally linked websites or services.
           </p>
           <p>
-            8.4 Quran.com makes no representation that any third party mobile device platform or
+            8.4 Quran.ir makes no representation that any third party mobile device platform or
             service provider has endorsed the Service, and you should not rely on the availability
             of the Mobile Application by means of any mobile application catalog, storefront, or
             other means of downloading as an endorsement of the Mobile Application, the Service or
-            Quran.com generally. In no event shall any third party mobile device platform or service
+            Quran.ir generally. In no event shall any third party mobile device platform or service
             provider have any obligation to you whatsoever to furnish any maintenance and support
             services with respect to the Mobile Application.
           </p>
@@ -459,17 +459,17 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           <p>
             Please note that with regard to any content made available on or through the Service
             which contains or displays a third party logo (i.e. YouTube, Vimeo, etc.) or which is
-            provided via a third party’s player and is hosted on a third party’s servers; Quran.com
+            provided via a third party’s player and is hosted on a third party’s servers; Quran.ir
             does not have the ability to permanently remove all or any such content from the third
             party’s servers. Therefore, if you have a complaint concerning any video content made
             available on the Service that is provided by a third party, you should contact the third
             party directly in accordance with copyright policies of the third party. If you believe
             that your work is available on the Service via a third party player in a way that
             constitutes copyright infringement, please: (1) contact the third party directly in
-            accordance with its copyright policies; and (2) contact Quran.com by sending us notice
+            accordance with its copyright policies; and (2) contact Quran.ir by sending us notice
             in accordance with Section 15, below
           </p>
-          <h2>10. Quran.com DISCLOSURES</h2>
+          <h2>10. Quran.ir DISCLOSURES</h2>
           <p>
             10.1 When it comes to buying products or services when using the internet, it is
             recommended that you always conduct your own investigations. This includes buying any
@@ -478,21 +478,21 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           <p>
             10.2 Unless we have stated otherwise, you should always assume that when products or
             services are made reference to on the Service, they are made because there exists a
-            material connection between Quran.com and the providers of the products and services
+            material connection between Quran.ir and the providers of the products and services
             displayed. It should be noted that this is not always the case.
           </p>
           <p>
-            10.3 Quran.com will always recommend products and services based in part on a good faith
+            10.3 Quran.ir will always recommend products and services based in part on a good faith
             belief that the supply of such products or services will help you. We have a good faith
-            belief, because Quran.com has either tried the products or services prior to making any
+            belief, because Quran.ir has either tried the products or services prior to making any
             recommendations, or we have researched the products or services based on the supplier’s
-            history. The recommendations made by Quran.com about the products or services are honest
+            history. The recommendations made by Quran.ir about the products or services are honest
             opinions based on facts known to us at the time a product or service is mentioned on the
             Service.
           </p>
           <p>
             10.4 We have conducted all steps possible to verify the testimonials that appear on the
-            Service on behalf of Quran.com. They are treated as average user expectations based on
+            Service on behalf of Quran.ir. They are treated as average user expectations based on
             the information that was available at the time of publishing them. They are not
             exaggerations of user results which we do not entertain in any form. Enquiries have been
             made to confirm their authenticity at all times. If a claim sounds untrue then We regard
@@ -515,7 +515,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           <h2>11. WARRANTY DISCLAIMER.</h2>
           <p>
             11.1 Any use of the Mobile Application, the Service, reliance upon any of the Content,
-            and any use of the Internet generally shall be at your sole risk. Quran.com disclaims
+            and any use of the Internet generally shall be at your sole risk. Quran.ir disclaims
             any and all responsibility or liability for the accuracy, content, completeness,
             legality, licensure of Third Party Content Providers, reliability, or operability or
             availability of information or the Content accessible by use of the Service.
@@ -524,16 +524,16 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             11.2 THE SERVICE (INCLUDING CONTENT AND INFORMATION POSTED AND ACCESSIBLE AS PART
             THEREOF) IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTY OF ANY KIND, EITHER
             EXPRESS OR IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-            OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. Quran.com
+            OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. Quran.ir
             DISCLAIMS, TO THE FULLEST EXTENT PERMITTED UNDER LAW, ANY WARRANTIES REGARDING THE
             SECURITY, RELIABILITY, TIMELINESS, ACCURACY AND PERFORMANCE OF THE MOBILE APPLICATION,
-            OUR WEBSITES, THE SERVICE AND ANY CONTENT. Quran.com DOES NOT WARRANT THAT ANY DEFECTS
+            OUR WEBSITES, THE SERVICE AND ANY CONTENT. Quran.ir DOES NOT WARRANT THAT ANY DEFECTS
             OR ERRORS WILL BE CORRECTED; OR THAT THE MOBILE APPLICATION, OUR WEBSITES, THE SERVICE,
             ANY CONTENT, OR THE INTERNET GENERALLY, IS FREE OF VIRUSES, ERRORS, OTHER HARMFUL
             COMPONENTS, OR WILL BE UNINTERRUPTED.
           </p>
           <p>
-            11.3 Quran.com DISCLAIMS, TO THE FULLEST EXTENT PERMITTED UNDER LAW, ANY AND ALL
+            11.3 Quran.ir DISCLAIMS, TO THE FULLEST EXTENT PERMITTED UNDER LAW, ANY AND ALL
             WARRANTIES, REPRESENTATIONS AND ENDORSEMENTS, EXPRESS OR IMPLIED, INCLUDING ANY
             WARRANTIES FOR ANY INFORMATION, GOODS, OR SERVICES, OBTAINED THROUGH, ADVERTISED OR
             RECEIVED THROUGH ANY LINKS PROVIDED BY OR THROUGH THE SERVICE; OR REGARDING THE
@@ -541,11 +541,11 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             OUR WEBSITES, THE SERVICE AND ANY CONTENT.
           </p>
           <p>
-            11.4 NO ADVICE OR INFORMATION PROVIDED BY Quran.com, ITS AFFILIATES, OR THEIR RESPECTIVE
+            11.4 NO ADVICE OR INFORMATION PROVIDED BY Quran.ir, ITS AFFILIATES, OR THEIR RESPECTIVE
             EMPLOYEES AND AGENTS SHALL CREATE ANY WARRANTY.
           </p>
           <p>
-            11.5 NONE OF Quran.com, ITS AFFILIATES, OR ANY ASSOCIATED MOBILE DEVICE PLATFORM AND
+            11.5 NONE OF Quran.ir, ITS AFFILIATES, OR ANY ASSOCIATED MOBILE DEVICE PLATFORM AND
             SERVICE PROVIDERS, MAKE ANY REPRESENTATIONS, WARRANTIES OR GUARANTEES REGARDING (1) THE
             OPERATION OR PERFORMANCE OF THE MOBILE APPLICATION, SERVICE, OR ANY THIRD PARTY PROVIDER
             CONTENT OR SERVICES OR OTHER SITES; (2) THE NATURE, CONTENT OR ACCURACY (EITHER WHEN
@@ -567,7 +567,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             IMPLIED WARRANTIES.
           </p>
           <p>
-            11.7 NEITHER Quran.com, NOR ANY OF ITS ASSOCIATED MOBILE DEVICE PLATFORM AND SERVICE
+            11.7 NEITHER Quran.ir, NOR ANY OF ITS ASSOCIATED MOBILE DEVICE PLATFORM AND SERVICE
             PROVIDERS, WARRANTS THAT THE MOBILE APPLICATION WILL BE COMPATIBLE OR INTEROPERABLE WITH
             YOUR MOBILE DEVICE OR ANY OTHER PIECE OF HARDWARE, SOFTWARE, EQUIPMENT OR DEVICE
             INSTALLED ON OR USED IN CONNECTION WITH YOUR MOBILE DEVICE. FURTHERMORE, YOU ACKNOWLEDGE
@@ -575,19 +575,19 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             MOBILE DEVICE TO DIMINISH OR FAIL COMPLETELY, AND MAY RESULT IN PERMANENT THE DAMAGE TO
             YOUR MOBILE DEVICE, LOSS OF THE DATA LOCATED ON YOUR MOBILE DEVICE, AND CORRUPTION OF
             THE SOFTWARE AND FILES LOCATED ON YOUR MOBILE DEVICE. YOU ACKNOWLEDGE AND AGREE THAT
-            Quran.com AND ITS AFFILIATES, PARTNERS, SUPPLIERS, LICENSORS, AND ASSOCIATED MOBILE
+            Quran.ir AND ITS AFFILIATES, PARTNERS, SUPPLIERS, LICENSORS, AND ASSOCIATED MOBILE
             DEVICE PLATFORM AND SERVICE PROVIDERS SHALL HAVE NO LIABILITY TO YOU FOR ANY LOSSES
             SUFFERED RESULTING FROM OR ARISING IN CONNECTION WITH COMPATIBILITY OR INTEROPERABILITY
             PROBLEMS.
           </p>
           <h2>12. LIMITATION OF LIABILITY.</h2>
           <p>
-            12.1 IN NO EVENT SHALL Quran.com OR ANY OF ITS ASSOCIATED MOBILE DEVICE PLATFORM AND
+            12.1 IN NO EVENT SHALL Quran.ir OR ANY OF ITS ASSOCIATED MOBILE DEVICE PLATFORM AND
             SERVICE PROVIDERS BE LIABLE TO YOUR FOR YOUR USE, MISUSE OR RELIANCE ON THE MOBILE
             APPLICATION, OUR WEBSITES AND THE SERVICE FOR ANY DAMAGES WHATSOEVER, INCLUDING DIRECT,
             SPECIAL, PUNITIVE, INDIRECT, CONSEQUENTIAL OR INCIDENTAL DAMAGES OR DAMAGES FOR LOSS OF
             PROFITS, REVENUE, USE, OR DATA WHETHER BROUGHT IN WARRANTY, CONTRACT, INTELLECTUAL
-            PROPERTY INFRINGEMENT, TORT (INCLUDING NEGLIGENCE) OR OTHER THEORY, EVEN IF Quran.com OR
+            PROPERTY INFRINGEMENT, TORT (INCLUDING NEGLIGENCE) OR OTHER THEORY, EVEN IF Quran.ir OR
             ANY OF ITS ASSOCIATED MOBILE DEVICE PLATFORM AND SERVICE PROVIDERS ARE AWARE OF OR HAS
             BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE, ARISING OUT OF OR CONNECTED WITH (1) THE
             USE (OR INABILITY TO USE) OR PERFORMANCE OF THE SERVICE, (2) THE CONTENT OR THE INTERNET
@@ -595,7 +595,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             ANY MOBILE APPLICATION OR ANY THIRD PARTY PROVIDER CONTENT OR SERVICES OR OTHER SITES,
             OR (4) ANY PRODUCTS OR SERVICES PURCHASED OR OBTAINED AS A RESULT OF AN ADVERTISEMENT OR
             OTHER INFORMATION OR MATERIAL ACCESSED USING THE MOBILE APPLICATION,OUR WEBSITE OR THE
-            SERVICE. NEITHER Quran.com, NOR ANY OF ITS ASSOCIATED MOBILE DEVICE PLATFORM OR SERVICE
+            SERVICE. NEITHER Quran.ir, NOR ANY OF ITS ASSOCIATED MOBILE DEVICE PLATFORM OR SERVICE
             PROVIDERS, ASSUMES ANY LEGAL LIABILITY OR RESPONSIBILITY FOR THE ACCURACY, COMPLETENESS,
             TIMELINESS OR USEFULNESS OF ANY INFORMATION, APPARATUS, PRODUCT OR PROCESS OR OTHER
             MATERIAL ACCESSIBLE FROM THE MOBILE APPLICATION. THE USER OF THE SERVICES ASSUMES ALL
@@ -615,13 +615,13 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             STATES LIABILITY IS LIMITED TO THE FULLEST EXTENT PERMITTED BY LAW.
           </p>
           <p>
-            12.4 WITHOUT LIMITING THE GENERALITY OF THE FOREGOING, Quran.com'S AGGREGATE LIABILITY
+            12.4 WITHOUT LIMITING THE GENERALITY OF THE FOREGOING, Quran.ir'S AGGREGATE LIABILITY
             TO YOU (WHETHER UNDER CONTRACT, TORT, STATUTE OR OTHERWISE) SHALL NOT EXCEED THE AMOUNT
             OF FIFTY DOLLARS ($50.00).
           </p>
           <h2>13. INDEMNIFICATION.</h2>
           <p>
-            13.1 You agree to indemnify and hold Quran.com and, as applicable, our parent,
+            13.1 You agree to indemnify and hold Quran.ir and, as applicable, our parent,
             subsidiaries, affiliates, partners, officers, directors, agents and employees,
             licensors, suppliers and Third Party Content Providers harmless from any claim or
             demand, including any and all losses, liabilities, claims, demands, damages, costs or
@@ -629,7 +629,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             liens, including reasonable attorneys' fees and costs, whether brought by third parties
             or otherwise, due to or arising out of: (i) your breach of any representation, warranty,
             covenant or obligation set forth in this Agreement (or any other violation of your
-            agreement with Quran.com on the basis of this Agreement); (ii) your use or misuse of any
+            agreement with Quran.ir on the basis of this Agreement); (ii) your use or misuse of any
             location information; (iii) any information, User Generated Content or other content
             transmitted, submitted or provided by you through the Service, including your use of the
             Service to provide a link to another website or to upload content or other information
@@ -643,15 +643,15 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             13.2 The foregoing indemnity obligations will survive any termination of this Agreement.
           </p>
           <p>
-            13.3 Quran.com reserves the right, at its own expense, to assume the exclusive defense
+            13.3 Quran.ir reserves the right, at its own expense, to assume the exclusive defense
             and control of any matter subject to indemnification by you, which will not excuse your
             indemnity obligations under this Section. You agree not to settle any matter subject to
             the forgoing indemnification obligations without the express consent and approval of
-            Quran.com.
+            Quran.ir.
           </p>
           <h2>14. DIGITAL MILLENNIUM COPYRIGHT COMPLAINTS.</h2>
           <p>
-            Quran.com respects the copyright rights of others, and we ask user of Service, our
+            Quran.ir respects the copyright rights of others, and we ask user of Service, our
             advertisers and other third parties to do the same. In appropriate circumstances and at
             our discretion, we may remove, suspend, terminate access, or take other appropriate
             action against users or other third parties who infringe or repeatedly infringe the
@@ -680,24 +680,24 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             ANY NOTICE THAT DOES NOT COMPLY WITH THE REQUIREMENTS OF TITLE 17, UNITED STATES CODE,
             SECTION 512(C)(3) WILL NOT RECEIVE A RESPONSE. NOTHING IN THIS SECTION 14.1 IS INTENDED
             TO EXPAND OR SUPPLEMENT THE LEGAL RIGHTS, PROCEDURES AND REMEDIES AUTHORIZED AND GRANTED
-            UNDER DMCA AND WE DO NOT REPRESENT ANY RELATED UNDERTAKING BY Quran.com NOT OTHERWISE
+            UNDER DMCA AND WE DO NOT REPRESENT ANY RELATED UNDERTAKING BY Quran.ir NOT OTHERWISE
             EXPRESSLY REQUIRED BY APPLICABLE LAW.
           </p>
           <h2>15. TERMINATION.</h2>
           <p>
-            Quran.com may, in its sole and absolute discretion, at any time and for any or no
+            Quran.ir may, in its sole and absolute discretion, at any time and for any or no
             reason, suspend or terminate your use of the Service, including without limitation this
             Agreement and the rights afforded to you hereunder with or without prior notice.
             Furthermore, if you fail to comply with any terms and conditions of this Agreement, then
             this Agreement and any rights afforded to you hereunder shall terminate automatically,
-            without any notice or other action by Quran.com. Upon the termination, you shall cease
+            without any notice or other action by Quran.ir. Upon the termination, you shall cease
             all use of the Service and/or uninstall the Mobile Application from your Mobile Device.
-            Quran.com reserves the right to terminate or disable all or any portion of the Service,
+            Quran.ir reserves the right to terminate or disable all or any portion of the Service,
             our websites or of the Mobile Application (via update of the Mobile Application).
           </p>
           <h2>16. REMEDIES AVAILABLE TO US.</h2>
           <p>
-            Quran.com reserves the right to seek any and all remedies available at law or in equity
+            Quran.ir reserves the right to seek any and all remedies available at law or in equity
             in connection with your violation of this Agreement.
           </p>
           <h2>17. ASSIGNMENT.</h2>
@@ -714,7 +714,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <h2>19. LIMITED TIME TO BRING CLAIM.</h2>
           <p>
-            You acknowledge and agree that it is the intent of both you and Quran.com to limit the
+            You acknowledge and agree that it is the intent of both you and Quran.ir to limit the
             period of time a claim may be filed, even if the period is shorter than that fixed by
             the statute of limitations. You therefore agree that any cause of action arising out of
             or related to the Service must commence within one (1) year after the cause of action
@@ -737,9 +737,9 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <p>
             20.3 Except as expressly stated herein, this Agreement constitutes the entire agreement
-            between you and Quran.com with respect to your use of the Service, and it supersedes and
+            between you and Quran.ir with respect to your use of the Service, and it supersedes and
             replaces all prior or contemporaneous communications, proposals, understandings or
-            agreement, whether electronic, oral or written, between you and Quran.com with respect
+            agreement, whether electronic, oral or written, between you and Quran.ir with respect
             to your use of the Service and/or the subject matter of Agreement.
           </p>
           <p>
@@ -747,7 +747,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
             intended or shall be construed to confer upon any person (other than the parties hereto)
             any rights, benefits or remedies of any kind or character, or to create any obligations
             or liabilities of a party to any such person. Notwithstanding the foregoing, you
-            acknowledge and agree that each of Quran.com's associated mobile device platform and
+            acknowledge and agree that each of Quran.ir's associated mobile device platform and
             service providers are third party beneficiaries to this Agreement, and that, upon your
             acceptance of the terms and conditions of this Agreement, such associated mobile device
             platform and service providers will have the right to enforce this Agreement against you
@@ -755,13 +755,13 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <p>
             20.5 Any waiver of any provision of this Agreement will be effective only if in writing
-            and signed by you and Quran.com. Our failure to enforce our rights and remedies
+            and signed by you and Quran.ir. Our failure to enforce our rights and remedies
             available to us with respect to your breach of this Agreement shall not constitute a
             waiver of such breach nor of any prior, concurrent, or subsequent breach of the same or
             any other provision of this Agreement.
           </p>
           <p>
-            20.6 To be removed from future Quran.com marketing e-mail campaigns, please e-mail
+            20.6 To be removed from future Quran.ir marketing e-mail campaigns, please e-mail
             info@quran.foundation
           </p>
           <h2>21. USAGE RULES, ADDITIONAL OBLIGATIONS/RIGHTS RELATED TO YOUR MOBILE DEVICE. </h2>
@@ -787,7 +787,7 @@ const TermsAndConditionsPage: NextPage = (): JSX.Element => {
           </p>
           <h2>23. CHANGES OR MODIFICATIONS</h2>
           <p>
-            Quran.com reserves the right to add, delete, change or modify parts of this Agreement at
+            Quran.ir reserves the right to add, delete, change or modify parts of this Agreement at
             our sole discretion and at any time without notice or liability to you. If we do this,
             we will post the changes on this page and will indicate the effective date of the change
             at the bottom of the page. It is important for you to refer to this Agreement from time

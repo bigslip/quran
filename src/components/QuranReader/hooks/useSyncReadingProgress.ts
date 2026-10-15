@@ -73,6 +73,12 @@ const useSyncReadingProgress = ({ isReadingPreference }: UseSyncReadingProgressP
     [addReadingSessionAndClearCache],
   );
 
+  useEffect(() => {
+    return () => {
+      debouncedAddReadingSession.cancel();
+    };
+  }, [debouncedAddReadingSession]);
+
   // send the data to the backend and clear the SWR cache
   const updateReadingDayAndClearCache = useCallback(
     (body: UpdateActivityDayBody<UpdateQuranActivityDayBody>) => {
@@ -199,6 +205,7 @@ const useSyncReadingProgress = ({ isReadingPreference }: UseSyncReadingProgressP
     handleFocus();
 
     return () => {
+      if (interval) clearInterval(interval);
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('blur', handleBlur);
     };

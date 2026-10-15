@@ -63,7 +63,9 @@ const FAQ: React.FC = () => {
             );
           })
         ) : (
-          <div className={styles.noFaqItems}>No FAQ items available.</div>
+          <div className={styles.noFaqItems}>
+            {t('no-faq-items', { defaultValue: 'No FAQ items available.' })}
+          </div>
         )}
       </div>
     </div>

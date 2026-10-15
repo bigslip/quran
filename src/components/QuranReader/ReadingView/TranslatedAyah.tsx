@@ -9,6 +9,7 @@ import InlineFootnote from './InlineFootnote';
 import styles from './TranslatedAyah.module.scss';
 
 import { logErrorToSentry } from '@/lib/sentry';
+import { RootState } from '@/redux/RootState';
 import {
   openStudyMode,
   selectStudyModeIsOpen,
@@ -21,13 +22,13 @@ import Footnote from 'types/Footnote';
 import Language from 'types/Language';
 import Verse from 'types/Verse';
 
-type TranslatedAyahProps = {
+interface TranslatedAyahProps extends React.HTMLAttributes<HTMLSpanElement> {
   verse: Verse;
   translationHtml: string;
-  languageId: number;
+  languageId?: number;
   lang: string;
   isLastVerse?: boolean;
-};
+}
 
 /**
  * Renders a single translated ayah with hover highlight, click interactions, and footnote support.
@@ -41,16 +42,17 @@ const TranslatedAyah: React.FC<TranslatedAyahProps> = ({
   languageId,
   lang,
   isLastVerse = false,
+  className,
+  ...props
 }) => {
   const dispatch = useDispatch();
-  const studyModeIsOpen = useSelector(selectStudyModeIsOpen);
-  const studyModeVerseKey = useSelector(selectStudyModeVerseKey);
+  const isStudyModeModalOpen = useSelector(
+    (state: RootState) =>
+      selectStudyModeIsOpen(state) && selectStudyModeVerseKey(state) === verse.verseKey,
+  );
   const [footnote, setFootnote] = useState<Footnote | null>(null);
   const [activeFootnoteName, setActiveFootnoteName] = useState<string | null>(null);
   const [isLoadingFootnote, setIsLoadingFootnote] = useState(false);
-
-  // Check if study mode is open for this specific verse
-  const isStudyModeModalOpen = studyModeIsOpen && studyModeVerseKey === verse.verseKey;
 
   const langData = getLanguageDataById(languageId || findLanguageIdByLocale(lang as Language));
 
@@ -148,7 +150,7 @@ const TranslatedAyah: React.FC<TranslatedAyahProps> = ({
   return (
     <>
       <span
-        className={classNames(styles.ayah, styles[langData.direction], styles.clickable, {
+        className={classNames(className, styles.ayah, styles[langData.direction], styles.clickable, {
           [styles.hasActiveFootnote]: showFootnote,
           [styles.isActive]: isStudyModeModalOpen,
         })}
@@ -157,6 +159,7 @@ const TranslatedAyah: React.FC<TranslatedAyahProps> = ({
         onKeyDown={handleAyahKeyDown}
         role="button"
         tabIndex={0}
+        {...props}
       >
         {verseNumberElement}
         {translationTextElement}
@@ -176,4 +179,4 @@ const TranslatedAyah: React.FC<TranslatedAyahProps> = ({
   );
 };
 
-export default TranslatedAyah;
+export default React.memo(TranslatedAyah);

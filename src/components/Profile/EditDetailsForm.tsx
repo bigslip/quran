@@ -73,7 +73,11 @@ const EditDetailsForm: FC = () => {
   );
 
   return (
-    <Section title={t('edit-details')} dataTestId={TestId.AUTH_UPDATE_PROFILE_EDIT_DETAILS_SECTION}>
+    <Section
+      title={t('edit-details')}
+      dataTestId={TestId.AUTH_UPDATE_PROFILE_EDIT_DETAILS_SECTION}
+      aria-busy={isUpdating}
+    >
       <FormBuilder
         key={userData ? `${userData.email}-${userData.firstName}-${userData.lastName}` : 'loading'}
         className={styles.formContainer}

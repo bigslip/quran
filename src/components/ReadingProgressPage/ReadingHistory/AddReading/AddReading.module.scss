@@ -6,6 +6,8 @@
   justify-content: center;
   gap: var(--spacing-medium);
   font-size: var(--font-size-large);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
 }
 
 .verseRangesListContainer {

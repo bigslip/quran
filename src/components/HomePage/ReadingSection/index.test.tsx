@@ -1,6 +1,5 @@
 import React from 'react';
 
-/* eslint-disable max-lines */
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
@@ -8,7 +7,6 @@ import ReadingSection from './index';
 
 import BookmarkType from '@/types/BookmarkType';
 
-// mock swr before importing component under test
 vi.mock('swr', () => ({
   default: (key: any) => {
     if (!key) return { data: undefined };
@@ -26,37 +24,37 @@ vi.mock('swr', () => ({
 }));
 
 vi.mock('next-translate/useTranslation', () => ({ default: () => ({ t: (k: string) => k }) }));
-vi.mock('@/components/Wrapper/Wrapper', () => ({
-  default: ({ children }: any) => <div>{children}</div>,
-}));
-vi.mock('@/icons/bookmark_remove.svg', () => ({ default: () => <div /> }));
-vi.mock('@/dls/Link/Link', () => ({
-  default: ({ children, href }: any) => <a href={href}>{children}</a>,
-  LinkVariant: {},
-}));
-vi.mock('@/components/HomePage/ReadingSection/ChapterCard', () => ({
-  default: ({ pageNumber, surahNumber, verseNumber }: any) => (
+
+vi.mock('@/components/HomePage/ReadingSection/SanctuaryResumeCard', () => ({
+  default: ({ pageNumber, surahNumber, verseNumber, isContinueReading }: any) => (
     <div
-      data-testid="chapter-card"
+      data-testid="sanctuary-resume-action"
       data-page-number={pageNumber ?? ''}
       data-surah={surahNumber}
       data-verse={verseNumber ?? ''}
+      data-continue={isContinueReading ? 'true' : 'false'}
     />
   ),
 }));
-vi.mock('@/components/HomePage/ReadingSection/NewCard', () => ({ default: () => <div /> }));
-vi.mock('@/components/HomePage/ReadingSection/NoGoalOrStreakCard', () => ({
-  default: () => <div />,
+
+vi.mock('@/components/HomePage/ReadingSection/SpiritualHabitWidget', () => ({
+  default: ({ streak, goal }: any) => (
+    <div data-testid="spiritual-habit-widget" data-streak={streak ?? ''} data-goal={goal ?? ''} />
+  ),
 }));
-vi.mock('@/components/HomePage/ReadingSection/StreakOrGoalCard', () => ({
-  default: () => <div />,
+
+vi.mock('@/components/HomePage/ReadingSection/AnnouncementPill', () => ({
+  default: () => <div data-testid="announcement-pill" />,
 }));
+
 vi.mock('@/hooks/auth/useGetRecentlyReadVerseKeys', () => ({
   default: () => ({ recentlyReadVerseKeys: [] }),
 }));
+
 vi.mock('@/hooks/auth/useGetStreakWithMetadata', () => ({
-  default: () => ({ goal: null, streak: null, currentActivityDay: null }),
+  default: () => ({ goal: null, streak: 5, currentActivityDay: null }),
 }));
+
 vi.mock('@/redux/slices/session', () => ({ selectUserState: (s: any) => s.session }));
 vi.mock('@/redux/slices/QuranReader/styles', () => ({
   selectQuranReaderStyles: (s: any) => s.quranReaderStyles,
@@ -95,10 +93,10 @@ vi.mock('@/hooks/useMappedBookmark', () => ({
   }),
 }));
 
-describe('ReadingSection', () => {
+describe('ReadingSection Sanctuary Ribbon', () => {
   beforeEach(() => cleanup());
 
-  it('renders ChapterCard with resolved page from extended bookmark', async () => {
+  it('renders SanctuaryResumeCard with resolved page from extended bookmark', async () => {
     (globalThis as any).mockSWRFirstVerse = { surahNumber: 1, verseNumber: 1 };
     (globalThis as any).mockState = {
       current: {
@@ -116,14 +114,17 @@ describe('ReadingSection', () => {
     };
     render(<ReadingSection />);
     await waitFor(() => {
-      const el = screen.getByTestId('chapter-card');
+      const el = screen.getByTestId('sanctuary-resume-action');
       expect(el.getAttribute('data-page-number')).toBe('2');
       expect(el.getAttribute('data-surah')).toBe('1');
       expect(el.getAttribute('data-verse')).toBe('1');
+      expect(el.getAttribute('data-continue')).toBe('true');
     });
+    expect(screen.getByTestId('spiritual-habit-widget')).toBeTruthy();
+    expect(screen.getByTestId('announcement-pill')).toBeTruthy();
   });
 
-  it('renders ChapterCard linking to verse for ayah bookmark', async () => {
+  it('renders SanctuaryResumeCard linking to verse for ayah bookmark', async () => {
     (globalThis as any).mockState = {
       current: {
         session: { isGuest: true, isFirstTimeGuest: false },
@@ -141,10 +142,11 @@ describe('ReadingSection', () => {
     };
     render(<ReadingSection />);
     await waitFor(() => {
-      const el = screen.getByTestId('chapter-card');
+      const el = screen.getByTestId('sanctuary-resume-action');
       expect(el.getAttribute('data-page-number')).toBe('');
       expect(el.getAttribute('data-surah')).toBe('60');
       expect(el.getAttribute('data-verse')).toBe('3');
+      expect(el.getAttribute('data-continue')).toBe('true');
     });
   });
 
@@ -170,10 +172,11 @@ describe('ReadingSection', () => {
     };
     render(<ReadingSection />);
     await waitFor(() => {
-      const el = screen.getByTestId('chapter-card');
+      const el = screen.getByTestId('sanctuary-resume-action');
       expect(el.getAttribute('data-page-number')).toBe('');
       expect(el.getAttribute('data-surah')).toBe('60');
       expect(el.getAttribute('data-verse')).toBe('3');
+      expect(el.getAttribute('data-continue')).toBe('true');
     });
   });
 });

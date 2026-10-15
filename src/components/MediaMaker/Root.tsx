@@ -60,12 +60,12 @@ export const RemotionRoot = () => {
   return (
     <Composition
       id={COMPOSITION_NAME}
-      component={MediaMakerContent}
+      component={MediaMakerContent as any}
       durationInFrames={getDurationInFrames(DEFAULT_PROPS.timestamps)}
       fps={VIDEO_FPS}
       width={VIDEO_LANDSCAPE_WIDTH}
       height={VIDEO_LANDSCAPE_HEIGHT}
-      calculateMetadata={({ props }) => {
+      calculateMetadata={({ props }: any) => {
         return {
           ...props,
           ...orientationToDimensions(props.orientation),

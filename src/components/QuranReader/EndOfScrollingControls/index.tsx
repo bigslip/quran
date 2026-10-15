@@ -63,4 +63,4 @@ const EndOfScrollingControls: React.FC<Props> = ({
   );
 };
 
-export default EndOfScrollingControls;
+export default React.memo(EndOfScrollingControls);

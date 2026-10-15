@@ -1,4 +1,4 @@
-import React, { useMemo, type ClipboardEvent } from 'react';
+import React, { useCallback, useMemo, type ClipboardEvent } from 'react';
 
 import clipboardCopy from 'clipboard-copy';
 import useTranslation from 'next-translate/useTranslation';
@@ -28,9 +28,9 @@ interface Props {
 const QuranInYearSection: React.FC<Props> = ({ chaptersData }) => {
   const { t } = useTranslation('home');
 
-  const onCalendarClicked = () => {
+  const onCalendarClicked = useCallback(() => {
     logButtonClick('quran_in_year_header_calendar');
-  };
+  }, []);
 
   // Get the Ayah for today's date
   const todayAyah = useMemo(() => getCurrentDayAyah(), []);
@@ -39,7 +39,7 @@ const QuranInYearSection: React.FC<Props> = ({ chaptersData }) => {
    * Handle copy events on the verse container.
    * @param {ClipboardEvent<HTMLDivElement>} event The copy event.
    */
-  const onCopy = (event: ClipboardEvent<HTMLDivElement>) => {
+  const onCopy = useCallback((event: ClipboardEvent<HTMLDivElement>) => {
     const selection = window.getSelection();
     if (!selection || selection.isCollapsed) return;
 
@@ -73,7 +73,7 @@ const QuranInYearSection: React.FC<Props> = ({ chaptersData }) => {
 
     // copy the combined text to clipboard
     clipboardCopy(parts.join('\n'));
-  };
+  }, []);
 
   // Don't render anything if we're before April 1st, 2025
   if (!todayAyah) {
@@ -133,4 +133,4 @@ const QuranInYearSection: React.FC<Props> = ({ chaptersData }) => {
   );
 };
 
-export default QuranInYearSection;
+export default React.memo(QuranInYearSection);

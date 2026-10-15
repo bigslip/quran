@@ -19,19 +19,19 @@
       "question": "Chương trình hoạt động ra sao?"
     },
     {
-      "answer": "Hoàn toàn không. Bạn có thể bắt đầu bằng cách tìm hiểu ý nghĩa Kinh Qur'an qua bất kỳ ngôn ngữ dịch nào bạn thấy thuận tiện. Quran.com có nhiều bản dịch để ai cũng dễ tiếp cận, và chúng tôi mong khích lệ bạn nâng tầm mỗi năm.",
+      "answer": "Hoàn toàn không. Bạn có thể bắt đầu bằng cách tìm hiểu ý nghĩa Kinh Qur'an qua bất kỳ ngôn ngữ dịch nào bạn thấy thuận tiện. Quran.ir có nhiều bản dịch để ai cũng dễ tiếp cận, và chúng tôi mong khích lệ bạn nâng tầm mỗi năm.",
       "question": "Tôi có phải biết đọc tiếng Ả Rập mới tham gia được không?"
     },
     {
-      "answer": "Mỗi tuần, bài đọc cập nhật có tại Quran.com/calendar. Bạn có thể đọc trực tiếp trên Quran.com qua liên kết dẫn thẳng đến bài đọc chính trong tuần.\\n\\nBạn cũng có thể mở file PDF tiếng Anh để in tại nhà. Mỗi tài liệu tuần gồm bản dịch mạch lạc (dựa chủ yếu trên MAS Abdel Haleem), chia thành bảy phần, kèm giới thiệu ngắn về Surahs, tiêu đề, ghi chú, câu hỏi suy ngẫm và gợi ý hành động mỗi ngày.",
+      "answer": "Mỗi tuần, bài đọc cập nhật có tại Quran.ir/calendar. Bạn có thể đọc trực tiếp trên Quran.ir qua liên kết dẫn thẳng đến bài đọc chính trong tuần.\\n\\nBạn cũng có thể mở file PDF tiếng Anh để in tại nhà. Mỗi tài liệu tuần gồm bản dịch mạch lạc (dựa chủ yếu trên MAS Abdel Haleem), chia thành bảy phần, kèm giới thiệu ngắn về Surahs, tiêu đề, ghi chú, câu hỏi suy ngẫm và gợi ý hành động mỗi ngày.",
       "question": "Tôi tìm các bài đọc hàng tuần ở đâu?"
     },
     {
-      "answer": "Bạn có nhiều cách để theo dõi. Hãy đăng ký nhận email kèm bài đọc hàng tuần và tham gia kênh cộng đồng trên Telegram, WhatsApp. Nhấp các nút tương ứng trên Quran.com/calendar để đăng ký; bạn có thể chọn cả ba.",
+      "answer": "Bạn có nhiều cách để theo dõi. Hãy đăng ký nhận email kèm bài đọc hàng tuần và tham gia kênh cộng đồng trên Telegram, WhatsApp. Nhấp các nút tương ứng trên Quran.ir/calendar để đăng ký; bạn có thể chọn cả ba.",
       "question": "Làm sao để tôi nhận lời nhắc đọc hàng tuần?"
     },
     {
-      "answer": "Trên Quran.com, vào cài đặt để:\\n• Điều chỉnh phông chữ\\n• Chọn chế độ sáng, tối hoặc sepia\\n• Chọn bản dịch bạn muốn\\n\\nGiúp bạn dễ dàng đọc bằng ngôn ngữ quen thuộc, với bản dịch rõ ràng, dễ hiểu.",
+      "answer": "Trên Quran.ir, vào cài đặt để:\\n• Điều chỉnh phông chữ\\n• Chọn chế độ sáng, tối hoặc sepia\\n• Chọn bản dịch bạn muốn\\n\\nGiúp bạn dễ dàng đọc bằng ngôn ngữ quen thuộc, với bản dịch rõ ràng, dễ hiểu.",
       "question": "Làm sao để tôi cá nhân hóa trải nghiệm đọc?"
     },
     {
@@ -88,6 +88,7 @@
   "marked-as-completed": "Tuần này đã được đánh dấu là hoàn thành!",
   "month": "Tháng",
   "my-progress": "Tiến độ của tôi",
+  "no-faq-items": "Không có câu hỏi thường gặp.",
   "progress-subtitle": "Bạn cứ quay lại hoàn thành các tuần đã bỏ lỡ!",
   "quran-calendar-description": "Kế hoạch đọc Kinh Qur'an trong một năm, giúp bạn đều đặn, hiểu sâu hơn và không bị quá tải.",
   "quran-calendar-title": "Đọc Kinh Qur'an trong một năm – Kế hoạch đơn giản để đọc và hiểu trọn bộ Kinh Qur'an",

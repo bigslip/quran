@@ -12,11 +12,11 @@ export const X_INTERNAL_CLIENT = 'x-internal-client';
 export const getAdditionalHeaders = (req: NextApiRequest) => {
   let additionalHeaders = {};
 
-  if (isStaticBuild) {
+  if (isStaticBuild && process.env.SIGNATURE_TOKEN) {
     const { signature, timestamp } = generateSignature(
       req,
       req.url,
-      process.env.SIGNATURE_TOKEN as string,
+      process.env.SIGNATURE_TOKEN,
     );
     additionalHeaders = {
       [X_AUTH_SIGNATURE]: signature,
@@ -25,11 +25,11 @@ export const getAdditionalHeaders = (req: NextApiRequest) => {
     };
   }
 
-  if (typeof window === 'undefined') {
+  if (typeof window === 'undefined' && process.env.PROXY_SIGNATURE_TOKEN) {
     const { signature: proxySignature, timestamp: proxyTimestamp } = generateSignature(
       req,
       req.url,
-      process.env.PROXY_SIGNATURE_TOKEN as string,
+      process.env.PROXY_SIGNATURE_TOKEN,
     );
     additionalHeaders = {
       ...additionalHeaders,

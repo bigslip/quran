@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 /**
  * A hook that detects clicking outside an element.
@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
  * @param {React.RefObject<HTMLElement>} ref
  * @param {()=> void} onClickOutsideDetected
  * @param {boolean} enableDetection
+ * @param {boolean} preventDefault
  */
 const useOutsideClickDetector = (
   ref: React.RefObject<HTMLElement>,
@@ -13,25 +14,37 @@ const useOutsideClickDetector = (
   enableDetection: boolean,
   preventDefault: boolean = false,
 ) => {
+  const onClickOutsideDetectedRef = useRef(onClickOutsideDetected);
+  const preventDefaultRef = useRef(preventDefault);
+
+  useEffect(() => {
+    onClickOutsideDetectedRef.current = onClickOutsideDetected;
+    preventDefaultRef.current = preventDefault;
+  });
+
   useEffect(() => {
     if (!enableDetection) return () => {};
 
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && event.target instanceof Node && !ref.current.contains(event.target)) {
-        if (preventDefault) {
+        if (preventDefaultRef.current) {
           event.preventDefault();
           event.stopPropagation();
         }
-        onClickOutsideDetected();
+        onClickOutsideDetectedRef.current?.();
       }
     };
 
-    document.addEventListener('click', handleClickOutside, true);
+    const options: AddEventListenerOptions = preventDefaultRef.current
+      ? { capture: true }
+      : { capture: true, passive: true };
+
+    document.addEventListener('click', handleClickOutside, options);
 
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [ref, onClickOutsideDetected, enableDetection, preventDefault]);
+  }, [ref, enableDetection]);
 };
 
 export default useOutsideClickDetector;

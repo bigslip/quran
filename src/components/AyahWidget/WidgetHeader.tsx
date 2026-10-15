@@ -83,7 +83,7 @@ const WidgetHeader = ({ verse, options, colors }: Props): JSX.Element => {
   const verseCaptionUrl = options.rangeEnd
     ? `${verse.chapterId}:${verse.verseNumber}-${options.rangeEnd}`
     : verseCaption;
-  const siteLinkLabel = options.labels?.readOnQuran || 'Read on Quran.com';
+  const siteLinkLabel = options.labels?.readOnQuran || 'Read on Quran.ir';
 
   // Labels with defaults
   const surahLabel = options.labels?.surah || 'Surah';
@@ -111,8 +111,8 @@ const WidgetHeader = ({ verse, options, colors }: Props): JSX.Element => {
   );
   const localePrefix = locale === 'en' ? '' : `/${locale}`;
 
-  // Construct the URL to the verse on Quran.com
-  const verseUrl = `https://quran.com${localePrefix}/${verseCaptionUrl}`;
+  // Construct the URL to the verse on Quran.ir
+  const verseUrl = `https://quran.ir${localePrefix}/${verseCaptionUrl}`;
 
   const showExternalLink = isLearningPlan;
   const hasLeftActions = (options.enableAudio && audioUrl) || showExternalLink;
@@ -155,7 +155,7 @@ const WidgetHeader = ({ verse, options, colors }: Props): JSX.Element => {
             ...ICON_BUTTON_STYLE(colors),
             textDecoration: 'none',
           }}
-          aria-label="Open verse on Quran.com"
+          aria-label="Open verse on Quran.ir"
         >
           <ExternalLinkIcon style={{ width: 16, height: 16 }} />
         </a>

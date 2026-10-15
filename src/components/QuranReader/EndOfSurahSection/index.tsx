@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,6 +11,7 @@ import StreakGoalCard from './StreakGoalCard';
 
 import { getChapterMetadata } from '@/api';
 import { StudyModeTabId } from '@/components/QuranReader/ReadingView/StudyModeModal/StudyModeBottomActions';
+import DataContext from '@/contexts/DataContext';
 import Link from '@/dls/Link/Link';
 import useBatchedCountRangeQuestions from '@/hooks/auth/useBatchedCountRangeQuestions';
 import useScrollToTop from '@/hooks/useScrollToTop';
@@ -18,7 +19,7 @@ import { openStudyMode } from '@/redux/slices/QuranReader/studyMode';
 import { selectIsReadingByRevelationOrder } from '@/redux/slices/revelationOrder';
 import QuestionType from '@/types/QuestionsAndAnswers/QuestionType';
 import { makeChapterMetadataUrl } from '@/utils/apiPaths';
-import { getNextChapterNumber } from '@/utils/chapter';
+import { getChapterData, getNextChapterNumber } from '@/utils/chapter';
 import EventName from '@/utils/event-names';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getSurahNavigationUrl } from '@/utils/navigation';
@@ -51,7 +52,11 @@ const EndOfSurahSection: React.FC<EndOfSurahSectionProps> = ({ chapterNumber }) 
 
   const chapterMetadata = metadataResponse?.chapterMetadata;
 
+  const chaptersData = useContext(DataContext);
   const nextChapterId = getNextChapterNumber(chapterNumber, isReadingByRevelationOrder);
+  const nextChapterData = nextChapterId
+    ? getChapterData(chaptersData, String(nextChapterId))
+    : null;
 
   const handleCtaClick = () => {
     logButtonClick(EventName.QURAN_READER_END_OF_SURAH_CTA);
@@ -64,7 +69,7 @@ const EndOfSurahSection: React.FC<EndOfSurahSectionProps> = ({ chapterNumber }) 
         {nextChapterId && (
           <Link
             onClick={handleCtaClick}
-            href={getSurahNavigationUrl(nextChapterId)}
+            href={getSurahNavigationUrl(nextChapterData?.slug || nextChapterId)}
             className={styles.cta}
           >
             {t('end-of-surah.cta')}

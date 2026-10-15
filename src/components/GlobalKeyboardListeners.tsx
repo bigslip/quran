@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 
-import { selectIsSearchDrawerOpen, toggleSearchDrawerIsOpen } from '@/redux/slices/navbar';
+import { selectIsSearchModalOpen, toggleSearchModalIsOpen } from '@/redux/slices/navbar';
 import { logEvent } from '@/utils/eventLogger';
 
 const getPressedShortcut = (event: KeyboardEvent): string => {
@@ -18,16 +18,16 @@ const getPressedShortcut = (event: KeyboardEvent): string => {
 
 const GlobalKeyboardListeners: React.FC = () => {
   const dispatch = useDispatch();
-  const isOpen = useSelector(selectIsSearchDrawerOpen, shallowEqual);
+  const isOpen = useSelector(selectIsSearchModalOpen, shallowEqual);
   const toggleShowCommandBar = useCallback(
     (event: KeyboardEvent) => {
       // eslint-disable-next-line i18next/no-literal-string
-      logEvent(`search_drawer_${isOpen ? 'close' : 'open'}`, {
+      logEvent(`search_modal_${isOpen ? 'close' : 'open'}`, {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         keyboard_shortcut: getPressedShortcut(event),
       });
       event.preventDefault();
-      dispatch({ type: toggleSearchDrawerIsOpen.type });
+      dispatch({ type: toggleSearchModalIsOpen.type });
     },
     [dispatch, isOpen],
   );
@@ -35,7 +35,7 @@ const GlobalKeyboardListeners: React.FC = () => {
     'meta+k, ctrl+k, meta+p, ctrl+p',
     toggleShowCommandBar,
     { enableOnFormTags: ['INPUT'] },
-    [dispatch],
+    [toggleShowCommandBar],
   );
   return <></>;
 };

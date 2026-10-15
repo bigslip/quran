@@ -3,19 +3,25 @@
 
 .endOfSurahCard {
   padding: var(--spacing-medium2-px);
+  border-radius: var(--border-radius-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
   @include breakpoints.smallerThanTablet {
-    padding: 0;
+    padding: var(--spacing-small-px);
   }
 
   &.withGoalBackground.withGoalBackground.withGoalBackground {
-    background-color: var(--color-streaks-light);
-    box-shadow: none;
+    background: var(--color-surface-card, var(--color-streaks-light));
+    border-color: var(--color-border-subtle, var(--color-borders-hairline));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   }
 }
 
 .guestState {
-  background-color: var(--color-background-default-new);
+  background-color: var(--color-surface-card, var(--color-background-default-new));
 }
 
 .container {
@@ -40,13 +46,11 @@
     align-items: center;
     block-size: calc(
       var(--spacing-xxlarge-px) + var(--spacing-micro2-px) + var(--spacing-hairline-px)
-    ); // maintains consistent card size on mobile
+    );
     gap: var(--spacing-small);
     padding: var(--spacing-medium-px) var(--spacing-small-px);
   }
 }
-
-// GUEST STATE (No Goal/Streak)
 
 .titleContainer {
   display: flex;
@@ -66,7 +70,7 @@
   block-size: var(--spacing-large-px);
 
   path {
-    fill: var(--color-streaks-dark);
+    fill: var(--color-primary, var(--color-streaks-dark));
   }
 
   @include breakpoints.smallerThanTablet {
@@ -76,7 +80,8 @@
 
 .title {
   font-size: var(--font-size-large-px);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, #ffffff);
   margin: 0;
 
   @include breakpoints.smallerThanTablet {
@@ -88,8 +93,8 @@
 
 .subtitle {
   font-size: var(--font-size-normal-px);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-faded-new);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-secondary, var(--color-text-faded-new));
   text-align: center;
   text-wrap: balance;
 
@@ -99,27 +104,32 @@
 }
 
 .button {
-  background-color: var(--color-streaks-dark);
+  background: var(--color-primary-gradient, linear-gradient(135deg, #00f2fe 0%, #4facfe 100%));
+  color: #070a13;
   border: none;
-  font-weight: var(--font-weight-semibold);
-  border-radius: var(--border-radius-medium-px);
-  padding-inline: var(--spacing-small-px);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--border-radius-pill);
+  padding-inline: var(--spacing-large-px);
+  padding-block: var(--spacing-small-px);
+  box-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.2));
+  cursor: pointer;
+  transition: all var(--transition-fast) ease;
 
   &:hover {
-    background-color: var(--color-streaks-dark);
-    color: var(--color-text-white);
-    border-color: var(--color-streaks-dark);
+    filter: brightness(1.15);
+    box-shadow: 0 0 24px var(--color-primary, rgba(0, 242, 254, 0.4));
+    transform: translateY(-1px);
+    color: #070a13;
   }
 
   @include breakpoints.smallerThanTablet {
     block-size: auto;
-    border-radius: var(--border-radius-medium-px);
+    border-radius: var(--border-radius-pill);
     padding: var(--spacing-xxsmall-px) var(--spacing-small-px);
-    font-size: var(--font-size-normal);
+    font-size: var(--font-size-small);
     margin-block-start: 0;
     flex-shrink: 0;
 
-    // Target button content span on mobile
     > span {
       align-items: center;
       text-wrap: nowrap;
@@ -131,7 +141,7 @@
   margin-inline-end: var(--spacing-xsmall);
 
   path {
-    fill: var(--color-text-white);
+    fill: #070a13;
   }
 
   @include breakpoints.smallerThanTablet {
@@ -141,9 +151,6 @@
   }
 }
 
-// USER WITH GOAL/STREAK STATE
-
-// Streak Section
 .streakSection {
   display: flex;
   align-items: center;
@@ -162,9 +169,10 @@
 .streakIcon {
   inline-size: calc(var(--spacing-large-px) * 2);
   block-size: calc(var(--spacing-large-px) * 2);
+  filter: drop-shadow(0 0 8px var(--color-primary-subtle, rgba(0, 242, 254, 0.4)));
 
   path {
-    fill: var(--color-streaks-dark);
+    fill: var(--color-primary, var(--color-streaks-dark));
   }
 
   @include breakpoints.smallerThanTablet {
@@ -186,7 +194,8 @@
 .streakNumber {
   font-size: var(--font-size-jumbo);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text-black);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary, var(--color-text-black));
 
   @include breakpoints.smallerThanTablet {
     font-size: var(--font-size-xxlarge-px);
@@ -199,7 +208,7 @@
 
 .streakText {
   font-size: var(--font-size-large-px);
-  color: var(--color-text-gray);
+  color: var(--color-text-secondary, var(--color-text-gray));
   font-weight: var(--font-weight-semibold);
   white-space: nowrap;
 
@@ -215,7 +224,7 @@
 
 .streakArrowIcon {
   > svg {
-    color: var(--color-text-gray);
+    color: var(--color-text-secondary, var(--color-text-gray));
     inline-size: var(--spacing-small2-px);
     block-size: var(--spacing-medium-plus2-px);
 
@@ -226,7 +235,6 @@
   }
 }
 
-// Goal Progress Section
 .goalLink {
   display: flex;
   text-decoration: none;
@@ -250,7 +258,6 @@
   }
 }
 
-// Custom styles for end-of-surah variant progressbar
 .endOfSurahGoalContent .customProgressbar {
   block-size: auto;
   inline-size: auto;
@@ -268,17 +275,17 @@
   }
 }
 
-// Custom styles for end-of-surah variant progressbar text
 .customProgressbarText {
-  fill: var(--color-streaks-dark);
+  fill: var(--color-primary, var(--color-streaks-dark));
   font-size: var(--font-size-small-px);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-weight-bold);
 
   @include breakpoints.smallerThanTablet {
     font-size: var(--font-size-xxsmall-px);
   }
 }
 
-// Custom styles for end-of-surah variant status container
 .customStatusContainer {
   text-align: start;
   padding-inline-end: var(--spacing-medium2-px);

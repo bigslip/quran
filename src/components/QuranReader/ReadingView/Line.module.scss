@@ -4,10 +4,14 @@
 .line {
   text-align: center;
   margin-inline: auto;
+  line-height: 2.4;
+  text-rendering: optimizeLegibility;
 }
 
 .container {
   direction: rtl;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
 }
 
 .mobileInline {

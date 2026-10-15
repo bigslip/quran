@@ -1,22 +1,22 @@
 # Architecture Decision Records (ADRs)
 
-Status as of 2026-07-27. Each decision is locked for the quran.com clone project.
+Status as of 2026-07-27. Each decision is locked for the quran.ir clone project.
 
 ---
 
-## ADR-A: Backend data source → **Self-host quran.com-api**
+## ADR-A: Backend data source → **Self-host quran.ir-api**
 
-**Context:** quran.com-frontend-next consumes `api.qurancdn.com` behind a signature-auth'd proxy. Public alternatives exist (quran.com public API, Islamic Network, AlQuran Cloud) but each lacks features (qiraat matrix, layered translations, hadith linkage, advanced search).
+**Context:** quran.ir-frontend-next consumes `api.qurancdn.com` behind a signature-auth'd proxy. Public alternatives exist (quran.ir public API, Islamic Network, AlQuran Cloud) but each lacks features (qiraat matrix, layered translations, hadith linkage, advanced search).
 
-**Decision:** Self-host the open-source `quran.com-api` backend. We own the database (Quran text, translations, tafsirs, reciter metadata, audio file inventory) and the API surface matches the frontend's expectations exactly — no client rewrites.
+**Decision:** Self-host the open-source `quran.ir-api` backend. We own the database (Quran text, translations, tafsirs, reciter metadata, audio file inventory) and the API surface matches the frontend's expectations exactly — no client rewrites.
 
 **Consequences:**
 - Must run Postgres, an Elasticsearch/OpenSearch instance (for full-text search), and a CDN-compatible audio storage layer.
 - Initial infra setup: ~3–5 days before any frontend feature that hits the API can be built.
 - Operational burden (backups, scaling, security patches) is ours.
-- We get feature parity with quran.com (qiraat, layered translations, hadiths, tafsirs, advanced copy).
+- We get feature parity with quran.ir (qiraat, layered translations, hadiths, tafsirs, advanced copy).
 
-**Migration path:** If self-hosting proves too heavy, fall back to api.quran.com public endpoints for read-only data and only self-host the user-data tables (bookmarks, notes, collections).
+**Migration path:** If self-hosting proves too heavy, fall back to api.quran.ir public endpoints for read-only data and only self-host the user-data tables (bookmarks, notes, collections).
 
 **Why not the alternatives:** Public APIs were rejected because the user explicitly wants full feature parity, and any of them would force dropping `/qiraat`, `/layers`, `/hadith`, or `/answers`.
 
@@ -57,7 +57,7 @@ Status as of 2026-07-27. Each decision is locked for the quran.com clone project
 
 ## ADR-D: Font strategy → **All 604 Hafs v4 COLRv1 fonts**
 
-**Context:** quran.com uses 604 individual `.woff` font files (`p1.woff`–`p604.woff`), one per Quran page, in COLRv1 format with embedded tajweed color palettes. This is the most visually distinctive feature. License status unknown.
+**Context:** quran.ir uses 604 individual `.woff` font files (`p1.woff`–`p604.woff`), one per Quran page, in COLRv1 format with embedded tajweed color palettes. This is the most visually distinctive feature. License status unknown.
 
 **Decision:** Mirror all 604 fonts to our own CDN. Verify license redistributability first.
 
@@ -67,7 +67,7 @@ Status as of 2026-07-27. Each decision is locked for the quran.com clone project
 - Tajweed color palettes (`src/components/Verse/TajweedFontPalettes.tsx` in reference) must be ported.
 - Per-page layout fidelity — the visual breaks and line counts match the printed Madani Mushaf.
 
-**License action item:** Before deploying, contact quran.com maintainers or check `public/fonts/quran/hafs/v4/LICENSE*` in the reference repo. If redistribution is forbidden, fall back to a single UthmanicHafs font for v1.0 and revisit later.
+**License action item:** Before deploying, contact quran.ir maintainers or check `public/fonts/quran/hafs/v4/LICENSE*` in the reference repo. If redistribution is forbidden, fall back to a single UthmanicHafs font for v1.0 and revisit later.
 
 **Migration path:** If license blocks us, the same component API supports swapping to a single-font strategy without breaking the reader UI.
 
@@ -114,11 +114,11 @@ Status as of 2026-07-27. Each decision is locked for the quran.com clone project
 
 | Decision | Choice | Fidelity | Ops burden |
 |---|---|---|---|
-| A. Backend | Self-host quran.com-api | 100% | High |
+| A. Backend | Self-host quran.ir-api | 100% | High |
 | B. Auth | Firebase | 100% | Low |
 | C. CMS | Sanity | 100% | Low |
 | D. Fonts | All 604 COLRv1 v4 fonts | 100% | Medium (license check) |
 | E. Styling | SCSS + CSS variables | 100% | Low |
 | F. Audio CDN | Self-mirror → S3 | 100% | Medium → High |
 
-**Theme:** Maximum fidelity to quran.com. Self-hosted infrastructure where it matters. Operational burden is accepted as the cost of parity.
+**Theme:** Maximum fidelity to quran.ir. Self-hosted infrastructure where it matters. Operational burden is accepted as the cost of parity.

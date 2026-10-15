@@ -13,7 +13,7 @@ test.beforeEach(async ({ page, context }) => {
 test('Copyright year is current', { tag: ['@fast', '@footer'] }, async ({ page }) => {
   const footer = page.locator('footer');
   const currentYear = new Date().getFullYear().toString();
-  await expect(footer).toContainText(`© ${currentYear} Quran.com`);
+  await expect(footer).toContainText(`© ${currentYear} Quran.ir`);
 });
 
 test(
@@ -76,11 +76,11 @@ const footerLinks = [
   { text: 'About Us', href: '/about-us', target: '' },
   { text: 'Developers', href: '/developers', target: '' },
   { text: 'Product Updates', href: '/product-updates', target: '' },
-  { text: 'Feedback', href: 'https://feedback.quran.com/', target: '_blank' },
+  { text: 'Feedback', href: 'https://feedback.quran.ir/', target: '_blank' },
   { text: 'Help', href: '/support', target: '' },
 
   // Our Projects section
-  { text: 'Quran.com', href: 'https://quran.com', target: '' },
+  { text: 'Quran.ir', href: 'https://quran.ir', target: '' },
   {
     text: 'Quran For Android',
     href: '',
@@ -94,8 +94,8 @@ const footerLinks = [
   { text: 'QuranReflect.com', href: 'https://quranreflect.com', target: '_blank' },
   { text: 'Sunnah.com', href: 'https://sunnah.com', target: '_blank' },
   { text: 'Nuqayah.com', href: 'https://nuqayah.com', target: '_blank' },
-  { text: 'Legacy.Quran.com', href: 'https://legacy.quran.com', target: '_blank' },
-  { text: 'Corpus.Quran.com', href: 'https://corpus.quran.com', target: '_blank' },
+  { text: 'Legacy.Quran.ir', href: 'https://legacy.quran.ir', target: '_blank' },
+  { text: 'Corpus.Quran.ir', href: 'https://corpus.quran.ir', target: '_blank' },
   { text: 'Quran.Foundation', href: 'https://quran.foundation', target: '_blank' },
 
   // Popular Links section

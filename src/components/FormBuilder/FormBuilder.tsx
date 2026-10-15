@@ -11,9 +11,9 @@ import ValidationErrors from './ValidationErrors';
 
 import Button, { ButtonProps } from '@/dls/Button/Button';
 import Checkbox from '@/dls/Forms/Checkbox/Checkbox';
-import Input from '@/dls/Forms/Input';
+import Input, { InputType } from '@/dls/Forms/Input';
 import StarRating from '@/dls/Forms/StarRating';
-import TextArea from '@/dls/Forms/TextArea';
+import TextArea, { TextAreaType } from '@/dls/Forms/TextArea';
 import { FormFieldType } from '@/types/FormField';
 
 // Stable empty object reference to prevent unnecessary re-renders
@@ -43,7 +43,7 @@ type FormBuilderProps<T> = {
 /**
  * {@see https://legacy.reactjs.org/docs/jsx-in-depth.html#choosing-the-type-at-runtime}
  */
-const FormFieldTypeToComponentMap = {
+const FormFieldTypeToComponentMap: Record<FormFieldType, any> = {
   [FormFieldType.TextArea]: TextArea,
   [FormFieldType.Text]: Input,
   [FormFieldType.Password]: Input,
@@ -106,9 +106,11 @@ const FormBuilder = <T,>({
   );
 
   const renderError = useCallback(
-    (error: any, errorClassName?: string) =>
+    (error: any, errorClassName?: string, fieldName?: string) =>
       error && (
         <span
+          id={fieldName ? `${fieldName}-error` : undefined}
+          role="alert"
           className={classNames(styles.errorText, errorClassName)}
           data-testid="form-builder-validation-errors"
         >
@@ -157,6 +159,12 @@ const FormBuilder = <T,>({
                       onChange: field.onChange,
                       placeholder: formField.placeholder,
                       dataTestId: formField.dataTestId,
+                      error,
+                      isInvalid: !!error,
+                      'aria-invalid': !!error,
+                      'aria-describedby': error ? `${formField.field}-error` : undefined,
+                      id: formField.field,
+                      name: formField.field,
                     })}
                     {formField.shouldShowValidationErrors
                       ? isFieldDirty && (
@@ -165,14 +173,13 @@ const FormBuilder = <T,>({
                             rules={formField.rules ?? []}
                           />
                         )
-                      : renderError(error, formField.errorClassName)}
+                      : renderError(error, formField.errorClassName, formField.field)}
                     {renderExtraSection(formField, field.value)}
                   </div>
                 );
               }
 
               const inputFieldProps = {
-                key: formField.field,
                 value: field.value,
                 id: formField.field,
                 name: formField.field,
@@ -188,8 +195,14 @@ const FormBuilder = <T,>({
                   }
                 },
                 ...(isFieldTextInput(formField.type) && {
-                  htmlType: formField.type,
+                  htmlType: formField.type === FormFieldType.Phone ? 'tel' : formField.type,
                   fixedWidth: false,
+                }),
+                ...(error && {
+                  type:
+                    formField.type === FormFieldType.TextArea
+                      ? TextAreaType.Error
+                      : InputType.Error,
                 }),
                 ...(formField.type === FormFieldType.Checkbox &&
                   typeof formField.checked !== 'undefined' && {
@@ -199,7 +212,7 @@ const FormBuilder = <T,>({
               const InputField = FormFieldTypeToComponentMap[formField.type];
               return (
                 <div className={classNames(styles.inputContainer, formField.containerClassName)}>
-                  <InputField {...inputFieldProps} />
+                  <InputField key={formField.field} {...inputFieldProps} />
                   {renderError(error, formField.errorClassName)}
                   {renderExtraSection(formField, field.value)}
                 </div>

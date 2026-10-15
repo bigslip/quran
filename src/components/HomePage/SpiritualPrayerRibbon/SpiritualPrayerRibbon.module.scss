@@ -1,0 +1,609 @@
+@use 'src/styles/breakpoints';
+@use 'src/styles/theme';
+
+.ribbonContainer {
+  inline-size: 100%;
+  max-inline-size: var(--page-container-max-width, 1280px);
+  margin-inline: auto;
+  margin-block-start: var(--spacing-small, 12px);
+  margin-block-end: var(--spacing-large, 24px);
+  padding-inline: var(--spacing-medium, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium, 16px);
+}
+
+// Upper Atmospheric Header Plaque
+.headerPlaque {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-medium, 16px);
+  padding-inline: var(--spacing-large, 24px);
+  padding-block: var(--spacing-small, 12px);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-rounded, 16px);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  position: relative;
+  overflow: hidden;
+
+  @include theme.dark {
+    background: rgba(14, 22, 40, 0.45);
+    border-color: rgba(251, 191, 36, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  @include theme.sepia {
+    background: rgba(248, 244, 230, 0.7);
+    border-color: var(--color-border-subtle);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    block-size: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-accent-gold-rich) 50%,
+      transparent 100%
+    );
+    opacity: 0.85;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    flex-direction: column;
+    align-items: stretch;
+    padding-inline: var(--spacing-medium, 16px);
+    gap: var(--spacing-small, 10px);
+  }
+}
+
+.dateBlock {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small, 10px);
+  flex-shrink: 0;
+}
+
+.crescentIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: 50%;
+  background: var(--color-accent-gold-subtle);
+  color: var(--color-accent-gold);
+  font-size: 1rem;
+  border: 1px solid var(--color-border-subtle);
+
+  @include theme.dark {
+    color: var(--color-accent-gold);
+  }
+}
+
+.dateDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.hijriDate {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-base, 0.92rem);
+  font-weight: 600;
+  color: var(--color-text-default-new);
+  letter-spacing: 0.02em;
+}
+
+.gregorianDate {
+  font-size: var(--font-size-xxsmall-px, 11px);
+  color: var(--color-text-faded-new);
+}
+
+.titleBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include breakpoints.smallerThanTablet {
+    display: none;
+  }
+}
+
+.sanctuaryHeading {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-medium-px, 15px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-gold);
+  margin: 0;
+
+  &:dir(rtl),
+  [dir='rtl'] & {
+    font-family: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  @include theme.dark {
+    color: var(--color-accent-gold);
+  }
+}
+
+.countdownBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small, 8px);
+  flex-shrink: 0;
+
+  @include breakpoints.smallerThanTablet {
+    justify-content: space-between;
+    border-block-start: 1px dashed rgba(217, 119, 6, 0.2);
+    padding-block-start: 8px;
+  }
+}
+
+.countdownLabel {
+  font-size: 0.82rem;
+  color: var(--color-text-faded-new);
+
+  strong {
+    color: var(--color-accent-gold);
+    font-weight: 700;
+
+    @include theme.dark {
+      color: var(--color-accent-gold);
+    }
+  }
+}
+
+.countdownTimer {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding-inline: 8px;
+  padding-block: 2px;
+  background: var(--color-accent-gold-subtle);
+  color: var(--color-accent-gold);
+  border-radius: var(--border-radius-pill);
+  border: 1px solid var(--color-border-subtle);
+
+  @include theme.dark {
+    color: var(--color-accent-gold);
+  }
+}
+
+// 5-Arch Islamic Prayer Grid
+.archGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--spacing-medium, 16px);
+  inline-size: 100%;
+  align-items: center;
+  padding-block-start: var(--spacing-small, 8px);
+  padding-block-end: var(--spacing-medium, 14px);
+
+  @media (max-width: 1024px) {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: var(--spacing-small, 12px);
+    padding-inline: var(--spacing-medium, 16px);
+    padding-block-start: var(--spacing-medium, 16px);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+// Arch Card Container
+.archCardWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 400px;
+  inline-size: 100%;
+  min-inline-size: 180px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+  scroll-snap-align: center;
+
+  @include breakpoints.tablet {
+    &.staggered {
+      transform: translateY(-12px);
+    }
+  }
+
+  &:hover {
+    transform: translateY(-8px) scale(1.015);
+
+    @include breakpoints.tablet {
+      &.staggered {
+        transform: translateY(-18px) scale(1.015);
+      }
+    }
+
+    .archPath {
+      stroke: var(--color-accent-gold-rich);
+      stroke-width: 2px;
+      filter: drop-shadow(0 0 10px var(--color-accent-gold-subtle));
+    }
+
+    .goldMedallion {
+      transform: scale(1.04);
+      border-color: var(--color-accent-gold-rich);
+      box-shadow: 0 0 0 3px var(--color-accent-gold-subtle), inset 0 2px 4px rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  &.isNextPrayer {
+    .archPath {
+      stroke: var(--color-accent-gold-rich);
+      stroke-width: 2px;
+      filter: drop-shadow(0 0 14px var(--color-accent-gold-subtle));
+    }
+
+    .goldMedallion {
+      border-color: var(--color-accent-gold-rich);
+      box-shadow: 0 0 0 3px var(--color-accent-gold-subtle), inset 0 2px 4px rgba(0, 0, 0, 0.04);
+      background: var(--color-background-default);
+
+      @include theme.dark {
+        border-color: var(--color-accent-gold);
+        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25), inset 0 2px 6px rgba(0, 0, 0, 0.4);
+      }
+
+      @include theme.sepia {
+        border-color: var(--color-accent-gold-rich);
+      }
+    }
+  }
+}
+
+.archSilhouette {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  z-index: 0;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.05));
+
+  @include theme.dark {
+    filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.4));
+  }
+}
+
+.archPath {
+  fill: rgba(255, 255, 255, 0.65);
+  stroke: var(--color-border-subtle);
+  stroke-width: 1.5px;
+  transition: all 0.3s ease;
+
+  @include theme.dark {
+    fill: rgba(14, 22, 40, 0.4);
+    stroke: rgba(251, 191, 36, 0.22);
+  }
+
+  @include theme.sepia {
+    fill: rgba(248, 244, 230, 0.68);
+    stroke: var(--color-border-subtle);
+  }
+}
+
+.archContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  padding-block-start: 42px;
+  padding-block-end: 36px;
+  padding-inline: 14px;
+  inline-size: 100%;
+  block-size: 100%;
+  box-sizing: border-box;
+}
+
+.topEmblem {
+  font-family: var(--font-family-arabic, 'Amiri', serif);
+  font-size: 22px;
+  color: var(--color-accent-gold);
+  line-height: 1;
+  margin-block-end: 4px;
+  user-select: none;
+
+  @include theme.dark {
+    color: var(--color-accent-gold);
+  }
+}
+
+.archHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  max-inline-size: 100%;
+}
+
+.archTitle {
+  font-family: var(--font-family-display, 'Cinzel', serif);
+  font-size: var(--font-size-medium-px, 16px);
+  font-weight: 800;
+  color: var(--color-text-default-new, #1e293b);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  max-inline-size: 100%;
+
+  &:dir(rtl),
+  [dir='rtl'] & {
+    font-family: inherit;
+    letter-spacing: normal;
+  }
+}
+
+.archSub {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-accent-gold, #b45309);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-inline-size: 100%;
+
+  @include theme.dark {
+    color: var(--color-accent-gold, #f59e0b);
+  }
+}
+
+.archArabic {
+  font-family: var(--font-family-arabic, 'Amiri', serif);
+  font-size: 14px;
+  color: var(--color-text-faded-new, #64748b);
+  margin-block-start: 1px;
+}
+
+.medallionWrapper {
+  position: relative;
+  margin-block: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.goldMedallion {
+  inline-size: 88px;
+  block-size: 88px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-subtle);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease,
+    box-shadow 0.25s ease;
+
+  @include theme.dark {
+    border-color: rgba(251, 191, 36, 0.25);
+    background: rgba(7, 10, 19, 0.55);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 242, 254, 0.08);
+  }
+
+  @include theme.sepia {
+    border-color: var(--color-border-subtle);
+    background: rgba(244, 238, 220, 0.85);
+    box-shadow: inset 0 2px 4px rgba(100, 80, 50, 0.06);
+  }
+}
+
+.medallionSparkle {
+  font-size: 13px;
+  color: var(--color-accent-gold);
+  line-height: 1;
+
+  @include theme.dark {
+    color: var(--color-accent-gold);
+  }
+}
+
+.medallionTime {
+  font-family: var(--font-family-display);
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--color-text-default-new);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+
+  @include theme.dark {
+    color: var(--color-text-primary);
+  }
+
+  @include theme.sepia {
+    color: var(--color-text-default-new);
+  }
+}
+
+.nextPillBadge {
+  position: absolute;
+  inset-block-end: -8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--color-accent-gold);
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  padding-inline: 8px;
+  padding-block: 2px;
+  border-radius: var(--border-radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+
+  .nextPillIcon {
+    font-size: 8px;
+    line-height: 1;
+  }
+
+  @include theme.dark {
+    background: var(--color-accent-gold-rich);
+    color: #070a13;
+    font-weight: 900;
+    box-shadow: 0 0 12px var(--color-accent-gold-subtle);
+  }
+}
+
+.archFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 60px;
+  justify-content: flex-end;
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
+
+.archDesc {
+  font-size: 11px;
+  color: var(--color-text-default-new);
+  opacity: 0.85;
+  line-height: 1.35;
+  max-inline-size: 160px;
+  margin: 0;
+  transition: opacity 0.2s ease;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.virtueBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-inline-size: 165px;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.virtueText {
+  font-size: 10.5px;
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--color-accent-gold);
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+
+  @include theme.dark {
+    color: var(--color-accent-gold);
+  }
+}
+
+.virtueSource {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-text-faded-new);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.footerActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-block-start: 2px;
+  flex-wrap: wrap;
+}
+
+.activeCountdownBadge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-accent-gold);
+  background: var(--color-accent-gold-subtle);
+  padding-inline: 8px;
+  padding-block: 2px;
+  border-radius: var(--border-radius-pill);
+  border: 1px solid var(--color-border-subtle);
+  display: inline-block;
+
+  @include theme.dark {
+    color: var(--color-accent-gold);
+    background: var(--color-accent-gold-subtle);
+    border-color: var(--color-border-subtle);
+  }
+}
+
+.virtueTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 9.5px;
+  font-weight: 600;
+  padding-inline: 8px;
+  padding-block: 4px;
+  min-block-size: 28px;
+  min-inline-size: 44px;
+  border-radius: var(--border-radius-pill);
+  background: transparent;
+  color: var(--color-text-faded-new);
+  border: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--color-accent-gold-rich);
+    border-color: var(--color-accent-gold);
+    background: var(--color-accent-gold-subtle);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

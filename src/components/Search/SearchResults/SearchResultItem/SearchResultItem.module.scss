@@ -9,10 +9,12 @@
 
 .container {
   padding-block: var(--spacing-xsmall);
-  padding-inline: var(--spacing-xsmall);
+  padding-inline: var(--spacing-small);
+  border-radius: var(--border-radius-rounded);
+  transition: background-color var(--transition-fast) ease;
+
   &:hover {
     background-color: var(--color-background-alternative-faded);
-    border-radius: var(--border-radius-default);
   }
 }
 

@@ -1,6 +1,8 @@
 {
   "default-translations": "คำแปลตั้งต้น",
-  "filter": "กรอง",
+  "filter": {
+    "languages-placeholder": "เลือกภาษา"
+  },
   "language-filter-label": "ค้นหาคำแปลทั้งหมดของภาษา",
   "language-select": "เลือกภาษา",
   "reset": "รีเซ็ต",

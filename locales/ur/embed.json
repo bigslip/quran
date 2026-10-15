@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "قرآن شیئر کرنے کے لیے ایمبیڈ ویجٹس کو سیٹ اپ اور پریویو کریں، پھر تیار شدہ اسکرپٹ کا سنپٹ کاپی کریں۔",
-    "title": "آیاہ ایمبیڈ بلڈر | Quran.com"
+    "title": "آیاہ ایمبیڈ بلڈر | Quran.ir"
   },
   "mushaf": {
     "indopak": "انڈوپاک",
@@ -80,6 +80,6 @@
     "otherLanguage": "دیگر"
   },
   "widget": {
-    "readOnQuran": "Quran.com پر پڑھیں"
+    "readOnQuran": "Quran.ir پر پڑھیں"
   }
 }

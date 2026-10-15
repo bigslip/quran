@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 
@@ -7,24 +7,28 @@ import SurahPreviewRow from '../dls/SurahPreview/SurahPreviewRow';
 
 import styles from './JuzView.module.scss';
 
+import DataContext from '@/contexts/DataContext';
 import { getAllJuzMappings, getChapterData } from '@/utils/chapter';
 import { shouldUseMinimalLayout, toLocalizedNumber } from '@/utils/locale';
-import DataContext from 'src/contexts/DataContext';
+import { getVerseNavigationUrl } from '@/utils/navigation';
 
 type JuzViewProps = {
   isDescending: boolean;
 };
 
-const JuzView = ({ isDescending }: JuzViewProps) => {
+const EMPTY_MAPPINGS: [string, Record<string, string>][] = [];
+
+const JuzView: React.FC<JuzViewProps> = ({ isDescending }: JuzViewProps) => {
   const { t, lang } = useTranslation();
-  const [juzMappings, setJuzMappings] = useState([]);
+  const [juzMappings, setJuzMappings] =
+    useState<[string, Record<string, string>][]>(EMPTY_MAPPINGS);
   const chaptersData = useContext(DataContext);
 
   useEffect(() => {
     getAllJuzMappings()
       .then((data) => Object.entries(data))
       .then(setJuzMappings);
-  }, [isDescending]);
+  }, []);
 
   const sortedJuzIds = useMemo(
     () =>
@@ -46,17 +50,21 @@ const JuzView = ({ isDescending }: JuzViewProps) => {
             <Link href={`/juz/${juzId}`} variant={LinkVariant.Primary} shouldPrefetch={false}>
               <div className={styles.juzTitle}>
                 <span>
-                  {t('common:juz')} {toLocalizedNumber(juzId, lang)}
+                  {t('common:juz')} {toLocalizedNumber(Number(juzId), lang)}
                 </span>
                 <span className={styles.readJuz}>{t('home:read-juz')}</span>
               </div>
             </Link>
             {chapterIds.map((chapterId) => {
               const chapter = getChapterData(chaptersData, chapterId);
+              if (!chapter) return null;
               return (
                 <div className={styles.chapterContainer} key={chapterId}>
                   <Link
-                    href={`/${chapterId}/${chapterAndVerseMappings[chapterId]}`}
+                    href={getVerseNavigationUrl(
+                      chapter?.slug || chapterId,
+                      chapterAndVerseMappings[chapterId],
+                    )}
                     shouldPrefetch={false}
                   >
                     <SurahPreviewRow
@@ -67,6 +75,7 @@ const JuzView = ({ isDescending }: JuzViewProps) => {
                       surahName={chapter.transliteratedName}
                       surahNumber={Number(chapterId)}
                       translatedSurahName={chapter.translatedName as string}
+                      revelationPlace={chapter.revelationPlace}
                       isMinimalLayout={shouldUseMinimalLayout(lang)}
                     />
                   </Link>
@@ -80,4 +89,4 @@ const JuzView = ({ isDescending }: JuzViewProps) => {
   );
 };
 
-export default JuzView;
+export default React.memo(JuzView);

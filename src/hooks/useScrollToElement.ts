@@ -1,4 +1,4 @@
-import { useRef, RefObject } from 'react';
+import { useRef, RefObject, useCallback } from 'react';
 
 /**
  * A hook that scrolls to a specific element in the DOM.
@@ -12,13 +12,16 @@ export const useScrollToElement = <T extends HTMLElement>(
   options?: ScrollIntoViewOptions,
 ): [() => void, RefObject<T>] => {
   const elementRef = useRef<T>(null);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
   // a function that will be invoked by the component using this hook to scroll to the element being referenced (if found).
-  const executeScroll = (): void => {
+  const executeScroll = useCallback((): void => {
     // only scroll when the ref has a value
     if (elementRef.current) {
-      elementRef.current.scrollIntoView(options);
+      elementRef.current.scrollIntoView(optionsRef.current);
     }
-  };
+  }, []);
 
   return [executeScroll, elementRef];
 };

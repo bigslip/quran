@@ -2,7 +2,7 @@
   "api-docs": {
     "cta": "Afficher la documentation de l'API",
     "header": "Documentation de l'API",
-    "sub-header": "Intégrez les données de Quran.com dans vos applications grâce à notre API complète",
+    "sub-header": "Intégrez les données de Quran.ir dans vos applications grâce à notre API complète",
     "title": "Documentation de l'API"
   },
   "app-portal": {
@@ -18,11 +18,11 @@
     "cta": "Voir les postes",
     "header": "Découvrez nos offres d'emploi actuelles"
   },
-  "footer": "- L'équipe Quran.com",
+  "footer": "- L'équipe Quran.ir",
   "header": "Aide au développement",
   "hero": {
     "subtitle": "Ressources, outils et conseils pour les développeurs créant des expériences coraniques.",
-    "title": "Construisez avec Quran.com"
+    "title": "Construisez avec Quran.ir"
   },
   "issues-cta": "Si vous avez des questions ou si vous souhaitez contacter les responsables, écrivez simplement un problème ! Nous vous répondrons dans les plus brefs délais, inch Allah.",
   "issues-guide": "Typiquement, nous nous inspirons de <0>projets Github</0> pour bâtir de nouvelles fonctionnalités, et corriger les bugs. Par exemple, <1>cette URL</1> contient une liste de bugs, des choses pour lesquelles nous avons besoin d'aide et des fonctionnalités à venir.",
@@ -30,7 +30,7 @@
   "labs-cta": "Explorer les laboratoires",
   "labs-description": "Découvrez des fonctionnalités expérimentales et des nouveautés à venir.",
   "labs-pitch": "Partagez vos idées et participez à l'avenir de l'engagement et des expériences coraniques.",
-  "main-desc": "Merci pour votre contribution au développement de Quran.com et ses projets. Nous sommes ravis de travailler avec vous !",
+  "main-desc": "Merci pour votre contribution au développement de Quran.ir et ses projets. Nous sommes ravis de travailler avec vous !",
   "projects": {
     "all": "Nous avons des projets hébergés sur Github, consultables <0>ici</0>. Mais pour les décrire succintement :",
     "items": {
@@ -41,7 +41,7 @@
       },
       "q-api": {
         "description": "Serveur dorsal Ruby on Rails qui alimente les données, la recherche et les traductions du Coran.",
-        "name": "API Quran.com",
+        "name": "API Quran.ir",
         "stack": "Rails, PostgreSQL"
       },
       "q-audio": {
@@ -56,19 +56,19 @@
       },
       "q-next": {
         "description": "Expérience web Next.js pour la lecture, la recherche et l'écoute du Coran.",
-        "name": "Interface utilisateur de Quran.com",
+        "name": "Interface utilisateur de Quran.ir",
         "stack": "Conçu avec TypeScript et Next.js"
       }
     },
-    "lead": "Projets open source maintenus par l'équipe et la communauté de Quran.com.",
+    "lead": "Projets open source maintenus par l'équipe et la communauté de Quran.ir.",
     "q-android": "<0>Quran Android</0> - écrit en Kotlin et Java",
-    "q-api": "<0>API Quran.com</0> - écrite en Ruby on Rails.",
-    "q-api-docs": "<0>Quran.com API Docs</0> - Notre portail de documentation API.",
+    "q-api": "<0>API Quran.ir</0> - écrite en Ruby on Rails.",
+    "q-api-docs": "<0>Quran.ir API Docs</0> - Notre portail de documentation API.",
     "q-audio": "<0>Quranic Audio</0> et <1>Quranic Audio mobile apps</1>",
     "q-audio-segments": "<0>Quran Audio Segments</0>",
     "q-ios": "<0>Quran iOS</0> - écrit en Swift.",
-    "q-next": "<0>Quran.com Frontend</0> - écrit en Next.js.",
-    "q-v2": "<0>Quran.com</0> - écrit en Ruby on Rails."
+    "q-next": "<0>Quran.ir Frontend</0> - écrit en Next.js.",
+    "q-v2": "<0>Quran.ir</0> - écrit en Ruby on Rails."
   },
   "thanks": "Nous attendons votre contribution avec impatience !"
 }

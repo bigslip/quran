@@ -1,19 +1,22 @@
 @mixin footnote-styling {
   line-height: normal;
   sup {
-    color: var(--color-success-medium);
-    font-weight: var(--font-weight-bold);
-    inset-block-start: calc(-1 * var(--spacing-small-px));
+    color: var(--color-primary, var(--color-success-medium));
+    font-weight: var(--font-weight-semibold);
+    inset-block-start: -0.4em;
     position: relative;
-    font-size: var(--font-size-xsmall);
+    font-size: 0.75rem;
     line-height: 0;
     vertical-align: baseline;
-    padding-block-start: 0;
-    padding-block-end: 0;
-    padding-inline-start: var(--spacing-micro2-px);
-    padding-inline-end: var(--spacing-micro2-px);
+    padding-block: 0;
+    padding-inline: 2px;
     cursor: pointer;
-    padding-inline-end: 0;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--color-accent-gold, var(--color-primary));
+      text-decoration: underline;
+    }
   }
   sup[class='qiraat'] {
     display: none;

@@ -6,7 +6,7 @@ import { FormBuilderFormField } from '@/components/FormBuilder/FormBuilderTypes'
 import { RuleType } from '@/types/FieldRule';
 import { FormFieldType } from '@/types/FormField';
 
-export const REGEX_NAME = '^[^!"#$%&\'\\*\\+,\\-\\./:;<=>?@\\[\\\\\\]\\^_`{|}~§±×÷]+$';
+export const REGEX_NAME = '^[^!"#$%&*+,/:;<=>?@[\\]^_`{|}~§±×÷]+$';
 
 export const getNameFields = (t: any): FormBuilderFormField[] => [
   {

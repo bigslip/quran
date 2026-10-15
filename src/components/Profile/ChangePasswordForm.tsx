@@ -82,6 +82,7 @@ const ChangePasswordForm: FC = () => {
     <Section
       title={t('change-password')}
       dataTestId={TestId.AUTH_UPDATE_PROFILE_CHANGE_PASSWORD_SECTION}
+      aria-busy={isUpdating}
     >
       <FormBuilder
         className={styles.passwordFormContainer}

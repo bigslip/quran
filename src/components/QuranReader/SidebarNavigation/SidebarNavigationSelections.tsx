@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
 
-import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import SidebarSelectionSkeleton from './SidebarSelectionSkeleton';
+import JuzSelection from './JuzSelection';
+import PageSelection from './PageSelection';
+import SurahSelection from './SurahSelection';
+import VerseSelection from './VerseSelection';
 
 import {
   selectLastReadVerseKey,
@@ -18,19 +21,6 @@ import NavigationItemType from '@/types/NavigationItemType';
 import { isMobile } from '@/utils/responsive';
 import DataContext from 'src/contexts/DataContext';
 
-const PageSelection = dynamic(() => import('./PageSelection'), {
-  loading: SidebarSelectionSkeleton,
-});
-const SurahSelection = dynamic(() => import('./SurahSelection'), {
-  loading: SidebarSelectionSkeleton,
-});
-const JuzSelection = dynamic(() => import('./JuzSelection'), {
-  loading: SidebarSelectionSkeleton,
-});
-const VerseSelection = dynamic(() => import('./VerseSelection'), {
-  loading: SidebarSelectionSkeleton,
-});
-
 type Props = {
   isVisible: IsSidebarNavigationVisible;
   selectedNavigationItem: string;
@@ -38,8 +28,10 @@ type Props = {
 
 const SidebarNavigationSelections: React.FC<Props> = ({ isVisible, selectedNavigationItem }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const chaptersData = useContext(DataContext);
   const lastReadVerseKey = useSelector(selectLastReadVerseKey);
+  const isHomePage = router.pathname === '/';
   // we skip requesting any selection list if the drawer is not open.
   if (!isVisible) return <></>;
 
@@ -77,7 +69,7 @@ const SidebarNavigationSelections: React.FC<Props> = ({ isVisible, selectedNavig
   };
 
   const onAfterNavigationItemRouted = (itemValue?: string, itemType?: string) => {
-    if (isMobile()) {
+    if (isMobile() || isHomePage) {
       dispatch(setIsSidebarNavigationVisible(false));
     }
 

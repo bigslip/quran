@@ -13,12 +13,12 @@ const PERSIST_KEY = 'persist:root';
  * @returns {RootState[SliceName.THEME] | null} The persisted theme state or null if not found
  */
 const getPersistedTheme = (): RootState[SliceName.THEME] | null => {
-  if (typeof window === 'undefined') {
+  if (typeof window === 'undefined' || !window.localStorage) {
     return null;
   }
 
   try {
-    const persistedState = localStorage.getItem(PERSIST_KEY);
+    const persistedState = window.localStorage.getItem(PERSIST_KEY);
     if (!persistedState) {
       return null;
     }

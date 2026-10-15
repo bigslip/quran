@@ -19,8 +19,9 @@ const useShowOnScrollUp = (topThreshold = 20, scrollDistance = 50, hideThreshold
       scroll.current.lastY = y;
 
       const shouldShow = y > topThreshold && scroll.current.upDistance >= scrollDistance;
-      setShow(shouldShow);
-      setNearTop(shouldShow && y <= hideThreshold);
+      const isNearTop = shouldShow && y <= hideThreshold;
+      setShow((prev) => (prev !== shouldShow ? shouldShow : prev));
+      setNearTop((prev) => (prev !== isNearTop ? isNearTop : prev));
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);

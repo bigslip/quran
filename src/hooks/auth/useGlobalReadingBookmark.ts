@@ -53,7 +53,8 @@ interface UseGlobalReadingBookmarkReturn {
  * await mutate(newBookmark, { revalidate: true });
  */
 const useGlobalReadingBookmark = (mushafId: number): UseGlobalReadingBookmarkReturn => {
-  const { state } = useAuthContext();
+  const authContext = useAuthContext();
+  const state = authContext?.state;
   const userId = state?.user?.id;
 
   // Generate cache key with user ID to isolate data between users.

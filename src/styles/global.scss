@@ -2,54 +2,190 @@
 @use 'src/styles/breakpoints';
 @use 'src/styles/constants';
 
+// Global root text selection
+::selection {
+  background-color: var(--color-selection-bg, var(--color-highlight));
+  color: var(--color-selection-fg, inherit);
+}
+
+::-moz-selection {
+  background-color: var(--color-selection-bg, var(--color-highlight));
+  color: var(--color-selection-fg, inherit);
+}
+
 body {
   min-block-size: 100vh;
   background: var(--color-background-default);
   color: var(--color-text-default);
   padding: 0px !important;
 
-  ::selection {
-    background: var(--color-highlight);
-  }
-
-  ::-moz-selection {
-    background: var(--color-highlight);
-  }
-
   overscroll-behavior-y: none;
   font-family: 'Figtree', 'Helvetica Neue', Helvetica, Arial !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  // Note: Reciter and translation names have full locale names e.g. "urdu" instead of "ur"
-  // and these names are coming from BE. It is easier to add another selector in css instead of changing BE
+  // Language-specific typography rules
+  :lang(fa),
+  :lang(persian),
+  .fa,
+  .persian {
+    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: normal;
+  }
+
+  :lang(ar),
+  :lang(arabic),
+  .ar,
+  .arabic {
+    font-family: 'Kitab', 'NotoNaskhArabic', 'Noto Naskh Arabic', -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, sans-serif;
+    letter-spacing: normal;
+  }
+
   :lang(ur),
   :lang(urdu),
   .ur,
   .urdu {
     font-family: 'MehrNastaliq', 'Mehr Nastaliq Web', 'Helvetica Neue', Helvetica, Arial, serif;
+    letter-spacing: normal;
   }
 
-  :lang(ar),
-  :lang(arabic) .ar {
-    font-family: 'Noto Nastaliq Arabic', 'NotoNastaliq', 'Figtree', 'Helvetica Neue', Helvetica,
-      Arial;
+  :lang(th),
+  :lang(thai),
+  .th,
+  .thai {
+    font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont,
+      sans-serif;
+  }
+
+  :lang(zh),
+  :lang(chinese),
+  .zh,
+  .chinese {
+    font-family: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC',
+      sans-serif;
   }
 
   :lang(bn),
-  :lang(bengali) {
-    font-family: 'NotoSerifBengali', 'Figtree', 'Helvetica Neue', Helvetica, Arial;
+  :lang(bengali),
+  .bn,
+  .bengali {
+    font-family: 'NotoSerifBengali', 'Noto Serif Bengali', 'Hind Siliguri', 'Noto Sans Bengali',
+      sans-serif;
   }
 
-  :lang(ku) {
-    font-family: 'DroidArabicNaskh', 'Noto Nastaliq Arabic', 'NotoNastaliq', 'Figtree', Helvetica,
+  :lang(ru),
+  :lang(russian),
+  .ru,
+  .russian {
+    font-family: 'Plus Jakarta Sans', 'Figtree', 'Inter', -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, sans-serif;
+  }
+
+  :lang(ku),
+  :lang(kurdish),
+  .ku,
+  .kurdish {
+    font-family: 'DroidArabicNaskh', 'NotoNaskhArabic', 'Kitab', 'Noto Naskh Arabic', Helvetica,
       Arial;
   }
 
   :lang(vi),
-  :lang(vietnamese) {
+  :lang(vietnamese),
+  .vi,
+  .vietnamese {
     font-family: 'BeVietnamPro', 'Be Vietnam Pro', 'Figtree', 'Helvetica Neue', Helvetica, Arial;
   }
+
+  :lang(dv),
+  :lang(dhivehi),
+  .dv,
+  .dhivehi {
+    font-family: 'divehi', 'Dhivehi Akuru', sans-serif;
+  }
+}
+
+// Locale-specific root typography enforcement
+html[lang='fa'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+}
+
+html[lang='ar'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'Kitab', 'NotoNaskhArabic', 'Noto Naskh Arabic', -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, sans-serif !important;
+  }
+}
+
+html[lang='th'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'Prompt', 'Noto Sans Thai', 'Sarabun', -apple-system, BlinkMacSystemFont,
+      sans-serif !important;
+  }
+}
+
+html[lang='zh'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC',
+      sans-serif !important;
+  }
+}
+
+html[lang='ur'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'MehrNastaliq', 'Mehr Nastaliq Web', 'Helvetica Neue', Helvetica, Arial, serif !important;
+  }
+}
+
+html[lang='bn'] {
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: 'NotoSerifBengali', 'Noto Serif Bengali', 'Hind Siliguri', 'Noto Sans Bengali',
+      sans-serif !important;
+  }
+}
+
+// Global focus-visible styling for interactive elements (WCAG 2.2 AA compliant)
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring));
+  outline-offset: 2px;
 }
 
 // reference: https://github.com/necolas/normalize.css/blob/fc091cce1534909334c1911709a39c22d406977b/normalize.css#L165
@@ -80,7 +216,8 @@ select option {
   /* Center the video */
   position: absolute;
   inset: 0;
-  margin: 0 auto;
+  margin-inline: auto;
+  margin-block: 0;
 }
 
 .bannerActive {

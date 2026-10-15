@@ -11,7 +11,7 @@ export type FundraisingBannerState = {
 };
 
 const initialState: FundraisingBannerState = {
-  isHomepageBannerVisible: true,
+  isHomepageBannerVisible: false,
   isQuranReaderBannerVisible: true,
   isQuranReaderFloatingBannerVisible: true,
 };

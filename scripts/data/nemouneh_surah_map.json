@@ -1,0 +1,3035 @@
+{
+  "metadata": {
+    "title": "تفسیر نمونه",
+    "author": "آیت‌الله العظمی ناصر مکارم شیرازی و جمعی از دانشمندان",
+    "database": "/Users/reza/Develop/private/tafsir-almizan/data/nemouneh.db",
+    "total_surahs": 114,
+    "total_volumes": 27,
+    "total_segments": 122,
+    "multi_volume_surahs_count": 8,
+    "multi_volume_surahs": [2, 3, 4, 5, 6, 7, 9, 12],
+    "volumes_breakdown": [
+      {
+        "volume_id": 1,
+        "surahs_count": 2,
+        "surahs_started": 2,
+        "surahs_list": [1, 2],
+        "content_start_page": 19,
+        "content_end_page": 735
+      },
+      {
+        "volume_id": 2,
+        "surahs_count": 2,
+        "surahs_started": 1,
+        "surahs_list": [2, 3],
+        "content_start_page": 7,
+        "content_end_page": 759
+      },
+      {
+        "volume_id": 3,
+        "surahs_count": 2,
+        "surahs_started": 1,
+        "surahs_list": [3, 4],
+        "content_start_page": 30,
+        "content_end_page": 491
+      },
+      {
+        "volume_id": 4,
+        "surahs_count": 2,
+        "surahs_started": 1,
+        "surahs_list": [4, 5],
+        "content_start_page": 11,
+        "content_end_page": 589
+      },
+      {
+        "volume_id": 5,
+        "surahs_count": 2,
+        "surahs_started": 1,
+        "surahs_list": [5, 6],
+        "content_start_page": 9,
+        "content_end_page": 564
+      },
+      {
+        "volume_id": 6,
+        "surahs_count": 2,
+        "surahs_started": 1,
+        "surahs_list": [6, 7],
+        "content_start_page": 9,
+        "content_end_page": 532
+      },
+      {
+        "volume_id": 7,
+        "surahs_count": 3,
+        "surahs_started": 2,
+        "surahs_list": [7, 8, 9],
+        "content_start_page": 11,
+        "content_end_page": 554
+      },
+      {
+        "volume_id": 8,
+        "surahs_count": 2,
+        "surahs_started": 1,
+        "surahs_list": [9, 10],
+        "content_start_page": 10,
+        "content_end_page": 485
+      },
+      {
+        "volume_id": 9,
+        "surahs_count": 2,
+        "surahs_started": 2,
+        "surahs_list": [11, 12],
+        "content_start_page": 13,
+        "content_end_page": 517
+      },
+      {
+        "volume_id": 10,
+        "surahs_count": 3,
+        "surahs_started": 2,
+        "surahs_list": [12, 13, 14],
+        "content_start_page": 5,
+        "content_end_page": 534
+      },
+      {
+        "volume_id": 11,
+        "surahs_count": 2,
+        "surahs_started": 2,
+        "surahs_list": [15, 16],
+        "content_start_page": 12,
+        "content_end_page": 504
+      },
+      {
+        "volume_id": 12,
+        "surahs_count": 2,
+        "surahs_started": 2,
+        "surahs_list": [17, 18],
+        "content_start_page": 11,
+        "content_end_page": 638
+      },
+      {
+        "volume_id": 13,
+        "surahs_count": 3,
+        "surahs_started": 3,
+        "surahs_list": [19, 20, 21],
+        "content_start_page": 11,
+        "content_end_page": 578
+      },
+      {
+        "volume_id": 14,
+        "surahs_count": 3,
+        "surahs_started": 3,
+        "surahs_list": [22, 23, 24],
+        "content_start_page": 11,
+        "content_end_page": 607
+      },
+      {
+        "volume_id": 15,
+        "surahs_count": 3,
+        "surahs_started": 3,
+        "surahs_list": [25, 26, 27],
+        "content_start_page": 11,
+        "content_end_page": 611
+      },
+      {
+        "volume_id": 16,
+        "surahs_count": 3,
+        "surahs_started": 3,
+        "surahs_list": [28, 29, 30],
+        "content_start_page": 11,
+        "content_end_page": 516
+      },
+      {
+        "volume_id": 17,
+        "surahs_count": 3,
+        "surahs_started": 3,
+        "surahs_list": [31, 32, 33],
+        "content_start_page": 11,
+        "content_end_page": 488
+      },
+      {
+        "volume_id": 18,
+        "surahs_count": 3,
+        "surahs_started": 3,
+        "surahs_list": [34, 35, 36],
+        "content_start_page": 11,
+        "content_end_page": 520
+      },
+      {
+        "volume_id": 19,
+        "surahs_count": 3,
+        "surahs_started": 3,
+        "surahs_list": [37, 38, 39],
+        "content_start_page": 11,
+        "content_end_page": 588
+      },
+      {
+        "volume_id": 20,
+        "surahs_count": 3,
+        "surahs_started": 3,
+        "surahs_list": [40, 41, 42],
+        "content_start_page": 21,
+        "content_end_page": 530
+      },
+      {
+        "volume_id": 21,
+        "surahs_count": 5,
+        "surahs_started": 5,
+        "surahs_list": [43, 44, 45, 46, 47],
+        "content_start_page": 11,
+        "content_end_page": 530
+      },
+      {
+        "volume_id": 22,
+        "surahs_count": 6,
+        "surahs_started": 6,
+        "surahs_list": [48, 49, 50, 51, 52, 53],
+        "content_start_page": 11,
+        "content_end_page": 590
+      },
+      {
+        "volume_id": 23,
+        "surahs_count": 6,
+        "surahs_started": 6,
+        "surahs_list": [54, 55, 56, 57, 58, 59],
+        "content_start_page": 22,
+        "content_end_page": 579
+      },
+      {
+        "volume_id": 24,
+        "surahs_count": 10,
+        "surahs_started": 10,
+        "surahs_list": [60, 61, 62, 63, 64, 65, 66, 67, 68, 69],
+        "content_start_page": 13,
+        "content_end_page": 488
+      },
+      {
+        "volume_id": 25,
+        "surahs_count": 8,
+        "surahs_started": 8,
+        "surahs_list": [70, 71, 72, 73, 74, 75, 76, 77],
+        "content_start_page": 13,
+        "content_end_page": 431
+      },
+      {
+        "volume_id": 26,
+        "surahs_count": 12,
+        "surahs_started": 12,
+        "surahs_list": [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89],
+        "content_start_page": 13,
+        "content_end_page": 495
+      },
+      {
+        "volume_id": 27,
+        "surahs_count": 25,
+        "surahs_started": 25,
+        "surahs_list": [
+          90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109,
+          110, 111, 112, 113, 114
+        ],
+        "content_start_page": 13,
+        "content_end_page": 512
+      }
+    ]
+  },
+  "surahs": [
+    {
+      "surah_number": 1,
+      "name_arabic": "الفاتحة",
+      "name_persian": "حمد",
+      "total_verses": 7,
+      "volume_id": 1,
+      "volumes": [1],
+      "start_volume": 1,
+      "start_page": 19,
+      "end_volume": 1,
+      "end_page": 80,
+      "total_commentary_pages": 62,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 1,
+          "start_page": 19,
+          "end_page": 80,
+          "page_count": 62,
+          "start_verse": 1,
+          "end_verse": 7
+        }
+      ]
+    },
+    {
+      "surah_number": 2,
+      "name_arabic": "البقرة",
+      "name_persian": "بقره",
+      "total_verses": 286,
+      "volume_id": [1, 2],
+      "volumes": [1, 2],
+      "start_volume": 1,
+      "start_page": 81,
+      "end_volume": 2,
+      "end_page": 471,
+      "total_commentary_pages": 1120,
+      "is_multivolume": true,
+      "segments": [
+        {
+          "volume_id": 1,
+          "start_page": 81,
+          "end_page": 735,
+          "page_count": 655,
+          "start_verse": 1,
+          "end_verse": 187
+        },
+        {
+          "volume_id": 2,
+          "start_page": 7,
+          "end_page": 471,
+          "page_count": 465,
+          "start_verse": 188,
+          "end_verse": 286
+        }
+      ]
+    },
+    {
+      "surah_number": 3,
+      "name_arabic": "آل عمران",
+      "name_persian": "آل عمران",
+      "total_verses": 200,
+      "volume_id": [2, 3],
+      "volumes": [2, 3],
+      "start_volume": 2,
+      "start_page": 472,
+      "end_volume": 3,
+      "end_page": 266,
+      "total_commentary_pages": 525,
+      "is_multivolume": true,
+      "segments": [
+        {
+          "volume_id": 2,
+          "start_page": 472,
+          "end_page": 759,
+          "page_count": 288,
+          "start_verse": 1,
+          "end_verse": 91
+        },
+        {
+          "volume_id": 3,
+          "start_page": 30,
+          "end_page": 266,
+          "page_count": 237,
+          "start_verse": 92,
+          "end_verse": 200
+        }
+      ]
+    },
+    {
+      "surah_number": 4,
+      "name_arabic": "النساء",
+      "name_persian": "نساء",
+      "total_verses": 176,
+      "volume_id": [3, 4],
+      "volumes": [3, 4],
+      "start_volume": 3,
+      "start_page": 267,
+      "end_volume": 4,
+      "end_page": 313,
+      "total_commentary_pages": 528,
+      "is_multivolume": true,
+      "segments": [
+        {
+          "volume_id": 3,
+          "start_page": 267,
+          "end_page": 491,
+          "page_count": 225,
+          "start_verse": 1,
+          "end_verse": 70
+        },
+        {
+          "volume_id": 4,
+          "start_page": 11,
+          "end_page": 313,
+          "page_count": 303,
+          "start_verse": 71,
+          "end_verse": 176
+        }
+      ]
+    },
+    {
+      "surah_number": 5,
+      "name_arabic": "المائدة",
+      "name_persian": "مائده",
+      "total_verses": 120,
+      "volume_id": [4, 5],
+      "volumes": [4, 5],
+      "start_volume": 4,
+      "start_page": 314,
+      "end_volume": 5,
+      "end_page": 175,
+      "total_commentary_pages": 443,
+      "is_multivolume": true,
+      "segments": [
+        {
+          "volume_id": 4,
+          "start_page": 314,
+          "end_page": 589,
+          "page_count": 276,
+          "start_verse": 1,
+          "end_verse": 66
+        },
+        {
+          "volume_id": 5,
+          "start_page": 9,
+          "end_page": 175,
+          "page_count": 167,
+          "start_verse": 67,
+          "end_verse": 120
+        }
+      ]
+    },
+    {
+      "surah_number": 6,
+      "name_arabic": "الأنعام",
+      "name_persian": "انعام",
+      "total_verses": 165,
+      "volume_id": [5, 6],
+      "volumes": [5, 6],
+      "start_volume": 5,
+      "start_page": 176,
+      "end_volume": 6,
+      "end_page": 91,
+      "total_commentary_pages": 472,
+      "is_multivolume": true,
+      "segments": [
+        {
+          "volume_id": 5,
+          "start_page": 176,
+          "end_page": 564,
+          "page_count": 389,
+          "start_verse": 1,
+          "end_verse": 110
+        },
+        {
+          "volume_id": 6,
+          "start_page": 9,
+          "end_page": 91,
+          "page_count": 83,
+          "start_verse": 111,
+          "end_verse": 165
+        }
+      ]
+    },
+    {
+      "surah_number": 7,
+      "name_arabic": "الأعراف",
+      "name_persian": "اعراف",
+      "total_verses": 206,
+      "volume_id": [6, 7],
+      "volumes": [6, 7],
+      "start_volume": 6,
+      "start_page": 92,
+      "end_volume": 7,
+      "end_page": 98,
+      "total_commentary_pages": 529,
+      "is_multivolume": true,
+      "segments": [
+        {
+          "volume_id": 6,
+          "start_page": 92,
+          "end_page": 532,
+          "page_count": 441,
+          "start_verse": 1,
+          "end_verse": 171
+        },
+        {
+          "volume_id": 7,
+          "start_page": 11,
+          "end_page": 98,
+          "page_count": 88,
+          "start_verse": 172,
+          "end_verse": 206
+        }
+      ]
+    },
+    {
+      "surah_number": 8,
+      "name_arabic": "الأنفال",
+      "name_persian": "انفال",
+      "total_verses": 75,
+      "volume_id": 7,
+      "volumes": [7],
+      "start_volume": 7,
+      "start_page": 99,
+      "end_volume": 7,
+      "end_page": 324,
+      "total_commentary_pages": 226,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 7,
+          "start_page": 99,
+          "end_page": 324,
+          "page_count": 226,
+          "start_verse": 1,
+          "end_verse": 75
+        }
+      ]
+    },
+    {
+      "surah_number": 9,
+      "name_arabic": "التوبة",
+      "name_persian": "توبه",
+      "total_verses": 129,
+      "volume_id": [7, 8],
+      "volumes": [7, 8],
+      "start_volume": 7,
+      "start_page": 325,
+      "end_volume": 8,
+      "end_page": 260,
+      "total_commentary_pages": 481,
+      "is_multivolume": true,
+      "segments": [
+        {
+          "volume_id": 7,
+          "start_page": 325,
+          "end_page": 554,
+          "page_count": 230,
+          "start_verse": 1,
+          "end_verse": 59
+        },
+        {
+          "volume_id": 8,
+          "start_page": 10,
+          "end_page": 260,
+          "page_count": 251,
+          "start_verse": 60,
+          "end_verse": 129
+        }
+      ]
+    },
+    {
+      "surah_number": 10,
+      "name_arabic": "يونس",
+      "name_persian": "یونس",
+      "total_verses": 109,
+      "volume_id": 8,
+      "volumes": [8],
+      "start_volume": 8,
+      "start_page": 261,
+      "end_volume": 8,
+      "end_page": 485,
+      "total_commentary_pages": 225,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 8,
+          "start_page": 261,
+          "end_page": 485,
+          "page_count": 225,
+          "start_verse": 1,
+          "end_verse": 109
+        }
+      ]
+    },
+    {
+      "surah_number": 11,
+      "name_arabic": "هود",
+      "name_persian": "هود",
+      "total_verses": 123,
+      "volume_id": 9,
+      "volumes": [9],
+      "start_volume": 9,
+      "start_page": 13,
+      "end_volume": 9,
+      "end_page": 346,
+      "total_commentary_pages": 334,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 9,
+          "start_page": 13,
+          "end_page": 346,
+          "page_count": 334,
+          "start_verse": 1,
+          "end_verse": 123
+        }
+      ]
+    },
+    {
+      "surah_number": 12,
+      "name_arabic": "يوسف",
+      "name_persian": "یوسف",
+      "total_verses": 111,
+      "volume_id": [9, 10],
+      "volumes": [9, 10],
+      "start_volume": 9,
+      "start_page": 347,
+      "end_volume": 10,
+      "end_page": 138,
+      "total_commentary_pages": 305,
+      "is_multivolume": true,
+      "segments": [
+        {
+          "volume_id": 9,
+          "start_page": 347,
+          "end_page": 517,
+          "page_count": 171,
+          "start_verse": 1,
+          "end_verse": 53
+        },
+        {
+          "volume_id": 10,
+          "start_page": 5,
+          "end_page": 138,
+          "page_count": 134,
+          "start_verse": 54,
+          "end_verse": 111
+        }
+      ]
+    },
+    {
+      "surah_number": 13,
+      "name_arabic": "الرعد",
+      "name_persian": "رعد",
+      "total_verses": 43,
+      "volume_id": 10,
+      "volumes": [10],
+      "start_volume": 10,
+      "start_page": 139,
+      "end_volume": 10,
+      "end_page": 341,
+      "total_commentary_pages": 203,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 10,
+          "start_page": 139,
+          "end_page": 341,
+          "page_count": 203,
+          "start_verse": 1,
+          "end_verse": 43
+        }
+      ]
+    },
+    {
+      "surah_number": 14,
+      "name_arabic": "إبراهيم",
+      "name_persian": "ابراهیم",
+      "total_verses": 52,
+      "volume_id": 10,
+      "volumes": [10],
+      "start_volume": 10,
+      "start_page": 342,
+      "end_volume": 10,
+      "end_page": 534,
+      "total_commentary_pages": 193,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 10,
+          "start_page": 342,
+          "end_page": 534,
+          "page_count": 193,
+          "start_verse": 1,
+          "end_verse": 52
+        }
+      ]
+    },
+    {
+      "surah_number": 15,
+      "name_arabic": "الحجر",
+      "name_persian": "حجر",
+      "total_verses": 99,
+      "volume_id": 11,
+      "volumes": [11],
+      "start_volume": 11,
+      "start_page": 12,
+      "end_volume": 11,
+      "end_page": 168,
+      "total_commentary_pages": 157,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 11,
+          "start_page": 12,
+          "end_page": 168,
+          "page_count": 157,
+          "start_verse": 1,
+          "end_verse": 99
+        }
+      ]
+    },
+    {
+      "surah_number": 16,
+      "name_arabic": "النحل",
+      "name_persian": "نحل",
+      "total_verses": 128,
+      "volume_id": 11,
+      "volumes": [11],
+      "start_volume": 11,
+      "start_page": 169,
+      "end_volume": 11,
+      "end_page": 504,
+      "total_commentary_pages": 336,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 11,
+          "start_page": 169,
+          "end_page": 504,
+          "page_count": 336,
+          "start_verse": 1,
+          "end_verse": 128
+        }
+      ]
+    },
+    {
+      "surah_number": 17,
+      "name_arabic": "الإسراء",
+      "name_persian": "اسراء",
+      "total_verses": 111,
+      "volume_id": 12,
+      "volumes": [12],
+      "start_volume": 12,
+      "start_page": 11,
+      "end_volume": 12,
+      "end_page": 364,
+      "total_commentary_pages": 354,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 12,
+          "start_page": 11,
+          "end_page": 364,
+          "page_count": 354,
+          "start_verse": 1,
+          "end_verse": 111
+        }
+      ]
+    },
+    {
+      "surah_number": 18,
+      "name_arabic": "الكهف",
+      "name_persian": "کهف",
+      "total_verses": 110,
+      "volume_id": 12,
+      "volumes": [12],
+      "start_volume": 12,
+      "start_page": 365,
+      "end_volume": 12,
+      "end_page": 638,
+      "total_commentary_pages": 274,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 12,
+          "start_page": 365,
+          "end_page": 638,
+          "page_count": 274,
+          "start_verse": 1,
+          "end_verse": 110
+        }
+      ]
+    },
+    {
+      "surah_number": 19,
+      "name_arabic": "مريم",
+      "name_persian": "مریم",
+      "total_verses": 98,
+      "volume_id": 13,
+      "volumes": [13],
+      "start_volume": 13,
+      "start_page": 11,
+      "end_volume": 13,
+      "end_page": 172,
+      "total_commentary_pages": 162,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 13,
+          "start_page": 11,
+          "end_page": 172,
+          "page_count": 162,
+          "start_verse": 1,
+          "end_verse": 98
+        }
+      ]
+    },
+    {
+      "surah_number": 20,
+      "name_arabic": "طه",
+      "name_persian": "طه",
+      "total_verses": 135,
+      "volume_id": 13,
+      "volumes": [13],
+      "start_volume": 13,
+      "start_page": 173,
+      "end_volume": 13,
+      "end_page": 378,
+      "total_commentary_pages": 206,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 13,
+          "start_page": 173,
+          "end_page": 378,
+          "page_count": 206,
+          "start_verse": 1,
+          "end_verse": 135
+        }
+      ]
+    },
+    {
+      "surah_number": 21,
+      "name_arabic": "الأنبياء",
+      "name_persian": "انبیاء",
+      "total_verses": 112,
+      "volume_id": 13,
+      "volumes": [13],
+      "start_volume": 13,
+      "start_page": 379,
+      "end_volume": 13,
+      "end_page": 578,
+      "total_commentary_pages": 200,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 13,
+          "start_page": 379,
+          "end_page": 578,
+          "page_count": 200,
+          "start_verse": 1,
+          "end_verse": 112
+        }
+      ]
+    },
+    {
+      "surah_number": 22,
+      "name_arabic": "الحج",
+      "name_persian": "حج",
+      "total_verses": 78,
+      "volume_id": 14,
+      "volumes": [14],
+      "start_volume": 14,
+      "start_page": 11,
+      "end_volume": 14,
+      "end_page": 204,
+      "total_commentary_pages": 194,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 14,
+          "start_page": 11,
+          "end_page": 204,
+          "page_count": 194,
+          "start_verse": 1,
+          "end_verse": 78
+        }
+      ]
+    },
+    {
+      "surah_number": 23,
+      "name_arabic": "المؤمنون",
+      "name_persian": "مؤمنون",
+      "total_verses": 118,
+      "volume_id": 14,
+      "volumes": [14],
+      "start_volume": 14,
+      "start_page": 205,
+      "end_volume": 14,
+      "end_page": 376,
+      "total_commentary_pages": 172,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 14,
+          "start_page": 205,
+          "end_page": 376,
+          "page_count": 172,
+          "start_verse": 1,
+          "end_verse": 118
+        }
+      ]
+    },
+    {
+      "surah_number": 24,
+      "name_arabic": "النور",
+      "name_persian": "نور",
+      "total_verses": 64,
+      "volume_id": 14,
+      "volumes": [14],
+      "start_volume": 14,
+      "start_page": 377,
+      "end_volume": 14,
+      "end_page": 607,
+      "total_commentary_pages": 231,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 14,
+          "start_page": 377,
+          "end_page": 607,
+          "page_count": 231,
+          "start_verse": 1,
+          "end_verse": 64
+        }
+      ]
+    },
+    {
+      "surah_number": 25,
+      "name_arabic": "الفرقان",
+      "name_persian": "فرقان",
+      "total_verses": 77,
+      "volume_id": 15,
+      "volumes": [15],
+      "start_volume": 15,
+      "start_page": 11,
+      "end_volume": 15,
+      "end_page": 199,
+      "total_commentary_pages": 189,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 15,
+          "start_page": 11,
+          "end_page": 199,
+          "page_count": 189,
+          "start_verse": 1,
+          "end_verse": 77
+        }
+      ]
+    },
+    {
+      "surah_number": 26,
+      "name_arabic": "الشعراء",
+      "name_persian": "شعراء",
+      "total_verses": 227,
+      "volume_id": 15,
+      "volumes": [15],
+      "start_volume": 15,
+      "start_page": 200,
+      "end_volume": 15,
+      "end_page": 414,
+      "total_commentary_pages": 215,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 15,
+          "start_page": 200,
+          "end_page": 414,
+          "page_count": 215,
+          "start_verse": 1,
+          "end_verse": 227
+        }
+      ]
+    },
+    {
+      "surah_number": 27,
+      "name_arabic": "النمل",
+      "name_persian": "نمل",
+      "total_verses": 93,
+      "volume_id": 15,
+      "volumes": [15],
+      "start_volume": 15,
+      "start_page": 415,
+      "end_volume": 15,
+      "end_page": 611,
+      "total_commentary_pages": 197,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 15,
+          "start_page": 415,
+          "end_page": 611,
+          "page_count": 197,
+          "start_verse": 1,
+          "end_verse": 93
+        }
+      ]
+    },
+    {
+      "surah_number": 28,
+      "name_arabic": "القصص",
+      "name_persian": "قصص",
+      "total_verses": 88,
+      "volume_id": 16,
+      "volumes": [16],
+      "start_volume": 16,
+      "start_page": 11,
+      "end_volume": 16,
+      "end_page": 210,
+      "total_commentary_pages": 200,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 16,
+          "start_page": 11,
+          "end_page": 210,
+          "page_count": 200,
+          "start_verse": 1,
+          "end_verse": 88
+        }
+      ]
+    },
+    {
+      "surah_number": 29,
+      "name_arabic": "العنكبوت",
+      "name_persian": "عنکبوت",
+      "total_verses": 69,
+      "volume_id": 16,
+      "volumes": [16],
+      "start_volume": 16,
+      "start_page": 211,
+      "end_volume": 16,
+      "end_page": 372,
+      "total_commentary_pages": 162,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 16,
+          "start_page": 211,
+          "end_page": 372,
+          "page_count": 162,
+          "start_verse": 1,
+          "end_verse": 69
+        }
+      ]
+    },
+    {
+      "surah_number": 30,
+      "name_arabic": "الروم",
+      "name_persian": "روم",
+      "total_verses": 60,
+      "volume_id": 16,
+      "volumes": [16],
+      "start_volume": 16,
+      "start_page": 373,
+      "end_volume": 16,
+      "end_page": 516,
+      "total_commentary_pages": 144,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 16,
+          "start_page": 373,
+          "end_page": 516,
+          "page_count": 144,
+          "start_verse": 1,
+          "end_verse": 60
+        }
+      ]
+    },
+    {
+      "surah_number": 31,
+      "name_arabic": "لقمان",
+      "name_persian": "لقمان",
+      "total_verses": 34,
+      "volume_id": 17,
+      "volumes": [17],
+      "start_volume": 17,
+      "start_page": 11,
+      "end_volume": 17,
+      "end_page": 114,
+      "total_commentary_pages": 104,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 17,
+          "start_page": 11,
+          "end_page": 114,
+          "page_count": 104,
+          "start_verse": 1,
+          "end_verse": 34
+        }
+      ]
+    },
+    {
+      "surah_number": 32,
+      "name_arabic": "السجدة",
+      "name_persian": "سجده",
+      "total_verses": 30,
+      "volume_id": 17,
+      "volumes": [17],
+      "start_volume": 17,
+      "start_page": 115,
+      "end_volume": 17,
+      "end_page": 198,
+      "total_commentary_pages": 84,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 17,
+          "start_page": 115,
+          "end_page": 198,
+          "page_count": 84,
+          "start_verse": 1,
+          "end_verse": 30
+        }
+      ]
+    },
+    {
+      "surah_number": 33,
+      "name_arabic": "الأحزاب",
+      "name_persian": "احزاب",
+      "total_verses": 73,
+      "volume_id": 17,
+      "volumes": [17],
+      "start_volume": 17,
+      "start_page": 199,
+      "end_volume": 17,
+      "end_page": 488,
+      "total_commentary_pages": 290,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 17,
+          "start_page": 199,
+          "end_page": 488,
+          "page_count": 290,
+          "start_verse": 1,
+          "end_verse": 73
+        }
+      ]
+    },
+    {
+      "surah_number": 34,
+      "name_arabic": "سبأ",
+      "name_persian": "سبا",
+      "total_verses": 54,
+      "volume_id": 18,
+      "volumes": [18],
+      "start_volume": 18,
+      "start_page": 11,
+      "end_volume": 18,
+      "end_page": 175,
+      "total_commentary_pages": 165,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 18,
+          "start_page": 11,
+          "end_page": 175,
+          "page_count": 165,
+          "start_verse": 1,
+          "end_verse": 54
+        }
+      ]
+    },
+    {
+      "surah_number": 35,
+      "name_arabic": "فاطر",
+      "name_persian": "فاطر",
+      "total_verses": 45,
+      "volume_id": 18,
+      "volumes": [18],
+      "start_volume": 18,
+      "start_page": 176,
+      "end_volume": 18,
+      "end_page": 326,
+      "total_commentary_pages": 151,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 18,
+          "start_page": 176,
+          "end_page": 326,
+          "page_count": 151,
+          "start_verse": 1,
+          "end_verse": 45
+        }
+      ]
+    },
+    {
+      "surah_number": 36,
+      "name_arabic": "يس",
+      "name_persian": "یس",
+      "total_verses": 83,
+      "volume_id": 18,
+      "volumes": [18],
+      "start_volume": 18,
+      "start_page": 327,
+      "end_volume": 18,
+      "end_page": 520,
+      "total_commentary_pages": 194,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 18,
+          "start_page": 327,
+          "end_page": 520,
+          "page_count": 194,
+          "start_verse": 1,
+          "end_verse": 83
+        }
+      ]
+    },
+    {
+      "surah_number": 37,
+      "name_arabic": "الصافات",
+      "name_persian": "صافات",
+      "total_verses": 182,
+      "volume_id": 19,
+      "volumes": [19],
+      "start_volume": 19,
+      "start_page": 11,
+      "end_volume": 19,
+      "end_page": 218,
+      "total_commentary_pages": 208,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 19,
+          "start_page": 11,
+          "end_page": 218,
+          "page_count": 208,
+          "start_verse": 1,
+          "end_verse": 182
+        }
+      ]
+    },
+    {
+      "surah_number": 38,
+      "name_arabic": "ص",
+      "name_persian": "ص",
+      "total_verses": 88,
+      "volume_id": 19,
+      "volumes": [19],
+      "start_volume": 19,
+      "start_page": 219,
+      "end_volume": 19,
+      "end_page": 376,
+      "total_commentary_pages": 158,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 19,
+          "start_page": 219,
+          "end_page": 376,
+          "page_count": 158,
+          "start_verse": 1,
+          "end_verse": 88
+        }
+      ]
+    },
+    {
+      "surah_number": 39,
+      "name_arabic": "الزمر",
+      "name_persian": "زمر",
+      "total_verses": 75,
+      "volume_id": 19,
+      "volumes": [19],
+      "start_volume": 19,
+      "start_page": 377,
+      "end_volume": 19,
+      "end_page": 588,
+      "total_commentary_pages": 212,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 19,
+          "start_page": 377,
+          "end_page": 588,
+          "page_count": 212,
+          "start_verse": 1,
+          "end_verse": 75
+        }
+      ]
+    },
+    {
+      "surah_number": 40,
+      "name_arabic": "غافر",
+      "name_persian": "غافر",
+      "total_verses": 85,
+      "volume_id": 20,
+      "volumes": [20],
+      "start_volume": 20,
+      "start_page": 21,
+      "end_volume": 20,
+      "end_page": 220,
+      "total_commentary_pages": 200,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 20,
+          "start_page": 21,
+          "end_page": 220,
+          "page_count": 200,
+          "start_verse": 1,
+          "end_verse": 85
+        }
+      ]
+    },
+    {
+      "surah_number": 41,
+      "name_arabic": "فصلت",
+      "name_persian": "فصلت",
+      "total_verses": 54,
+      "volume_id": 20,
+      "volumes": [20],
+      "start_volume": 20,
+      "start_page": 221,
+      "end_volume": 20,
+      "end_page": 360,
+      "total_commentary_pages": 140,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 20,
+          "start_page": 221,
+          "end_page": 360,
+          "page_count": 140,
+          "start_verse": 1,
+          "end_verse": 54
+        }
+      ]
+    },
+    {
+      "surah_number": 42,
+      "name_arabic": "الشورى",
+      "name_persian": "شوری",
+      "total_verses": 53,
+      "volume_id": 20,
+      "volumes": [20],
+      "start_volume": 20,
+      "start_page": 361,
+      "end_volume": 20,
+      "end_page": 530,
+      "total_commentary_pages": 170,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 20,
+          "start_page": 361,
+          "end_page": 530,
+          "page_count": 170,
+          "start_verse": 1,
+          "end_verse": 53
+        }
+      ]
+    },
+    {
+      "surah_number": 43,
+      "name_arabic": "الزخرف",
+      "name_persian": "زخرف",
+      "total_verses": 89,
+      "volume_id": 21,
+      "volumes": [21],
+      "start_volume": 21,
+      "start_page": 11,
+      "end_volume": 21,
+      "end_page": 154,
+      "total_commentary_pages": 144,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 21,
+          "start_page": 11,
+          "end_page": 154,
+          "page_count": 144,
+          "start_verse": 1,
+          "end_verse": 89
+        }
+      ]
+    },
+    {
+      "surah_number": 44,
+      "name_arabic": "الدخان",
+      "name_persian": "دخان",
+      "total_verses": 59,
+      "volume_id": 21,
+      "volumes": [21],
+      "start_volume": 21,
+      "start_page": 155,
+      "end_volume": 21,
+      "end_page": 234,
+      "total_commentary_pages": 80,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 21,
+          "start_page": 155,
+          "end_page": 234,
+          "page_count": 80,
+          "start_verse": 1,
+          "end_verse": 59
+        }
+      ]
+    },
+    {
+      "surah_number": 45,
+      "name_arabic": "الجاثية",
+      "name_persian": "جاثیه",
+      "total_verses": 37,
+      "volume_id": 21,
+      "volumes": [21],
+      "start_volume": 21,
+      "start_page": 235,
+      "end_volume": 21,
+      "end_page": 308,
+      "total_commentary_pages": 74,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 21,
+          "start_page": 235,
+          "end_page": 308,
+          "page_count": 74,
+          "start_verse": 1,
+          "end_verse": 37
+        }
+      ]
+    },
+    {
+      "surah_number": 46,
+      "name_arabic": "الأحقاف",
+      "name_persian": "احقاف",
+      "total_verses": 35,
+      "volume_id": 21,
+      "volumes": [21],
+      "start_volume": 21,
+      "start_page": 309,
+      "end_volume": 21,
+      "end_page": 402,
+      "total_commentary_pages": 94,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 21,
+          "start_page": 309,
+          "end_page": 402,
+          "page_count": 94,
+          "start_verse": 1,
+          "end_verse": 35
+        }
+      ]
+    },
+    {
+      "surah_number": 47,
+      "name_arabic": "محمد",
+      "name_persian": "محمد",
+      "total_verses": 38,
+      "volume_id": 21,
+      "volumes": [21],
+      "start_volume": 21,
+      "start_page": 403,
+      "end_volume": 21,
+      "end_page": 530,
+      "total_commentary_pages": 128,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 21,
+          "start_page": 403,
+          "end_page": 530,
+          "page_count": 128,
+          "start_verse": 1,
+          "end_verse": 38
+        }
+      ]
+    },
+    {
+      "surah_number": 48,
+      "name_arabic": "الفتح",
+      "name_persian": "فتح",
+      "total_verses": 29,
+      "volume_id": 22,
+      "volumes": [22],
+      "start_volume": 22,
+      "start_page": 11,
+      "end_volume": 22,
+      "end_page": 136,
+      "total_commentary_pages": 126,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 22,
+          "start_page": 11,
+          "end_page": 136,
+          "page_count": 126,
+          "start_verse": 1,
+          "end_verse": 29
+        }
+      ]
+    },
+    {
+      "surah_number": 49,
+      "name_arabic": "الحجرات",
+      "name_persian": "حجرات",
+      "total_verses": 18,
+      "volume_id": 22,
+      "volumes": [22],
+      "start_volume": 22,
+      "start_page": 137,
+      "end_volume": 22,
+      "end_page": 228,
+      "total_commentary_pages": 92,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 22,
+          "start_page": 137,
+          "end_page": 228,
+          "page_count": 92,
+          "start_verse": 1,
+          "end_verse": 18
+        }
+      ]
+    },
+    {
+      "surah_number": 50,
+      "name_arabic": "ق",
+      "name_persian": "ق",
+      "total_verses": 45,
+      "volume_id": 22,
+      "volumes": [22],
+      "start_volume": 22,
+      "start_page": 229,
+      "end_volume": 22,
+      "end_page": 310,
+      "total_commentary_pages": 82,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 22,
+          "start_page": 229,
+          "end_page": 310,
+          "page_count": 82,
+          "start_verse": 1,
+          "end_verse": 45
+        }
+      ]
+    },
+    {
+      "surah_number": 51,
+      "name_arabic": "الذاريات",
+      "name_persian": "ذاریات",
+      "total_verses": 60,
+      "volume_id": 22,
+      "volumes": [22],
+      "start_volume": 22,
+      "start_page": 311,
+      "end_volume": 22,
+      "end_page": 416,
+      "total_commentary_pages": 106,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 22,
+          "start_page": 311,
+          "end_page": 416,
+          "page_count": 106,
+          "start_verse": 1,
+          "end_verse": 60
+        }
+      ]
+    },
+    {
+      "surah_number": 52,
+      "name_arabic": "الطور",
+      "name_persian": "طور",
+      "total_verses": 49,
+      "volume_id": 22,
+      "volumes": [22],
+      "start_volume": 22,
+      "start_page": 417,
+      "end_volume": 22,
+      "end_page": 482,
+      "total_commentary_pages": 66,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 22,
+          "start_page": 417,
+          "end_page": 482,
+          "page_count": 66,
+          "start_verse": 1,
+          "end_verse": 49
+        }
+      ]
+    },
+    {
+      "surah_number": 53,
+      "name_arabic": "النجم",
+      "name_persian": "نجم",
+      "total_verses": 62,
+      "volume_id": 22,
+      "volumes": [22],
+      "start_volume": 22,
+      "start_page": 483,
+      "end_volume": 22,
+      "end_page": 590,
+      "total_commentary_pages": 108,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 22,
+          "start_page": 483,
+          "end_page": 590,
+          "page_count": 108,
+          "start_verse": 1,
+          "end_verse": 62
+        }
+      ]
+    },
+    {
+      "surah_number": 54,
+      "name_arabic": "القمر",
+      "name_persian": "قمر",
+      "total_verses": 55,
+      "volume_id": 23,
+      "volumes": [23],
+      "start_volume": 23,
+      "start_page": 22,
+      "end_volume": 23,
+      "end_page": 107,
+      "total_commentary_pages": 86,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 23,
+          "start_page": 22,
+          "end_page": 107,
+          "page_count": 86,
+          "start_verse": 1,
+          "end_verse": 55
+        }
+      ]
+    },
+    {
+      "surah_number": 55,
+      "name_arabic": "الرحمن",
+      "name_persian": "رحمن",
+      "total_verses": 78,
+      "volume_id": 23,
+      "volumes": [23],
+      "start_volume": 23,
+      "start_page": 108,
+      "end_volume": 23,
+      "end_page": 209,
+      "total_commentary_pages": 102,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 23,
+          "start_page": 108,
+          "end_page": 209,
+          "page_count": 102,
+          "start_verse": 1,
+          "end_verse": 78
+        }
+      ]
+    },
+    {
+      "surah_number": 56,
+      "name_arabic": "الواقعة",
+      "name_persian": "واقعه",
+      "total_verses": 96,
+      "volume_id": 23,
+      "volumes": [23],
+      "start_volume": 23,
+      "start_page": 210,
+      "end_volume": 23,
+      "end_page": 307,
+      "total_commentary_pages": 98,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 23,
+          "start_page": 210,
+          "end_page": 307,
+          "page_count": 98,
+          "start_verse": 1,
+          "end_verse": 96
+        }
+      ]
+    },
+    {
+      "surah_number": 57,
+      "name_arabic": "الحديد",
+      "name_persian": "حدید",
+      "total_verses": 29,
+      "volume_id": 23,
+      "volumes": [23],
+      "start_volume": 23,
+      "start_page": 308,
+      "end_volume": 23,
+      "end_page": 421,
+      "total_commentary_pages": 114,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 23,
+          "start_page": 308,
+          "end_page": 421,
+          "page_count": 114,
+          "start_verse": 1,
+          "end_verse": 29
+        }
+      ]
+    },
+    {
+      "surah_number": 58,
+      "name_arabic": "المجادلة",
+      "name_persian": "مجادله",
+      "total_verses": 22,
+      "volume_id": 23,
+      "volumes": [23],
+      "start_volume": 23,
+      "start_page": 422,
+      "end_volume": 23,
+      "end_page": 495,
+      "total_commentary_pages": 74,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 23,
+          "start_page": 422,
+          "end_page": 495,
+          "page_count": 74,
+          "start_verse": 1,
+          "end_verse": 22
+        }
+      ]
+    },
+    {
+      "surah_number": 59,
+      "name_arabic": "الحشر",
+      "name_persian": "حشر",
+      "total_verses": 24,
+      "volume_id": 23,
+      "volumes": [23],
+      "start_volume": 23,
+      "start_page": 496,
+      "end_volume": 23,
+      "end_page": 579,
+      "total_commentary_pages": 84,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 23,
+          "start_page": 496,
+          "end_page": 579,
+          "page_count": 84,
+          "start_verse": 1,
+          "end_verse": 24
+        }
+      ]
+    },
+    {
+      "surah_number": 60,
+      "name_arabic": "الممتحنة",
+      "name_persian": "ممتحنه",
+      "total_verses": 13,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 13,
+      "end_volume": 24,
+      "end_page": 66,
+      "total_commentary_pages": 54,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 13,
+          "end_page": 66,
+          "page_count": 54,
+          "start_verse": 1,
+          "end_verse": 13
+        }
+      ]
+    },
+    {
+      "surah_number": 61,
+      "name_arabic": "الصف",
+      "name_persian": "صف",
+      "total_verses": 14,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 67,
+      "end_volume": 24,
+      "end_page": 110,
+      "total_commentary_pages": 44,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 67,
+          "end_page": 110,
+          "page_count": 44,
+          "start_verse": 1,
+          "end_verse": 14
+        }
+      ]
+    },
+    {
+      "surah_number": 62,
+      "name_arabic": "الجمعة",
+      "name_persian": "جمعه",
+      "total_verses": 11,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 111,
+      "end_volume": 24,
+      "end_page": 154,
+      "total_commentary_pages": 44,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 111,
+          "end_page": 154,
+          "page_count": 44,
+          "start_verse": 1,
+          "end_verse": 11
+        }
+      ]
+    },
+    {
+      "surah_number": 63,
+      "name_arabic": "المنافقون",
+      "name_persian": "منافقون",
+      "total_verses": 11,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 155,
+      "end_volume": 24,
+      "end_page": 190,
+      "total_commentary_pages": 36,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 155,
+          "end_page": 190,
+          "page_count": 36,
+          "start_verse": 1,
+          "end_verse": 11
+        }
+      ]
+    },
+    {
+      "surah_number": 64,
+      "name_arabic": "التغابن",
+      "name_persian": "تغابن",
+      "total_verses": 18,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 191,
+      "end_volume": 24,
+      "end_page": 226,
+      "total_commentary_pages": 36,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 191,
+          "end_page": 226,
+          "page_count": 36,
+          "start_verse": 1,
+          "end_verse": 18
+        }
+      ]
+    },
+    {
+      "surah_number": 65,
+      "name_arabic": "الطلاق",
+      "name_persian": "طلاق",
+      "total_verses": 12,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 227,
+      "end_volume": 24,
+      "end_page": 278,
+      "total_commentary_pages": 52,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 227,
+          "end_page": 278,
+          "page_count": 52,
+          "start_verse": 1,
+          "end_verse": 12
+        }
+      ]
+    },
+    {
+      "surah_number": 66,
+      "name_arabic": "التحريم",
+      "name_persian": "تحریم",
+      "total_verses": 12,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 279,
+      "end_volume": 24,
+      "end_page": 322,
+      "total_commentary_pages": 44,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 279,
+          "end_page": 322,
+          "page_count": 44,
+          "start_verse": 1,
+          "end_verse": 12
+        }
+      ]
+    },
+    {
+      "surah_number": 67,
+      "name_arabic": "الملك",
+      "name_persian": "ملک",
+      "total_verses": 30,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 323,
+      "end_volume": 24,
+      "end_page": 370,
+      "total_commentary_pages": 48,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 323,
+          "end_page": 370,
+          "page_count": 48,
+          "start_verse": 1,
+          "end_verse": 30
+        }
+      ]
+    },
+    {
+      "surah_number": 68,
+      "name_arabic": "القلم",
+      "name_persian": "قلم",
+      "total_verses": 52,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 371,
+      "end_volume": 24,
+      "end_page": 436,
+      "total_commentary_pages": 66,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 371,
+          "end_page": 436,
+          "page_count": 66,
+          "start_verse": 1,
+          "end_verse": 52
+        }
+      ]
+    },
+    {
+      "surah_number": 69,
+      "name_arabic": "الحاقة",
+      "name_persian": "حاقه",
+      "total_verses": 52,
+      "volume_id": 24,
+      "volumes": [24],
+      "start_volume": 24,
+      "start_page": 437,
+      "end_volume": 24,
+      "end_page": 488,
+      "total_commentary_pages": 52,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 24,
+          "start_page": 437,
+          "end_page": 488,
+          "page_count": 52,
+          "start_verse": 1,
+          "end_verse": 52
+        }
+      ]
+    },
+    {
+      "surah_number": 70,
+      "name_arabic": "المعارج",
+      "name_persian": "معارج",
+      "total_verses": 44,
+      "volume_id": 25,
+      "volumes": [25],
+      "start_volume": 25,
+      "start_page": 13,
+      "end_volume": 25,
+      "end_page": 58,
+      "total_commentary_pages": 46,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 25,
+          "start_page": 13,
+          "end_page": 58,
+          "page_count": 46,
+          "start_verse": 1,
+          "end_verse": 44
+        }
+      ]
+    },
+    {
+      "surah_number": 71,
+      "name_arabic": "نوح",
+      "name_persian": "نوح",
+      "total_verses": 28,
+      "volume_id": 25,
+      "volumes": [25],
+      "start_volume": 25,
+      "start_page": 59,
+      "end_volume": 25,
+      "end_page": 102,
+      "total_commentary_pages": 44,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 25,
+          "start_page": 59,
+          "end_page": 102,
+          "page_count": 44,
+          "start_verse": 1,
+          "end_verse": 28
+        }
+      ]
+    },
+    {
+      "surah_number": 72,
+      "name_arabic": "الجن",
+      "name_persian": "جن",
+      "total_verses": 28,
+      "volume_id": 25,
+      "volumes": [25],
+      "start_volume": 25,
+      "start_page": 103,
+      "end_volume": 25,
+      "end_page": 164,
+      "total_commentary_pages": 62,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 25,
+          "start_page": 103,
+          "end_page": 164,
+          "page_count": 62,
+          "start_verse": 1,
+          "end_verse": 28
+        }
+      ]
+    },
+    {
+      "surah_number": 73,
+      "name_arabic": "المزمل",
+      "name_persian": "مزمل",
+      "total_verses": 20,
+      "volume_id": 25,
+      "volumes": [25],
+      "start_volume": 25,
+      "start_page": 165,
+      "end_volume": 25,
+      "end_page": 208,
+      "total_commentary_pages": 44,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 25,
+          "start_page": 165,
+          "end_page": 208,
+          "page_count": 44,
+          "start_verse": 1,
+          "end_verse": 20
+        }
+      ]
+    },
+    {
+      "surah_number": 74,
+      "name_arabic": "المدثر",
+      "name_persian": "مدثر",
+      "total_verses": 56,
+      "volume_id": 25,
+      "volumes": [25],
+      "start_volume": 25,
+      "start_page": 209,
+      "end_volume": 25,
+      "end_page": 272,
+      "total_commentary_pages": 64,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 25,
+          "start_page": 209,
+          "end_page": 272,
+          "page_count": 64,
+          "start_verse": 1,
+          "end_verse": 56
+        }
+      ]
+    },
+    {
+      "surah_number": 75,
+      "name_arabic": "القيامة",
+      "name_persian": "قیامت",
+      "total_verses": 40,
+      "volume_id": 25,
+      "volumes": [25],
+      "start_volume": 25,
+      "start_page": 273,
+      "end_volume": 25,
+      "end_page": 326,
+      "total_commentary_pages": 54,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 25,
+          "start_page": 273,
+          "end_page": 326,
+          "page_count": 54,
+          "start_verse": 1,
+          "end_verse": 40
+        }
+      ]
+    },
+    {
+      "surah_number": 76,
+      "name_arabic": "الإنسان",
+      "name_persian": "انسان",
+      "total_verses": 31,
+      "volume_id": 25,
+      "volumes": [25],
+      "start_volume": 25,
+      "start_page": 327,
+      "end_volume": 25,
+      "end_page": 388,
+      "total_commentary_pages": 62,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 25,
+          "start_page": 327,
+          "end_page": 388,
+          "page_count": 62,
+          "start_verse": 1,
+          "end_verse": 31
+        }
+      ]
+    },
+    {
+      "surah_number": 77,
+      "name_arabic": "المرسلات",
+      "name_persian": "مرسلات",
+      "total_verses": 50,
+      "volume_id": 25,
+      "volumes": [25],
+      "start_volume": 25,
+      "start_page": 389,
+      "end_volume": 25,
+      "end_page": 431,
+      "total_commentary_pages": 43,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 25,
+          "start_page": 389,
+          "end_page": 431,
+          "page_count": 43,
+          "start_verse": 1,
+          "end_verse": 50
+        }
+      ]
+    },
+    {
+      "surah_number": 78,
+      "name_arabic": "النبأ",
+      "name_persian": "نبا",
+      "total_verses": 40,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 13,
+      "end_volume": 26,
+      "end_page": 80,
+      "total_commentary_pages": 68,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 13,
+          "end_page": 80,
+          "page_count": 68,
+          "start_verse": 1,
+          "end_verse": 40
+        }
+      ]
+    },
+    {
+      "surah_number": 79,
+      "name_arabic": "النازعات",
+      "name_persian": "نازعات",
+      "total_verses": 46,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 81,
+      "end_volume": 26,
+      "end_page": 128,
+      "total_commentary_pages": 48,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 81,
+          "end_page": 128,
+          "page_count": 48,
+          "start_verse": 1,
+          "end_verse": 46
+        }
+      ]
+    },
+    {
+      "surah_number": 80,
+      "name_arabic": "عبس",
+      "name_persian": "عبس",
+      "total_verses": 42,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 129,
+      "end_volume": 26,
+      "end_page": 174,
+      "total_commentary_pages": 46,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 129,
+          "end_page": 174,
+          "page_count": 46,
+          "start_verse": 1,
+          "end_verse": 42
+        }
+      ]
+    },
+    {
+      "surah_number": 81,
+      "name_arabic": "التكوير",
+      "name_persian": "تکویر",
+      "total_verses": 29,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 175,
+      "end_volume": 26,
+      "end_page": 214,
+      "total_commentary_pages": 40,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 175,
+          "end_page": 214,
+          "page_count": 40,
+          "start_verse": 1,
+          "end_verse": 29
+        }
+      ]
+    },
+    {
+      "surah_number": 82,
+      "name_arabic": "الانفطار",
+      "name_persian": "انفطار",
+      "total_verses": 19,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 215,
+      "end_volume": 26,
+      "end_page": 248,
+      "total_commentary_pages": 34,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 215,
+          "end_page": 248,
+          "page_count": 34,
+          "start_verse": 1,
+          "end_verse": 19
+        }
+      ]
+    },
+    {
+      "surah_number": 83,
+      "name_arabic": "المطففين",
+      "name_persian": "مطففین",
+      "total_verses": 36,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 249,
+      "end_volume": 26,
+      "end_page": 302,
+      "total_commentary_pages": 54,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 249,
+          "end_page": 302,
+          "page_count": 54,
+          "start_verse": 1,
+          "end_verse": 36
+        }
+      ]
+    },
+    {
+      "surah_number": 84,
+      "name_arabic": "الانشقاق",
+      "name_persian": "انشقاق",
+      "total_verses": 25,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 303,
+      "end_volume": 26,
+      "end_page": 336,
+      "total_commentary_pages": 34,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 303,
+          "end_page": 336,
+          "page_count": 34,
+          "start_verse": 1,
+          "end_verse": 25
+        }
+      ]
+    },
+    {
+      "surah_number": 85,
+      "name_arabic": "البروج",
+      "name_persian": "بروج",
+      "total_verses": 22,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 337,
+      "end_volume": 26,
+      "end_page": 366,
+      "total_commentary_pages": 30,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 337,
+          "end_page": 366,
+          "page_count": 30,
+          "start_verse": 1,
+          "end_verse": 22
+        }
+      ]
+    },
+    {
+      "surah_number": 86,
+      "name_arabic": "الطارق",
+      "name_persian": "طارق",
+      "total_verses": 17,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 367,
+      "end_volume": 26,
+      "end_page": 392,
+      "total_commentary_pages": 26,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 367,
+          "end_page": 392,
+          "page_count": 26,
+          "start_verse": 1,
+          "end_verse": 17
+        }
+      ]
+    },
+    {
+      "surah_number": 87,
+      "name_arabic": "الأعلى",
+      "name_persian": "اعلی",
+      "total_verses": 19,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 393,
+      "end_volume": 26,
+      "end_page": 424,
+      "total_commentary_pages": 32,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 393,
+          "end_page": 424,
+          "page_count": 32,
+          "start_verse": 1,
+          "end_verse": 19
+        }
+      ]
+    },
+    {
+      "surah_number": 88,
+      "name_arabic": "الغاشية",
+      "name_persian": "غاشیه",
+      "total_verses": 26,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 425,
+      "end_volume": 26,
+      "end_page": 452,
+      "total_commentary_pages": 28,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 425,
+          "end_page": 452,
+          "page_count": 28,
+          "start_verse": 1,
+          "end_verse": 26
+        }
+      ]
+    },
+    {
+      "surah_number": 89,
+      "name_arabic": "الفجر",
+      "name_persian": "فجر",
+      "total_verses": 30,
+      "volume_id": 26,
+      "volumes": [26],
+      "start_volume": 26,
+      "start_page": 453,
+      "end_volume": 26,
+      "end_page": 495,
+      "total_commentary_pages": 43,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 26,
+          "start_page": 453,
+          "end_page": 495,
+          "page_count": 43,
+          "start_verse": 1,
+          "end_verse": 30
+        }
+      ]
+    },
+    {
+      "surah_number": 90,
+      "name_arabic": "البلد",
+      "name_persian": "بلد",
+      "total_verses": 20,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 13,
+      "end_volume": 27,
+      "end_page": 48,
+      "total_commentary_pages": 36,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 13,
+          "end_page": 48,
+          "page_count": 36,
+          "start_verse": 1,
+          "end_verse": 20
+        }
+      ]
+    },
+    {
+      "surah_number": 91,
+      "name_arabic": "الشمس",
+      "name_persian": "شمس",
+      "total_verses": 15,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 49,
+      "end_volume": 27,
+      "end_page": 80,
+      "total_commentary_pages": 32,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 49,
+          "end_page": 80,
+          "page_count": 32,
+          "start_verse": 1,
+          "end_verse": 15
+        }
+      ]
+    },
+    {
+      "surah_number": 92,
+      "name_arabic": "الليل",
+      "name_persian": "لیل",
+      "total_verses": 21,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 81,
+      "end_volume": 27,
+      "end_page": 108,
+      "total_commentary_pages": 28,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 81,
+          "end_page": 108,
+          "page_count": 28,
+          "start_verse": 1,
+          "end_verse": 21
+        }
+      ]
+    },
+    {
+      "surah_number": 93,
+      "name_arabic": "الضحى",
+      "name_persian": "ضحی",
+      "total_verses": 11,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 109,
+      "end_volume": 27,
+      "end_page": 134,
+      "total_commentary_pages": 26,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 109,
+          "end_page": 134,
+          "page_count": 26,
+          "start_verse": 1,
+          "end_verse": 11
+        }
+      ]
+    },
+    {
+      "surah_number": 94,
+      "name_arabic": "الشرح",
+      "name_persian": "شرح",
+      "total_verses": 8,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 135,
+      "end_volume": 27,
+      "end_page": 154,
+      "total_commentary_pages": 20,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 135,
+          "end_page": 154,
+          "page_count": 20,
+          "start_verse": 1,
+          "end_verse": 8
+        }
+      ]
+    },
+    {
+      "surah_number": 95,
+      "name_arabic": "التين",
+      "name_persian": "تین",
+      "total_verses": 8,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 155,
+      "end_volume": 27,
+      "end_page": 168,
+      "total_commentary_pages": 14,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 155,
+          "end_page": 168,
+          "page_count": 14,
+          "start_verse": 1,
+          "end_verse": 8
+        }
+      ]
+    },
+    {
+      "surah_number": 96,
+      "name_arabic": "العلق",
+      "name_persian": "علق",
+      "total_verses": 19,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 169,
+      "end_volume": 27,
+      "end_page": 198,
+      "total_commentary_pages": 30,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 169,
+          "end_page": 198,
+          "page_count": 30,
+          "start_verse": 1,
+          "end_verse": 19
+        }
+      ]
+    },
+    {
+      "surah_number": 97,
+      "name_arabic": "القدر",
+      "name_persian": "قدر",
+      "total_verses": 5,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 199,
+      "end_volume": 27,
+      "end_page": 216,
+      "total_commentary_pages": 18,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 199,
+          "end_page": 216,
+          "page_count": 18,
+          "start_verse": 1,
+          "end_verse": 5
+        }
+      ]
+    },
+    {
+      "surah_number": 98,
+      "name_arabic": "البينة",
+      "name_persian": "بینه",
+      "total_verses": 8,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 217,
+      "end_volume": 27,
+      "end_page": 238,
+      "total_commentary_pages": 22,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 217,
+          "end_page": 238,
+          "page_count": 22,
+          "start_verse": 1,
+          "end_verse": 8
+        }
+      ]
+    },
+    {
+      "surah_number": 99,
+      "name_arabic": "الزلزلة",
+      "name_persian": "زلزله",
+      "total_verses": 8,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 239,
+      "end_volume": 27,
+      "end_page": 254,
+      "total_commentary_pages": 16,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 239,
+          "end_page": 254,
+          "page_count": 16,
+          "start_verse": 1,
+          "end_verse": 8
+        }
+      ]
+    },
+    {
+      "surah_number": 100,
+      "name_arabic": "العاديات",
+      "name_persian": "عادیات",
+      "total_verses": 11,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 255,
+      "end_volume": 27,
+      "end_page": 280,
+      "total_commentary_pages": 26,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 255,
+          "end_page": 280,
+          "page_count": 26,
+          "start_verse": 1,
+          "end_verse": 11
+        }
+      ]
+    },
+    {
+      "surah_number": 101,
+      "name_arabic": "القارعة",
+      "name_persian": "قارعه",
+      "total_verses": 11,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 281,
+      "end_volume": 27,
+      "end_page": 296,
+      "total_commentary_pages": 16,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 281,
+          "end_page": 296,
+          "page_count": 16,
+          "start_verse": 1,
+          "end_verse": 11
+        }
+      ]
+    },
+    {
+      "surah_number": 102,
+      "name_arabic": "التكاثر",
+      "name_persian": "تکاثر",
+      "total_verses": 8,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 297,
+      "end_volume": 27,
+      "end_page": 312,
+      "total_commentary_pages": 16,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 297,
+          "end_page": 312,
+          "page_count": 16,
+          "start_verse": 1,
+          "end_verse": 8
+        }
+      ]
+    },
+    {
+      "surah_number": 103,
+      "name_arabic": "العصر",
+      "name_persian": "عصر",
+      "total_verses": 3,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 313,
+      "end_volume": 27,
+      "end_page": 332,
+      "total_commentary_pages": 20,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 313,
+          "end_page": 332,
+          "page_count": 20,
+          "start_verse": 1,
+          "end_verse": 3
+        }
+      ]
+    },
+    {
+      "surah_number": 104,
+      "name_arabic": "الهمزة",
+      "name_persian": "همزه",
+      "total_verses": 9,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 333,
+      "end_volume": 27,
+      "end_page": 352,
+      "total_commentary_pages": 20,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 333,
+          "end_page": 352,
+          "page_count": 20,
+          "start_verse": 1,
+          "end_verse": 9
+        }
+      ]
+    },
+    {
+      "surah_number": 105,
+      "name_arabic": "الفيل",
+      "name_persian": "فیل",
+      "total_verses": 5,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 353,
+      "end_volume": 27,
+      "end_page": 368,
+      "total_commentary_pages": 16,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 353,
+          "end_page": 368,
+          "page_count": 16,
+          "start_verse": 1,
+          "end_verse": 5
+        }
+      ]
+    },
+    {
+      "surah_number": 106,
+      "name_arabic": "قريش",
+      "name_persian": "قریش",
+      "total_verses": 4,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 369,
+      "end_volume": 27,
+      "end_page": 380,
+      "total_commentary_pages": 12,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 369,
+          "end_page": 380,
+          "page_count": 12,
+          "start_verse": 1,
+          "end_verse": 4
+        }
+      ]
+    },
+    {
+      "surah_number": 107,
+      "name_arabic": "الماعون",
+      "name_persian": "ماعون",
+      "total_verses": 7,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 381,
+      "end_volume": 27,
+      "end_page": 398,
+      "total_commentary_pages": 18,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 381,
+          "end_page": 398,
+          "page_count": 18,
+          "start_verse": 1,
+          "end_verse": 7
+        }
+      ]
+    },
+    {
+      "surah_number": 108,
+      "name_arabic": "الكوثر",
+      "name_persian": "کوثر",
+      "total_verses": 3,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 399,
+      "end_volume": 27,
+      "end_page": 408,
+      "total_commentary_pages": 10,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 399,
+          "end_page": 408,
+          "page_count": 10,
+          "start_verse": 1,
+          "end_verse": 3
+        }
+      ]
+    },
+    {
+      "surah_number": 109,
+      "name_arabic": "الكافرون",
+      "name_persian": "کافرون",
+      "total_verses": 6,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 409,
+      "end_volume": 27,
+      "end_page": 424,
+      "total_commentary_pages": 16,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 409,
+          "end_page": 424,
+          "page_count": 16,
+          "start_verse": 1,
+          "end_verse": 6
+        }
+      ]
+    },
+    {
+      "surah_number": 110,
+      "name_arabic": "النصر",
+      "name_persian": "نصر",
+      "total_verses": 3,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 425,
+      "end_volume": 27,
+      "end_page": 442,
+      "total_commentary_pages": 18,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 425,
+          "end_page": 442,
+          "page_count": 18,
+          "start_verse": 1,
+          "end_verse": 3
+        }
+      ]
+    },
+    {
+      "surah_number": 111,
+      "name_arabic": "المسد",
+      "name_persian": "مسد",
+      "total_verses": 5,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 443,
+      "end_volume": 27,
+      "end_page": 460,
+      "total_commentary_pages": 18,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 443,
+          "end_page": 460,
+          "page_count": 18,
+          "start_verse": 1,
+          "end_verse": 5
+        }
+      ]
+    },
+    {
+      "surah_number": 112,
+      "name_arabic": "الإخلاص",
+      "name_persian": "اخلاص",
+      "total_verses": 4,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 461,
+      "end_volume": 27,
+      "end_page": 490,
+      "total_commentary_pages": 30,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 461,
+          "end_page": 490,
+          "page_count": 30,
+          "start_verse": 1,
+          "end_verse": 4
+        }
+      ]
+    },
+    {
+      "surah_number": 113,
+      "name_arabic": "الفلق",
+      "name_persian": "فلق",
+      "total_verses": 5,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 491,
+      "end_volume": 27,
+      "end_page": 502,
+      "total_commentary_pages": 12,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 491,
+          "end_page": 502,
+          "page_count": 12,
+          "start_verse": 1,
+          "end_verse": 5
+        }
+      ]
+    },
+    {
+      "surah_number": 114,
+      "name_arabic": "الناس",
+      "name_persian": "ناس",
+      "total_verses": 6,
+      "volume_id": 27,
+      "volumes": [27],
+      "start_volume": 27,
+      "start_page": 503,
+      "end_volume": 27,
+      "end_page": 512,
+      "total_commentary_pages": 10,
+      "is_multivolume": false,
+      "segments": [
+        {
+          "volume_id": 27,
+          "start_page": 503,
+          "end_page": 512,
+          "page_count": 10,
+          "start_verse": 1,
+          "end_verse": 6
+        }
+      ]
+    }
+  ]
+}

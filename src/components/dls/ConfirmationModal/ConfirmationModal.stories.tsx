@@ -1,35 +1,38 @@
-/* eslint-disable no-alert */
-import Button from '../Button/Button';
+import { useState } from 'react';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 import ConfirmationModal from './ConfirmationModal';
-import { useConfirm } from './hooks';
 
-export default {
+import Button from '@/components/dls/Button/Button';
+
+const meta = {
   title: 'dls/ConfirmationModal',
   component: ConfirmationModal,
-};
+  tags: ['autodocs'],
+} as Meta<typeof ConfirmationModal>;
 
-export const Example = () => {
-  const confirm = useConfirm();
-  const onClick = async () => {
-    const isConfirmed = await confirm({
-      title: 'are you sure?',
-      subtitle: 'really?',
-      description: 'seriously are you sure?',
-      confirmText: 'yes',
-      cancelText: 'no',
-    });
+export default meta;
 
-    if (isConfirmed) {
-      alert('user is really sure');
-    } else {
-      alert('user is not sure');
-    }
-  };
+const DefaultStory = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <Button onClick={onClick}>test</Button>
-      <ConfirmationModal />
+      <Button onClick={() => setIsOpen(true)}>Delete Account</Button>
+      <ConfirmationModal
+        isOpen={isOpen}
+        onCancel={() => setIsOpen(false)}
+        onConfirm={() => setIsOpen(false)}
+        title="Delete Account?"
+        body="Are you absolutely sure you want to delete your account? This action cannot be undone."
+        confirmText="Yes, delete"
+        cancelText="Cancel"
+        isConfirmDanger
+      />
     </>
   );
+};
+
+export const Default: StoryObj<typeof ConfirmationModal> = {
+  render: () => <DefaultStory />,
 };

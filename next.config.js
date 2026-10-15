@@ -7,7 +7,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE_BUNDLE === 'true',
 });
 const { withSentryConfig } = require('@sentry/nextjs');
-const withFonts = require('next-fonts');
 const withPWA = require('next-pwa');
 const nextTranslate = require('next-translate-plugin');
 
@@ -32,25 +31,23 @@ const withPWAConfig = withPWA({
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
-  swcMinify: true,
-  experimental: {
-    instrumentationHook: true,
+  modularizeImports: {
+    lodash: {
+      transform: 'lodash/{{member}}',
+    },
   },
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: [
-      'cdn.qurancdn.com',
-      'static.qurancdn.com',
-      'vercel.com',
-      'now.sh',
-      'quran.com',
-      'images.quran.com',
-      // Google OAuth user avatars
-      'lh3.googleusercontent.com',
-      // S3-hosted avatars (generic domain required for OAuth providers)
-      's3.amazonaws.com',
-      // Facebook OAuth user avatars
-      'platform-lookaside.fbsbx.com',
+    remotePatterns: [
+      { protocol: 'https', hostname: 'cdn.qurancdn.com' },
+      { protocol: 'https', hostname: 'static.qurancdn.com' },
+      { protocol: 'https', hostname: 'vercel.com' },
+      { protocol: 'https', hostname: 'now.sh' },
+      { protocol: 'https', hostname: 'quran.ir' },
+      { protocol: 'https', hostname: 'images.quran.ir' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'https', hostname: 's3.amazonaws.com' },
+      { protocol: 'https', hostname: 'platform-lookaside.fbsbx.com' },
     ],
   },
   webpack: (webpackConfig) => {
@@ -86,6 +83,7 @@ const nextConfig = {
                   params: {
                     overrides: {
                       removeViewBox: false,
+                      convertShapeToPath: false,
                     },
                   },
                 },
@@ -187,13 +185,21 @@ const nextConfig = {
       permanent: true,
     },
   ],
+  rewrites: async () => ({
+    fallback: [
+      {
+        source: '/fonts/quran/hafs/:path*',
+        destination: 'https://static.qurancdn.com/fonts/quran/hafs/:path*',
+      },
+    ],
+  }),
   compiler: {
     removeConsole: !isDev,
   },
 };
 
 // Apply plugins
-const configWithPlugins = withBundleAnalyzer(withFonts(nextTranslate(withPWAConfig(nextConfig))));
+const configWithPlugins = withBundleAnalyzer(nextTranslate(withPWAConfig(nextConfig)));
 
 // Apply Sentry configuration
 module.exports = withSentryConfig(configWithPlugins, {

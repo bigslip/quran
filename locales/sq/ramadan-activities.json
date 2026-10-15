@@ -1,4 +1,8 @@
 {
+  "enroll-failed": "Regjistrimi dështoi, ju lutemi provoni përsëri më vonë.",
+  "enroll-success-email": "U regjistruat me sukses! Mund të shihni një email mirëseardhjeje në kutinë tuaj hyrëse.",
+  "join-surah-mulk-challenge": "Bashkohuni me Sfidën e Sures El-Mulk",
   "ramadan-activities": "Aktivitetet e Ramazanit",
-  "ramadan-activities-desc": "Ngritni përvojën tuaj të Ramazanit me programet dhe veçoritë tona të kuruara për një lidhje më të thellë me Kuranin. Eksploroni aktivitetet tona të Ramazanit në Quran.com sot!"
+  "ramadan-activities-desc": "Ngritni përvojën tuaj të Ramazanit me programet dhe veçoritë tona të kuruara për një lidhje më të thellë me Kuranin. Eksploroni aktivitetet tona të Ramazanit në Quran.ir sot!",
+  "subscribed": "U abonuat!"
 }

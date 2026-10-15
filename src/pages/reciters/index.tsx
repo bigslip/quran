@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import { GetStaticProps } from 'next';
@@ -17,17 +17,54 @@ import { getAllChaptersData } from '@/utils/chapter';
 import { getLanguageAlternates } from '@/utils/locale';
 import { getCanonicalUrl } from '@/utils/navigation';
 import { REVALIDATION_PERIOD_ON_ERROR_SECONDS } from '@/utils/staticPageGeneration';
+import Reciter from 'types/Reciter';
 
 const NAVIGATION_URL = '/reciters';
 
-const RecitersListPage = ({ reciters }) => {
+const RecitersListPage = ({ reciters = [] }: { reciters?: Reciter[] }) => {
   const { t, lang } = useTranslation('reciter');
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  const filteredReciters = useMemo(
-    () => (searchQuery ? filterReciters(reciters, searchQuery) : reciters),
-    [searchQuery, reciters],
+  const totalCount = reciters.length;
+  const availableCount = useMemo(
+    () => reciters.filter((r) => Boolean(r.isAvailable ?? r.hasAudio)).length,
+    [reciters],
   );
+
+  const filteredReciters = useMemo(() => {
+    let result = reciters;
+
+    if (searchQuery.trim()) {
+      result = filterReciters(result, searchQuery.trim());
+    }
+
+    if (activeFilter === 'available') {
+      result = result.filter((r) => Boolean(r.isAvailable ?? r.hasAudio));
+    } else if (activeFilter === 'murattal') {
+      result = result.filter(
+        (r) =>
+          r.style?.name?.toLowerCase().includes('murattal') ||
+          r.style?.name?.includes('ترتیل') ||
+          r.recitationStyle?.toLowerCase().includes('murattal'),
+      );
+    } else if (activeFilter === 'mujawwad') {
+      result = result.filter(
+        (r) =>
+          r.style?.name?.toLowerCase().includes('mujawwad') ||
+          r.style?.name?.includes('تحقیق') ||
+          r.style?.name?.includes('تجوید') ||
+          r.recitationStyle?.toLowerCase().includes('mujawwad'),
+      );
+    }
+
+    return result;
+  }, [reciters, searchQuery, activeFilter]);
+
+  const handleResetFilters = useCallback(() => {
+    setSearchQuery('');
+    setActiveFilter('all');
+  }, []);
 
   return (
     <>
@@ -38,9 +75,34 @@ const RecitersListPage = ({ reciters }) => {
         languageAlternates={getLanguageAlternates(NAVIGATION_URL)}
       />
       <div className={classNames(layoutStyle.flow, pageStyle.flow)}>
-        <QuranReciterListHero searchQuery={searchQuery} onSearchQueryChange={setSearchQuery} />
+        <QuranReciterListHero
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+          availableCount={availableCount}
+          totalCount={totalCount}
+        />
         <div className={classNames(layoutStyle.flowItem, pageStyle.recitersListContainer)}>
-          <RecitersList reciters={filteredReciters} />
+          {filteredReciters.length > 0 ? (
+            <RecitersList reciters={filteredReciters} />
+          ) : (
+            <div className={pageStyle.emptyState}>
+              <div className={pageStyle.emptyTitle}>
+                {t('reciter:no-results')}
+              </div>
+              <p className={pageStyle.emptySubtitle}>
+                {t('common:try-different-search')}
+              </p>
+              <button
+                type="button"
+                className={pageStyle.resetButton}
+                onClick={handleResetFilters}
+              >
+                {t('common:clear-filters')}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

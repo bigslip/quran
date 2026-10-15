@@ -2,7 +2,7 @@
   "api-docs": {
     "cta": "Lihat Dokumen API",
     "header": "Dokumentasi API",
-    "sub-header": "Integrasikan data Quran.com ke dalam aplikasi Anda dengan API komprehensif kami",
+    "sub-header": "Integrasikan data Quran.ir ke dalam aplikasi Anda dengan API komprehensif kami",
     "title": "Dokumentasi API"
   },
   "app-portal": {
@@ -18,11 +18,11 @@
     "cta": "Lihat Lowongan",
     "header": "Jelajahi lowongan pekerjaan kami saat ini"
   },
-  "footer": "- Tim Quran.com",
+  "footer": "- Tim Quran.ir",
   "header": "Bantuan pengembangan",
   "hero": {
     "subtitle": "Sumber daya, alat, dan panduan untuk pengembang yang membangun pengalaman Al-Quran.",
-    "title": "Dibangun dengan Quran.com"
+    "title": "Dibangun dengan Quran.ir"
   },
   "issues-cta": "Jika Anda memiliki pertanyaan atau ingin menghubungi pengelola, tulis saja masalah! Kami akan menghubungi Anda sesegera mungkin, insyaAllah.",
   "issues-guide": "Biasanya kami menggunakan <0> proyek Github </0> sebagai sumber untuk apa yang harus dikerjakan selanjutnya, apa yang akan datang dan bug apa yang ada yang perlu dipecahkan. Misalnya <1> URL ini </1> memiliki daftar bug, hal-hal yang perlu kami bantu, dan fitur yang akan datang.",
@@ -30,7 +30,7 @@
   "labs-cta": "Jelajahi Labs",
   "labs-description": "Temukan fitur eksperimental dan inovasi mendatang. Bagikan ide Anda",
   "labs-pitch": "Bagikan ide Anda dan berpartisipasilah dalam masa depan keterlibatan dan pengalaman Al-Quran.",
-  "main-desc": "Assalamu A'laikum, Pertama, terima kasih banyak atas minat Anda untuk membantu kami mengembangkan Quran.com dan projek-projeknya. Kami amat senang kerana dapat bekerja sama dengan Anda!",
+  "main-desc": "Assalamu A'laikum, Pertama, terima kasih banyak atas minat Anda untuk membantu kami mengembangkan Quran.ir dan projek-projeknya. Kami amat senang kerana dapat bekerja sama dengan Anda!",
   "projects": {
     "all": "Kami memiliki sejumlah projek yang semuanya dihosting di Github. Anda dapat menemukan semuanya <0> sini </0> . Tetapi untuk menguraikannya:",
     "items": {
@@ -41,7 +41,7 @@
       },
       "q-api": {
         "description": "Backend Ruby on Rails yang mendukung data, pencarian, dan terjemahan Al-Quran.",
-        "name": "API Quran.com",
+        "name": "API Quran.ir",
         "stack": "Rails, PostgreSQL"
       },
       "q-audio": {
@@ -56,19 +56,19 @@
       },
       "q-next": {
         "description": "Pengalaman web Next.js untuk membaca, mencari, dan mendengarkan Al-Quran.",
-        "name": "Antarmuka Pengguna Quran.com",
+        "name": "Antarmuka Pengguna Quran.ir",
         "stack": "Dibangun dengan TypeScript dan Next.js"
       }
     },
-    "lead": "Proyek sumber terbuka yang dikelola oleh tim dan komunitas Quran.com.",
+    "lead": "Proyek sumber terbuka yang dikelola oleh tim dan komunitas Quran.ir.",
     "q-android": "<0> Quran Android </0>",
-    "q-api": "<0> Quran.com API </0> - ditulis di Ruby pada Rails.",
-    "q-api-docs": "<0> Dokumen API Quran.com </0> - Portal dokumen API kami.",
+    "q-api": "<0> Quran.ir API </0> - ditulis di Ruby pada Rails.",
+    "q-api-docs": "<0> Dokumen API Quran.ir </0> - Portal dokumen API kami.",
     "q-audio": "<0> Audio Quran </0> dan <1> Aplikasi seluler Audio Quran </1>",
     "q-audio-segments": "<0> Segmen Audio Quran </0>",
     "q-ios": "<0> Quran iOS </0>",
-    "q-next": "<0> Quran.com Frontend </0> - ditulis dalam Next.js.",
-    "q-v2": "<0> Quran.com </0> - ditulis di Ruby on Rails."
+    "q-next": "<0> Quran.ir Frontend </0> - ditulis dalam Next.js.",
+    "q-v2": "<0> Quran.ir </0> - ditulis di Ruby on Rails."
   },
   "thanks": "Terima kasih sudah membaca! selanjutnya berharap untuk melihat Anda melakukan beberapa kode!"
 }

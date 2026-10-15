@@ -1,0 +1,24 @@
+{
+  "chapter": {
+    "id": 18,
+    "revelation_place": "makkah",
+    "revelation_order": 69,
+    "bismillah_pre": true,
+    "name_simple": "Al-Kahf",
+    "name_complex": "Al-Kahf",
+    "name_arabic": "الكهف",
+    "verses_count": 110,
+    "pages": [
+      293,
+      304
+    ],
+    "slug": {
+      "slug": "al-kahf",
+      "locale": "en"
+    },
+    "translated_name": {
+      "language_name": "english",
+      "name": "The Cave"
+    }
+  }
+}

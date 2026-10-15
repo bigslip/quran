@@ -17,7 +17,7 @@ import { selectValidatedReadingTranslation } from '@/redux/slices/QuranReader/re
 import { selectSelectedTranslations } from '@/redux/slices/QuranReader/translations';
 import QuranReaderStyles from '@/redux/types/QuranReaderStyles';
 import { ReadingPreference } from '@/types/QuranReader';
-import { getMushafId } from '@/utils/api';
+import { getMushafId, STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { areArraysEqual } from '@/utils/array';
 import { makeBookmarksRangeUrl } from '@/utils/auth/apiPaths';
 import { VersesResponse } from 'types/ApiResponses';
@@ -34,7 +34,7 @@ type Props = {
   setMushafPageToVersesMap: (data: Record<number, Verse[]>) => void;
   initialData: VersesResponse;
   readingPreference: ReadingPreference;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const getPageVersesRange = (
   currentMushafPage: number,
@@ -82,6 +82,8 @@ const PageContainer: React.FC<Props> = ({
   setMushafPageToVersesMap,
   initialData,
   readingPreference,
+  className,
+  ...props
 }: Props): JSX.Element => {
   /**
    * HYDRATION RACE CONDITION FIX:
@@ -106,9 +108,10 @@ const PageContainer: React.FC<Props> = ({
   const isPersistGateHydrationComplete = useSelector(selectIsPersistGateHydrationComplete);
   const { isLoggedIn } = useIsLoggedIn();
 
+  const fallbackPageNumber = initialData?.verses?.[0]?.pageNumber ?? 1;
   const pageNumber = useMemo(
-    () => getPageNumberByPageIndex(pageIndex, pagesVersesRange),
-    [pageIndex, pagesVersesRange],
+    () => getPageNumberByPageIndex(pageIndex, pagesVersesRange, fallbackPageNumber),
+    [pageIndex, pagesVersesRange, fallbackPageNumber],
   );
   const initialVerses = useMemo(
     () => (pageIndex === 0 ? getInitialVerses(pageNumber, initialData.verses) : initialData.verses),
@@ -166,6 +169,7 @@ const PageContainer: React.FC<Props> = ({
     // This ensures verses render immediately server-side and during hydration
     fallbackData: shouldUseInitialData ? initialVerses : null,
     revalidateOnMount: !shouldUseInitialData,
+    dedupingInterval: STATIC_DEDUPING_INTERVAL,
   });
 
   // FALLBACK for SSR/hydration: If no verses from SWR but we have initialData, use it
@@ -173,12 +177,17 @@ const PageContainer: React.FC<Props> = ({
   const effectiveVerses = verses || (shouldUseInitialData ? initialVerses : null);
 
   useEffect(() => {
-    if (effectiveVerses) {
+    if (effectiveVerses && !Number.isNaN(pageNumber)) {
       // @ts-ignore
-      setMushafPageToVersesMap((prevMushafPageToVersesMap: Record<number, Verse[]>) => ({
-        ...prevMushafPageToVersesMap,
-        [pageNumber]: effectiveVerses,
-      }));
+      setMushafPageToVersesMap((prevMushafPageToVersesMap: Record<number, Verse[]>) => {
+        if (prevMushafPageToVersesMap?.[pageNumber] === effectiveVerses) {
+          return prevMushafPageToVersesMap;
+        }
+        return {
+          ...prevMushafPageToVersesMap,
+          [pageNumber]: effectiveVerses,
+        };
+      });
     }
   }, [pageNumber, setMushafPageToVersesMap, effectiveVerses]);
 
@@ -197,7 +206,7 @@ const PageContainer: React.FC<Props> = ({
   // Only show skeleton when we truly have no data.
   // Keep showing existing content while revalidating to prevent header flickering during mode switches.
   if (!effectiveVerses) {
-    return <ReadingViewSkeleton readingPreference={readingPreference} />;
+    return <ReadingViewSkeleton readingPreference={readingPreference} className={className} />;
   }
 
   return (
@@ -209,8 +218,10 @@ const PageContainer: React.FC<Props> = ({
       pageIndex={pageIndex}
       bookmarksRangeUrl={bookmarksRangeUrl}
       lang={lang}
+      className={className}
+      {...props}
     />
   );
 };
 
-export default PageContainer;
+export default React.memo(PageContainer);

@@ -65,11 +65,9 @@ const HoverablePopover: React.FC<Props> = ({
     [onOpenChange],
   );
 
-  // When suffixContent is present (e.g. reading mode 3-dots) and the Popover is active
-  // (opened via click/tap), suppress the Tooltip to avoid duplicate overlays.
-  // Without suffixContent (e.g. translation mode), preserve the original behavior
-  // where isOpen can force both Tooltip and Popover open simultaneously.
-  const effectiveTooltipOpen = suffixContent && isPopoverOpen ? undefined : isTooltipOpen ?? isOpen;
+  // When the Popover is active (opened via click/tap), suppress the Tooltip
+  // to avoid duplicate overlays and duplicate accessibility text.
+  const effectiveTooltipOpen = isPopoverOpen ? false : isTooltipOpen ?? isOpen;
 
   return (
     <Popover

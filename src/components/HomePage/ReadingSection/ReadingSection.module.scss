@@ -1,170 +1,74 @@
 @use 'src/styles/breakpoints';
 
-.header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-block-start: var(--spacing-medium2-px);
-  padding-block-end: var(--spacing-medium);
-  @include breakpoints.tablet {
-    padding-block-end: var(--spacing-large-px);
-    padding-block-start: var(--spacing-xlarge-px);
-  }
-
-  h1 {
-    font-size: var(--font-size-xlarge-px);
-    font-weight: var(--font-weight-bold);
-    @include breakpoints.tablet {
-      font-size: var(--font-size-xxlarge-px);
-    }
-  }
-}
-
-.cardsContainer {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  gap: var(--spacing-medium);
-
-  @include breakpoints.smallerThanTablet {
-    gap: 0;
-    flex-direction: column;
-  }
-}
-
-.cardContainer {
-  @include breakpoints.smallerThanTablet {
-    inline-size: 100%;
-    padding-block-end: var(--spacing-small-px);
-  }
-  inline-size: 50%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-medium);
-
-  &:first-child {
-    > :first-child {
-      block-size: 100%;
-    }
-  }
-}
-
-.myQuranText {
-  font-size: var(--font-size-small-px);
-  @include breakpoints.tablet {
-    font-size: var(--font-size-normal-px);
-  }
-}
-
-.stayConsistentText {
-  padding-block-start: var(--spacing-xxsmall-px);
-  font-size: var(--font-size-xsmall-px);
-  @include breakpoints.tablet {
-    padding-block-start: var(--spacing-small-px);
-    font-size: var(--font-size-normal-px);
-  }
-}
-
-.iconContainer {
-  display: flex;
-  padding-inline-end: var(--spacing-xxsmall-px);
-  @include breakpoints.tablet {
-    padding-inline-end: var(--spacing-small-px);
-  }
-
-  svg {
-    inline-size: var(--spacing-medium2-px);
-    block-size: var(--spacing-medium2-px);
-    @include breakpoints.tablet {
-      inline-size: var(--spacing-large-px);
-      block-size: var(--spacing-large-px);
-    }
-  }
-}
-
-.myQuranContainer {
-  display: flex;
-  svg {
-    fill: var(--color-blue-buttons-and-icons);
-    color: var(--color-blue-buttons-and-icons);
-  }
-  @include breakpoints.smallerThanTablet {
-    svg {
-      inline-size: 12px !important;
-      block-size: 12px !important;
-    }
-  }
-}
-
-.cardWithIcon {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--spacing-micro);
-  @include breakpoints.tablet {
-    font-size: var(--font-size-large-px);
-  }
-}
-
-.streakCardLeft {
+.ribbonWrapper {
   inline-size: 100%;
+  margin-block-start: var(--spacing-small-px);
+  margin-block-end: var(--spacing-medium-px);
+
+  @include breakpoints.tablet {
+    margin-block-start: var(--spacing-medium-px);
+    margin-block-end: var(--spacing-large-px);
+  }
 }
 
-.cardOuterContainer {
-  justify-content: space-between;
+.sanctuaryRibbon {
+  box-sizing: border-box;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: var(--spacing-micro);
-  font-weight: var(--font-weight-semibold);
-  inline-size: 100%;
-}
-
-.streakCard {
-  box-shadow: none !important;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-small-px);
+  background-color: var(--color-surface-card);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-iridescent);
+  border-radius: var(--border-radius-rounded);
   padding-inline: var(--spacing-medium-px);
-  background-color: var(--color-streaks-light);
-  @include breakpoints.smallerThanTablet {
-    padding: var(--spacing-small-px);
-  }
-}
+  padding-block: var(--spacing-small-px);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    border-color var(--transition-fast) ease, background-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease;
 
-.readingSectionContainer {
-  @include breakpoints.smallerThanTablet {
-    padding: var(--spacing-small-px);
-  }
-}
-
-.link {
-  @include breakpoints.smallerThanTablet {
-    color: var(--color-text-faded-new);
-  }
-}
-
-.linkHref {
-  color: var(--color-text-link);
-}
-
-.firstTimeReadingCard {
-  @include breakpoints.smallerThanTablet {
-    box-shadow: none !important;
-    border-radius: 0;
-    padding: var(--spacing-xxsmall);
-  }
-}
-
-.arrowIcon {
-  @include breakpoints.smallerThanTablet {
-    display: none;
-  }
-}
-
-.arrowIconRight {
-  @include breakpoints.smallerThanTablet {
-    svg {
-      inline-size: 12px !important;
-      block-size: 12px !important;
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-accent-gold);
+      background-color: var(--color-surface-card-hover);
+      box-shadow: var(--shadow-card-hover), 0 0 20px var(--color-accent-gold-subtle);
     }
+  }
+
+  @include breakpoints.smallerThanDesktop {
+    padding-inline: var(--spacing-small-px);
+    padding-block: var(--spacing-small-px);
+    gap: var(--spacing-small-px);
+  }
+
+  @include breakpoints.smallerThanTablet {
+    flex-direction: column;
+    align-items: stretch;
+    padding-inline: var(--spacing-small-px);
+    padding-block: var(--spacing-small-px);
+  }
+}
+
+.actionsGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small-px);
+  flex-shrink: 0;
+
+  @include breakpoints.smallerThanDesktop {
+    inline-size: 100%;
+    justify-content: space-between;
+    padding-block-start: var(--spacing-xxsmall-px);
+    border-block-start: 1px solid var(--color-borders-hairline);
+  }
+
+  @include breakpoints.smallerThanTablet {
+    border-block-start: 1px solid var(--color-borders-hairline);
+    padding-block-start: var(--spacing-xxsmall-px);
+    inline-size: 100%;
+    justify-content: space-between;
   }
 }

@@ -12,10 +12,11 @@ import { logErrorToSentry } from '@/lib/sentry';
 import { getQuranReaderStylesInitialState } from '@/redux/defaultSettings/util';
 import { QuranReaderDataType } from '@/types/QuranReader';
 import { getDefaultWordFields, getMushafId } from '@/utils/api';
-import { getAllChaptersData, getChapterData } from '@/utils/chapter';
+import { getAllChaptersData, getChapterData, getChapterIdBySlugOrId } from '@/utils/chapter';
 import { getLanguageAlternates, toLocalizedNumber, toLocalizedVersesRange } from '@/utils/locale';
 import { getCanonicalUrl, getVerseNavigationUrl } from '@/utils/navigation';
 import getPlainTranslationText from '@/utils/plainTranslationText';
+import { getSurahSeoTitle, isAyatulKursi } from '@/utils/seo';
 import {
   REVALIDATION_PERIOD_ON_ERROR_SECONDS,
   ONE_WEEK_REVALIDATION_PERIOD_SECONDS,
@@ -25,9 +26,10 @@ import {
   isValidVerseRange,
   isValidVerseId,
   isValidVerseNumber,
+  isValidChapterId,
 } from '@/utils/validator';
 import { generateVerseKeysBetweenTwoVerseKeys } from '@/utils/verseKeys';
-import { ChapterResponse, VersesResponse } from 'types/ApiResponses';
+import { ChapterResponse, VersesResponse, PagesLookUpResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
 import MetaData from 'types/MetaData';
 
@@ -40,21 +42,38 @@ type VerseProps = {
 
 const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse }) => {
   const { t, lang } = useTranslation('common');
-  const {
-    query: { verseId },
-  } = useRouter();
-  const path = getVerseNavigationUrl(chapterResponse.chapter.slug, verseId as string);
+  const router = useRouter();
+  const verseIdFromQuery = router.query.verseId;
+  const currentVerseId =
+    (typeof verseIdFromQuery === 'string' ? verseIdFromQuery : null) ||
+    (isVerse
+      ? versesResponse?.verses?.[0]?.verseNumber?.toString()
+      : `${versesResponse?.verses?.[0]?.verseNumber}-${versesResponse?.verses?.[versesResponse?.verses?.length - 1]?.verseNumber}`) ||
+    '';
+  const path = getVerseNavigationUrl(chapterResponse.chapter.slug, currentVerseId);
+
+  const getSEOTitle = () => {
+    if (!isVerse) {
+      return `${t('surah')} ${chapterResponse.chapter.transliteratedName} - ${toLocalizedVersesRange(currentVerseId, lang)}`;
+    }
+    const verseNumber = Number(currentVerseId);
+    return getSurahSeoTitle({
+      chapter: chapterResponse.chapter,
+      lang,
+      isChapter: false,
+      verseNumber,
+      isAyatulKursi: isAyatulKursi(chapterResponse.chapter.id as string, verseNumber),
+    });
+  };
+
   return (
     <>
       <NextSeoWrapper
-        title={`${t('surah')} ${chapterResponse.chapter.transliteratedName} - ${
-          isVerse
-            ? toLocalizedNumber(Number(verseId), lang)
-            : toLocalizedVersesRange(verseId as string, lang)
-        }`}
+        title={getSEOTitle()}
+        titleTemplate="%s"
         image={getChapterOgImageUrl({
           chapterId: chapterResponse.chapter.id,
-          verseNumber: isVerse ? Number(verseId) : undefined,
+          verseNumber: isVerse ? Number(currentVerseId) : undefined,
           locale: lang,
         })}
         imageWidth={1200}
@@ -65,7 +84,7 @@ const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse 
       />
       <QuranReader
         initialData={versesResponse}
-        id={chapterResponse.chapter.id}
+        id={isVerse ? `${chapterResponse.chapter.id}:${currentVerseId}` : chapterResponse.chapter.id}
         quranReaderDataType={
           isVerse ? QuranReaderDataType.Verse : QuranReaderDataType.ChapterVerseRanges
         }
@@ -77,12 +96,29 @@ const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   let chapterIdOrSlug = String(params.chapterId);
   const verseIdOrRange = String(params.verseId);
-  // 1. make sure the chapter Id/slug is valid using BE since slugs are stored in BE first
-  const sluggedChapterId = await getChapterIdBySlug(chapterIdOrSlug, locale);
-  if (sluggedChapterId) {
-    chapterIdOrSlug = sluggedChapterId;
-  }
   const chaptersData = await getAllChaptersData(locale);
+
+  // If chapterId is numeric (e.g. /2/255, /1/1-5), redirect permanently to its canonical slug URL
+  if (isValidChapterId(chapterIdOrSlug)) {
+    const chapterData = getChapterData(chaptersData, chapterIdOrSlug);
+    if (chapterData?.slug) {
+      return {
+        redirect: {
+          destination: getVerseNavigationUrl(chapterData.slug, verseIdOrRange),
+          permanent: true,
+        },
+      };
+    }
+  }
+
+  // In-memory synchronous slug resolution first before network call
+  const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterIdOrSlug);
+  const resolvedChapterId =
+    localChapterId || (await getChapterIdBySlug(chapterIdOrSlug, locale));
+
+  if (resolvedChapterId) {
+    chapterIdOrSlug = resolvedChapterId;
+  }
   // 2. make sure that verse id/range are valid before calling BE to get the verses.
   if (
     !isValidVerseId(chaptersData, chapterIdOrSlug, verseIdOrRange) &&
@@ -117,15 +153,30 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     metaData.numberOfVerses = Number(toVerseNumber) - Number(fromVerseNumber) + 1;
   }
   try {
-    const pagesLookupResponse = await getPagesLookup({
-      chapterNumber: Number(chapterIdOrSlug),
-      mushaf: defaultMushafId,
-      from: isVerse ? `${chapterIdOrSlug}:${verseIdOrRange}` : metaData.from,
-      to: isVerse ? `${chapterIdOrSlug}:${verseIdOrRange}` : metaData.to,
-    });
+    let pagesLookupResponse: PagesLookUpResponse;
+    let versesResponse: VersesResponse;
 
-    // if it's range, we need to set the per page as the number of verses of the first page of the range in the actual Mushaf
-    if (!isVerse) {
+    if (isVerse) {
+      const [lookupRes, versesRes] = await Promise.all([
+        getPagesLookup({
+          chapterNumber: Number(chapterIdOrSlug),
+          mushaf: defaultMushafId,
+          from: `${chapterIdOrSlug}:${verseIdOrRange}`,
+          to: `${chapterIdOrSlug}:${verseIdOrRange}`,
+        }),
+        getChapterVerses(chapterIdOrSlug, locale, apiParams),
+      ]);
+      pagesLookupResponse = lookupRes;
+      versesResponse = versesRes;
+    } else {
+      pagesLookupResponse = await getPagesLookup({
+        chapterNumber: Number(chapterIdOrSlug),
+        mushaf: defaultMushafId,
+        from: metaData.from,
+        to: metaData.to,
+      });
+
+      // if it's range, we need to set the per page as the number of verses of the first page of the range in the actual Mushaf
       const firstRangeMushafPage = Object.keys(pagesLookupResponse.pages)[0];
       const firstRangeMushafPageLookup = pagesLookupResponse.pages[firstRangeMushafPage];
       const firstRangeMushafPageNumberOfVerses = generateVerseKeysBetweenTwoVerseKeys(
@@ -134,9 +185,9 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
         firstRangeMushafPageLookup.to,
       ).length;
       apiParams = { ...apiParams, ...{ perPage: firstRangeMushafPageNumberOfVerses } };
-    }
 
-    const versesResponse = await getChapterVerses(chapterIdOrSlug, locale, apiParams);
+      versesResponse = await getChapterVerses(chapterIdOrSlug, locale, apiParams);
+    }
     // if any of the APIs have failed due to internal server error, we will still receive a response but the body will be something like {"status":500,"error":"Internal Server Error"}.
     if (!versesResponse.verses || !versesResponse.verses.length) {
       return {

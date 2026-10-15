@@ -50,7 +50,7 @@ import ChaptersData from 'types/ChaptersData';
  * />
  * ```
  */
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   chaptersData?: ChaptersData;
   chapter: number;
   from: number;
@@ -66,19 +66,38 @@ interface Props {
 const VerseAndTranslation: React.FC<Props> = (props) => {
   // If fixedFontScale is provided as a prop, use it; otherwise, get from hook (Redux)
   const { lang } = useTranslation();
-  const { fixedFontScale, chapter, ...restProps } = props;
+  const {
+    chaptersData,
+    chapter,
+    from,
+    to,
+    titleText,
+    quranFont,
+    translationsLimit,
+    arabicVerseClassName,
+    translationClassName,
+    fixedFontScale,
+    className,
+    ...htmlProps
+  } = props;
   const {
     data,
     error,
     mutate,
     translationFontScale: reduxTranslationFontScale,
     quranTextFontScale: reduxQuranTextFontScale,
-  } = useVerseAndTranslation({ ...restProps, chapter });
+  } = useVerseAndTranslation({
+    chapter,
+    from,
+    to,
+    quranFont,
+    translationsLimit,
+  });
   const chapterData = useMemo(() => {
-    if (!restProps.chaptersData) return null;
-    return getChapterData(restProps.chaptersData, chapter?.toString());
-  }, [restProps.chaptersData, chapter]);
-  const shouldShowReference = !!restProps.titleText;
+    if (!chaptersData) return null;
+    return getChapterData(chaptersData, chapter?.toString());
+  }, [chaptersData, chapter]);
+  const shouldShowReference = !!titleText;
 
   if (error) {
     return <Error error={error} onRetryClicked={mutate} />;
@@ -87,19 +106,19 @@ const VerseAndTranslation: React.FC<Props> = (props) => {
   if (!data) return <Spinner />;
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, className)} {...htmlProps}>
       {data?.verses?.map((verse) => (
         <div key={verse.verseKey} className={styles.verseContainer}>
-          <div className={classNames(styles.arabicVerseContainer, restProps.arabicVerseClassName)}>
+          <div className={classNames(styles.arabicVerseContainer, arabicVerseClassName)}>
             <PlainVerseText
-              titleText={restProps.titleText}
-              quranFont={restProps.quranFont}
+              titleText={titleText}
+              quranFont={quranFont}
               words={getVerseWords(verse)}
               fontScale={fixedFontScale ?? reduxQuranTextFontScale}
             />
           </div>
           <div
-            className={classNames(styles.translationsListContainer, restProps.translationClassName)}
+            className={classNames(styles.translationsListContainer, translationClassName)}
           >
             {verse.translations?.map((translation) => (
               <div key={translation.id} className={styles.translationContainer}>

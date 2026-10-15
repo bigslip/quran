@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import useFetchPagesLookup from '@/components/QuranReader/hooks/useFetchPagesLookup';
 import DataContext from '@/contexts/DataContext';
 import { selectIsUsingDefaultFont } from '@/redux/slices/QuranReader/styles';
+import { QuranReaderDataType } from '@/types/QuranReader';
 import { generateVerseKeysBetweenTwoVerseKeys } from '@/utils/verseKeys';
 
 /**
@@ -37,9 +38,12 @@ const useGetVersesCount = ({
   const chaptersData = useContext(DataContext);
 
   const versesCount = useMemo(() => {
+    if (quranReaderDataType === QuranReaderDataType.Verse) {
+      return 1;
+    }
     return generateVerseKeysBetweenTwoVerseKeys(chaptersData, lookupRange.from, lookupRange.to)
       .length;
-  }, [chaptersData, lookupRange.from, lookupRange.to]);
+  }, [chaptersData, lookupRange.from, lookupRange.to, quranReaderDataType]);
 
   return versesCount;
 };

@@ -1,9 +1,12 @@
-import { ScopedMutator, Cache } from 'swr/dist/types';
+import { Cache, useSWRConfig } from 'swr';
 
 import { GetAllNotesResponse, Note } from '@/types/auth/Note';
 import { makeGetNoteByIdUrl, makeGetNotesByVerseUrl, makeNotesUrl } from '@/utils/auth/apiPaths';
 import { makeGetUserReflectionsUrl } from '@/utils/quranReflect/apiPaths';
 import { isVerseKeyWithinRanges } from '@/utils/verse';
+
+export type ScopedMutator = ReturnType<typeof useSWRConfig>['mutate'];
+export type { Cache };
 
 /**
  * Enum representing the type of cache mutation action.
@@ -36,8 +39,8 @@ export const invalidateCache = ({
   flushNotesList = false,
   action,
 }: {
-  mutate: ScopedMutator<unknown>;
-  cache?: Cache<unknown>;
+  mutate: ScopedMutator;
+  cache?: Cache;
   verseKeys?: string[];
   note?: Note;
   invalidateCount?: boolean;
@@ -60,8 +63,8 @@ export const invalidateCache = ({
  * When cache is not available, invalidates exact single-verse count caches.
  */
 const invalidateCountCaches = (
-  mutate: ScopedMutator<unknown>,
-  cache: Cache<unknown> | undefined,
+  mutate: ScopedMutator,
+  cache: Cache | undefined,
   verseKeys: string[],
 ): void => {
   const cacheKeys = (cache as unknown as { keys?: () => string[] })?.keys?.();
@@ -90,7 +93,7 @@ const invalidateCountCaches = (
  * Updates note-by-verse caches for the given verse keys.
  */
 const updateVerseCaches = (
-  mutate: ScopedMutator<unknown>,
+  mutate: ScopedMutator,
   verseKeys: string[],
   note?: Note,
   action?: CacheAction,
@@ -120,8 +123,8 @@ const updateVerseCaches = (
  * Updates individual note and general notes list caches.
  */
 const updateNoteCaches = (
-  mutate: ScopedMutator<unknown>,
-  cache: Cache<unknown> | undefined,
+  mutate: ScopedMutator,
+  cache: Cache | undefined,
   note: Note | undefined,
   action?: CacheAction,
   flushNotesList?: boolean,
@@ -137,7 +140,10 @@ const updateNoteCaches = (
 
   // Update general notes list (My Notes tab)
   const cacheKeys = (cache as unknown as { keys?: () => string[] })?.keys?.();
-  if (!cacheKeys) mutate(baseNotesUrl, undefined, { revalidate: true });
+  if (!cacheKeys) {
+    mutate(baseNotesUrl, undefined, { revalidate: true });
+    return;
+  }
 
   const notesListKeys = [...cacheKeys].filter(
     (key) => key.startsWith('$inf$') && key.includes(baseNotesUrl),
@@ -192,10 +198,7 @@ const updatePaginatedNotes = (
 /**
  * Invalidates reflections caches for the given verse keys.
  */
-const invalidateReflectionsCaches = (
-  mutate: ScopedMutator<unknown>,
-  cache?: Cache<unknown>,
-): void => {
+const invalidateReflectionsCaches = (mutate: ScopedMutator, cache?: Cache): void => {
   const cacheKeys = (cache as unknown as { keys?: () => string[] })?.keys?.();
 
   if (cacheKeys) {

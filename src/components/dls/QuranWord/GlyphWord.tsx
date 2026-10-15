@@ -1,11 +1,15 @@
 /* eslint-disable react/no-danger */
+import React from 'react';
 
 import classNames from 'classnames';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import styles from './GlyphWord.module.scss';
 
-import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
+import {
+  selectQuranMushafLines,
+  selectQuranTextFontScale,
+} from '@/redux/slices/QuranReader/styles';
 import { CharType } from '@/types/Word';
 import { isFirefox } from '@/utils/device-detector';
 import { getFontClassName, getFontFaceNameForPage } from '@/utils/fontFaceHelper';
@@ -23,7 +27,7 @@ type UthmaniWordTextProps = {
 
   quranTextFontScaleOverride?: number; // Optional font scale override
   mushafLinesOverride?: MushafLines; // Optional mushaf lines override
-};
+} & React.HTMLAttributes<HTMLSpanElement>;
 
 /**
  * Get the text of the verse's word. This is used to show textUthmani as a fallback
@@ -60,13 +64,17 @@ const GlyphWord = ({
   charType,
   quranTextFontScaleOverride,
   mushafLinesOverride,
+  className,
+  style,
+  ...props
 }: UthmaniWordTextProps) => {
   // Get values from Redux as the default
-  const reduxStyles = useSelector(selectQuranReaderStyles, shallowEqual);
+  const defaultFontScale = useSelector(selectQuranTextFontScale);
+  const defaultMushafLines = useSelector(selectQuranMushafLines);
 
   // Use prop overrides if provided, otherwise fall back to Redux values.
-  const quranTextFontScale = quranTextFontScaleOverride ?? reduxStyles.quranTextFontScale;
-  const mushafLines = mushafLinesOverride ?? reduxStyles.mushafLines;
+  const quranTextFontScale = quranTextFontScaleOverride ?? defaultFontScale ?? 3;
+  const mushafLines = mushafLinesOverride ?? defaultMushafLines ?? MushafLines.SixteenLines;
 
   // The extra space before the glyph should only be added where the issue occurs,
   // which is in firefox with the Madani V1 Mushaf and the font scale is less than 6
@@ -85,7 +93,7 @@ const GlyphWord = ({
       }}
       data-font-scale={quranTextFontScale}
       data-font={font}
-      className={classNames(styles.styledWord, {
+      className={classNames(className, styles.styledWord, {
         [styles.tajweedTextHighlighted]:
           font === QuranFont.TajweedV4 && charType !== CharType.End && isHighlighted,
         [styles.wordSpacing]: addExtraSpace,
@@ -93,10 +101,12 @@ const GlyphWord = ({
         [styles[getFontClassName(FALLBACK_FONT, quranTextFontScale, mushafLines, true)]]:
           !isFontLoaded,
       })}
-      {...(isFontLoaded && {
-        style: { fontFamily: getFontFaceNameForPage(font, pageNumber) },
-      })}
+      style={{
+        ...style,
+        ...(isFontLoaded && { fontFamily: getFontFaceNameForPage(font, pageNumber) })
+      }}
+      {...props}
     />
   );
 };
-export default GlyphWord;
+export default React.memo(GlyphWord);

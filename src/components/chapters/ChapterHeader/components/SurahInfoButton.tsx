@@ -4,15 +4,24 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 
+import dynamic from 'next/dynamic';
+
 import styles from '../ChapterHeader.module.scss';
 
-import SurahInfoContent from '@/components/chapters/Info/SurahInfoContent';
 import surahInfoStyles from '@/components/chapters/Info/SurahInfoModal.module.scss';
-import ContentModal, { ContentModalSize } from '@/components/dls/ContentModal/ContentModal';
+import { ContentModalSize } from '@/components/dls/ContentModal/ContentModal';
 import DataContext from '@/contexts/DataContext';
+import InfoIcon from '@/icons/info.svg';
 import { getChapterData } from '@/utils/chapter';
 import { logButtonClick } from '@/utils/eventLogger';
 import { fakeNavigate, getSurahInfoNavigationUrl, getSurahNavigationUrl } from '@/utils/navigation';
+
+const ContentModal = dynamic(() => import('@/components/dls/ContentModal/ContentModal'), {
+  ssr: false,
+});
+const SurahInfoContent = dynamic(() => import('@/components/chapters/Info/SurahInfoContent'), {
+  ssr: false,
+});
 
 interface SurahInfoButtonProps {
   chapterId: string;
@@ -47,17 +56,17 @@ const SurahInfoButton: React.FC<SurahInfoButtonProps> = ({ chapterId, className 
     if (!router.pathname.includes('/surah/[chapterId]/[...info]')) {
       fakeNavigate(router.asPath, router.locale);
     } else {
-      fakeNavigate(getSurahNavigationUrl(chapterId), router.locale);
+      fakeNavigate(getSurahNavigationUrl(chapter?.slug || chapterId), router.locale);
     }
-  }, [router, chapterId]);
+  }, [router, chapterId, chapter?.slug]);
 
   const handleClick = useCallback(() => {
     if (chapterId) {
       logButtonClick('surah_info_button_click');
       setIsOpen(true);
-      fakeNavigate(getSurahInfoNavigationUrl(chapterId), router.locale);
+      fakeNavigate(getSurahInfoNavigationUrl(chapter?.slug || chapterId), router.locale);
     }
-  }, [chapterId, router.locale]);
+  }, [chapterId, chapter?.slug, router.locale]);
 
   return (
     <>
@@ -68,7 +77,8 @@ const SurahInfoButton: React.FC<SurahInfoButtonProps> = ({ chapterId, className 
         type="button"
         data-testid="surah-info-button"
       >
-        {t('info')}
+        <InfoIcon className={styles.infoIcon} aria-hidden="true" />
+        <span>{t('info')}</span>
       </button>
       {chapterId && chapter && (
         <ContentModal

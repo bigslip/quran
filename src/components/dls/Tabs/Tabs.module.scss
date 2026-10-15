@@ -1,20 +1,66 @@
-.container {
+.root {
   display: flex;
-  border-block-end: 1px solid var(--color-borders-hairline);
+  flex-direction: column;
 }
 
-.tabItem {
+.list {
+  display: flex;
+  flex-shrink: 0;
+  border-block-end: 1px solid var(--color-border-subtle);
+  margin-block-end: 1rem;
+  gap: var(--spacing-xxsmall);
+}
+
+.trigger {
+  background-color: transparent;
+  padding-block: 0.75rem;
+  padding-inline: 1.25rem;
+  block-size: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  user-select: none;
+  border: none;
+  border-block-end: 2px solid transparent;
   cursor: pointer;
-  padding-block-start: var(--spacing-xxsmall);
-  padding-block-end: var(--spacing-xxsmall);
-  padding-inline-start: var(--spacing-xxsmall);
-  padding-inline-end: var(--spacing-xxsmall);
-  background-color: var(--color-background-default);
-}
-.tabItem + .tabItem {
-  margin-inline-start: var(--spacing-xxsmall);
+  border-start-start-radius: var(--border-radius-small-px);
+  border-start-end-radius: var(--border-radius-small-px);
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  transition: color var(--transition-fast) ease, border-color var(--transition-fast) ease,
+    background-color var(--transition-fast) ease;
+
+  &:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-primary-subtle);
+  }
+
+  &[data-state='active'] {
+    color: var(--color-primary);
+    border-block-end: 2px solid var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+    box-shadow: 0 4px 12px var(--color-primary-subtle);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring));
+    outline-offset: -2px;
+  }
 }
 
-.tabItemSelected {
-  border-block-end: 2px solid var(--color-text-default);
+.content {
+  flex-grow: 1;
+  padding-block: 1rem;
+  padding-inline: 0;
+  color: var(--color-text-default);
+
+  &[data-state='inactive'] {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
 }

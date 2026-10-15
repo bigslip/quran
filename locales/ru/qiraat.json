@@ -1,4 +1,5 @@
 {
   "description": "Изучите различные кираты (варианты прочтения) аята. {{ayahNumber}} из суры {{surahName}}",
+  "juncture-selection": "Выбор соединения",
   "title": "Кираат {{surahName}} - {{ayahNumber}}"
 }

@@ -6,24 +6,38 @@ import LookupRecord from 'types/LookupRecord';
  *
  * @param {number} pageIndex
  * @param {Record<number, LookupRecord>} pagesVersesRange
+ * @param {number} [fallbackFirstPage=1]
  * @returns {number}
  */
 export const getPageNumberByPageIndex = (
   pageIndex: number,
   pagesVersesRange: Record<number, LookupRecord>,
-): number => Number(Object.keys(pagesVersesRange)[0]) + pageIndex;
+  fallbackFirstPage = 1,
+): number => {
+  const keys = Object.keys(pagesVersesRange || {});
+  const firstKey = keys.length > 0 ? Number(keys[0]) : fallbackFirstPage;
+  const basePage = Number.isNaN(firstKey) ? fallbackFirstPage : firstKey;
+  return basePage + pageIndex;
+};
 
 /**
  * Get the page index by the page number.
  *
  * @param {number} pageNumber
  * @param {Record<number, LookupRecord>} pagesVersesRange
+ * @param {number} [fallbackFirstPage=1]
  * @returns {number}
  */
 export const getPageIndexByPageNumber = (
   pageNumber: number,
   pagesVersesRange: Record<number, LookupRecord>,
-): number => Number(pageNumber) - Number(Object.keys(pagesVersesRange)[0]);
+  fallbackFirstPage = 1,
+): number => {
+  const keys = Object.keys(pagesVersesRange || {});
+  const firstKey = keys.length > 0 ? Number(keys[0]) : fallbackFirstPage;
+  const basePage = Number.isNaN(firstKey) ? fallbackFirstPage : firstKey;
+  return Number(pageNumber) - basePage;
+};
 
 /**
  * Get the number of pages of the current resource e.g. chapter.

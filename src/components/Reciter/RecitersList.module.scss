@@ -1,12 +1,204 @@
 @use 'src/styles/breakpoints';
+@use 'src/styles/theme';
 
 .container {
-  @include breakpoints.tablet {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-small);
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--spacing-medium-px);
+
+  @include breakpoints.smallerThanTablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-small-px);
   }
+
+  @include breakpoints.tablet {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-medium-px);
+  }
+
   @include breakpoints.desktop {
     grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-medium-px);
   }
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  outline: none;
+
+  &:focus-visible .reciterCard {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+  }
+}
+
+.disabledCardContainer {
+  display: block;
+}
+
+.reciterCard {
+  position: relative;
+  border-radius: var(--border-radius-rounded);
+  overflow: hidden;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  transition: transform var(--transition-regular) cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow var(--transition-regular) ease, border-color var(--transition-regular) ease;
+}
+
+.availableCard {
+  cursor: pointer;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-4px);
+      border-color: #10b981;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14), 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+.disabledCard {
+  opacity: 0.7;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+  background: var(--color-surface-card);
+  border: 1px dashed var(--color-border-subtle);
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.85;
+      filter: grayscale(0.3);
+    }
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  block-size: 190px;
+  inline-size: 100%;
+  overflow: hidden;
+  background-color: var(--color-background-alternative-deep);
+
+  @include breakpoints.smallerThanTablet {
+    block-size: 150px;
+  }
+}
+
+.reciterImage {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .availableCard:hover & {
+    transform: scale(1.05);
+  }
+}
+
+.avatarFallback {
+  inline-size: 100%;
+  block-size: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  background: var(--color-surface-floating);
+}
+
+.badgeContainer {
+  position: absolute;
+  inset-block-start: var(--spacing-xsmall-px);
+  inset-inline-end: var(--spacing-xsmall-px);
+  z-index: 2;
+}
+
+.availableBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding-inline: var(--spacing-small-px);
+  padding-block: var(--spacing-micro-px);
+  border-radius: var(--border-radius-pill);
+  background: rgba(16, 185, 129, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+}
+
+.pulseDot {
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: var(--border-radius-circle);
+  background: #fff;
+  box-shadow: 0 0 4px #fff;
+}
+
+.comingSoonBadge {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--spacing-small-px);
+  padding-block: var(--spacing-micro-px);
+  border-radius: var(--border-radius-pill);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text-faded-new);
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.02em;
+}
+
+.infoWrapper {
+  padding-inline: var(--spacing-medium-px);
+  padding-block: var(--spacing-small-px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--color-surface-floating);
+  flex-grow: 1;
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: var(--spacing-small-px);
+    padding-block: var(--spacing-xsmall-px);
+  }
+}
+
+.reciterName {
+  font-size: var(--font-size-small-px);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+
+  @include breakpoints.tablet {
+    font-size: var(--font-size-medium-px);
+  }
+}
+
+.reciterStyle {
+  font-size: var(--font-size-xsmall-px);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

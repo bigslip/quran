@@ -1,4 +1,5 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 import SearchResultItemIcon from '../../SearchResults/SearchResultItemIcon';
 import SearchItem from '../SearchItem';
@@ -22,6 +23,7 @@ const SearchQuerySuggestion: React.FC<Props> = ({
   onRemoveSearchQueryClicked,
   type,
 }) => {
+  const { t } = useTranslation('common');
   const onRemoveClicked = (
     event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>,
     toBeDeletedSearchQuery: string,
@@ -40,6 +42,7 @@ const SearchQuerySuggestion: React.FC<Props> = ({
           onRemoveSearchQueryClicked && (
             <Button
               shape={ButtonShape.Circle}
+              ariaLabel={t('remove')}
               onClick={(event) =>
                 onRemoveClicked(
                   // @ts-ignore

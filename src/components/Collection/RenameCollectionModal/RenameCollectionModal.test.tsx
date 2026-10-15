@@ -22,6 +22,8 @@ vi.mock('@/components/FormBuilder/FormBuilder', () => ({
 vi.mock('@/dls/Modal/Modal', () => {
   const Modal = ({ isOpen, children }) => (isOpen ? <div>{children}</div> : null);
   Modal.Body = ({ children }) => <div>{children}</div>;
+  Modal.Header = ({ children }) => <div>{children}</div>;
+  Modal.Title = ({ children }) => <div>{children}</div>;
 
   return { default: Modal };
 });

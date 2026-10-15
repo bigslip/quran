@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { getChapterIdsForJuz, getChapterIdsForPage } from '@/utils/chapter';
+import { getChapterIdsForJuz, getChapterIdsForPage, getChapterIdBySlugOrId } from '@/utils/chapter';
 import { getChapterIdsForHizb } from '@/utils/hizb';
 import { formatStringNumber } from '@/utils/number';
 import { getChapterIdsForRub } from '@/utils/rub';
@@ -24,46 +24,93 @@ import DataContext from 'src/contexts/DataContext';
  * - /chapter/1 => ["1"]
  */
 const AYAH_KURSI_SLUGS = ['ayatul-kursi', 'آیت الکرسی']; // TODO: this needs to be refactored when we localize Ayatul Kursi
-const useChapterIdsByUrlPath = (lang: string): string[] => {
+
+const useChapterIdsByUrlPath = (lang?: string): string[] => {
   const router = useRouter();
   const { chapterId, juzId, pageId, hizbId, rubId } = router.query;
-  const [chapterIds, setChapterIds] = useState([]);
   const chaptersData = useContext(DataContext);
+
+  const getSyncChapterIds = (): string[] => {
+    if (chapterId) {
+      const chapterIdOrVerseKeyOrSlug = chapterId as string;
+      const param = chapterIdOrVerseKeyOrSlug.toLowerCase();
+      if (isValidChapterId(chapterIdOrVerseKeyOrSlug)) {
+        return [formatStringNumber(chapterIdOrVerseKeyOrSlug)];
+      }
+      if (isValidVerseKey(chaptersData, chapterIdOrVerseKeyOrSlug)) {
+        return [getChapterNumberFromKey(chapterIdOrVerseKeyOrSlug).toString()];
+      }
+      if (AYAH_KURSI_SLUGS.includes(param)) {
+        return ['2'];
+      }
+      if (chaptersData) {
+        const localId = getChapterIdBySlugOrId(chaptersData, chapterIdOrVerseKeyOrSlug);
+        if (localId) {
+          return [localId];
+        }
+      }
+    }
+    return [];
+  };
+
+  const [chapterIds, setChapterIds] = useState<string[]>(getSyncChapterIds);
+
   useEffect(() => {
+    let isMounted = true;
     (async () => {
       if (chapterId) {
         const chapterIdOrVerseKeyOrSlug = chapterId as string;
+        const param = chapterIdOrVerseKeyOrSlug.toLowerCase();
         // if it's a chapter id
         if (isValidChapterId(chapterIdOrVerseKeyOrSlug)) {
-          setChapterIds([formatStringNumber(chapterIdOrVerseKeyOrSlug)]);
+          if (isMounted) setChapterIds([formatStringNumber(chapterIdOrVerseKeyOrSlug)]);
         } else if (isValidVerseKey(chaptersData, chapterIdOrVerseKeyOrSlug)) {
           // if it's a verse key e.g 5:1
-          setChapterIds([getChapterNumberFromKey(chapterIdOrVerseKeyOrSlug).toString()]);
-        } else if (AYAH_KURSI_SLUGS.includes(chapterIdOrVerseKeyOrSlug.toLowerCase())) {
+          if (isMounted)
+            setChapterIds([getChapterNumberFromKey(chapterIdOrVerseKeyOrSlug).toString()]);
+        } else if (AYAH_KURSI_SLUGS.includes(param)) {
           // if it's Ayatul Kursi
-          setChapterIds(['2']);
+          if (isMounted) setChapterIds(['2']);
         } else {
+          // In-memory synchronous lookup in DataContext (chaptersData)
+          if (chaptersData) {
+            const localId = getChapterIdBySlugOrId(chaptersData, chapterIdOrVerseKeyOrSlug);
+            if (localId) {
+              if (isMounted) setChapterIds([localId]);
+              return;
+            }
+          }
           // we need to convert the slug into a chapterId by calling BE
-          const sluggedChapterId = await getChapterIdBySlug(chapterIdOrVerseKeyOrSlug, lang);
+          const sluggedChapterId = await getChapterIdBySlug(
+            chapterIdOrVerseKeyOrSlug,
+            lang || (router.locale || 'en'),
+          );
           // if it's a valid slug and the call doesn't have any errors
-          if (sluggedChapterId) {
+          if (isMounted && sluggedChapterId) {
             setChapterIds([sluggedChapterId.toString()]);
           }
         }
       } else if (pageId) {
         const chapterIdsForPage = await getChapterIdsForPage(formatStringNumber(pageId as string));
-        setChapterIds(chapterIdsForPage);
+        if (isMounted) setChapterIds(chapterIdsForPage);
       } else if (juzId) {
-        setChapterIds(await getChapterIdsForJuz(formatStringNumber(juzId as string)));
+        const ids = await getChapterIdsForJuz(formatStringNumber(juzId as string));
+        if (isMounted) setChapterIds(ids);
       } else if (hizbId) {
-        setChapterIds(await getChapterIdsForHizb(formatStringNumber(hizbId as string)));
+        const ids = await getChapterIdsForHizb(formatStringNumber(hizbId as string));
+        if (isMounted) setChapterIds(ids);
       } else if (rubId) {
-        setChapterIds(await getChapterIdsForRub(formatStringNumber(rubId as string)));
+        const ids = await getChapterIdsForRub(formatStringNumber(rubId as string));
+        if (isMounted) setChapterIds(ids);
       }
     })();
-  }, [pageId, juzId, hizbId, rubId, lang, chapterId, chaptersData]);
+    return () => {
+      isMounted = false;
+    };
+  }, [pageId, juzId, hizbId, rubId, lang, chapterId, chaptersData, router.locale]);
 
   return chapterIds;
 };
 
+export { useChapterIdsByUrlPath as useChapterId };
 export default useChapterIdsByUrlPath;

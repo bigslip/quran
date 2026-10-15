@@ -12,7 +12,7 @@ import PreviousIcon from '@/icons/caret-back.svg';
 import NextIcon from '@/icons/caret-forward.svg';
 import { toLocalizedNumber } from '@/utils/locale';
 
-interface Props {
+export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
   currentPage: number;
   totalCount: number;
   onPageChange: (newPage: number) => void;
@@ -31,13 +31,15 @@ const DEFAULT_SIBLINGS_COUNT = 1;
  * @returns {number[]}
  */
 const generateRange = (start: number, end: number): number[] => range(start, end + 1);
-const Pagination: React.FC<Props> = ({
+const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   totalCount,
   currentPage,
   pageSize = DEFAULT_PAGE_SIZE,
   siblingsCount = DEFAULT_SIBLINGS_COUNT,
   showSummary = true,
+  className,
+  ...props
 }) => {
   const { t, lang } = useTranslation('common');
   const paginationRange = useMemo(() => {
@@ -58,19 +60,23 @@ const Pagination: React.FC<Props> = ({
 
     const firstPageIndex = 1;
     const lastPageIndex = totalPageCount;
-    // No left dots to be shown, but the right dots should be shown
-    if (!shouldShowLeftDots && shouldShowRightDots) {
-      const leftItemCount = 3 + 2 * siblingsCount;
-      const leftRange = generateRange(1, leftItemCount);
-      return [...leftRange, DOTS, totalPageCount];
-    }
-    // No right dots to be shown, but the left dots should be shown
+
+    // Case 1: show left dots but not right dots
     if (shouldShowLeftDots && !shouldShowRightDots) {
       const rightItemCount = 3 + 2 * siblingsCount;
       const rightRange = generateRange(totalPageCount - rightItemCount + 1, totalPageCount);
       return [firstPageIndex, DOTS, ...rightRange];
     }
-    // the right and left dots should be shown
+
+    // Case 2: show right dots but not left dots
+    if (!shouldShowLeftDots && shouldShowRightDots) {
+      const leftItemCount = 3 + 2 * siblingsCount;
+      const leftRange = generateRange(1, leftItemCount);
+
+      return [...leftRange, DOTS, lastPageIndex];
+    }
+
+    // Case 3: show both left and right dots
     if (shouldShowLeftDots && shouldShowRightDots) {
       const middleRange = generateRange(leftSiblingIndex, rightSiblingIndex);
       return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
@@ -78,7 +84,8 @@ const Pagination: React.FC<Props> = ({
     return [];
   }, [totalCount, pageSize, siblingsCount, currentPage]);
 
-  if (currentPage === 0 || paginationRange.length < 1) {
+  // If there are less than 2 items in pagination range we shall not render the component
+  if (currentPage === 0 || paginationRange.length < 2) {
     return null;
   }
 
@@ -92,10 +99,16 @@ const Pagination: React.FC<Props> = ({
 
   const showingUntilItem = currentPage * pageSize;
   return (
-    <div className={styles.container} data-testid="page-navigation-buttons">
+    <nav
+      aria-label={t('pagination-navigation')}
+      className={classNames(styles.container, className)}
+      data-testid="page-navigation-buttons"
+      {...props}
+    >
       <div className={styles.buttonContainer}>
         <Button
           tooltip={t('prev')}
+          ariaLabel={t('prev')}
           variant={ButtonVariant.Ghost}
           isDisabled={currentPage === 1}
           onClick={onPrevious}
@@ -109,15 +122,18 @@ const Pagination: React.FC<Props> = ({
           return <div key={`${pageNumber}-${index}`}>{DOTS}</div>;
         }
 
+        const isCurrent = pageNumber === currentPage;
         return (
           <div
             className={classNames(styles.buttonContainer, {
-              [styles.selectedButton]: pageNumber === currentPage,
+              [styles.selectedButton]: isCurrent,
             })}
             key={`${pageNumber}-${index}`}
           >
             <Button
               variant={ButtonVariant.Ghost}
+              aria-current={isCurrent ? 'page' : undefined}
+              ariaLabel={t('page-number', { page: pageNumber })}
               onClick={() => onPageChange(pageNumber as number)}
             >
               {toLocalizedNumber(Number(pageNumber), lang)}
@@ -128,6 +144,7 @@ const Pagination: React.FC<Props> = ({
       <div className={styles.buttonContainer}>
         <Button
           tooltip={t('next')}
+          ariaLabel={t('next')}
           variant={ButtonVariant.Ghost}
           isDisabled={currentPage === paginationRange[paginationRange.length - 1]}
           onClick={onNext}
@@ -148,7 +165,7 @@ const Pagination: React.FC<Props> = ({
           })}
         </p>
       )}
-    </div>
+    </nav>
   );
 };
 

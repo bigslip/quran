@@ -3,11 +3,11 @@
   "body-placeholder": "Utiliza este espacio para guardar notas generales o escribir una reflexión.",
   "checkbox-refl-intro": {
     "checkbox": {
-      "desc": "<li> Publicar significa que tu reflexión será compartida en QuranReflect bajo tu nombre, donde será revisada por el equipo de moderación y visible para la comunidad de QuranReflect. </li> <li> Una vez que tu publicación sea revisada y aprobada o promovida por nuestro equipo de moderación, podrás recibir notificaciones de Me gusta, comentarios y seguidores. Al iniciar sesión en QuranReflect, puedes actualizar tu configuración de notificaciones para adaptarla a tus preferencias. </li> <li> Puedes ver tus notas y reflexiones publicadas en tu perfil de inicio de sesión de Quran.com en la sección “Mis notas y reflexiones”, o iniciar sesión en <link> QuranReflect </link> usando tu correo electrónico de inicio de sesión de Quran.com. </li>",
+      "desc": "<li> Publicar significa que tu reflexión será compartida en QuranReflect bajo tu nombre, donde será revisada por el equipo de moderación y visible para la comunidad de QuranReflect. </li> <li> Una vez que tu publicación sea revisada y aprobada o promovida por nuestro equipo de moderación, podrás recibir notificaciones de Me gusta, comentarios y seguidores. Al iniciar sesión en QuranReflect, puedes actualizar tu configuración de notificaciones para adaptarla a tus preferencias. </li> <li> Puedes ver tus notas y reflexiones publicadas en tu perfil de inicio de sesión de Quran.ir en la sección “Mis notas y reflexiones”, o iniciar sesión en <link> QuranReflect </link> usando tu correo electrónico de inicio de sesión de Quran.ir. </li>",
       "title": "¿Qué sucede si hago clic en \"Guardar y publicar en QuranReflect\"?"
     },
     "post-button": "¿Qué pasa cuando publico?",
-    "qr-intro": "QuranReflect, junto con Quran.com, es parte de la familia Quran.Foundation. Es una plataforma social para compartir reflexiones personales sobre el Corán, animando a los usuarios a interiorizar sus mensajes y compartir ideas que inspiren cambios positivos. A diferencia del tafsir, que es una interpretación académica, las reflexiones son pensamientos y experiencias personales relacionadas con los versículos. Las publicaciones de los usuarios en QuranReflect son revisadas y moderadas por un equipo calificado, que ayudará a garantizar la calidad del contenido y las normas de etiqueta al interactuar con el Corán, y empoderará a los usuarios a compartir comentarios y destacando comentarios valiosos, fomentando así una comunidad espiritualmente edificante y centrada en el Corán. Obtén más información: <link> Quranreflect.com/faq </link>",
+    "qr-intro": "QuranReflect, junto con Quran.ir, es parte de la familia Quran.Foundation. Es una plataforma social para compartir reflexiones personales sobre el Corán, animando a los usuarios a interiorizar sus mensajes y compartir ideas que inspiren cambios positivos. A diferencia del tafsir, que es una interpretación académica, las reflexiones son pensamientos y experiencias personales relacionadas con los versículos. Las publicaciones de los usuarios en QuranReflect son revisadas y moderadas por un equipo calificado, que ayudará a garantizar la calidad del contenido y las normas de etiqueta al interactuar con el Corán, y empoderará a los usuarios a compartir comentarios y destacando comentarios valiosos, fomentando así una comunidad espiritualmente edificante y centrada en el Corán. Obtén más información: <link> Quranreflect.com/faq </link>",
     "qr-title": "¿Qué es QuranReflect?",
     "title": "¿Qué es QuranReflect y qué sucede si marco esta casilla?"
   },
@@ -57,7 +57,7 @@
   "reflection-update-success": "La reflexión se ha actualizado correctamente",
   "reflections-intro": {
     "line-1": "Para ver e interactuar con los comentarios, interactuar con la comunidad y más, visita <link> QuranReflect.com </link>.",
-    "line-2": "Puedes iniciar sesión en tu cuenta de QuranReflect vinculada iniciando sesión o registrándote con el mismo correo electrónico de Quran.com utilizado en tu inicio de sesión.",
+    "line-2": "Puedes iniciar sesión en tu cuenta de QuranReflect vinculada iniciando sesión o registrándote con el mismo correo electrónico de Quran.ir utilizado en tu inicio de sesión.",
     "line-3": "El contenido que no sea apto para el público será ocultado o eliminado. Los usuarios que publiquen contenido inapropiado serán bloqueados.",
     "title": "Obtén más información sobre las reflexiones publicadas"
   },

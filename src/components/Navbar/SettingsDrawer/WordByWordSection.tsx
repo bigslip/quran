@@ -125,8 +125,18 @@ const WordByWordSection = () => {
       setSelectedWordByWordLocale({ value: wordByWordLocale, locale: lang }),
       false,
       () => {
-        router.query[QueryParam.WBW_LOCALE] = value;
-        router.push(router, undefined, { shallow: true });
+        const nextQuery = {
+          ...router.query,
+          [QueryParam.WBW_LOCALE]: value,
+        };
+        router.push(
+          {
+            pathname: router.pathname,
+            query: nextQuery,
+          },
+          undefined,
+          { shallow: true },
+        );
       },
     );
   };

@@ -1,0 +1,162 @@
+{
+  "audio_files": [
+    {
+      "id": 201,
+      "chapter_id": 114,
+      "file_size": 203286,
+      "format": "mp3",
+      "audio_url": "/audio/reciters/201/114.mp3",
+      "duration": 33881,
+      "verse_timings": [
+        {
+          "verse_key": "114:1",
+          "timestamp_from": 0,
+          "timestamp_to": 9482,
+          "duration": 9482,
+          "segments": [
+            [
+              1,
+              240,
+              256
+            ],
+            [
+              2,
+              256,
+              287
+            ],
+            [
+              3,
+              287,
+              318
+            ],
+            [
+              4,
+              318,
+              380
+            ]
+          ]
+        },
+        {
+          "verse_key": "114:2",
+          "timestamp_from": 9482,
+          "timestamp_to": 12643,
+          "duration": 3161,
+          "segments": [
+            [
+              1,
+              9652,
+              10377
+            ],
+            [
+              2,
+              10377,
+              12312
+            ]
+          ]
+        },
+        {
+          "verse_key": "114:3",
+          "timestamp_from": 12643,
+          "timestamp_to": 16196,
+          "duration": 3553,
+          "segments": [
+            [
+              1,
+              12783,
+              14005
+            ],
+            [
+              2,
+              14005,
+              15783
+            ]
+          ]
+        },
+        {
+          "verse_key": "114:4",
+          "timestamp_from": 16196,
+          "timestamp_to": 21603,
+          "duration": 5407,
+          "segments": [
+            [
+              1,
+              16316,
+              16796
+            ],
+            [
+              2,
+              16796,
+              17516
+            ],
+            [
+              3,
+              17516,
+              19196
+            ],
+            [
+              4,
+              19196,
+              21356
+            ]
+          ]
+        },
+        {
+          "verse_key": "114:5",
+          "timestamp_from": 21603,
+          "timestamp_to": 27742,
+          "duration": 6139,
+          "segments": [
+            [
+              1,
+              21723,
+              22879
+            ],
+            [
+              2,
+              22879,
+              24035
+            ],
+            [
+              3,
+              24035,
+              24498
+            ],
+            [
+              4,
+              24498,
+              25423
+            ],
+            [
+              5,
+              25423,
+              27273
+            ]
+          ]
+        },
+        {
+          "verse_key": "114:6",
+          "timestamp_from": 27742,
+          "timestamp_to": 33881,
+          "duration": 6139,
+          "segments": [
+            [
+              1,
+              27912,
+              28537
+            ],
+            [
+              2,
+              28537,
+              30411
+            ],
+            [
+              3,
+              30411,
+              33222
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

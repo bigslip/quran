@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { DefaultSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
@@ -6,16 +7,18 @@ import { useSelector } from 'react-redux';
 
 import styles from './AppContent.module.scss';
 
-import AudioPlayer from '@/components/AudioPlayer/AudioPlayer';
 import AuthRedirects from '@/components/Auth/AuthRedirects';
 import UserAccountModal from '@/components/Auth/UserAccountModal';
+
+const AudioPlayer = dynamic(() => import('@/components/AudioPlayer/AudioPlayer'), {
+  ssr: false,
+});
 import DeveloperUtility from '@/components/DeveloperUtility/DeveloperUtility';
 import GlobalListeners from '@/components/GlobalListeners';
 import Navbar from '@/components/Navbar/Navbar';
 import Footer from '@/dls/Footer/Footer';
 import useAuthData from '@/hooks/auth/useAuthData';
 import useShowNavbar from '@/hooks/useShowNavbar';
-import { selectIsBannerVisible } from '@/redux/slices/banner';
 import {
   selectIsLanguageDrawerOpen,
   selectIsNavigationDrawerOpen,
@@ -39,7 +42,6 @@ function AppContent({ Component, pageProps }: AppContentProps) {
   const isNavigationDrawerOpen = useSelector(selectIsNavigationDrawerOpen);
   const isSettingsDrawerOpen = useSelector(selectIsSettingsDrawerOpen);
   const isLanguageDrawerOpen = useSelector(selectIsLanguageDrawerOpen);
-  const isBannerVisible = useSelector(selectIsBannerVisible);
   const isEmbedPage = router.pathname === '/embed/v1';
 
   if (isEmbedPage) {
@@ -49,8 +51,6 @@ function AppContent({ Component, pageProps }: AppContentProps) {
   return (
     <div
       className={classNames({
-        bannerActive: isBannerVisible,
-        desktopStandaloneBannerActive: isBannerVisible,
         navbarVisible: showNavbar,
         navbarHidden: !showNavbar,
       })}
@@ -66,7 +66,7 @@ function AppContent({ Component, pageProps }: AppContentProps) {
           [styles.dimmed]: isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen,
         })}
         {...((isNavigationDrawerOpen || isSettingsDrawerOpen || isLanguageDrawerOpen) && {
-          inert: true,
+          inert: '' as unknown as boolean,
           'aria-hidden': true, // eslint-disable-line @typescript-eslint/naming-convention
         })}
       >

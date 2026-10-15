@@ -86,6 +86,15 @@ const PlayVerseAudioButton: React.FC<PlayVerseAudioProps> = ({
   ]);
 
   useEffect(() => {
+    if (
+      !isActive ||
+      activeStepGroup !== OnboardingGroup.READING_EXPERIENCE ||
+      chapterId !== 1 ||
+      verseNumber !== 1
+    ) {
+      return undefined;
+    }
+
     const handlePlayAudioStep = () => {
       onPlayClicked();
     };
@@ -95,7 +104,7 @@ const PlayVerseAudioButton: React.FC<PlayVerseAudioProps> = ({
     return () => {
       window.removeEventListener(OnboardingEvent.STEP_AFTER_PLAY_AUDIO_CLICK, handlePlayAudioStep);
     };
-  }, [nextStep, onPlayClicked]);
+  }, [isActive, activeStepGroup, chapterId, verseNumber, onPlayClicked]);
 
   if (isVerseLoading) {
     return (
@@ -122,7 +131,16 @@ const PlayVerseAudioButton: React.FC<PlayVerseAudioProps> = ({
       shape={ButtonShape.Circle}
       id="play-verse-button" // this ID is for onboarding
       className={classNames(styles.iconContainer, styles.verseAction)}
-      ariaLabel={t('aria.play-surah', { surahName: chapterData.transliteratedName })}
+      ariaLabel={
+        verseNumber
+          ? t('aria.play-verse', {
+              verseKey: `${chapterId}:${verseNumber}`,
+              defaultValue: `Play Ayah ${chapterId}:${verseNumber}`,
+            })
+          : t('aria.play-surah', {
+              surahName: chapterData?.transliteratedName ?? chapterId,
+            })
+      }
     >
       <span className={classNames(styles.icon, styles.playIcon)}>
         <IconContainer

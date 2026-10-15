@@ -1,22 +1,23 @@
 {
   "about": "Về chúng tôi",
+  "all": "All",
   "allow": "Cho phép",
   "and": "và",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
         "action": "Kế tiếp",
-        "description": "Dù dùng Quran.com trên điện thoại hay máy tính, dấu trang, câu đã đọc gần đây và tùy chọn của bạn luôn sẵn có.",
+        "description": "Dù dùng Quran.ir trên điện thoại hay máy tính, dấu trang, câu đã đọc gần đây và tùy chọn của bạn luôn sẵn có.",
         "title": "Dữ liệu của bạn sẽ được đồng bộ hóa <br></br> trên các thiết bị"
       },
       "feedback": {
         "action": "Được rồi, tôi đã hiểu.",
-        "description": "Cảm ơn bạn đã sử dụng Quran.com và chúng tôi rất mong nhận được phản hồi của bạn <link>feedback.quran.com</link>",
+        "description": "Cảm ơn bạn đã sử dụng Quran.ir và chúng tôi rất mong nhận được phản hồi của bạn <link>feedback.quran.ir</link>",
         "title": "Chúng tôi muốn lắng nghe ý kiến của bạn."
       },
       "quran-foundation-link": {
         "action": "Kế tiếp",
-        "description": "Hãy sử dụng thông tin đăng nhập Quran.com của bạn để truy cập QuranReflect.com — một cộng đồng toàn cầu sôi nổi tham gia vào việc suy ngẫm về Kinh Qur'an.",
+        "description": "Hãy sử dụng thông tin đăng nhập Quran.ir của bạn để truy cập QuranReflect.com — một cộng đồng toàn cầu sôi nổi tham gia vào việc suy ngẫm về Kinh Qur'an.",
         "title": "Sử dụng tài khoản của bạn trên tất cả các ứng dụng của Quran.Foundation!"
       },
       "quran-growth-journey": {
@@ -26,7 +27,7 @@
       },
       "welcome": {
         "action": "Xem có gì mới nhé!",
-        "title": "Chào mừng bạn đến với Quran.com <br></br> Tài khoản người dùng"
+        "title": "Chào mừng bạn đến với Quran.ir <br></br> Tài khoản người dùng"
       }
     },
     "collections-announcement": {
@@ -46,7 +47,11 @@
     "select-lng": "Chọn ngôn ngữ",
     "sidebar-nav-close": "Đóng thanh điều hướng",
     "tooltip-action": "Hành động chú thích",
-    "translation-info": "Xem thông tin dịch thuật"
+    "translation-info": "Xem thông tin dịch thuật",
+    "play-verse": "Phát câu {{verseKey}}",
+    "pause-surah": "Tạm dừng chương {{surahName}}",
+    "pause-verse": "Tạm dừng câu {{verseKey}}",
+    "surah-filter": "Bộ lọc chương"
   },
   "audio": {
     "auto-scroll": {
@@ -113,12 +118,19 @@
   "click-here": "Nhấp vào đây",
   "close": "Đóng",
   "command-bar": {
+    "close": "Đóng",
+    "direct-jump-hint": "Nhấn ↵ để đi",
+    "filter": "Lọc",
+    "navigate": "Điều hướng",
     "navigations": "Điều hướng",
-    "no-nav-results": "Không có kết quả điều hướng",
-    "placeholder": "Tìm kiếm Qur'an...",
+    "no-nav-results": "Không tìm thấy kết quả điều hướng",
+    "placeholder": "Tìm kiếm trong Kinh Quran...",
+    "search-placeholder": "Tìm Kinh Quran, Chương (vd: Kahf hoặc 18), Câu (2:255), Juz hoặc Trang...",
+    "select": "Chọn",
+    "spotlight-placeholder": "Tìm Kinh Quran, Chương hoặc Câu...",
     "recent-navigations": "Điều hướng gần đây",
     "search-by-voice": "Tìm kiếm bằng giọng nói",
-    "try-navigating": "Hãy thử điều hướng đến"
+    "try-navigating": "Thử điều hướng tới"
   },
   "community": {
     "cta": "Hãy liên hệ với chúng tôi",
@@ -228,6 +240,7 @@
   },
   "exciting-updates": "Cập nhật thú vị",
   "favorites": "Mục yêu thích",
+  "featured": "Featured",
   "feedback": "Phản hồi",
   "fonts": {
     "15_lines": "15 dòng",
@@ -250,7 +263,7 @@
   },
   "footer": {
     "apps-disclaimer": "Mỗi ứng dụng đều thuộc sở hữu và được duy trì độc lập bởi nhà phát triển của nó. Để được hỗ trợ, báo cáo lỗi hoặc yêu cầu tính năng, vui lòng liên hệ trực tiếp với nhà phát triển ứng dụng.",
-    "description": "Quran.com là nền tảng đáng tin cậy, được hàng triệu người dùng trên thế giới để đọc, tra cứu, lắng nghe và suy ngẫm Kinh Qur'an bằng nhiều ngôn ngữ, với bản dịch, tafsir, tụng đọc, dịch từng từ và các công cụ học sâu, giúp ai cũng có thể tiếp cận Kinh Qur'an. <br/> <br/> Là một Sadaqah Jariyah, Quran.com tận tâm giúp mọi người gắn bó sâu sắc hơn với Kinh Qur'an. Được hậu thuẫn bởi tổ chức phi lợi nhuận 501(c)(3) <link>Quran.Foundation</link>, Quran.com không ngừng phát triển như một nguồn tài nguyên miễn phí và hữu ích cho tất cả, Alhamdulillah.",
+    "description": "Quran.ir là nền tảng đáng tin cậy, được hàng triệu người dùng trên thế giới để đọc, tra cứu, lắng nghe và suy ngẫm Kinh Qur'an bằng nhiều ngôn ngữ, với bản dịch, tafsir, tụng đọc, dịch từng từ và các công cụ học sâu, giúp ai cũng có thể tiếp cận Kinh Qur'an. <br/> <br/> Là một Sadaqah Jariyah, Quran.ir tận tâm giúp mọi người gắn bó sâu sắc hơn với Kinh Qur'an. Được hậu thuẫn bởi tổ chức phi lợi nhuận 501(c)(3) <link>Quran.Foundation</link>, Quran.ir không ngừng phát triển như một nguồn tài nguyên miễn phí và hữu ích cho tất cả, Alhamdulillah.",
     "hiring": "Chúng tôi đang tuyển dụng! Hãy gia nhập đội ngũ của QuranFoundation và đóng góp vào sứ mệnh của chúng tôi. <link>Ứng tuyển ngay!</link>",
     "rights": "Bản quyền đã được bảo lưu.",
     "title": "Đọc, Lắng nghe, Tra cứu và Suy ngẫm về Kinh Qur'an"
@@ -271,29 +284,29 @@
     "verification-code": "Mã xác minh"
   },
   "from": "Từ",
-  "fundraising-card-v2": {
-    "cta": "Quyên góp ngay",
-    "description": "Các nhà tài trợ hàng tháng giúp chúng tôi cải thiện Quran.com và duy trì hoạt động để chúng tôi tập trung ít hơn vào việc gây quỹ và nhiều hơn vào việc tạo ra tác động.",
-    "title": "Trở thành nhà tài trợ hàng tháng"
-  },
-  "fundraising-share-title": "Chia sẻ gây quỹ Quran.com",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Quyên tặng",
-    "desktop-text": "Hãy cùng chung tay thực hiện sứ mệnh của chúng tôi",
-    "mobile-line-one": "Đây là tháng của kinh Quran.",
-    "mobile-line-two": "Hãy giúp chúng tôi lan tỏa ánh sáng này."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Quyên góp",
-    "title": "Hãy cho đi vào những ngày tốt đẹp nhất!"
-  },
   "fundraising": {
-    "description": "Các khoản ủng hộ định kỳ hàng tháng giúp chúng tôi cải thiện Quran.com, duy trì hoạt động và bớt lo gây quỹ để tập trung tạo ra nhiều giá trị hơn.",
+    "description": "Các khoản ủng hộ định kỳ hàng tháng giúp chúng tôi cải thiện Quran.ir, duy trì hoạt động và bớt lo gây quỹ để tập trung tạo ra nhiều giá trị hơn.",
     "donation-campaign": {
       "cta": "Quyên góp ngay hôm nay!",
       "text": "Trở thành người ủng hộ"
     },
     "title": "Trở thành nhà tài trợ hàng tháng"
+  },
+  "fundraising-card-v2": {
+    "cta": "Quyên góp ngay",
+    "description": "Các nhà tài trợ hàng tháng giúp chúng tôi cải thiện Quran.ir và duy trì hoạt động để chúng tôi tập trung ít hơn vào việc gây quỹ và nhiều hơn vào việc tạo ra tác động.",
+    "title": "Trở thành nhà tài trợ hàng tháng"
+  },
+  "fundraising-share-title": "Chia sẻ gây quỹ Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "Quyên góp",
+    "title": "Hãy cho đi vào những ngày tốt đẹp nhất!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Quyên tặng",
+    "desktop-text": "Hãy cùng chung tay thực hiện sứ mệnh của chúng tôi",
+    "mobile-line-one": "Đây là tháng của kinh Quran.",
+    "mobile-line-two": "Hãy giúp chúng tôi lan tỏa ánh sáng này."
   },
   "get-started": "Bắt đầu",
   "go-to-verse": "Đi đến câu thơ",
@@ -311,6 +324,7 @@
   "juz": "Juz",
   "language": "Ngôn ngữ",
   "languages": "Ngôn ngữ",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Học tập",
   "learn-more": "Tìm hiểu thêm",
   "learning-plans": "Kế hoạch học tập",
@@ -320,11 +334,16 @@
   "loading": "Đang tải",
   "login": "Đăng nhập",
   "logout": "Đăng xuất",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "Meccan",
   "medinan": "Medinan",
   "menu": "Menu",
   "minutes": "Phút",
   "mobile-apps": "Ứng dụng di động",
+  "modal": "Hộp thoại",
   "mode": "Chế độ",
   "more": "Thêm",
   "my-learning-plans": "Kế hoạch học tập của tôi",
@@ -336,6 +355,7 @@
   "next": "Kế tiếp",
   "next-ayah": "Ayah tiếp theo",
   "no": "Không",
+  "no-languages-found": "No languages found",
   "no-notifications": "Chưa có thông báo nào",
   "no-verses-available": "Không có câu nào",
   "none": "Không có",
@@ -344,18 +364,20 @@
     "label": "Ghi chú",
     "title": "Ghi chú & Suy ngẫm của tôi"
   },
-  "notification-settings": "Cài đặt thông báo",
   "notification": {
     "mark-all-as-read": "Đánh dấu tất cả là đã đọc",
     "mark-as-read": "Đánh dấu là đã đọc"
   },
+  "notification-settings": "Cài đặt thông báo",
   "notifications": "Thông báo",
   "off": "Tắt",
   "oldest": "Cũ nhất",
   "on": "Mở",
   "our-projects": "Dự án của chúng tôi",
   "page": "Trang",
+  "page-number": "Trang {{page}}",
   "pages": "Trang",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}}-{{endOfResultNumber}} của {{totalNumberOfResults}} kết quả tìm kiếm",
   "pbuh": "Cầu mong phước lành của Allah đến với ông ấy.",
   "popular-links": "Liên kết phổ biến",
@@ -379,9 +401,12 @@
   "profile": "Hồ sơ",
   "projects-desc": "Dự án phi lợi nhuận do <link>Quran.Foundation</link> sở hữu, quản lý hoặc tài trợ",
   "q-reflect": "QuranReflect",
+  "quran-android": "Kinh Quran cho Android",
   "quran-apps": "Ứng dụng Kinh Qur'an",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
+  "quran-ios": "Kinh Quran cho iOS",
   "quran-radio": "Đài Qur'an",
+  "ramadan-2026": "Ramadan 2026",
   "read": "Đọc",
   "read-more": "Đọc thêm",
   "reading-history": "Lịch sử đọc",
@@ -412,9 +437,6 @@
   "rub": "Rub el Hizb",
   "save": "Lưu",
   "save-to-collection": "Lưu vào bộ sưu tập",
-  "search-for": "Tìm kiếm '{{searchQuery}}'",
-  "search-results": "{{count}} kết quả tìm kiếm",
-  "search-results-no-count": "Kết quả tìm kiếm",
   "search": {
     "filters": "Bộ lọc",
     "hint": "Hãy thử tìm kiếm",
@@ -427,12 +449,18 @@
     "results": "kết quả",
     "show-all": "Hiển thị tất cả kết quả",
     "switch-mode": "Chuyển sang Tìm kiếm nâng cao",
-    "title": "Tìm kiếm"
+    "title": "Tìm kiếm",
+    "placeholder": "Tìm kiếm câu kinh, chương, chủ đề hoặc nhảy tới câu..."
   },
+  "search-for": "Tìm kiếm '{{searchQuery}}'",
+  "search-languages": "Tìm kiếm ngôn ngữ...",
+  "search-results": "{{count}} kết quả tìm kiếm",
+  "search-results-no-count": "Kết quả tìm kiếm",
   "seconds": "Giây",
   "see-less": "Xem ít hơn",
   "see-new": "Xem có gì mới",
   "select-language": "Chọn ngôn ngữ",
+  "select-language-description": "Chọn ngôn ngữ hiển thị ưa thích của bạn cho Quran.ir",
   "settings": {
     "no-tafsir-selected": "Không có tafsir nào được chọn.",
     "no-translation-selected": "Chưa có bản dịch nào được chọn.",
@@ -484,6 +512,7 @@
   "subscribe": "Đăng ký",
   "subscribed": "Đã đăng ký",
   "surah": "Surah",
+  "surahs": "Surahs",
   "tab-see-less": "Thu gọn...",
   "tab-see-more": "Xem thêm...",
   "tafsir": {
@@ -508,6 +537,7 @@
   "to": "Đến",
   "tooltip": "Chú thích công cụ",
   "tooltip-trans-lang": "Ngôn ngữ chú thích",
+  "topics": "Topics",
   "trans-lang": "Ngôn ngữ bản dịch",
   "translation": "Bản dịch",
   "translations": "Bản dịch",
@@ -540,7 +570,9 @@
     "suggest": "Hãy bắt đầu đọc, câu Kinh của bạn sẽ hiện lên.",
     "suggest-subtitle": "Hãy đọc bất kỳ câu Kinh tiếng Ả Rập nào, câu đó sẽ hiện lên",
     "suggest-title": "Đọc ngay",
-    "voice-search-powered-by": "Tìm kiếm giọng nói được hỗ trợ bởi"
+    "voice-search-powered-by": "Tìm kiếm giọng nói được hỗ trợ bởi",
+    "start": "Bắt đầu tìm kiếm bằng giọng nói",
+    "stop": "Dừng tìm kiếm bằng giọng nói"
   },
   "wbw": "Từng từ",
   "wbw-lang-summary": "Nguồn dịch từng từ: <link>{{source}}</link>. Nguồn này tách biệt với lựa chọn bản dịch câu Kinh.",

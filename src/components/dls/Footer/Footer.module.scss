@@ -120,11 +120,6 @@
   cursor: not-allowed;
 }
 
-.titleAndDescriptionContainer {
-  max-inline-size: calc(12.5 * var(--spacing-mega));
-  margin-inline-end: var(--spacing-medium);
-}
-
 .bottomSectionContainer {
   display: flex;
   flex-direction: column-reverse;
@@ -165,7 +160,7 @@
   }
 }
 
-// https://github.com/quran/quran.com-frontend-next/issues/560
+// https://github.com/quran/quran.ir-frontend-next/issues/560
 // our AudioPlayer is has "position: fixed", so its position is removed from the normal flow
 // we need to add an empty space placeholder, so the AudioPlayer doesn't cover the other elements in the page
 .emptySpacePlaceholder {
@@ -188,4 +183,92 @@
   color: var(--color-text-secondary);
   font-size: var(--font-size-small);
   margin-block-start: var(--spacing-xsmall);
+}
+
+.titleAndDescriptionContainer {
+  @include breakpoints.desktop {
+    max-inline-size: 380px;
+    margin-inline-end: var(--spacing-large);
+  }
+  margin-block-end: var(--spacing-large);
+}
+
+.appBadgesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-small);
+  margin-block-start: var(--spacing-medium);
+}
+
+.appBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xsmall);
+  padding-block: var(--spacing-xxsmall);
+  padding-inline: var(--spacing-small);
+  border-radius: var(--border-radius-default);
+  background-color: var(--color-background-default);
+  border: 1px solid var(--color-borders-hairline);
+  color: var(--color-text-default);
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease,
+    background-color var(--transition-fast) ease;
+  cursor: pointer;
+  user-select: none;
+  min-inline-size: 140px;
+  min-block-size: 44px;
+  box-sizing: border-box;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-borders-subtle);
+    background-color: var(--color-background-elevated-new);
+    text-decoration: none;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  @include breakpoints.smallerThanTablet {
+    flex: 1 1 calc(50% - var(--spacing-small));
+    min-inline-size: 0;
+  }
+}
+
+.badgeIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badgeIcon {
+  inline-size: 22px;
+  block-size: 22px;
+  fill: currentColor;
+}
+
+.badgeText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.badgeSubtext {
+  font-size: 0.65rem;
+  letter-spacing: 0.02em;
+  opacity: var(--opacity-75);
+  text-transform: uppercase;
+}
+
+.badgeTitle {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
 }

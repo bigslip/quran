@@ -30,7 +30,7 @@ type TranslationViewProps = {
   quranReaderDataType: QuranReaderDataType;
   initialData: VersesResponse;
   resourceId: number | string; // can be the chapter, verse, tafsir, hizb, juz, rub or page's ID.
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const EndOfScrollingControls = dynamic(() => import('../EndOfScrollingControls'), {
   ssr: false,
@@ -44,6 +44,8 @@ const TranslationView = ({
   quranReaderDataType,
   initialData,
   resourceId,
+  className,
+  ...props
 }: TranslationViewProps) => {
   const [apiPageToVersesMap, setApiPageToVersesMap] = useState<Record<number, Verse[]>>({
     1: initialData.verses,
@@ -86,6 +88,10 @@ const TranslationView = ({
   const verses = useMemo(() => Object.values(apiPageToVersesMap).flat(), [apiPageToVersesMap]);
   useQcfFont(quranReaderStyles.quranFont, verses);
 
+  const lastVerse = verses[verses.length - 1];
+  const lastVerseRef = useRef<Verse>(lastVerse);
+  lastVerseRef.current = lastVerse;
+
   // Simplified: just render the item without passing questions data down
   // Each TranslationViewVerse will fetch its own questions data via context
   const itemContentRenderer = useCallback(
@@ -94,7 +100,7 @@ const TranslationView = ({
         return (
           <EndOfScrollingControls
             quranReaderDataType={quranReaderDataType}
-            lastVerse={verses[verses.length - 1]}
+            lastVerse={lastVerseRef.current}
             initialData={initialData}
           />
         );
@@ -118,7 +124,6 @@ const TranslationView = ({
     [
       versesCount,
       quranReaderDataType,
-      verses,
       initialData,
       quranReaderStyles,
       setApiPageToVersesMap,
@@ -147,10 +152,11 @@ const TranslationView = ({
       )}
 
       <div
-        className={classNames(styles.wrapper, {
+        className={classNames(className, styles.wrapper, {
           [styles.singleVerseWrapper]: isSingleVerse,
         })}
         onCopy={(event) => onCopyQuranWords(event, verses, quranReaderStyles.quranFont)}
+        {...props}
       >
         <Virtuoso
           ref={virtuosoRef}

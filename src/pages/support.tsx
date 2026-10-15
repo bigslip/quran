@@ -29,7 +29,7 @@ const SupportPage: NextPage = (): JSX.Element => {
             <Trans
               i18nKey="support:main-desc"
               components={[
-                <a key={0} target="_blank" href="https://feedback.quran.com/" rel="noreferrer" />,
+                <a key={0} target="_blank" href="https://feedback.quran.ir/" rel="noreferrer" />,
               ]}
             />
           </p>
@@ -42,7 +42,7 @@ const SupportPage: NextPage = (): JSX.Element => {
             <Trans
               i18nKey="support:bug-a"
               components={[
-                <a key={0} target="_blank" href="https://feedback.quran.com/" rel="noreferrer" />,
+                <a key={0} target="_blank" href="https://feedback.quran.ir/" rel="noreferrer" />,
               ]}
             />
           </p>
@@ -51,7 +51,7 @@ const SupportPage: NextPage = (): JSX.Element => {
             <Trans
               i18nKey="support:site-down-a"
               components={[
-                <a key={0} target="_blank" href="https://feedback.quran.com/" rel="noreferrer" />,
+                <a key={0} target="_blank" href="https://feedback.quran.ir/" rel="noreferrer" />,
               ]}
             />
           </p>
@@ -76,7 +76,7 @@ const SupportPage: NextPage = (): JSX.Element => {
             <Trans
               i18nKey="support:translations-a"
               components={[
-                <a key={0} href="https://feedback.quran.com/" target="_blank" rel="noreferrer" />,
+                <a key={0} href="https://feedback.quran.ir/" target="_blank" rel="noreferrer" />,
               ]}
             />
           </p>
@@ -85,7 +85,7 @@ const SupportPage: NextPage = (): JSX.Element => {
             <Trans
               i18nKey="support:reciters-a"
               components={[
-                <a key={0} target="_blank" href="https://feedback.quran.com/" rel="noreferrer" />,
+                <a key={0} target="_blank" href="https://feedback.quran.ir/" rel="noreferrer" />,
               ]}
             />
           </p>

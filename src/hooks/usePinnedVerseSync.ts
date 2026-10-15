@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,6 @@ import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import { getMushafId } from '@/utils/api';
 import { addPinnedItem, deletePinnedItemById, clearPinnedItems } from '@/utils/auth/api';
 import { isPinnedItemsCacheKey } from '@/utils/auth/pinnedItems';
-import { getChapterNumberFromKey, getVerseNumberFromKey } from '@/utils/verse';
 import { PinnedItemTargetType } from 'types/PinnedItem';
 
 const usePinnedVerseSync = () => {
@@ -29,6 +28,9 @@ const usePinnedVerseSync = () => {
   const toast = useToast();
   const { isLoggedIn } = useIsLoggedIn();
   const pinnedVerses = useSelector(selectPinnedVerses, shallowEqual);
+  const pinnedVersesRef = useRef(pinnedVerses);
+  pinnedVersesRef.current = pinnedVerses;
+
   const { mutate: globalMutate } = useSWRConfig();
   const { quranFont, mushafLines } = useSelector(selectQuranReaderStyles, shallowEqual);
   const { mushaf: mushafId } = getMushafId(quranFont, mushafLines);
@@ -49,11 +51,11 @@ const usePinnedVerseSync = () => {
             targetId: verseKey,
             metadata: {
               sourceMushafId: mushafId,
-              key: getChapterNumberFromKey(verseKey),
-              verseNumber: getVerseNumberFromKey(verseKey),
             },
           });
-          dispatch(setServerIds({ [verseKey]: response.id }));
+          if (response?.id) {
+            dispatch(setServerIds({ [verseKey]: response.id }));
+          }
           invalidateCache();
         } catch (error) {
           dispatch(unpinVerse(verseKey));
@@ -74,7 +76,7 @@ const usePinnedVerseSync = () => {
 
   const unpinVerseWithSync = useCallback(
     async (verseKey: string) => {
-      const verse = pinnedVerses.find((v) => v.verseKey === verseKey);
+      const verse = pinnedVersesRef.current.find((v) => v.verseKey === verseKey);
       const { serverId } = verse || {};
 
       dispatch(unpinVerse(verseKey));
@@ -98,11 +100,11 @@ const usePinnedVerseSync = () => {
         }
       }
     },
-    [dispatch, isLoggedIn, pinnedVerses, invalidateCache, t, toast],
+    [dispatch, isLoggedIn, invalidateCache, t, toast],
   );
 
   const clearPinnedWithSync = useCallback(async () => {
-    const savedVerses = [...pinnedVerses];
+    const savedVerses = [...pinnedVersesRef.current];
 
     dispatch(clearPinnedVerses());
     broadcastPinnedVerses(PinnedVersesBroadcastType.CLEAR);
@@ -123,7 +125,7 @@ const usePinnedVerseSync = () => {
         });
       }
     }
-  }, [dispatch, isLoggedIn, pinnedVerses, invalidateCache, t, toast]);
+  }, [dispatch, isLoggedIn, invalidateCache, t, toast]);
 
   return { pinVerseWithSync, unpinVerseWithSync, clearPinnedWithSync };
 };

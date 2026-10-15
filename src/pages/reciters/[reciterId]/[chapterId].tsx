@@ -26,7 +26,7 @@ import PlayIcon from '@/icons/play-arrow.svg';
 import ReaderIcon from '@/icons/reader.svg';
 import { logErrorToSentry } from '@/lib/sentry';
 import { makeCDNUrl } from '@/utils/cdn';
-import { getAllChaptersData, getChapterData } from '@/utils/chapter';
+import { getAllChaptersData, getChapterData, getChapterIdBySlugOrId } from '@/utils/chapter';
 import { logButtonClick } from '@/utils/eventLogger';
 import {
   getCanonicalUrl,
@@ -83,7 +83,7 @@ const RecitationPage = ({ selectedReciter, selectedChapter }: ShareRecitationPag
 
   const onReadClicked = () => {
     logButtonClick('share-recitation-read');
-    router.push(getSurahNavigationUrl(selectedChapter.id));
+    router.push(getSurahNavigationUrl(selectedChapter.slug || selectedChapter.id));
   };
 
   const onDownloadClicked = async () => {
@@ -109,7 +109,10 @@ const RecitationPage = ({ selectedReciter, selectedChapter }: ShareRecitationPag
         })}
         canonical={getCanonicalUrl(
           lang,
-          getReciterChapterNavigationUrl(selectedReciter.id.toString(), selectedChapter.slug),
+          getReciterChapterNavigationUrl(
+            selectedReciter.id.toString(),
+            selectedChapter.slug || String(selectedChapter.id),
+          ),
         )}
       />
       <div className={classNames(layoutStyle.flow, styles.flow)}>
@@ -187,10 +190,13 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     const reciterId = params.reciterId as string;
     let chapterId = params.chapterId as string;
     const isValidId = isValidChapterId(chapterId);
-    // if it's not a valid number or a number that exceed 114 or below 1
+    const chaptersData = await getAllChaptersData(locale);
+
+    // If it's not a valid numeric ID, resolve the slug
     if (!isValidId) {
-      const sluggedChapterId = await getChapterIdBySlug(chapterId, locale);
-      // if it's not a valid number nor a valid slug
+      const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterId);
+      const sluggedChapterId =
+        localChapterId || (await getChapterIdBySlug(chapterId, locale));
       if (!sluggedChapterId) {
         return { notFound: true };
       }
@@ -198,11 +204,19 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     }
 
     const reciterData = await getReciterData(reciterId, locale);
-    const chaptersData = await getAllChaptersData(locale);
     const chapterData = await getChapterData(chaptersData, chapterId);
 
     if (!reciterData || !chapterData) {
       return { notFound: true };
+    }
+
+    if (isValidId && chapterData?.slug) {
+      return {
+        redirect: {
+          destination: getReciterChapterNavigationUrl(reciterId, chapterData.slug),
+          permanent: true,
+        },
+      };
     }
 
     return {

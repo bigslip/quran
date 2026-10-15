@@ -1,4 +1,6 @@
 {
   "description": "Zbuloni hadithe dhe rrëfime autentike që lidhen me ajetet {{ayahNumber}} e Sures {{surahName}}Qasuni në traditat shkencore të lidhura me këtë varg kuranor.",
+  "sahih-bukhari": "Sahih el-Buhari",
+  "sahih-muslim": "Sahih Muslim",
   "title": "Hadithe {{surahName}} - {{ayahNumber}}"
 }

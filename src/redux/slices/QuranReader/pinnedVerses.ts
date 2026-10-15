@@ -90,13 +90,16 @@ export const pinnedVersesSlice = createSlice({
 export const { pinVerse, pinVerses, unpinVerse, clearPinnedVerses, setServerIds, setPinnedVerses } =
   pinnedVersesSlice.actions;
 
-export const selectPinnedVerses = (state: RootState) => state.pinnedVerses?.verses || [];
+const EMPTY_PINNED_VERSES: PinnedVerse[] = [];
+
+export const selectPinnedVerses = (state: RootState) =>
+  state.pinnedVerses?.verses || EMPTY_PINNED_VERSES;
 
 export const selectPinnedVersesCount = (state: RootState) =>
-  (state.pinnedVerses?.verses || []).length;
+  (state.pinnedVerses?.verses || EMPTY_PINNED_VERSES).length;
 
 export const selectIsVersePinned = (state: RootState, verseKey: string) =>
-  (state.pinnedVerses?.verses || []).some((v) => v.verseKey === verseKey);
+  (state.pinnedVerses?.verses || EMPTY_PINNED_VERSES).some((v) => v.verseKey === verseKey);
 
 export const selectPinnedVerseKeys = createSelector(selectPinnedVerses, (verses) =>
   verses.map((v) => v.verseKey),

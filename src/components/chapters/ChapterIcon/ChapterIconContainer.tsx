@@ -41,4 +41,4 @@ const IconContainer: React.FC<Props> = ({
   </span>
 );
 
-export default IconContainer;
+export default React.memo(IconContainer);

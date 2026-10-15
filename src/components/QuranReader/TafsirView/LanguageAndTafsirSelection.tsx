@@ -87,6 +87,7 @@ const LanguageAndTafsirSelection = ({
         })}
         data-testid={`tafsir-selection-${tafsir.slug}`}
         data-isselected={selected}
+        aria-pressed={selected}
       >
         {tafsir.translatedName.name}
       </Button>

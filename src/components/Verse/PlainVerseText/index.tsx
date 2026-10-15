@@ -25,7 +25,7 @@ type Props = {
   titleText?: string;
   quranFont?: QuranFont;
   highlightedWordLocation?: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 /**
  * A component to only show the verse text without extra functionalities such as ayah
@@ -43,6 +43,8 @@ const PlainVerseText: React.FC<Props> = ({
   titleText,
   quranFont: quranFontFromProps,
   highlightedWordLocation,
+  className,
+  ...props
 }: Props): JSX.Element => {
   const {
     quranFont: quranFontFromStore,
@@ -56,7 +58,7 @@ const PlainVerseText: React.FC<Props> = ({
   const shouldShowTitle = !!titleText;
 
   return (
-    <>
+    <div className={className} {...props}>
       <SeoTextForVerse words={words} />
       <TajweedFontPalettes pageNumber={pageNumber} quranFont={quranFont} />
       <div
@@ -99,6 +101,25 @@ const PlainVerseText: React.FC<Props> = ({
                 </PlainVerseTextWord>
               );
             }
+            const wordText =
+              quranFont === QuranFont.IndoPak
+                ? (word.textIndopak ||
+                   word.text_indopak ||
+                   word.textUthmani ||
+                   word.text_uthmani ||
+                   word.qpcUthmaniHafs ||
+                   word.text)
+                : quranFont === QuranFont.QPCHafs
+                ? (word.qpcUthmaniHafs ||
+                   word.qpc_uthmani_hafs ||
+                   word.textUthmani ||
+                   word.text_uthmani ||
+                   word.text)
+                : (word.textUthmani ||
+                   word.text_uthmani ||
+                   word.qpcUthmaniHafs ||
+                   word.text);
+
             return (
               <PlainVerseTextWord
                 key={word.location}
@@ -107,13 +128,13 @@ const PlainVerseText: React.FC<Props> = ({
                 shouldShowWordByWordTransliteration={shouldShowWordByWordTransliteration}
                 isHighlighted={isHighlighted}
               >
-                <TextWord font={quranFont} text={word.text} charType={word.charTypeName} />
+                <TextWord font={quranFont} text={wordText} charType={word.charTypeName} />
               </PlainVerseTextWord>
             );
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

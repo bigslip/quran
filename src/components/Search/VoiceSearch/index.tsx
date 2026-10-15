@@ -1,6 +1,7 @@
 import React from 'react';
 
 import classNames from 'classnames';
+import useTranslation from 'next-translate/useTranslation';
 import { useSelector } from 'react-redux';
 
 import styles from './VoiceSearch.module.scss';
@@ -35,6 +36,7 @@ const VoiceSearch: React.FC<VoiceSearchProps> = ({
   onError,
   className,
 }) => {
+  const { t } = useTranslation('common');
   // Add a custom error handler that logs and passes the error to the parent
   const handleError = (error: Error) => {
     if (onError) {
@@ -61,7 +63,7 @@ const VoiceSearch: React.FC<VoiceSearchProps> = ({
       type="button"
       onClick={handleVoiceSearch}
       className={classNames(styles.micButton, { [styles.active]: isMicActive }, className)}
-      aria-label={isMicActive ? 'Stop voice search' : 'Start voice search'}
+      aria-label={isMicActive ? t('voice.stop') : t('voice.start')}
     >
       <MicIcon />
     </button>

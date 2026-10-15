@@ -6,7 +6,6 @@ import useThemeDetector from './useThemeDetector';
 
 import { selectLoadedFontFaces, addLoadedFontFace } from '@/redux/slices/QuranReader/font-faces';
 import { QuranFont } from '@/types/QuranReader';
-import { removeItemFromArray } from '@/utils/array';
 import {
   getFontFaceNameForPage,
   getPagesByVerses,
@@ -14,6 +13,9 @@ import {
   isQCFFont,
 } from '@/utils/fontFaceHelper';
 import Verse from 'types/Verse';
+
+const globalFetchingFonts = new Set<string>();
+const globalLoadedFonts = new Set<string>();
 
 /**
  * This hook manually request the browser to download the font for each page
@@ -28,14 +30,16 @@ import Verse from 'types/Verse';
  * @param {Verse[]} verses
  */
 const useQcfFont = (quranFont: QuranFont, verses: Verse[]) => {
-  const currentlyFetchingFonts = useRef([]);
   const dispatch = useDispatch();
   const isFontQCF = isQCFFont(quranFont);
   const loadedFonts = useSelector(selectLoadedFontFaces);
+  const loadedFontsRef = useRef(loadedFonts);
+  loadedFontsRef.current = loadedFonts;
   const { themeVariant } = useThemeDetector();
 
   const onFontLoaded = useCallback(
     (fontFace: string) => {
+      globalLoadedFonts.add(fontFace);
       dispatch(addLoadedFontFace(fontFace));
     },
     [dispatch],
@@ -43,48 +47,48 @@ const useQcfFont = (quranFont: QuranFont, verses: Verse[]) => {
 
   // listen to changes in verses (this is due to infinite scrolling fetching more verses).
   useEffect(() => {
-    if (isFontQCF && verses.length > 0) {
-      // loop through unique page numbers of the current verses
-      getPagesByVerses(verses).forEach((pageNumber) => {
-        const fontFaceName = getFontFaceNameForPage(quranFont, pageNumber);
-        const fontFace = new FontFace(
-          fontFaceName,
-          getQCFFontFaceSource(quranFont, pageNumber, themeVariant),
-        );
-        // we only want to load fonts that were not loaded and also are not currently being loaded
-        if (
-          !currentlyFetchingFonts.current.includes(fontFaceName) &&
-          !loadedFonts.includes(fontFaceName)
-        ) {
-          currentlyFetchingFonts.current = [...currentlyFetchingFonts.current, fontFaceName];
-          fontFace.display = 'block';
-          document.fonts.add(fontFace);
-          // load the font-face programmatically
-          fontFace
-            .load()
-            .then(() => {
-              // store the font face in Redux slice
-              onFontLoaded(fontFaceName);
-            })
-            .finally(() => {
-              // whether we failed or succeeded to fetch the fontFace, we remove it from currently fetching array
-              currentlyFetchingFonts.current = removeItemFromArray(
-                fontFaceName,
-                currentlyFetchingFonts.current,
-              );
-            });
-        }
-      });
+    if (
+      !isFontQCF ||
+      verses.length === 0 ||
+      typeof document === 'undefined' ||
+      !('fonts' in document) ||
+      typeof FontFace === 'undefined'
+    ) {
+      return;
     }
-  }, [
-    quranFont,
-    verses,
-    loadedFonts,
-    isFontQCF,
-    currentlyFetchingFonts,
-    onFontLoaded,
-    themeVariant,
-  ]);
+
+    // loop through unique page numbers of the current verses
+    getPagesByVerses(verses).forEach((pageNumber) => {
+      const fontFaceName = getFontFaceNameForPage(quranFont, pageNumber);
+      // we only want to load fonts that were not loaded and also are not currently being loaded
+      if (
+        globalFetchingFonts.has(fontFaceName) ||
+        globalLoadedFonts.has(fontFaceName) ||
+        loadedFontsRef.current.includes(fontFaceName)
+      ) {
+        return;
+      }
+
+      globalFetchingFonts.add(fontFaceName);
+      const fontFace = new FontFace(
+        fontFaceName,
+        getQCFFontFaceSource(quranFont, pageNumber, themeVariant),
+      );
+      fontFace.display = 'block';
+      document.fonts.add(fontFace);
+
+      // load the font-face programmatically
+      fontFace
+        .load()
+        .then(() => {
+          // store the font face in Redux slice
+          onFontLoaded(fontFaceName);
+        })
+        .finally(() => {
+          globalFetchingFonts.delete(fontFaceName);
+        });
+    });
+  }, [quranFont, verses, isFontQCF, onFontLoaded, themeVariant]);
 };
 
 export default useQcfFont;

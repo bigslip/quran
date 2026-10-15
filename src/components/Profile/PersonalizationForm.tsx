@@ -18,7 +18,8 @@ import { logButtonClick } from '@/utils/eventLogger';
 const PersonalizationForm: FC = () => {
   const { t } = useTranslation('profile');
   const { userData } = useAuthData();
-  const hasProfilePicture = !!userData?.avatars?.large;
+  const avatarUrl = userData?.avatars?.large || userData?.photoUrl;
+  const hasProfilePicture = !!avatarUrl;
 
   const {
     fileInputRef,
@@ -44,15 +45,16 @@ const PersonalizationForm: FC = () => {
     <Section
       title={t('personalization')}
       dataTestId={TestId.AUTH_UPDATE_PROFILE_PERSONALIZATION_SECTION}
+      aria-busy={isProcessing || isRemoving}
     >
       <div className={styles.profilePictureContainer}>
         <p className={styles.profilePictureTitle}>{t('profile-picture')}</p>
         <div className={styles.profilePictureDetailAction}>
           <div className={styles.profilePictureDetail}>
             <div className={styles.profilePictureImage}>
-              {hasProfilePicture && userData.avatars?.large ? (
+              {hasProfilePicture && avatarUrl ? (
                 <Image
-                  src={userData.avatars.large}
+                  src={avatarUrl}
                   alt={t('profile-picture')}
                   width={60}
                   height={60}
@@ -73,6 +75,7 @@ const PersonalizationForm: FC = () => {
               type="file"
               accept="image/jpeg,image/jpg,image/png"
               onChange={handleFileSelect}
+              aria-label={t('profile-picture')}
               className={styles.profilePictureInput}
               data-testid={TestId.AUTH_UPDATE_PROFILE_PROFILE_INPUT}
             />

@@ -3,11 +3,11 @@
   "body-placeholder": "Genel notları kaydetmek veya bir yansıma yazmak için bu alanı kullanın.",
   "checkbox-refl-intro": {
     "checkbox": {
-      "desc": "<li> Göndermek, yansımanızın, moderasyon ekibi tarafından inceleneceği ve QuranReflect topluluğu tarafından görüleceği, adınızla QuranReflect'te paylaşılacağı anlamına gelir. </li> <li> Gönderiniz moderasyon ekibimiz tarafından incelenip onaylandıktan veya tanıtıldıktan sonra beğeni, yorum ve takip bildirimleri alabilirsiniz. QuranReflect'te oturum açtıktan sonra bildirim ayarlarınızı tercihlerinize uyacak şekilde güncelleyebilirsiniz. </li> <li> Notlarınızı ve yayınladığınız yansımaları, Quran.com giriş profilinizin “Notlarım ve Düşüncelerim” bölümünde görüntüleyebilir veya Quran.com imzanızı kullanarak <link> QuranReflect </link> te oturum açabilirsiniz. e-postada. </li>",
+      "desc": "<li> Göndermek, yansımanızın, moderasyon ekibi tarafından inceleneceği ve QuranReflect topluluğu tarafından görüleceği, adınızla QuranReflect'te paylaşılacağı anlamına gelir. </li> <li> Gönderiniz moderasyon ekibimiz tarafından incelenip onaylandıktan veya tanıtıldıktan sonra beğeni, yorum ve takip bildirimleri alabilirsiniz. QuranReflect'te oturum açtıktan sonra bildirim ayarlarınızı tercihlerinize uyacak şekilde güncelleyebilirsiniz. </li> <li> Notlarınızı ve yayınladığınız yansımaları, Quran.ir giriş profilinizin “Notlarım ve Düşüncelerim” bölümünde görüntüleyebilir veya Quran.ir imzanızı kullanarak <link> QuranReflect </link> te oturum açabilirsiniz. e-postada. </li>",
       "title": "\"Kaydet ve QuranReflect'e Gönder\" seçeneğine tıklarsam ne olur?"
     },
     "post-button": "Paylaşım yaptığımda ne oluyor?",
-    "qr-intro": "QuranReflect, Quran.com ile birlikte Quran.Foundation ailesinin bir parçasıdır. Kuran hakkındaki kişisel düşüncelerin paylaşıldığı, kullanıcıların Kur'an'ın mesajlarını içselleştirmesine ve olumlu değişime ilham veren içgörüleri paylaşmaya teşvik ettiği sosyal bir platformdur. İlmî bir yorum olan tefsirden farklı olarak yansımalar, ayetlerle ilgili kişisel düşünce ve tecrübelerdir. QuranReflect'teki kullanıcı gönderileri, içeriğin kalitesinin ve Kuran'la etkileşimde görgü kurallarının sağlanmasına yardımcı olacak nitelikli bir ekip tarafından incelenir ve denetlenir ve geri bildirimleri paylaşarak ve değerli söylemi vurgulayarak kullanıcıları güçlendirerek manevi açıdan canlandırıcı, Kuran odaklı bir topluluğa teşvik eder. Daha fazla bilgi edinin: <link> Quranreflect.com/faq </link>",
+    "qr-intro": "QuranReflect, Quran.ir ile birlikte Quran.Foundation ailesinin bir parçasıdır. Kuran hakkındaki kişisel düşüncelerin paylaşıldığı, kullanıcıların Kur'an'ın mesajlarını içselleştirmesine ve olumlu değişime ilham veren içgörüleri paylaşmaya teşvik ettiği sosyal bir platformdur. İlmî bir yorum olan tefsirden farklı olarak yansımalar, ayetlerle ilgili kişisel düşünce ve tecrübelerdir. QuranReflect'teki kullanıcı gönderileri, içeriğin kalitesinin ve Kuran'la etkileşimde görgü kurallarının sağlanmasına yardımcı olacak nitelikli bir ekip tarafından incelenir ve denetlenir ve geri bildirimleri paylaşarak ve değerli söylemi vurgulayarak kullanıcıları güçlendirerek manevi açıdan canlandırıcı, Kuran odaklı bir topluluğa teşvik eder. Daha fazla bilgi edinin: <link> Quranreflect.com/faq </link>",
     "qr-title": "QuranReflect nedir?",
     "title": "QuranReflect nedir ve bu kutuyu işaretlersem ne olur?"
   },
@@ -57,7 +57,7 @@
   "reflection-update-success": "tefekkur yansımasi başarıyla güncellendi",
   "reflections-intro": {
     "line-1": "Yorumları görüntülemek ve onlarla etkileşimde bulunmak, toplulukla etkileşimde bulunmak ve daha fazlasını yapmak için <link> QuranReflect.com </link> adresini ziyaret edin.",
-    "line-2": "Oturum açarken kullandığınız Quran.com e-posta adresiyle oturum açarak veya kaydolarak bağlantılı KuranReflect hesabınızda oturum açabilirsiniz.",
+    "line-2": "Oturum açarken kullandığınız Quran.ir e-posta adresiyle oturum açarak veya kaydolarak bağlantılı KuranReflect hesabınızda oturum açabilirsiniz.",
     "line-3": "Herkese açık olarak görüntülemeye uygun olmayan içerikler gizlenecek veya silinecektir. Uygunsuz içerik paylaşan kullanıcılar engellenecektir.",
     "title": "Yayınlanan Yansımalar hakkında daha fazla bilgi edinin"
   },

@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "ကုရ်အာန်ကို မျှဝေရန်အတွက် embed widget များကို ပြင်ဆင်ပြီး preview လုပ်ပါ၊ ထို့နောက် အသုံးပြုရန် အသင့်ဖြစ်နေသော script snippet ကို ကူးယူပါ။",
-    "title": "အာယာထည့်သွင်းမှုတည်ဆောက်သူ | Quran.com"
+    "title": "အာယာထည့်သွင်းမှုတည်ဆောက်သူ | Quran.ir"
   },
   "mushaf": {
     "indopak": "အင်ဒိုပက်",
@@ -80,6 +80,6 @@
     "otherLanguage": "အခြား"
   },
   "widget": {
-    "readOnQuran": "Quran.com မှာ ဖတ်ပါ"
+    "readOnQuran": "Quran.ir မှာ ဖတ်ပါ"
   }
 }

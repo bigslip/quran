@@ -1,22 +1,23 @@
 {
   "about": "About Us",
+  "all": "All",
   "allow": "Allow",
   "and": "and",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
         "action": "Next",
-        "description": "Whether you're using Quran.com on your phone or your laptop, your bookmarks, last read verses, and your preferences will be available",
+        "description": "Whether you're using Quran.ir on your phone or your laptop, your bookmarks, last read verses, and your preferences will be available",
         "title": "Your data will be synced <br></br> across devices"
       },
       "feedback": {
         "action": "Okay, got it",
-        "description": "Thank you for using Quran.com and we would be glad to hear your feedback on <link>feedback.quran.com</link>",
+        "description": "Thank you for using Quran.ir and we would be glad to hear your feedback on <link>feedback.quran.ir</link>",
         "title": "We want to hear your thoughts"
       },
       "quran-foundation-link": {
         "action": "Next",
-        "description": "Use your Quran.com login for access to QuranReflect.com — a thriving global community engaged in Quranic reflection.",
+        "description": "Use your Quran.ir login for access to QuranReflect.com — a thriving global community engaged in Quranic reflection.",
         "title": "Use your account across Quran.Foundation apps!"
       },
       "quran-growth-journey": {
@@ -26,7 +27,7 @@
       },
       "welcome": {
         "action": "See what's new",
-        "title": "Welcome to Quran.com <br></br> User Account"
+        "title": "Welcome to Quran.ir <br></br> User Account"
       }
     },
     "collections-announcement": {
@@ -46,7 +47,11 @@
     "select-lng": "Select Language",
     "sidebar-nav-close": "Close Navigation Sidebar",
     "tooltip-action": "Tooltip action",
-    "translation-info": "View translation information"
+    "translation-info": "View translation information",
+    "play-verse": "Play Ayah {{verseKey}}",
+    "pause-surah": "Pause Surah {{surahName}}",
+    "pause-verse": "Pause Ayah {{verseKey}}",
+    "surah-filter": "Surah filter"
   },
   "audio": {
     "auto-scroll": {
@@ -113,9 +118,16 @@
   "click-here": "Click here",
   "close": "Close",
   "command-bar": {
+    "close": "Close",
+    "direct-jump-hint": "Press ↵ to go",
+    "filter": "Filter",
+    "navigate": "Navigate",
     "navigations": "Navigations",
     "no-nav-results": "No navigation results",
     "placeholder": "Search the Quran...",
+    "search-placeholder": "Search Quran, Surah (e.g. Kahf or 18), Verse (2:255), Juz, or Page...",
+    "select": "Select",
+    "spotlight-placeholder": "Search Quran, Surah, or Ayah...",
     "recent-navigations": "Recent navigations",
     "search-by-voice": "Search by voice",
     "try-navigating": "Try navigating to"
@@ -228,6 +240,7 @@
   },
   "exciting-updates": "Exciting Updates",
   "favorites": "Favorites",
+  "featured": "Featured",
   "feedback": "Feedback",
   "fonts": {
     "15_lines": "15 Lines",
@@ -249,8 +262,12 @@
     "translation-font-size": "Translation font size"
   },
   "footer": {
+    "app-store": "App Store",
     "apps-disclaimer": "Each application is independently owned and maintained by its developer. For support, bug reports, or feature requests, please contact the app creator directly.",
-    "description": "Quran.com is a trusted platform used by millions worldwide to read, search, listen to, and reflect on the Quran in multiple languages. It provides translations, tafsir, recitations, word-by-word translation, and tools for deeper study, making the Quran accessible to everyone. <br/> <br/> As a Sadaqah Jariyah, Quran.com is dedicated to helping people connect deeply with the Quran. Supported by <link>Quran.Foundation</link>, a 501(c)(3) non-profit organization, Quran.com continues to grow as a free and valuable resource for all, Alhamdulillah.",
+    "description": "Quran.ir is a trusted platform used by millions worldwide to read, search, listen to, and reflect on the Quran in multiple languages. It provides translations, tafsir, recitations, word-by-word translation, and tools for deeper study, making the Quran accessible to everyone. <br/> <br/> As a Sadaqah Jariyah, Quran.ir is dedicated to helping people connect deeply with the Quran. Supported by <link>Quran.Foundation</link>, a 501(c)(3) non-profit organization, Quran.ir continues to grow as a free and valuable resource for all, Alhamdulillah.",
+    "download-on": "Download on the",
+    "get-it-on": "Get it on",
+    "google-play": "Google Play",
     "hiring": "We're hiring! Join the QuranFoundation team and contribute to our mission. <link>Apply now!</link>",
     "rights": "All Rights Reserved",
     "title": "Read, Listen, Search, and Reflect on the Quran"
@@ -271,29 +288,29 @@
     "verification-code": "Verification Code"
   },
   "from": "From",
-  "fundraising-card-v2": {
-    "cta": "Donate now",
-    "description": "Monthly donors help us improve Quran.com and sustain operations so we focus less on fundraising and more on creating impact.",
-    "title": "Become a Monthly Donor"
-  },
-  "fundraising-share-title": "Share Quran.com Fundraising",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Donate",
-    "desktop-text": "Contribute to our mission",
-    "mobile-line-one": "It's the month of the Quran.",
-    "mobile-line-two": "Help us spread its light."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Donate",
-    "title": "Give during the best days!"
-  },
   "fundraising": {
-    "description": "Monthly donations help us improve Quran.com and sustain operations so we focus less on fundraising and more on creating impact.",
+    "description": "Monthly donations help us improve Quran.ir and sustain operations so we focus less on fundraising and more on creating impact.",
     "donation-campaign": {
       "cta": "Donate today",
       "text": "Become a supporter"
     },
     "title": "Become A Monthly Donor"
+  },
+  "fundraising-card-v2": {
+    "cta": "Donate now",
+    "description": "Monthly donors help us improve Quran.ir and sustain operations so we focus less on fundraising and more on creating impact.",
+    "title": "Become a Monthly Donor"
+  },
+  "fundraising-share-title": "Share Quran.ir Fundraising",
+  "fundraising-sticky-banner": {
+    "cta": "Donate",
+    "title": "Give during the best days!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Donate",
+    "desktop-text": "Contribute to our mission",
+    "mobile-line-one": "It's the month of the Quran.",
+    "mobile-line-two": "Help us spread its light."
   },
   "get-started": "Get Started",
   "go-to-verse": "Go To Verse",
@@ -311,6 +328,7 @@
   "juz": "Juz",
   "language": "Language",
   "languages": "Languages",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Learn",
   "learn-more": "Learn more",
   "learning-plans": "Learning Plans",
@@ -320,11 +338,16 @@
   "loading": "Loading",
   "login": "Login",
   "logout": "Logout",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "Meccan",
   "medinan": "Medinan",
   "menu": "Menu",
   "minutes": "Minutes",
   "mobile-apps": "Mobile Apps",
+  "modal": "Modal",
   "mode": "Mode",
   "more": "More",
   "my-learning-plans": "My Learning Plans",
@@ -336,6 +359,7 @@
   "next": "Next",
   "next-ayah": "Next Ayah",
   "no": "No",
+  "no-languages-found": "No languages found",
   "no-notifications": "No notifications yet",
   "no-verses-available": "No verses available",
   "none": "None",
@@ -344,18 +368,20 @@
     "label": "Notes",
     "title": "My Notes & Reflections"
   },
-  "notification-settings": "Notification Settings",
   "notification": {
     "mark-all-as-read": "Mark all as read",
     "mark-as-read": "Mark as read"
   },
+  "notification-settings": "Notification Settings",
   "notifications": "Notifications",
   "off": "Off",
   "oldest": "Oldest",
   "on": "On",
   "our-projects": "Our Projects",
   "page": "Page",
+  "page-number": "Page {{page}}",
   "pages": "Pages",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}}-{{endOfResultNumber}} of {{totalNumberOfResults}} search results",
   "pbuh": "Blessings of Allah be upon him",
   "popular-links": "Popular Links",
@@ -379,9 +405,12 @@
   "profile": "Profile",
   "projects-desc": "Non-profit projects owned, managed, or sponsored by <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
+  "quran-android": "Quran for Android",
   "quran-apps": "Quran Apps",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
+  "quran-ios": "Quran for iOS",
   "quran-radio": "Quran Radio",
+  "ramadan-2026": "Ramadan 2026",
   "read": "Read",
   "read-more": "Read More",
   "reading-history": "Reading history",
@@ -412,9 +441,6 @@
   "rub": "Rub el Hizb",
   "save": "Save",
   "save-to-collection": "Save to Collection",
-  "search-for": "Search for '{{searchQuery}}'",
-  "search-results": "{{count}} search results",
-  "search-results-no-count": "Search Results",
   "search": {
     "filters": "Filters",
     "hint": "Try searching for",
@@ -427,12 +453,18 @@
     "results": "results",
     "show-all": "Show all results",
     "switch-mode": "Switch to Advanced Search",
+    "placeholder": "Search verses, surahs, topics, or jump to ayah...",
     "title": "Search"
   },
+  "search-for": "Search for '{{searchQuery}}'",
+  "search-languages": "Search languages...",
+  "search-results": "{{count}} search results",
+  "search-results-no-count": "Search Results",
   "seconds": "Seconds",
   "see-less": "See less",
   "see-new": "See What's New",
   "select-language": "Select Language",
+  "select-language-description": "Select your preferred display language for Quran.ir",
   "settings": {
     "no-tafsir-selected": "No tafsir selected",
     "no-translation-selected": "No translation selected",
@@ -463,11 +495,15 @@
   "show-arabic": "Show Arabic",
   "show-more": "Show more",
   "sidebar": {
+    "loading-juz": "Loading Juz...",
+    "loading-page": "Loading Page...",
+    "loading-surah": "Loading Surah...",
     "search-hizb": "Search Hizb",
     "search-juz": "Search Juz",
     "search-page": "Search Page",
     "search-surah": "Search Surah",
     "search-verse": "Search Verse",
+    "searching": "Searching Quran...",
     "try-navigating-with": "Tip: try navigating with"
   },
   "sign-in": "Sign in",
@@ -484,6 +520,7 @@
   "subscribe": "Subscribe",
   "subscribed": "Subscribed",
   "surah": "Surah",
+  "surahs": "Surahs",
   "tab-see-less": "See less...",
   "tab-see-more": "See more...",
   "tafsir": {
@@ -508,6 +545,7 @@
   "to": "To",
   "tooltip": "Tooltip",
   "tooltip-trans-lang": "Tooltip Language",
+  "topics": "Topics",
   "trans-lang": "Translation Language",
   "translation": "Translation",
   "translations": "Translations",
@@ -540,6 +578,8 @@
     "suggest": "Please begin reciting and your verse will appear.",
     "suggest-subtitle": "Recite any verse in Arabic, and the verse will appear",
     "suggest-title": "Recite now",
+    "start": "Start voice search",
+    "stop": "Stop voice search",
     "voice-search-powered-by": "Voice Search Powered by"
   },
   "wbw": "Word By Word",

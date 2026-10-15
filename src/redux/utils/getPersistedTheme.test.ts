@@ -21,14 +21,26 @@ describe('getPersistedTheme', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    // Spy on localStorage.getItem
-    getItemSpy = vi.spyOn(Storage.prototype, 'getItem');
+    const mockStorage = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+      key: vi.fn(),
+      length: 0,
+    };
+    Object.defineProperty(window, 'localStorage', {
+      value: mockStorage,
+      writable: true,
+      configurable: true,
+    });
+    getItemSpy = vi.spyOn(window.localStorage, 'getItem');
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    getItemSpy.mockRestore();
-    consoleErrorSpy.mockRestore();
+    getItemSpy?.mockRestore();
+    consoleErrorSpy?.mockRestore();
   });
 
   describe('successfully reading and parsing persisted theme', () => {

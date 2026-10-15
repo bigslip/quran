@@ -19,7 +19,7 @@ export default {
       control: {
         type: 'text',
       },
-      defaultValue: 'https://www.quran.com',
+      defaultValue: 'https://www.quran.ir',
       description: 'The href of the link.',
       table: {
         category: 'Required',

@@ -264,5 +264,7 @@
   "verses-pinned": "{{count}} versos fijados",
   "verses-range": "Gama de versos",
   "view-on-quran-reflect": "Ver en QuranReflect",
-  "wbw-helper-text": "Seleccione opciones para mostrar la traducción, transliteración y/o recitación de cada palabra."
+  "wbw-helper-text": "Seleccione opciones para mostrar la traducción, transliteración y/o recitación de cada palabra.",
+  "page-number": "Página {{page}}",
+  "chapter-header-intro": "Lea y escuche la sura {{chapterName}} con traducción, tafsir, recitación de audio, significado palabra por palabra y transliteración."
 }

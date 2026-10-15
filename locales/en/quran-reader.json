@@ -264,5 +264,7 @@
   "verses-pinned": "{{count}} verses pinned",
   "verses-range": "Range of verses",
   "view-on-quran-reflect": "View on QuranReflect",
-  "wbw-helper-text": "Select options to show translation, transliteration, and/or recitation for each word."
+  "wbw-helper-text": "Select options to show translation, transliteration, and/or recitation for each word.",
+  "page-number": "Page {{page}}",
+  "chapter-header-intro": "Read and listen to Surah {{chapterName}} with translation, tafsir, audio recitation, word-by-word meaning, and transliteration."
 }

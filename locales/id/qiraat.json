@@ -1,4 +1,5 @@
 {
   "description": "Jelajahi berbagai Qiraat (varian bacaan) Ayah {{ayahNumber}} dari Surah {{surahName}}",
+  "juncture-selection": "Pilihan sambungan",
   "title": "Qiraat {{surahName}} - {{ayahNumber}}"
 }

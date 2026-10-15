@@ -39,10 +39,35 @@
   --color-text-white: #ffffff;
   --color-text-gray: #495057;
 
-  --color-background-default: #f8ebd5;
-  --color-background-elevated: #fff7ea;
-  --color-background-elevated-new: #fff7ea;
-  --color-background-gradient: #fff7ea;
+  // Modern Spiritual Sanctuary Tokens - Sepia Palette
+  --font-family-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-family-sans: 'Plus Jakarta Sans', 'Figtree', sans-serif;
+  --color-primary: #1b5e20;
+  --color-primary-subtle: rgba(27, 94, 32, 0.1);
+  --color-primary-gradient: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+  --color-secondary-gradient: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+  --color-accent-gold: #b45309;
+  --color-accent-gold-rich: #d97706;
+  --color-accent-gold-subtle: rgba(180, 83, 9, 0.12);
+  --color-accent-emerald: #1b5e20;
+  --color-accent-emerald-subtle: rgba(27, 94, 32, 0.1);
+  --color-surface-bg: #fbf7ee;
+  --color-surface-card: #f4ebd9;
+  --color-surface-card-hover: #efe4ce;
+  --color-surface-floating: rgba(244, 235, 217, 0.9);
+  --color-text-primary: #2a241c;
+  --color-text-secondary: #6b5e4f;
+  --color-border-subtle: rgba(215, 201, 178, 0.7);
+  --color-border-iridescent: rgba(215, 201, 178, 0.9);
+  --color-glow-celestial: 0 0 16px rgba(27, 94, 32, 0.15);
+  --color-glow-gold: 0 0 20px rgba(180, 83, 9, 0.16);
+  --color-glow-subtle: 0 8px 24px rgba(100, 80, 50, 0.08);
+  --shadow-card: 0 6px 24px rgba(100, 80, 50, 0.08), 0 0 1px rgba(180, 83, 9, 0.2);
+
+  --color-background-default: #fbf7ee;
+  --color-background-elevated: #f4ebd9;
+  --color-background-elevated-new: #f4ebd9;
+  --color-background-gradient: #f4ebd9;
 
   --color-background-alternative-faded: #efe2cd;
   --color-background-alternative-faint: #f0e2cc;
@@ -58,7 +83,17 @@
 
   --color-borders-hairline: #dbccb3;
 
-  --color-highlight: #50e3c2;
+  // Text selection tokens (subtle warm amber/gold tint)
+  --color-selection-bg: rgba(180, 83, 9, 0.22);
+  --color-selection-fg: #2a241c;
+  --color-highlight: rgba(180, 83, 9, 0.22);
+  --color-highlight-dark: #9d5c01;
+
+  // Focus ring tokens (WCAG 2.2 AA compliant, rich emerald / gold)
+  --color-focus-ring: #1b5e20;
+  --color-focus-ring-subtle: rgba(27, 94, 32, 0.35);
+  --focus-ring-shadow: 0 0 0 2px var(--color-background-default), 0 0 0 4px var(--color-focus-ring);
+  --focus-ring-outline: 2px solid var(--color-focus-ring);
 
   --shadow-small: 0px 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-reading-word-three-dots: var(--shadow-small);
@@ -77,19 +112,23 @@
   --shadow-language-selector: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
   --shadow-chapter-header-actions: 0px 0px 4px rgba(0, 0, 0, 0.1);
   --shadow-tajweed-trigger: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  --elevation-floating: 0 12px 32px rgba(100, 80, 50, 0.12), 0 2px 6px rgba(100, 80, 50, 0.06);
+  --shadow-card-hover: 0 10px 25px -5px rgba(100, 80, 50, 0.08),
+    0 8px 10px -6px rgba(100, 80, 50, 0.06);
+  --shadow-word-glow: 0 0 12px var(--color-primary-subtle);
   font-palette: --Sepia;
 
   // scrollbar styles
-  --scrollbar-background: #72603f;
-  --scrollbar-thumb: #f0cd8c;
-  --scrollbar-thumb-hover: #d4b478;
+  --scrollbar-background: #efe2cd;
+  --scrollbar-thumb: #d4b478;
+  --scrollbar-thumb-hover: #b49b6c;
   --scrollbar-thumb-active: #8d774e;
 
   --color-grey-icons: #d8c6a5;
   --color-grey-icons-new: #7c756a;
   --color-daily-progress: #ccb996;
-  --color-separators: #f8ebd5;
-  --color-separators-new: #f8ebd5;
+  --color-separators: #f4ebd9;
+  --color-separators-new: #f4ebd9;
   --color-blue-buttons-and-icons: #72603f;
   --color-faint-blue-icons: #f2e0bf;
   --color-black-buttons: #000000;
@@ -100,13 +139,30 @@
   --color-qdc-faded-blue: #ebf9fa;
   --color-qdc-faint-blue: #c2edef;
   --color-qdc-deep-blue: #258c91;
-  --color-streaks-dark: #415d49;
+  --color-streaks-dark: #1b5e20;
   --color-streaks-light: #efe2cd;
   --color-calligraphy: #ccb996;
   --color-scholars-say-background: #f1d5b7;
   --color-scholars-say-text: #7c4221;
   --color-search-background: #d8c6a5;
-  --color-check: rgba(56, 121, 75, 1);
   --color-green-light: rgba(228, 244, 233, 1);
   --color-bookmark-icon: #22a5ad;
+
+  // Islamic Sanctuary Board & Petal Surah Cards (Sepia Theme - Warm Andalusian Sanctuary)
+  --color-sanctuary-bg: #3d2e1e;
+  --color-sanctuary-arch-fill: #3d2e1e;
+  --color-sanctuary-shadow: rgba(61, 46, 30, 0.35);
+  --color-sanctuary-petal-bg: #f5ecda;
+  --color-sanctuary-petal-hover-bg: #b45309;
+  --color-sanctuary-petal-hover-text: #ffffff;
+  --color-sanctuary-petal-num-bg: #3d2e1e;
+  --color-sanctuary-petal-num-text: #fde68a;
+  --color-sanctuary-petal-num-border: #b45309;
+  --color-sanctuary-petal-title-ar: #2a241c;
+  --color-sanctuary-petal-title-en: #2a241c;
+  --color-sanctuary-petal-meta: #78350f;
+  --color-sanctuary-petal-tag-makkah: #92400e;
+  --color-sanctuary-petal-tag-makkah-bg: rgba(146, 64, 14, 0.14);
+  --color-sanctuary-petal-tag-madinah: #1b5e20;
+  --color-sanctuary-petal-tag-madinah-bg: rgba(27, 94, 32, 0.14);
 }

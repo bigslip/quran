@@ -1,4 +1,6 @@
 {
   "description": "Discover authentic Hadiths and narrations related to Ayah {{ayahNumber}} of Surah {{surahName}}. Access scholarly traditions connected to this Quranic verse.",
+  "sahih-bukhari": "Sahih al-Bukhari",
+  "sahih-muslim": "Sahih Muslim",
   "title": "Hadiths {{surahName}} - {{ayahNumber}}"
 }

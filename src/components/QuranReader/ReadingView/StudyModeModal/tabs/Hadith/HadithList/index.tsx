@@ -40,7 +40,7 @@ const HadithList: React.FC<HadithListProps> = ({
   error,
   onRetry,
 }) => {
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation('hadith');
   const loadMoreTriggerRef = useInfiniteScroll({
     hasMore,
     isLoading: isLoadingMore,
@@ -63,7 +63,7 @@ const HadithList: React.FC<HadithListProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://sunnah.com/bukhari/about"
-                aria-label="Sahih al-Bukhari"
+                aria-label={t('hadith:sahih-bukhari', { defaultValue: 'Sahih al-Bukhari' })}
               />
             ),
             1: (
@@ -72,7 +72,7 @@ const HadithList: React.FC<HadithListProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://sunnah.com/muslim/about"
-                aria-label="Sahih Muslim"
+                aria-label={t('hadith:sahih-muslim', { defaultValue: 'Sahih Muslim' })}
               />
             ),
           }}

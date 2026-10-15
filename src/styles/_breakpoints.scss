@@ -79,3 +79,15 @@ $breakpoint-buffer-max-width: 1px;
     @content;
   }
 }
+
+@mixin reducedMotion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin highContrast {
+  @media (forced-colors: active), (prefers-contrast: more) {
+    @content;
+  }
+}

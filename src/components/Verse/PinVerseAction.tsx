@@ -8,7 +8,8 @@ import PopoverMenu from '@/dls/PopoverMenu/PopoverMenu';
 import usePinnedVerseSync from '@/hooks/usePinnedVerseSync';
 import PinFilledIcon from '@/icons/pin-filled.svg';
 import PinIcon from '@/icons/pin.svg';
-import { selectPinnedVerseKeysSet } from '@/redux/slices/QuranReader/pinnedVerses';
+import { RootState } from '@/redux/RootState';
+import { selectIsVersePinned } from '@/redux/slices/QuranReader/pinnedVerses';
 import pinIconStyles from '@/styles/pinIcon.module.scss';
 import Verse from '@/types/Verse';
 import { logButtonClick } from '@/utils/eventLogger';
@@ -28,8 +29,7 @@ const PinVerseAction: React.FC<PinVerseActionProps> = ({
   const { verseKey } = verse;
   const { pinVerseWithSync, unpinVerseWithSync } = usePinnedVerseSync();
 
-  const pinnedVerseKeysSet = useSelector(selectPinnedVerseKeysSet);
-  const isPinned = pinnedVerseKeysSet.has(verseKey);
+  const isPinned = useSelector((state: RootState) => selectIsVersePinned(state, verseKey));
 
   const handleClick = useCallback(() => {
     if (isPinned) {

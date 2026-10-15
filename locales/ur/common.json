@@ -1,22 +1,23 @@
 {
   "about": "ہمارے بارے میں",
+  "all": "تمام",
   "allow": "اجازت دیں۔",
   "and": "اور",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
         "action": "اگلا",
-        "description": "چاہے آپ اپنے فون پر Quran.com استعمال کر رہے ہوں یا اپنے لیپ ٹاپ پر، آپ کے بُک مارکس، آخری پڑھی گئی آیات اور آپ کی ترجیحات دستیاب ہوں گی۔",
+        "description": "چاہے آپ اپنے فون پر Quran.ir استعمال کر رہے ہوں یا اپنے لیپ ٹاپ پر، آپ کے بُک مارکس، آخری پڑھی گئی آیات اور آپ کی ترجیحات دستیاب ہوں گی۔",
         "title": "آپ کا ڈیٹا تمام آلات پر <br></br> مطابقت پذیر ہوگا۔"
       },
       "feedback": {
         "action": "ٹھیک ہے، سمجھ گیا۔",
-        "description": "Quran.com استعمال کرنے کا شکریہ اور ہمیں <link> feedback.quran.com </link> پر آپ کی رائے سن کر خوشی ہوگی۔",
+        "description": "Quran.ir استعمال کرنے کا شکریہ اور ہمیں <link> feedback.quran.ir </link> پر آپ کی رائے سن کر خوشی ہوگی۔",
         "title": "ہم آپ کے خیالات سننا چاہتے ہیں۔"
       },
       "quran-foundation-link": {
         "action": "اگلا",
-        "description": "QuranReflect.com تک رسائی کے لیے اپنے Quran.com لاگ ان کا استعمال کریں — ایک خوشحال عالمی کمیونٹی جو قرآن کے تدبر میں مشغول ہے۔",
+        "description": "QuranReflect.com تک رسائی کے لیے اپنے Quran.ir لاگ ان کا استعمال کریں — ایک خوشحال عالمی کمیونٹی جو قرآن کے تدبر میں مشغول ہے۔",
         "title": "Quran.Foundation ایپس پر اپنا اکاؤنٹ استعمال کریں!"
       },
       "quran-growth-journey": {
@@ -26,7 +27,7 @@
       },
       "welcome": {
         "action": "دیکھیں نیا کیا ہے۔",
-        "title": "Quran.com <br></br> صارف اکاؤنٹ میں خوش آمدید"
+        "title": "Quran.ir <br></br> صارف اکاؤنٹ میں خوش آمدید"
       }
     },
     "collections-announcement": {
@@ -46,7 +47,11 @@
     "select-lng": "زبان منتخب کریں۔",
     "sidebar-nav-close": "نیویگیشن سائڈبار بند کریں۔",
     "tooltip-action": "ٹول ٹپ ایکشن",
-    "translation-info": "ترجمہ کی معلومات دیکھیں"
+    "translation-info": "ترجمہ کی معلومات دیکھیں",
+    "play-verse": "آیت {{verseKey}} چلائیں",
+    "pause-surah": "سورہ {{surahName}} روکیں",
+    "pause-verse": "آیت {{verseKey}} روکیں",
+    "surah-filter": "سورتوں کی فلٹرنگ"
   },
   "audio": {
     "auto-scroll": {
@@ -113,12 +118,19 @@
   "click-here": "یہاں کلک کریں",
   "close": "بند کریں",
   "command-bar": {
-    "navigations": "نیویگیشن",
-    "no-nav-results": "کوئی نیویگیشن نتائج نہیں ہیں۔",
+    "close": "بند کریں",
+    "direct-jump-hint": "جانے کے لیے ↵ دبائیں",
+    "filter": "فلٹر",
+    "navigate": "رہنمائی",
+    "navigations": "نیویگیشنز",
+    "no-nav-results": "کوئی نیویگیشن نتیجہ نہیں ملا",
     "placeholder": "قرآن میں تلاش کریں...",
+    "search-placeholder": "قرآن، سورہ (مثلاً کہف یا 18)، آیت (2:255)، پارہ یا صفحہ تلاش کریں...",
+    "select": "منتخب کریں",
+    "spotlight-placeholder": "قرآن، سورہ یا آیت تلاش کریں...",
     "recent-navigations": "حالیہ نیویگیشنز",
-    "search-by-voice": "آواز کے ذریعے سرچ کریں۔",
-    "try-navigating": "تک نیویگیٹ کرنے کی کوشش کریں۔"
+    "search-by-voice": "آواز سے تلاش کریں",
+    "try-navigating": "نیویگیٹ کرنے کی کوشش کریں"
   },
   "community": {
     "cta": "رابطہ کریں۔",
@@ -228,6 +240,7 @@
   },
   "exciting-updates": "دلچسپ اپڈیٹس",
   "favorites": "پسندیدہ",
+  "featured": "نمایاں",
   "feedback": "رائے",
   "fonts": {
     "15_lines": "15 ستری",
@@ -250,7 +263,7 @@
   },
   "footer": {
     "apps-disclaimer": "ہر ایپلیکیشن اپنے ڈویلپر کی ملکیت اور دیکھ بھال میں ہے۔ سپورٹ، بگ رپورٹس یا فیچر کی درخواست کے لیے براہِ راست ایپ بنانے والے سے رابطہ کریں۔",
-    "description": "Quran.com ایک قابلِ اعتماد پلیٹ فارم ہے جسے دنیا بھر کے لاکھوں لوگ قرآن کو متعدد زبانوں میں پڑھنے، سرچ کرنے، سننے اور اس پر تدبر کرنے کے لیے استعمال کرتے ہیں۔ یہ ترجمے، تفسیر، تلاوت، لفظ بہ لفظ ترجمہ اور گہرے مطالعے کے ٹولز فراہم کرتا ہے، جس سے قرآن سب کے لیے قابلِ رسائی بنتا ہے۔<br/><br/>صدقۂ جاریہ کے طور پر، Quran.com لوگوں کو قرآن کے ساتھ گہرا تعلق قائم کرنے میں مدد کے لیے وقف ہے۔ <link>Quran.Foundation</link> کے تعاون سے، جو ایک 501(c)(3) غیر منافع بخش تنظیم ہے، Quran.com سب کے لیے ایک مفت اور قیمتی وسیلہ کے طور پر بڑھتا جا رہا ہے، الحمد للہ۔",
+    "description": "Quran.ir ایک قابلِ اعتماد پلیٹ فارم ہے جسے دنیا بھر کے لاکھوں لوگ قرآن کو متعدد زبانوں میں پڑھنے، سرچ کرنے، سننے اور اس پر تدبر کرنے کے لیے استعمال کرتے ہیں۔ یہ ترجمے، تفسیر، تلاوت، لفظ بہ لفظ ترجمہ اور گہرے مطالعے کے ٹولز فراہم کرتا ہے، جس سے قرآن سب کے لیے قابلِ رسائی بنتا ہے۔<br/><br/>صدقۂ جاریہ کے طور پر، Quran.ir لوگوں کو قرآن کے ساتھ گہرا تعلق قائم کرنے میں مدد کے لیے وقف ہے۔ <link>Quran.Foundation</link> کے تعاون سے، جو ایک 501(c)(3) غیر منافع بخش تنظیم ہے، Quran.ir سب کے لیے ایک مفت اور قیمتی وسیلہ کے طور پر بڑھتا جا رہا ہے، الحمد للہ۔",
     "hiring": "ہم بھرتی کر رہے ہیں! قرآن فاؤنڈیشن ٹیم میں شامل ہوں اور ہمارے مشن میں اپنا حصہ ڈالیں۔ <link> ابھی اپلائی کریں! </link>",
     "rights": "جملہ حقوق محفوظ ہیں",
     "title": "قرآن کو پڑھیں، سنیں، تلاش کریں، اور اس پر تدبر کریں۔"
@@ -271,22 +284,6 @@
     "verification-code": "تصدیقی کوڈ"
   },
   "from": "سے",
-  "fundraising-card-v2": {
-    "cta": "ابھی عطیہ کریں۔",
-    "description": "ماہانہ عطیہ دہندگان Quran.com کو بہتر بنانے اور آپریشنز کو برقرار رکھنے میں ہماری مدد کرتے ہیں تاکہ ہم فنڈ ریزنگ پر کم اور اثر پیدا کرنے پر زیادہ توجہ دیں۔",
-    "title": "ماہانہ ڈونر بنیں۔"
-  },
-  "fundraising-share-title": "Quran.com کی فنڈ ریزنگ میں حصہ لیں۔",
-  "fundraising-sticky-banner-v2": {
-    "cta": "عطیہ کریں۔",
-    "desktop-text": "ہمارے مشن میں اپنا حصہ ڈالیں۔",
-    "mobile-line-one": "یہ قرآن کا مہینہ ہے۔",
-    "mobile-line-two": "اس کی روشنی پھیلانے میں ہماری مدد کریں۔"
-  },
-  "fundraising-sticky-banner": {
-    "cta": "عطیہ کریں۔",
-    "title": "بہترین دنوں کے دوران دیں!"
-  },
   "fundraising": {
     "description": "ماہانہ عطیات قرآن ڈاٹ کام کو بہتر بنانے اور اس کے نظام کو جاری رکھنے میں ہماری مدد کرتے ہیں، تاکہ ہم فنڈ ریزنگ کے بجائے اثر انگیزی پر زیادہ توجہ دے سکیں۔",
     "donation-campaign": {
@@ -294,6 +291,22 @@
       "text": "سپورٹر بنیں۔"
     },
     "title": "ماہانہ ڈونر بنیں۔"
+  },
+  "fundraising-card-v2": {
+    "cta": "ابھی عطیہ کریں۔",
+    "description": "ماہانہ عطیہ دہندگان Quran.ir کو بہتر بنانے اور آپریشنز کو برقرار رکھنے میں ہماری مدد کرتے ہیں تاکہ ہم فنڈ ریزنگ پر کم اور اثر پیدا کرنے پر زیادہ توجہ دیں۔",
+    "title": "ماہانہ ڈونر بنیں۔"
+  },
+  "fundraising-share-title": "Quran.ir کی فنڈ ریزنگ میں حصہ لیں۔",
+  "fundraising-sticky-banner": {
+    "cta": "عطیہ کریں۔",
+    "title": "بہترین دنوں کے دوران دیں!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "عطیہ کریں۔",
+    "desktop-text": "ہمارے مشن میں اپنا حصہ ڈالیں۔",
+    "mobile-line-one": "یہ قرآن کا مہینہ ہے۔",
+    "mobile-line-two": "اس کی روشنی پھیلانے میں ہماری مدد کریں۔"
   },
   "get-started": "شروع کریں",
   "go-to-verse": "آیت پر جائیں",
@@ -311,6 +324,7 @@
   "juz": "پارہ",
   "language": "زبان",
   "languages": "زبانیں",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "سیکھیں۔",
   "learn-more": " مزيد جانیے",
   "learning-plans": "سیکھنے کے پلانز",
@@ -320,11 +334,16 @@
   "loading": "لوڈ ہو رہا ہے۔",
   "login": "لاگ ان",
   "logout": "لاگ آوٹ",
+  "madinah": "مدینہ منورہ",
+  "madinah-short": "مدنی",
+  "makkah": "مکہ مکرمہ",
+  "makkah-short": "مکی",
   "meccan": "مکی",
   "medinan": "مدنی",
   "menu": "مینو",
   "minutes": "منٹس",
   "mobile-apps": "موبائل ایپس",
+  "modal": "ونڈو",
   "mode": "موڈ",
   "more": "مزید",
   "my-learning-plans": "میرے سیکھنے کے پلانز",
@@ -336,6 +355,7 @@
   "next": "اگلا",
   "next-ayah": "اگلی آیت",
   "no": "نہیں",
+  "no-languages-found": "No languages found",
   "no-notifications": "ابھی تک کوئی نوٹیفکیشن نہیں ہے۔",
   "no-verses-available": "کوئی آیات دستیاب نہیں",
   "none": "کچھ نہیں۔",
@@ -344,18 +364,20 @@
     "label": "نوٹس",
     "title": "میرے نوٹس اور تدبرات۔"
   },
-  "notification-settings": "نوٹیفکیشن سیٹنگز",
   "notification": {
     "mark-all-as-read": "سب کو پڑھا ہوا شمار کریں",
     "mark-as-read": "پڑھا ہوا نشان زد کریں۔"
   },
+  "notification-settings": "نوٹیفکیشن سیٹنگز",
   "notifications": "نوٹیفکیشنز",
   "off": "آف",
   "oldest": "قدیم ترین",
   "on": "آن",
   "our-projects": "ہمارے پروجیکٹس",
   "page": "صفحہ",
+  "page-number": "صفحہ {{page}}",
   "pages": "صفحات",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} کی {{totalNumberOfResults}} سرچ کے نتائج",
   "pbuh": "صلى الله عليه وسلم",
   "popular-links": "مشہور لنکس",
@@ -379,9 +401,12 @@
   "profile": "پروفائل",
   "projects-desc": "غیر منافع بخش منصوبے جو <link>Quran.Foundation</link> کی ملکیت، زیرِ انتظام یا زیرِ سرپرستی ہیں۔",
   "q-reflect": "QuranReflect",
+  "quran-android": "قرآن برائے اینڈرائیڈ",
   "quran-apps": "قرآن ایپس",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
+  "quran-ios": "قرآن برائے iOS",
   "quran-radio": "قرآن ریڈیو",
+  "ramadan-2026": "رمضان ۲۰۲۶",
   "read": "پڑھیں",
   "read-more": "مزید پڑھیں",
   "reading-history": "پڑھائ کی ہسٹری",
@@ -412,9 +437,6 @@
   "rub": "ربع الحزب",
   "save": "سیو کریں۔",
   "save-to-collection": "کلیکشن میں سيو کریں۔",
-  "search-for": "'{{searchQuery}}' سرچ کریں",
-  "search-results": "{{count}} سرچ  کے نتائج",
-  "search-results-no-count": "تلاش کے نتائج",
   "search": {
     "filters": "فلٹرز",
     "hint": "سرچ کرنے کی کوشش کریں۔",
@@ -427,12 +449,18 @@
     "results": "نتائج",
     "show-all": "تمام نتائج دکھائیں۔",
     "switch-mode": "ایڈوانس سرچ پر جائیں۔",
-    "title": "سرچ"
+    "title": "سرچ",
+    "placeholder": "آیات، سورتیں، موضوعات تلاش کریں یا آیت پر جائیں..."
   },
+  "search-for": "'{{searchQuery}}' سرچ کریں",
+  "search-languages": "زبانیں تلاش کریں...",
+  "search-results": "{{count}} سرچ  کے نتائج",
+  "search-results-no-count": "تلاش کے نتائج",
   "seconds": "سیکنڈز",
   "see-less": "کم دکھائیں",
   "see-new": "نئی اپڈیٹس دیکھیں",
   "select-language": "زبان منتخب کریں۔",
+  "select-language-description": "Quran.ir کے لیے اپنی پسندیدہ زبان منتخب کریں",
   "settings": {
     "no-tafsir-selected": "کوئی تفسیر منتخب نہیں کی گی۔۔",
     "no-translation-selected": "کوئی ترجمہ منتخب نہیں کیا گیا۔",
@@ -484,6 +512,7 @@
   "subscribe": "سبسکرائب",
   "subscribed": "سبسکرائبڈ",
   "surah": "سورہ",
+  "surahs": "سورتیں",
   "tab-see-less": "کم دکھائیں...",
   "tab-see-more": "مزیددکھائیں...",
   "tafsir": {
@@ -508,6 +537,7 @@
   "to": "تک",
   "tooltip": "ٹول ٹِپ",
   "tooltip-trans-lang": "ٹول ٹپ زبان",
+  "topics": "موضوعات",
   "trans-lang": "ترجمہ کی زبان",
   "translation": "ترجمہ",
   "translations": "ترجمے",
@@ -540,7 +570,9 @@
     "suggest": "براہ کرم تلاوت شروع کریں اور آپ کی آیت ظاہر ہو جائے گی۔",
     "suggest-subtitle": "کوئی بھی آیت عربی میں پڑھیں، اور آیت ظاہر ہو جائے گی۔",
     "suggest-title": "ابھی تلاوت کریں۔",
-    "voice-search-powered-by": "وائس سرچ فراہم کردہ"
+    "voice-search-powered-by": "وائس سرچ فراہم کردہ",
+    "start": "صوتی تلاش شروع کریں",
+    "stop": "صوتی تلاش روکیں"
   },
   "wbw": "لفظ بہ لفظ",
   "wbw-lang-summary": "لفظ بہ لفظ ترجمہ ماخذ: <link> {{source}} </link> ۔ یہ ماخذ آیت کے ترجمے کے انتخاب سے آزاد ہے۔",

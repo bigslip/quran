@@ -1,33 +1,42 @@
 import Fuse from 'fuse.js';
 
+import { getLanguageNativeName, getTranslationNativeName } from './translationInfo';
+
 import AvailableTranslation from 'types/AvailableTranslation';
+
+/**
+ * Enriches translations with normalized lowercase language name and native metadata.
+ *
+ * @param {AvailableTranslation[]} translations
+ * @returns {AvailableTranslation[]}
+ */
+export const getTranslations = (translations: AvailableTranslation[]): AvailableTranslation[] => {
+  if (!translations) return [];
+  return translations.map((translation: any) => {
+    const languageName = (translation.languageName || translation.language_name || '').toLowerCase();
+    const nativeName = getTranslationNativeName(translation);
+    const nativeLanguageName = getLanguageNativeName(languageName);
+    return {
+      ...translation,
+      languageName,
+      nativeName,
+      nativeLanguageName,
+    };
+  });
+};
 
 const filterTranslations = (
   translations: AvailableTranslation[],
   searchQuery: string,
 ): AvailableTranslation[] => {
-  const fuse = new Fuse(translations, {
-    keys: ['name', 'languageName', 'authorName', 'translatedName.name'],
+  const prepared = getTranslations(translations);
+  const fuse = new Fuse(prepared, {
+    keys: ['name', 'languageName', 'authorName', 'translatedName.name', 'nativeName', 'nativeLanguageName'],
     threshold: 0.3,
   });
 
   const filteredTranslations = fuse.search(searchQuery).map(({ item }) => item);
   return filteredTranslations;
-};
-
-/**
- * Transforms an array of translations by converting the language name to lowercase.
- * This is to temporarily fix the issue when BE returns the same language names
- * but in different cases (e.g. 'Dutch' and 'dutch').
- *
- * @param {AvailableTranslation[]} translations - The array of translations to be transformed.
- * @returns {AvailableTranslation[]} The transformed array of translations with language names in lowercase.
- */
-export const getTranslations = (translations: AvailableTranslation[]): AvailableTranslation[] => {
-  return translations.map((translation) => ({
-    ...translation,
-    languageName: translation.languageName.toLowerCase(),
-  }));
 };
 
 export default filterTranslations;

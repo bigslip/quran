@@ -1,4 +1,5 @@
 {
   "description": "Chunguza Qiraat (visomo tofauti) vya Aya {{ayahNumber}} ya Sura {{surahName}}",
+  "juncture-selection": "Uteuzi wa makutano",
   "title": "Qiraat {{surahName}} - {{ayahNumber}}"
 }

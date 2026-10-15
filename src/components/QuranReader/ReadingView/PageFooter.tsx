@@ -13,13 +13,19 @@ interface Props {
 }
 
 const PageFooter: React.FC<Props> = ({ page }) => {
-  const { lang } = useTranslation('quran-reader');
+  const { lang, t } = useTranslation('quran-reader');
   const pageUrl = getPageNavigationUrl(page);
+  const localizedPage = toLocalizedNumber(page, lang);
 
   return (
     <div className={styles.pageText}>
-      <Link href={pageUrl} shouldPassHref shouldPrefetch={false}>
-        <p className={styles.pageLink}>{toLocalizedNumber(page, lang)}</p>
+      <Link
+        href={pageUrl}
+        shouldPassHref
+        shouldPrefetch={false}
+        ariaLabel={t('page-number', { page: localizedPage })}
+      >
+        <p className={styles.pageLink}>{localizedPage}</p>
       </Link>
     </div>
   );

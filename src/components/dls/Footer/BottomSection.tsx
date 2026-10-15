@@ -40,11 +40,11 @@ const BottomSection = () => {
         </div>
         <div className={styles.copyright}>
           © {localizedCurrentYear}{' '}
-          <Link href="https://quran.com" variant={LinkVariant.Highlight} shouldPrefetch={false}>
+          <Link href="https://quran.ir" variant={LinkVariant.Highlight} shouldPrefetch={false}>
             {
-              // we don't want to localize Quran.com text
+              // we don't want to localize Quran.ir text
               // eslint-disable-next-line i18next/no-literal-string
-              'Quran.com'
+              'Quran.ir'
             }
           </Link>
           . {t('footer.rights')}

@@ -28,7 +28,9 @@ export const secondsFormatter = (seconds: number, locale: string) => {
  * @returns {string}
  */
 // eslint-disable-next-line react-func/max-lines-per-function
-export const secondsToReadableFormat = (s: number, t: Translate, locale: string): string => {
+type TranslateFn = Translate | ((key: string, values?: any) => any);
+
+export const secondsToReadableFormat = (s: number, t: TranslateFn, locale: string): string => {
   const results: string[] = [];
 
   let seconds = s;
@@ -75,9 +77,17 @@ export const secondsToReadableFormat = (s: number, t: Translate, locale: string)
  *
  * @param {number} s seconds
  * @param {string} locale locale
+ * @param {TranslateFn} t translate function
  * @returns {string}
  */
-export const secondsToShortReadableFormat = (s: number, locale: string): string => {
+export const secondsToShortReadableFormat = (
+  s: number,
+  locale: string,
+  t?: TranslateFn,
+): string => {
+  if (t) {
+    return secondsToReadableFormat(s, t, locale);
+  }
   const results: string[] = [];
 
   let seconds = s;

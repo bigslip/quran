@@ -25,13 +25,13 @@ import { logButtonClick } from '@/utils/eventLogger';
 import { toLocalizedNumber } from '@/utils/locale';
 import { getChapterWithStartingVerseUrl, getReadingGoalNavigationUrl } from '@/utils/navigation';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   goal?: StreakWithMetadata['goal'];
   isLoading: boolean;
   currentActivityDay: CurrentQuranActivityDay;
 }
 
-const ProgressPageGoalWidget = ({ goal, isLoading, currentActivityDay }: Props) => {
+const ProgressPageGoalWidget = ({ goal, isLoading, currentActivityDay, className, ...props }: Props) => {
   const { t, lang } = useTranslation('reading-goal');
   const chaptersData = useContext(DataContext);
   const isMobile = useIsMobile();
@@ -79,7 +79,7 @@ const ProgressPageGoalWidget = ({ goal, isLoading, currentActivityDay }: Props) 
 
   if (isLoading) {
     return (
-      <Skeleton className={classNames(styles.widget, styles.emptyWidget)}>
+      <Skeleton className={classNames(styles.widget, styles.emptyWidget, className)} {...props}>
         {createReadingGoalButton}
       </Skeleton>
     );
@@ -87,7 +87,7 @@ const ProgressPageGoalWidget = ({ goal, isLoading, currentActivityDay }: Props) 
 
   if (!goal) {
     return (
-      <div className={classNames(styles.widget, styles.emptyWidget)}>
+      <div className={classNames(styles.widget, styles.emptyWidget, className)} {...props}>
         <div className={styles.emptyWidgetHeader}>
           <CirclesIcon />
           <p>{t('achieve-quran-goals')}</p>
@@ -99,7 +99,7 @@ const ProgressPageGoalWidget = ({ goal, isLoading, currentActivityDay }: Props) 
   }
 
   return (
-    <div className={styles.progressWidget}>
+    <div className={classNames(styles.progressWidget, className)} {...props}>
       <div className={styles.progressWidgetWrapper}>
         <div className={styles.circularProgressbar}>
           <CircularProgressbar

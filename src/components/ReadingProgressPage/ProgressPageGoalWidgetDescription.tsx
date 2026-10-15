@@ -46,7 +46,7 @@ const ProgressPageGoalWidgetDescription: React.FC<Props> = ({
     return (
       <p className={styles.progressWidgetDaysLeft}>
         <span>{`${t('remaining-base')}: `}</span>
-        {secondsToShortReadableFormat(goal.progress.amountLeft, lang)}
+        {secondsToShortReadableFormat(goal.progress.amountLeft, lang, t)}
       </p>
     );
   }

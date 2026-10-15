@@ -11,11 +11,11 @@
     "zekr": "<0>Zekr</0>: una herramienta de estudio del Corán en plataforma abierta para navegar e investigar sobre el Corán."
   },
   "global-effort": {
-    "desc": "Millones de personas de todo el mundo confían en Quran.com como su principal recurso digital sobre el Corán. Ya sea que vengan a recitar, reflexionar, memorizar o estudiar, comparten un propósito común: un deseo sincero de conectarse con las palabras de Alá. \\n A medida que continuamos creciendo, mantenemos nuestro compromiso de garantizar que Quran.com siga siendo un espacio confiable, accesible y bellamente diseñado para cualquiera que busque interactuar con el Corán.",
+    "desc": "Millones de personas de todo el mundo confían en Quran.ir como su principal recurso digital sobre el Corán. Ya sea que vengan a recitar, reflexionar, memorizar o estudiar, comparten un propósito común: un deseo sincero de conectarse con las palabras de Alá. \\n A medida que continuamos creciendo, mantenemos nuestro compromiso de garantizar que Quran.ir siga siendo un espacio confiable, accesible y bellamente diseñado para cualquiera que busque interactuar con el Corán.",
     "title": "Un esfuerzo global"
   },
   "key-features": {
-    "desc": "Quran.com está diseñado para brindar soporte en cada etapa del aprendizaje del Corán, desde la lectura y la memorización hasta el estudio y la reflexión. Nuestras funciones incluyen:",
+    "desc": "Quran.ir está diseñado para brindar soporte en cada etapa del aprendizaje del Corán, desde la lectura y la memorización hasta el estudio y la reflexión. Nuestras funciones incluyen:",
     "features": [
       "Interfaz del Corán fácil de usar: una experiencia de lectura limpia e intuitiva en cualquier dispositivo.",
       "Varias traducciones y tafsir: acceso a traducciones en varios idiomas, junto con tafsir.",
@@ -29,13 +29,13 @@
     ],
     "title": "Características y ofertas principales"
   },
-  "main-description": "Desde su fundación en 1995, Quran.com se ha comprometido a hacer que el Corán esté disponible para todos de una manera clara, auténtica y fácil de entender. Todos los días, millones de personas en todo el mundo recurren a Quran.com para leer, escuchar, estudiar y reflexionar sobre el Corán, ya sean estudiantes de toda la vida, académicos o recién comenzando su camino.",
+  "main-description": "Desde su fundación en 1995, Quran.ir se ha comprometido a hacer que el Corán esté disponible para todos de una manera clara, auténtica y fácil de entender. Todos los días, millones de personas en todo el mundo recurren a Quran.ir para leer, escuchar, estudiar y reflexionar sobre el Corán, ya sean estudiantes de toda la vida, académicos o recién comenzando su camino.",
   "our-mission": {
     "desc": "El Corán está destinado a ser leído, comprendido y reflexionado. Nuestra misión es eliminar las barreras de acceso y empoderar a las personas y las comunidades proporcionando una experiencia coránica fiable, bien diseñada y profundamente enriquecedora. Nuestro objetivo es servir como una fuente de confianza para todo aquel que desee interactuar con el Corán, guiados por los principios de precisión, claridad y sinceridad.",
     "title": "Nuestra misión"
   },
   "who-we-are": {
-    "desc": "Quran.com es un waqf (fondo de donación) creado como fideicomiso público para garantizar que el Corán siga siendo accesible para todos, de forma gratuita y sin intereses comerciales. Está gestionado por <link>Quran.Foundation</link>, una organización sin ánimo de lucro 501(c)(3), que sostiene y desarrolla Quran.com como parte de su misión de proporcionar recursos coránicos auténticos y de alta calidad al mundo. Nuestro compromiso es servir al Corán y a sus lectores con excelencia, sinceridad y responsabilidad.",
+    "desc": "Quran.ir es un waqf (fondo de donación) creado como fideicomiso público para garantizar que el Corán siga siendo accesible para todos, de forma gratuita y sin intereses comerciales. Está gestionado por <link>Quran.Foundation</link>, una organización sin ánimo de lucro 501(c)(3), que sostiene y desarrolla Quran.ir como parte de su misión de proporcionar recursos coránicos auténticos y de alta calidad al mundo. Nuestro compromiso es servir al Corán y a sus lectores con excelencia, sinceridad y responsabilidad.",
     "title": "Quienes somos"
   }
 }

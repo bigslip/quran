@@ -67,7 +67,7 @@
     "BannedUserError": "Lo sentimos, tu cuenta está bloqueada. Contacta a Quran.Foundation.",
     "TokenExpiredError": "Se ha cerrado la sesión, vuelve a iniciar sesión."
   },
-  "login-title": "Iniciar sesión en Quran.com",
+  "login-title": "Iniciar sesión en Quran.ir",
   "new-password-placeholder": "Nueva contraseña",
   "or": "O",
   "other-options": "Otras opciones de inicio de sesión",
@@ -83,7 +83,7 @@
   },
   "privacy-policy": "Proteger tu privacidad es nuestra prioridad: al registrarte, aceptas nuestra <link> Política de privacidad </link> y <link1> Términos y condiciones </link1>.",
   "quran-text": "Corán",
-  "quran-title": "Quran.com",
+  "quran-title": "Quran.ir",
   "reflect-feature-1": "Reflexiona sobre el Corán",
   "reflect-feature-2": "Unirse a grupos",
   "reflect-feature-3": "Interactuar con otros",

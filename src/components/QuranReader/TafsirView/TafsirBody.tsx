@@ -24,6 +24,7 @@ import Separator from '@/dls/Separator/Separator';
 import usePersistPreferenceGroup from '@/hooks/auth/usePersistPreferenceGroup';
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import { selectTafsirs, setSelectedTafsirs } from '@/redux/slices/QuranReader/tafsirs';
+import { STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { makeTafsirContentUrl, makeTafsirsUrl } from '@/utils/apiPaths';
 import { logButtonClick, logItemSelectionChange, logValueChange } from '@/utils/eventLogger';
 import { getLanguageDataById } from '@/utils/locale';
@@ -60,7 +61,7 @@ type TafsirBodyProps = {
     languageAndTafsirSelection: JSX.Element;
     body: JSX.Element;
   }) => JSX.Element;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const TafsirBody = ({
   initialChapterId,
@@ -73,6 +74,8 @@ const TafsirBody = ({
   showNavigation = true,
   shouldShowFontControl = true,
   hasSeparateTafsirLayout = false,
+  className,
+  ...props
 }: TafsirBodyProps) => {
   const quranReaderStyles = useSelector(selectQuranReaderStyles, shallowEqual);
   const { lang, t } = useTranslation('common');
@@ -143,6 +146,9 @@ const TafsirBody = ({
   const { data: tafsirSelectionList } = useSWR<TafsirsResponse>(
     shouldRender ? makeTafsirsUrl(lang) : null,
     fetcher,
+    {
+      dedupingInterval: STATIC_DEDUPING_INTERVAL,
+    },
   );
 
   // selectedLanguage is based on selectedTafsir's language
@@ -337,12 +343,14 @@ const TafsirBody = ({
   const body = (
     <div
       className={classNames(
+        className,
         styles.tafsirContainer,
         styles[`tafsir-font-size-${quranReaderStyles.tafsirFontScale}`],
       )}
       // disable browser translation for tafsir content
       // @see {https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/translate}
       translate="no"
+      {...props}
     >
       <DataFetcher
         loading={TafsirSkeleton}

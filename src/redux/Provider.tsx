@@ -46,14 +46,14 @@ const ReduxProvider = ({ children, locale }) => {
   // Browser back/forward can change the URL locale without going through our explicit
   // language-switch handlers. For guests, keep locale-dependent "tabs" aligned with the URL
   // locale unless the user customized them.
-  const prevLocaleRef = useRef(locale);
+  const prevLocaleRef = useRef<string | null>(null);
   useEffect(() => {
     const prevLocale = prevLocaleRef.current;
     if (prevLocale === locale) return;
     prevLocaleRef.current = locale;
 
     if (isClient && !isLoggedIn()) {
-      store.dispatch(syncLocaleDependentSettings({ prevLocale, nextLocale: locale }));
+      store.dispatch(syncLocaleDependentSettings({ prevLocale: prevLocale || locale, nextLocale: locale }));
     }
   }, [locale, store]);
 

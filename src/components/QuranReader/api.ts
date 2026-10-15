@@ -1,8 +1,10 @@
 /* eslint-disable max-lines */
 /* eslint-disable react-func/max-lines-per-function */
+import { SWRConfiguration } from 'swr';
+
 import QuranReaderStyles from '@/redux/types/QuranReaderStyles';
 import { QuranReaderDataType, ReadingPreference } from '@/types/QuranReader';
-import { getDefaultWordFields, getMushafId } from '@/utils/api';
+import { getDefaultWordFields, getMushafId, STATIC_DEDUPING_INTERVAL, staticDataSWRConfig } from '@/utils/api';
 import {
   makeHizbVersesUrl,
   makeJuzVersesUrl,
@@ -12,10 +14,20 @@ import {
   makeByRangeVersesUrl,
 } from '@/utils/apiPaths';
 import { fetcher } from 'src/api';
+
 import { PagesLookUpRequest } from 'types/ApiRequests';
 import { VersesResponse } from 'types/ApiResponses';
 import LookupRecord from 'types/LookupRecord';
 import Verse from 'types/Verse';
+
+/**
+ * Default SWR configuration for Quran reader requests (verses, lookups, translations).
+ * Uses 60s deduplication interval and disables automatic revalidation for immutable content.
+ */
+export const QURAN_READER_SWR_CONFIG: SWRConfiguration = {
+  ...staticDataSWRConfig,
+  dedupingInterval: STATIC_DEDUPING_INTERVAL,
+};
 
 interface TranslationViewRequestKeyInput {
   quranReaderDataType: QuranReaderDataType;
@@ -62,7 +74,7 @@ export const getTranslationViewRequestKey = ({
   wordByWordLocale,
 }: TranslationViewRequestKeyInput): string => {
   // if the response has only 1 verse it means we should set the page to that verse this will be combined with perPage which will be set to only 1.
-  const page = isVerseData ? initialData.verses[0].verseNumber : pageNumber;
+  const page = isVerseData ? (initialData?.verses?.[0]?.verseNumber ?? pageNumber) : pageNumber;
   const commonParams = {
     page,
     reciter,
@@ -74,13 +86,13 @@ export const getTranslationViewRequestKey = ({
   if (quranReaderDataType === QuranReaderDataType.Juz) {
     return makeJuzVersesUrl(id, locale, {
       ...commonParams,
-      perPage: initialData.pagination.perPage,
+      perPage: initialData?.pagination?.perPage,
     });
   }
   if (quranReaderDataType === QuranReaderDataType.Hizb) {
     return makeHizbVersesUrl(id, locale, {
       ...commonParams,
-      perPage: initialData.pagination.perPage,
+      perPage: initialData?.pagination?.perPage,
     });
   }
   if (quranReaderDataType === QuranReaderDataType.Page) {
@@ -91,31 +103,31 @@ export const getTranslationViewRequestKey = ({
   }
   if (quranReaderDataType === QuranReaderDataType.Rub) {
     return makeRubVersesUrl(id, locale, {
-      from: initialData.metaData.from,
-      perPage: initialData.pagination.perPage,
-      to: initialData.metaData.to,
+      from: initialData?.metaData?.from,
+      perPage: initialData?.pagination?.perPage,
+      to: initialData?.metaData?.to,
       ...commonParams,
     });
   }
   if (quranReaderDataType === QuranReaderDataType.ChapterVerseRanges) {
     return makeVersesUrl(id, locale, {
-      from: initialData.metaData.from,
-      perPage: initialData.pagination.perPage,
-      to: initialData.metaData.to,
+      from: initialData?.metaData?.from,
+      perPage: initialData?.pagination?.perPage,
+      to: initialData?.metaData?.to,
       ...commonParams,
     });
   }
   if (quranReaderDataType === QuranReaderDataType.Ranges) {
     return makeByRangeVersesUrl(locale, {
-      from: initialData.pagesLookup.lookupRange.from,
-      perPage: initialData.pagination.perPage,
-      to: initialData.pagesLookup.lookupRange.to,
+      from: initialData?.pagesLookup?.lookupRange?.from,
+      perPage: initialData?.pagination?.perPage,
+      to: initialData?.pagesLookup?.lookupRange?.to,
       ...commonParams,
     });
   }
 
   return makeVersesUrl(id, locale, {
-    perPage: isVerseData ? 1 : initialData.pagination.perPage, // the idea is that when it's a verse view, we want to fetch only 1 verse starting from the verse's number and we can do that by passing per_page option to the API.
+    perPage: isVerseData ? 1 : initialData?.pagination?.perPage, // the idea is that when it's a verse view, we want to fetch only 1 verse starting from the verse's number and we can do that by passing per_page option to the API.
     ...commonParams,
   });
 };
@@ -149,16 +161,23 @@ export const getReaderViewRequestKey = ({
     return {};
   };
 
-  return makePageVersesUrl(pageNumber, locale, {
-    ...getDefaultWordFields(quranReaderStyles.quranFont),
-    ...getMushafId(quranReaderStyles.quranFont, quranReaderStyles.mushafLines),
-    reciter,
-    perPage: 'all',
-    wordTranslationLanguage: wordByWordLocale,
-    filterPageWords: true,
-    ...getTranslationsParam(),
-    ...(pageVersesRange && { ...pageVersesRange }), // add the from and to verse range of the current page
-  });
+  const isReadingTranslationMode = readingPreference === ReadingPreference.ReadingTranslation;
+
+  return makePageVersesUrl(
+    pageNumber,
+    locale,
+    {
+      ...getDefaultWordFields(quranReaderStyles.quranFont),
+      ...getMushafId(quranReaderStyles.quranFont, quranReaderStyles.mushafLines),
+      reciter,
+      perPage: 'all',
+      wordTranslationLanguage: wordByWordLocale,
+      filterPageWords: true,
+      ...getTranslationsParam(),
+      ...(pageVersesRange && { ...pageVersesRange }), // add the from and to verse range of the current page
+    },
+    isReadingTranslationMode,
+  );
 };
 
 export const getPagesLookupParams = (
@@ -187,17 +206,17 @@ export const getPagesLookupParams = (
       break;
     case QuranReaderDataType.Verse:
       params.chapterNumber = resourceIdNumber;
-      params.from = initialData.verses[0].verseKey;
-      params.to = initialData.verses[0].verseKey;
+      params.from = initialData?.verses?.[0]?.verseKey;
+      params.to = initialData?.verses?.[0]?.verseKey;
       break;
     case QuranReaderDataType.ChapterVerseRanges:
       params.chapterNumber = resourceIdNumber;
-      params.from = initialData.metaData.from;
-      params.to = initialData.metaData.to;
+      params.from = initialData?.metaData?.from;
+      params.to = initialData?.metaData?.to;
       break;
     case QuranReaderDataType.Ranges:
-      params.from = initialData.pagesLookup.lookupRange.from;
-      params.to = initialData.pagesLookup.lookupRange.to;
+      params.from = initialData?.pagesLookup?.lookupRange?.from;
+      params.to = initialData?.pagesLookup?.lookupRange?.to;
       break;
     default:
       break;

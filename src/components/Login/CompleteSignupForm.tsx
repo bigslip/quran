@@ -29,14 +29,20 @@ type FormData = {
   [key: string]: string;
 };
 
-interface CompleteSignupFormProps {
+interface CompleteSignupFormProps extends React.HTMLAttributes<HTMLDivElement> {
   onSuccess?: () => void;
   userData?: UserProfile;
 }
 
-const CompleteSignupForm: React.FC<CompleteSignupFormProps> = ({ onSuccess, userData }) => {
+const CompleteSignupForm: React.FC<CompleteSignupFormProps> = ({
+  onSuccess,
+  userData,
+  className,
+  ...props
+}) => {
   const { t } = useTranslation('common');
   const { mutate } = useSWRConfig();
+
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showVerification, setShowVerification] = useState(false);
@@ -179,7 +185,7 @@ const CompleteSignupForm: React.FC<CompleteSignupFormProps> = ({ onSuccess, user
 
   if (showVerification) {
     return (
-      <div className={styles.outerContainer}>
+      <div className={classNames(styles.outerContainer, className)} {...props}>
         <VerificationCodeForm
           email={email}
           signUpData={formData as any}
@@ -193,13 +199,17 @@ const CompleteSignupForm: React.FC<CompleteSignupFormProps> = ({ onSuccess, user
   }
 
   return (
-    <div className={authStyles.outerContainer}>
+    <div className={classNames(authStyles.outerContainer, className)} {...props}>
       <div className={styles.authContainer}>
         <AuthHeader />
         <h1 className={styles.authTitle}>{t('complete-signup.title')}</h1>
         <p className={styles.description}>{t('complete-signup.description')}</p>
         <div className={styles.formContainer}>
-          {generalError && <div className={styles.generalError}>{generalError}</div>}
+          {generalError && (
+            <div className={styles.generalError} role="alert" aria-live="polite">
+              {generalError}
+            </div>
+          )}
           {userData && (
             <FormBuilder
               key={userData.id}

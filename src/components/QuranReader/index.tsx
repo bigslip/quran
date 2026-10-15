@@ -1,22 +1,26 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { useSelector as useXstateSelector } from '@xstate/react';
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import ContextMenu from './ContextMenu';
 import { VerseTrackerContextProvider } from './contexts/VerseTrackerContext';
-import DebuggingObserverWindow from './DebuggingObserverWindow';
 import {
   getReaderBannerAnalyticsParams,
   getReaderBannerAnalyticsSource,
 } from './fundraisingAnalytics';
 import useSyncChapterPage from './hooks/useSyncChapterPage';
-import Notes from './Notes/Notes';
 import styles from './QuranReader.module.scss';
 import QuranReaderView from './QuranReaderView';
 import ReaderTopActions from './ReaderTopActions';
+
+const DebuggingObserverWindow = dynamic(() => import('./DebuggingObserverWindow'), {
+  ssr: false,
+});
+const Notes = dynamic(() => import('./Notes/Notes'), { ssr: false });
 
 import FontPreLoader from '@/components/Fonts/FontPreLoader';
 import HomepageFundraisingBanner, {
@@ -78,6 +82,16 @@ const QuranReader = ({
 
   useSyncChapterPage(initialData);
 
+  const bannerAnalyticsSource = useMemo(
+    () => getReaderBannerAnalyticsSource(quranReaderDataType),
+    [quranReaderDataType],
+  );
+
+  const bannerAnalyticsParams = useMemo(
+    () => getReaderBannerAnalyticsParams(quranReaderDataType, id, initialData?.verses?.[0]),
+    [quranReaderDataType, id, initialData?.verses],
+  );
+
   return (
     <>
       <FontPreLoader isQuranReader locale={lang} />
@@ -105,6 +119,7 @@ const QuranReader = ({
           <VerseTrackerContextProvider>
             <ReaderTopActions initialData={initialData} quranReaderDataType={quranReaderDataType} />
             <QuranReaderView
+              key={`${quranReaderDataType}-${id}`}
               isReadingPreference={isReadingPreference}
               readingPreference={readingPreference}
               quranReaderStyles={quranReaderStyles}
@@ -124,12 +139,8 @@ const QuranReader = ({
           <HomepageFundraisingBanner
             context={FundraisingBannerContext.QuranReader}
             layout={FundraisingBannerLayout.Floating}
-            analyticsSource={getReaderBannerAnalyticsSource(quranReaderDataType)}
-            analyticsParams={getReaderBannerAnalyticsParams(
-              quranReaderDataType,
-              id,
-              initialData?.verses?.[0],
-            )}
+            analyticsSource={bannerAnalyticsSource}
+            analyticsParams={bannerAnalyticsParams}
           />
         </div>
       )}

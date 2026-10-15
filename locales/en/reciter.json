@@ -4,5 +4,18 @@
   "read": "Read",
   "reciter-desc": "Listen to and download beautiful Holy Quran recitation by {{reciterName}}.",
   "reciters-desc": "Listen to and download beautiful Holy Quran recitations by various reciters.",
-  "search-chapter": "Search Chapter"
+  "search-chapter": "Search Chapter",
+  "sanctuary-badge": "Holy Quran Audio Sanctuary",
+  "hero-title": "Quran Reciters & Masters",
+  "hero-subtitle": "Listen to soulful recitations by master qaris with verse synchronized audio",
+  "search-placeholder": "Search by reciter name, style, or riwayah...",
+  "filter-all": "All Reciters",
+  "filter-available": "Available Audio",
+  "filter-murattal": "Murattal",
+  "filter-mujawwad": "Mujawwad",
+  "badge-available": "Full Audio",
+  "badge-coming-soon": "Coming Soon",
+  "unavailable-tooltip": "Audio files for this reciter will be added soon.",
+  "filter-reciters-aria": "Reciter filters",
+  "no-results": "No reciters found matching your search."
 }

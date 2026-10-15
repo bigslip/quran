@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
@@ -17,23 +17,26 @@ type SurahPreviewRowProps = {
   translatedSurahName: string;
   description: string;
   chapterId: number;
+  revelationPlace?: string;
   isMinimalLayout?: boolean;
   isLoading?: boolean;
 };
-const SurahPreviewRow = ({
+const SurahPreviewRow: React.FC<SurahPreviewRowProps> = ({
   surahName,
   surahNumber,
   translatedSurahName,
   description,
   chapterId,
+  revelationPlace,
   isMinimalLayout = false,
   isLoading = false,
 }: SurahPreviewRowProps) => {
-  const { lang } = useTranslation('home');
+  const { t, lang } = useTranslation('common');
   const localizedSurahNumber = useMemo(
     () => toLocalizedNumber(surahNumber, lang),
     [surahNumber, lang],
   );
+  const isMakkah = revelationPlace === 'makkah';
 
   if (isMinimalLayout) {
     return (
@@ -63,23 +66,44 @@ const SurahPreviewRow = ({
           <span>{localizedSurahNumber}</span>
         </div>
         <div className={styles.surahNameContainer}>
-          <div className={styles.surahName} translate="no">
-            {surahName}
+          <div className={styles.nameHeader}>
+            <span className={styles.surahName} translate="no">
+              {surahName}
+            </span>
+            {revelationPlace && (
+              <span
+                className={classNames(
+                  styles.revelationTag,
+                  isMakkah ? styles.makkah : styles.madinah,
+                )}
+              >
+                {isMakkah
+                  ? t('common:makkah-short', { defaultValue: 'Makki' })
+                  : t('common:madinah-short', { defaultValue: 'Madani' })}
+              </span>
+            )}
           </div>
           <div className={styles.translatedSurahName} translate="no">
             {translatedSurahName}
           </div>
         </div>
       </div>
-      {isLoading && <Spinner />}
       <div className={styles.right}>
-        <div>
-          <ChapterIconContainer chapterId={chapterId.toString()} hasSurahPrefix={false} />
-        </div>
-        {description && <div className={styles.description}>{description}</div>}
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <>
+            <ChapterIconContainer
+              chapterId={chapterId.toString()}
+              hasSurahPrefix={false}
+              size={ChapterIconsSize.Large}
+            />
+            {description && <div className={styles.description}>{description}</div>}
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-export default SurahPreviewRow;
+export default React.memo(SurahPreviewRow);

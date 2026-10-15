@@ -16,19 +16,20 @@ export const searchSlice = createSlice({
   initialState,
   reducers: {
     addSearchHistoryRecord: (state: Search, action: PayloadAction<string>) => {
-      let newSearchHistory = [...state.searchHistory];
-      const newSearchQuery = action.payload;
-      // if we have reached the maximum number of search queries, remove the last element
-      if (state.searchHistory.length >= MAXIMUM_RECENT_SEARCH_QUERIES) {
-        // splice will mutate newSearchHistory and remove the last element
-        newSearchHistory.splice(-1);
-      }
-      // filter out the old search queries that match the new search queries (if any).
-      newSearchHistory = newSearchHistory.filter(
+      const newSearchQuery = action.payload?.trim();
+      if (!newSearchQuery) return state;
+
+      // Filter out existing occurrence first so duplicates move to the front
+      const filteredHistory = state.searchHistory.filter(
         (currentSearchQuery) => currentSearchQuery !== newSearchQuery,
       );
-      // put the new search query at the beginning of the array
-      newSearchHistory = [newSearchQuery, ...newSearchHistory];
+
+      // Prepend the new query and slice to maximum length
+      const newSearchHistory = [newSearchQuery, ...filteredHistory].slice(
+        0,
+        MAXIMUM_RECENT_SEARCH_QUERIES,
+      );
+
       return {
         ...state,
         searchHistory: newSearchHistory,

@@ -37,7 +37,7 @@ const resolveEmbedBaseUrl = (): string => {
     if (/^https?:\/\//i.test(DEFAULTS.embedUrl)) return DEFAULTS.embedUrl;
   }
 
-  return 'https://quran.com/embed/v1';
+  return 'https://quran.ir/embed/v1';
 };
 
 /**

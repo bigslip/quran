@@ -26,7 +26,7 @@ body** of any fetched ticket. This is recursive and continues until no new ticke
 // turbo
 
 ```bash
-curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
   "https://quranfoundation.atlassian.net/rest/api/3/issue/${TICKET_KEY}?expand=renderedFields" | \
   jq '{key: .key, id: .id, summary: .fields.summary, type: .fields.issuetype.name, status: .fields.status.name, renderedDescription: .renderedFields.description}'
 ```
@@ -36,7 +36,7 @@ curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
 // turbo
 
 ```bash
-curl -s -X POST -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+curl -s -X POST -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
   -H "Content-Type: application/json" \
   "https://quranfoundation.atlassian.net/rest/api/3/search/jql" \
   -d '{"jql":"\"Epic Link\"='"${TICKET_KEY}"' OR parent='"${TICKET_KEY}"'","maxResults":100}' | \
@@ -48,7 +48,7 @@ curl -s -X POST -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
 // turbo For each issue ID:
 
 ```bash
-curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
   "https://quranfoundation.atlassian.net/rest/api/3/issue/ISSUE_ID?expand=renderedFields" | \
   jq '{key: .key, summary: .fields.summary, type: .fields.issuetype.name, status: .fields.status.name, renderedDescription: .renderedFields.description}'
 ```

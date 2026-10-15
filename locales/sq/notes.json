@@ -3,11 +3,11 @@
   "body-placeholder": "Përdoreni këtë hapësirë për të ruajtur shënime të përgjithshme ose për të shkruar një reflektim.",
   "checkbox-refl-intro": {
     "checkbox": {
-      "desc": "<li> Postimi do të thotë që reflektimi juaj do të ndahet në QuranReflect nën emrin tuaj ku do të shqyrtohet nga ekipi i moderatorit dhe do të jetë i dukshëm për komunitetin QuranReflect. </li> <li> Pasi postimi juaj të shqyrtohet dhe miratohet ose promovohet nga ekipi ynë i moderimit, ju mund të merrni pëlqime, komente dhe të ndiqni njoftimet. Me t'u identifikuar në QuranReflect, mund të përditësoni cilësimet tuaja të njoftimit për t'iu përshtatur preferencave tuaja. </li> <li> Ju mund t'i shikoni shënimet tuaja dhe reflektimet e postuara nën profilin tuaj të hyrjes në Quran.com në seksionin \"Shënimet dhe Reflektimet e Mia\" ose të hyni në <link> QuranReflect </link> duke përdorur shenjën tuaj të Quran.com- në email. </li>",
+      "desc": "<li> Postimi do të thotë që reflektimi juaj do të ndahet në QuranReflect nën emrin tuaj ku do të shqyrtohet nga ekipi i moderatorit dhe do të jetë i dukshëm për komunitetin QuranReflect. </li> <li> Pasi postimi juaj të shqyrtohet dhe miratohet ose promovohet nga ekipi ynë i moderimit, ju mund të merrni pëlqime, komente dhe të ndiqni njoftimet. Me t'u identifikuar në QuranReflect, mund të përditësoni cilësimet tuaja të njoftimit për t'iu përshtatur preferencave tuaja. </li> <li> Ju mund t'i shikoni shënimet tuaja dhe reflektimet e postuara nën profilin tuaj të hyrjes në Quran.ir në seksionin \"Shënimet dhe Reflektimet e Mia\" ose të hyni në <link> QuranReflect </link> duke përdorur shenjën tuaj të Quran.ir- në email. </li>",
       "title": "Çfarë ndodh nëse klikoj \"Ruaj dhe posto në QuranReflect\"?"
     },
     "post-button": "Çfarë ndodh kur postoj?",
-    "qr-intro": "QuranReflex, së bashku me Quran.com, është një pjesë e familjes Quran.Foundation. Është një platformë sociale për ndarjen e reflektimeve personale mbi Kuranin, duke inkurajuar përdoruesit të përvetësojnë mesazhet e tij dhe të ndajnë njohuri që frymëzojnë ndryshime pozitive. Ndryshe nga tefsiri, i cili është një interpretim dijetar, reflektimet janë mendime dhe përvoja personale që lidhen me ajetet. Postimet e përdoruesve në QuranReflect shqyrtohen dhe moderohen nga një ekip i kualifikuar, i cili do të ndihmojë në sigurimin e cilësisë së përmbajtjes, etiketave kur ndërveprojnë me Kuranin, dhe ato do të fuqizojnë përdoruesit duke ndarë komente dhe duke nxjerrë në pah diskursin e vlefshëm duke nxitur kështu një komunitet shpirtëror të fokusuar në Kuran. . Mësoni më shumë: <link> Quranreflect.com/faq </link>",
+    "qr-intro": "QuranReflex, së bashku me Quran.ir, është një pjesë e familjes Quran.Foundation. Është një platformë sociale për ndarjen e reflektimeve personale mbi Kuranin, duke inkurajuar përdoruesit të përvetësojnë mesazhet e tij dhe të ndajnë njohuri që frymëzojnë ndryshime pozitive. Ndryshe nga tefsiri, i cili është një interpretim dijetar, reflektimet janë mendime dhe përvoja personale që lidhen me ajetet. Postimet e përdoruesve në QuranReflect shqyrtohen dhe moderohen nga një ekip i kualifikuar, i cili do të ndihmojë në sigurimin e cilësisë së përmbajtjes, etiketave kur ndërveprojnë me Kuranin, dhe ato do të fuqizojnë përdoruesit duke ndarë komente dhe duke nxjerrë në pah diskursin e vlefshëm duke nxitur kështu një komunitet shpirtëror të fokusuar në Kuran. . Mësoni më shumë: <link> Quranreflect.com/faq </link>",
     "qr-title": "Çfarë është Kur'ani Reflekt?",
     "title": "Çfarë është QuranReflect dhe çfarë ndodh nëse e shënoj këtë kuti?"
   },
@@ -57,7 +57,7 @@
   "reflection-update-success": "Reflektimi është përditësuar me sukses",
   "reflections-intro": {
     "line-1": "Për të parë dhe ndërvepruar me komentet, për t'u angazhuar me komunitetin dhe për të bërë më shumë, vizitoni <link> QuranReflec.com </link> .",
-    "line-2": "Ju mund të identifikoheni në llogarinë tuaj të lidhur në QuranReflec duke u identifikuar ose duke u regjistruar me të njëjtin email të Quran.com të përdorur në hyrjen tuaj.",
+    "line-2": "Ju mund të identifikoheni në llogarinë tuaj të lidhur në QuranReflec duke u identifikuar ose duke u regjistruar me të njëjtin email të Quran.ir të përdorur në hyrjen tuaj.",
     "line-3": "Përmbajtja që nuk është e përshtatshme për shikim publik do të fshihet ose fshihet. Përdoruesit që postojnë përmbajtje të papërshtatshme do të bllokohen.",
     "title": "Mësoni më shumë rreth Reflektimeve të Postuara"
   },

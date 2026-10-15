@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useSelector } from '@xstate/react';
 import classNames from 'classnames';
@@ -28,9 +28,9 @@ import Reciter from 'types/Reciter';
 type ChaptersListProps = {
   filteredChapters: Chapter[];
   selectedReciter: Reciter;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-const ChaptersList = ({ filteredChapters, selectedReciter }: ChaptersListProps) => {
+const ChaptersList = ({ filteredChapters, selectedReciter, ...props }: ChaptersListProps) => {
   const toast = useToast();
   const { t, lang } = useTranslation();
   const audioService = useContext(AudioPlayerMachineContext);
@@ -56,10 +56,13 @@ const ChaptersList = ({ filteredChapters, selectedReciter }: ChaptersListProps) 
     });
   };
 
-  const onCopyUrlClicked = (chapterId) => {
+  const onCopyUrlClicked = (chapter: Chapter) => {
     logButtonClick('reciter_page_chapter_url_copy');
     const origin = getWindowOrigin(lang);
-    const path = getReciterChapterNavigationUrl(selectedReciter.id.toString(), chapterId);
+    const path = getReciterChapterNavigationUrl(
+      selectedReciter.id.toString(),
+      chapter.slug || chapter.id.toString(),
+    );
     clipboardCopy(origin + path).then(() => {
       toast(t('common:shared'), { status: ToastStatus.Success });
     });
@@ -76,7 +79,7 @@ const ChaptersList = ({ filteredChapters, selectedReciter }: ChaptersListProps) 
   };
 
   return (
-    <div className={styles.chapterListContainer}>
+    <div className={styles.chapterListContainer} {...props}>
       {filteredChapters.map((chapter) => {
         const isAudioPlayingThisChapter =
           isAudioPlaying &&
@@ -94,8 +97,18 @@ const ChaptersList = ({ filteredChapters, selectedReciter }: ChaptersListProps) 
             className={styles.chapterListItem}
             role="button"
             tabIndex={0}
-            onKeyPress={onClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick();
+              }
+            }}
             onClick={onClick}
+            aria-label={
+              isAudioPlayingThisChapter
+                ? `${t('common:audio.player.pause')} ${chapter.transliteratedName}`
+                : `${t('common:audio.player.play')} ${chapter.transliteratedName}`
+            }
           >
             <div className={styles.chapterInfoContainer}>
               <div className={styles.playIconWrapper}>
@@ -126,7 +139,7 @@ const ChaptersList = ({ filteredChapters, selectedReciter }: ChaptersListProps) 
                 shape={ButtonShape.Circle}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onCopyUrlClicked(chapter.id);
+                  onCopyUrlClicked(chapter);
                 }}
                 tooltip={t('reciter:copy-link')}
                 ariaLabel={t('reciter:copy-link')}

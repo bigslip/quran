@@ -10,15 +10,15 @@ import { toLocalizedNumber } from '@/utils/locale';
 type WidgetRootRef = { current: HTMLDivElement | null };
 
 /**
- * Build quran.com URL for this widget configuration.
+ * Build quran.ir URL for this widget configuration.
  * @param {WidgetOptions} options - The widget options.
- * @returns {string} The quran.com URL for this widget configuration.
+ * @returns {string} The quran.ir URL for this widget configuration.
  */
 const buildVerseUrl = (options: WidgetOptions): string => {
   const [chapterId, verseId] = options.ayah.split(':');
   const verseLabel = options.rangeEnd ? `${verseId}-${options.rangeEnd}` : verseId;
   const localePrefix = options.locale === 'en' ? '' : `/${options.locale}`;
-  return `https://quran.com${localePrefix}/${chapterId}:${verseLabel}`;
+  return `https://quran.ir${localePrefix}/${chapterId}:${verseLabel}`;
 };
 
 /**

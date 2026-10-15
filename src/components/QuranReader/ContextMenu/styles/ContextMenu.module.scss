@@ -2,8 +2,12 @@
 @use 'src/styles/breakpoints';
 
 .container {
-  background: var(--color-background-elevated);
-  color: var(--color-text-default);
+  background: var(--color-surface-floating, var(--color-background-elevated));
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-block-end: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  box-shadow: var(--elevation-floating, var(--shadow-small-new));
+  color: var(--color-text-primary, var(--color-text-default));
   text-align: center;
   position: fixed;
   z-index: var(--z-index-sticky);
@@ -27,7 +31,6 @@
 
 .visibleContainer {
   transform: translate3d(0, var(--navbar-container-height), 0);
-  // https://ptgamr.github.io/2014-09-13-translate3d-vs-translate-performance/
 
   @include breakpoints.smallerThanTablet {
     // Faster expand with ease-out for smooth landing
@@ -37,8 +40,6 @@
 
 .withVisibleBanner {
   @include breakpoints.smallerThanTablet {
-    // TODO: we should add the banner height here if it's shown
-    // transform: translate3d(0, calc(var(--navbar-container-height) + var(--banner-height)), 0);
     transform: translate3d(0, calc(var(--navbar-container-height)), 0);
   }
 }
@@ -69,8 +70,9 @@
   padding-inline: calc(1.3 * var(--spacing-large));
   z-index: var(--z-index-default);
   position: relative;
-  background: var(--color-background-elevated);
+  background: transparent;
   margin-block-start: -1px;
+
   @include breakpoints.tablet {
     block-size: var(--context-menu-section-height);
     max-block-size: var(--context-menu-section-height);
@@ -93,7 +95,6 @@
     visibility: hidden;
     display: none;
     block-size: 0;
-    visibility: hidden;
   }
 }
 
@@ -131,7 +132,6 @@
     visibility: hidden;
     display: none;
     block-size: 0;
-    visibility: hidden;
   }
 }
 
@@ -171,8 +171,8 @@
   align-items: center;
   justify-content: center;
   column-gap: var(--spacing-small-px);
-  color: var(--color-text-faded-new);
-  background: var(--color-background-elevated);
+  color: var(--color-text-secondary, var(--color-text-faded-new));
+  background: transparent;
   z-index: var(--z-index-default);
 }
 
@@ -184,6 +184,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.1);
+  }
 
   svg {
     inline-size: 16px;
@@ -192,12 +197,14 @@
 }
 
 .unbookmarkedIcon {
-  color: var(--color-text-faded-new);
+  color: var(--color-text-secondary, var(--color-text-faded-new));
+  transition: color var(--transition-fast);
 
   &:hover {
-    color: var(--color-text-default);
+    color: var(--color-text-primary, var(--color-text-default));
   }
 }
+
 .bookmarkedIcon {
   color: var(--color-bookmark-icon);
 }
@@ -207,10 +214,12 @@
   align-items: center;
   column-gap: var(--spacing-xxsmall-px);
   font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
 
 .secondaryInfo {
   font-weight: var(--font-weight-normal);
+  color: var(--color-text-secondary);
 }
 
 .surahName {
@@ -218,12 +227,14 @@
   align-items: center;
   cursor: pointer;
 }
+
 .chevronIconContainer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-inline-start: var(--spacing-xxsmall-px);
   box-sizing: border-box;
+  color: var(--color-primary);
 }
 
 .rotate180 {
@@ -234,6 +245,7 @@
 .rotateAuto {
   transition: var(--transition-fast);
   transform: rotate(0);
+
   @include breakpoints.tablet {
     transition: var(--transition-fast);
     transform: rotate(180deg);
@@ -242,6 +254,7 @@
 
 .disabledOnMobile {
   pointer-events: none;
+
   @include breakpoints.tablet {
     pointer-events: inherit;
   }
@@ -251,5 +264,22 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-large);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-pill);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    background-color: var(--color-primary-subtle);
+    border-color: var(--color-border-subtle);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
 }

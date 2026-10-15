@@ -18,41 +18,50 @@ interface ContentProps extends ComponentProps<typeof DialogPrimitive.Content> {
   testId?: string;
 }
 
-const Content: React.FC<ContentProps> = ({
-  children,
-  isPropagationStopped,
-  isBottomSheetOnMobile,
-  contentClassName,
-  size = ModalSize.MEDIUM,
-  testId,
-  ...props
-}) => (
-  <DialogPrimitive.Content
-    {...props}
-    data-testid={testId}
-    className={classNames(
-      styles.content,
-      { [ModalSize.MEDIUM]: styles.medium, [ModalSize.LARGE]: styles.large }[size],
-      { [styles.topSheetOnMobile]: !isBottomSheetOnMobile },
+const Content = React.forwardRef<HTMLDivElement, ContentProps>(
+  (
+    {
+      children,
+      isPropagationStopped,
+      isBottomSheetOnMobile,
       contentClassName,
-    )}
-    onClick={(e) => {
-      /**
-       * Radix is using react portal,
-       * React Portal bubble events events to the parent element,
-       * even if they are not in the same DOM Tree, for us this could
-       * cause problems. For example, calling Modal inside AudioPlayer
-       * could cause the AudioPlayer to `expand` / `minimize`
-       *
-       * References:
-       * - https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-       * - https://jwwnz.medium.com/react-portals-and-event-bubbling-8df3e35ca3f1
-       */
-      if (isPropagationStopped) e.stopPropagation();
-    }}
-  >
-    {children}
-  </DialogPrimitive.Content>
+      size = ModalSize.MEDIUM,
+      testId,
+      ...props
+    },
+    ref,
+  ) => (
+    <DialogPrimitive.Content
+      ref={ref}
+      aria-describedby={props['aria-describedby'] ?? undefined}
+      {...props}
+      data-testid={testId}
+      className={classNames(
+        styles.content,
+        { [ModalSize.MEDIUM]: styles.medium, [ModalSize.LARGE]: styles.large }[size],
+        { [styles.topSheetOnMobile]: !isBottomSheetOnMobile },
+        contentClassName,
+      )}
+      onClick={(e) => {
+        /**
+         * Radix is using react portal,
+         * React Portal bubble events events to the parent element,
+         * even if they are not in the same DOM Tree, for us this could
+         * cause problems. For example, calling Modal inside AudioPlayer
+         * could cause the AudioPlayer to `expand` / `minimize`
+         *
+         * References:
+         * - https://reactjs.org/docs/portals.html#event-bubbling-through-portals
+         * - https://jwwnz.medium.com/react-portals-and-event-bubbling-8df3e35ca3f1
+         */
+        if (isPropagationStopped) e.stopPropagation();
+      }}
+    >
+      {children}
+    </DialogPrimitive.Content>
+  ),
 );
+
+Content.displayName = 'ModalContent';
 
 export default Content;

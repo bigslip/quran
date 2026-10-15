@@ -1,4 +1,4 @@
-import { memo, RefObject, useCallback, useContext, useRef } from 'react';
+import { memo, RefObject, useCallback, useContext, useMemo, useRef } from 'react';
 
 import { useSelector as useXstateSelector } from '@xstate/react';
 import classNames from 'classnames';
@@ -35,7 +35,7 @@ export type LineProps = {
   // eslint-disable-next-line react/no-unused-prop-types
   bookmarksRangeUrl: string | null;
   pageHeaderChapterId?: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const Line = ({
   lineKey,
@@ -44,15 +44,19 @@ const Line = ({
   pageIndex,
   lineIndex,
   pageHeaderChapterId,
+  quranReaderStyles,
+  bookmarksRangeUrl,
+  className,
+  ...props
 }: LineProps) => {
   const audioService = useContext(AudioPlayerMachineContext);
+  const lineVerseKeys = useMemo(() => new Set(words.map((word) => word.verseKey)), [words]);
   const isHighlighted = useXstateSelector(audioService, (state) => {
     // Don't highlight when audio player is closed
     if (!selectIsAudioPlayerVisible(state)) return false;
 
     const { surah, ayahNumber } = state.context;
-    const verseKeys = words.map((word) => word.verseKey);
-    return verseKeys.includes(`${surah}:${ayahNumber}`);
+    return lineVerseKeys.has(`${surah}:${ayahNumber}`);
   });
 
   const [scrollToSelectedItem, selectedItemRef]: [() => void, RefObject<HTMLDivElement>] =
@@ -105,10 +109,11 @@ const Line = ({
       data-page={pageNumber}
       data-chapter-id={chapterId}
       data-hizb={hizbNumber}
-      className={classNames(styles.container, {
+      className={classNames(className, styles.container, {
         [styles.highlighted]: isHighlighted,
         [styles.mobileInline]: isBigTextLayout,
       })}
+      {...props}
     >
       {shouldShowChapterHeader && chapterId !== pageHeaderChapterId && (
         <ChapterHeader chapterId={firstWordData[0]} isTranslationView={false} />

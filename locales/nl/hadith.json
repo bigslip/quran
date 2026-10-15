@@ -1,4 +1,6 @@
 {
   "description": "Ontdek authentieke Hadiths en overleveringen met betrekking tot Ayah {{ayahNumber}} van Soera {{surahName}}Raadpleeg wetenschappelijke tradities die verband houden met dit koranvers.",
+  "sahih-bukhari": "Sahih al-Bukhari",
+  "sahih-muslim": "Sahih Muslim",
   "title": "Hadiths {{surahName}} - {{ayahNumber}}"
 }

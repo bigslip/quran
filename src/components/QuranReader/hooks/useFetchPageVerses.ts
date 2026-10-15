@@ -6,7 +6,7 @@ import { getPageVerses } from '@/api';
 import useGetMushaf from '@/hooks/useGetMushaf';
 import { selectIsUsingDefaultFont, selectQuranFont } from '@/redux/slices/QuranReader/styles';
 import { VersesResponse } from '@/types/ApiResponses';
-import { getDefaultWordFields } from '@/utils/api';
+import { getDefaultWordFields, STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { makePageVersesUrl } from '@/utils/apiPaths';
 import getPageVersesParams from '@/utils/pages/getPageVersesParams';
 
@@ -32,6 +32,7 @@ const useFetchPageVerses = (pageId: string, initialData: VersesResponse) => {
     {
       fallbackData: initialData,
       revalidateOnMount: !isUsingDefaultFont,
+      dedupingInterval: STATIC_DEDUPING_INTERVAL,
     },
   );
 

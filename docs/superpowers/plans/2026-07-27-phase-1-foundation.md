@@ -8,7 +8,7 @@
 
 **Tech Stack:** Pinned in master plan. Key versions: Next `^14.2.6`, React `^18.3.1`, TypeScript `^5.5.4`, Node `18.x`, Redux Toolkit `^2.2.7`, Radix UI (16 packages), Storybook `^8.2.9`, Vitest `^2.0.5`, Playwright `^1.46.1`.
 
-**Decisions locked in:** See `docs/decisions.md`. Summary: self-host quran.com-api (backend), Firebase (auth), Sanity (CMS), all 604 COLRv1 fonts (Quran text), SCSS + CSS variables (styling), self-mirrored audio (start local → S3 later).
+**Decisions locked in:** See `docs/decisions.md`. Summary: self-host quran.ir-api (backend), Firebase (auth), Sanity (CMS), all 604 COLRv1 fonts (Quran text), SCSS + CSS variables (styling), self-mirrored audio (start local → S3 later).
 
 ---
 
@@ -508,8 +508,8 @@ Created during this phase. Paths relative to `/home/v2ray/projects/quran-clone/`
   import { resolve } from 'node:path';
 
   const OUT_DIR = resolve('public/fonts/quran/hafs/v4/colrv1/woff');
-  // Use quran.com's public CDN as source — verify license allows redistribution first (ADR-D)
-  const BASE_URL = 'https://quran.com/fonts/quran/hafs/v4/colrv1/woff';
+  // Use quran.ir's public CDN as source — verify license allows redistribution first (ADR-D)
+  const BASE_URL = 'https://quran.ir/fonts/quran/hafs/v4/colrv1/woff';
 
   async function download(page) {
     const url = `${BASE_URL}/p${page}.woff`;
@@ -1003,7 +1003,7 @@ Created during this phase. Paths relative to `/home/v2ray/projects/quran-clone/`
     return (
       <footer className={styles.footer}>
         {/* TODO: theme switcher, links, social — Phase 1c */}
-        <p>Built for learning purposes. Not affiliated with quran.com.</p>
+        <p>Built for learning purposes. Not affiliated with quran.ir.</p>
       </footer>
     );
   }

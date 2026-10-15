@@ -1,7 +1,10 @@
 import { useContext } from 'react';
 
 import { useSelector } from '@xstate/react';
+import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
+
+import styles from './PlayPauseButton.module.scss';
 
 import Button, { ButtonShape, ButtonVariant } from '@/dls/Button/Button';
 import Spinner, { SpinnerSize } from '@/dls/Spinner/Spinner';
@@ -26,8 +29,10 @@ const PlayPauseButton = () => {
     return (
       <Button
         tooltip={`${t('loading')}...`}
+        ariaLabel={`${t('loading')}...`}
         shape={ButtonShape.Circle}
         variant={ButtonVariant.Ghost}
+        className={styles.playPauseButton}
         isDisabled={isLoading}
         data-testid="audio-loading-button"
       >
@@ -39,8 +44,10 @@ const PlayPauseButton = () => {
     return (
       <Button
         tooltip={t('audio.player.pause')}
+        ariaLabel={t('audio.player.pause')}
         shape={ButtonShape.Circle}
         variant={ButtonVariant.Ghost}
+        className={classNames(styles.playPauseButton, styles.playing)}
         onClick={withStopPropagation(() => {
           logButtonClick('audio_player_pause');
           audioService.send('TOGGLE');
@@ -54,8 +61,10 @@ const PlayPauseButton = () => {
   return (
     <Button
       tooltip={t('audio.player.play')}
+      ariaLabel={t('audio.player.play')}
       shape={ButtonShape.Circle}
       variant={ButtonVariant.Ghost}
+      className={styles.playPauseButton}
       onClick={withStopPropagation(() => {
         logButtonClick('audio_player_play');
         audioService.send('TOGGLE');
@@ -69,3 +78,4 @@ const PlayPauseButton = () => {
 };
 
 export default PlayPauseButton;
+

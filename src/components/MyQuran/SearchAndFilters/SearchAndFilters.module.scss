@@ -5,7 +5,6 @@
   flex-direction: column;
   gap: var(--spacing-medium-px);
   margin-block-end: var(--spacing-large-px);
-  // Smooth entrance animation
   animation: slideDown var(--transition-moderate) ease-out;
 
   @include breakpoints.tablet {
@@ -27,7 +26,7 @@
   transform: translateY(-50%);
   inline-size: var(--spacing-medium2-px);
   block-size: var(--spacing-medium2-px);
-  color: var(--color-text-faded);
+  color: var(--color-text-secondary, var(--color-text-faded));
   pointer-events: none;
   transition: color var(--transition-fast) ease-out, transform var(--transition-moderate) ease-out;
 }
@@ -39,29 +38,29 @@
     calc(var(--spacing-xlarge-px) + var(--spacing-small-px));
   font-size: var(--font-size-normal);
   font-weight: var(--font-weight-normal);
-  color: var(--color-text-default);
-  background-color: var(--color-background-alternative-faint-new);
-  border: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  color: var(--color-text-primary, var(--color-text-default));
+  background-color: var(--color-surface-card, var(--color-background-alternative-faint-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
   border-radius: var(--border-radius-pill);
   transition: all var(--transition-moderate) ease-out;
 
   &::placeholder {
-    color: var(--color-text-faded);
+    color: var(--color-text-secondary, var(--color-text-faded));
     transition: opacity var(--transition-fast) ease-out;
   }
 
   &:hover {
-    border-color: var(--color-borders-hairline-new);
+    border-color: var(--color-primary, #00f2fe);
   }
 
   &:focus {
     outline: none;
-    border-color: var(--color-primary-medium);
-    box-shadow: 0 0 0 calc(var(--spacing-micro-px) * 3) var(--color-primary-faded);
-    transform: translateY(calc(var(--spacing-micro-px) * -1));
+    border-color: var(--color-primary, #00f2fe);
+    box-shadow: 0 0 0 3px var(--color-primary-subtle, rgba(0, 242, 254, 0.15));
+    transform: translateY(-1px);
 
     + .searchIcon {
-      color: var(--color-primary-medium);
+      color: var(--color-primary, #00f2fe);
       transform: translateY(-50%) scale(1.1);
     }
 
@@ -80,19 +79,19 @@
 .controls {
   display: flex;
   align-items: center;
-  gap: var(--spacing-medium-px);
+  gap: var(--spacing-small-px);
 }
 
 .controlButton {
   display: flex;
   align-items: center;
   gap: var(--spacing-xsmall-px);
-  padding: var(--spacing-xsmall-px) var(--spacing-small2-px);
+  padding: var(--spacing-micro2-px) var(--spacing-small2-px);
   font-size: var(--font-size-normal);
   font-weight: var(--font-weight-medium);
-  color: var(--color-text-default);
-  background: var(--color-background-default);
-  border: var(--spacing-hairline-px) solid var(--color-borders-hairline);
+  color: var(--color-text-primary, var(--color-text-default));
+  background: var(--color-surface-card, var(--color-background-default));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
   border-radius: var(--border-radius-pill);
   cursor: pointer;
   transition: all var(--transition-moderate) ease-out;
@@ -100,12 +99,13 @@
   position: relative;
 
   &:hover {
-    background: var(--color-background-alternative);
-    border-color: var(--color-borders-hairline-new);
-    transform: translateY(calc(var(--spacing-micro-px) * -1));
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    border-color: var(--color-primary, #00f2fe);
+    color: var(--color-primary, #00f2fe);
+    transform: translateY(-1px);
 
     .controlIcon {
-      color: var(--color-primary-medium);
+      color: var(--color-primary, #00f2fe);
     }
   }
 
@@ -113,34 +113,41 @@
     transform: translateY(0) scale(0.98);
   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 calc(var(--spacing-micro-px) * 3) var(--color-primary-faded);
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 
 .addNewButton {
   @extend .controlButton;
-  background: var(--color-primary-medium);
-  border-color: var(--color-primary-medium);
-  color: var(--color-background-default);
+  background: var(--color-primary-gradient, linear-gradient(135deg, #00f2fe 0%, #4facfe 100%));
+  border-color: transparent;
+  color: #070a13;
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.2));
 
   .controlIcon {
-    color: var(--color-background-default);
+    color: #070a13;
   }
 
   &:hover {
-    background: var(--color-primary-dark);
-    border-color: var(--color-primary-dark);
-    transform: translateY(calc(var(--spacing-small-px) * -1));
-    box-shadow: 0 var(--spacing-xsmall-px) var(--spacing-small2-px) rgba(0, 0, 0, 0.15);
+    filter: brightness(1.15);
+    border-color: transparent;
+    color: #070a13;
+    transform: translateY(-1px);
+    box-shadow: 0 0 24px var(--color-primary, rgba(0, 242, 254, 0.4));
+
+    .controlIcon {
+      color: #070a13;
+    }
   }
 }
 
 .controlIcon {
   inline-size: var(--spacing-medium2-px);
   block-size: var(--spacing-medium2-px);
-  color: var(--color-text-faded);
+  color: var(--color-text-secondary, var(--color-text-faded));
   transition: color var(--transition-fast) ease-out, transform var(--transition-moderate) ease-out;
 
   .controlButton:hover & {
@@ -158,14 +165,14 @@
   position: absolute;
   inset-inline-end: var(--spacing-xsmall-px);
   inset-block-start: var(--spacing-xsmall-px);
-  inline-size: var(--spacing-micro2-px);
-  block-size: var(--spacing-micro2-px);
+  inline-size: var(--spacing-xxsmall-px);
+  block-size: var(--spacing-xxsmall-px);
   border-radius: 50%;
-  background-color: var(--color-success-medium);
+  background-color: var(--color-primary, #00f2fe);
+  box-shadow: 0 0 8px var(--color-primary, #00f2fe);
   animation: pulse var(--transition-slow) ease-in-out infinite;
 }
 
-// Animation keyframes
 @keyframes slideDown {
   from {
     opacity: 0;

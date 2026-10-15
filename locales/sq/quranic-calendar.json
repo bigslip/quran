@@ -19,19 +19,19 @@
       "question": "Si funksionon programi?"
     },
     {
-      "answer": "Aspak. Pika e fillimit në këtë program është të angazhoheni me kuptimet e Kur'anit përmes çdo gjuhe (përkthimi) me të cilën jeni të kënaqur. Quran.com ofron përkthime në shumë gjuhë për ta bërë këtë të arritshme për të gjithë. Ne synojmë të frymëzojmë pjesëmarrësit që të vazhdojnë të rriten nga viti në vit.",
+      "answer": "Aspak. Pika e fillimit në këtë program është të angazhoheni me kuptimet e Kur'anit përmes çdo gjuhe (përkthimi) me të cilën jeni të kënaqur. Quran.ir ofron përkthime në shumë gjuhë për ta bërë këtë të arritshme për të gjithë. Ne synojmë të frymëzojmë pjesëmarrësit që të vazhdojnë të rriten nga viti në vit.",
       "question": "A duhet të di të lexoj arabisht për të marrë pjesë?"
     },
     {
-      "answer": "Çdo javë, detyra e përditësuar e leximit do të jetë e disponueshme në Quran.com/calendar. Mund të lexoni drejtpërdrejt në Quran.com, ku një lidhje e dedikuar do t'ju çojë direkt në leximin parësor për javën. \\n \\n Mund të hapësh gjithashtu PDF-në në anglisht dhe ta printosh në shtëpi. Ky përmban një përkthim të rrjedhshëm të përshtatur kryesisht nga vepra e MAS Abdel Haleem. Dokumenti i çdo jave është i ndarë në shtatë pjesë, duke e bërë më të lehtë përhapjen e leximit gjatë javës nëse dëshironi. Ka hyrje të shkurtra për suret, titujt dhe shënimet për të sqaruar disa pika thelbësore, dhe çdo pjesë e përditshme ka një pyetje reflektimi dhe veprim të sugjeruar.",
+      "answer": "Çdo javë, detyra e përditësuar e leximit do të jetë e disponueshme në Quran.ir/calendar. Mund të lexoni drejtpërdrejt në Quran.ir, ku një lidhje e dedikuar do t'ju çojë direkt në leximin parësor për javën. \\n \\n Mund të hapësh gjithashtu PDF-në në anglisht dhe ta printosh në shtëpi. Ky përmban një përkthim të rrjedhshëm të përshtatur kryesisht nga vepra e MAS Abdel Haleem. Dokumenti i çdo jave është i ndarë në shtatë pjesë, duke e bërë më të lehtë përhapjen e leximit gjatë javës nëse dëshironi. Ka hyrje të shkurtra për suret, titujt dhe shënimet për të sqaruar disa pika thelbësore, dhe çdo pjesë e përditshme ka një pyetje reflektimi dhe veprim të sugjeruar.",
       "question": "Ku mund t'i gjej detyrat javore të leximit?"
     },
     {
-      "answer": "Ju keni shumë opsione për të qëndruar në rrugën e duhur. Ne rekomandojmë shumë të abonoheni për të marrë email me detyrat javore të leximit të bashkangjitura. Ne kemi krijuar gjithashtu kanale të komunitetit në Telegram dhe WhatsApp të cilat do të përmbajnë kujtesë dhe inkurajim. Thjesht klikoni butonat e zgjedhjes suaj në Quran.com/calendar për t'u abonuar. Ju mund të zgjidhni të tre nëse dëshironi.",
+      "answer": "Ju keni shumë opsione për të qëndruar në rrugën e duhur. Ne rekomandojmë shumë të abonoheni për të marrë email me detyrat javore të leximit të bashkangjitura. Ne kemi krijuar gjithashtu kanale të komunitetit në Telegram dhe WhatsApp të cilat do të përmbajnë kujtesë dhe inkurajim. Thjesht klikoni butonat e zgjedhjes suaj në Quran.ir/calendar për t'u abonuar. Ju mund të zgjidhni të tre nëse dëshironi.",
       "question": "Si mund të marr kujtesa javore për leximin?"
     },
     {
-      "answer": "Në Quran.com, shkoni te menyja e cilësimeve për: \\n • Rregulloni madhësitë dhe stilet e shkronjave \\n • Kaloni midis modalitetit të dritës, errësirës dhe sepisë \\n • Zgjidhni nga përkthimet e shumta të disponueshme \\n \\n Kjo e bën të lehtë për këdo që të marrë pjesë në një përkthim të qartë dhe informativ që e kupton më së miri.",
+      "answer": "Në Quran.ir, shkoni te menyja e cilësimeve për: \\n • Rregulloni madhësitë dhe stilet e shkronjave \\n • Kaloni midis modalitetit të dritës, errësirës dhe sepisë \\n • Zgjidhni nga përkthimet e shumta të disponueshme \\n \\n Kjo e bën të lehtë për këdo që të marrë pjesë në një përkthim të qartë dhe informativ që e kupton më së miri.",
       "question": "Si mund ta personalizoj përvojën time të leximit?"
     },
     {
@@ -88,6 +88,7 @@
   "marked-as-completed": "Kjo javë është shënuar si e përfunduar me sukses!",
   "month": "muaj",
   "my-progress": "Përparimi im",
+  "no-faq-items": "Nuk ka pyetje të shpeshta të disponueshme.",
   "progress-subtitle": "Mos ngurroni të ktheheni dhe të plotësoni javët që keni humbur!",
   "quran-calendar-description": "Një plan i strukturuar leximi për të përfunduar Kuranin brenda një viti. Ndërtoni qëndrueshmëri, thelloni mirëkuptimin tuaj dhe qëndroni në rrugën e duhur - pa u ndier i mbingarkuar.",
   "quran-calendar-title": "Kurani në një vit – Një plan i thjeshtë për të lexuar dhe kuptuar të gjithë Kuranin",

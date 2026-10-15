@@ -43,7 +43,7 @@ const Error = ({ hasFullWidth = true }: ErrorProps) => {
       </div>
       <p className={styles.reportBug}>
         {t('if-persist')}{' '}
-        <Link href="https://feedback.quran.com/" variant={LinkVariant.Highlight}>
+        <Link href="https://feedback.quran.ir/" variant={LinkVariant.Highlight}>
           {t('report-cta')}
         </Link>
       </p>

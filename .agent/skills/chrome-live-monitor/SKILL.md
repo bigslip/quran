@@ -1,0 +1,1 @@
+../../../.agents/quran/skills/chrome-live-monitor/SKILL.md

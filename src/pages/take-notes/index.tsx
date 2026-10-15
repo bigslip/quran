@@ -4,11 +4,11 @@ import classNames from 'classnames';
 import { NextPage } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 
-import Benefits from './components/Benefits';
-import Conclusion from './components/Conclusion';
-import HowToUse from './components/HowToUse';
-import Introduction from './components/Introduction';
-import TableOfContents from './components/TableOfContents';
+import Benefits from '@/components/TakeNotes/Benefits';
+import Conclusion from '@/components/TakeNotes/Conclusion';
+import HowToUse from '@/components/TakeNotes/HowToUse';
+import Introduction from '@/components/TakeNotes/Introduction';
+import TableOfContents from '@/components/TakeNotes/TableOfContents';
 
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import PageContainer from '@/components/PageContainer';

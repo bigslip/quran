@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "Configurez et prévisualisez les widgets d'intégration pour le partage du Coran, puis copiez l'extrait de script prêt à l'emploi.",
-    "title": "Outil d'intégration de versets coraniques | Quran.com"
+    "title": "Outil d'intégration de versets coraniques | Quran.ir"
   },
   "mushaf": {
     "indopak": "Indopak",
@@ -80,6 +80,6 @@
     "otherLanguage": "Autre"
   },
   "widget": {
-    "readOnQuran": "Lisez la suite sur Quran.com"
+    "readOnQuran": "Lisez la suite sur Quran.ir"
   }
 }

@@ -1,8 +1,8 @@
 ---
-description: How to add a new language/locale to Quran.com Frontend
+description: How to add a new language/locale to Quran.ir Frontend
 ---
 
-# Adding a New Language to Quran.com Frontend
+# Adding a New Language to Quran.ir Frontend
 
 This guide explains how to add support for a new language (e.g., Vietnamese `vi`).
 
@@ -37,7 +37,7 @@ enum Language {
 
 ### 2. Add Language Enum (Backend)
 
-**File:** `packages/types/src/preferences/Language.ts` (in `quran.com-users-backend`)
+**File:** `packages/types/src/preferences/Language.ts` (in `quran.ir-users-backend`)
 
 Add the language to the backend types so the API can accept it:
 
@@ -366,7 +366,7 @@ const LOCALE_PRELOADED_FONTS = {
 ## Notes
 
 - **Content DB IDs**: Language ID (step 5.4) and Translation ID (step 6) must match IDs in the
-  Quran.com content database
+  Quran.ir content database
 - **Font optimization**: Always use woff2 format - compress with `woff2_compress` if you have TTF
   files
 - **RTL languages**: Don't forget to add to `RTL_LOCALES` array

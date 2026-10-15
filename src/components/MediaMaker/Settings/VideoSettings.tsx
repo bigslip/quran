@@ -31,7 +31,7 @@ import QueryParam from '@/types/QueryParam';
 import Reciter from '@/types/Reciter';
 import { logButtonClick, logEvent, logValueChange } from '@/utils/eventLogger';
 
-type Props = {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   chaptersList: any[];
   reciters: Reciter[];
   playerRef: MutableRefObject<PlayerRef>;
@@ -73,6 +73,7 @@ const VideoSettings: React.FC<Props> = ({
   inputProps,
   mediaSettings,
   playerRef,
+  ...rest
 }) => {
   const [selectedTab, setSelectedTab] = useState<Tab>(Tab.AUDIO);
   const dispatch = useDispatch();
@@ -187,6 +188,7 @@ const VideoSettings: React.FC<Props> = ({
     <>
       <div
         className={classNames(layoutStyle.flowItem, layoutStyle.fullWidth, styles.mainContainer)}
+        {...rest}
       >
         <div className={styles.settingsContainer}>
           <div className={styles.switchContainer}>

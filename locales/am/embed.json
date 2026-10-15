@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "ቁርዓንን ለማጋራት መግብሮችን ያዋቅሩ እና አስቀድመው ይመልከቱ፣ ከዚያም ለአጠቃቀም ዝግጁ የሆነውን የስክሪፕት ቅንጭብ ይቅዱ።",
-    "title": "አያህ ኢምቤድ ገንቢ | Quran.com"
+    "title": "አያህ ኢምቤድ ገንቢ | Quran.ir"
   },
   "mushaf": {
     "indopak": "ኢንዶፓክ",
@@ -80,6 +80,6 @@
     "otherLanguage": "ሌላ"
   },
   "widget": {
-    "readOnQuran": "በQuran.com ላይ ያንብቡ"
+    "readOnQuran": "በQuran.ir ላይ ያንብቡ"
   }
 }

@@ -474,7 +474,7 @@ describe('prepareGenerateMediaFileRequestData', () => {
       verseAlignment: Alignment.CENTRE,
       translationAlignment: Alignment.CENTRE,
       video: {
-        thumbnailSrc: 'https://images.quran.com/videos/thumbnails/stars.png',
+        thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/stars.png',
         videoSrc: '/videos/videos_stars.mp4',
         watermarkColor: WatermarkColor.LIGHT,
       },
@@ -490,7 +490,7 @@ describe('prepareGenerateMediaFileRequestData', () => {
       previewMode: PreviewMode.DISABLED,
       type: MediaType.VIDEO,
       chaptersDataArabic: '',
-    } as GenerateMediaFileRequest;
+    } as unknown as GenerateMediaFileRequest;
 
     const result = prepareGenerateMediaFileRequestData(rawData);
 
@@ -849,7 +849,7 @@ describe('prepareGenerateMediaFileRequestData', () => {
       verseAlignment: Alignment.CENTRE,
       translationAlignment: Alignment.CENTRE,
       video: {
-        thumbnailSrc: 'https://images.quran.com/videos/thumbnails/stars.png',
+        thumbnailSrc: 'https://images.quran.ir/videos/thumbnails/stars.png',
         videoSrc: '/videos/videos_stars.mp4',
         watermarkColor: WatermarkColor.LIGHT,
       },
@@ -865,7 +865,7 @@ describe('prepareGenerateMediaFileRequestData', () => {
       type: MediaType.IMAGE,
       chaptersDataArabic: '',
       previewMode: PreviewMode.DISABLED,
-    } as GenerateMediaFileRequest;
+    } as unknown as GenerateMediaFileRequest;
 
     const result = prepareGenerateMediaFileRequestData(rawData);
 

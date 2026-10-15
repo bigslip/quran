@@ -20,7 +20,7 @@ import {
   SearchNavigationType,
 } from '@/types/Search/SearchNavigationResult';
 import { Direction } from '@/utils/locale';
-import { getSearchNavigationResult } from '@/utils/search';
+import { getSearchNavigationResult, sanitizeSearchHighlight } from '@/utils/search';
 import { getVerseAndChapterNumbersFromKey } from '@/utils/verse';
 import ChaptersData from 'types/ChaptersData';
 
@@ -159,7 +159,7 @@ const SearchResultText: React.FC<Props> = ({
               )}
               dir={Direction.RTL}
               lang={Language.AR}
-              dangerouslySetInnerHTML={{ __html: arabicLine ?? '' }}
+              dangerouslySetInnerHTML={{ __html: sanitizeSearchHighlight(arabicLine ?? '') }}
             />
           </div>
           <div className={textClasses.translationColumn}>
@@ -167,17 +167,25 @@ const SearchResultText: React.FC<Props> = ({
               className={classNames(textClasses.resultText, textClasses.translationText)}
               dir={translationDir}
               lang={lang}
-              dangerouslySetInnerHTML={{ __html: translationLine ?? '' }}
+              dangerouslySetInnerHTML={{ __html: sanitizeSearchHighlight(translationLine ?? '') }}
             />
           </div>
         </div>
+      ) : isSearchPage ? (
+        <TextTag
+          className={classNames(textClasses.resultText, isArabic && textClasses.arabic)}
+          dir={singleLineDirection}
+          lang={singleLineLanguage}
+        >
+          {singleLineText}
+        </TextTag>
       ) : (
         // Single line layout
         <TextTag
           className={classNames(textClasses.resultText, isArabic && textClasses.arabic)}
           dir={singleLineDirection}
           lang={singleLineLanguage}
-          dangerouslySetInnerHTML={{ __html: singleLineText ?? '' }}
+          dangerouslySetInnerHTML={{ __html: sanitizeSearchHighlight(singleLineText ?? '') }}
         />
       )}
     </div>

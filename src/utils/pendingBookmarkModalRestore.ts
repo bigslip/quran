@@ -22,7 +22,7 @@ const normalizePathname = (pathname: string): string => {
 
 const parseUrl = (url: string): URL | null => {
   try {
-    return new URL(url, 'https://quran.com');
+    return new URL(url, 'https://quran.ir');
   } catch {
     return null;
   }

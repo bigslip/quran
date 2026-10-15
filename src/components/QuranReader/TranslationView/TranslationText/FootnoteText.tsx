@@ -71,6 +71,7 @@ const FootnoteText: React.FC<FootnoteTextProps> = ({
           variant={ButtonVariant.Ghost}
           shape={ButtonShape.Circle}
           onClick={onCloseClicked}
+          ariaLabel={t('common:close')}
         >
           <CloseIcon />
         </Button>

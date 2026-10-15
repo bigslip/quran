@@ -1,6 +1,8 @@
 {
   "default-translations": "Bản dịch mặc định",
-  "filter": "lọc",
+  "filter": {
+    "languages-placeholder": "Chọn một ngôn ngữ"
+  },
   "language-filter-label": "Tìm kiếm tất cả các bản dịch của một ngôn ngữ",
   "language-select": "Chọn ngôn ngữ",
   "reset": "cài lại",

@@ -1,21 +1,20 @@
-@use 'src/styles/utility';
+@use 'src/styles/breakpoints';
+@use 'src/styles/theme';
 
-.container {
+.pageWrapper {
   display: flex;
-  justify-content: center;
-  margin-block-start: var(--spacing-mega);
+  flex-direction: column;
+  inline-size: 100%;
   min-block-size: 80vh;
 }
 
-.title {
-  text-align: center;
-  font-size: var(--font-size-jumbo);
-  font-weight: var(--font-weight-bold);
+.listSection {
+  inline-size: 100%;
+  padding-block-end: calc(3 * var(--spacing-mega));
 }
 
-.desc {
-  text-align: center;
-  padding-block-start: var(--spacing-small);
-  padding-inline: var(--spacing-small);
-  @include utility.kitabFontHtmlLang;
+.container {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
 }

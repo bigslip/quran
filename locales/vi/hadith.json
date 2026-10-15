@@ -1,4 +1,6 @@
 {
   "description": "Khám phá những Hadith và lời kể xác thực liên quan đến Ayah. {{ayahNumber}} của Surah {{surahName}}Tìm hiểu các truyền thống học thuật liên quan đến câu thơ này trong Kinh Qur'an.",
+  "sahih-bukhari": "Sahih al-Bukhari",
+  "sahih-muslim": "Sahih Muslim",
   "title": "Hadith {{surahName}} - {{ayahNumber}}"
 }

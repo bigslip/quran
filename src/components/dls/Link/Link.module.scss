@@ -1,9 +1,10 @@
 .base {
   text-decoration: none;
   color: inherit;
-  &:active,
-  &:focus {
-    outline: none;
+  &:focus-visible {
+    outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring));
+    outline-offset: 2px;
+    border-radius: var(--border-radius-default);
   }
 }
 // variants

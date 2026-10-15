@@ -1,15 +1,21 @@
 @use 'src/styles/breakpoints';
 
 .container {
-  border-radius: var(--border-radius-rounded);
-  padding: var(--spacing-medium-px);
-  background-color: var(--color-success-faded);
-  color: var(--color-text-default-new);
-  font-size: var(--font-size-xsmall-px);
+  border-radius: var(--border-radius-large-px);
+  padding: var(--spacing-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
+  border: 1px solid var(--color-border-subtle, var(--color-borders-hairline));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--color-text-primary, var(--color-text-default-new));
+  font-size: var(--font-size-small-px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 
   margin-block-end: var(--spacing-xlarge-px);
+
   @include breakpoints.smallerThanTablet {
     margin-block-end: var(--spacing-large-px);
+    padding: var(--spacing-medium-px);
   }
 
   ul {
@@ -17,13 +23,15 @@
     flex-direction: column;
     gap: var(--spacing-xxsmall);
     margin-block-start: var(--spacing-xsmall);
-    line-height: inherit;
-
+    line-height: var(--line-height-normal);
     list-style: initial;
     padding-inline-start: var(--spacing-medium2);
+    color: var(--color-text-secondary, var(--color-text-faded));
   }
 }
 
 .title {
+  font-size: var(--font-size-normal-px);
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default-new));
 }

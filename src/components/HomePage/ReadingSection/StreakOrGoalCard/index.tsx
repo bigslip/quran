@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -30,17 +30,17 @@ type Props = {
 const StreakOrGoalCard: React.FC<Props> = ({ goal, streak, currentActivityDay }) => {
   const { t, lang } = useTranslation('home');
 
-  const onStreakCardClicked = () => {
+  const onStreakCardClicked = useCallback(() => {
     logButtonClick('homepage_reading_streak_card');
-  };
+  }, []);
 
-  const onGoalArrowClicked = () => {
+  const onGoalArrowClicked = useCallback(() => {
     logButtonClick('homepage_reading_goal_card_arrow');
-  };
+  }, []);
 
-  const onSetGoalButtonClicked = () => {
+  const onSetGoalButtonClicked = useCallback(() => {
     logButtonClick('homepage_reading_goal_card_set_goal');
-  };
+  }, []);
 
   return (
     <div className={styles.streakCard}>
@@ -96,4 +96,4 @@ const StreakOrGoalCard: React.FC<Props> = ({ goal, streak, currentActivityDay })
   );
 };
 
-export default StreakOrGoalCard;
+export default React.memo(StreakOrGoalCard);

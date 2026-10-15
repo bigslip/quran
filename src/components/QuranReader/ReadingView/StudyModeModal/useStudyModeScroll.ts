@@ -66,7 +66,7 @@ const useStudyModeScroll = ({
     if (containerRef.current) {
       const scrollContainer = containerRef.current.parentElement;
       if (scrollContainer) {
-        scrollContainer.addEventListener('scroll', handleScroll);
+        scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
         return () => scrollContainer.removeEventListener('scroll', handleScroll);
       }
     }

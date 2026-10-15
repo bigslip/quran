@@ -13,7 +13,13 @@ import { QiraatApiResponse } from '@/types/Qiraat';
 import { MushafLines, QuranFont } from '@/types/QuranReader';
 import { SearchRequestParams, SearchMode } from '@/types/Search/SearchRequestParams';
 import NewSearchResponse from '@/types/Search/SearchResponse';
-import { getMushafId } from '@/utils/api';
+import {
+  getMushafId,
+  STATIC_DEDUPING_INTERVAL,
+  DYNAMIC_DEDUPING_INTERVAL,
+  staticDataSWRConfig,
+  dynamicDataSWRConfig,
+} from '@/utils/api';
 import {
   makeAdvancedCopyUrl,
   makeTafsirsUrl,
@@ -71,7 +77,17 @@ import {
 } from 'types/ApiResponses';
 import AudioData from 'types/AudioData';
 
+export {
+  STATIC_DEDUPING_INTERVAL,
+  DYNAMIC_DEDUPING_INTERVAL,
+  staticDataSWRConfig,
+  dynamicDataSWRConfig,
+};
+
 export const OFFLINE_ERROR = 'OFFLINE';
+
+const serverApiCache = new Map<string, { data: any; expiry: number }>();
+const SERVER_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache for SSR / dev static requests
 
 export const fetcher = async function fetcher<T>(
   input: RequestInfo,
@@ -82,8 +98,20 @@ export const fetcher = async function fetcher<T>(
   if (typeof window !== 'undefined' && !window.navigator.onLine) {
     throw new Error(OFFLINE_ERROR);
   }
+
+  const url = typeof input === 'string' ? input : input.url;
+  const isGet = !init.method || init.method.toUpperCase() === 'GET';
+
+  // In Node.js SSR / dev server, serve repeated GET requests from memory cache to avoid network round-trips
+  if (typeof window === 'undefined' && isGet && !fullResponse) {
+    const cached = serverApiCache.get(url);
+    if (cached && cached.expiry > Date.now()) {
+      return cached.data as T;
+    }
+  }
+
   const req: NextApiRequest = {
-    url: typeof input === 'string' ? input : input.url,
+    url,
     method: init.method || 'GET',
     body: init.body,
     headers: init.headers,
@@ -103,10 +131,22 @@ export const fetcher = async function fetcher<T>(
   const res = await fetch(input, reqInit);
   if (fullResponse) return res as unknown as T;
   if (!res.ok || res.status === 500 || res.status === 404) {
-    throw res;
+    const error = new Error(`Request failed with status ${res.status}: ${res.statusText}`);
+    (error as any).status = res.status;
+    (error as any).response = res;
+    throw error;
   }
   const json = await res.json();
-  return camelizeKeys(json);
+  const camelized = camelizeKeys(json) as T;
+
+  if (typeof window === 'undefined' && isGet && !fullResponse) {
+    if (serverApiCache.size > 500) {
+      serverApiCache.clear();
+    }
+    serverApiCache.set(url, { data: camelized, expiry: Date.now() + SERVER_CACHE_TTL_MS });
+  }
+
+  return camelized;
 };
 
 /**

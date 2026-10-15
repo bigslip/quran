@@ -9,6 +9,7 @@ import type { RootState } from '@/redux/RootState';
 import {
   setLessonLanguages,
   setReflectionLanguages,
+  setSelectedWordByWordLocale,
 } from '@/redux/slices/QuranReader/readingPreferences';
 import { setSelectedTafsirs } from '@/redux/slices/QuranReader/tafsirs';
 import { setSelectedTranslations } from '@/redux/slices/QuranReader/translations';
@@ -36,6 +37,7 @@ vi.mock('@/redux/defaultSettings/util', () => ({
     return {
       selectedReflectionLanguages: [lang],
       selectedLessonLanguages: [lang],
+      selectedWordByWordLocale: lang,
     };
   },
 }));
@@ -52,13 +54,15 @@ const runThunk = (state: DeepPartial<RootState>, prevLocale: string, nextLocale:
 };
 
 describe('syncLocaleDependentSettings', () => {
-  it('syncs locale-dependent defaults for translations, tafsir, lessons, and reflections', () => {
+  it('syncs locale-dependent defaults for translations, tafsir, wbw, lessons, and reflections', () => {
     const state = {
       translations: { isUsingDefaultTranslations: true },
       tafsirs: { isUsingDefaultTafsirs: true },
       readingPreferences: {
         selectedReflectionLanguages: ['ar'],
         selectedLessonLanguages: ['ar'],
+        selectedWordByWordLocale: 'ar',
+        isUsingDefaultWordByWordLocale: true,
       },
     };
 
@@ -70,6 +74,10 @@ describe('syncLocaleDependentSettings', () => {
       },
       {
         ...setSelectedTafsirs({ tafsirs: ['en-tafsir'], locale: 'en' }),
+        meta: { skipDefaultSettings: true },
+      },
+      {
+        ...setSelectedWordByWordLocale({ value: 'en', locale: 'en' }),
         meta: { skipDefaultSettings: true },
       },
       {
@@ -91,6 +99,7 @@ describe('syncLocaleDependentSettings', () => {
         // user explicitly picked Arabic content while site locale was English
         selectedReflectionLanguages: ['ar'],
         selectedLessonLanguages: ['ar'],
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -106,6 +115,7 @@ describe('syncLocaleDependentSettings', () => {
       readingPreferences: {
         selectedReflectionLanguages: ['ar', 'fr'],
         selectedLessonLanguages: ['ar', 'fr'],
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -124,6 +134,7 @@ describe('syncLocaleDependentSettings', () => {
         selectedLessonLanguages: ['ar'],
         hasCustomizedReflectionLanguages: true,
         hasCustomizedLessonLanguages: true,
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -138,6 +149,7 @@ describe('syncLocaleDependentSettings', () => {
       readingPreferences: {
         selectedReflectionLanguages: ['ar', 'en'],
         selectedLessonLanguages: ['ar', 'en'],
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -145,13 +157,15 @@ describe('syncLocaleDependentSettings', () => {
     expect(actions).toEqual([]);
   });
 
-  it('does not sync translations/tafsir when they are not using defaults', () => {
+  it('does not sync translations/tafsir/wbw when they are not using defaults', () => {
     const state = {
       translations: { isUsingDefaultTranslations: false },
       tafsirs: { isUsingDefaultTafsirs: false },
       readingPreferences: {
         selectedReflectionLanguages: ['ar'],
         selectedLessonLanguages: ['ar'],
+        selectedWordByWordLocale: 'id',
+        isUsingDefaultWordByWordLocale: false,
       },
     };
 
@@ -168,6 +182,27 @@ describe('syncLocaleDependentSettings', () => {
     ]);
   });
 
+  it('syncs wbw when isUsingDefaultWordByWordLocale is undefined (legacy persisted state)', () => {
+    const state = {
+      translations: { isUsingDefaultTranslations: false },
+      tafsirs: { isUsingDefaultTafsirs: false },
+      readingPreferences: {
+        selectedReflectionLanguages: ['fa'],
+        selectedLessonLanguages: ['fa'],
+        selectedWordByWordLocale: 'en',
+        // isUsingDefaultWordByWordLocale is undefined
+      },
+    };
+
+    const actions = runThunk(state, 'fa', 'fa');
+    expect(actions).toEqual([
+      {
+        ...setSelectedWordByWordLocale({ value: 'fa', locale: 'fa' }),
+        meta: { skipDefaultSettings: true },
+      },
+    ]);
+  });
+
   it('does not dispatch when next-locale defaults equal current values', () => {
     const state = {
       translations: { isUsingDefaultTranslations: true, selectedTranslations: [131] },
@@ -175,6 +210,8 @@ describe('syncLocaleDependentSettings', () => {
       readingPreferences: {
         selectedReflectionLanguages: ['en'],
         selectedLessonLanguages: ['en'],
+        selectedWordByWordLocale: 'en',
+        isUsingDefaultWordByWordLocale: true,
       },
     };
 

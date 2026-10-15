@@ -1,7 +1,6 @@
 import { FC, memo, useMemo } from 'react';
 
 import classNames from 'classnames';
-import useTranslation from 'next-translate/useTranslation';
 import { MultipleFieldErrors } from 'react-hook-form';
 
 import styles from './ValidationErrors.module.scss';
@@ -18,7 +17,6 @@ interface Props {
 }
 
 const ValidationErrors: FC<Props> = ({ error, rules }) => {
-  const { t } = useTranslation('common');
 
   const validationRules = useMemo(
     () =>
@@ -53,7 +51,7 @@ const ValidationErrors: FC<Props> = ({ error, rules }) => {
             className={styles.ruleIcon}
             icon={isValid ? <CheckIcon /> : <CloseIcon />}
           />
-          <span className={styles.ruleText}>{t(rule.errorMessage)}</span>
+          <span className={styles.ruleText}>{rule.errorMessage}</span>
         </div>
       ))}
     </div>

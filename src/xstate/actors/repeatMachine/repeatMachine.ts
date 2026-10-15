@@ -17,6 +17,7 @@ export const createRepeatMachine = ({
   /** @xstate-layout N4IgpgJg5mDOIC5QCcwAcwEMAuBZTAxgBYCWAdmAHTkAKyA9lKrLAMQT0XVkBu9A1lWSYyMAMIBPAgBsw+YuTCJQaerBLYSnZSAAeiACwGAzJQAcARgAMAVmMWzATmOOrZswBoQExNceVHdwB2CwsbCwMguwA2AF94rzJ6CDgdVAwceVIuWgYmOHgkEFV1TW0i-QQrLx8EaLjYr3SsPEJsqgAzchJYIkgdEo0tMh1Kg0cLSisAJgMbRyC3aKsgoLmaxGMzA0pohetZ6LszNZsEkGbMtsUBtSHy0EqAWlmNhCfogLMbOZsbbbszlm8XiQA */
   createMachine(
     {
+      predictableActionArguments: true,
       context: {
         verseTimings,
         fromVerseNumber,

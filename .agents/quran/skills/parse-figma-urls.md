@@ -14,7 +14,7 @@ description: Parse Figma URLs into file key and node id
 ## Parsing Examples
 
 ```bash
-URL="https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.com?node-id=14088-232378&t=TOKEN"
+URL="https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.ir?node-id=14088-232378&t=TOKEN"
 
 # Extract file key
 FILE_KEY=$(echo "$URL" | sed -n 's|.*design/\([^/]*\)/.*|\1|p')
@@ -42,6 +42,6 @@ curl -H "X-Figma-Token: $(cat ~/.figma_token)" \
   "https://api.figma.com/v1/images/${FILE_KEY}?ids=${NODE_IDS}&format=png&scale=2"
 ```
 
-## Common Quran.com Figma File
+## Common Quran.ir Figma File
 
-The main Quran.com design file key is: `RgJTH4su68l8K54RMzdnhR`
+The main Quran.ir design file key is: `RgJTH4su68l8K54RMzdnhR`

@@ -46,6 +46,9 @@ const useGlobalIntersectionObserverWithDelay = (
    * is visible for delayForMS number of seconds.
    */
   const timeouts = useRef<Map<any, number>>(new Map());
+  const onElementVisibleRef = useRef(onElementVisible);
+  onElementVisibleRef.current = onElementVisible;
+
   const updateEntry = useCallback(
     (entries: IntersectionObserverEntry[]): void => {
       entries.forEach((visibleEntry) => {
@@ -70,7 +73,7 @@ const useGlobalIntersectionObserverWithDelay = (
           timeouts.current.set(
             elementId,
             window.setTimeout(() => {
-              onElementVisible(visibleEntry.target);
+              onElementVisibleRef.current(visibleEntry.target);
               setIntersectionDebuggerNodeText(
                 `Element callback triggered`,
                 elementIntersectionDebuggerNode,
@@ -93,7 +96,7 @@ const useGlobalIntersectionObserverWithDelay = (
         }
       });
     },
-    [delayForMSKey, elementIdKey, onElementVisible],
+    [delayForMSKey, elementIdKey],
   );
 
   /**
@@ -101,7 +104,7 @@ const useGlobalIntersectionObserverWithDelay = (
    * {@see https://kentcdodds.com/blog/useeffect-vs-uselayouteffect}
    */
   useBrowserLayoutEffect(() => {
-    const hasIOSupport = !!window.IntersectionObserver;
+    const hasIOSupport = typeof window !== 'undefined' && !!window.IntersectionObserver;
     if (!hasIOSupport) return undefined;
 
     // no need to create a new observer if it already exists.
@@ -122,7 +125,7 @@ const useGlobalIntersectionObserverWithDelay = (
         window[observerId] = undefined;
       }
     };
-  }, [root, rootMargin, threshold, updateEntry, observerId]);
+  }, [root, rootMargin, threshold, observerId]);
 };
 
 export default useGlobalIntersectionObserverWithDelay;

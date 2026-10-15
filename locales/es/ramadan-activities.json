@@ -1,4 +1,8 @@
 {
+  "enroll-failed": "Error al inscribirse, inténtalo de nuevo más tarde.",
+  "enroll-success-email": "¡Inscripción exitosa! Es posible que veas un correo de bienvenida en tu bandeja de entrada.",
+  "join-surah-mulk-challenge": "Únete al Desafío de la Sura Al-Mulk",
   "ramadan-activities": "Actividades de Ramadán.",
-  "ramadan-activities-desc": "Mejora tu experiencia en Ramadán con nuestros programas y funciones seleccionados para una conexión más profunda con el Corán. ¡Explora nuestras actividades de Ramadán en Quran.com hoy mismo!"
+  "ramadan-activities-desc": "Mejora tu experiencia en Ramadán con nuestros programas y funciones seleccionados para una conexión más profunda con el Corán. ¡Explora nuestras actividades de Ramadán en Quran.ir hoy mismo!",
+  "subscribed": "¡Suscrito!"
 }

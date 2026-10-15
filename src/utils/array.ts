@@ -26,25 +26,26 @@ export const stringsToNumbersArray = (stringsArray: string[]): number[] =>
  * @returns {boolean}
  */
 export const areArraysEqual = <T>(array1: T[], array2: T[]): boolean => {
-  // If the arrays have different lengths, they are not equal
   if (array1?.length !== array2?.length) return false;
+  if (!array1 && !array2) return true;
+  if (!array1 || !array2) return false;
 
-  // Create a map of the first array, with each element as a key and true as the value
-  const array1Map = new Map();
-
-  array1.map((item) => array1Map.set(item, true));
-
-  // Loop through the second array
-  for (let i = 0; i < array2.length; i += 1) {
-    // If an element in the second array is not found in the map of the first array, they are not equal
-    if (array1Map.get(array2[i]) == null) return false;
-
-    // Delete the element from the map of the first array
-    array1Map.delete(array2[i]);
+  const counts = new Map<T, number>();
+  for (const item of array1) {
+    counts.set(item, (counts.get(item) || 0) + 1);
   }
 
-  // If the map of the first array has no elements left, the arrays are equal
-  return array1Map.size === 0;
+  for (const item of array2) {
+    const count = counts.get(item);
+    if (!count) return false;
+    if (count === 1) {
+      counts.delete(item);
+    } else {
+      counts.set(item, count - 1);
+    }
+  }
+
+  return counts.size === 0;
 };
 
 /**

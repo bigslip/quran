@@ -1,76 +1,80 @@
-/* eslint-disable react/no-array-index-key */
-import { useMemo } from 'react';
+import React, { ReactNode } from 'react';
 
-import { useConfirmModal } from './hooks';
+import styles from './ConfirmationModal.module.scss';
 
-import Modal from '@/dls/Modal/Modal';
+import useTranslation from 'next-translate/useTranslation';
+
+import Button, { ButtonType, ButtonVariant } from '@/components/dls/Button/Button';
+import { useConfirmModal } from '@/components/dls/ConfirmationModal/hooks';
+import ContentModal from '@/components/dls/ContentModal/ContentModal';
 import ZIndexVariant from '@/types/enums/ZIndexVariant';
 
-interface ConfirmationModalProps {
+export interface ConfirmationModalProps {
+  isOpen?: boolean;
+  title?: ReactNode;
+  body?: ReactNode;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  isConfirmDanger?: boolean;
   zIndexVariant?: ZIndexVariant;
 }
 
-const ConfirmationModal = ({ zIndexVariant }: ConfirmationModalProps = {}) => {
-  const { onCancel, onConfirm, state } = useConfirmModal();
+const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+  isOpen: propsIsOpen,
+  title: propsTitle,
+  body: propsBody,
+  confirmText: propsConfirmText,
+  cancelText: propsCancelText,
+  onConfirm: propsOnConfirm,
+  onCancel: propsOnCancel,
+  isConfirmDanger = false,
+  zIndexVariant,
+}) => {
+  const { t } = useTranslation('common');
+  const { state: modalState, onCancel: onHookCancel, onConfirm: onHookConfirm } = useConfirmModal();
 
-  const actions = useMemo(() => {
-    const returnedActions = [];
-    if (state.confirmText && onConfirm) {
-      returnedActions.push({
-        label: state.confirmText,
-        onClick: onConfirm,
-        dataTestId: 'confirmation-modal-confirm-button',
-      });
-    }
-    if (state.cancelText && onCancel) {
-      returnedActions.push({
-        label: state.cancelText,
-        onClick: onCancel,
-        isCloseAction: true,
-        dataTestId: 'confirmation-modal-cancel-button',
-      });
-    }
-    return returnedActions;
-  }, [onCancel, onConfirm, state.cancelText, state.confirmText]);
+  const isHookMode = propsIsOpen === undefined;
+  const isOpen = isHookMode ? modalState.open : propsIsOpen;
+  const rawTitle = t('confirm');
+  const title = propsTitle ?? modalState.title ?? (rawTitle === 'confirm' ? 'Confirm' : rawTitle);
+  const body = propsBody ?? modalState.subtitle ?? modalState.description;
+  const rawConfirmText = t('confirm');
+  const confirmText =
+    propsConfirmText ?? modalState.confirmText ?? (rawConfirmText === 'confirm' ? 'Confirm' : rawConfirmText);
+  const rawCancelText = t('cancel');
+  const cancelText =
+    propsCancelText ?? modalState.cancelText ?? (rawCancelText === 'cancel' ? 'Cancel' : rawCancelText);
+  const onConfirm = propsOnConfirm ?? (isHookMode ? onHookConfirm : undefined);
+  const onCancel = propsOnCancel ?? (isHookMode ? onHookCancel : undefined);
 
-  const onClose = () => {
-    if (onCancel) {
-      onCancel();
-    }
-  };
+  const footer = (
+    <div className={styles.footer}>
+      {onCancel && (
+        <Button variant={ButtonVariant.Ghost} onClick={onCancel}>
+          {cancelText}
+        </Button>
+      )}
+      {onConfirm && (
+        <Button type={isConfirmDanger ? ButtonType.Error : ButtonType.Primary} onClick={onConfirm}>
+          {confirmText}
+        </Button>
+      )}
+    </div>
+  );
 
   return (
-    <Modal
-      isOpen={!!state.open}
-      onClickOutside={onClose}
-      onEscapeKeyDown={onClose}
+    <ContentModal
+      isOpen={isOpen}
+      onClose={onCancel}
+      header={title}
+      footer={footer}
+      hasCloseButton={Boolean(onCancel)}
       zIndexVariant={zIndexVariant}
     >
-      <Modal.Body>
-        <Modal.Header>
-          <Modal.Title>{state.title}</Modal.Title>
-          <Modal.Subtitle>{state.subtitle}</Modal.Subtitle>
-        </Modal.Header>
-        <p>{state.description}</p>
-      </Modal.Body>
-      <Modal.Footer>
-        {actions.map((action, index) => {
-          const { onClick, label, dataTestId } = action;
-          if (action.isCloseAction) {
-            return (
-              <Modal.CloseAction key={index} onClick={onClick} dataTestId={dataTestId}>
-                {label}
-              </Modal.CloseAction>
-            );
-          }
-          return (
-            <Modal.Action key={index} onClick={onClick} dataTestId={dataTestId}>
-              {label}
-            </Modal.Action>
-          );
-        })}
-      </Modal.Footer>
-    </Modal>
+      {body && <p className={styles.body}>{body}</p>}
+    </ContentModal>
   );
 };
 

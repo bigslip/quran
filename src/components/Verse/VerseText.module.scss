@@ -5,7 +5,7 @@
 
 .verseTitleText {
   font-size: var(--font-size-normal);
-  color: var(--color-primary-medium);
+  color: var(--color-primary);
   font-weight: var(--font-weight-medium);
   @include breakpoints.tablet {
     font-size: var(--font-size-large);
@@ -14,14 +14,16 @@
 
 .verseText {
   display: flex;
-  line-height: var(--line-height);
+  line-height: 2.4;
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
 }
 
 .verseTextStart {
   /**
   flex-start alignment for when the inline word by word translation/transliteration is enabled
   and its content is wrapped across multiple lines.
-  {@see https://quran.com/2:74} on mobile with Inline word by word translation enabled.
+  {@see https://quran.ir/2:74} on mobile with Inline word by word translation enabled.
   **/
   align-items: flex-start;
 }
@@ -30,7 +32,7 @@
   /**
   center alignment for when the inline word by word translation/transliteration is enabled
   and its content is wrapped across multiple lines.
-  {@see https://quran.com/2:74} on mobile with Inline word by word translation enabled.
+  {@see https://quran.ir/2:74} on mobile with Inline word by word translation enabled.
   **/
   align-items: center;
   justify-content: center;
@@ -83,7 +85,8 @@
 @include utility.generate-font-scales('tajweed');
 
 .highlighted {
-  background-color: var(--color-background-alternative-faded);
+  background-color: var(--color-primary-subtle);
+  border-radius: var(--border-radius-rounded);
 }
 
 // On mobile, make the QuranWord slightly bigger on translation or tafsir mode

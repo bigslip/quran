@@ -1,8 +1,8 @@
-# Quran.com Clone — Master Implementation Plan
+# Quran.ir Clone — Master Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. **Read "How to use this plan" first** — this is a master plan that decomposes into per-phase sub-plans.
 
-**Goal:** Build a production-grade clone of quran.com-frontend-next with all user-facing capabilities: reading, audio, search, auth, collections, notes, learning plans, reading goals, calendar, Ramadan features, media maker, embeds, radio, and PWA — using quran.com-frontend-next as the *reference spec*, not as copyable source (the upstream README explicitly forbids copying).
+**Goal:** Build a production-grade clone of quran.ir-frontend-next with all user-facing capabilities: reading, audio, search, auth, collections, notes, learning plans, reading goals, calendar, Ramadan features, media maker, embeds, radio, and PWA — using quran.ir-frontend-next as the *reference spec*, not as copyable source (the upstream README explicitly forbids copying).
 
 **Architecture:** Next.js 14 (Pages Router) + TypeScript + SCSS-with-CSS-variables theming + Redux Toolkit (persisted) + SWR + XState for audio + Radix UI primitives. Backend is *not* cloned — we consume an existing public Quran API (decision in Phase 0). PWA via next-pwa, i18n via next-translate, error tracking via Sentry, CMS via Sanity or MDX.
 
@@ -128,10 +128,10 @@ The reference uses `api.qurancdn.com` behind a signature-auth'd proxy. We need a
 
 | Option | Pros | Cons | Verdict |
 |---|---|---|---|
-| **Quran.com API v4 (api.quran.com)** — public GraphQL/REST | Same data as reference, full features (tafsirs, qiraat, audio), free | May rate-limit; some endpoints require auth | **(Recommended)** — try first |
+| **Quran.ir API v4 (api.quran.ir)** — public GraphQL/REST | Same data as reference, full features (tafsirs, qiraat, audio), free | May rate-limit; some endpoints require auth | **(Recommended)** — try first |
 | **Islamic Network CDN + API (api.islamic.network, cdn.islamic.network)** | Free, generous limits, used by many apps, official | Smaller feature set; no qiraat/layered translations | Fallback |
 | **AlQuran Cloud (alquran.cloud/api)** | REST, edition-based, simple | Limited advanced features | Fallback |
-| **Self-host quran.com-api** (their open-source backend) | Full feature parity | Heavy ops burden (Postgres, search index, audio pipeline) | Last resort |
+| **Self-host quran.ir-api** (their open-source backend) | Full feature parity | Heavy ops burden (Postgres, search index, audio pipeline) | Last resort |
 
 **Action:** Stand up a tiny script (`scripts/probe-apis.ts`) that hits each candidate API for `surah 1 ayah 1` and checks: verse text, translations list, audio URL, tafsir. Pick the one that covers the most features.
 
@@ -155,7 +155,7 @@ Reference uses Firebase (Google, Facebook, Apple, magic-link via email). Alterna
 
 #### Decision D: Font strategy for Quran text
 
-Reference uses **604 COLRv1 fonts** (one per Quran page, `p1.woff`–`p604.woff`, ~?MB each) for pixel-perfect Hafs v4 rendering with tajweed color palettes. This is the *most distinctive* part of quran.com's UX.
+Reference uses **604 COLRv1 fonts** (one per Quran page, `p1.woff`–`p604.woff`, ~?MB each) for pixel-perfect Hafs v4 rendering with tajweed color palettes. This is the *most distinctive* part of quran.ir's UX.
 
 | Option | Pros | Cons | Verdict |
 |---|---|---|---|
@@ -417,7 +417,7 @@ Reference uses `audio.qurancdn.com` and `download.quranicaudio.com`. Public alte
 
 | Risk | Mitigation |
 |---|---|
-| Chosen Quran API lacks qiraat/layered translations/hadiths | Accept reduced feature set in `/qiraat`, `/layers`, `/hadith` routes OR self-host `quran.com-api` |
+| Chosen Quran API lacks qiraat/layered translations/hadiths | Accept reduced feature set in `/qiraat`, `/layers`, `/hadith` routes OR self-host `quran.ir-api` |
 | 604 COLRv1 fonts have unclear license | Use single UthmanicHafs font for MVP; revisit for v1.0 |
 | Remotion video rendering is expensive (Lambda) | Ship Media Maker behind a feature flag; gate by login |
 | Reflections depend on QuranReflect.com (third-party) | Fork to local reflections table; lose community vibe |

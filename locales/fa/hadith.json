@@ -1,4 +1,6 @@
 {
   "description": "احادیث و روایات معتبر مربوط به آیه را کشف کنید {{ayahNumber}} سوره {{surahName}}به روایات علمی مرتبط با این آیه قرآنی دسترسی پیدا کنید.",
+  "sahih-bukhari": "صحیح بخاری",
+  "sahih-muslim": "صحیح مسلم",
   "title": "احادیث {{surahName}} - {{ayahNumber}}"
 }

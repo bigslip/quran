@@ -1,80 +1,178 @@
 @use 'src/styles/utility';
+@use 'src/styles/breakpoints';
+
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid var(--color-borders-hairline);
-  padding-block-start: var(--spacing-medium);
-  padding-block-end: var(--spacing-medium);
-  padding-inline-start: var(--spacing-large);
-  padding-inline-end: var(--spacing-large);
-  border-radius: var(--border-radius-default);
+  background-color: var(--color-surface-card);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
+  border: 1px solid var(--color-border-iridescent);
+  padding-block: var(--spacing-medium-px);
+  padding-inline: var(--spacing-large-px);
+  border-radius: var(--border-radius-rounded);
   cursor: pointer;
+  box-shadow: var(--shadow-card);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 68px;
+  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    border-color var(--transition-fast) ease, box-shadow var(--transition-fast) ease,
+    background-color var(--transition-fast) ease;
 
   @media (hover: hover) {
     &:hover {
-      border: 1px solid var(--color-success-medium);
-      background-color: var(--color-background-alternative-faded);
+      transform: translateY(-2px) scale(1.012);
+      border-color: var(--color-accent-gold);
+      box-shadow: var(--shadow-card-hover), 0 0 20px var(--color-accent-gold-subtle);
+      background-color: var(--color-surface-card-hover);
 
       .surahNumber {
-        background-color: var(--color-success-medium);
-        color: var(--color-text-inverse);
+        background: linear-gradient(
+          135deg,
+          var(--color-accent-gold-rich, #d97706) 0%,
+          var(--color-accent-gold, #f59e0b) 100%
+        );
+        color: #070a13;
+        border-color: var(--color-accent-gold);
+        box-shadow: 0 0 16px var(--color-accent-gold-subtle);
       }
-      .translatedSurahName {
-        color: var(--color-success-medium);
+
+      .surahName {
+        color: var(--color-accent-gold);
       }
+
       .description {
-        color: var(--color-success-medium);
+        color: var(--color-accent-gold);
       }
     }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: var(--spacing-medium-px);
   }
 }
 
 .surahNumber {
-  background-color: var(--color-background-alternative-faint);
+  background: var(--color-surface-floating);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 0 12px var(--color-accent-gold-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
-  inline-size: calc(2.5 * var(--spacing-medium));
-  block-size: calc(2.5 * var(--spacing-medium));
-  border-radius: var(--border-radius-default);
+  inline-size: 34px;
+  block-size: 34px;
+  border-radius: var(--border-radius-small-px);
   transform: rotate(45deg);
-  margin-inline-end: var(--spacing-large);
+  margin-inline-end: var(--spacing-large-px);
+  color: var(--color-accent-gold);
+  flex-shrink: 0;
+  transition: background var(--transition-fast) ease, color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease;
+
   & > span {
     transform: rotate(-45deg);
+    font-size: var(--font-size-xsmall-px);
     font-weight: var(--font-weight-bold);
+    line-height: 1;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    margin-inline-end: var(--spacing-medium-px);
   }
 }
+
 .surahNameContainer {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
 }
-.translatedSurahName {
-  font-size: var(--font-size-xsmall);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-faded);
+
+.nameHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall2-px);
+  min-inline-size: 0;
 }
 
 .surahName {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-normal-px);
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: 0.03em;
+  transition: color var(--transition-fast) ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.revelationTag {
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  padding-inline: 6px;
+  padding-block: 2px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.makkah {
+    background: var(--color-accent-gold-subtle, rgba(217, 119, 6, 0.12));
+    color: var(--color-accent-gold-rich, #d97706);
+    border: 1px solid rgba(217, 119, 6, 0.3);
+  }
+
+  &.madinah {
+    background: var(--color-accent-emerald-subtle, rgba(6, 95, 70, 0.12));
+    color: var(--color-accent-emerald, #059669);
+    border: 1px solid rgba(6, 95, 70, 0.3);
+  }
+}
+
+.translatedSurahName {
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
 }
 
 .left {
   display: flex;
   align-items: center;
+  min-inline-size: 0;
+  flex: 1;
 }
+
 .right {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
 }
 
 .description {
   text-align: end;
-  font-size: var(--font-size-xsmall);
-  font-weight: var(--font-weight-bold);
-
-  color: var(--color-text-faded);
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast) ease;
+  line-height: 1.25;
 }
 
 .largeText {

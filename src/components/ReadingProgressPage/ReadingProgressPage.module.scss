@@ -4,11 +4,11 @@
 $section-spacing: calc(var(--spacing-large-px) * 1.5);
 $section-padding: var(--spacing-large-px);
 
-$widget-border: var(--spacing-hairline-px) solid var(--color-separators-ayah-level);
-$widget-border-radius: var(--border-radius-rounded);
+$widget-border: 1px solid var(--color-border-subtle, var(--color-separators-ayah-level));
+$widget-border-radius: var(--border-radius-large-px);
 
 .contentContainer {
-  background-color: var(--color-background-default);
+  background-color: transparent;
   border-radius: $widget-border-radius;
 
   @include breakpoints.tablet {
@@ -32,7 +32,7 @@ $widget-border-radius: var(--border-radius-rounded);
 
 .streakContainer {
   display: flex;
-  gap: var(--spacing-small-px);
+  gap: var(--spacing-medium-px);
   align-items: center;
   margin-block-end: var(--spacing-large-px);
 }
@@ -40,6 +40,7 @@ $widget-border-radius: var(--border-radius-rounded);
 .mushaf {
   inline-size: var(--spacing-xlarge-px);
   block-size: var(--spacing-xlarge-px);
+  filter: drop-shadow(0 0 8px var(--color-primary-subtle, rgba(0, 242, 254, 0.3)));
 
   @include breakpoints.tablet {
     inline-size: var(--spacing-xxlarge-px);
@@ -47,7 +48,7 @@ $widget-border-radius: var(--border-radius-rounded);
   }
 
   path {
-    stroke: var(--color-blue-buttons-and-icons);
+    stroke: var(--color-primary, var(--color-blue-buttons-and-icons));
   }
 }
 
@@ -57,7 +58,7 @@ $widget-border-radius: var(--border-radius-rounded);
   gap: var(--spacing-small-px);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-normal-px);
-  color: var(--color-text-faded);
+  color: var(--color-text-secondary, var(--color-text-faded));
 
   @include breakpoints.tablet {
     font-size: var(--font-size-large-px);
@@ -65,28 +66,35 @@ $widget-border-radius: var(--border-radius-rounded);
 }
 
 .streakNumber {
-  color: var(--color-primary-medium);
+  color: var(--color-primary, var(--color-primary-medium));
   font-size: var(--font-size-jumbo-px);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.3));
 
   @include breakpoints.tablet {
-    font-size: var(--font-size-jumbo2-px);
+    font-size: var(--font-size-xjumbo-px);
   }
 }
 
 .widget {
-  --day-circle-color: var(--color-success-faded);
+  --day-circle-color: var(--color-primary-subtle, rgba(0, 242, 254, 0.1));
 
   display: flex;
   flex: 1;
   justify-content: space-between;
-  padding-block: var(--spacing-medium-px);
-  padding-inline: var(--spacing-medium2-px);
+  padding-block: var(--spacing-large-px);
+  padding-inline: var(--spacing-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
   border: $widget-border;
   border-radius: $widget-border-radius;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 
   @include breakpoints.tablet {
-    padding-block: var(--spacing-large-px);
-    padding-inline: var(--spacing-large-px);
+    padding-block: var(--spacing-xlarge-px);
+    padding-inline: var(--spacing-xlarge-px);
   }
 
   &.streakWidget {
@@ -95,26 +103,35 @@ $widget-border-radius: var(--border-radius-rounded);
 }
 
 .emptyWidget {
-  background-color: var(--color-background-elevated-new);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   gap: var(--spacing-medium2-px);
+  padding: var(--spacing-xlarge-px);
+  border: $widget-border;
+  border-radius: $widget-border-radius;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .emptyWidgetHeader {
   display: flex;
   align-items: center;
   gap: var(--spacing-small-px);
-  color: var(--color-text-default-new);
+  color: var(--color-text-primary, var(--color-text-default-new));
   font-size: var(--font-size-large-px);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
+
   svg {
     block-size: var(--spacing-large-px);
     inline-size: var(--spacing-large-px);
+    color: var(--color-primary, #00f2fe);
   }
+
   @include breakpoints.smallerThanTablet {
     font-size: var(--font-size-normal-px);
   }
@@ -122,19 +139,41 @@ $widget-border-radius: var(--border-radius-rounded);
 
 .emptyWidgetDescription {
   font-size: var(--font-size-normal-px);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-faded-new);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-secondary, var(--color-text-faded-new));
+
   @include breakpoints.smallerThanTablet {
     font-size: var(--font-size-small-px);
   }
 }
 
 .emptyWidgetCta {
+  display: inline-flex;
   align-items: center;
   gap: var(--spacing-small-px);
+  background: var(--color-primary-gradient, linear-gradient(135deg, #00f2fe 0%, #4facfe 100%));
+  color: #070a13;
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--border-radius-pill);
+  padding: var(--spacing-small-px) var(--spacing-large-px);
+  border: none;
+  box-shadow: 0 0 16px var(--color-primary-subtle, rgba(0, 242, 254, 0.2));
+  cursor: pointer;
+  transition: all var(--transition-fast) ease;
+
   svg,
   path {
-    fill: var(--color-text-white);
+    fill: #070a13;
+  }
+
+  &:hover {
+    filter: brightness(1.15);
+    box-shadow: 0 0 24px var(--color-primary, rgba(0, 242, 254, 0.4));
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
   }
 }
 
@@ -145,39 +184,44 @@ $widget-border-radius: var(--border-radius-rounded);
   gap: var(--spacing-large-px);
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-medium2-px);
-  background-color: var(--color-streaks-light);
+  padding: var(--spacing-large-px);
+  background: var(--color-surface-card, var(--color-background-elevated-new));
   border: $widget-border;
   border-radius: $widget-border-radius;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .progressWidgetWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--spacing-medium-px);
+  gap: var(--spacing-large-px);
 }
 
 .circularProgressbar {
-  inline-size: var(--spacing-xxxlarge-px);
-  block-size: var(--spacing-xxxlarge-px);
+  inline-size: calc(var(--spacing-xxlarge-px) * 1.5);
+  block-size: calc(var(--spacing-xxlarge-px) * 1.5);
 }
 
 .circularProgressbarPath {
-  stroke: var(--color-streaks-dark);
+  stroke: var(--color-primary, #00f2fe);
   stroke-linecap: round;
+  filter: drop-shadow(0 0 8px var(--color-primary, rgba(0, 242, 254, 0.5)));
   transition: stroke-dashoffset 0.5s ease 0s;
 }
 
 .circularProgressbarTrail {
-  stroke: var(--color-daily-progress);
+  stroke: var(--color-border-subtle, rgba(0, 242, 254, 0.15));
   stroke-linecap: round;
 }
 
 .circularProgressbarText {
-  fill: var(--color-text-black);
+  fill: var(--color-text-primary, #ffffff);
   font-size: var(--font-size-small-px);
   font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
   dominant-baseline: middle;
   text-anchor: middle;
 }
@@ -185,10 +229,11 @@ $widget-border-radius: var(--border-radius-rounded);
 .progressWidgetContent {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-xxsmall-px);
 }
 
 .progressWidgetTitle {
-  color: var(--color-text-black);
+  color: var(--color-text-primary, #ffffff);
   font-size: var(--font-size-large-px);
   font-weight: var(--font-weight-bold);
 }
@@ -196,10 +241,11 @@ $widget-border-radius: var(--border-radius-rounded);
 .progressWidgetDaysLeft {
   font-size: var(--font-size-normal-px);
   font-weight: var(--font-weight-medium);
-  color: var(--color-text-gray);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary, var(--color-text-gray));
 
   span {
-    color: var(--color-text-black);
+    color: var(--color-primary, #00f2fe);
     font-weight: var(--font-weight-bold);
   }
 }
@@ -220,5 +266,10 @@ $widget-border-radius: var(--border-radius-rounded);
 }
 
 .arrowLink {
-  color: #666;
+  color: var(--color-text-secondary, #666);
+  transition: color var(--transition-fast) ease;
+
+  &:hover {
+    color: var(--color-primary, #00f2fe);
+  }
 }

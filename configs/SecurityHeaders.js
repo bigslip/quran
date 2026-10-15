@@ -19,7 +19,7 @@ const ContentSecurityPolicy = `
   worker-src 'self' blob:;
   child-src 'self' blob:;
   img-src * data:;
-  media-src 'self' data: blob: *.quranicaudio.com *.qurancdn.com https://qurancdn.com https://images.quran.com;
+  media-src 'self' data: blob: *.quranicaudio.com *.qurancdn.com https://qurancdn.com https://images.quran.ir;
   connect-src *;
 `;
 
@@ -32,7 +32,7 @@ const securityHeaders = [
   // Controls how much information the browser includes when navigating away from a document. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
   {
     key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin', // Will Send the origin, path, and query string when performing a same-origin request to the same protocol level e.g. https://www.quran.com/search?page=1&language=en&query=Allah; otherwise, will only send base url e.g. https://www.quran.com.
+    value: 'origin-when-cross-origin', // Will Send the origin, path, and query string when performing a same-origin request to the same protocol level e.g. https://www.quran.ir/search?page=1&language=en&query=Allah; otherwise, will only send base url e.g. https://www.quran.ir.
   },
   // Indicate that Content-Type headers should not be changed and be followed. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
   {

@@ -10,8 +10,8 @@ interface Props {
 
 const ChapterIcon: React.FC<Props> = ({ id }) => (
   <span className={classNames(styles.icon)} translate="no">
-    {id.padStart(3, '0')}
+    {id ? String(id).padStart(3, '0') : ''}
   </span>
 );
 
-export default ChapterIcon;
+export default React.memo(ChapterIcon);

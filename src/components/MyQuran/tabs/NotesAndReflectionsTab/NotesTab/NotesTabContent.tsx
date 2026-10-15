@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -21,7 +22,7 @@ import { logButtonClick } from '@/utils/eventLogger';
 // It will be used to calculate approximate min height to prevent block size jumping during virtuoso initial calculations
 const PROXIMATE_NOTE_HEIGHT = 100;
 
-interface NotesTabContentProps {
+interface NotesTabContentProps extends React.HTMLAttributes<HTMLDivElement> {
   notes: NoteWithRecentReflection[];
   isLoading: boolean;
   isValidating: boolean;
@@ -42,6 +43,8 @@ const NotesTabContent: React.FC<NotesTabContentProps> = ({
   error,
   loadMore,
   mutateCache,
+  className,
+  ...props
 }) => {
   const { t } = useTranslation('notes');
 
@@ -99,14 +102,14 @@ const NotesTabContent: React.FC<NotesTabContentProps> = ({
 
   if (isEmpty) {
     return (
-      <div className={styles.statusContainer} data-status="empty">
+      <div className={classNames(styles.statusContainer, className)} data-status="empty" {...props}>
         {t('empty-notes')}
       </div>
     );
   }
 
   return (
-    <>
+    <div className={className} {...props} aria-busy={isValidatingOrLoading ? 'true' : undefined}>
       <div style={{ minBlockSize: notes.length * PROXIMATE_NOTE_HEIGHT }}>
         <Virtuoso
           data={notes}
@@ -143,7 +146,7 @@ const NotesTabContent: React.FC<NotesTabContentProps> = ({
       />
 
       <ConfirmationModal zIndexVariant={ZIndexVariant.ULTRA} />
-    </>
+    </div>
   );
 };
 

@@ -29,7 +29,7 @@ import { QuranReaderDataType } from '@/types/QuranReader';
 import Verse from '@/types/Verse';
 import { getMushafId } from '@/utils/api';
 import { makeTafsirContentUrl, makeTafsirsUrl } from '@/utils/apiPaths';
-import { getAllChaptersData, getChapterData } from '@/utils/chapter';
+import { getAllChaptersData, getChapterData, getChapterIdBySlugOrId } from '@/utils/chapter';
 import { logEvent } from '@/utils/eventLogger';
 import { getLanguageAlternates, toLocalizedNumber } from '@/utils/locale';
 import { getCanonicalUrl, getVerseTafsirNavigationUrl } from '@/utils/navigation';
@@ -117,13 +117,16 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     let chapterIdOrSlug = String(params.chapterId);
     const verseId = String(params.verseId);
 
-    // 1. make sure the chapter Id/slug is valid using BE since slugs are stored in BE first
-    const sluggedChapterId = await getChapterIdBySlug(chapterIdOrSlug, locale);
-    if (sluggedChapterId) {
-      chapterIdOrSlug = sluggedChapterId;
-    }
-
     const chaptersData = await getAllChaptersData(locale);
+
+    // In-memory synchronous slug resolution first before network call
+    const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterIdOrSlug);
+    const resolvedChapterId =
+      localChapterId || (await getChapterIdBySlug(chapterIdOrSlug, locale));
+
+    if (resolvedChapterId) {
+      chapterIdOrSlug = resolvedChapterId;
+    }
 
     // 2. make sure that verse id is valid before calling BE to get the verses.
     if (!isValidVerseId(chaptersData, chapterIdOrSlug, verseId)) {

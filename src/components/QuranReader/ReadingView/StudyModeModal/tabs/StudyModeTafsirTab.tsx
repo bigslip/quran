@@ -11,6 +11,7 @@ import TafsirSkeleton from '@/components/QuranReader/TafsirView/TafsirSkeleton';
 
 const TafsirBody = dynamic(() => import('@/components/QuranReader/TafsirView/TafsirBody'), {
   loading: TafsirSkeleton,
+  ssr: false,
 });
 
 interface StudyModeTafsirTabProps {

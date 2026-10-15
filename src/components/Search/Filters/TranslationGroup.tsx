@@ -1,6 +1,14 @@
+import React, { useMemo } from 'react';
+
 import styles from './TranslationGroup.module.scss';
 
 import Checkbox from '@/dls/Forms/Checkbox/Checkbox';
+import {
+  getLanguageFlag,
+  getLanguageNativeName,
+  getTranslationNativeName,
+  getTranslationSecondaryName,
+} from '@/utils/translationInfo';
 import AvailableTranslation from 'types/AvailableTranslation';
 
 type TranslationGroupProps = {
@@ -9,6 +17,7 @@ type TranslationGroupProps = {
   selectedTranslations: string[];
   onTranslationsChange: (translationsId: string[]) => void;
 };
+
 const TranslationGroup = ({
   language,
   translations,
@@ -24,9 +33,10 @@ const TranslationGroup = ({
   );
 
   const onLanguageSelected = () => {
+    const groupIds = new Set(translations.map((t) => t.id.toString()));
     const nextSelectedTranslations = areAllTranslationsSelected
-      ? []
-      : translations.map((translation) => translation.id.toString());
+      ? selectedTranslations.filter((id) => !groupIds.has(id))
+      : Array.from(new Set(selectedTranslations.concat(Array.from(groupIds))));
     onTranslationsChange(nextSelectedTranslations);
   };
 
@@ -37,38 +47,62 @@ const TranslationGroup = ({
     onTranslationsChange(nextTranslations);
   };
 
-  let languageCheckboxCheckedStatus;
+  const sortedTranslations = useMemo(
+    () =>
+      [...translations].sort((a: AvailableTranslation, b: AvailableTranslation) =>
+        (a.authorName || '').localeCompare(b.authorName || ''),
+      ),
+    [translations],
+  );
+
+  let languageCheckboxCheckedStatus: boolean | 'indeterminate';
   if (areSomeTranslationsSelected) languageCheckboxCheckedStatus = 'indeterminate';
   if (areAllTranslationsSelected) languageCheckboxCheckedStatus = true;
   if (!areSomeTranslationsSelected && !areAllTranslationsSelected) {
     languageCheckboxCheckedStatus = false;
   }
 
+  const flag = getLanguageFlag(language);
+  const nativeLang = getLanguageNativeName(language);
+  const capitalizedLang = language.charAt(0).toUpperCase() + language.slice(1);
+  const displayTitle =
+    nativeLang && nativeLang.toLowerCase() !== capitalizedLang.toLowerCase()
+      ? `${flag} ${capitalizedLang} (${nativeLang})`
+      : `${flag} ${capitalizedLang}`;
+
   return (
-    <div key={language}>
+    <div role="group" aria-labelledby={language} key={language}>
       <span className={styles.header}>
         <Checkbox
           id={language}
           checked={languageCheckboxCheckedStatus}
-          label={language}
+          label={displayTitle}
           onChange={onLanguageSelected}
         />
       </span>
       <div className={styles.itemsContainer}>
-        {translations
-          .sort((a: AvailableTranslation, b: AvailableTranslation) =>
-            a.authorName.localeCompare(b.authorName),
-          )
-          .map((translation: AvailableTranslation) => (
+        {sortedTranslations.map((translation: AvailableTranslation) => {
+          const nativeName = getTranslationNativeName(translation);
+          const secondaryName = getTranslationSecondaryName(translation);
+
+          return (
             <div key={translation.id} className={styles.item}>
               <Checkbox
                 id={translation.id.toString()}
                 checked={selectedTranslations.includes(translation.id.toString())}
-                label={translation.translatedName.name}
+                label={
+                  <span>
+                    <span>{nativeName}</span>
+                    {secondaryName && (
+                      <span className={styles.secondaryAuthor}> ({secondaryName})</span>
+                    )}
+                  </span>
+                }
                 onChange={onSelectedTranslationsChange(translation.id)}
               />
             </div>
-          ))}
+          );
+        })}
       </div>
     </div>
   );

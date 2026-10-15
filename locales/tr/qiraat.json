@@ -1,4 +1,5 @@
 {
   "description": "Ayah'ın farklı Kıraat'larını (çeşitli okumaları) keşfedin {{ayahNumber}} Surenin {{surahName}}",
+  "juncture-selection": "Bağlantı noktası seçimi",
   "title": "Kıraat {{surahName}} - {{ayahNumber}}"
 }

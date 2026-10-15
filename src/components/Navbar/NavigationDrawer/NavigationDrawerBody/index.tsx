@@ -8,7 +8,6 @@ import NavigationDrawerList from '../NavigationDrawerList';
 
 import styles from './NavigationDrawerBody.module.scss';
 
-import FundraisingBanner from '@/components/Fundraising/FundraisingBanner';
 import Button, { ButtonShape, ButtonSize, ButtonVariant } from '@/dls/Button/Button';
 import Spinner from '@/dls/Spinner/Spinner';
 import IconDiamond from '@/icons/diamond.svg';
@@ -51,16 +50,10 @@ const NavigationDrawerBody = ({ isLanguageDrawerOpen }: NavigationDrawerBodyProp
       <div
         className={styles.mainListItems}
         aria-hidden={isLanguageDrawerOpen}
-        inert={isLanguageDrawerOpen || undefined}
+        inert={(isLanguageDrawerOpen ? '' : undefined) as unknown as boolean}
       >
         <div className={styles.listItems}>
-          <FundraisingBanner />
-          <NavigationDrawerList
-            accordionHeaderLeftClassName={styles.accordionHeaderLeft}
-            accordionContentClassName={styles.accordionContent}
-            accordionItemTitleClassName={styles.accordionItemTitle}
-            projectsDescClassName={styles.projectsDesc}
-          />
+          <NavigationDrawerList />
         </div>
         <div className={styles.ctaContainer}>
           <div className={styles.ctaTop}>

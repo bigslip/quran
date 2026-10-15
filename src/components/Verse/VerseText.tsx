@@ -15,8 +15,8 @@ import QuranWord from '@/dls/QuranWord/QuranWord';
 import { TooltipType } from '@/dls/Tooltip';
 import { selectInlineDisplayWordByWordPreferences } from '@/redux/slices/QuranReader/readingPreferences';
 import {
-  selectReadingViewSelectedVerseKey,
-  selectReadingViewHoveredVerseKey,
+  selectIsVerseHovered,
+  selectIsVerseSelected,
 } from '@/redux/slices/QuranReader/readingViewVerse';
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import QueryParam from '@/types/QueryParam';
@@ -39,7 +39,7 @@ type VerseTextProps = {
   shouldShowWordByWordTranslation?: boolean;
   shouldShowWordByWordTransliteration?: boolean;
   isStandaloneMode?: boolean;
-};
+} & React.HTMLAttributes<HTMLDivElement | HTMLHeadingElement>;
 
 const VerseText = ({
   words,
@@ -57,25 +57,27 @@ const VerseText = ({
   shouldShowWordByWordTranslation,
   shouldShowWordByWordTransliteration,
   isStandaloneMode = false,
+  className,
+  ...props
 }: VerseTextProps) => {
   const { verseKey: startingVerseHighlightVerseKey } = useContext(StartingVerseHighlightContext);
   const router = useRouter();
   const textRef = useRef(null);
   const reduxStyles = useSelector(selectQuranReaderStyles, shallowEqual);
-  const quranFont = quranFontOverride ?? reduxStyles.quranFont;
-  const quranTextFontScale = quranTextFontScaleOverride ?? reduxStyles.quranTextFontScale;
-  const mushafLines = mushafLinesOverride ?? reduxStyles.mushafLines;
+  const quranFont = quranFontOverride ?? reduxStyles?.quranFont ?? QuranFont.QPCHafs;
+  const quranTextFontScale = quranTextFontScaleOverride ?? reduxStyles?.quranTextFontScale ?? 3;
+  const mushafLines = mushafLinesOverride ?? reduxStyles?.mushafLines ?? MushafLines.SixteenLines;
   const [firstWord] = words;
   const { lineNumber, pageNumber } = firstWord;
   const reduxFontLoaded = useIsFontLoaded(firstWord.pageNumber, quranFont);
   const isFontLoaded = isStandaloneMode ? true : reduxFontLoaded;
   const reduxWbwPrefs = useSelector(selectInlineDisplayWordByWordPreferences, shallowEqual);
   const showWordByWordTranslation =
-    shouldShowWordByWordTranslation ?? reduxWbwPrefs.showWordByWordTranslation;
+    shouldShowWordByWordTranslation ?? reduxWbwPrefs?.showWordByWordTranslation ?? false;
   const showWordByWordTransliteration =
-    shouldShowWordByWordTransliteration ?? reduxWbwPrefs.showWordByWordTransliteration;
-  const selectedVerseKey = useSelector(selectReadingViewSelectedVerseKey, shallowEqual);
-  const hoveredVerseKey = useSelector(selectReadingViewHoveredVerseKey, shallowEqual);
+    shouldShowWordByWordTransliteration ?? reduxWbwPrefs?.showWordByWordTransliteration ?? false;
+  const isVerseSelected = useSelector(selectIsVerseSelected(firstWord.verseKey));
+  const isVerseHovered = useSelector(selectIsVerseHovered(firstWord.verseKey));
   const centerAlignPage = useMemo(
     () => isCenterAlignedPage(pageNumber, lineNumber, quranFont),
     [pageNumber, lineNumber, quranFont],
@@ -92,7 +94,7 @@ const VerseText = ({
     isReadingMode &&
     (quranTextFontScale > 3 || showWordByWordTranslation || showWordByWordTransliteration);
 
-  const VerseTextContainer = shouldShowH1ForSEO ? 'h1' : 'div';
+  const VerseTextContainer: React.ElementType = shouldShowH1ForSEO ? 'h1' : 'div';
   const fontClassName = isFontLoaded
     ? getFontClassName(quranFont, quranTextFontScale, mushafLines)
     : getFontClassName(FALLBACK_FONT, quranTextFontScale, mushafLines, true);
@@ -103,11 +105,12 @@ const VerseText = ({
       <VerseTextContainer
         ref={textRef}
         data-testid={`verse-arabic-${firstWord.verseKey}`}
-        className={classNames(styles.verseTextContainer, styles[fontClassName], {
+        className={classNames(className, styles.verseTextContainer, styles[fontClassName], {
           [styles.largeQuranTextLayoutContainer]: isBigTextLayout,
           [styles.highlighted]: isHighlighted,
           [styles.tafsirOrTranslationMode]: !isReadingMode,
         })}
+        {...props}
       >
         <div
           translate="no"
@@ -121,24 +124,23 @@ const VerseText = ({
           {words?.map((word) => {
             const isHighlightedWord =
               highlightedWordPosition !== undefined && word.position === highlightedWordPosition;
-            const isHoveredWord = word.verseKey === hoveredVerseKey;
             return (
               <QuranWord
                 key={word.location}
                 word={word}
                 font={quranFont}
                 isFontLoaded={isFontLoaded}
-                isHighlighted={
-                  isHighlightedWord || word.verseKey === selectedVerseKey || isHoveredWord
-                }
+                isHighlighted={Boolean(
+                  isHighlightedWord || isVerseSelected || isVerseHovered,
+                )}
                 isStartingVerseHighlighted={word.verseKey === startingVerseHighlightVerseKey}
                 tooltipType={tooltipType}
                 isWordInteractionDisabled={isWordInteractionDisabled}
-                shouldForceShowTooltip={isHighlightedWord && !shouldDisableForceTooltip}
-                quranTextFontScaleOverride={quranTextFontScaleOverride}
-                mushafLinesOverride={mushafLinesOverride}
-                shouldShowWordByWordTranslation={shouldShowWordByWordTranslation}
-                shouldShowWordByWordTransliteration={shouldShowWordByWordTransliteration}
+                shouldForceShowTooltip={Boolean(isHighlightedWord && !shouldDisableForceTooltip)}
+                quranTextFontScaleOverride={quranTextFontScale}
+                mushafLinesOverride={mushafLines}
+                shouldShowWordByWordTranslation={showWordByWordTranslation}
+                shouldShowWordByWordTransliteration={showWordByWordTransliteration}
                 isStandaloneMode={isStandaloneMode}
               />
             );

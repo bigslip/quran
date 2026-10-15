@@ -7,7 +7,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 
 import InlineWordByWord from '../InlineWordByWord';
-import { TooltipType } from '../Tooltip';
+import { ContentSide, TooltipType } from '../Tooltip';
 
 import getTooltipText from './getToolTipText';
 import GlyphWord from './GlyphWord';
@@ -20,7 +20,6 @@ import TextWord from './TextWord';
 
 import Wrapper from '@/components/Wrapper/Wrapper';
 import MobilePopover from '@/dls/Popover/HoverablePopover';
-import useIsMobile from '@/hooks/useIsMobile';
 import ArrowIcon from '@/icons/arrow.svg';
 import { selectShowTooltipWhenPlayingAudio } from '@/redux/slices/AudioPlayer/state';
 import {
@@ -42,6 +41,7 @@ import { areArraysEqual } from '@/utils/array';
 import { milliSecondsToSeconds } from '@/utils/datetime';
 import { logButtonClick } from '@/utils/eventLogger';
 import { isQCFFont } from '@/utils/fontFaceHelper';
+import { isMobile } from '@/utils/responsive';
 import { getChapterNumberFromKey, getVerseNumberFromKey, makeWordLocation } from '@/utils/verse';
 import { getWordTimeSegment } from 'src/xstate/actors/audioPlayer/audioPlayerMachineHelper';
 import { selectIsAudioPlayerVisible } from 'src/xstate/actors/audioPlayer/selectors';
@@ -107,7 +107,6 @@ const QuranWord = ({
 }: QuranWordProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation('quran-reader');
-  const isMobile = useIsMobile();
   const wordClickFunctionality = useSelector(selectWordClickFunctionality);
   const audioService = useContext(AudioPlayerMachineContext);
 
@@ -133,8 +132,9 @@ const QuranWord = ({
 
   // Determine if the audio player is currently playing the word
   const isAudioPlayingWord = useXstateSelector(audioService, (state) => {
-    // Don't highlight when audio player is closed
-    if (!selectIsAudioPlayerVisible(state)) return false;
+    // Don't highlight when audio player is closed or audio highlighting is disabled
+    if (!isAudioHighlightingAllowed) return false;
+    if (!audioService || !selectIsAudioPlayerVisible(state)) return false;
 
     const { surah, ayahNumber, wordLocation: wordPosition } = state.context;
     return `${surah}:${ayahNumber}:${wordPosition}` === wordLocation;
@@ -142,17 +142,52 @@ const QuranWord = ({
 
   const isWordByWordLayout = showWordByWordTranslation || showWordByWordTransliteration;
   let wordText = null;
-  const shouldBeHighLighted =
-    isHighlighted || isTooltipOpened || (isAudioHighlightingAllowed && isAudioPlayingWord);
+  const shouldBeHighLighted = Boolean(
+    isHighlighted || isTooltipOpened || (isAudioHighlightingAllowed && isAudioPlayingWord),
+  );
 
   // Check if the current word has IndoPak stop signs
   const isIndoPakFont = font === QuranFont.IndoPak;
+  const wordTextContent: string = useMemo(() => {
+    if (isIndoPakFont) {
+      return (
+        (word.textIndopak as string) ||
+        (word.text_indopak as string) ||
+        (word.textUthmani as string) ||
+        (word.text_uthmani as string) ||
+        (word.qpcUthmaniHafs as string) ||
+        word.text ||
+        ''
+      );
+    }
+    if (font === QuranFont.QPCHafs) {
+      return (
+        (word.qpcUthmaniHafs as string) ||
+        (word.qpc_uthmani_hafs as string) ||
+        (word.textUthmani as string) ||
+        (word.text_uthmani as string) ||
+        word.text ||
+        ''
+      );
+    }
+    if (font === QuranFont.MadaniV1 || font === QuranFont.MadaniV2) {
+      return (
+        (word.textUthmani as string) ||
+        (word.text_uthmani as string) ||
+        (word.qpcUthmaniHafs as string) ||
+        word.text ||
+        ''
+      );
+    }
+    return word.text || '';
+  }, [font, isIndoPakFont, word]);
+
   const hasIndoPakStopSign = useMemo(
     () =>
       isIndoPakFont &&
-      word.text &&
-      Array.from(word.text).some((char) => INDO_PAK_STOP_SIGN_CHARS.has(char)),
-    [isIndoPakFont, word.text],
+      Boolean(wordTextContent) &&
+      Array.from(wordTextContent).some((char) => INDO_PAK_STOP_SIGN_CHARS.has(char)),
+    [isIndoPakFont, wordTextContent],
   );
 
   if (isQCFFont(font)) {
@@ -171,7 +206,7 @@ const QuranWord = ({
       />
     );
   } else if (word.charTypeName !== CharType.Pause) {
-    wordText = <TextWord font={font} text={word.text} charType={word.charTypeName} />;
+    wordText = <TextWord font={font} text={wordTextContent} charType={word.charTypeName} />;
   }
 
   /*
@@ -215,10 +250,12 @@ const QuranWord = ({
   }, [readingPreference]);
 
   const seekToWordIfPlaying = useCallback(() => {
+    if (!audioService) return false;
     const currentState = audioService.getSnapshot();
+    if (!currentState?.matches) return false;
     const isPlaying = currentState.matches('VISIBLE.AUDIO_PLAYER_INITIATED.PLAYING');
     const currentSurah = getChapterNumberFromKey(word.verseKey);
-    const isSameSurah = currentState.context.surah === Number(currentSurah);
+    const isSameSurah = currentState.context?.surah === Number(currentSurah);
 
     if (isPlaying && isSameSurah) {
       const wordSegment = getWordTimeSegment(currentState.context.audioData.verseTimings, word);
@@ -296,7 +333,7 @@ const QuranWord = ({
       return;
     }
 
-    if (isMobile && !isRecitationEnabled && word.charTypeName === CharType.Word && showTooltip) {
+    if (isMobile() && !isRecitationEnabled && word.charTypeName === CharType.Word && showTooltip) {
       return;
     }
 
@@ -317,7 +354,6 @@ const QuranWord = ({
     word,
     isArabicReadingMode,
     isRecitationEnabled,
-    isMobile,
     showTooltip,
     handleWordAction,
     handleReadingModeWordClick,
@@ -351,7 +387,7 @@ const QuranWord = ({
     [handleInteraction],
   );
 
-  const onKeyPress = useCallback(
+  const onKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault(); // Prevent scrolling on Space key
@@ -380,7 +416,7 @@ const QuranWord = ({
   const shouldHandleWordClicking = !isInteractionDisabled;
   return (
     <div
-      {...(shouldHandleWordClicking && { onClick, onKeyPress, role: 'button', tabIndex: 0 })}
+      {...(shouldHandleWordClicking && { onClick, onKeyDown, role: 'button', tabIndex: 0 })}
       {...(!isInteractionDisabled && { onMouseEnter, onMouseLeave })}
       {...{
         [DATA_ATTRIBUTE_WORD_LOCATION]: wordLocation,
@@ -450,6 +486,8 @@ const QuranWord = ({
 
             return (
               <MobilePopover
+                isContainerSpan
+                contentSide={ContentSide.TOP}
                 icon={<ArrowIcon />}
                 isOpen={isTooltipOpen ? true : undefined}
                 defaultStyling={false}

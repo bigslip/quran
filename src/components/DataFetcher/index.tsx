@@ -4,6 +4,7 @@ import useSWRImmutable from 'swr/immutable';
 
 import Error from '@/components/Error';
 import Spinner from '@/dls/Spinner/Spinner';
+import { STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { fetcher } from 'src/api';
 import { BaseResponse } from 'types/ApiResponses';
 
@@ -51,6 +52,7 @@ const DataFetcher: React.FC<Props> = ({
         .catch((err) => Promise.reject(err)),
     {
       fallbackData: initialData,
+      dedupingInterval: STATIC_DEDUPING_INTERVAL,
     },
   );
 

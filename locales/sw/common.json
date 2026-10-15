@@ -1,22 +1,23 @@
 {
   "about": "Kutuhusu",
+  "all": "All",
   "allow": "Ruhusu",
   "and": "na",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
         "action": "Inayofuata",
-        "description": "Iwe unatumia Quran.com kwenye simu yako au kompyuta yako ndogo, utaweza kupata alamisho zako, aya za mwisho ulizozisoma na mapendeleo yako.",
+        "description": "Iwe unatumia Quran.ir kwenye simu yako au kompyuta yako ndogo, utaweza kupata alamisho zako, aya za mwisho ulizozisoma na mapendeleo yako.",
         "title": "Data yako itasawazishwa <br></br> kwenye vifaa vyote"
       },
       "feedback": {
         "action": "Sawa, nimeipata",
-        "description": "Asante kwa kutumia Quran.com na tutafurahi kusikia maoni yako kwenye <link> feedback.quran.com </link>",
+        "description": "Asante kwa kutumia Quran.ir na tutafurahi kusikia maoni yako kwenye <link> feedback.quran.ir </link>",
         "title": "Tungependa kusikia mawazo yako"
       },
       "quran-foundation-link": {
         "action": "Inayofuata",
-        "description": "Tumia maelezo yale yale ya kuingia kwenye Quran.com kuweza kuingia kwenye QuranReflect.com - jumuiya ya kimataifa iliyostawi na inayojishughulisha na kutafakari Qur'ani.",
+        "description": "Tumia maelezo yale yale ya kuingia kwenye Quran.ir kuweza kuingia kwenye QuranReflect.com - jumuiya ya kimataifa iliyostawi na inayojishughulisha na kutafakari Qur'ani.",
         "title": "Tumia akaunti yako kwenye programu za Quran.Foundation!"
       },
       "quran-growth-journey": {
@@ -26,7 +27,7 @@
       },
       "welcome": {
         "action": "Tazama kilicho kipya",
-        "title": "Karibu kwenye Quran.com <br></br> Akaunti ya Mtumiaji"
+        "title": "Karibu kwenye Quran.ir <br></br> Akaunti ya Mtumiaji"
       }
     },
     "collections-announcement": {
@@ -46,7 +47,11 @@
     "select-lng": "Chagua Lugha",
     "sidebar-nav-close": "Funga Upau wa pembeni wa Uchunguzi",
     "tooltip-action": "Kitendo cha vidokezo",
-    "translation-info": "Tazama maelezo ya tarjuma"
+    "translation-info": "Tazama maelezo ya tarjuma",
+    "play-verse": "Cheza Aya {{verseKey}}",
+    "pause-surah": "Simamisha Sura {{surahName}}",
+    "pause-verse": "Simamisha Aya {{verseKey}}",
+    "surah-filter": "Chuja Sura"
   },
   "audio": {
     "auto-scroll": {
@@ -113,12 +118,19 @@
   "click-here": "Bofya hapa",
   "close": "Funga",
   "command-bar": {
-    "navigations": "Uchunguzi",
-    "no-nav-results": "Hakuna matokeo",
-    "placeholder": "Pekua Qur'ani...",
-    "recent-navigations": "Uchunguzi wa hivi majuzi",
-    "search-by-voice": "Tafuta kutumia sauti",
-    "try-navigating": "Nenda hadi"
+    "close": "Funga",
+    "direct-jump-hint": "Bonyeza ↵ kwenda",
+    "filter": "Chuja",
+    "navigate": "Nenda",
+    "navigations": "Urambazaji",
+    "no-nav-results": "Hakuna matokeo ya urambazaji",
+    "placeholder": "Tafuta katika Quran...",
+    "search-placeholder": "Tafuta Quran, Sura (k.m. Kahf au 18), Aya (2:255), Juz au Ukurasa...",
+    "select": "Chagua",
+    "spotlight-placeholder": "Tafuta Quran, Sura au Aya...",
+    "recent-navigations": "Urambazaji wa hivi karibuni",
+    "search-by-voice": "Tafuta kwa sauti",
+    "try-navigating": "Jaribu kwenda kwa"
   },
   "community": {
     "cta": "Wasiliana",
@@ -228,6 +240,7 @@
   },
   "exciting-updates": "Sasisho za Kusisimua",
   "favorites": "Vipendwa",
+  "featured": "Featured",
   "feedback": "Maoni",
   "fonts": {
     "15_lines": "Mistari 15",
@@ -250,7 +263,7 @@
   },
   "footer": {
     "apps-disclaimer": "Kila programu inamilikiwa na kutunzwa na msanidi programu wake. Kwa usaidizi, ripoti za hitilafu, au maombi ya vipengele, tafadhali wasiliana na muundaji wa programu moja kwa moja.",
-    "description": "Quran.com ni jukwaa linaloaminika na linalotumiwa na mamilioni duniani kote kusoma, kutafuta, kusikiliza na kutafakari kuhusu Qur'ani katika lugha tofauti. Inatoa huduma za tarjuma, tafsiri, vikariri, tarjuma ya neno kwa neno, na zana za ufahamu wa kina, kuifanya Qur'ani ipatikane na kila mtu. <br/> <br/> Kama mbinu ya Sadaqah Jariyah, Quran.com imejitolea kusaidia watu kuunganishwa kwa kina na Qur'ani. Ikiungwa mkono na <link> Quran.Foundation </link>, shirika lisilo la faida la 501(c)(3), Quran.com inaendelea kukua kama rasilimali ya bila malipo na yenye thamani kwa wote, Alhamdulillah.",
+    "description": "Quran.ir ni jukwaa linaloaminika na linalotumiwa na mamilioni duniani kote kusoma, kutafuta, kusikiliza na kutafakari kuhusu Qur'ani katika lugha tofauti. Inatoa huduma za tarjuma, tafsiri, vikariri, tarjuma ya neno kwa neno, na zana za ufahamu wa kina, kuifanya Qur'ani ipatikane na kila mtu. <br/> <br/> Kama mbinu ya Sadaqah Jariyah, Quran.ir imejitolea kusaidia watu kuunganishwa kwa kina na Qur'ani. Ikiungwa mkono na <link> Quran.Foundation </link>, shirika lisilo la faida la 501(c)(3), Quran.ir inaendelea kukua kama rasilimali ya bila malipo na yenye thamani kwa wote, Alhamdulillah.",
     "hiring": "Tunaajiri! Jiunge na timu ya QuranFoundation na uchangie katika dhamira yetu. <link> Tuma ombi sasa! </link>",
     "rights": "Haki Zote Zimehifadhiwa",
     "title": "Soma, Sikiliza, Tafuta, na Tafakari Qur'ani"
@@ -271,29 +284,29 @@
     "verification-code": "Nambari ya Uthibitishaji"
   },
   "from": "Kutoka",
-  "fundraising-card-v2": {
-    "cta": "Toa mchango sasa",
-    "description": "Wafadhili wa kila mwezi hutusaidia kuboresha Quran.com na kudumisha shughuli ili tusizingatie sana ukusanyaji wa fedha na zaidi kuunda athari.",
-    "title": "Kuwa Mfadhili wa Kila Mwezi"
-  },
-  "fundraising-share-title": "Shiriki Uchangishaji wa Quran.com",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Toa mchango",
-    "desktop-text": "Changia katika dhamira yetu",
-    "mobile-line-one": "Ni mwezi wa Quran.",
-    "mobile-line-two": "Tusaidie kueneza mwanga wake."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Changia",
-    "title": "Toa wakati wa siku bora!"
-  },
   "fundraising": {
-    "description": "Michango ya kila mwezi hutusaidia kuboresha Quran.com na kuendeleza shughuli zetu, ili tuweke mkazo mdogo kwenye ukusanyaji wa fedha na zaidi kwenye kuleta athari chanya",
+    "description": "Michango ya kila mwezi hutusaidia kuboresha Quran.ir na kuendeleza shughuli zetu, ili tuweke mkazo mdogo kwenye ukusanyaji wa fedha na zaidi kwenye kuleta athari chanya",
     "donation-campaign": {
       "cta": "Toa mchango leo",
       "text": "Kuwa msaidizi"
     },
     "title": "Kuwa Mfadhili wa Kila Mwezi"
+  },
+  "fundraising-card-v2": {
+    "cta": "Toa mchango sasa",
+    "description": "Wafadhili wa kila mwezi hutusaidia kuboresha Quran.ir na kudumisha shughuli ili tusizingatie sana ukusanyaji wa fedha na zaidi kuunda athari.",
+    "title": "Kuwa Mfadhili wa Kila Mwezi"
+  },
+  "fundraising-share-title": "Shiriki Uchangishaji wa Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "Changia",
+    "title": "Toa wakati wa siku bora!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Toa mchango",
+    "desktop-text": "Changia katika dhamira yetu",
+    "mobile-line-one": "Ni mwezi wa Quran.",
+    "mobile-line-two": "Tusaidie kueneza mwanga wake."
   },
   "get-started": "Anza",
   "go-to-verse": "Nenda kwenye Aya",
@@ -311,6 +324,7 @@
   "juz": "Juzuu",
   "language": "Lugha",
   "languages": "Lugha",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Jifunze",
   "learn-more": "Jifunze zaidi",
   "learning-plans": "Mipango ya Kujifunza",
@@ -320,11 +334,16 @@
   "loading": "Inapakia",
   "login": "Ingia",
   "logout": "Ondoka",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "Imeteremshwa Makka",
   "medinan": "Imeteremshwa Madina",
   "menu": "Menyu",
   "minutes": "Dakika",
   "mobile-apps": "Programu za Simu",
+  "modal": "Modali",
   "mode": "Hali",
   "more": "Zaidi",
   "my-learning-plans": "Mipango Yangu ya Kujifunza",
@@ -336,6 +355,7 @@
   "next": "Inayofuata",
   "next-ayah": "Aya Inayofuata",
   "no": "Hapana",
+  "no-languages-found": "No languages found",
   "no-notifications": "Hakuna arifa Bado",
   "no-verses-available": "Hakuna Aya zinazopatikana",
   "none": "Hakuna",
@@ -344,18 +364,20 @@
     "label": "Maelezo",
     "title": "Maelezo na Tafakari Zangu"
   },
-  "notification-settings": "Mipangilio ya Arifa",
   "notification": {
     "mark-all-as-read": "Weka alama kama zote zimesomwa",
     "mark-as-read": "Weka alama kama imesomwa"
   },
+  "notification-settings": "Mipangilio ya Arifa",
   "notifications": "Arifa",
   "off": "Zima",
   "oldest": "Zee zaidi",
   "on": "Washa",
   "our-projects": "Miradi Yetu",
   "page": "Ukurasa",
+  "page-number": "Ukurasa {{page}}",
   "pages": "Kurasa",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} kati ya {{totalNumberOfResults}} matokeo ya utafutaji",
   "pbuh": "Baraka za Mwenyezi Mungu ziwe juu yake",
   "popular-links": "Viungo Maarufu",
@@ -379,9 +401,12 @@
   "profile": "Wasifu",
   "projects-desc": "Miradi isiyo ya faida inayomilikiwa, kusimamiwa, au kufadhiliwa na <link>Quran.Foundation</link>",
   "q-reflect": "Quranreflect",
+  "quran-android": "Quran ya Android",
   "quran-apps": "Programu za Qur'ani",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
+  "quran-ios": "Quran ya iOS",
   "quran-radio": "Redio ya Qur'ani",
+  "ramadan-2026": "Ramadhani 2026",
   "read": "Soma",
   "read-more": "Soma Zaidi",
   "reading-history": "Historia ya kusoma",
@@ -412,9 +437,6 @@
   "rub": "Rub el Hizb",
   "save": "Hifadhi",
   "save-to-collection": "Hifadhi kwenye Mkusanyiko",
-  "search-for": "Tafuta ' {{searchQuery}} '",
-  "search-results": "{{count}} matokeo ya utafutaji",
-  "search-results-no-count": "Matokeo ya Utafutaji",
   "search": {
     "filters": "Vichujio",
     "hint": "Jaribu kutafuta",
@@ -427,12 +449,18 @@
     "results": "matokeo",
     "show-all": "Onyesha matokeo yote",
     "switch-mode": "Hamia kwenye Utafutaji wa Kina",
-    "title": "Tafuta"
+    "title": "Tafuta",
+    "placeholder": "Tafuta aya, sura, mada au ruka kwenye aya..."
   },
+  "search-for": "Tafuta ' {{searchQuery}} '",
+  "search-languages": "Tafuta lugha...",
+  "search-results": "{{count}} matokeo ya utafutaji",
+  "search-results-no-count": "Matokeo ya Utafutaji",
   "seconds": "Sekunde",
   "see-less": "Tazama kidogo",
   "see-new": "Tazama Nini Kipya",
   "select-language": "Chagua Lugha",
+  "select-language-description": "Chagua lugha unayopendelea ya kuonyesha kwa Quran.ir",
   "settings": {
     "no-tafsir-selected": "Hakuna tafsir iliyochaguliwa",
     "no-translation-selected": "Hakuna tarjuma iliyochaguliwa",
@@ -484,6 +512,7 @@
   "subscribe": "Jisajili",
   "subscribed": "Umejisajili",
   "surah": "Sura",
+  "surahs": "Surahs",
   "tab-see-less": "Tazama kidogo...",
   "tab-see-more": "Tazama zaidi...",
   "tafsir": {
@@ -508,6 +537,7 @@
   "to": "Hadi",
   "tooltip": "Tooltip",
   "tooltip-trans-lang": "Lugha ya Tooltip",
+  "topics": "Topics",
   "trans-lang": "Lugha ya Tarjuma",
   "translation": "Tarjuma",
   "translations": "Tarjuma",
@@ -540,7 +570,9 @@
     "suggest": "Tafadhali anza kusoma na aya yako itaonekana.",
     "suggest-subtitle": "Soma aya yoyote kwa Kiarabu, na aya itaonekana",
     "suggest-title": "Soma sasa",
-    "voice-search-powered-by": "Utafutaji wa Sauti Unaendeshwa na"
+    "voice-search-powered-by": "Utafutaji wa Sauti Unaendeshwa na",
+    "start": "Anza utafutaji wa sauti",
+    "stop": "Acha utafutaji wa sauti"
   },
   "wbw": "Neno Kwa Neno",
   "wbw-lang-summary": "Chanzo cha tarjuma ya neno kwa neno: <link> {{source}} </link>. Chanzo hiki hakijitegemei uteuzi wa tarjuma ya aya.",

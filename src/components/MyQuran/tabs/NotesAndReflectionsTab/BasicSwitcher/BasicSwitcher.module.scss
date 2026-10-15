@@ -3,37 +3,42 @@
 .basicSwitcher {
   display: flex;
   gap: var(--spacing-xsmall-px);
+  padding: var(--spacing-micro-px);
+  background: var(--color-surface-card, var(--color-background-alternative-faint));
+  border: 1px solid var(--color-border-iridescent, var(--color-borders-hairline));
+  border-radius: var(--border-radius-pill);
 }
 
 .tabButton {
   all: unset;
-
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  block-size: calc(var(--spacing-small-plus-px) * 4);
+  block-size: calc(var(--spacing-small-plus-px) * 3.5);
   padding-inline: var(--spacing-medium-px);
   border-radius: var(--border-radius-pill);
-  background-color: var(--color-background-alternative-medium);
-  color: var(--color-text-default-new);
+  background-color: transparent;
+  color: var(--color-text-secondary, var(--color-text-default-new));
   line-height: 1;
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-small);
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition: all var(--transition-fast) ease;
 
   &:hover {
-    background-color: var(--color-blue-buttons-and-icons);
-    color: var(--color-text-white);
+    color: var(--color-text-primary, var(--color-text-white));
+    background-color: rgba(16, 185, 129, 0.08);
   }
 
   &:focus-visible {
-    outline: var(--spacing-micro-px) solid var(--color-primary-medium);
-    outline-offset: var(--spacing-micro-px);
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
   }
 
   &[data-selected='true'] {
-    background-color: var(--color-blue-buttons-and-icons);
-    color: var(--color-text-white);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    font-weight: var(--font-weight-bold);
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
   }
 }

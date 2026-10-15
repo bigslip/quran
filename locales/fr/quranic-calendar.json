@@ -19,19 +19,19 @@
       "question": "Comment fonctionne le programme?"
     },
     {
-      "answer": "Absolument pas. Le point de départ de ce programme est de vous familiariser avec les significations du Coran dans la langue (traduction) que vous maîtrisez. Quran.com propose des traductions dans de nombreuses langues pour rendre ce programme accessible à tous. Notre objectif est d'inciter les participants à progresser d'année en année.",
+      "answer": "Absolument pas. Le point de départ de ce programme est de vous familiariser avec les significations du Coran dans la langue (traduction) que vous maîtrisez. Quran.ir propose des traductions dans de nombreuses langues pour rendre ce programme accessible à tous. Notre objectif est d'inciter les participants à progresser d'année en année.",
       "question": "Dois-je savoir lire l’arabe pour participer ?"
     },
     {
-      "answer": "Chaque semaine, le nouveau devoir de lecture sera disponible sur Quran.com/calendrier. Vous pouvez le lire directement sur Quran.com, où un lien dédié vous mènera directement à la lecture principale de la semaine. \\n\\nVous pouvez également ouvrir le PDF en anglais et l'imprimer. Il contient une traduction fluide principalement issue de l'œuvre de MAS Abdel Haleem. Chaque semaine, le document est divisé en sept parties, ce qui facilite la répartition de la lecture. Il comprend de courtes introductions aux Sourates, des en-têtes et des notes pour clarifier certains points essentiels, et chaque partie quotidienne propose une question invitant à la méditation, et une suggestion d'action.",
+      "answer": "Chaque semaine, le nouveau devoir de lecture sera disponible sur Quran.ir/calendrier. Vous pouvez le lire directement sur Quran.ir, où un lien dédié vous mènera directement à la lecture principale de la semaine. \\n\\nVous pouvez également ouvrir le PDF en anglais et l'imprimer. Il contient une traduction fluide principalement issue de l'œuvre de MAS Abdel Haleem. Chaque semaine, le document est divisé en sept parties, ce qui facilite la répartition de la lecture. Il comprend de courtes introductions aux Sourates, des en-têtes et des notes pour clarifier certains points essentiels, et chaque partie quotidienne propose une question invitant à la méditation, et une suggestion d'action.",
       "question": "Où puis-je trouver les devoirs de lecture hebdomadaires ?"
     },
     {
-      "answer": "Plusieurs options s'offrent à vous pour rester sur la bonne voie. Nous vous recommandons vivement de vous abonner pour recevoir les e-mails contenant les lectures hebdomadaires. Nous avons également créé des canaux communautaires sur Telegram et WhatsApp, qui contiennent des rappels et des encouragements. Cliquez simplement sur le bouton de votre choix sur Quran.com/calendrier pour vous abonner. Vous pouvez choisir les trois options si vous le souhaitez.",
+      "answer": "Plusieurs options s'offrent à vous pour rester sur la bonne voie. Nous vous recommandons vivement de vous abonner pour recevoir les e-mails contenant les lectures hebdomadaires. Nous avons également créé des canaux communautaires sur Telegram et WhatsApp, qui contiennent des rappels et des encouragements. Cliquez simplement sur le bouton de votre choix sur Quran.ir/calendrier pour vous abonner. Vous pouvez choisir les trois options si vous le souhaitez.",
       "question": "Comment puis-je recevoir des rappels de lecture hebdomadaires ?"
     },
     {
-      "answer": "Sur Quran.com, accédez au menu des paramètres pour : \\n • Ajuster les tailles et les styles de police \\n • Basculer entre les modes clair, foncé et sépia \\n • Choisir parmi plusieurs traductions disponibles \\n \\nCela permet à chacun de participer facilement dans la langue qu'il comprend le mieux, et avec une traduction claire et informative.",
+      "answer": "Sur Quran.ir, accédez au menu des paramètres pour : \\n • Ajuster les tailles et les styles de police \\n • Basculer entre les modes clair, foncé et sépia \\n • Choisir parmi plusieurs traductions disponibles \\n \\nCela permet à chacun de participer facilement dans la langue qu'il comprend le mieux, et avec une traduction claire et informative.",
       "question": "Comment puis-je personnaliser mon expérience de lecture ?"
     },
     {
@@ -88,6 +88,7 @@
   "marked-as-completed": "Cette semaine a été marquée comme terminée avec succès !",
   "month": "Mois",
   "my-progress": "Mes progrès",
+  "no-faq-items": "Aucune FAQ disponible.",
   "progress-subtitle": "N'hésitez pas à revenir en arrière et à compléter les semaines que vous avez manquées !",
   "quran-calendar-description": "Un plan de lecture structuré pour lire le Coran en un an. Gagnez en régularité, approfondissez votre compréhension et maintenez le cap, sans vous sentir submergé(e).",
   "quran-calendar-title": "Le Coran en un an – Un plan simple pour lire et comprendre l'intégralité du Coran",

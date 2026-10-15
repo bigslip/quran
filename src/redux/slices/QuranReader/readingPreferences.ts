@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import resetSettings from '@/redux/actions/reset-settings';
 import syncUserPreferences from '@/redux/actions/sync-user-preferences';
@@ -153,16 +153,19 @@ export const {
   setLessonLanguages,
 } = readingPreferencesSlice.actions;
 
-export const selectInlineDisplayWordByWordPreferences = (state: RootState) => {
-  const { wordByWordDisplay, wordByWordInlineContentType } = state.readingPreferences;
-  const inline = wordByWordDisplay.includes(WordByWordDisplay.INLINE);
-  return {
-    showWordByWordTranslation:
-      inline && wordByWordInlineContentType.includes(WordByWordType.Translation),
-    showWordByWordTransliteration:
-      inline && wordByWordInlineContentType.includes(WordByWordType.Transliteration),
-  };
-};
+export const selectInlineDisplayWordByWordPreferences = createSelector(
+  (state: RootState) => state.readingPreferences.wordByWordDisplay,
+  (state: RootState) => state.readingPreferences.wordByWordInlineContentType,
+  (wordByWordDisplay, wordByWordInlineContentType) => {
+    const inline = wordByWordDisplay.includes(WordByWordDisplay.INLINE);
+    return {
+      showWordByWordTranslation:
+        inline && wordByWordInlineContentType.includes(WordByWordType.Translation),
+      showWordByWordTransliteration:
+        inline && wordByWordInlineContentType.includes(WordByWordType.Transliteration),
+    };
+  },
+);
 export const selectIsTooltipContentEnabled = (state: RootState): boolean => {
   const { wordByWordTooltipContentType, wordByWordDisplay } = state.readingPreferences;
   if (!wordByWordDisplay.includes(WordByWordDisplay.TOOLTIP)) return false;
@@ -172,10 +175,12 @@ export const selectIsTooltipContentEnabled = (state: RootState): boolean => {
   );
 };
 
+const EMPTY_TOOLTIP_CONTENT_TYPE: WordByWordType[] = [];
+
 export const selectReadingPreferences = (state: RootState) => state.readingPreferences;
 export const selectTooltipContentType = (state: RootState): WordByWordType[] => {
   const { wordByWordDisplay: d, wordByWordTooltipContentType: t } = state.readingPreferences;
-  return d?.includes(WordByWordDisplay.TOOLTIP) && t?.length ? t : [];
+  return d?.includes(WordByWordDisplay.TOOLTIP) && t?.length ? t : EMPTY_TOOLTIP_CONTENT_TYPE;
 };
 export const selectReadingPreference = (state: RootState) =>
   state.readingPreferences.readingPreference;
@@ -184,7 +189,7 @@ export const selectWordClickFunctionality = (state: RootState) =>
 export const selectWordByWordLocale = (state: RootState) =>
   state.readingPreferences.selectedWordByWordLocale;
 export const selectIsUsingDefaultWordByWordLocale = (state: RootState) =>
-  state.readingPreferences.isUsingDefaultWordByWordLocale;
+  state.readingPreferences.isUsingDefaultWordByWordLocale ?? true;
 export const selectSelectedReadingTranslation = (state: RootState) =>
   state.readingPreferences.selectedReadingTranslation;
 

@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "Konfiguroni dhe shikoni paraprakisht veglat e integruara për ndarjen e Kuranit, pastaj kopjoni fragmentin e skriptit gati për përdorim.",
-    "title": "Ndërtues i Vendosjes së Ajetit | Quran.com"
+    "title": "Ndërtues i Vendosjes së Ajetit | Quran.ir"
   },
   "mushaf": {
     "indopak": "Indopak",
@@ -80,6 +80,6 @@
     "otherLanguage": "Të tjera"
   },
   "widget": {
-    "readOnQuran": "Lexo në Quran.com"
+    "readOnQuran": "Lexo në Quran.ir"
   }
 }

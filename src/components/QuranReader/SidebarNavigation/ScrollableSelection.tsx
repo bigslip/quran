@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 
 import styles from './SidebarNavigation.module.scss';
 
+import { LoadingState } from '@/components/ui';
 import Link from '@/dls/Link/Link';
 import { SCROLL_TO_NEAREST_ELEMENT, useScrollToElement } from '@/hooks/useScrollToElement';
 import NavigationItemType from '@/types/NavigationItemType';
@@ -21,15 +22,33 @@ const ScrollableSelection = ({
   onAfterNavigationItemRouted,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [loadingItemValue, setLoadingItemValue] = useState<string | number | null>(null);
   const router = useRouter();
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.value.toString().startsWith(searchQuery) ||
-      item.label.toString().startsWith(searchQuery),
+  const filteredItems = useMemo(
+    () =>
+      items.filter(
+        (item) =>
+          item.value.toString().startsWith(searchQuery) ||
+          item.label.toString().startsWith(searchQuery),
+      ),
+    [items, searchQuery],
   );
 
   useEffect(() => {
+    const handleRouteChange = () => {
+      setLoadingItemValue(null);
+    };
+    router.events?.on('routeChangeComplete', handleRouteChange);
+    router.events?.on('routeChangeError', handleRouteChange);
+    return () => {
+      router.events?.off('routeChangeComplete', handleRouteChange);
+      router.events?.off('routeChangeError', handleRouteChange);
+    };
+  }, [router.events]);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) return;
     if (!filteredItems.length) {
       logEmptySearchResults({
         query: searchQuery,
@@ -45,7 +64,7 @@ const ScrollableSelection = ({
           : SearchQuerySource.SidebarNavigationPagesList,
       );
     }
-  }, [searchQuery, filteredItems, isJuz]);
+  }, [searchQuery, filteredItems.length, isJuz]);
 
   const [scroll, selectedItemRef] = useScrollToElement<HTMLDivElement>(SCROLL_TO_NEAREST_ELEMENT);
   useEffect(() => {
@@ -53,12 +72,25 @@ const ScrollableSelection = ({
   }, [selectedItem, scroll]);
 
   const navigateAndHandleAfterNavigation = (href: string, itemValue: string | number) => {
-    router.push(href).then(() => {
+    const itemType = isJuz ? NavigationItemType.JUZ : NavigationItemType.PAGE;
+    if (router.asPath === href || router.pathname === href) {
       if (onAfterNavigationItemRouted) {
-        const itemType = isJuz ? NavigationItemType.JUZ : NavigationItemType.PAGE;
         onAfterNavigationItemRouted(itemValue?.toString(), itemType);
       }
-    });
+      return;
+    }
+    setLoadingItemValue(itemValue);
+    router
+      .push(href)
+      .then(() => {
+        setLoadingItemValue(null);
+        if (onAfterNavigationItemRouted) {
+          onAfterNavigationItemRouted(itemValue?.toString(), itemType);
+        }
+      })
+      .catch(() => {
+        setLoadingItemValue(null);
+      });
   };
 
   const handleInputSubmit = (e: React.FormEvent) => {
@@ -89,6 +121,7 @@ const ScrollableSelection = ({
         <div className={styles.list}>
           {filteredItems.map((item) => {
             const href = getHref(item.value);
+            const isLoading = loadingItemValue === item.value;
             return (
               <Link
                 href={href}
@@ -101,9 +134,14 @@ const ScrollableSelection = ({
                   className={classNames(
                     styles.listItem,
                     item.value === selectedItem && styles.selectedItem,
+                    isLoading && styles.loadingItem,
                   )}
                 >
-                  {renderItem(item)}
+                  {isLoading ? (
+                    <LoadingState label={renderItem(item)} variant="Drive" />
+                  ) : (
+                    renderItem(item)
+                  )}
                 </div>
               </Link>
             );

@@ -15,9 +15,16 @@ import IconSearch from '@/icons/search.svg';
 import { MediaSettingsProps } from '@/types/Media/MediaSettings';
 import { makeTranslationsUrl } from '@/utils/apiPaths';
 import filterTranslations, { getTranslations } from '@/utils/filter-translations';
-import { getLocaleName } from '@/utils/locale';
+import { getLanguageNameByLocale } from '@/utils/locale';
 import { TranslationsResponse } from 'types/ApiResponses';
 import AvailableTranslation from 'types/AvailableTranslation';
+
+import {
+  getLanguageFlag,
+  getLanguageNativeName,
+  getTranslationNativeName,
+  getTranslationSecondaryName,
+} from '@/utils/translationInfo';
 
 const TRANSLATIONS_LIMIT = 3;
 
@@ -49,26 +56,44 @@ const TranslationSelectionBody: React.FC<Props> = ({ selectedTranslations, onSet
 
   const renderTranslationGroup = useCallback(
     (language: string, translations: AvailableTranslation[]) => {
-      if (!translations) {
+      if (!translations || !translations.length) {
         return <></>;
       }
+      const flag = getLanguageFlag(language);
+      const nativeLang = getLanguageNativeName(language);
+      const capitalizedLang = language.charAt(0).toUpperCase() + language.slice(1);
+      const displayTitle =
+        nativeLang && nativeLang.toLowerCase() !== capitalizedLang.toLowerCase()
+          ? `${flag} ${capitalizedLang} (${nativeLang})`
+          : `${flag} ${capitalizedLang}`;
+
       return (
         <div className={styles.group} key={language}>
-          <div className={styles.language}>{language}</div>
-          {translations.map((translation: AvailableTranslation) => (
-            <div key={translation.id} className={styles.item}>
-              <Checkbox
-                id={translation.id.toString()}
-                checked={selectedTranslations.includes(translation.id)}
-                label={translation.translatedName.name}
-                onChange={onTranslationsChange(translation.id)}
-                disabled={
-                  !selectedTranslations.includes(translation.id) &&
-                  selectedTranslations.length === TRANSLATIONS_LIMIT
-                }
-              />
-            </div>
-          ))}
+          <div className={styles.language}>{displayTitle}</div>
+          {translations.map((translation: AvailableTranslation) => {
+            const nativeName = getTranslationNativeName(translation);
+            const secondaryName = getTranslationSecondaryName(translation);
+
+            return (
+              <div key={translation.id} className={styles.item}>
+                <Checkbox
+                  id={translation.id.toString()}
+                  checked={selectedTranslations.includes(translation.id)}
+                  label={
+                    <span>
+                      <span>{nativeName}</span>
+                      {secondaryName && <span> ({secondaryName})</span>}
+                    </span>
+                  }
+                  onChange={onTranslationsChange(translation.id)}
+                  disabled={
+                    !selectedTranslations.includes(translation.id) &&
+                    selectedTranslations.length === TRANSLATIONS_LIMIT
+                  }
+                />
+              </div>
+            );
+          })}
         </div>
       );
     },
@@ -111,7 +136,7 @@ const TranslationSelectionBody: React.FC<Props> = ({ selectedTranslations, onSet
             getTranslations(filteredTranslations),
             'languageName',
           );
-          const selectedTranslationLanguage = getLocaleName(lang).toLowerCase();
+          const selectedTranslationLanguage = getLanguageNameByLocale(lang).toLowerCase();
           const selectedTranslationGroup = translationByLanguages[selectedTranslationLanguage];
           const translationByLanguagesWithoutSelectedLanguage = omit(translationByLanguages, [
             selectedTranslationLanguage,

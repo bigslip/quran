@@ -8,6 +8,12 @@ $list-max-width: 80rem;
   padding-inline-end: 0;
 }
 
+.sanctuaryHeroStage {
+  position: relative;
+  inline-size: 100%;
+  padding-block-end: var(--spacing-small);
+}
+
 .loadingContainer {
   min-block-size: 70vh;
   display: flex;
@@ -16,10 +22,10 @@ $list-max-width: 80rem;
 }
 
 .flow > .flowItem {
-  margin-block-start: calc(1.5 * var(--spacing-medium));
+  margin-block-start: var(--spacing-medium2);
 
   @include breakpoints.tablet {
-    margin-block-start: calc(2 * var(--spacing-medium));
+    margin-block-start: var(--spacing-mega);
   }
 }
 
@@ -61,29 +67,36 @@ $list-max-width: 80rem;
   }
 }
 
-.homepageCard:not(:first-child) {
-  padding-block-start: var(--spacing-medium2-px);
+.homepageRibbon {
+  padding-block: var(--spacing-xxsmall-px);
   @include breakpoints.tablet {
-    padding-block-start: var(--spacing-large-px);
+    padding-block: var(--spacing-xsmall-px);
+  }
+}
+
+.homepageCard:not(:first-child) {
+  padding-block-start: var(--spacing-medium2);
+  @include breakpoints.tablet {
+    padding-block-start: var(--spacing-large);
   }
 }
 
 .homepageCard {
   @include breakpoints.smallerThanTablet {
-    padding-inline: var(--spacing-small-px);
-    margin-inline: var(--spacing-medium2-px);
+    padding-inline: var(--spacing-small);
+    margin-inline: var(--spacing-medium2);
   }
-  padding-block-end: var(--spacing-medium2-px);
+  padding-block-end: var(--spacing-medium2);
   @include breakpoints.tablet {
-    padding-block-end: var(--spacing-large-px);
+    padding-block-end: var(--spacing-large);
   }
-  border-block-end: 1px solid var(--color-separators-ayah-level);
+  border-block-end: 1px solid var(--color-border-subtle);
 }
 
 .appsSection {
-  padding-block-end: var(--spacing-medium4-px);
+  padding-block-end: var(--spacing-large);
   @include breakpoints.tablet {
-    padding-block-end: var(--spacing-large-px);
+    padding-block-end: var(--spacing-large);
   }
 
   border-block-end: 0;
@@ -94,10 +107,15 @@ $list-max-width: 80rem;
 }
 
 .bodyContainer {
-  background: var(--color-background-elevated);
+  background: radial-gradient(circle at 50% 0%, var(--color-primary-subtle) 0%, transparent 35%),
+    var(--color-background-elevated);
   padding-block-end: var(--spacing-max);
   @include breakpoints.smallerThanTablet {
     border-start-start-radius: var(--border-radius-rounded);
     border-start-end-radius: var(--border-radius-rounded);
+  }
+
+  :global(#chapter-and-juz-list) {
+    scroll-margin-top: calc(var(--spacing-medium) + 20px);
   }
 }

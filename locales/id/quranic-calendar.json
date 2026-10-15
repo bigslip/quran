@@ -19,19 +19,19 @@
       "question": "Bagaimana cara kerja program ini?"
     },
     {
-      "answer": "Sama sekali tidak. Titik awal dalam program ini adalah untuk memahami makna Al-Quran melalui bahasa apa pun (terjemahan) yang Anda kuasai. Quran.com menawarkan terjemahan dalam banyak bahasa agar dapat diakses oleh semua orang. Tujuan kami adalah untuk menginspirasi peserta agar terus meningkat dari tahun ke tahun.",
+      "answer": "Sama sekali tidak. Titik awal dalam program ini adalah untuk memahami makna Al-Quran melalui bahasa apa pun (terjemahan) yang Anda kuasai. Quran.ir menawarkan terjemahan dalam banyak bahasa agar dapat diakses oleh semua orang. Tujuan kami adalah untuk menginspirasi peserta agar terus meningkat dari tahun ke tahun.",
       "question": "Apakah saya harus bisa membaca bahasa Arab untuk berpartisipasi?"
     },
     {
-      "answer": "Setiap minggu, tugas bacaan baru akan tersedia di Quran.com/calendar. Anda dapat membaca langsung di Quran.com, di mana tautan khusus akan membawa Anda langsung ke bacaan utama untuk minggu tersebut. \\n \\n Anda juga dapat membuka PDF bahasa Inggrisnya, dan mencetaknya di rumah. Dokumen ini berisi terjemahan yang mengalir yang diadaptasi terutama dari karya MAS Abdel Haleem. Dokumen mingguan dibagi menjadi tujuh bagian, sehingga memudahkan untuk membagi bacaan sepanjang minggu jika Anda mau. Ada pengantar singkat untuk surah, topik inti, dan catatan untuk menjelaskan beberapa poin penting, dan setiap bagian harian memiliki pertanyaan untuk refleksi dan tindakan yang disarankan.",
+      "answer": "Setiap minggu, tugas bacaan baru akan tersedia di Quran.ir/calendar. Anda dapat membaca langsung di Quran.ir, di mana tautan khusus akan membawa Anda langsung ke bacaan utama untuk minggu tersebut. \\n \\n Anda juga dapat membuka PDF bahasa Inggrisnya, dan mencetaknya di rumah. Dokumen ini berisi terjemahan yang mengalir yang diadaptasi terutama dari karya MAS Abdel Haleem. Dokumen mingguan dibagi menjadi tujuh bagian, sehingga memudahkan untuk membagi bacaan sepanjang minggu jika Anda mau. Ada pengantar singkat untuk surah, topik inti, dan catatan untuk menjelaskan beberapa poin penting, dan setiap bagian harian memiliki pertanyaan untuk refleksi dan tindakan yang disarankan.",
       "question": "Di mana saya dapat menemukan tugas bacaan mingguan?"
     },
     {
-      "answer": "Anda memiliki beberapa pilihan untuk tetap on track. Kami sangat menyarankan untuk berlangganan guna menerima email dengan tugas bacaan mingguan terlampir. Kami juga telah membuat saluran komunitas di Telegram dan WhatsApp yang akan berisi pengingat dan dorongan. Cukup klik tombol pilihan Anda di Quran.com/calendar untuk berlangganan. Anda dapat memilih ketiganya jika Anda mau.",
+      "answer": "Anda memiliki beberapa pilihan untuk tetap on track. Kami sangat menyarankan untuk berlangganan guna menerima email dengan tugas bacaan mingguan terlampir. Kami juga telah membuat saluran komunitas di Telegram dan WhatsApp yang akan berisi pengingat dan dorongan. Cukup klik tombol pilihan Anda di Quran.ir/calendar untuk berlangganan. Anda dapat memilih ketiganya jika Anda mau.",
       "question": "Bagaimana caranya agar saya menerima pengingat membaca mingguan?"
     },
     {
-      "answer": "Di Quran.com, buka menu Pengaturan untuk: \\n • Menyesuaikan ukuran dan gaya font \\n • Beralih antara mode terang, gelap, dan sepia \\n • Memilih dari beberapa terjemahan yang tersedia \\n \\n Ini memudahkan siapa saja untuk terlibat dengan menggunakan bahasa yang paling mereka pahami, dan dengan terjemahan yang jelas dan informatif.",
+      "answer": "Di Quran.ir, buka menu Pengaturan untuk: \\n • Menyesuaikan ukuran dan gaya font \\n • Beralih antara mode terang, gelap, dan sepia \\n • Memilih dari beberapa terjemahan yang tersedia \\n \\n Ini memudahkan siapa saja untuk terlibat dengan menggunakan bahasa yang paling mereka pahami, dan dengan terjemahan yang jelas dan informatif.",
       "question": "Bagaimana saya dapat mempersonalisasi pengalaman membaca saya?"
     },
     {
@@ -88,6 +88,7 @@
   "marked-as-completed": "Pekan ini berhasil ditandai sebagai selesai!",
   "month": "Bulan",
   "my-progress": "Kemajuan Saya",
+  "no-faq-items": "Tidak ada item FAQ yang tersedia.",
   "progress-subtitle": "Jangan ragu untuk kembali dan menyelesaikan pekan-pekan yang terlewatkan!",
   "quran-calendar-description": "Rencana bacaan terstruktur untuk menuntaskan Al-Quran dalam setahun. Bangun konsistensi, perdalam pemahaman Anda, dan tetaplah pada jalur yang benar—tanpa merasa kewalahan.",
   "quran-calendar-title": "Quran dalam Setahun – Cara Mudah untuk Membaca & Memahami Seluruh Quran",

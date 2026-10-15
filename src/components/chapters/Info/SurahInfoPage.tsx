@@ -21,8 +21,8 @@ const SurahInfoPage: React.FC<SurahInfoPageProps> = ({ chapter, initialResourceI
   const router = useRouter();
 
   const handleClose = useCallback(() => {
-    fakeNavigate(getSurahNavigationUrl(chapter.id), router.locale);
-  }, [chapter.id, router.locale]);
+    fakeNavigate(getSurahNavigationUrl(chapter?.slug || chapter.id), router.locale);
+  }, [chapter?.slug, chapter.id, router.locale]);
 
   return (
     <ContentModal

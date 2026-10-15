@@ -1,22 +1,23 @@
 {
   "about": "关于我们",
+  "all": "All",
   "allow": "允许",
   "and": "和",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
         "action": "下一个",
-        "description": "无论您是在手机还是笔记本电脑上使用 Quran.com，您的书签、最后阅读的经文和您的偏好都将可用",
+        "description": "无论您是在手机还是笔记本电脑上使用 Quran.ir，您的书签、最后阅读的经文和您的偏好都将可用",
         "title": "您的数据将在设备间同步<br></br>"
       },
       "feedback": {
         "action": "好，知道了",
-        "description": "感谢您使用 Quran.com，我们很高兴听到您对<link> feedback.quran.com </link> 的反馈",
+        "description": "感谢您使用 Quran.ir，我们很高兴听到您对<link> feedback.quran.ir </link> 的反馈",
         "title": "我们想听听你的想法"
       },
       "quran-foundation-link": {
         "action": "下一个",
-        "description": "使用您的 Quran.com 登录名访问 QuranReflect.com — 一个致力于反思古兰经的蓬勃发展的全球社区。",
+        "description": "使用您的 Quran.ir 登录名访问 QuranReflect.com — 一个致力于反思古兰经的蓬勃发展的全球社区。",
         "title": "在 Quran.Foundation 应用程序中使用您的帐户！"
       },
       "quran-growth-journey": {
@@ -26,7 +27,7 @@
       },
       "welcome": {
         "action": "看看有什么新鲜事",
-        "title": "欢迎来到 Quran.com <br></br>用户帐户"
+        "title": "欢迎来到 Quran.ir <br></br>用户帐户"
       }
     },
     "collections-announcement": {
@@ -46,7 +47,11 @@
     "select-lng": "选择语言",
     "sidebar-nav-close": "关闭导航侧边栏",
     "tooltip-action": "工具提示操作",
-    "translation-info": "查看翻译信息"
+    "translation-info": "查看翻译信息",
+    "play-verse": "播放节文 {{verseKey}}",
+    "pause-surah": "暂停苏拉 {{surahName}}",
+    "pause-verse": "暂停节文 {{verseKey}}",
+    "surah-filter": "苏拉筛选"
   },
   "audio": {
     "auto-scroll": {
@@ -113,12 +118,19 @@
   "click-here": "点击这里",
   "close": "关闭",
   "command-bar": {
+    "close": "关闭",
+    "direct-jump-hint": "按 ↵ 前往",
+    "filter": "筛选",
+    "navigate": "导航",
     "navigations": "导航",
-    "no-nav-results": "没有导航结果",
+    "no-nav-results": "未找到导航结果",
     "placeholder": "搜索《古兰经》...",
-    "recent-navigations": "最近的导航",
+    "search-placeholder": "搜索《古兰经》、苏拉（如山洞章或18）、节文（2:255）、卷或页...",
+    "select": "选择",
+    "spotlight-placeholder": "搜索《古兰经》、苏拉或节文...",
+    "recent-navigations": "最近导航",
     "search-by-voice": "语音搜索",
-    "try-navigating": "尝试导航到"
+    "try-navigating": "尝试导航至"
   },
   "community": {
     "cta": "联系我们",
@@ -228,6 +240,7 @@
   },
   "exciting-updates": "令人兴奋的更新",
   "favorites": "收藏夹",
+  "featured": "Featured",
   "feedback": "反馈问题",
   "fonts": {
     "15_lines": "15行",
@@ -250,7 +263,7 @@
   },
   "footer": {
     "apps-disclaimer": "每个应用程序均由其开发者独立拥有和维护。如需支持、提交错误报告或提出功能请求，请直接联系应用程序创建者。",
-    "description": "Quran.com 是一个值得信赖的平台，全球数百万人使用它来阅读、搜索、聆听和思考多种语言的《古兰经》。它提供翻译、注释、诵读、逐字翻译以及深入研究的工具，让每个人都能接触到《古兰经》。 <br/> <br/>作为一家名为“施舍之家”（Sadaqah Jariyah）的机构，Quran.com 致力于帮助人们与《古兰经》建立更深层次的联系。在 501(c)(3) 非营利组织<link> Quran.Foundation </link>的支持下，Quran.com 不断发展壮大，成为所有人的免费宝贵资源。Alhamdulillah（真主安拉）",
+    "description": "Quran.ir 是一个值得信赖的平台，全球数百万人使用它来阅读、搜索、聆听和思考多种语言的《古兰经》。它提供翻译、注释、诵读、逐字翻译以及深入研究的工具，让每个人都能接触到《古兰经》。 <br/> <br/>作为一家名为“施舍之家”（Sadaqah Jariyah）的机构，Quran.ir 致力于帮助人们与《古兰经》建立更深层次的联系。在 501(c)(3) 非营利组织<link> Quran.Foundation </link>的支持下，Quran.ir 不断发展壮大，成为所有人的免费宝贵资源。Alhamdulillah（真主安拉）",
     "hiring": "我们正在招聘！加入古兰经基金会团队并为我们的使命做出贡献。 <link>立即申请！ </link>",
     "rights": "版权所有",
     "title": "阅读、聆听、探索并思考《古兰经》"
@@ -271,29 +284,29 @@
     "verification-code": "验证码"
   },
   "from": "从",
-  "fundraising-card-v2": {
-    "cta": "立即捐款",
-    "description": "每月捐款帮助我们改进 Quran.com 并维持运营，使我们能够减少对筹款的关注，更多地关注创造影响力。",
-    "title": "成为月捐者"
-  },
-  "fundraising-share-title": "分享 Quran.com 筹款活动",
-  "fundraising-sticky-banner-v2": {
-    "cta": "捐",
-    "desktop-text": "为我们的使命做出贡献",
-    "mobile-line-one": "现在是古兰经月。",
-    "mobile-line-two": "请帮助我们传播它的光芒。"
-  },
-  "fundraising-sticky-banner": {
-    "cta": "捐",
-    "title": "在最好的日子里赠送！"
-  },
   "fundraising": {
-    "description": "每月的捐款帮助我们改善 Quran.com 并维持运营，因此我们不再专注于筹款，而是更多地关注创造影响力。",
+    "description": "每月的捐款帮助我们改善 Quran.ir 并维持运营，因此我们不再专注于筹款，而是更多地关注创造影响力。",
     "donation-campaign": {
       "cta": "立即捐款",
       "text": "成为支持者"
     },
     "title": "成为每月捐助者"
+  },
+  "fundraising-card-v2": {
+    "cta": "立即捐款",
+    "description": "每月捐款帮助我们改进 Quran.ir 并维持运营，使我们能够减少对筹款的关注，更多地关注创造影响力。",
+    "title": "成为月捐者"
+  },
+  "fundraising-share-title": "分享 Quran.ir 筹款活动",
+  "fundraising-sticky-banner": {
+    "cta": "捐",
+    "title": "在最好的日子里赠送！"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "捐",
+    "desktop-text": "为我们的使命做出贡献",
+    "mobile-line-one": "现在是古兰经月。",
+    "mobile-line-two": "请帮助我们传播它的光芒。"
   },
   "get-started": "立即开始",
   "go-to-verse": "前往诗节",
@@ -311,6 +324,7 @@
   "juz": "卷",
   "language": "语",
   "languages": "语言",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "学习",
   "learn-more": "学到更多",
   "learning-plans": "学习计划",
@@ -320,11 +334,16 @@
   "loading": "加载中",
   "login": "登录",
   "logout": "登出",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "麦加",
   "medinan": "麦地那",
   "menu": "菜单",
   "minutes": "分钟",
   "mobile-apps": "手机App",
+  "modal": "弹窗",
   "mode": "模式",
   "more": "更多的",
   "my-learning-plans": "我的学习计划",
@@ -336,6 +355,7 @@
   "next": "下一个",
   "next-ayah": "下一节文",
   "no": "不",
+  "no-languages-found": "No languages found",
   "no-notifications": "还没有通知",
   "no-verses-available": "没有可用的诗句",
   "none": "无",
@@ -344,18 +364,20 @@
     "label": "笔记",
     "title": "我的笔记和思考"
   },
-  "notification-settings": "通知设置",
   "notification": {
     "mark-all-as-read": "标记为已读",
     "mark-as-read": "标记为已读"
   },
+  "notification-settings": "通知设置",
   "notifications": "通知",
   "off": "离开",
   "oldest": "最老的",
   "on": "在",
   "our-projects": "我们的项目",
   "page": "页",
+  "page-number": "第 {{page}} 页",
   "pages": "页面",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{totalNumberOfResults}}搜索结果，共{{endOfResultNumber}}",
   "pbuh": "真主的祝福降临在他身上",
   "popular-links": "热门链接",
@@ -379,9 +401,12 @@
   "profile": "轮廓",
   "projects-desc": "<link>Quran.Foundation</link> 拥有、管理或赞助的非营利项目",
   "q-reflect": "古兰经反射",
+  "quran-android": "Android版古兰经",
   "quran-apps": "古兰经应用程序",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
+  "quran-ios": "iOS版古兰经",
   "quran-radio": "在线听古兰经",
+  "ramadan-2026": "2026斋月",
   "read": "读",
   "read-more": "阅读更多",
   "reading-history": "阅读历史",
@@ -412,9 +437,6 @@
   "rub": "鲁布埃尔希兹",
   "save": "节省",
   "save-to-collection": "保存到收藏",
-  "search-for": "搜索 '{{searchQuery}}'",
-  "search-results": "{{count}}搜索结果",
-  "search-results-no-count": "搜索结果",
   "search": {
     "filters": "过滤器",
     "hint": "尝试搜索",
@@ -427,12 +449,18 @@
     "results": "结果",
     "show-all": "显示所有结果",
     "switch-mode": "切换到高级搜索",
-    "title": "搜索"
+    "title": "搜索",
+    "placeholder": "搜索节文、苏拉、主题或跳转至节文..."
   },
+  "search-for": "搜索 '{{searchQuery}}'",
+  "search-languages": "搜索语言...",
+  "search-results": "{{count}}搜索结果",
+  "search-results-no-count": "搜索结果",
   "seconds": "秒数",
   "see-less": "查看更少",
   "see-new": "查看最新动态",
   "select-language": "选择语言",
+  "select-language-description": "选择 Quran.ir 的首选显示语言",
   "settings": {
     "no-tafsir-selected": "尚未选择经注",
     "no-translation-selected": "尚未选择译文",
@@ -484,6 +512,7 @@
   "subscribe": "订阅",
   "subscribed": "已订阅",
   "surah": "章",
+  "surahs": "Surahs",
   "tab-see-less": "收起...",
   "tab-see-more": "查看更多…",
   "tafsir": {
@@ -508,6 +537,7 @@
   "to": "到",
   "tooltip": "工具提示",
   "tooltip-trans-lang": "翻译成：",
+  "topics": "Topics",
   "trans-lang": "翻译语言",
   "translation": "意译",
   "translations": "翻译",
@@ -540,7 +570,9 @@
     "suggest": "请开始诵读，经文就会显示",
     "suggest-subtitle": "用阿拉伯语背诵任何一节经文，这节经文就会出现",
     "suggest-title": "现在背诵",
-    "voice-search-powered-by": "语音搜索由"
+    "voice-search-powered-by": "语音搜索由",
+    "start": "开始语音搜索",
+    "stop": "停止语音搜索"
   },
   "wbw": "在单词下方显示其译文",
   "wbw-lang-summary": "逐字翻译来源： <link> {{source}} </link> 。此来源独立于诗歌翻译选择。",

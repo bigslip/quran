@@ -1,5 +1,7 @@
 .bookmarksHeader {
-  margin-block-end: var(--spacing-xsmall);
+  margin-block-end: var(--spacing-small-px);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
 }
 
 .verseLinksContainer {
@@ -8,15 +10,28 @@
   flex-wrap: nowrap;
   flex-grow: 1;
   flex-shrink: 0;
+  gap: var(--spacing-xsmall-px);
 }
 
 .viewAllBookmarksContainer {
   white-space: nowrap;
-  text-decoration: underline;
+  text-decoration: none;
+  color: var(--color-primary, var(--color-text-link));
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-small-px);
+  padding: var(--spacing-micro2-px) var(--spacing-small-px);
+  border-radius: var(--border-radius-pill);
+  transition: all var(--transition-fast) ease;
+
+  &:hover {
+    background: var(--color-primary-subtle, rgba(0, 242, 254, 0.08));
+    text-decoration: underline;
+  }
 }
 
 .container {
   padding-block-start: 0;
-  padding-block-end: var(--spacing-micro);
+  padding-block-end: var(--spacing-xsmall-px);
   overflow-x: auto;
+  scrollbar-width: thin;
 }

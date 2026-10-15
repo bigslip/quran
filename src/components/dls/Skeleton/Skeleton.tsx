@@ -1,8 +1,9 @@
+import React from 'react';
 import classNames from 'classnames';
 
 import styles from './Skeleton.module.scss';
 
-type SkeletonProps = {
+type SkeletonProps = React.HTMLAttributes<HTMLSpanElement> & {
   children?: React.ReactNode;
   isRounded?: boolean;
   isSquared?: boolean;
@@ -16,15 +17,17 @@ const Skeleton = ({
   isSquared,
   isActive = true,
   className,
+  ...props
 }: SkeletonProps) => {
   return (
     <span
-      className={classNames(styles.skeleton, {
+      aria-hidden="true"
+      {...props}
+      className={classNames(styles.skeleton, className, {
         [styles.baseSize]: !children && !className,
         [styles.active]: isActive,
         [styles.rounded]: isRounded,
         [styles.squared]: isSquared,
-        [className]: className,
       })}
     >
       {children && <span className={styles.content}>{children}</span>}

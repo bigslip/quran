@@ -73,6 +73,7 @@ const VolumeControl = ({ shouldUseModalZIndex }: VolumeControlProps) => {
         trigger={
           <Button
             tooltip={t('audio.player.volume-control')}
+            ariaLabel={t('audio.player.volume-control')}
             shape={ButtonShape.Circle}
             variant={ButtonVariant.Ghost}
             shouldFlipOnRTL={false}

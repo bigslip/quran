@@ -1,48 +1,33 @@
-/* eslint-disable react/no-multi-comp */
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import dynamic from 'next/dynamic';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import Drawer, { DrawerSide, DrawerType } from '../Drawer';
-import NavbarLogoWrapper from '../Logo/NavbarLogoWrapper';
-import ProfileAvatarButton from '../NavbarBody/ProfileAvatarButton';
-
-import styles from './NavigationDrawer.module.scss';
 import NavigationDrawerBodySkeleton from './NavigationDrawerBodySkeleton';
 
-import { selectNavbar } from '@/redux/slices/navbar';
-import { isLoggedIn } from '@/utils/auth/login';
+import { selectNavbar, setIsNavigationDrawerOpen } from '@/redux/slices/navbar';
 
-const NavigationDrawerBody = dynamic(() => import('./NavigationDrawerBody'), {
+const SterlingGateNav = dynamic(() => import('./SterlingGateNav'), {
   ssr: false,
   loading: () => <NavigationDrawerBodySkeleton />,
 });
 
 const NavigationDrawer = () => {
+  const dispatch = useDispatch();
   const { isNavigationDrawerOpen, isLanguageDrawerOpen } = useSelector(selectNavbar, shallowEqual);
-  const isUserLoggedIn = isLoggedIn();
+
+  const handleClose = useCallback(() => {
+    if (!isLanguageDrawerOpen) {
+      dispatch(setIsNavigationDrawerOpen(false));
+    }
+  }, [dispatch, isLanguageDrawerOpen]);
 
   return (
-    <Drawer
-      id="navigation-drawer"
-      data-testid="navigation-drawer"
-      type={DrawerType.Navigation}
-      side={DrawerSide.Right}
-      header={
-        <div className={styles.centerVertically}>
-          <div className={styles.leftCTA}>
-            <NavbarLogoWrapper />
-            {!isUserLoggedIn && <ProfileAvatarButton isPopoverPortalled={false} />}
-          </div>
-        </div>
-      }
-      canCloseDrawer={!isLanguageDrawerOpen}
-    >
-      {isNavigationDrawerOpen && (
-        <NavigationDrawerBody isLanguageDrawerOpen={isLanguageDrawerOpen} />
-      )}
-    </Drawer>
+    <SterlingGateNav
+      isOpen={isNavigationDrawerOpen}
+      onClose={handleClose}
+      isLanguageDrawerOpen={isLanguageDrawerOpen}
+    />
   );
 };
 

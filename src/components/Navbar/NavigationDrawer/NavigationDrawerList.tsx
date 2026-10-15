@@ -3,18 +3,17 @@ import React, { useCallback } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { useDispatch } from 'react-redux';
 
-import MoreMenuCollapsible from './MoreMenuCollapsible';
 import NavigationDrawerItem from './NavigationDrawerItem';
-import OurProjectsCollapsible from './OurProjectsCollapsible';
 
 import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import IconApps from '@/icons/apps.svg';
 import IconBookmarkFilled from '@/icons/bookmark_filled.svg';
+import IconBookOpen from '@/icons/book-open.svg';
 import IconCode from '@/icons/code.svg';
-import DiamondIcon from '@/icons/diamond.svg';
+import IconGraduationCap from '@/icons/graduation-cap.svg';
 import IconHeadphonesFilled from '@/icons/headphones-filled.svg';
-import IconHome from '@/icons/home.svg';
-import IconSchool from '@/icons/school.svg';
+import IconMoon from '@/icons/moon.svg';
+import IconRadio from '@/icons/radio.svg';
 import { setIsNavigationDrawerOpen } from '@/redux/slices/navbar';
 import Language from '@/types/Language';
 import { logButtonClick } from '@/utils/eventLogger';
@@ -28,29 +27,15 @@ import {
   ROUTES,
 } from '@/utils/navigation';
 
-interface NavigationDrawerListProps {
-  accordionHeaderClassName?: string;
-  accordionHeaderLeftClassName?: string;
-  accordionContentClassName?: string;
-  accordionItemTitleClassName?: string;
-  projectsDescClassName?: string;
-}
-
-const NavigationDrawerList: React.FC<NavigationDrawerListProps> = ({
-  accordionHeaderClassName,
-  accordionHeaderLeftClassName,
-  accordionContentClassName,
-  accordionItemTitleClassName,
-  projectsDescClassName,
-}) => {
+const NavigationDrawerList: React.FC = () => {
   const { lang, t } = useTranslation('common');
   const dispatch = useDispatch();
   const continueReadingUrl = useGetContinueReadingUrl();
 
   const ITEMS = [
     {
-      title: 'Ramadan 2026',
-      icon: <DiamondIcon />,
+      title: t('ramadan-2026', { defaultValue: 'Ramadan 2026' }),
+      icon: <IconMoon />,
       href: ROUTES.RAMADAN_2026,
       eventName: 'navigation_drawer_ramadan2026',
       isEvent: true,
@@ -58,13 +43,13 @@ const NavigationDrawerList: React.FC<NavigationDrawerListProps> = ({
     },
     {
       title: t('read'),
-      icon: <IconHome />,
+      icon: <IconBookOpen />,
       href: continueReadingUrl,
       eventName: 'navigation_drawer_read',
     },
     {
       title: t('learn'),
-      icon: <IconSchool />,
+      icon: <IconGraduationCap />,
       href: LEARNING_PLANS_URL,
       eventName: 'navigation_drawer_learn',
     },
@@ -76,7 +61,7 @@ const NavigationDrawerList: React.FC<NavigationDrawerListProps> = ({
     },
     {
       title: t('quran-radio'),
-      icon: <IconHeadphonesFilled />,
+      icon: <IconRadio />,
       href: RADIO_URL,
       eventName: 'navigation_drawer_quran_radio',
     },
@@ -125,21 +110,6 @@ const NavigationDrawerList: React.FC<NavigationDrawerListProps> = ({
           />
         );
       })}
-      <MoreMenuCollapsible
-        onItemClick={handleItemClick}
-        headerClassName={accordionHeaderClassName}
-        headerLeftClassName={accordionHeaderLeftClassName}
-        contentClassName={accordionContentClassName}
-        itemTitleClassName={accordionItemTitleClassName}
-      />
-      <OurProjectsCollapsible
-        onItemClick={handleItemClick}
-        headerClassName={accordionHeaderClassName}
-        headerLeftClassName={accordionHeaderLeftClassName}
-        descriptionClassName={projectsDescClassName}
-        contentClassName={accordionContentClassName}
-        itemTitleClassName={accordionItemTitleClassName}
-      />
     </>
   );
 };

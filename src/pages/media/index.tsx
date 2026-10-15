@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Player, PlayerRef, RenderPoster } from '@remotion/player';
+import type { PlayerRef, RenderPoster } from '@remotion/player';
 import classNames from 'classnames';
 import { GetStaticProps, NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -67,7 +68,7 @@ import { isValidVerseFrom, isValidVerseKey, isValidVerseTo } from '@/utils/valid
 import { VersesResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
 
-interface MediaMaker {
+interface MediaMaker extends React.HTMLAttributes<HTMLDivElement> {
   juzVerses?: VersesResponse;
   reciters: Reciter[];
   translationsData: Translation[];
@@ -77,6 +78,10 @@ interface MediaMaker {
   englishChaptersList: ChaptersData;
 }
 
+const Player = dynamic(() => import('@remotion/player').then((mod) => mod.Player), {
+  ssr: false,
+}) as typeof import('@remotion/player').Player;
+
 const MediaMaker: NextPage<MediaMaker> = ({
   chaptersData,
   englishChaptersList,
@@ -84,6 +89,7 @@ const MediaMaker: NextPage<MediaMaker> = ({
   verses: defaultVerses,
   audio: defaultAudio,
   translationsData,
+  ...rest
 }) => {
   const { t, lang } = useTranslation('common');
   const mediaSettings = useGetMediaSettings(reciters, translationsData);
@@ -441,7 +447,7 @@ const MediaMaker: NextPage<MediaMaker> = ({
   return (
     <>
       {SEOComponent}
-      <div className={styles.pageContainer}>
+      <div className={styles.pageContainer} {...rest}>
         {!isPreviewMode && (
           <div className={styles.titleContainer}>
             <h1>{t('media:title')}</h1>
@@ -513,29 +519,23 @@ const MediaMaker: NextPage<MediaMaker> = ({
   );
 };
 
-const fetchRecitersAndTranslations = async (locale) => {
-  const { reciters } = await getAvailableReciters(locale, []);
-  const { translations } = await getAvailableTranslations(locale);
-  return { reciters, translations };
-};
-
-const fetchChapterData = async (locale) => {
-  const chaptersData = await getAllChaptersData(locale);
-  const englishChaptersList = await getAllChaptersData('en');
-  return { chaptersData, englishChaptersList };
-};
-
-const fetchVersesAndAudio = async (locale) => {
-  const verses = await getChapterVerses(DEFAULT_SURAH, locale, DEFAULT_API_PARAMS);
-  const chapterAudioData = await getChapterAudioData(DEFAULT_RECITER_ID, DEFAULT_SURAH, true);
-  return { verses, chapterAudioData };
-};
-
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   try {
-    const { reciters, translations } = await fetchRecitersAndTranslations(locale);
-    const { chaptersData, englishChaptersList } = await fetchChapterData(locale);
-    const { verses, chapterAudioData } = await fetchVersesAndAudio(locale);
+    const [
+      recitersData,
+      translationsDataRes,
+      chaptersData,
+      englishChaptersList,
+      verses,
+      chapterAudioData,
+    ] = await Promise.all([
+      getAvailableReciters(locale, []),
+      getAvailableTranslations(locale),
+      getAllChaptersData(locale),
+      getAllChaptersData('en'),
+      getChapterVerses(DEFAULT_SURAH, locale, DEFAULT_API_PARAMS),
+      getChapterAudioData(DEFAULT_RECITER_ID, DEFAULT_SURAH, true),
+    ]);
 
     return {
       props: {
@@ -543,8 +543,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
         verses,
         chaptersData,
         englishChaptersList,
-        reciters: reciters || [],
-        translationsData: translations || [],
+        reciters: recitersData.reciters || [],
+        translationsData: translationsDataRes.translations || [],
       },
       revalidate: ONE_MONTH_REVALIDATION_PERIOD_SECONDS,
     };

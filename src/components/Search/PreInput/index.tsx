@@ -61,8 +61,8 @@ const PreInput: React.FC<Props> = ({ onSearchKeywordClicked, source }) => {
         <div data-testid="popular-search-section">
           {Object.keys(POPULAR_SEARCH_QUERIES).map((popularSearchQuery) => {
             const chapterId = POPULAR_SEARCH_QUERIES[popularSearchQuery];
-            const url = getSurahNavigationUrl(POPULAR_SEARCH_QUERIES[popularSearchQuery]);
             const chapterData = getChapterData(chaptersData, chapterId);
+            const url = getSurahNavigationUrl(chapterData?.slug || chapterId);
             return (
               <Link href={url} key={url} className={styles.popularSearchItem}>
                 <SearchItem

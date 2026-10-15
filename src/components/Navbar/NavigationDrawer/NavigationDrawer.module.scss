@@ -1,6 +1,7 @@
 @use 'src/styles/breakpoints';
 @use 'src/styles/utility';
 
+.startCTA,
 .leftCTA {
   display: flex;
   margin-inline-start: var(--spacing-xsmall);
@@ -8,6 +9,7 @@
   justify-content: space-between;
 }
 
+.endCTA,
 .rightCTA {
   display: flex;
   margin-inline-end: var(--spacing-medium);

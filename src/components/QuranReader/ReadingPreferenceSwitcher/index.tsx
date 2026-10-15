@@ -36,35 +36,41 @@ const ReadingPreferenceSwitcher = ({
     context: type,
   });
 
-  const readingPreferencesOptions = (): Array<{ name: JSX.Element; value: ReadingPreference }> => [
-    {
-      name: (
-        <ReadingPreferenceOption
-          readingPreference={readingPreference}
-          selectedReadingPreference={ReadingPreference.Translation}
-          isLoading={isLoading}
-          isIconsOnly={isIconsOnly}
-        />
-      ),
-      value: ReadingPreference.Translation,
-    },
-    {
-      name: (
-        <ReadingPreferenceOption
-          readingPreference={readingPreference}
-          selectedReadingPreference={ReadingPreference.Reading}
-          isLoading={isLoading}
-          isIconsOnly={isIconsOnly}
-        />
-      ),
-      value: ReadingPreference.Reading,
-    },
-  ];
+  const readingPreferencesOptions = React.useMemo(
+    (): Array<{ name: JSX.Element; value: ReadingPreference }> => [
+      {
+        name: (
+          <ReadingPreferenceOption
+            readingPreference={readingPreference}
+            selectedReadingPreference={ReadingPreference.Translation}
+            isLoading={isLoading}
+            isIconsOnly={isIconsOnly}
+          />
+        ),
+        value: ReadingPreference.Translation,
+      },
+      {
+        name: (
+          <ReadingPreferenceOption
+            readingPreference={readingPreference}
+            selectedReadingPreference={ReadingPreference.Reading}
+            isLoading={isLoading}
+            isIconsOnly={isIconsOnly}
+          />
+        ),
+        value: ReadingPreference.Reading,
+      },
+    ],
+    [readingPreference, isLoading, isIconsOnly],
+  );
 
-  const onViewSwitched = (view: ReadingPreference) => {
-    logValueChange(`${type}_reading_preference`, readingPreference, view);
-    switchReadingPreference(view);
-  };
+  const onViewSwitched = React.useCallback(
+    (view: ReadingPreference) => {
+      logValueChange(`${type}_reading_preference`, readingPreference, view);
+      switchReadingPreference(view);
+    },
+    [type, readingPreference, switchReadingPreference],
+  );
 
   const containerClassNames = classNames(styles.container, {
     [styles.surahHeaderContainer]: type === SwitcherContext.SurahHeader,
@@ -76,7 +82,7 @@ const ReadingPreferenceSwitcher = ({
   return (
     <div className={containerClassNames} id="reading-preference-switcher">
       <Switch
-        items={readingPreferencesOptions()}
+        items={readingPreferencesOptions}
         selected={readingPreference}
         onSelect={onViewSwitched}
         size={size}

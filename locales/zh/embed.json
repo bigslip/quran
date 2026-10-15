@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "配置和预览用于分享《古兰经》的嵌入式小部件，然后复制可直接使用的脚本片段。",
-    "title": "经文嵌入生成器 | Quran.com"
+    "title": "经文嵌入生成器 | Quran.ir"
   },
   "mushaf": {
     "indopak": "印度巴基斯坦",
@@ -80,6 +80,6 @@
     "otherLanguage": "其他"
   },
   "widget": {
-    "readOnQuran": "请访问 Quran.com 阅读全文。"
+    "readOnQuran": "请访问 Quran.ir 阅读全文。"
   }
 }

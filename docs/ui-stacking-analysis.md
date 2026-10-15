@@ -1,7 +1,7 @@
 # UI Element Stacking Analysis
 
 This document provides a comprehensive visual analysis of how UI elements stack on top of each other
-across different states in the Quran.com frontend application.
+across different states in the Quran.ir frontend application.
 
 ## 2026 Donation Surface Update
 

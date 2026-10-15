@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "Kur'an paylaşımı için yerleştirme widget'larını yapılandırın ve önizleyin, ardından kullanıma hazır komut dosyası parçasını kopyalayın.",
-    "title": "Ayet Gömme Oluşturucu | Quran.com"
+    "title": "Ayet Gömme Oluşturucu | Quran.ir"
   },
   "mushaf": {
     "indopak": "Hint-Pakistan",
@@ -80,6 +80,6 @@
     "otherLanguage": "Diğer"
   },
   "widget": {
-    "readOnQuran": "Quran.com'da okuyun."
+    "readOnQuran": "Quran.ir'da okuyun."
   }
 }

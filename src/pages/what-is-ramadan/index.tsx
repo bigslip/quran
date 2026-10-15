@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import { NextPage } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 
-import WhatIsRamadanArabic from './WhatIsRamadanArabic';
-import WhatIsRamadanSwahili from './WhatIsRamadanSwahili';
+import WhatIsRamadanArabic from '@/components/WhatIsRamadan/WhatIsRamadanArabic';
+import WhatIsRamadanSwahili from '@/components/WhatIsRamadan/WhatIsRamadanSwahili';
 
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import PageContainer from '@/components/PageContainer';
@@ -147,7 +147,7 @@ const WhatIsRamadanPage: NextPage = (): JSX.Element => {
         <div className={styles.subSection}>
           <h2>Your Invitation</h2>
           <div>
-            We invite you to take the first step on this journey. Explore Quran.com to experience
+            We invite you to take the first step on this journey. Explore Quran.ir to experience
             the Quran for yourself. Listen to its recitation, read its meaning, and discover how its
             timeless guidance can illuminate your path.
           </div>

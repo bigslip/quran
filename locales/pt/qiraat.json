@@ -1,4 +1,5 @@
 {
   "description": "Explore os diferentes Qiraat (leituras variantes) de Ayah {{ayahNumber}} da Surata {{surahName}}",
+  "juncture-selection": "Seleção de junção",
   "title": "Qiraat {{surahName}} - {{ayahNumber}}"
 }

@@ -11,11 +11,11 @@
     "zekr": "<0>Zekr</0>: Kuran'ı incelemek ve araştırmak için açık platformlu bir Kuran çalışma aracı"
   },
   "global-effort": {
-    "desc": "Dünyanın dört bir yanından milyonlarca insan, birincil dijital Kuran kaynağı olarak Quran.com'a güveniyor. İster okumak, ister düşünmek, ister ezberlemek veya çalışmak için gelsinler, ortak bir amaçları var: Allah'ın sözleriyle bağlantı kurmak için samimi bir arzu. \\n Büyümeye devam ederken, Quran.com'un Kuran ile etkileşim kurmak isteyen herkes için güvenilir, erişilebilir ve güzel tasarlanmış bir alan olmaya devam etmesini sağlamaya kararlıyız.",
+    "desc": "Dünyanın dört bir yanından milyonlarca insan, birincil dijital Kuran kaynağı olarak Quran.ir'a güveniyor. İster okumak, ister düşünmek, ister ezberlemek veya çalışmak için gelsinler, ortak bir amaçları var: Allah'ın sözleriyle bağlantı kurmak için samimi bir arzu. \\n Büyümeye devam ederken, Quran.ir'un Kuran ile etkileşim kurmak isteyen herkes için güvenilir, erişilebilir ve güzel tasarlanmış bir alan olmaya devam etmesini sağlamaya kararlıyız.",
     "title": "Küresel Bir Çaba"
   },
   "key-features": {
-    "desc": "Quran.com, Kur'an'la etkileşimin her aşamasını desteklemek için tasarlanmıştır: okuma ve ezberlemeden çalışma ve tefekküre kadar. Özelliklerimiz şunları içerir:",
+    "desc": "Quran.ir, Kur'an'la etkileşimin her aşamasını desteklemek için tasarlanmıştır: okuma ve ezberlemeden çalışma ve tefekküre kadar. Özelliklerimiz şunları içerir:",
     "features": [
       "Kullanıcı Dostu Kur'an Arayüzü – Herhangi bir cihazda temiz ve sezgisel bir okuma deneyimi.",
       "Çoklu Tercüme ve Tefsir – Tefsir ile birlikte birden fazla dilde tercümelere erişim.",
@@ -29,13 +29,13 @@
     ],
     "title": "Temel özellikler ve sunulan hizmetler"
   },
-  "main-description": "1995'teki kuruluşundan bu yana, Quran.com, Kuran'ı herkesin anlayabileceği, gerçek ve etkileşimi kolay bir şekilde erişilebilir kılmaya kendini adamıştır. Her gün, dünya çapında milyonlarca insan Kuran'ı okumak, dinlemek, incelemek ve üzerinde düşünmek için Quran.com'a yöneliyor; ister hayat boyu öğrenci, ister akademisyen olsunlar, ister yolculuklarına yeni başlamış olsunlar.",
+  "main-description": "1995'teki kuruluşundan bu yana, Quran.ir, Kuran'ı herkesin anlayabileceği, gerçek ve etkileşimi kolay bir şekilde erişilebilir kılmaya kendini adamıştır. Her gün, dünya çapında milyonlarca insan Kuran'ı okumak, dinlemek, incelemek ve üzerinde düşünmek için Quran.ir'a yöneliyor; ister hayat boyu öğrenci, ister akademisyen olsunlar, ister yolculuklarına yeni başlamış olsunlar.",
   "our-mission": {
     "desc": "Kuran'ın okunması, anlaşılması ve üzerinde düşünülmesi amaçlanmıştır. Misyonumuz, güvenilir, iyi tasarlanmış ve derinlemesine zenginleştirici bir Kuran deneyimi sunarak erişim engellerini kaldırmak ve bireyleri ve toplulukları güçlendirmektir. Doğruluk, açıklık ve samimiyet ilkeleriyle yönlendirilen Kuran ile etkileşim kurmak isteyen herkes için güvenilir bir kaynak olmayı hedefliyoruz.",
     "title": "Misyonumuz"
   },
   "who-we-are": {
-    "desc": "Quran.com, Kuran'ın herkese ücretsiz ve ticari çıkarlar olmadan erişilebilir olmasını sağlamak için kamusal bir güven olarak kurulan bir vakıftır. 501(c)(3) kar amacı gütmeyen bir kuruluş olan <link>Quran.Foundation</link> tarafından yönetilir ve Kuran.com'u, dünyaya yüksek kaliteli, gerçek Kuran kaynakları sağlama misyonunun bir parçası olarak sürdürür ve geliştirir. Taahhüdümüz, Kuran'a ve okuyucularına mükemmellik, samimiyet ve sorumlulukla hizmet etmektir.",
+    "desc": "Quran.ir, Kuran'ın herkese ücretsiz ve ticari çıkarlar olmadan erişilebilir olmasını sağlamak için kamusal bir güven olarak kurulan bir vakıftır. 501(c)(3) kar amacı gütmeyen bir kuruluş olan <link>Quran.Foundation</link> tarafından yönetilir ve Kuran.com'u, dünyaya yüksek kaliteli, gerçek Kuran kaynakları sağlama misyonunun bir parçası olarak sürdürür ve geliştirir. Taahhüdümüz, Kuran'a ve okuyucularına mükemmellik, samimiyet ve sorumlulukla hizmet etmektir.",
     "title": "Biz Kimiz"
   }
 }

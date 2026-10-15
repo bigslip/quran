@@ -11,11 +11,11 @@
     "zekr": "<0>Zekr</0>: Chombo cha wazi cha kujifunza Qur'ani kwa ajili ya kuvinjari na kutafiti juu ya Qur'ani"
   },
   "global-effort": {
-    "desc": "Mamilioni ya watu kutoka duniani kote wanategemea Quran.com kama nyenzo yao msingi ya Qur'ani ya kidijitali. Iwe wanakuja kukariri, kutafakari, kuhifadhi, au kusoma, wanashiriki katika lengo moja: nia ya dhati ya kuunganishwa na maneno ya Mwenyezi Mungu. \\n Tunapoendelea kukua, tunasalia kujitolea kuhakikisha kuwa Quran.com inasalia kuwa nafasi inayoaminika, inayoweza kufikiwa na iliyoundwa kwa uzuri kwa mtu yeyote anayetaka kutumia Qur'ani.",
+    "desc": "Mamilioni ya watu kutoka duniani kote wanategemea Quran.ir kama nyenzo yao msingi ya Qur'ani ya kidijitali. Iwe wanakuja kukariri, kutafakari, kuhifadhi, au kusoma, wanashiriki katika lengo moja: nia ya dhati ya kuunganishwa na maneno ya Mwenyezi Mungu. \\n Tunapoendelea kukua, tunasalia kujitolea kuhakikisha kuwa Quran.ir inasalia kuwa nafasi inayoaminika, inayoweza kufikiwa na iliyoundwa kwa uzuri kwa mtu yeyote anayetaka kutumia Qur'ani.",
     "title": "Juhudi za Kimataifa"
   },
   "key-features": {
-    "desc": "Quran.com imeundwa kusaidia kila hatua ya kujihusisha na Qur'ani—kuanzia kusoma na kukariri hadi kusoma na kutafakari. Vipengele vyetu ni pamoja na:",
+    "desc": "Quran.ir imeundwa kusaidia kila hatua ya kujihusisha na Qur'ani—kuanzia kusoma na kukariri hadi kusoma na kutafakari. Vipengele vyetu ni pamoja na:",
     "features": [
       "Kiolesura cha Qur'ani kinachofaa Mtumiaji- Uzoefu safi na angavu wa kusoma kwenye kifaa chochote.",
       "Tarjuma Kadhaa & Tafsiri - Upatikanaji wa tarjuma katika lugha nyingi, pamoja na tafsiri.",
@@ -29,13 +29,13 @@
     ],
     "title": "Vipengele Muhimu & Matoleo Yetu"
   },
-  "main-description": "Tangu kuanzishwa kwake mwaka wa 1995, Quran.com imejitolea kuifanya Qur'ani ipatikane kwa kila mtu kwa njia iliyo wazi, sahihi na rahisi kuizingatia. Kila siku, mamilioni ya watu ulimwenguni kote hugeukia Quran.com kusoma, kusikiliza, kujifunza na kutafakari juu Qur'ani—iwe ni wanafunzi wa daima, wasomi, au wale wanaoanza safari yao.",
+  "main-description": "Tangu kuanzishwa kwake mwaka wa 1995, Quran.ir imejitolea kuifanya Qur'ani ipatikane kwa kila mtu kwa njia iliyo wazi, sahihi na rahisi kuizingatia. Kila siku, mamilioni ya watu ulimwenguni kote hugeukia Quran.ir kusoma, kusikiliza, kujifunza na kutafakari juu Qur'ani—iwe ni wanafunzi wa daima, wasomi, au wale wanaoanza safari yao.",
   "our-mission": {
     "desc": "Qur'ani imekusudiwa kusomwa, kueleweka, na kutafakariwa. Dhamira yetu ni kuondoa vizuizi vya kufikia na kuwawezesha watu binafsi na jamii kwa kutoa uzoefu tajiri ulioboreshwa, wa kutegemewa, na uliobuniwa vyema. Tunalenga kutumika kama chanzo kinachoaminika kwa yeyote anayetaka kujihusisha na Qur'ani, tukiongozwa na kanuni za usahihi, uwazi na uaminifu.",
     "title": "Dhamira Yetu"
   },
   "who-we-are": {
-    "desc": "Quran.com ni wakfu (wakfu), iliyoanzishwa kama amana ya umma ili kuhakikisha kuwa Qur'ani inabaki kupatikana kwa wote, bila malipo na bila maslahi ya kibiashara. Inasimamiwa na <link>Quran.Foundation</link>, shirika lisilo la faida la 501(c)(3), ambalo hudumisha na kuendeleza Quran.com kama sehemu ya dhamira yake ya kutoa nyenzo za Qur'ani za ubora wa juu kwa ulimwengu. Dhamira yetu ni kuitumikia Qur'ani na wasomaji wake kwa ubora, ikhlasi, na uwajibikaji.",
+    "desc": "Quran.ir ni wakfu (wakfu), iliyoanzishwa kama amana ya umma ili kuhakikisha kuwa Qur'ani inabaki kupatikana kwa wote, bila malipo na bila maslahi ya kibiashara. Inasimamiwa na <link>Quran.Foundation</link>, shirika lisilo la faida la 501(c)(3), ambalo hudumisha na kuendeleza Quran.ir kama sehemu ya dhamira yake ya kutoa nyenzo za Qur'ani za ubora wa juu kwa ulimwengu. Dhamira yetu ni kuitumikia Qur'ani na wasomaji wake kwa ubora, ikhlasi, na uwajibikaji.",
     "title": "Sisi ni Nani"
   }
 }

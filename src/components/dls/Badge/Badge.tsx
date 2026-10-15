@@ -7,12 +7,13 @@ export enum BadgePosition {
   BOTTOM_RIGHT = 'bottom-right',
 }
 
-type BadeProps = {
+type BadgeProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> & {
   content: React.ReactNode;
   children: React.ReactNode;
   contentClassName?: string;
   className?: string;
   position?: BadgePosition;
+  contentProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
 const Badge = ({
@@ -21,11 +22,14 @@ const Badge = ({
   contentClassName,
   className,
   position = BadgePosition.BOTTOM_RIGHT,
-}: BadeProps) => {
+  contentProps,
+  ...props
+}: BadgeProps) => {
   return (
-    <div className={classNames(styles.container, className)}>
+    <div className={classNames(styles.container, className)} {...props}>
       {children}
       <div
+        {...contentProps}
         className={classNames(contentClassName, styles.content, {
           [styles.topLeft]: position === BadgePosition.TOP_LEFT,
           [styles.bottomRight]: position === BadgePosition.BOTTOM_RIGHT,

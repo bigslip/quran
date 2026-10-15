@@ -6,7 +6,6 @@ import cellStyles from './TranslationViewCell.module.scss';
 import skeletonStyles from './TranslationViewSkeleton.module.scss';
 
 import verseTextStyles from '@/components/Verse/VerseText.module.scss';
-import Button, { ButtonSize } from '@/dls/Button/Button';
 import Skeleton from '@/dls/Skeleton/Skeleton';
 import useGetQueryParamOrReduxValue from '@/hooks/useGetQueryParamOrReduxValue';
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
@@ -17,11 +16,11 @@ const TRANSLATION_TEXT_SAMPLE =
   'He has revealed to you ˹O Prophet˺ the Book in truth, confirming what came before it, as He revealed the Torah and the Gospel';
 const TRANSLATION_AUTHOR_SAMPLE = '— Dr. Mustafa Khattab, the Clear Quran';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   hasActionMenuItems?: boolean;
 }
 
-const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = true }) => {
+const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = true, className, ...props }) => {
   const { value: selectedTranslations }: { value: number[] } = useGetQueryParamOrReduxValue(
     QueryParam.TRANSLATIONS,
   );
@@ -30,21 +29,26 @@ const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = tru
     shallowEqual,
   );
 
+  const translations = selectedTranslations?.length ? selectedTranslations : [1];
+
   return (
-    <div className={classNames(cellStyles.cellContainer, skeletonStyles.cellContainer)}>
+    <div className={classNames(className, cellStyles.cellContainer, skeletonStyles.cellContainer)} {...props}>
       <div className={cellStyles.actionContainer}>
         <div className={cellStyles.actionContainerLeft}>
           {range(0, 4).map((index) => (
-            <Skeleton key={index} className={skeletonStyles.actionItem}>
-              <Button size={ButtonSize.Small} />
-            </Skeleton>
+            <Skeleton
+              key={index}
+              isRounded
+              className={classNames(skeletonStyles.actionItem, skeletonStyles.actionButton)}
+            />
           ))}
         </div>
         {hasActionMenuItems && (
           <div className={cellStyles.actionContainerRight}>
-            <Skeleton className={cellStyles.actionItem}>
-              <Button size={ButtonSize.Small} />
-            </Skeleton>
+            <Skeleton
+              isRounded
+              className={classNames(cellStyles.actionItem, skeletonStyles.actionButton)}
+            />
           </div>
         )}
       </div>
@@ -65,8 +69,8 @@ const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = tru
             skeletonStyles[`translation-font-size-${translationFontScale}`],
           )}
         >
-          {selectedTranslations.map((translation) => (
-            <span key={translation}>
+          {translations.map((translation) => (
+            <div key={translation} className={cellStyles.verseTranslationContainer}>
               <div>
                 <Skeleton className={classNames(skeletonStyles.translationText)}>
                   {TRANSLATION_TEXT_SAMPLE}
@@ -77,7 +81,7 @@ const TranslationViewCellSkeleton: React.FC<Props> = ({ hasActionMenuItems = tru
                   {TRANSLATION_AUTHOR_SAMPLE}
                 </Skeleton>
               </div>
-            </span>
+            </div>
           ))}
         </div>
       </div>

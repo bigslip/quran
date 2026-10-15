@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '@/redux/RootState';
 
@@ -63,11 +63,13 @@ export const { toggleVerseBookmark, togglePageBookmark, clearBookmarks } = bookm
 
 export const selectBookmarks = (state: RootState) => state.bookmarks.bookmarkedVerses;
 export const selectBookmarkedPages = (state: RootState) => state.bookmarks.bookmarkedPages;
-export const selectOrderedBookmarkedVerses = (state: RootState) =>
-  // sort the bookmarked verses by the order they appear in the Mushaf.
-  Object.fromEntries(Object.entries(state.bookmarks.bookmarkedVerses).sort());
-export const selectOrderedBookmarkedPages = (state: RootState) =>
-  // sort the bookmarked pages by the order they appear in the Mushaf.
-  Object.fromEntries(Object.entries(state.bookmarks.bookmarkedPages).sort());
+export const selectOrderedBookmarkedVerses = createSelector(
+  (state: RootState) => state.bookmarks.bookmarkedVerses,
+  (bookmarkedVerses) => Object.fromEntries(Object.entries(bookmarkedVerses).sort()),
+);
+export const selectOrderedBookmarkedPages = createSelector(
+  (state: RootState) => state.bookmarks.bookmarkedPages,
+  (bookmarkedPages) => Object.fromEntries(Object.entries(bookmarkedPages).sort()),
+);
 
 export default bookmarksSlice.reducer;

@@ -198,7 +198,7 @@
   "reading-bookmark-info-tooltip": "Seu marcador de leitura ajuda você a acompanhar de onde parou em sua jornada de leitura do Alcorão. Você pode defini-lo para qualquer versículo, e ele será salvo em todos os seus dispositivos quando você fizer login.",
   "reciter-summary": "(Com a gentil permissão do Tafsir Center)",
   "referencing": "Referência",
-  "reflection-disclaimer": "As reflexões não representam a opinião do Quran.com e não devem ser tiradas do contexto",
+  "reflection-disclaimer": "As reflexões não representam a opinião do Quran.ir e não devem ser tiradas do contexto",
   "reflection-languages": "Linguagens de reflexão",
   "reflection-not-available": "Não há reflexões revisadas para este ayah",
   "reflections": "Reflexões",
@@ -264,5 +264,7 @@
   "verses-pinned": "{{count}} versos fixados",
   "verses-range": "Variedade de versos",
   "view-on-quran-reflect": "Veja no QuranReflect",
-  "wbw-helper-text": "Selecione as opções para exibir a tradução, a transliteração e/ou a recitação de cada palavra."
+  "wbw-helper-text": "Selecione as opções para exibir a tradução, a transliteração e/ou a recitação de cada palavra.",
+  "page-number": "Página {{page}}",
+  "chapter-header-intro": "Leia e ouça a Surata {{chapterName}} com tradução, tafsir, recitação de áudio, significado palavra por palavra e transliteração."
 }

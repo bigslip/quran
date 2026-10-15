@@ -1,0 +1,117 @@
+import * as matchers from '@testing-library/jest-dom/matchers';
+import { describe, expect, it, vi, afterEach } from 'vitest';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import SegmentedControl from './SegmentedControl';
+
+expect.extend(matchers);
+
+let mockDirection = 'ltr';
+vi.mock('@/hooks/useDirection', () => ({
+  default: () => mockDirection,
+}));
+
+afterEach(() => {
+  cleanup();
+  mockDirection = 'ltr';
+});
+
+describe('SegmentedControl', () => {
+  it('renders options and calls onChange', () => {
+    const onChange = vi.fn();
+    render(
+      <SegmentedControl
+        options={[
+          { label: 'Map', value: 'map' },
+          { label: 'List', value: 'list' },
+        ]}
+        value="map"
+        onChange={onChange}
+      />
+    );
+    
+    expect(screen.getByRole('button', { name: 'Map' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'List' })).toBeInTheDocument();
+    
+    fireEvent.click(screen.getByRole('button', { name: 'List' }));
+    expect(onChange).toHaveBeenCalledWith('list');
+  });
+
+  it('supports ArrowRight and ArrowLeft keyboard navigation and roving focus', () => {
+    const onChange = vi.fn();
+    render(
+      <SegmentedControl
+        options={[
+          { label: 'Map', value: 'map' },
+          { label: 'List', value: 'list' },
+          { label: 'Grid', value: 'grid' },
+        ]}
+        value="map"
+        onChange={onChange}
+      />
+    );
+    
+    const mapTab = screen.getByRole('button', { name: 'Map' });
+    const listTab = screen.getByRole('button', { name: 'List' });
+    const gridTab = screen.getByRole('button', { name: 'Grid' });
+
+    mapTab.focus();
+    expect(mapTab).toHaveFocus();
+
+    // ArrowRight: Map -> List
+    fireEvent.keyDown(mapTab, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenCalledWith('list');
+    expect(listTab).toHaveFocus();
+
+    // ArrowRight: List -> Grid
+    fireEvent.keyDown(listTab, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenCalledWith('grid');
+    expect(gridTab).toHaveFocus();
+
+    // ArrowRight: Grid -> Map (wrap around)
+    fireEvent.keyDown(gridTab, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenCalledWith('map');
+    expect(mapTab).toHaveFocus();
+
+    // ArrowLeft: Map -> Grid (wrap around)
+    fireEvent.keyDown(mapTab, { key: 'ArrowLeft' });
+    expect(onChange).toHaveBeenCalledWith('grid');
+    expect(gridTab).toHaveFocus();
+
+    // ArrowLeft: Grid -> List
+    fireEvent.keyDown(gridTab, { key: 'ArrowLeft' });
+    expect(onChange).toHaveBeenCalledWith('list');
+    expect(listTab).toHaveFocus();
+  });
+
+  it('supports reverse ArrowRight and ArrowLeft keyboard navigation for RTL', () => {
+    mockDirection = 'rtl';
+    const onChange = vi.fn();
+    render(
+      <SegmentedControl
+        options={[
+          { label: 'Map', value: 'map' },
+          { label: 'List', value: 'list' },
+          { label: 'Grid', value: 'grid' },
+        ]}
+        value="map"
+        onChange={onChange}
+      />
+    );
+    
+    const mapTab = screen.getByRole('button', { name: 'Map' });
+    const gridTab = screen.getByRole('button', { name: 'Grid' });
+
+    mapTab.focus();
+    expect(mapTab).toHaveFocus();
+
+    // ArrowRight in RTL: Map -> Grid (previous item, wrap around)
+    fireEvent.keyDown(mapTab, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenCalledWith('grid');
+    expect(gridTab).toHaveFocus();
+
+    // ArrowLeft in RTL: Grid -> Map (next item, wrap around)
+    fireEvent.keyDown(gridTab, { key: 'ArrowLeft' });
+    expect(onChange).toHaveBeenCalledWith('map');
+    expect(mapTab).toHaveFocus();
+  });
+});

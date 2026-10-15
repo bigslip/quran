@@ -24,7 +24,7 @@ const LabsSection = ({ variant = 'drawer' }: LabsSectionProps) => {
       <div>{t('labs-pitch')}</div>
       {variant === 'drawer' && <div>{t('labs-description')}</div>}
       <div className={styles.actions}>
-        <Link href="https://labs.quran.com" isNewTab className={styles.joinCommunityLink}>
+        <Link href="https://labs.quran.ir" isNewTab className={styles.joinCommunityLink}>
           <Button href="" type={ButtonType.Success} onClick={onLabsClicked}>
             {t('labs-cta')}
           </Button>

@@ -1,22 +1,23 @@
 {
   "about": "Rreth Nesh",
+  "all": "All",
   "allow": "Lejo",
   "and": "dhe",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
         "action": "Tjetra",
-        "description": "Pavarësisht nëse jeni duke përdorur Quran.com në telefonin ose laptopin tuaj, faqeshënuesit, vargjet e fundit të lexuara dhe preferencat tuaja do të jenë të disponueshme",
+        "description": "Pavarësisht nëse jeni duke përdorur Quran.ir në telefonin ose laptopin tuaj, faqeshënuesit, vargjet e fundit të lexuara dhe preferencat tuaja do të jenë të disponueshme",
         "title": "Të dhënat tuaja do të sinkronizohen <br></br> nëpër pajisje"
       },
       "feedback": {
         "action": "Mirë, e kuptova",
-        "description": "Faleminderit që përdorni Quran.com dhe do të ishim të lumtur të dëgjonim komentet tuaja në <link> feedback.quran.com </link>",
+        "description": "Faleminderit që përdorni Quran.ir dhe do të ishim të lumtur të dëgjonim komentet tuaja në <link> feedback.quran.ir </link>",
         "title": "Ne duam të dëgjojmë mendimet tuaja"
       },
       "quran-foundation-link": {
         "action": "Tjetra",
-        "description": "Përdorni hyrjen tuaj në Quran.com për të hyrë në QuranReflec.com - një komunitet i lulëzuar global i angazhuar në reflektimin Kur'anor.",
+        "description": "Përdorni hyrjen tuaj në Quran.ir për të hyrë në QuranReflec.com - një komunitet i lulëzuar global i angazhuar në reflektimin Kur'anor.",
         "title": "Përdorni llogarinë tuaj nëpër aplikacionet Quran.Foundation!"
       },
       "quran-growth-journey": {
@@ -26,7 +27,7 @@
       },
       "welcome": {
         "action": "Shihni çfarë ka të re",
-        "title": "Mirë se vini në llogarinë e përdoruesit <br></br> të Quran.com"
+        "title": "Mirë se vini në llogarinë e përdoruesit <br></br> të Quran.ir"
       }
     },
     "collections-announcement": {
@@ -46,7 +47,11 @@
     "select-lng": "Zgjidh gjuhen",
     "sidebar-nav-close": "Mbyllni shiritin anësor të navigimit",
     "tooltip-action": "Veprimi i këshillës së mjetit",
-    "translation-info": "Shiko informacionin e përkthimit"
+    "translation-info": "Shiko informacionin e përkthimit",
+    "play-verse": "Dëgjo Ajetin {{verseKey}}",
+    "pause-surah": "Pusho Suren {{surahName}}",
+    "pause-verse": "Pusho Ajetin {{verseKey}}",
+    "surah-filter": "Filtri i sureve"
   },
   "audio": {
     "auto-scroll": {
@@ -113,12 +118,19 @@
   "click-here": "Kliko këtu",
   "close": "Mbylle",
   "command-bar": {
-    "navigations": "Lundrimet",
+    "close": "Mbyll",
+    "direct-jump-hint": "Shtypni ↵ për të shkuar",
+    "filter": "Filtro",
+    "navigate": "Navigo",
+    "navigations": "Navigimet",
     "no-nav-results": "Nuk ka rezultate navigimi",
-    "placeholder": "Kërkoni në Kuran...",
-    "recent-navigations": "Lundrimet e fundit",
-    "search-by-voice": "Kërko me zë",
-    "try-navigating": "Provoni të lundroni në"
+    "placeholder": "Kërko në Kuran...",
+    "search-placeholder": "Kërko Kuran, Sure (p.sh. Kehf ose 18), Ajet (2:255), Xhuz ose Faqe...",
+    "select": "Zgjidh",
+    "spotlight-placeholder": "Kërko Kuran, Sure ose Ajet...",
+    "recent-navigations": "Navigimet e fundit",
+    "search-by-voice": "Kërkim me zë",
+    "try-navigating": "Provoni të shkoni te"
   },
   "community": {
     "cta": "Kontaktoni",
@@ -228,6 +240,7 @@
   },
   "exciting-updates": "Përditësime emocionuese",
   "favorites": "Të preferuarat",
+  "featured": "Featured",
   "feedback": "Feedback",
   "fonts": {
     "15_lines": "15 rreshta",
@@ -250,7 +263,7 @@
   },
   "footer": {
     "apps-disclaimer": "Çdo aplikacion është në pronësi dhe mirëmbahet në mënyrë të pavarur nga zhvilluesi i tij. Për mbështetje, raportime gabimesh ose kërkesa për veçori, ju lutemi kontaktoni drejtpërdrejt krijuesin e aplikacionit.",
-    "description": "Quran.com është një platformë e besueshme e përdorur nga miliona njerëz në mbarë botën për të lexuar, kërkuar, dëgjuar dhe reflektuar mbi Kuranin në gjuhë të shumta. Ajo ofron përkthime, tefsir, recitime, përkthim fjalë për fjalë dhe mjete për studim më të thellë, duke e bërë Kuranin të arritshëm për të gjithë. <br/> <br/> Si një Sadaka Xhariyah, Quran.com është i përkushtuar për të ndihmuar njerëzit të lidhen thellë me Kuranin. I mbështetur nga <link> Quran.Foundation </link>, një organizatë jofitimprurëse 501(c)(3), Quran.com vazhdon të rritet si një burim falas dhe i vlefshëm për të gjithë, Elhamdulillah.",
+    "description": "Quran.ir është një platformë e besueshme e përdorur nga miliona njerëz në mbarë botën për të lexuar, kërkuar, dëgjuar dhe reflektuar mbi Kuranin në gjuhë të shumta. Ajo ofron përkthime, tefsir, recitime, përkthim fjalë për fjalë dhe mjete për studim më të thellë, duke e bërë Kuranin të arritshëm për të gjithë. <br/> <br/> Si një Sadaka Xhariyah, Quran.ir është i përkushtuar për të ndihmuar njerëzit të lidhen thellë me Kuranin. I mbështetur nga <link> Quran.Foundation </link>, një organizatë jofitimprurëse 501(c)(3), Quran.ir vazhdon të rritet si një burim falas dhe i vlefshëm për të gjithë, Elhamdulillah.",
     "hiring": "Ne po punësojmë! Bashkohuni me ekipin e QuranFoundation dhe kontribuoni në misionin tonë. <link> Apliko tani! </link>",
     "rights": "Të gjitha të drejtat e rezervuara",
     "title": "Lexoni, dëgjoni, kërkoni dhe reflektoni mbi Kuranin"
@@ -271,29 +284,29 @@
     "verification-code": "Kodi i verifikimit"
   },
   "from": "Nga",
-  "fundraising-card-v2": {
-    "cta": "Dhuro tani",
-    "description": "Donatorët mujorë na ndihmojnë të përmirësojmë Quran.com dhe të mbështesim operacionet, kështu që ne përqendrohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
-    "title": "Bëhuni një Donator Mujor"
-  },
-  "fundraising-share-title": "Share Quran.com Mbledhja e fondeve",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Dhuro",
-    "desktop-text": "Kontribuoni në misionin tonë",
-    "mobile-line-one": "Është muaji i Kuranit.",
-    "mobile-line-two": "Na ndihmoni të përhapim dritën e saj."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Dhuroni",
-    "title": "Jepni në ditët më të mira!"
-  },
   "fundraising": {
-    "description": "Donacionet mujore na ndihmojnë të përmirësojmë Quran.com dhe të mbajmë operacionet, kështu që ne fokusohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
+    "description": "Donacionet mujore na ndihmojnë të përmirësojmë Quran.ir dhe të mbajmë operacionet, kështu që ne fokusohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
     "donation-campaign": {
       "cta": "Dhuro sot",
       "text": "Bëhu një mbështetës"
     },
     "title": "Bëhuni një donator mujor"
+  },
+  "fundraising-card-v2": {
+    "cta": "Dhuro tani",
+    "description": "Donatorët mujorë na ndihmojnë të përmirësojmë Quran.ir dhe të mbështesim operacionet, kështu që ne përqendrohemi më pak në mbledhjen e fondeve dhe më shumë në krijimin e ndikimit.",
+    "title": "Bëhuni një Donator Mujor"
+  },
+  "fundraising-share-title": "Share Quran.ir Mbledhja e fondeve",
+  "fundraising-sticky-banner": {
+    "cta": "Dhuroni",
+    "title": "Jepni në ditët më të mira!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Dhuro",
+    "desktop-text": "Kontribuoni në misionin tonë",
+    "mobile-line-one": "Është muaji i Kuranit.",
+    "mobile-line-two": "Na ndihmoni të përhapim dritën e saj."
   },
   "get-started": "Filloni",
   "go-to-verse": "Shko te Vargu",
@@ -311,6 +324,7 @@
   "juz": "Xhuz",
   "language": "Gjuhë",
   "languages": "Gjuhët",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Mëso",
   "learn-more": "Mëso më shumë",
   "learning-plans": "Planet mësimore",
@@ -320,11 +334,16 @@
   "loading": "Po ngarkohet",
   "login": "Identifikohu",
   "logout": "Shkyç",
+  "madinah": "Madinan",
+  "madinah-short": "Madani",
+  "makkah": "Meccan",
+  "makkah-short": "Makki",
   "meccan": "mekas",
   "medinan": "Medinas",
   "menu": "Menu",
   "minutes": "Minutat",
   "mobile-apps": "Aplikacionet celulare",
+  "modal": "Dritare",
   "mode": "Modaliteti",
   "more": "Më shumë",
   "my-learning-plans": "Planet e mia të mësimit",
@@ -336,6 +355,7 @@
   "next": "Tjetra",
   "next-ayah": "Ajeti tjetër",
   "no": "Jo",
+  "no-languages-found": "No languages found",
   "no-notifications": "Nuk ka ende njoftime",
   "no-verses-available": "Nuk ka vargje të disponueshme",
   "none": "Asnjëra",
@@ -344,18 +364,20 @@
     "label": "Shënime",
     "title": "Shënimet dhe Reflektimet e Mia"
   },
-  "notification-settings": "Cilësimet e njoftimit",
   "notification": {
     "mark-all-as-read": "Shënoni të gjitha si të lexuara",
     "mark-as-read": "Shënoni si të lexuar"
   },
+  "notification-settings": "Cilësimet e njoftimit",
   "notifications": "Njoftimet",
   "off": "Joaktiv",
   "oldest": "Më e vjetra",
   "on": "Aktiv",
   "our-projects": "Projektet tona",
   "page": "Faqe",
+  "page-number": "Faqe {{page}}",
   "pages": "Faqet",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} nga {{totalNumberOfResults}} rezultate kërkimi",
   "pbuh": "Bekimet e Allahut qofshin mbi të",
   "popular-links": "Kërkimet e preferuara",
@@ -379,9 +401,12 @@
   "profile": "Profili",
   "projects-desc": "Projektet jofitimprurëse të zotëruara, të menaxhuara ose të sponsorizuara nga <link>Quran.Foundation</link>",
   "q-reflect": "Kurani Reflekto",
+  "quran-android": "Kurani për Android",
   "quran-apps": "Aplikacionet e Kuranit",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
+  "quran-ios": "Kurani për iOS",
   "quran-radio": "Kuran Radio",
+  "ramadan-2026": "Ramazan 2026",
   "read": "Lexo",
   "read-more": "Lexo më shumë",
   "reading-history": "Leximi i historisë",
@@ -412,9 +437,6 @@
   "rub": "Rub el Hizb",
   "save": "Ruaj",
   "save-to-collection": "Ruaje në Koleksion",
-  "search-for": "Kërko për \"{{searchQuery}}\"",
-  "search-results": "{{count}} rezultatet e  kërkimit",
-  "search-results-no-count": "Rezultatet e Kërkimit",
   "search": {
     "filters": "Filtrat",
     "hint": "Provoni të kërkoni për",
@@ -427,12 +449,18 @@
     "results": "rezultatet",
     "show-all": "Shfaq të gjitha rezultatet",
     "switch-mode": "Kalo te Kërkimi i Avancuar",
-    "title": "Kërko"
+    "title": "Kërko",
+    "placeholder": "Kërkoni ajete, sure, tema ose shkoni te ajeti..."
   },
+  "search-for": "Kërko për \"{{searchQuery}}\"",
+  "search-languages": "Kërko gjuhët...",
+  "search-results": "{{count}} rezultatet e  kërkimit",
+  "search-results-no-count": "Rezultatet e Kërkimit",
   "seconds": "Sekonda",
   "see-less": "Shiko më pak",
   "see-new": "Shihni çfarë ka të re",
   "select-language": "Zgjidh Gjuhën",
+  "select-language-description": "Zgjidhni gjuhën e preferuar të shfaqjes për Quran.ir",
   "settings": {
     "no-tafsir-selected": "Nuk është zgjedhur asnjë tefsir",
     "no-translation-selected": "Nuk u zgjodh asnjë përkthim",
@@ -484,6 +512,7 @@
   "subscribe": "Abonohu",
   "subscribed": "Abonuar",
   "surah": "Surja",
+  "surahs": "Surahs",
   "tab-see-less": "Shiko më pak...",
   "tab-see-more": "Shiko më shumë...",
   "tafsir": {
@@ -508,6 +537,7 @@
   "to": "tek",
   "tooltip": "Mesazh sugjerues",
   "tooltip-trans-lang": "Gjuha e mesazheve sugjeruese",
+  "topics": "Topics",
   "trans-lang": "Gjuha e përkthimit",
   "translation": "Përkthimi",
   "translations": "Përkthime",
@@ -540,7 +570,9 @@
     "suggest": "Ju lutemi filloni të recitoni dhe vargu juaj do të shfaqet.",
     "suggest-subtitle": "Recitoni çdo varg në arabisht dhe vargu do të shfaqet",
     "suggest-title": "Recitoni tani",
-    "voice-search-powered-by": "Kërkimi me zë Mundësuar nga"
+    "voice-search-powered-by": "Kërkimi me zë Mundësuar nga",
+    "start": "Fillo kërkimin me zë",
+    "stop": "Ndalo kërkimin me zë"
   },
   "wbw": "Fjalë Për Fjalë",
   "wbw-lang-summary": "Burimi i përkthimit fjalë për fjalë: <link> {{source}} </link> . Ky burim është i pavarur nga përzgjedhja e përkthimit të vargjeve.",

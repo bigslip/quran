@@ -7,7 +7,7 @@
 .track {
   inline-size: 100%;
   block-size: 3px;
-  background-color: var(--color-separators-new);
+  background-color: var(--color-border-subtle, var(--color-borders-hairline));
   position: relative;
 }
 
@@ -16,7 +16,8 @@
   inset-block-start: 0;
   inset-inline-start: 0;
   block-size: 100%;
-  background-color: var(--color-success-deep);
+  background: var(--color-primary-gradient, var(--color-primary));
+  box-shadow: 0 0 8px var(--color-primary);
   transition: width var(--transition-fast);
   transition-timing-function: linear;
   min-inline-size: 0;

@@ -21,7 +21,7 @@ import defaultChaptersData from '@/utils/media/defaultChaptersData.json';
 import { convertHexToRGBA } from '@/utils/media/helpers';
 import getPlainTranslationText from '@/utils/plainTranslationText';
 
-type Props = {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   verses: Verse[];
   audio: any;
   video: any;
@@ -60,6 +60,7 @@ const MediaMakerContent: React.FC<Props> = ({
   orientation,
   chapterEnglishName,
   isPlayer = false,
+  ...rest
 }) => {
   const chaptersDataArabic = useGetChaptersData('ar');
   const firstVerseTiming = audio?.verseTimings[0];
@@ -80,14 +81,21 @@ const MediaMakerContent: React.FC<Props> = ({
       : (verseTiming?.timestampTo / 1000) * 30;
   }, [audio?.verseTimings, firstVerseTiming?.normalizedEnd]);
 
-  const audioHasStartAndEndRanges = typeof startFrom === 'number' && typeof endAt === 'number';
+  const audioHasStartAndEndRanges =
+    typeof startFrom === 'number' &&
+    !Number.isNaN(startFrom) &&
+    typeof endAt === 'number' &&
+    !Number.isNaN(endAt) &&
+    Boolean(audio?.audioUrl);
 
   const videoPath = staticFile(`${isPlayer ? '/publicMin' : ''}${video.videoSrc}`);
   const isPortrait = orientation === Orientation.PORTRAIT;
   return (
     <AbsoluteFill
+      {...rest}
       style={{
         justifyContent: 'center',
+        ...rest.style,
       }}
       translate="no"
     >
@@ -142,7 +150,7 @@ const MediaMakerContent: React.FC<Props> = ({
                         [styles.logoLandscape]: !isPortrait,
                       })}
                     >
-                      Quran.com
+                      Quran.ir
                     </span>
                   </div>
                   <div>

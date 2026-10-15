@@ -1,4 +1,8 @@
 {
+  "enroll-failed": "Đăng ký không thành công, vui lòng thử lại sau.",
+  "enroll-success-email": "Đăng ký thành công! Bạn có thể thấy một email chào mừng trong hộp thư đến của mình.",
+  "join-surah-mulk-challenge": "Tham gia Thử thách Chương Al-Mulk",
   "ramadan-activities": "Hoạt động Ramadan",
-  "ramadan-activities-desc": "Nâng tầm trải nghiệm Ramadan của bạn với các chương trình, tính năng chọn lọc giúp gắn bó sâu hơn với Kinh Qur'an. Khám phá hoạt động Ramadan trên Quran.com ngay hôm nay!"
+  "ramadan-activities-desc": "Nâng tầm trải nghiệm Ramadan của bạn với các chương trình, tính năng chọn lọc giúp gắn bó sâu hơn với Kinh Qur'an. Khám phá hoạt động Ramadan trên Quran.ir ngay hôm nay!",
+  "subscribed": "Đã đăng ký!"
 }

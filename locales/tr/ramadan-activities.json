@@ -1,4 +1,8 @@
 {
+  "enroll-failed": "Kayıt başarısız oldu, lütfen daha sonra tekrar deneyin.",
+  "enroll-success-email": "Başarıyla kaydoldunuz! Gelen kutunuzda bir hoş geldiniz e-postası görebilirsiniz.",
+  "join-surah-mulk-challenge": "Mülk Suresi Meydan Okumasına Katılın",
   "ramadan-activities": "Ramazan Aktiviteleri",
-  "ramadan-activities-desc": "Kuran'la daha derin bir bağlantı kurmak için özel olarak hazırlanmış programlarımız ve özelliklerimizle Ramazan deneyiminizi geliştirin. Bugün Kuran.com'daki Ramazan Etkinliklerimizi keşfedin!"
+  "ramadan-activities-desc": "Kuran'la daha derin bir bağlantı kurmak için özel olarak hazırlanmış programlarımız ve özelliklerimizle Ramazan deneyiminizi geliştirin. Bugün Kuran.com'daki Ramazan Etkinliklerimizi keşfedin!",
+  "subscribed": "Abone olundu!"
 }

@@ -8,14 +8,12 @@ import EnrollButton from './EnrollButton';
 import styles from './EnrollButton.module.scss';
 
 import Button, { ButtonVariant } from '@/dls/Button/Button';
-import Spinner from '@/dls/Spinner/Spinner';
 import { ToastStatus, useToast } from '@/dls/Toast/Toast';
 import useEmailNotificationSettings from '@/hooks/auth/useEmailNotificationSettings';
 import { logErrorToSentry } from '@/lib/sentry';
-import { TestId } from '@/tests/test-ids';
 import { logButtonClick } from '@/utils/eventLogger';
 
-interface Props {
+interface Props extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   section: string;
   subscribedText: string;
   enrollText: string;
@@ -33,6 +31,7 @@ const EnrollButtonNotification = ({
   isEnrolled,
   isLoading,
   mutate,
+  ...rest
 }: Props) => {
   const { headlessService } = useHeadlessService();
   const {
@@ -86,7 +85,17 @@ const EnrollButtonNotification = ({
   }, [notification]);
 
   if (!notification || isLoading || isEmailNotificationSettingsLoading) {
-    return <Spinner dataTestId={TestId.RAMADAN_CHALLENGE_ENROLL_BUTTON_NOTIFICATION_SPINNER} />;
+    return (
+      <Button
+        variant={ButtonVariant.Shadow}
+        isLoading={true}
+        isDisabled={true}
+        className={styles.button}
+        {...rest}
+      >
+        {enrollText}
+      </Button>
+    );
   }
 
   if (isEnabled || !isEnrolled) {
@@ -98,6 +107,7 @@ const EnrollButtonNotification = ({
         section={section}
         subscribedText={subscribedText}
         enrollText={enrollText}
+        {...rest}
       />
     );
   }
@@ -110,6 +120,7 @@ const EnrollButtonNotification = ({
       isDisabled={isEnabled || isEnrollLoading}
       aria-live="polite"
       className={styles.button}
+      {...rest}
     >
       {isEnabled ? subscribedText : enrollText}
     </Button>

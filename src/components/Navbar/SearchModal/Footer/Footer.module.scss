@@ -1,0 +1,88 @@
+@use 'src/styles/breakpoints';
+
+.footerContainer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  padding-inline-start: var(--spacing-medium-px);
+  padding-inline-end: var(--spacing-medium-px);
+  padding-block: var(--spacing-xsmall-px);
+  border-block-start: 1px solid var(--color-borders-hairline);
+  background-color: var(--color-background-alternative);
+  font-size: var(--font-size-xsmall);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline-start: var(--spacing-small-px);
+    padding-inline-end: var(--spacing-small-px);
+    justify-content: flex-end;
+  }
+}
+
+.shortcuts {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+
+  @include breakpoints.smallerThanTablet {
+    display: none;
+  }
+}
+
+.shortcutItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+}
+
+.kbdGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 18px;
+  block-size: 18px;
+  padding-inline: 6px;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  background-color: var(--color-background-default);
+  border: 1px solid var(--color-borders-hairline);
+  border-radius: var(--border-radius-xsmall2-px);
+  box-shadow: 0 1px 0 var(--color-borders-hairline);
+}
+
+.label {
+  font-size: var(--font-size-xsmall);
+  color: var(--color-text-secondary);
+}
+
+.advancedSearchLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: var(--font-size-xsmall);
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-text-default);
+  }
+
+  svg {
+    inline-size: 14px;
+    block-size: 14px;
+  }
+}

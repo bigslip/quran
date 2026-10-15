@@ -1,14 +1,19 @@
 .inputContainer {
   inline-size: 100%;
 }
+
 .deleteButton {
   inline-size: 100%;
+  font-weight: var(--font-weight-bold);
 }
 
 .confirmationText {
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
 }
 
 .instructionText {
   padding-block: var(--spacing-medium);
+  color: var(--color-text-secondary, var(--color-text-faded));
+  line-height: var(--line-height-normal);
 }

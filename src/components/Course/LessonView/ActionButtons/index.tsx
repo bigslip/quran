@@ -106,6 +106,7 @@ const ActionButtons: React.FC<Props> = ({ lesson, courseSlug }) => {
             isDisabled={isLoading}
             size={ButtonSize.Small}
             onClick={onPreviousLessonClicked}
+            ariaLabel={t('previous-lesson', { defaultValue: 'Previous lesson' })}
           >
             <ChevronLeftIcon />
           </Button>
@@ -123,6 +124,7 @@ const ActionButtons: React.FC<Props> = ({ lesson, courseSlug }) => {
             isDisabled={isLoading}
             size={ButtonSize.Small}
             onClick={onNextLessonClicked}
+            ariaLabel={t('next-lesson', { defaultValue: 'Next lesson' })}
           >
             <ChevronRightIcon />
           </Button>

@@ -1,3 +1,4 @@
+import { SWRConfiguration } from 'swr';
 import { decamelizeKeys } from 'humps';
 
 import stringify from './qs-stringify';
@@ -7,14 +8,37 @@ import { Mushaf, MushafLines, QuranFont, QuranFontMushaf } from '@/types/QuranRe
 
 export const ITEMS_PER_PAGE = 10;
 
-const STAGING_API_HOST = 'https://staging.quran.com';
-const PRODUCTION_API_HOST = 'https://api.qurancdn.com';
+/**
+ * Caching and request deduplication intervals (in milliseconds).
+ */
+export const STATIC_DEDUPING_INTERVAL = 60000; // 60s window for immutable static data (verses, translations, tafsir list, reciters)
+export const DYNAMIC_DEDUPING_INTERVAL = 2000; // 2s window for mutable/dynamic user data
+
+/**
+ * SWR configuration for immutable static data (e.g. surah verses, translations, tafsirs, reciters).
+ * Disables background revalidation on window focus/reconnect and enforces a 60s request deduplication interval.
+ */
+export const staticDataSWRConfig: SWRConfiguration = {
+  dedupingInterval: STATIC_DEDUPING_INTERVAL,
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false,
+  revalidateIfStale: false,
+};
+
+/**
+ * SWR configuration for dynamic / user-specific data (e.g. user notes, bookmarks, collections).
+ * Enables revalidation on window focus for cross-tab sync while deduplicating rapid successive requests.
+ */
+export const dynamicDataSWRConfig: SWRConfiguration = {
+  dedupingInterval: DYNAMIC_DEDUPING_INTERVAL,
+  revalidateOnFocus: true,
+  revalidateOnReconnect: false,
+};
 
 const API_ROOT_PATH = '/api/qdc';
 
-// env variables in Vercel can't be dynamic, we have to hardcode the urls here. https://stackoverflow.com/questions/44342226/next-js-error-only-absolute-urls-are-supported
-export const API_HOST =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? PRODUCTION_API_HOST : STAGING_API_HOST;
+// Local origin for sovereign offline architecture
+export const API_HOST = '';
 
 /**
  * Generates a url to make an api call to our backend

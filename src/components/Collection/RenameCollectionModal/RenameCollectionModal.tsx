@@ -45,7 +45,7 @@ const RenameCollectionModal = ({
   return (
     <Modal isOpen={isOpen} onClickOutside={onClose} isBottomSheetOnMobile={false}>
       <Modal.Body>
-        <div className={styles.header}>{t('common:rename')}</div>
+        <Modal.Title>{t('common:rename')}</Modal.Title>
         <div className={styles.newCollectionFormContainer}>
           <FormBuilder
             formFields={[

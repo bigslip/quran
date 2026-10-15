@@ -7,6 +7,19 @@ export type FormBuilderFieldRule = Pick<FieldRule, 'type' | 'value' | 'name'> & 
   errorMessage: string;
 };
 
+export type FormBuilderCustomRenderProps = {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  dataTestId?: string;
+  error?: any;
+  isInvalid?: boolean;
+  'aria-invalid'?: boolean;
+  'aria-describedby'?: string;
+  id?: string;
+  name?: string;
+};
+
 export type FormBuilderFormField = Pick<FormField, 'field' | 'type'> & {
   defaultValue?: any;
   label?: string | ReactNode;
@@ -19,11 +32,6 @@ export type FormBuilderFormField = Pick<FormField, 'field' | 'type'> & {
   onChange?: (value: unknown) => void;
   extraSection?: ReactNode | ((value: string) => ReactNode);
   shouldShowValidationErrors?: boolean;
-  customRender?: (props: {
-    value: string;
-    onChange: (value: string) => void;
-    placeholder?: string;
-    dataTestId?: string;
-  }) => ReactNode;
+  customRender?: (props: FormBuilderCustomRenderProps) => ReactNode;
   dataTestId?: string;
 };

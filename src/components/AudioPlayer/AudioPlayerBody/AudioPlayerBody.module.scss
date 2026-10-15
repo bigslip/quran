@@ -1,10 +1,14 @@
 @use 'src/styles/utility';
+@use 'src/styles/breakpoints';
 
 .innerContainer {
   @include utility.center-horizontally;
   display: flex;
-  padding-inline-start: var(--spacing-xsmall);
-  padding-inline-end: var(--spacing-xsmall);
+  padding-inline: var(--spacing-xsmall);
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  max-inline-size: 100%;
 }
 
 .sliderContainer {

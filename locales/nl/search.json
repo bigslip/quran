@@ -1,6 +1,8 @@
 {
   "default-translations": "Standaard vertalingen",
-  "filter": "filter",
+  "filter": {
+    "languages-placeholder": "Selecteer een taal"
+  },
   "language-filter-label": "Doorzoek alle vertalingen van een taal",
   "language-select": "Selecteer een taal",
   "reset": "resetten",

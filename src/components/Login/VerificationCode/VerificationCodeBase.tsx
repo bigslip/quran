@@ -46,6 +46,7 @@ const VerificationCodeBase: FC<Props> = ({
   const [resendTimer, setResendTimer] = useState(RESEND_COOLDOWN_SECONDS);
   const [verificationCode, setVerificationCode] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -58,6 +59,8 @@ const VerificationCodeBase: FC<Props> = ({
   }, [resendTimer]);
 
   const handleSubmit = async (code: string) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     logFormSubmission(formSubmissionKey);
     setError('');
 
@@ -65,12 +68,14 @@ const VerificationCodeBase: FC<Props> = ({
       await onSubmitCode(code);
     } catch (err) {
       setError(t(errorTranslationKey));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleChange = (code: string) => {
     setVerificationCode(code);
-    if (code.length === VERIFICATION_CODE_LENGTH) {
+    if (code.length === VERIFICATION_CODE_LENGTH && !isSubmitting) {
       handleSubmit(code);
     }
   };
@@ -121,7 +126,11 @@ const VerificationCodeBase: FC<Props> = ({
             characterSelected: styles.characterSelected,
           }}
         />
-        {error && <div className={styles.error}>{error}</div>}
+        {error && (
+          <div className={styles.error} aria-live="polite">
+            {error}
+          </div>
+        )}
       </div>
 
       <div className={styles.spamNote}>{t('verification-code-spam-note')}</div>

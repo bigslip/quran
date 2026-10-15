@@ -1,0 +1,188 @@
+/* eslint-disable import/extensions, no-restricted-syntax, no-await-in-loop */
+import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
+
+const USER_DB_NAME = 'quran_user.db';
+let userDbInstance: SQLiteLikeDb | null = null;
+let rawDbInstance: any = null;
+let initPromise: Promise<SQLiteLikeDb> | null = null;
+let isInitialized = false;
+
+export const PRESET_TAGS = [
+  { id: 'tag-fav', name: 'منتخب', color: '#F59E0B' },
+  { id: 'tag-dua', name: 'دعا و نیایش', color: '#10B981' },
+  { id: 'tag-peace', name: 'آرامش‌بخش', color: '#14B8A6' },
+  { id: 'tag-memorize', name: 'حفظ قرآن', color: '#6366F1' },
+  { id: 'tag-reflect', name: 'تدبر و اندیشه', color: '#8B5CF6' },
+] as const;
+
+export function setUserDatabase(db: SQLiteLikeDb | any | null): void {
+  rawDbInstance = db || null;
+  userDbInstance = db ? adaptDatabase(db) : null;
+  initPromise = null;
+  isInitialized = false;
+}
+
+export function resetUserDatabaseForTesting(): void {
+  rawDbInstance = null;
+  userDbInstance = null;
+  initPromise = null;
+  isInitialized = false;
+}
+
+async function createParentTables(db: SQLiteLikeDb): Promise<void> {
+  await db.run!(`
+    CREATE TABLE IF NOT EXISTS user_bookmarks (
+      id TEXT PRIMARY KEY,
+      verse_key TEXT NOT NULL UNIQUE,
+      chapter_id INTEGER NOT NULL,
+      verse_number INTEGER NOT NULL,
+      note TEXT,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL
+    );
+  `);
+
+  await db.run!(`
+    CREATE TABLE IF NOT EXISTS user_tags (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      color TEXT NOT NULL DEFAULT '#10B981',
+      is_preset INTEGER NOT NULL DEFAULT 0,
+      created_at INTEGER NOT NULL
+    );
+  `);
+
+  await db.run!(`
+    CREATE TABLE IF NOT EXISTS user_reflections (
+      verse_key TEXT PRIMARY KEY,
+      reflection TEXT NOT NULL,
+      updated_at INTEGER NOT NULL
+    );
+  `);
+
+  await db.run!(`
+    CREATE TABLE IF NOT EXISTS cached_tafsir_verses (
+      tafsir_id TEXT NOT NULL,
+      verse_key TEXT NOT NULL,
+      text TEXT NOT NULL,
+      points_json TEXT NOT NULL,
+      language_name TEXT NOT NULL,
+      cached_at INTEGER NOT NULL,
+      PRIMARY KEY (tafsir_id, verse_key)
+    );
+  `);
+}
+
+async function createChildTables(db: SQLiteLikeDb): Promise<void> {
+  await db.run!(`
+    CREATE TABLE IF NOT EXISTS bookmark_tag_map (
+      bookmark_id TEXT NOT NULL,
+      tag_id TEXT NOT NULL,
+      PRIMARY KEY (bookmark_id, tag_id),
+      FOREIGN KEY (bookmark_id) REFERENCES user_bookmarks(id) ON DELETE CASCADE,
+      FOREIGN KEY (tag_id) REFERENCES user_tags(id) ON DELETE CASCADE
+    );
+  `);
+}
+
+async function createIndexes(db: SQLiteLikeDb): Promise<void> {
+  await db.run!(`
+    CREATE INDEX IF NOT EXISTS idx_user_bookmarks_verse_key ON user_bookmarks (verse_key);
+  `);
+  await db.run!(`
+    CREATE INDEX IF NOT EXISTS idx_user_bookmarks_created_at ON user_bookmarks (created_at DESC);
+  `);
+  await db.run!(`
+    CREATE INDEX IF NOT EXISTS idx_user_bookmarks_quran_order ON user_bookmarks (chapter_id ASC, verse_number ASC);
+  `);
+  await db.run!(`
+    CREATE INDEX IF NOT EXISTS idx_bookmark_tag_map_tag ON bookmark_tag_map (tag_id);
+  `);
+}
+
+async function seedPresetTags(db: SQLiteLikeDb): Promise<void> {
+  const existing = await db.getFirst<{ count: number }>('SELECT count(*) as count FROM user_tags;');
+  if (!existing || existing.count === 0) {
+    const now = Date.now();
+    for (const tag of PRESET_TAGS) {
+      await db.run!(
+        'INSERT OR IGNORE INTO user_tags (id, name, color, is_preset, created_at) VALUES (?, ?, ?, 1, ?);',
+        [tag.id, tag.name, tag.color, now],
+      );
+    }
+  }
+}
+
+export async function initUserTables(db: SQLiteLikeDb): Promise<void> {
+  if (!db.run) return;
+  await db.run('PRAGMA foreign_keys = ON;');
+  await createParentTables(db);
+  await createChildTables(db);
+  await createIndexes(db);
+  await seedPresetTags(db);
+}
+
+export async function getUserDatabase(): Promise<SQLiteLikeDb> {
+  if (userDbInstance) {
+    if (!isInitialized) {
+      await initUserTables(userDbInstance);
+      isInitialized = true;
+    }
+    return userDbInstance;
+  }
+
+  if (initPromise) {
+    return initPromise;
+  }
+
+  initPromise = (async (): Promise<SQLiteLikeDb> => {
+    try {
+      let rawDb: any = null;
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const SQLite = typeof require !== 'undefined' ? require('expo-sqlite') : null;
+        if (!SQLite) {
+          throw new Error('Expo SQLite not available');
+        }
+        rawDb = await SQLite.openDatabaseAsync(USER_DB_NAME);
+        if (rawDb.execAsync) {
+          await rawDb.execAsync('PRAGMA journal_mode = WAL;');
+          await rawDb.execAsync('PRAGMA foreign_keys = ON;');
+        }
+      } catch {
+        // Fallback for Node test environments (hidden from Metro bundler AST parser)
+        // eslint-disable-next-line @typescript-eslint/no-implied-eval
+        const dynamicImport = new Function('specifier', 'return import(specifier);');
+        const { DatabaseSync } = (await dynamicImport('node:' + 'sqlite')) as any;
+        rawDb = new DatabaseSync(':memory:');
+      }
+
+      rawDbInstance = rawDb;
+      const adapted = adaptDatabase(rawDb);
+      await initUserTables(adapted);
+      isInitialized = true;
+
+      userDbInstance = adapted;
+      return userDbInstance;
+    } catch (err) {
+      initPromise = null;
+      throw err;
+    }
+  })();
+
+  return initPromise;
+}
+
+export async function closeUserDatabase(): Promise<void> {
+  if (rawDbInstance) {
+    if (typeof rawDbInstance.closeAsync === 'function') {
+      await rawDbInstance.closeAsync();
+    } else if (typeof rawDbInstance.close === 'function') {
+      rawDbInstance.close();
+    }
+  }
+  rawDbInstance = null;
+  userDbInstance = null;
+  initPromise = null;
+  isInitialized = false;
+}

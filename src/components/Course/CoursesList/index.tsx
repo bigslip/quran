@@ -1,33 +1,41 @@
 import React, { useMemo } from 'react';
 
 import classNames from 'classnames';
+import Image from 'next/image';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 
+import CourseCardItem from './CourseCardItem';
+import filterCourses from './filterCourses';
 import styles from './LessonsList.module.scss';
 import useCoursesList from './useCoursesList';
 
-import Card, { CardSize } from '@/dls/Card/Card';
 import Link, { LinkVariant } from '@/dls/Link/Link';
-import Pill from '@/dls/Pill';
 import Spinner, { SpinnerSize } from '@/dls/Spinner/Spinner';
 import { CoursesResponse } from '@/types/auth/Course';
 import { logButtonClick } from '@/utils/eventLogger';
-import {
-  getCoursesNavigationUrl,
-  getCourseNavigationUrl,
-  getLessonNavigationUrl,
-} from '@/utils/navigation';
+import { getCoursesNavigationUrl } from '@/utils/navigation';
 
 type Props = {
   initialResponse: CoursesResponse;
   isMyCourses: boolean;
   languages?: string[];
+  searchQuery?: string;
+  activeFilter?: string;
+  onResetFilters?: () => void;
 };
 
 const MIN_COURSES_COUNT = 6;
+const COMING_SOON_IMAGE = '/images/courses/coming-soon.svg';
 
-const CoursesList: React.FC<Props> = ({ initialResponse, isMyCourses, languages }) => {
+const CoursesList: React.FC<Props> = ({
+  initialResponse,
+  isMyCourses,
+  languages,
+  searchQuery = '',
+  activeFilter = 'all',
+  onResetFilters,
+}) => {
   const { t } = useTranslation('learn');
   const { courses, hasNextPage, isLoadingMore, sentinelRef } = useCoursesList({
     initialResponse,
@@ -43,81 +51,103 @@ const CoursesList: React.FC<Props> = ({ initialResponse, isMyCourses, languages 
     logButtonClick('all_courses_link');
   };
 
+  const filteredCourses = useMemo(
+    () => filterCourses(courses, searchQuery, activeFilter),
+    [courses, searchQuery, activeFilter],
+  );
+
   const comingSoonPlaceholders = useMemo(() => {
-    if (isMyCourses || courses.length >= MIN_COURSES_COUNT) {
+    const isFiltered = Boolean(searchQuery.trim()) || activeFilter !== 'all';
+    if (isMyCourses || isFiltered || filteredCourses.length >= MIN_COURSES_COUNT) {
       return [];
     }
-    const missingCoursesCount = MIN_COURSES_COUNT - courses.length;
-    const placeholderIndexes = Array.from({ length: missingCoursesCount }, (index, i) => i);
-    return placeholderIndexes;
-  }, [courses.length, isMyCourses]);
+    const missingCoursesCount = MIN_COURSES_COUNT - filteredCourses.length;
+    return Array.from({ length: missingCoursesCount }, (unusedIndex, index) => index);
+  }, [filteredCourses.length, isMyCourses, searchQuery, activeFilter]);
 
   const shouldShowEmptyMyCourses = isMyCourses && courses.length === 0 && !hasNextPage;
 
-  // if the user has no courses, show a message
   if (shouldShowEmptyMyCourses) {
     return (
-      <span>
-        <Trans
-          i18nKey="learn:empty-learning-plans"
-          components={{
-            link: (
-              <Link
-                onClick={onMyCourses}
-                key={0}
-                href={getCoursesNavigationUrl()}
-                variant={LinkVariant.Blend}
-              />
-            ),
-          }}
-        />
-      </span>
+      <div className={styles.emptyState}>
+        <p className={styles.emptySubtitle}>
+          <Trans
+            i18nKey="learn:empty-learning-plans"
+            components={{
+              link: (
+                <Link
+                  onClick={onMyCourses}
+                  key={0}
+                  href={getCoursesNavigationUrl()}
+                  variant={LinkVariant.Highlight}
+                />
+              ),
+            }}
+          />
+        </p>
+      </div>
+    );
+  }
+
+  if (filteredCourses.length === 0 && (searchQuery.trim() || activeFilter !== 'all')) {
+    return (
+      <div className={styles.emptyState}>
+        <div className={styles.emptyTitle}>{t('no-courses-found')}</div>
+        <p className={styles.emptySubtitle}>{t('try-different-filter')}</p>
+        {onResetFilters && (
+          <button type="button" className={styles.resetButton} onClick={onResetFilters}>
+            {t('clear-filters')}
+          </button>
+        )}
+      </div>
     );
   }
 
   return (
     <div>
       <div className={styles.container} data-testid="courses-list">
-        {courses.map((course) => {
-          const { slug, id, continueFromLesson, title, isCompleted, thumbnail } = course;
-          const navigateTo = continueFromLesson
-            ? getLessonNavigationUrl(slug, continueFromLesson)
-            : getCourseNavigationUrl(slug);
-          return (
-            <Link key={id} href={navigateTo}>
-              <Card
-                shouldShowFullTitle
-                imgSrc={thumbnail}
-                title={
-                  <div className={styles.titleContainer}>
-                    {title}
-                    {isCompleted ? <Pill>{t('completed')}</Pill> : ''}
-                  </div>
-                }
-                imgAlt={title}
-                size={CardSize.Large}
-                className={classNames(styles.cardContainer, styles.comingSoonContainer)}
-              />
-            </Link>
-          );
-        })}
-        {comingSoonPlaceholders.map((placeholderIndex) => {
-          return (
-            <Card
-              key={`coming-soon-${placeholderIndex}`}
-              imgSrc="https://images.quran.com/coming-soon.png"
-              size={CardSize.Large}
-              className={classNames(styles.cardContainer, styles.comingSoonContainer)}
-              title={t('coming-soon')}
-            />
-          );
-        })}
+        {filteredCourses.map((course) => (
+          <CourseCardItem key={course.id} course={course} />
+        ))}
+        {comingSoonPlaceholders.map((placeholderIndex) => (
+          <div key={`coming-soon-${placeholderIndex}`} className={styles.courseCardWrapper}>
+            <div className={classNames(styles.card, styles.comingSoonCard)}>
+              <div className={styles.thumbnailWrapper}>
+                <Image
+                  src={COMING_SOON_IMAGE}
+                  alt={t('coming-soon')}
+                  fill
+                  className={styles.thumbnail}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <div className={styles.gradientOverlay} />
+              </div>
+              <div className={styles.cardBody}>
+                <div className={styles.cardContent}>
+                  <h3 className={styles.cardTitle}>{t('coming-soon')}</h3>
+                  <p className={styles.cardDesc}>
+                    {t('coming-soon-desc', {
+                      defaultValue: 'برنامه‌ها و دوره‌های جدید در دست آماده‌سازی است',
+                    })}
+                  </p>
+                </div>
+                <div className={styles.cardFooter}>
+                  <span className={styles.comingSoonBadge}>
+                    {t('coming-soon-badge', { defaultValue: 'به زودی' })}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+
       {hasNextPage && (
         <div ref={sentinelRef} className={styles.loadingMore}>
           {isLoadingMore && <Spinner size={SpinnerSize.Small} />}
         </div>
       )}
+
       {isMyCourses && (
         <div className={styles.allCourses}>
           <Link

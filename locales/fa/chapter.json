@@ -1,4 +1,4 @@
 {
-  "meta-description": "{{transliteratedName}} بخوانید و گوش دهید. سوره نازل شد در {{revelationPlace}} ، دستور داد {{chapterOrder}} در قرآن است. عنوان سوره به معنای \"{{translatedName}}\" در {{localeName}} و از {{versesCount}} آیه تشکیل شده است.",
-  "ranges-meta-desc": "از Ayah {{rangeFrom}} به Ayah {{rangeTo}} بخوانید و گوش دهید."
+  "meta-description": "متن کامل سوره {{transliteratedName}} ({{translatedName}}) به همراه ترجمه فارسی، تلاوت صوتی، تفسیر، معنی کلمه به کلمه و فایل صوتی. سوره شماره {{chapterOrder}} با {{versesCount}} آیه نازل شده در {{revelationPlace}}.",
+  "ranges-meta-desc": "تلاوت و ترجمه آیات {{rangeFrom}} تا {{rangeTo}} با ترجمه و تفسیر کامل."
 }

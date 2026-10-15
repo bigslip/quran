@@ -37,6 +37,10 @@
       transform: none;
     }
   }
+  &:focus-visible {
+    outline: var(--focus-ring-outline, 2px solid var(--color-focus-ring));
+    outline-offset: 2px;
+  }
 }
 
 // type
@@ -100,9 +104,14 @@
   font-size: var(--font-size-normal);
   --button-size: calc(2.5 * var(--spacing-medium));
 }
-.small {
+.small,
+.sm {
   font-size: var(--font-size-normal);
   --button-size: calc(2 * var(--spacing-medium));
+  min-inline-size: 44px;
+  min-block-size: 44px;
+  min-inline-size: 44px;
+  min-block-size: 44px;
 }
 .xsmall {
   font-size: var(--font-size-small);
@@ -118,11 +127,19 @@
   border-radius: var(--border-radius-default);
   inline-size: var(--button-size);
   padding: 0;
+  min-inline-size: 44px;
+  min-block-size: 44px;
+  min-inline-size: 44px;
+  min-block-size: 44px;
 }
 .circle {
   border-radius: var(--border-radius-circle);
   inline-size: var(--button-size);
   padding: 0;
+  min-inline-size: 44px;
+  min-block-size: 44px;
+  min-inline-size: 44px;
+  min-block-size: 44px;
 }
 .pill {
   border-radius: var(--border-radius-pill);

@@ -24,6 +24,9 @@ interface Props {
 
 const ShareQuranModal: React.FC<Props> = ({ isOpen, onClose, verse }) => {
   const { t } = useTranslation('common');
+
+  if (!isOpen) return null;
+
   const shareURL = verse
     ? (() => {
         const [chapterId, verseNumber] = getVerseAndChapterNumbersFromKey(verse.verseKey);
@@ -34,7 +37,12 @@ const ShareQuranModal: React.FC<Props> = ({ isOpen, onClose, verse }) => {
   return (
     <Modal isOpen={isOpen} onClickOutside={onClose} size={ModalSize.MEDIUM}>
       <Modal.Body>
-        <button className={styles.closeButton} onClick={onClose} type="button" aria-label="Close">
+        <button
+          className={styles.closeButton}
+          onClick={onClose}
+          type="button"
+          aria-label={t('common:close')}
+        >
           <CloseIcon />
         </button>
         <Modal.Title>

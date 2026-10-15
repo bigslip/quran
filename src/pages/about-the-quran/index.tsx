@@ -9,8 +9,8 @@ import useTranslation from 'next-translate/useTranslation';
 import styles from '../contentPage.module.scss';
 
 import pageStyles from './about-the-quran.module.scss';
-import AboutTheQuranArabic from './AboutTheQuranArabic';
-import AboutTheQuranSwahili from './AboutTheQuranSwahili';
+import AboutTheQuranArabic from '@/components/AboutTheQuran/AboutTheQuranArabic';
+import AboutTheQuranSwahili from '@/components/AboutTheQuran/AboutTheQuranSwahili';
 
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import PageContainer from '@/components/PageContainer';
@@ -92,9 +92,9 @@ const AboutQuranPage: NextPage = (): JSX.Element => {
             <p className={pageStyles.translationName}>- Dr. Mustafa Khattab, The Clear Quran</p>
           </div>
           <div>
-            We welcome you to Quran.com and invite you to read and listen to the Quran with an open
+            We welcome you to Quran.ir and invite you to read and listen to the Quran with an open
             heart, to deeply contemplate its verses, sincerely seek the knowledge contained within
-            it, and to learn more using the resources on our site. We hope you will find Quran.com
+            it, and to learn more using the resources on our site. We hope you will find Quran.ir
             beneficial and pray that the message of the Quran will enrich your life's journey.
           </div>
         </div>
@@ -249,9 +249,9 @@ const AboutQuranPage: NextPage = (): JSX.Element => {
           </div>
         </div>
         <div className={styles.section}>
-          <h1>How can Quran.com help me on my Quran journey?</h1>
+          <h1>How can Quran.ir help me on my Quran journey?</h1>
           <div>
-            Quran.com is a comprehensive online platform that provides a range of features to help
+            Quran.ir is a comprehensive online platform that provides a range of features to help
             people explore and engage with the Quran.
           </div>
           <div>
@@ -262,14 +262,14 @@ const AboutQuranPage: NextPage = (): JSX.Element => {
             of the verses more accessible to readers.
           </div>
           <div>
-            Another feature of Quran.com is the Reflections section, which provides a space for
+            Another feature of Quran.ir is the Reflections section, which provides a space for
             readers to engage with the Quranic text on a more personal level. This feature offers
             insightful and thought-provoking reflections on the verses, providing readers with a
             deeper understanding of the Quranic teachings and their relevance to contemporary
             issues.
           </div>
           <div>
-            For those who prefer to listen to the recitation of the Quran, Quran.com offers a
+            For those who prefer to listen to the recitation of the Quran, Quran.ir offers a
             diverse library of Quranic recitations by renowned{' '}
             <Link href="/reciters" isNewTab>
               reciters
@@ -279,13 +279,13 @@ const AboutQuranPage: NextPage = (): JSX.Element => {
             verses.
           </div>
           <div>
-            To further aid users in their understanding of the Quranic text, Quran.com provides
+            To further aid users in their understanding of the Quranic text, Quran.ir provides
             word-by-word translations and audio, as well as a word tooltip feature that provides
             translations of individual words in the text. This makes the Quranic text more
             accessible and understandable to readers who are still learning the Arabic language.
           </div>
           <div>
-            Additionally, Quran.com offers{' '}
+            Additionally, Quran.ir offers{' '}
             <Link href="/radio" isNewTab>
               QuranRadio
             </Link>

@@ -72,7 +72,7 @@ const RelatedVersesPage: NextPage<AyahReflectionProp> = ({
         canonical={getCanonicalUrl(lang, navigationUrl)}
         languageAlternates={getLanguageAlternates(navigationUrl)}
         description={t('related-verses-desc', {
-          ayahNumber: verseNumber,
+          ayahNumber: toLocalizedNumber(Number(verseNumber), lang),
           surahName: chapter.chapter.transliteratedName,
         })}
       />

@@ -8,7 +8,7 @@
     "title": "Wasiliana Nasi"
   },
   "cookies": {
-    "desc": "Quran.com hutumia vidakuzi ili kuboresha matumizi yako ya kuvinjari, kutoa maudhui yaliyobinafsishwa, na kuchanganua trafiki ya tovuti. Kwa kuingia na kutumia tovuti yetu, unakubali matumizi ya vidakuzi kwa mujibu wa Sera hii ya Faragha. <br/> <br/> <li> Aina za Vidakuzi Tunazotumia: </li> <subLi> Vidakuzi Muhimu: Vidakuzi hivi ni muhimu kwa utendakazi ifaavyo wa tovuti yetu na kuwezesha vipengele vya msingi, kama vile usogezaji kwenye ukurasa na kufikia maeneo salama. Hazikusanyi taarifa zozote zinazoweza kumtambulisha mtu binafsi. Bila vidakuzi hivi, baadhi ya sehemu za tovuti huenda zisifanye kazi ipasavyo. </subLi> <subLi> Vidakuzi vya Uchambuzi na Utendaji: Tunatumia vidakuzi hivi kukusanya taarifa kuhusu jinsi wageni wanavyotumia tovuti yetu, ikijumuisha idadi ya wageni, kurasa wanazotembelea, na muda unaotumika kwenye kila ukurasa. Data hii hutusaidia kuchanganua na kuboresha utendaji na utendakazi wa tovuti yetu. Vidakuzi hivi havikutambulishi wewe binafsi; data yote imejumlishwa na haitambulishwi na mtu binafsi. </subLi>",
+    "desc": "Quran.ir hutumia vidakuzi ili kuboresha matumizi yako ya kuvinjari, kutoa maudhui yaliyobinafsishwa, na kuchanganua trafiki ya tovuti. Kwa kuingia na kutumia tovuti yetu, unakubali matumizi ya vidakuzi kwa mujibu wa Sera hii ya Faragha. <br/> <br/> <li> Aina za Vidakuzi Tunazotumia: </li> <subLi> Vidakuzi Muhimu: Vidakuzi hivi ni muhimu kwa utendakazi ifaavyo wa tovuti yetu na kuwezesha vipengele vya msingi, kama vile usogezaji kwenye ukurasa na kufikia maeneo salama. Hazikusanyi taarifa zozote zinazoweza kumtambulisha mtu binafsi. Bila vidakuzi hivi, baadhi ya sehemu za tovuti huenda zisifanye kazi ipasavyo. </subLi> <subLi> Vidakuzi vya Uchambuzi na Utendaji: Tunatumia vidakuzi hivi kukusanya taarifa kuhusu jinsi wageni wanavyotumia tovuti yetu, ikijumuisha idadi ya wageni, kurasa wanazotembelea, na muda unaotumika kwenye kila ukurasa. Data hii hutusaidia kuchanganua na kuboresha utendaji na utendakazi wa tovuti yetu. Vidakuzi hivi havikutambulishi wewe binafsi; data yote imejumlishwa na haitambulishwi na mtu binafsi. </subLi>",
     "title": "Matumizi ya Vidakuzi"
   },
   "data-analysis": {
@@ -32,14 +32,14 @@
     "title": "Kushiriki Data"
   },
   "info-collection": {
-    "desc": "Tunakusanya taarifa fulani za kibinafsi kutoka kwa watumiaji wanaochagua kufungua akaunti kwenye Quran.com. Maelezo haya yanaweza kujumuisha: <br/> <br/> <underline> Anwani ya Barua Pepe </underline> : Tunakusanya anwani yako ya barua pepe ili kuwezesha mchakato wa kuunda akaunti na kwa madhumuni ya mawasiliano yanayohusiana na akaunti yako, ikiwa ni pamoja na uokoaji wa akaunti na arifa za usalama.",
+    "desc": "Tunakusanya taarifa fulani za kibinafsi kutoka kwa watumiaji wanaochagua kufungua akaunti kwenye Quran.ir. Maelezo haya yanaweza kujumuisha: <br/> <br/> <underline> Anwani ya Barua Pepe </underline> : Tunakusanya anwani yako ya barua pepe ili kuwezesha mchakato wa kuunda akaunti na kwa madhumuni ya mawasiliano yanayohusiana na akaunti yako, ikiwa ni pamoja na uokoaji wa akaunti na arifa za usalama.",
     "title": "Ukusanyaji wa Habari"
   },
   "log-data": {
     "desc": "Tunakusanya maelezo ambayo kivinjari chako hutuma kila unapotembelea Huduma yetu (“Log Data”). Log Data hii inaweza kujumuisha maelezo kama vile anwani ya Itifaki ya Mtandao ya kompyuta (“IP”) ya kompyuta yako, aina ya kivinjari, toleo la kivinjari, kurasa zetu unazotembelea, saa na tarehe ya ziara yako, muda uliotumika kwenye kurasa hizo na takwimu nyinginezo.",
     "title": "Log Data"
   },
-  "main-privacy-desc": "Quran Foundation, Inc. (inayojumuisha Quran.com) ni shirika lisilo la faida la 501(c)(3) ambalo linajitahidi kumwezesha kila mwanadamu kufaidika na Qur'ani. Quran Foundation, Inc. inathamini na kuheshimu faragha ya watumiaji wetu wote.",
+  "main-privacy-desc": "Quran Foundation, Inc. (inayojumuisha Quran.ir) ni shirika lisilo la faida la 501(c)(3) ambalo linajitahidi kumwezesha kila mwanadamu kufaidika na Qur'ani. Quran Foundation, Inc. inathamini na kuheshimu faragha ya watumiaji wetu wote.",
   "personal-info-use": {
     "desc": "Tunatumia maelezo ya kibinafsi tunayokusanya kwa madhumuni yafuatayo: <br/> <li> <underline> Uundaji na Usimamizi wa Akaunti </underline> : Barua pepe yako inatumiwa kuunda na kudhibiti akaunti yako kwenye tovuti yetu. Inakuwezesha kuingia, kufikia mipangilio yako, na kuhifadhi alamisho zako na historia ya kusoma. </li> <li> <underline> Ubinafsishaji </underline> : Tunaweza kutumia historia yako ya kusoma ili kutoa mapendekezo na maoni ya kibinafsi kulingana na mapendeleo na maslahi yako. </li>",
     "title": "Matumizi ya Taarifa za Kibinafsi"

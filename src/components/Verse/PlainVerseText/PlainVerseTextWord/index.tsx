@@ -7,7 +7,7 @@ import styles from './PlainVerseTextWord.module.scss';
 import InlineWordByWord from '@/dls/InlineWordByWord';
 import Word from 'types/Word';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   word: Word;
   children: ReactNode;
   shouldShowWordByWordTranslation: boolean;
@@ -21,13 +21,16 @@ const PlainVerseTextWord: React.FC<Props> = ({
   shouldShowWordByWordTransliteration,
   shouldShowWordByWordTranslation,
   isHighlighted = false,
+  className,
+  ...props
 }) => {
   return (
     <div
-      className={classNames(styles.plainVerseWordContainer, {
+      className={classNames(styles.plainVerseWordContainer, className, {
         [styles.highlighted]: isHighlighted,
       })}
       key={word.location}
+      {...props}
     >
       {children}
       {shouldShowWordByWordTranslation && (

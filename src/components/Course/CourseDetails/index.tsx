@@ -29,14 +29,14 @@ import { getCoursesNavigationUrl } from '@/utils/navigation';
 
 type Props = {
   course: Course;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 enum Tab {
   MAIN = 'main',
   SYLLABUS = 'syllabus',
 }
 
-const CourseDetails: React.FC<Props> = ({ course }) => {
+const CourseDetails: React.FC<Props> = ({ course, className, ...props }) => {
   const { title, image, id, isCompleted } = course;
   const { t } = useTranslation('learn');
   const [selectedTab, setSelectedTab] = useState(Tab.MAIN);
@@ -79,7 +79,7 @@ const CourseDetails: React.FC<Props> = ({ course }) => {
   );
 
   return (
-    <ContentContainer>
+    <ContentContainer {...props} className={classNames(className)}>
       <Button
         onClick={onBackButtonClicked}
         href={getCoursesNavigationUrl()}
@@ -109,7 +109,7 @@ const CourseDetails: React.FC<Props> = ({ course }) => {
         </div>
 
         <div className={styles.imgContainer}>
-          <Image alt={title} src={image} width={1920} height={480} />
+          <Image alt="" src={image} width={1920} height={480} />
         </div>
       </div>
 

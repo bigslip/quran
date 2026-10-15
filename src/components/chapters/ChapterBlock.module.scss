@@ -1,15 +1,57 @@
 @use 'src/styles/breakpoints';
 
 .item {
-  border: 1px solid var(--color-background-alternative-deep);
-  border-radius: var(--border-radius-default);
+  border: 1px solid var(--color-border-iridescent);
+  border-radius: var(--border-radius-rounded);
+  background-color: var(--color-surface-card);
+  backdrop-filter: var(--backdrop-filter-frosted);
+  -webkit-backdrop-filter: var(--backdrop-filter-frosted);
   min-block-size: calc(4 * var(--spacing-medium));
   margin-block-end: var(--spacing-small);
-  &:hover {
-    background: var(--color-background-alternative-medium);
-    box-shadow: var(--shadow-normal);
-    border-color: var(--color-background-inverse);
+  box-shadow: var(--shadow-card);
+  box-sizing: border-box;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 72px;
+  transition: transform var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1),
+    border-color var(--transition-fast) ease, background-color var(--transition-fast) ease,
+    box-shadow var(--transition-fast) ease;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px) scale(1.012);
+      background-color: var(--color-surface-card-hover);
+      border-color: var(--color-accent-gold);
+      box-shadow: var(--shadow-card-hover), 0 0 20px var(--color-accent-gold-subtle);
+
+      .surahNumber {
+        background: linear-gradient(
+          135deg,
+          var(--color-accent-gold-rich, #d97706) 0%,
+          var(--color-accent-gold, #f59e0b) 100%
+        );
+        color: #070a13;
+        border-color: var(--color-accent-gold);
+        box-shadow: 0 0 16px var(--color-accent-gold-subtle);
+      }
+
+      .nameArabic {
+        color: var(--color-accent-gold);
+      }
+
+      .chapterIconWrapper {
+        filter: drop-shadow(0 0 12px var(--color-accent-gold-subtle));
+      }
+
+      .numberOfVerses {
+        color: var(--color-accent-gold);
+      }
+    }
   }
+
+  &:focus-within {
+    border-color: var(--color-primary);
+  }
+
   @include breakpoints.tablet {
     margin-block-end: 0;
   }
@@ -17,53 +59,156 @@
 
 .link {
   text-decoration: none;
-}
+  color: inherit;
+  display: block;
+  border-radius: var(--border-radius-rounded);
 
-.sectionContainer {
-  block-size: calc(2 * var(--spacing-large));
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
 }
 
 .container {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  padding-block-start: var(--spacing-medium);
-  padding-block-end: var(--spacing-medium);
-  padding-inline-start: var(--spacing-medium);
-  padding-inline-end: var(--spacing-medium);
+  padding-block: var(--spacing-medium-px);
+  padding-inline: var(--spacing-large-px);
+  gap: var(--spacing-small-px);
+
+  @include breakpoints.smallerThanTablet {
+    padding-inline: var(--spacing-medium-px);
+  }
+}
+
+.sectionContainer {
+  display: flex;
+  align-items: center;
 }
 
 .leftContainer {
-  inline-size: 70%;
   display: flex;
+  align-items: center;
+  gap: var(--spacing-small2-px);
+  min-inline-size: 0;
+  flex: 1;
 }
 
-.number {
-  min-inline-size: calc(2 * var(--spacing-large));
-  margin-block-start: 0;
-  margin-inline-end: 0;
-  margin-block-end: 0;
-  margin-inline-start: 0;
+.surahNumber {
+  background: var(--color-surface-floating);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 0 12px var(--color-accent-gold-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 34px;
+  block-size: 34px;
+  border-radius: var(--border-radius-small-px);
+  transform: rotate(45deg);
+  margin-inline-end: var(--spacing-xsmall-px);
+  color: var(--color-accent-gold);
+  flex-shrink: 0;
+  transition: all var(--transition-fast) ease;
+
+  & > span {
+    transform: rotate(-45deg);
+    font-size: var(--font-size-xsmall-px);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+  }
 }
 
 .detailsContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.nameHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+  flex-wrap: nowrap;
 }
 
 .nameArabic {
-  font-size: var(--font-size-large);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-normal-px);
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  letter-spacing: 0.03em;
+  transition: color var(--transition-fast) ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 1 auto;
+}
+
+.revelationTag {
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  padding-inline: 6px;
+  padding-block: 2px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.makkah {
+    background: var(--color-accent-gold-subtle, rgba(217, 119, 6, 0.12));
+    color: var(--color-accent-gold-rich, #d97706);
+    border: 1px solid rgba(217, 119, 6, 0.3);
+  }
+
+  &.madinah {
+    background: var(--color-accent-emerald-subtle, rgba(6, 95, 70, 0.12));
+    color: var(--color-accent-emerald, #059669);
+    border: 1px solid rgba(6, 95, 70, 0.3);
+  }
 }
 
 .nameTranslated {
-  font-size: var(--font-size-xsmall);
-  color: var(--color-text-faded);
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.chapterIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  line-height: 1;
+  transition: filter var(--transition-fast) ease;
 }
 
 .numberOfVerses {
   text-align: end;
-  font-size: var(--font-size-xsmall);
-  color: var(--color-text-faded);
+  font-size: var(--font-size-xsmall-px);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.25;
+  transition: color var(--transition-fast) ease;
 }

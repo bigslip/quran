@@ -37,13 +37,15 @@ type TranslationViewCellProps = {
   quranReaderStyles: QuranReaderStyles;
   verseIndex: number;
   isFirstCellWithHeader?: boolean;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const TranslationViewCell: React.FC<TranslationViewCellProps> = ({
   verse,
   quranReaderStyles,
   verseIndex,
   isFirstCellWithHeader = false,
+  className,
+  ...props
 }) => {
   const audioService = useContext(AudioPlayerMachineContext);
   const isHighlighted = useSelectorXstate(audioService, (state) => {
@@ -94,10 +96,11 @@ const TranslationViewCell: React.FC<TranslationViewCellProps> = ({
         data-chapter-id={verse.chapterId}
         data-hizb={verse.hizbNumber}
         data-testid={`verse-${verse.verseKey}`}
-        className={classNames(styles.cellContainer, {
+        className={classNames(className, styles.cellContainer, {
           [styles.highlightedContainer]: isHighlighted,
           [styles.firstCellWithHeader]: isFirstCellWithHeader,
         })}
+        {...props}
       >
         <TopActions verse={verse} />
 
@@ -148,6 +151,7 @@ const areVersesEqual = (
   prevProps: TranslationViewCellProps,
   nextProps: TranslationViewCellProps,
 ): boolean =>
+  prevProps.className === nextProps.className &&
   prevProps.verse.id === nextProps.verse.id &&
   prevProps.isFirstCellWithHeader === nextProps.isFirstCellWithHeader &&
   !verseFontChanged(

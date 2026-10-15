@@ -3,12 +3,14 @@ import useSWRImmutable from 'swr/immutable';
 import { getPagesLookupParams } from '@/components/QuranReader/api';
 import QuranReaderStyles from '@/redux/types/QuranReaderStyles';
 import { QuranReaderDataType } from '@/types/QuranReader';
-import { getMushafId } from '@/utils/api';
+import { getMushafId, STATIC_DEDUPING_INTERVAL } from '@/utils/api';
 import { makePagesLookupUrl } from '@/utils/apiPaths';
 import { fetcher } from 'src/api';
 import { PagesLookUpResponse, VersesResponse } from 'types/ApiResponses';
 import LookupRange from 'types/LookupRange';
 import LookupRecord from 'types/LookupRecord';
+
+const EMPTY_PAGES_MAP: Record<number, LookupRecord> = {};
 
 /**
  * This hooks fetches the total number of pages of a specific Mushaf of
@@ -48,14 +50,15 @@ const useFetchPagesLookup = (
     {
       fallbackData: initialData.pagesLookup,
       revalidateOnMount: !isUsingDefaultFont,
+      dedupingInterval: STATIC_DEDUPING_INTERVAL,
     },
   );
 
   return {
     data,
-    pagesCount: data.totalPage,
-    pagesVersesRange: data.pages,
-    lookupRange: data.lookupRange,
+    pagesCount: data?.totalPage ?? 0,
+    pagesVersesRange: data?.pages ?? EMPTY_PAGES_MAP,
+    lookupRange: data?.lookupRange,
     hasError: !!error,
     isLoading: isValidating && !data,
   };

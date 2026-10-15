@@ -11,7 +11,7 @@ import { ToastStatus, useToast } from '@/dls/Toast/Toast';
 import { logButtonClick } from '@/utils/eventLogger';
 import { toLocalizedNumber } from '@/utils/locale';
 
-interface MonthCardProps {
+interface MonthCardProps extends React.HTMLAttributes<HTMLDivElement> {
   month: MonthData;
   getWeekClass: (week: ProcessedWeek) => string;
   isProgramCompleted: boolean;
@@ -23,6 +23,8 @@ const MonthCard: React.FC<MonthCardProps> = ({
   getWeekClass,
   isProgramCompleted,
   onWeekSelect,
+  className,
+  ...props
 }) => {
   const { t, lang } = useTranslation('quranic-calendar');
   const toast = useToast();
@@ -43,20 +45,19 @@ const MonthCard: React.FC<MonthCardProps> = ({
     setLoadingWeeks((prev) => [...prev, weekNumber]);
 
     try {
-      // Call the parent's onWeekSelect to update the selected week
-      onWeekSelect(weekNumber);
-      // Scroll to top to see the updated verses
-      window.scrollTo({ top: 0 });
+      await onWeekSelect(weekNumber);
     } catch (error) {
-      toast(t('common:error.general'), { status: ToastStatus.Error });
+      toast(t('common:error.general'), {
+        status: ToastStatus.Error,
+      });
     } finally {
       // Remove weekNumber from loadingWeeks
-      setLoadingWeeks((prev) => prev.filter((id) => id !== weekNumber));
+      setLoadingWeeks((prev) => prev.filter((w) => w !== weekNumber));
     }
   };
 
   return (
-    <div key={`month-${month.id}`} className={styles.monthCard}>
+    <div className={classNames(styles.monthCard, className)} {...props}>
       <h3
         className={classNames(styles.monthTitle, {
           [styles.currentMonthTitle]: month.isCurrentMonth,
@@ -89,10 +90,11 @@ const MonthCard: React.FC<MonthCardProps> = ({
                   key={`week-${month.id}-${week.globalWeekNumber}`}
                   className={weekClass}
                   role="button"
-                  tabIndex={isCompleted ? -1 : 0}
-                  aria-label={`${t('week')} ${week.globalWeekNumber} of ${month.name}${
-                    isCompleted ? ` - ${t('completed')}` : ''
-                  }`}
+                  tabIndex={0}
+                  aria-label={`${t('week')} ${toLocalizedNumber(
+                    week.globalWeekNumber,
+                    lang,
+                  )} of ${month.name}${isCompleted ? ` - ${t('completed')}` : ''}`}
                   data-week-number={week.globalWeekNumber}
                   title={week.data.ranges}
                   onClick={() => onWeekClick(week)}

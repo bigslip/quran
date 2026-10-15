@@ -211,7 +211,7 @@ const Ramadan2026Page: NextPage = (): JSX.Element => {
               ⭐⭐⭐⭐⭐ “Mashallah,this learning plan not just helpful but it is extremely a
               helpful source for me to prepare myself for upcoming ramadhan. All the 9 day topics
               teach me lots of thing and made me reflect on my state of imaan.I hope i will gain
-              more knowledge in the month of ramadhan. Ameen insyaallah. Thank you Quran.com!!”
+              more knowledge in the month of ramadhan. Ameen insyaallah. Thank you Quran.ir!!”
             </div>
             <div>
               ⭐⭐⭐⭐⭐ “The plan was very transformative. I pray Allah SW will bless me with the
@@ -413,7 +413,7 @@ const Ramadan2026Page: NextPage = (): JSX.Element => {
           <div className={styles.subSection} id="explore-additional-beneficial-features">
             <h1>📱 Explore Additional Beneficial Features!</h1>
             <div className={styles.paragraph}>
-              Discover additional features on Quran.com to make your Ramadan journey more enriching.
+              Discover additional features on Quran.ir to make your Ramadan journey more enriching.
               You can take personalized notes at the ayah level to capture your reflections and
               thoughts, read tafsir (commentary) to deepen your understanding of the Quran, and
               explore reflections shared by others for inspiration.
@@ -426,7 +426,7 @@ const Ramadan2026Page: NextPage = (): JSX.Element => {
             </div>
             <div className={styles.paragraph}>
               With more features like bookmarking, audio recitations, and a powerful search tool, we
-              hope Quran.com can help you deeply connect with the Quran in Ramadan and beyond,
+              hope Quran.ir can help you deeply connect with the Quran in Ramadan and beyond,
               insha'Allah!
             </div>
           </div>

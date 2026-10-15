@@ -178,7 +178,13 @@ export const throwIfResponseContainsError = (response: unknown, errorMessage?: s
 };
 
 const handleErrors = async (res) => {
-  const body = await res.json();
+  let body;
+  try {
+    body = await res.json();
+  } catch (e) {
+    throw new Error(res.statusText || 'API request failed');
+  }
+
   const error = body?.error || body?.details?.error;
   const errorName = body?.name || body?.details?.name;
 
@@ -194,16 +200,9 @@ const handleErrors = async (res) => {
     return Router.push(`/login?error=${errorName}`);
   }
 
-  throw new Error(body?.message);
+  throw new Error(body?.message || 'API request failed');
 };
 
-/**
- * Execute a POST request
- *
- * @param {string} url
- * @param {RequestData} requestData
- * @returns {Promise<T>}
- */
 export const postRequest = <T>(url: string, requestData: RequestData): Promise<T> =>
   privateFetcher(url, {
     method: 'POST',
@@ -253,7 +252,7 @@ export const getUserFeatureFlags = async (): Promise<Record<string, boolean>> =>
   privateFetcher(makeUserFeatureFlagsUrl());
 
 export const refreshToken = async (): Promise<RefreshToken> =>
-  privateFetcher(makeRefreshTokenUrl());
+  withCredentialsFetcher(makeRefreshTokenUrl());
 
 // Track token refresh progress to allow UI / logic to defer actions while refreshing
 let tokenRefreshInProgress = false;

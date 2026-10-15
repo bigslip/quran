@@ -96,6 +96,15 @@ const VerseAdvancedCopy: React.FC<Props> = ({ verse, children }) => {
     };
   }, [isCopied]);
 
+  // Clean up blob URL on unmount or before creating a new one
+  useEffect(() => {
+    return () => {
+      if (objectUrl) {
+        window.URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [objectUrl]);
+
   // Get available translations
   // because we already have call the API in settings menu. useSWR will save it to cache.
   // in this component, we will get the data from the cache.

@@ -2,61 +2,61 @@
 
 @mixin donationStripThemeVars {
   @include theme.light {
-    --donation-strip-gradient-start: #22a5ad;
-    --donation-strip-gradient-end: #124245;
+    --donation-strip-gradient-start: #064e3b;
+    --donation-strip-gradient-end: #047857;
     --donation-strip-text: #ffffff;
-    --donation-strip-cta-bg: #ebf9fa;
-    --donation-strip-cta-fg: #2ca4ab;
+    --donation-strip-cta-bg: #fef3c7;
+    --donation-strip-cta-fg: #92400e;
   }
 
   @include theme.dark {
-    --donation-strip-gradient-start: #2ca4ab;
-    --donation-strip-gradient-end: #124245;
+    --donation-strip-gradient-start: #064e3b;
+    --donation-strip-gradient-end: #022c22;
     --donation-strip-text: #ffffff;
-    --donation-strip-cta-bg: #272f33;
-    --donation-strip-cta-fg: #2ca4ab;
+    --donation-strip-cta-bg: #f59e0b;
+    --donation-strip-cta-fg: #070a13;
   }
 
   @include theme.sepia {
     --donation-strip-gradient-start: #72603f;
-    --donation-strip-gradient-end: #124245;
+    --donation-strip-gradient-end: #543f25;
     --donation-strip-text: #ffffff;
     --donation-strip-cta-bg: #f2e0bf;
-    --donation-strip-cta-fg: #72603f;
+    --donation-strip-cta-fg: #5a492d;
   }
 }
 
 @mixin donationCardThemeVars {
   @include theme.light {
-    --donation-card-gradient-start: #2ca4ab;
-    --donation-card-gradient-end: #124245;
+    --donation-card-gradient-start: #064e3b;
+    --donation-card-gradient-end: #047857;
     --donation-card-title: #ffffff;
-    --donation-card-text: #ffffff;
-    --donation-card-cta-bg: #2ca4ab;
-    --donation-card-cta-fg: #ffffff;
+    --donation-card-text: #f0fdf4;
+    --donation-card-cta-bg: #ffffff;
+    --donation-card-cta-fg: #064e3b;
     --donation-card-close: #ffffff;
-    --donation-card-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+    --donation-card-shadow: 0 16px 40px rgba(6, 78, 59, 0.25), 0 0 1px rgba(217, 119, 6, 0.4);
   }
 
   @include theme.dark {
-    --donation-card-gradient-start: #2ca4ab;
-    --donation-card-gradient-end: #124245;
-    --donation-card-title: #ffffff;
-    --donation-card-text: #ffffff;
-    --donation-card-cta-bg: #2ca4ab;
-    --donation-card-cta-fg: #ffffff;
-    --donation-card-close: #ffffff;
-    --donation-card-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+    --donation-card-gradient-start: #0c1a29;
+    --donation-card-gradient-end: #07111c;
+    --donation-card-title: #f8fafc;
+    --donation-card-text: #cbd5e1;
+    --donation-card-cta-bg: #f59e0b;
+    --donation-card-cta-fg: #070a13;
+    --donation-card-close: #94a3b8;
+    --donation-card-shadow: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(217, 119, 6, 0.18);
   }
 
   @include theme.sepia {
-    --donation-card-gradient-start: #72603f;
-    --donation-card-gradient-end: #d8b677;
+    --donation-card-gradient-start: #785e3a;
+    --donation-card-gradient-end: #543f25;
     --donation-card-title: #ffffff;
-    --donation-card-text: #ffffff;
-    --donation-card-cta-bg: #72603f;
-    --donation-card-cta-fg: #ffffff;
+    --donation-card-text: #fdfbf7;
+    --donation-card-cta-bg: #ffffff;
+    --donation-card-cta-fg: #543f25;
     --donation-card-close: #ffffff;
-    --donation-card-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+    --donation-card-shadow: 0 12px 36px rgba(120, 94, 58, 0.2);
   }
 }

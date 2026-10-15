@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import * as RadixHoverCard from '@radix-ui/react-hover-card';
+import classnames from 'classnames';
 
 import styles from './HoverCard.module.scss';
 
@@ -17,51 +18,65 @@ export enum ContentAlign {
   END = 'end',
 }
 
-interface Props {
-  body: ReactNode;
-  children: ReactNode | ReactNode[];
-  onOpenChange?: (open: boolean) => void;
-  open?: boolean;
-  contentSide?: ContentSide;
-  contentAlign?: ContentAlign;
-  avoidCollisions?: boolean;
-  tip?: boolean;
+export interface HoverCardProps {
+  children: ReactNode;
+  content?: ReactNode;
+  body?: ReactNode;
   openDelay?: number;
   closeDelay?: number;
+  side?: 'top' | 'right' | 'bottom' | 'left';
+  contentSide?: ContentSide | 'top' | 'right' | 'bottom' | 'left';
+  align?: 'start' | 'center' | 'end';
+  contentAlign?: ContentAlign | 'start' | 'center' | 'end';
+  className?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  avoidCollisions?: boolean;
+  tip?: boolean;
 }
 
-const HoverCard: React.FC<Props> = ({
-  body,
+const HoverCard: React.FC<HoverCardProps> = ({
   children,
-  onOpenChange,
-  open,
-  contentSide = ContentSide.BOTTOM,
-  contentAlign = ContentAlign.CENTER,
-  avoidCollisions = true,
-  openDelay = 400,
+  content,
+  body,
+  openDelay = 200,
   closeDelay = 300,
+  side,
+  contentSide = ContentSide.BOTTOM,
+  align,
+  contentAlign = ContentAlign.CENTER,
+  className,
+  open,
+  onOpenChange,
+  avoidCollisions = true,
   tip = true,
-}) => (
-  <RadixHoverCard.Root
-    openDelay={openDelay}
-    closeDelay={closeDelay}
-    {...(typeof open !== 'undefined' && { open })}
-    {...(onOpenChange && { onOpenChange })}
-  >
-    <RadixHoverCard.Trigger asChild className={styles.trigger}>
-      <div>{children}</div>
-    </RadixHoverCard.Trigger>
-    <RadixHoverCard.Content
-      sideOffset={2}
-      side={contentSide}
-      align={contentAlign}
-      avoidCollisions={avoidCollisions}
-      className={styles.content}
+}) => {
+  const actualContent = content ?? body;
+  const actualSide = side ?? contentSide;
+  const actualAlign = align ?? contentAlign;
+
+  return (
+    <RadixHoverCard.Root
+      openDelay={openDelay}
+      closeDelay={closeDelay}
+      {...(typeof open !== 'undefined' && { open })}
+      {...(onOpenChange && { onOpenChange })}
     >
-      {body}
-      {tip && <RadixHoverCard.Arrow />}
-    </RadixHoverCard.Content>
-  </RadixHoverCard.Root>
-);
+      <RadixHoverCard.Trigger asChild>{children}</RadixHoverCard.Trigger>
+      <RadixHoverCard.Portal>
+        <RadixHoverCard.Content
+          className={classnames(styles.content, className)}
+          side={actualSide}
+          align={actualAlign}
+          avoidCollisions={avoidCollisions}
+          sideOffset={5}
+        >
+          {actualContent}
+          {tip && <RadixHoverCard.Arrow className={styles.arrow} />}
+        </RadixHoverCard.Content>
+      </RadixHoverCard.Portal>
+    </RadixHoverCard.Root>
+  );
+};
 
 export default HoverCard;

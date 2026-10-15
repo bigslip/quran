@@ -131,7 +131,7 @@ const Popover: React.FC<Props> = ({
       {...(typeof open !== 'undefined' && { open })}
       {...(onOpenChange && { onOpenChange })}
     >
-      <RadixPopover.Trigger aria-label="Open popover" asChild>
+      <RadixPopover.Trigger asChild>
         <span
           className={classNames(styles.trigger, {
             [triggerStyles]: triggerStyles,

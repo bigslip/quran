@@ -38,7 +38,9 @@ export const getReaderBannerAnalyticsParams = (
     case QuranReaderDataType.ChapterVerseRanges:
     case QuranReaderDataType.Ranges:
       return firstVerse?.verseKey ? { verseKey: firstVerse.verseKey } : {};
-    default:
-      return { chapterId: Number(id) };
+    default: {
+      const chapterId = Number(id) || Number(firstVerse?.chapterId);
+      return Number.isNaN(chapterId) ? {} : { chapterId };
+    }
   }
 };

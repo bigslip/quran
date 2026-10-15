@@ -43,7 +43,7 @@
   },
   "meta": {
     "description": "Cấu hình và xem trước các tiện ích nhúng để chia sẻ Kinh Qur'an, sau đó sao chép đoạn mã kịch bản đã được chuẩn bị sẵn.",
-    "title": "Công cụ tạo mã nhúng Ayah | Quran.com"
+    "title": "Công cụ tạo mã nhúng Ayah | Quran.ir"
   },
   "mushaf": {
     "indopak": "Indopak",
@@ -80,6 +80,6 @@
     "otherLanguage": "Khác"
   },
   "widget": {
-    "readOnQuran": "Đọc thêm trên Quran.com"
+    "readOnQuran": "Đọc thêm trên Quran.ir"
   }
 }

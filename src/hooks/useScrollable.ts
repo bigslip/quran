@@ -92,7 +92,7 @@ const useScrollable = ({
     updateScrollButtons();
     requestAnimationFrame(updateScrollButtons);
 
-    window.addEventListener('resize', updateScrollButtons);
+    window.addEventListener('resize', updateScrollButtons, { passive: true });
 
     return () => {
       window.removeEventListener('resize', updateScrollButtons);

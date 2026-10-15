@@ -32,7 +32,7 @@ its related tickets (sub-tickets and referenced tickets).
 TICKET_KEY="QF-3084"
 
 # First, list all property keys to see what's available
-curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
   "https://quranfoundation.atlassian.net/rest/api/3/issue/${TICKET_KEY}/properties" | \
   jq '.keys[].key'
 ```
@@ -49,12 +49,12 @@ This reveals keys like:
 TICKET_KEY="QF-3084"
 
 # Get issue ID (needed for properties endpoint)
-ISSUE_ID=$(curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+ISSUE_ID=$(curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
   "https://quranfoundation.atlassian.net/rest/api/3/issue/${TICKET_KEY}" | jq -r '.id')
 
 # Pull embed URLs - check multiple possible property indices
 FIGMA_URLS=$(for i in 0 1 2 3 4; do
-  curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+  curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
     "https://quranfoundation.atlassian.net/rest/api/3/issue/${ISSUE_ID}/properties/appsplusEmbedTabs:${i}" 2>/dev/null | \
     jq -r '.. | strings | select(startswith("https://www.figma.com"))' 2>/dev/null
 done | sort -u)
@@ -73,12 +73,12 @@ Given an array of ticket keys from `fetch-jira-ticket` skill:
 set TICKET_KEYS QF-3084 QF-3085 QF-3086
 
 for TICKET_KEY in $TICKET_KEYS
-  set ISSUE_ID (curl -s -u "osama@quran.com:(cat ~/.jira.d/.api_token)" \
+  set ISSUE_ID (curl -s -u "osama@quran.ir:(cat ~/.jira.d/.api_token)" \
     "https://quranfoundation.atlassian.net/rest/api/3/issue/$TICKET_KEY" | jq -r '.id')
 
   echo "=== $TICKET_KEY ==="
   for i in 0 1 2 3 4
-    curl -s -u "osama@quran.com:(cat ~/.jira.d/.api_token)" \
+    curl -s -u "osama@quran.ir:(cat ~/.jira.d/.api_token)" \
       "https://quranfoundation.atlassian.net/rest/api/3/issue/$ISSUE_ID/properties/appsplusEmbedTabs:$i" 2>/dev/null | \
       jq -r '.. | strings | select(startswith("https://www.figma.com"))' 2>/dev/null
   end | sort -u
@@ -97,11 +97,11 @@ echo "[" > "$OUTPUT_FILE"
 
 FIRST=true
 for TICKET_KEY in "${TICKET_KEYS[@]}"; do
-  ISSUE_ID=$(curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+  ISSUE_ID=$(curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
     "https://quranfoundation.atlassian.net/rest/api/3/issue/${TICKET_KEY}" | jq -r '.id')
 
   FIGMA_URLS=$(for i in 0 1 2 3 4; do
-    curl -s -u "osama@quran.com:$(cat ~/.jira.d/.api_token)" \
+    curl -s -u "osama@quran.ir:$(cat ~/.jira.d/.api_token)" \
       "https://quranfoundation.atlassian.net/rest/api/3/issue/${ISSUE_ID}/properties/appsplusEmbedTabs:${i}" 2>/dev/null | \
       jq -r '.. | strings | select(startswith("https://www.figma.com"))' 2>/dev/null
   done | sort -u | jq -R -s 'split("\n") | map(select(length > 0))')
@@ -128,13 +128,13 @@ The output is a JSON array mapping tickets to their Figma URLs:
   {
     "ticket": "QF-3084",
     "urls": [
-      "https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.com?node-id=14088-232378",
-      "https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.com?node-id=14088-233793"
+      "https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.ir?node-id=14088-232378",
+      "https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.ir?node-id=14088-233793"
     ]
   },
   {
     "ticket": "QF-3085",
-    "urls": ["https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.com?node-id=15000-100000"]
+    "urls": ["https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.ir?node-id=15000-100000"]
   }
 ]
 ```

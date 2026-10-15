@@ -19,17 +19,18 @@ const getPausedLoadingState = () =>
       surah: 1,
       ayahNumber: 1,
     },
-  );
+  ) as any;
 
-const getFetchReciterDoneEvent = () => ({
-  type: 'done.invoke.fetchReciter',
-  data: {
-    audioUrl: 'https://example.com/audio.mp3',
-    duration: 5_000,
-    verseTimings: [{ verseKey: '1:1', timestampFrom: 0, timestampTo: 5_000, segments: [] }],
-    reciterId: 7,
-  },
-});
+const getFetchReciterDoneEvent = () =>
+  ({
+    type: 'done.invoke.fetchReciter',
+    data: {
+      audioUrl: 'https://example.com/audio.mp3',
+      duration: 5_000,
+      verseTimings: [{ verseKey: '1:1', timestampFrom: 0, timestampTo: 5_000, segments: [] }],
+      reciterId: 7,
+    },
+  }) as any;
 
 describe('audioPlayerMachine reset flows', () => {
   it('resolves paused reciter reload to PAUSED.ACTIVE and pauses audio', () => {

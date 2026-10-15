@@ -1,5 +1,7 @@
+import React, { useMemo } from 'react';
+
 import useTranslation from 'next-translate/useTranslation';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import ScrollableSelection from './ScrollableSelection';
 
@@ -14,8 +16,11 @@ type Props = {
 
 const PageSelection: React.FC<Props> = ({ onAfterNavigationItemRouted }) => {
   const { t, lang } = useTranslation('common');
-  const { quranFont, mushafLines } = useSelector(selectQuranReaderStyles);
-  const pageIds = getPageIdsByMushaf(lang, quranFont, mushafLines);
+  const { quranFont, mushafLines } = useSelector(selectQuranReaderStyles, shallowEqual);
+  const pageIds = useMemo(
+    () => getPageIdsByMushaf(lang, quranFont, mushafLines),
+    [lang, quranFont, mushafLines],
+  );
   const lastReadPage = useSelector(selectedLastReadPage);
 
   return (
@@ -31,4 +36,4 @@ const PageSelection: React.FC<Props> = ({ onAfterNavigationItemRouted }) => {
   );
 };
 
-export default PageSelection;
+export default React.memo(PageSelection);

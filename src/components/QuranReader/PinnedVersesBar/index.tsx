@@ -1,21 +1,31 @@
 import React, { useCallback, useContext, useState } from 'react';
 
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import LoadFromCollectionModal from '../PinnedVerses/LoadFromCollectionModal';
-import SavePinnedToCollectionModal from '../PinnedVerses/SavePinnedToCollectionModal';
 import copyPinnedVerses from '../PinnedVerses/utils/copyPinnedVerses';
 
 import styles from './PinnedVersesBar.module.scss';
 import PinnedVersesContent from './PinnedVersesContent';
 
-import AddNoteModal from '@/components/Notes/modal/AddNoteModal';
 import DataContext from '@/contexts/DataContext';
 import { ToastStatus, useToast } from '@/dls/Toast/Toast';
 import usePinnedVerseSync from '@/hooks/usePinnedVerseSync';
+
+const SavePinnedToCollectionModal = dynamic(
+  () => import('../PinnedVerses/SavePinnedToCollectionModal'),
+  { ssr: false },
+);
+const LoadFromCollectionModal = dynamic(
+  () => import('../PinnedVerses/LoadFromCollectionModal'),
+  { ssr: false },
+);
+const AddNoteModal = dynamic(() => import('@/components/Notes/modal/AddNoteModal'), {
+  ssr: false,
+});
 import { selectPinnedVerses, selectPinnedVerseKeys } from '@/redux/slices/QuranReader/pinnedVerses';
 import { selectIsSidebarNavigationVisible } from '@/redux/slices/QuranReader/sidebarNavigation';
 import { openStudyMode } from '@/redux/slices/QuranReader/studyMode';

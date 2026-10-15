@@ -54,10 +54,15 @@ const Card = ({
         className={classNames(styles.imageContainer)}
         role="button"
         tabIndex={0}
-        onKeyPress={onImgClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onImgClick?.();
+          }
+        }}
         onClick={onImgClick}
       >
-        {imgSrc && <Image alt={imgAlt} className={styles.img} src={imgSrc} layout="fill" />}
+        {imgSrc && <Image alt={imgAlt} className={styles.img} src={imgSrc} fill />}
 
         {actionIcon && (
           <div className={styles.cardHoverEffectContainer} data-theme="dark">

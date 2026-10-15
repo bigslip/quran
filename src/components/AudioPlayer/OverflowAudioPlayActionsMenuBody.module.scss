@@ -1,8 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 14rem;
+}
+
 .menuWithNestedItems {
   display: flex;
   justify-content: space-between;
   flex: 1;
   align-items: center;
+  gap: var(--spacing-small);
 
   [dir='rtl'] & > svg {
     transform: scaleX(-1);

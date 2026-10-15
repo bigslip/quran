@@ -17,7 +17,7 @@ nodes in a single API call for efficiency.
 ## Inputs
 
 - `FIGMA_URLS` - Array of Figma URLs with node IDs
-- `FILE_KEY` - Figma file key (usually `RgJTH4su68l8K54RMzdnhR` for Quran.com)
+- `FILE_KEY` - Figma file key (usually `RgJTH4su68l8K54RMzdnhR` for Quran.ir)
 - `ROOT_TICKET` - The root ticket key for the spec directory
 
 ## Outputs
@@ -30,7 +30,7 @@ nodes in a single API call for efficiency.
 ### 1) Parse file key and node ID from a Figma URL
 
 ```bash
-URL="https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.com?node-id=14088-232378&t=TOKEN"
+URL="https://www.figma.com/design/RgJTH4su68l8K54RMzdnhR/Quran.ir?node-id=14088-232378&t=TOKEN"
 FILE_KEY=$(echo "$URL" | sed -n 's|.*design/\([^/]*\)/.*|\1|p')
 NODE_ID=$(echo "$URL" | sed -n 's|.*node-id=\([^&]*\).*|\1|p')
 

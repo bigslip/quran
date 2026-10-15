@@ -5,6 +5,7 @@ import NextLink from 'next/link';
 import styles from './Link.module.scss';
 
 import Wrapper from '@/components/Wrapper/Wrapper';
+import React from 'react';
 
 export enum LinkVariant {
   Highlight = 'highlight',
@@ -26,7 +27,7 @@ type LinkProps = {
   title?: string;
   children?: React.ReactNode;
   ariaLabel?: string;
-};
+} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick' | 'title'>;
 
 const Link: React.FC<LinkProps> = ({
   href,
@@ -41,13 +42,14 @@ const Link: React.FC<LinkProps> = ({
   shouldPrefetch = true,
   title,
   ariaLabel,
+  ...props
 }) => (
   <Wrapper
     shouldWrap={!download}
     wrapper={(node) => (
       <NextLink
         href={href}
-        {...(shouldPassHref && { shouldPassHref })}
+        {...(shouldPassHref && { passHref: shouldPassHref })}
         {...(shouldPrefetch === false && { prefetch: false })}
         shallow={isShallow}
         scroll={!isShallow}
@@ -72,6 +74,7 @@ const Link: React.FC<LinkProps> = ({
       {...(title && { title })}
       // eslint-disable-next-line @typescript-eslint/naming-convention
       {...(ariaLabel && { 'aria-label': ariaLabel })}
+      {...props}
     >
       {children}
     </a>

@@ -34,7 +34,7 @@ const TranslationSettingsButton: React.FC = () => {
   }, [dispatch]);
 
   const renderButtonWithName = useCallback(
-    (displayName?: string, validCount = 0) => (
+    (_displayName?: string, validCount = 0) => (
       <Button
         variant={ButtonVariant.ModeToggle}
         size={ButtonSize.XSmall}
@@ -51,7 +51,6 @@ const TranslationSettingsButton: React.FC = () => {
       >
         <span className={styles.translationText}>
           {t('translation')}
-          {displayName && `: ${displayName}`}
         </span>
       </Button>
     ),

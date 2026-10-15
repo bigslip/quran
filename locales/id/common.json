@@ -1,22 +1,23 @@
 {
   "about": "Tentang Kami",
+  "all": "Semua",
   "allow": "Ijinkan",
   "and": "dan",
   "announcements": {
     "auth-onboarding": {
       "data-sync": {
         "action": "Lanjut",
-        "description": "Baik Anda menggunakan Quran.com di ponsel ataupun laptop, bookmark Anda, ayat yang terakhir dibaca, dan preferensi Anda akan tersedia",
+        "description": "Baik Anda menggunakan Quran.ir di ponsel ataupun laptop, bookmark Anda, ayat yang terakhir dibaca, dan preferensi Anda akan tersedia",
         "title": "Data Anda akan disinkronkan <br></br> di seluruh perangkat"
       },
       "feedback": {
         "action": "OK saya mengerti",
-        "description": "Terima kasih telah menggunakan Quran.com dan silakan beri tanggapan Anda di <link> feedback.quran.com </link>",
+        "description": "Terima kasih telah menggunakan Quran.ir dan silakan beri tanggapan Anda di <link> feedback.quran.ir </link>",
         "title": "Kami ingin tahu pendapat Anda"
       },
       "quran-foundation-link": {
         "action": "Berikutnya",
-        "description": "Gunakan login Quran.com Anda untuk akses ke QuranReflect.com — sebuah komunitas refleksi Al-Qur'an global yang bertumbuh pesat.",
+        "description": "Gunakan login Quran.ir Anda untuk akses ke QuranReflect.com — sebuah komunitas refleksi Al-Qur'an global yang bertumbuh pesat.",
         "title": "Gunakan akun Anda di seluruh aplikasi Quran.Foundation!"
       },
       "quran-growth-journey": {
@@ -26,7 +27,7 @@
       },
       "welcome": {
         "action": "Lihat apa yang baru",
-        "title": "Selamat datang di Quran.com <br></br> Akun Pengguna"
+        "title": "Selamat datang di Quran.ir <br></br> Akun Pengguna"
       }
     },
     "collections-announcement": {
@@ -46,7 +47,11 @@
     "select-lng": "Pilih Bahasa",
     "sidebar-nav-close": "Tutup Sidebar Navigasi",
     "tooltip-action": "Aksi tooltip",
-    "translation-info": "Lihat informasi terjemahan"
+    "translation-info": "Lihat informasi terjemahan",
+    "play-verse": "Putar Ayat {{verseKey}}",
+    "pause-surah": "Jeda Surah {{surahName}}",
+    "pause-verse": "Jeda Ayat {{verseKey}}",
+    "surah-filter": "Filter Surah"
   },
   "audio": {
     "auto-scroll": {
@@ -113,12 +118,19 @@
   "click-here": "Klik disini",
   "close": "Tutup",
   "command-bar": {
+    "close": "Tutup",
+    "direct-jump-hint": "Tekan ↵ untuk menuju",
+    "filter": "Filter",
+    "navigate": "Navigasi",
     "navigations": "Navigasi",
     "no-nav-results": "Tidak ada hasil navigasi",
-    "placeholder": "Cari di Al Quran...",
-    "recent-navigations": "Navigasi terbaru",
-    "search-by-voice": "Cari dengan suara",
-    "try-navigating": "Coba navigasikan ke"
+    "placeholder": "Cari di Al-Quran...",
+    "search-placeholder": "Cari Al-Quran, Surah (mis. Al-Kahf atau 18), Ayat (2:255), Juz, atau Halaman...",
+    "select": "Pilih",
+    "spotlight-placeholder": "Cari Al-Quran, Surah, atau Ayat...",
+    "recent-navigations": "Navigasi Terbaru",
+    "search-by-voice": "Pencarian Suara",
+    "try-navigating": "Coba navigasi ke"
   },
   "community": {
     "cta": "Hubungi kami",
@@ -228,6 +240,7 @@
   },
   "exciting-updates": "Pengkinian menarik",
   "favorites": "Favorit",
+  "featured": "Pilihan",
   "feedback": "Beri Masukan",
   "fonts": {
     "15_lines": "15 Baris",
@@ -250,7 +263,7 @@
   },
   "footer": {
     "apps-disclaimer": "Setiap aplikasi dimiliki dan dikelola secara independen oleh pengembangnya. Untuk dukungan, laporan bug, atau permintaan fitur, silakan hubungi pembuat aplikasi secara langsung.",
-    "description": "Quran.com adalah platform tepercaya yang digunakan jutaan orang di seluruh dunia untuk membaca, mencari, mendengarkan, dan merefleksikan Al-Qur'an dalam berbagai bahasa. Platform ini menyediakan terjemahan, tafsir, tilawah, terjemahan kata demi kata, dan berbagai alat untuk pembelajaran yang lebih mendalam, sehingga Al-Qur'an dapat diakses oleh semua orang. <br/> <br/> Sebagai sebuah Sadaqah Jariyah, Quran.com berdedikasi untuk membantu orang-orang terhubung secara mendalam dengan Al-Qur'an. Didukung oleh <link> Quran.Foundation </link>, sebuah organisasi nirlaba 501(c)(3), Quran.com terus berkembang sebagai referensi yang sangat bernilai dan gratis untuk semua orang, Alhamdulillah.",
+    "description": "Quran.ir adalah platform tepercaya yang digunakan jutaan orang di seluruh dunia untuk membaca, mencari, mendengarkan, dan merefleksikan Al-Qur'an dalam berbagai bahasa. Platform ini menyediakan terjemahan, tafsir, tilawah, terjemahan kata demi kata, dan berbagai alat untuk pembelajaran yang lebih mendalam, sehingga Al-Qur'an dapat diakses oleh semua orang. <br/> <br/> Sebagai sebuah Sadaqah Jariyah, Quran.ir berdedikasi untuk membantu orang-orang terhubung secara mendalam dengan Al-Qur'an. Didukung oleh <link> Quran.Foundation </link>, sebuah organisasi nirlaba 501(c)(3), Quran.ir terus berkembang sebagai referensi yang sangat bernilai dan gratis untuk semua orang, Alhamdulillah.",
     "hiring": "Kami sedang merekrut! Bergabunglah dengan tim QuranFoundation dan berkontribusi pada misi kami. <link> Daftar sekarang! </link>",
     "rights": "Hak Cipta Terlindungi",
     "title": "Baca, Dengarkan, Cari, dan Renungkan Al Quran"
@@ -271,29 +284,29 @@
     "verification-code": "Kode Verifikasi"
   },
   "from": "Dari",
-  "fundraising-card-v2": {
-    "cta": "Donasi sekarang",
-    "description": "Donatur bulanan membantu kami meningkatkan Quran.com dan mempertahankan operasional sehingga kami dapat lebih fokus pada menciptakan dampak daripada penggalangan dana.",
-    "title": "Menjadi Donatur Bulanan"
-  },
-  "fundraising-share-title": "Sebarkan Penggalangan Dana Quran.com",
-  "fundraising-sticky-banner-v2": {
-    "cta": "Menyumbangkan",
-    "desktop-text": "Berkontribusilah pada misi kami",
-    "mobile-line-one": "Ini adalah bulan Al-Quran.",
-    "mobile-line-two": "Bantu kami menyebarkan cahayanya."
-  },
-  "fundraising-sticky-banner": {
-    "cta": "Menyumbang",
-    "title": "Menyumbang di hari-hari terbaik!"
-  },
   "fundraising": {
-    "description": "Donasi bulanan membantu kami mengembangkan dan mempertahankan operasional Quran.com sehingga kami dapat lebih fokus menciptakan dampak daripada menggalang dana.",
+    "description": "Donasi bulanan membantu kami mengembangkan dan mempertahankan operasional Quran.ir sehingga kami dapat lebih fokus menciptakan dampak daripada menggalang dana.",
     "donation-campaign": {
       "cta": "Donasi hari ini",
       "text": "Jadilah pendukung"
     },
     "title": "Menjadi Donatur Bulanan"
+  },
+  "fundraising-card-v2": {
+    "cta": "Donasi sekarang",
+    "description": "Donatur bulanan membantu kami meningkatkan Quran.ir dan mempertahankan operasional sehingga kami dapat lebih fokus pada menciptakan dampak daripada penggalangan dana.",
+    "title": "Menjadi Donatur Bulanan"
+  },
+  "fundraising-share-title": "Sebarkan Penggalangan Dana Quran.ir",
+  "fundraising-sticky-banner": {
+    "cta": "Menyumbang",
+    "title": "Menyumbang di hari-hari terbaik!"
+  },
+  "fundraising-sticky-banner-v2": {
+    "cta": "Menyumbangkan",
+    "desktop-text": "Berkontribusilah pada misi kami",
+    "mobile-line-one": "Ini adalah bulan Al-Quran.",
+    "mobile-line-two": "Bantu kami menyebarkan cahayanya."
   },
   "get-started": "Memulai",
   "go-to-verse": "Buka Ayat",
@@ -311,6 +324,7 @@
   "juz": "Juz",
   "language": "Bahasa",
   "languages": "Bahasa",
+  "languages-count": "{{count}} of {{total}} languages",
   "learn": "Mempelajari",
   "learn-more": "Pelajari lebih lanjut",
   "learning-plans": "Rencana Pembelajaran",
@@ -320,11 +334,16 @@
   "loading": "Memuat",
   "login": "Login",
   "logout": "Logout",
+  "madinah": "Madinah",
+  "madinah-short": "Madaniyah",
+  "makkah": "Makkah",
+  "makkah-short": "Makkiyah",
   "meccan": "Mekah",
   "medinan": "Madinah",
   "menu": "Menu",
   "minutes": "Menit",
   "mobile-apps": "Aplikasi",
+  "modal": "Modal",
   "mode": "Mode",
   "more": "Lagi",
   "my-learning-plans": "Rencana Pembelajaran Saya",
@@ -336,6 +355,7 @@
   "next": "Lanjut",
   "next-ayah": "Ayat Berikutnya",
   "no": "Tidak",
+  "no-languages-found": "No languages found",
   "no-notifications": "Belum ada notifikasi",
   "no-verses-available": "Tidak ada ayat yang tersedia",
   "none": "Tidak ada",
@@ -344,18 +364,20 @@
     "label": "Catatan",
     "title": "Catatan & Refleksi Saya"
   },
-  "notification-settings": "Pengaturan Notifikasi",
   "notification": {
     "mark-all-as-read": "Tandai semua telah dibaca",
     "mark-as-read": "Tandai telah dibaca"
   },
+  "notification-settings": "Pengaturan Notifikasi",
   "notifications": "Notifikasi",
   "off": "Mati",
   "oldest": "Paling Lama",
   "on": "Hidup",
   "our-projects": "Proyek Kami",
   "page": "Halaman",
+  "page-number": "Halaman {{page}}",
   "pages": "halaman-halaman",
+  "pagination-navigation": "Pagination navigation",
   "pagination-summary": "{{currentResultNumber}} - {{endOfResultNumber}} dari {{totalNumberOfResults}} hasil pencarian",
   "pbuh": "Berkah Allah atasnya",
   "popular-links": "Link populer",
@@ -379,9 +401,12 @@
   "profile": "Profil",
   "projects-desc": "Proyek nirlaba yang dimiliki, dikelola, atau disponsori oleh <link>Quran.Foundation</link>",
   "q-reflect": "QuranReflect",
+  "quran-android": "Quran untuk Android",
   "quran-apps": "Aplikasi Al-Quran",
-  "quran-com": "Quran.com",
+  "quran-com": "Quran.ir",
+  "quran-ios": "Quran untuk iOS",
   "quran-radio": "Radio Qur'an",
+  "ramadan-2026": "Ramadhan 2026",
   "read": "Membaca",
   "read-more": "Baca selengkapnya",
   "reading-history": "Riwayat membaca",
@@ -412,9 +437,6 @@
   "rub": "Rub el Hizb",
   "save": "Simpan",
   "save-to-collection": "Simpan ke Koleksi",
-  "search-for": "Cari '{{searchQuery}}'",
-  "search-results": "{{count}} hasil penelusuran",
-  "search-results-no-count": "Hasil Pencarian",
   "search": {
     "filters": "Filter",
     "hint": "Coba cari",
@@ -427,12 +449,18 @@
     "results": "hasil",
     "show-all": "Tampilkan semua hasil",
     "switch-mode": "Beralih ke Pencarian Lanjutan",
-    "title": "Mencari"
+    "title": "Mencari",
+    "placeholder": "Cari ayat, surah, topik, atau lompat ke ayat..."
   },
+  "search-for": "Cari '{{searchQuery}}'",
+  "search-languages": "Cari bahasa...",
+  "search-results": "{{count}} hasil penelusuran",
+  "search-results-no-count": "Hasil Pencarian",
   "seconds": "Detik",
   "see-less": "Lihat lebih sedikit",
   "see-new": "Lihat Apa yang Baru",
   "select-language": "Pilih Bahasa",
+  "select-language-description": "Pilih bahasa tampilan yang Anda inginkan untuk Quran.ir",
   "settings": {
     "no-tafsir-selected": "Tidak ada tafsir yang dipilih",
     "no-translation-selected": "Tidak ada terjemahan yang dipilih",
@@ -484,6 +512,7 @@
   "subscribe": "Mendaftar",
   "subscribed": "Terdaftar",
   "surah": "Surah",
+  "surahs": "Surah",
   "tab-see-less": "Lihat lebih sedikit...",
   "tab-see-more": "Lihat selengkapnya...",
   "tafsir": {
@@ -508,6 +537,7 @@
   "to": "Ke",
   "tooltip": "Dalam gelembung tooltip",
   "tooltip-trans-lang": "Bahasa Tooltip",
+  "topics": "Topik",
   "trans-lang": "Bahasa Terjemahan",
   "translation": "Terjemahan",
   "translations": "Terjemahan",
@@ -540,7 +570,9 @@
     "suggest": "Baca ayatnya, maka ayat akan mulai muncul",
     "suggest-subtitle": "Baca ayat apa saja dalam bahasa Arab, dan ayat itu akan muncul",
     "suggest-title": "Baca sekarang",
-    "voice-search-powered-by": "Pencarian Suara oleh"
+    "voice-search-powered-by": "Pencarian Suara oleh",
+    "start": "Mulai pencarian suara",
+    "stop": "Hentikan pencarian suara"
   },
   "wbw": "Kata per kata",
   "wbw-lang-summary": "Sumber terjemahan kata per kata: <link> {{source}} </link> . Sumber ini tidak tergantung pada pemilihan terjemahan ayat.",

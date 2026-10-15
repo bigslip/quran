@@ -15,7 +15,7 @@ import VerseText from '@/components/Verse/VerseText';
 import useBrowserLayoutEffect from '@/hooks/useBrowserLayoutEffect';
 import useThemeDetector from '@/hooks/useThemeDetector';
 import { addLoadedFontFace } from '@/redux/slices/QuranReader/font-faces';
-import { selectTooltipContentType } from '@/redux/slices/QuranReader/readingPreferences';
+import { selectTooltipContentType, selectWordByWordLocale } from '@/redux/slices/QuranReader/readingPreferences';
 import { selectQuranReaderStyles } from '@/redux/slices/QuranReader/styles';
 import { selectTheme } from '@/redux/slices/theme';
 import ThemeType from '@/redux/types/ThemeType';
@@ -33,9 +33,13 @@ const CONTENT_DELAY = 400;
 const VersePreview = () => {
   const { t } = useTranslation('quran-reader');
   const quranReaderStyles = useSelector(selectQuranReaderStyles, shallowEqual);
+  const selectedWbwLocale = useSelector(selectWordByWordLocale);
   const settingsTheme: { type: ThemeType } = useSelector(selectTheme, shallowEqual);
   const { themeVariant } = useThemeDetector();
-  const { data: sampleVerse } = useSWR(SWR_SAMPLE_VERSE_KEY, () => getSampleVerse());
+  const { data: sampleVerse } = useSWR(
+    [SWR_SAMPLE_VERSE_KEY, selectedWbwLocale],
+    () => getSampleVerse(selectedWbwLocale),
+  );
   const dispatch = useDispatch();
   const [showContent, setShowContent] = useState(false);
   const showTooltipFor = useSelector(selectTooltipContentType, areArraysEqual) as WordByWordType[];

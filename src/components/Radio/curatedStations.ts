@@ -10,7 +10,7 @@ const popularRecitersId = ['7', '3', '10', '4'];
 const generatePopularRecitersAudioTracks = (): AudioTrack[] => {
   return popularRecitersId
     .map((reciter) =>
-      range(1, QURAN_CHAPTERS_COUNT).map((chapter) => ({
+      range(1, QURAN_CHAPTERS_COUNT + 1).map((chapter) => ({
         surah: chapter.toString(),
         reciterId: reciter.toString(),
       })),
@@ -22,7 +22,7 @@ const JUZ_AMMA_FIRST_CHAPTER = 78;
 const generateJuzAmmaAudioTracks = (): AudioTrack[] => {
   return popularRecitersId
     .map((reciter) =>
-      range(JUZ_AMMA_FIRST_CHAPTER, QURAN_CHAPTERS_COUNT).map((chapter) => ({
+      range(JUZ_AMMA_FIRST_CHAPTER, QURAN_CHAPTERS_COUNT + 1).map((chapter) => ({
         surah: chapter.toString(),
         reciterId: reciter.toString(),
       })),
@@ -41,13 +41,13 @@ const curatedStations: Record<string, CuratedStation> = {
   '1': {
     title: 'popular-recitations.title',
     description: 'popular-recitations.description',
-    bannerImgSrc: '/images/stations/1.jpeg',
+    bannerImgSrc: '/images/stations/popular-recitations.jpg',
     audioTracks: generatePopularRecitersAudioTracks(),
   },
   '2': {
     title: 'yaseen-alwaqiah-al-mulk.title',
     description: 'yaseen-alwaqiah-al-mulk.description',
-    bannerImgSrc: '/images/stations/2.jpg',
+    bannerImgSrc: '/images/stations/yaseen-waqiah-mulk.jpg',
     audioTracks: [
       {
         surah: '36',
@@ -66,13 +66,13 @@ const curatedStations: Record<string, CuratedStation> = {
   '3': {
     title: 'surah-al-kahf.title',
     description: 'surah-al-kahf.description',
-    bannerImgSrc: '/images/stations/3.jpeg',
+    bannerImgSrc: '/images/stations/surah-al-kahf.jpg',
     audioTracks: generateSurahAlKahfAudioTracks(),
   },
   '4': {
     title: 'juz-amma.title',
     description: 'juz-amma.description',
-    bannerImgSrc: '/images/stations/4.jpeg',
+    bannerImgSrc: '/images/stations/juz-amma.jpg',
     audioTracks: generateJuzAmmaAudioTracks(),
   },
 };

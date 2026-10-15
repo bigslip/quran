@@ -35,7 +35,11 @@ const JunctureTabs: React.FC<JunctureTabsProps> = ({
   return (
     <div className={styles.container}>
       {hasMultipleJunctures && (
-        <div className={styles.tabs} role="tablist" aria-label="Juncture selection">
+        <div
+          className={styles.tabs}
+          role="tablist"
+          aria-label={t('qiraat:juncture-selection', { defaultValue: 'Juncture selection' })}
+        >
           {junctures.map((juncture, index) => {
             const isSelected = selectedJunctureId === juncture.id;
 

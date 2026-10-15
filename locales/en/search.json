@@ -1,6 +1,8 @@
 {
   "default-translations": "Default Translations",
-  "filter": "filter",
+  "filter": {
+    "languages-placeholder": "Select a language"
+  },
   "language-filter-label": "Search all translations of a language",
   "language-select": "Select a language",
   "reset": "reset",

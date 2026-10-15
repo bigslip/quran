@@ -8,6 +8,8 @@
   block-size: 100%;
   max-inline-size: 100%;
   padding-inline: var(--spacing-medium);
+  gap: var(--spacing-medium);
+
   @include breakpoints.tablet {
     margin-inline: auto;
   }
@@ -19,19 +21,34 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  min-inline-size: 0;
+  flex: 1;
 }
 
 .title {
   font-weight: var(--font-weight-semibold);
-  line-height: normal;
+  font-size: var(--font-size-small);
+  color: var(--color-text-primary, var(--color-text-default));
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-inline-size: 100%;
 }
 
 .description {
   text-align: start;
-  line-height: normal;
+  font-size: var(--font-size-xsmall);
+  color: var(--color-text-secondary, var(--color-text-faded));
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-inline-size: 100%;
 }
 
 .actions {
   display: flex;
   align-items: center;
+  gap: var(--spacing-xsmall);
 }

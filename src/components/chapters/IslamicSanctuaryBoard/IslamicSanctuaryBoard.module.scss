@@ -1,0 +1,143 @@
+@use 'src/styles/breakpoints';
+
+.sanctuaryBoard {
+  inline-size: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-block-start: var(--spacing-medium-px);
+  margin-block-end: var(--spacing-large-px);
+  filter: drop-shadow(0 24px 48px var(--color-sanctuary-shadow, rgba(0, 75, 57, 0.25)));
+  transition: filter var(--transition-regular) ease;
+}
+
+.topShapeWrapper {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+  margin-block-end: -1px;
+  z-index: 1;
+}
+
+.topArchSvg {
+  inline-size: 526px;
+  max-inline-size: 90vw;
+  block-size: 123px;
+  display: block;
+  fill: var(--color-sanctuary-arch-fill, #004b39);
+  transition: fill var(--transition-regular) ease;
+
+  @include breakpoints.smallerThanTablet {
+    inline-size: 280px;
+    block-size: 65px;
+  }
+}
+
+.boardBody {
+  inline-size: 100%;
+  background-color: var(--color-sanctuary-bg, #004b39);
+  background-image: url('/images/islamic-tapestry-bg.png');
+  background-repeat: repeat;
+  background-size: auto;
+  border-radius: 100px;
+  padding-inline: var(--spacing-large-px);
+  padding-block: 40px 60px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: background-color var(--transition-regular) ease;
+
+  @include breakpoints.smallerThanTablet {
+    border-radius: 40px;
+    padding-inline: var(--spacing-xsmall-px);
+    padding-block: 25px 35px;
+  }
+}
+
+.bottomShapeWrapper {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+  margin-block-start: -1px;
+  z-index: 1;
+}
+
+.bottomArchSvg {
+  inline-size: 83px;
+  block-size: 38px;
+  display: block;
+  fill: var(--color-sanctuary-arch-fill, #004b39);
+  transition: fill var(--transition-regular) ease;
+
+  @include breakpoints.smallerThanTablet {
+    inline-size: 50px;
+    block-size: 23px;
+  }
+}
+
+.honeycombGrid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+  inline-size: 100%;
+}
+
+.honeycombRow {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-block-start: -16px;
+  flex-wrap: nowrap;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 170px;
+  position: relative;
+  z-index: 1;
+
+  &:hover,
+  &:focus-within {
+    z-index: 10;
+  }
+
+  &:first-child {
+    margin-block-start: 0;
+  }
+
+  @media (max-width: 1279px) and (min-width: 1024px) {
+    gap: 24px;
+    margin-block-start: -16px;
+    contain-intrinsic-size: auto 180px;
+  }
+
+  @media (max-width: 1023px) and (min-width: 640px) {
+    gap: 20px;
+    margin-block-start: -14px;
+    contain-intrinsic-size: auto 175px;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    gap: 16px;
+    margin-block-start: -8px;
+    contain-intrinsic-size: auto 155px;
+  }
+}
+
+.alignedRow {
+  margin-block-start: 20px;
+
+  @media (max-width: 1279px) and (min-width: 1024px) {
+    margin-block-start: 24px;
+  }
+
+  @media (max-width: 1023px) and (min-width: 640px) {
+    margin-block-start: 20px;
+  }
+
+  @include breakpoints.smallerThanTablet {
+    margin-block-start: 16px;
+  }
+}

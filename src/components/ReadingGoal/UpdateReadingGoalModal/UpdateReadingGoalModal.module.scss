@@ -18,25 +18,31 @@
 
   select {
     inline-size: 100%;
+    font-variant-numeric: tabular-nums;
   }
 }
 
 .label {
   font-size: var(--font-size-large);
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
   margin-block-end: var(--spacing-small);
 }
 
 .actionButton {
   inline-size: 100%;
+  font-weight: var(--font-weight-bold);
 }
 
 .confirmationText {
   font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary, var(--color-text-default));
 }
 
 .instructionText {
   padding-block: var(--spacing-medium);
+  color: var(--color-text-secondary, var(--color-text-faded));
+  line-height: var(--line-height-normal);
 }
 
 .radioGroup {
@@ -51,18 +57,22 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xsmall);
+  color: var(--color-text-primary, var(--color-text-default));
+  font-weight: var(--font-weight-medium);
 }
 
 .footerCtaContainer {
   inline-size: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-micro);
+  gap: var(--spacing-small-px);
 }
 
 .editGoalButton {
   font-weight: var(--font-weight-semibold);
+  color: var(--color-primary, var(--color-streaks-dark));
+
   @include breakpoints.tablet {
-    color: var(--color-streaks-dark);
+    color: var(--color-primary, var(--color-streaks-dark));
   }
 }

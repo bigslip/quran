@@ -183,6 +183,12 @@ export const {
 export const selectQuranReaderStyles = (state: RootState) => state.quranReaderStyles;
 export const selectQuranFont = (state: RootState) => state.quranReaderStyles.quranFont;
 export const selectQuranMushafLines = (state: RootState) => state.quranReaderStyles.mushafLines;
+export const selectQuranTextFontScale = (state: RootState) =>
+  state.quranReaderStyles.quranTextFontScale;
+export const selectTranslationFontScale = (state: RootState) =>
+  state.quranReaderStyles.translationFontScale;
+export const selectTafsirFontScale = (state: RootState) =>
+  state.quranReaderStyles.tafsirFontScale;
 export const selectWordByWordFontScale = (s: RootState) => s.quranReaderStyles.wordByWordFontScale;
 export const selectIsUsingDefaultFont = (s: RootState) => !!s.quranReaderStyles.isUsingDefaultFont;
 export const selectShowTajweedRules = (s: RootState) => s.quranReaderStyles.showTajweedRules;

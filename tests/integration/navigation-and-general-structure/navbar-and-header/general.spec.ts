@@ -11,11 +11,11 @@ test.beforeEach(async ({ page, context }) => {
 });
 
 test(
-  'Clickable quran.com logo with homepage redirect',
+  'Clickable quran.ir logo with homepage redirect',
   { tag: ['@slow', '@navbar'] },
   async ({ page }) => {
-    // Click on the quran.com logo of the navbar (the first one, the second is in the drawer)
-    const logoElement = page.getByTitle('Quran.com').nth(0);
+    // Click on the quran.ir logo of the navbar (the first one, the second is in the drawer)
+    const logoElement = page.getByTitle('Quran.ir').nth(0);
     await logoElement.click();
 
     // Make sure we are redirected to the homepage

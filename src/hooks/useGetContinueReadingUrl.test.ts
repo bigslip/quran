@@ -1,11 +1,14 @@
 /* eslint-disable max-lines */
 /* eslint-disable react-func/max-lines-per-function */
+import React from 'react';
+
 import { renderHook } from '@testing-library/react';
 import { useSelector } from 'react-redux';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import useGetContinueReadingUrl from './useGetContinueReadingUrl';
 
+import DataContext from '@/contexts/DataContext';
 import useGetRecentlyReadVerseKeys from '@/hooks/auth/useGetRecentlyReadVerseKeys';
 import { selectLastReadVerseKey } from '@/redux/slices/QuranReader/readingTracker';
 import { getChapterWithStartingVerseUrl } from '@/utils/navigation';
@@ -48,7 +51,7 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/2:5');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('2:5');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('2:5', undefined);
     expect(getChapterWithStartingVerseUrl).toHaveBeenCalledTimes(1);
   });
 
@@ -77,7 +80,7 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/3:15');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('3:15');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('3:15', undefined);
     expect(getChapterWithStartingVerseUrl).toHaveBeenCalledTimes(1);
   });
 
@@ -99,7 +102,7 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/1:1');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1', 'al-fatihah');
     expect(getChapterWithStartingVerseUrl).toHaveBeenCalledTimes(1);
   });
 
@@ -131,7 +134,7 @@ describe('useGetContinueReadingUrl', () => {
 
     // Should use most recent reading session, not Redux value
     expect(result.current).toBe('/mocked-url/5:20');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('5:20');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('5:20', undefined);
     expect(getChapterWithStartingVerseUrl).not.toHaveBeenCalledWith('4:10');
   });
 
@@ -153,7 +156,7 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/1:1');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1', 'al-fatihah');
   });
 
   it('should handle undefined recentlyReadVerseKeys', () => {
@@ -174,6 +177,33 @@ describe('useGetContinueReadingUrl', () => {
     const { result } = renderHook(() => useGetContinueReadingUrl());
 
     expect(result.current).toBe('/mocked-url/1:1');
-    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('1:1', 'al-fatihah');
+  });
+
+  it('should resolve and pass canonical slug from DataContext when available', () => {
+    const mockRecentlyReadVerseKeys = [{ surah: '2', ayah: '255' }];
+
+    vi.mocked(useGetRecentlyReadVerseKeys).mockReturnValue({
+      recentlyReadVerseKeys: mockRecentlyReadVerseKeys,
+      isLoading: false,
+    });
+
+    vi.mocked(useSelector).mockReturnValue({ verseKey: null });
+
+    const mockChaptersData = {
+      '2': {
+        id: '2',
+        slug: 'al-baqarah',
+        transliteratedName: 'Al-Baqarah',
+      },
+    };
+
+    const wrapper = ({ children }: { children: React.ReactNode }) =>
+      React.createElement(DataContext.Provider, { value: mockChaptersData as any }, children);
+
+    const { result } = renderHook(() => useGetContinueReadingUrl(), { wrapper });
+
+    expect(result.current).toBe('/mocked-url/2:255');
+    expect(getChapterWithStartingVerseUrl).toHaveBeenCalledWith('2:255', 'al-baqarah');
   });
 });

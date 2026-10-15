@@ -1,29 +1,49 @@
 @use 'src/styles/breakpoints';
-$max-width: calc(7 * var(--spacing-mega-px) - 3 * var(--spacing-small-px)); // (700 - padding) = 670
+@use 'src/styles/theme';
+
+$max-width: 880px;
 
 .main {
-  div .headerNavigationInnerClassName {
-    max-inline-size: $max-width;
-  }
+  min-block-size: 100vh;
+  background: var(--color-background-default);
+  padding-block-end: var(--spacing-max);
 
   .mainContent {
+    margin-inline: auto;
+    max-inline-size: $max-width;
+
     .pageContainer {
       overflow: hidden;
-      max-inline-size: unset;
-      padding: unset;
+      max-inline-size: $max-width;
+      padding-inline: var(--spacing-medium-px);
+      padding-block: var(--spacing-small-px);
       margin-block-end: 0;
+
       @include breakpoints.tablet {
-        max-inline-size: $max-width;
-        padding-block: var(--spacing-xlarge-px);
+        padding-block: var(--spacing-medium-px);
       }
 
       .tabContent {
-        padding-block: var(--spacing-xlarge-px);
+        padding-block: var(--spacing-medium-px);
+        animation: tabContentFade var(--transition-regular) cubic-bezier(0.16, 1, 0.3, 1);
+
         @include breakpoints.smallerThanTablet {
-          padding-inline: var(--spacing-medium2-px);
-          padding-block: var(--spacing-large-px);
+          padding-inline: var(--spacing-xsmall-px);
+          padding-block: var(--spacing-small-px);
         }
       }
     }
+  }
+}
+
+@keyframes tabContentFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

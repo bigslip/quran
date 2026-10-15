@@ -18,17 +18,23 @@ import ExperienceIcon from '@/icons/experience.svg';
 import PersonIcon from '@/icons/person.svg';
 import { TestId } from '@/tests/test-ids';
 import { logButtonClick } from '@/utils/eventLogger';
+import { toLocalizedNumber } from '@/utils/locale';
 import { AudioPlayerMachineContext } from 'src/xstate/AudioPlayerMachineContext';
 
 /**
  * We're using (`1x` `1.25x`) as a replacement for `icon` in popover menu
- * So we need to adjust the font to make it fit the containeer
+ * So we need to adjust the font to make it fit the container
  *
  * @returns {number} fontSize
  */
 const getPlaybackRateLabelFontSize = (playbackRates: number) => {
   const numberOfCharacter = playbackRates.toString().length;
-  if (numberOfCharacter >= 4) return 11;
+  if (numberOfCharacter >= 4) {
+    return 10;
+  }
+  if (numberOfCharacter >= 3) {
+    return 12;
+  }
   return 14;
 };
 
@@ -50,7 +56,7 @@ const OverflowAudioPlayActionsMenuBody = ({
     AudioPlayerOverflowMenu.Main,
   );
   const audioService = useContext(AudioPlayerMachineContext);
-  const { t } = useTranslation('common');
+  const { t, lang } = useTranslation('common');
   const playbackRate = useSelector(audioService, (state) => state.context.playbackRate);
   const { prevStep, nextStep } = useOnboarding();
 
@@ -78,6 +84,16 @@ const OverflowAudioPlayActionsMenuBody = ({
       );
     };
   }, [nextStep, prevStep]);
+
+  useEffect(() => {
+    const handler = () => {
+      setSelectedMenu(AudioPlayerOverflowMenu.Main);
+    };
+    window.addEventListener('resize', handler, { passive: true });
+    return () => {
+      window.removeEventListener('resize', handler);
+    };
+  }, []);
 
   const menus = useMemo(
     () => ({
@@ -107,7 +123,7 @@ const OverflowAudioPlayActionsMenuBody = ({
           key={4}
           icon={
             <span style={{ fontSize: getPlaybackRateLabelFontSize(playbackRate) }}>
-              {playbackRate}
+              {toLocalizedNumber(playbackRate, lang)}
               {t('audio.playback-speed-unit')}
             </span>
           }
@@ -149,10 +165,10 @@ const OverflowAudioPlayActionsMenuBody = ({
         <AudioExperienceMenu onBack={() => setSelectedMenu(AudioPlayerOverflowMenu.Main)} />
       ),
     }),
-    [t, playbackRate, isEmbedded],
+    [isEmbedded, playbackRate, t, lang],
   );
 
-  return <>{menus[selectedMenu]}</>;
+  return <div className={styles.container}>{menus[selectedMenu]}</div>;
 };
 
 export default OverflowAudioPlayActionsMenuBody;

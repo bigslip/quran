@@ -4,11 +4,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-block: var(--spacing-xxsmall);
+  gap: var(--spacing-xsmall);
+
+  @include breakpoints.tablet {
+    gap: var(--spacing-small);
+    padding-block: var(--spacing-micro);
+  }
+
+  @include breakpoints.desktop {
+    gap: var(--spacing-medium);
+  }
+}
+
+.actionItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
 }
 
 .actionItem + .actionItem {
-  margin-inline-start: var(--spacing-xsmall);
-  @include breakpoints.desktop {
-    margin-inline-start: var(--spacing-medium);
-  }
+  margin-inline-start: 0;
 }

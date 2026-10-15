@@ -1,19 +1,17 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable i18next/no-literal-string */
 import { useState } from 'react';
+
+import useTranslation from 'next-translate/useTranslation';
 
 import styles from './EnrollButton.module.scss';
 
 import Button, { ButtonVariant } from '@/dls/Button/Button';
-import Spinner from '@/dls/Spinner/Spinner';
 import { ToastStatus, useToast } from '@/dls/Toast/Toast';
 import { logErrorToSentry } from '@/lib/sentry';
-import { TestId } from '@/tests/test-ids';
 import { addReadingGoal } from '@/utils/auth/api';
 import { logButtonClick } from '@/utils/eventLogger';
 import { GoalCategory } from 'types/auth/Goal';
 
-interface Props {
+interface Props extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   section: string;
   subscribedText: string;
   enrollText: string;
@@ -29,7 +27,9 @@ const EnrollButton = ({
   isEnrolled,
   isLoading,
   mutate,
+  ...rest
 }: Props) => {
+  const { t } = useTranslation('ramadan-activities');
   const [isEnrollLoading, setIsEnrollLoading] = useState(false);
   const toast = useToast();
 
@@ -41,32 +41,41 @@ const EnrollButton = ({
     try {
       await addReadingGoal({ category: GoalCategory.RAMADAN_CHALLENGE });
       await mutate();
-      toast('Enrolled successfully! You may see a welcome email in your inbox.', {
-        status: ToastStatus.Success,
-      });
+      toast(
+        t('enroll-success-email', {
+          defaultValue: 'Enrolled successfully! You may see a welcome email in your inbox.',
+        }),
+        {
+          status: ToastStatus.Success,
+        },
+      );
     } catch (error) {
       logErrorToSentry(error, {
         transactionName: 'ramadan_challenge_enroll',
         metadata: { section },
       });
-      toast('Failed to enroll, please try again later.', { status: ToastStatus.Error });
+      toast(
+        t('enroll-failed', {
+          defaultValue: 'Failed to enroll, please try again later.',
+        }),
+        { status: ToastStatus.Error },
+      );
     } finally {
       setIsEnrollLoading(false);
     }
   };
 
-  if (isLoading) {
-    return <Spinner dataTestId={TestId.RAMADAN_CHALLENGE_ENROLL_BUTTON_SPINNER} />;
-  }
+  // Button handles isLoading natively below
 
   return (
     <Button
       onClick={handleEnroll}
       variant={isDisabled ? ButtonVariant.Ghost : ButtonVariant.Shadow}
-      isLoading={isEnrollLoading}
+      isLoading={isEnrollLoading || isLoading}
       isDisabled={isDisabled}
       aria-live="polite"
       className={styles.button}
+      {...rest}
     >
       {isDisabled ? subscribedText : enrollText}
     </Button>

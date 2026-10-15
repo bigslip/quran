@@ -1,0 +1,134 @@
+import React from 'react';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import TranslationsFilter from './TranslationsFilter';
+import AvailableTranslation from 'types/AvailableTranslation';
+
+vi.mock('/public/icons/tick.svg', () => ({ default: () => <svg data-testid="tick-icon" /> }));
+vi.mock('/public/icons/divider-horizontal.svg', () => ({ default: () => <svg data-testid="divider-icon" /> }));
+
+const mockTranslationsByLanguages: Record<string, AvailableTranslation[]> = {
+  english: [
+    {
+      id: 131,
+      name: 'Dr. Mustafa Khattab, the Clear Quran',
+      authorName: 'Dr. Mustafa Khattab',
+      slug: 'clearquran-with-tafsir',
+      languageName: 'english',
+      translatedName: {
+        name: 'Dr. Mustafa Khattab, the Clear Quran',
+        languageName: 'english',
+      },
+    },
+    {
+      id: 17,
+      name: 'Dr. Ghali',
+      authorName: 'Dr. Mahmud M. Ghali',
+      slug: 'ghali',
+      languageName: 'english',
+      translatedName: {
+        name: 'Dr. Ghali',
+        languageName: 'english',
+      },
+    },
+  ],
+  russian: [
+    {
+      id: 54,
+      name: 'Tafsir Jalalayn',
+      authorName: 'Jalal ad-Din al-Mahalli and Jalal ad-Din as-Suyuti',
+      slug: 'ruy-tafsir-jalalayn',
+      languageName: 'russian',
+      translatedName: {
+        name: 'Tafsir Jalalayn',
+        languageName: 'russian',
+      },
+    },
+  ],
+};
+
+describe('TranslationsFilter', () => {
+  afterEach(cleanup);
+
+  it('renders translations grouped by language', () => {
+    render(
+      <TranslationsFilter
+        translationsByLanguages={mockTranslationsByLanguages}
+        selectedTranslations=""
+        onTranslationChange={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText(/english/i)).toBeTruthy();
+    expect(screen.getByText('Dr. Mustafa Khattab, the Clear Quran')).toBeTruthy();
+    expect(screen.getByText('Dr. Ghali')).toBeTruthy();
+
+    expect(screen.getByText(/russian/i)).toBeTruthy();
+  });
+
+  it('dispatches selected translations when checked', () => {
+    const onChange = vi.fn();
+    render(
+      <TranslationsFilter
+        translationsByLanguages={mockTranslationsByLanguages}
+        selectedTranslations="131"
+        onTranslationChange={onChange}
+      />,
+    );
+
+    // Click on Dr. Ghali to select it
+    fireEvent.click(screen.getByText('Dr. Ghali'));
+
+    // It should dispatch the existing 131 + the new 17
+    expect(onChange).toHaveBeenCalledWith(['131', '17']);
+  });
+
+  it('toggles language group checkbox without clearing other languages', () => {
+    const onChange = vi.fn();
+    render(
+      <TranslationsFilter
+        translationsByLanguages={mockTranslationsByLanguages}
+        selectedTranslations="54"
+        onTranslationChange={onChange}
+      />,
+    );
+
+    // Click on english group checkbox to select all english translations
+    fireEvent.click(screen.getByText(/english/i));
+
+    // Should include Russian (54) AND both English translations (131, 17)
+    expect(onChange).toHaveBeenCalledWith(['54', '131', '17']);
+  });
+
+  it('deselects language group without clearing other languages', () => {
+    const onChange = vi.fn();
+    render(
+      <TranslationsFilter
+        translationsByLanguages={mockTranslationsByLanguages}
+        selectedTranslations="54,131,17"
+        onTranslationChange={onChange}
+      />,
+    );
+
+    // English has all selected (131, 17). Clicking english should deselect English but KEEP Russian (54)
+    fireEvent.click(screen.getByText(/english/i));
+
+    expect(onChange).toHaveBeenCalledWith(['54']);
+  });
+
+  it('spreads HTMLAttributes like data-testid to root element', () => {
+    render(
+      <TranslationsFilter
+        translationsByLanguages={mockTranslationsByLanguages}
+        selectedTranslations=""
+        onTranslationChange={vi.fn()}
+        data-testid="translations-filter-root"
+        className="test-class"
+      />,
+    );
+
+    const rootElement = screen.getByTestId('translations-filter-root');
+    expect(rootElement).toBeTruthy();
+    expect(rootElement.className).toContain('test-class');
+  });
+});

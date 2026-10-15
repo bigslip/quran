@@ -15,7 +15,9 @@ const useMemoizedVerseTiming = ({ verseKey, verseTimingsData }) => {
   if (!verseTimingsData || !verseKey) return null;
 
   if (verseTiming.current && verseTiming.current.verseKey === verseKey) return verseTiming.current;
-  return getVerseTimingByVerseKey(verseKey, verseTimingsData);
+  const result = getVerseTimingByVerseKey(verseKey, verseTimingsData);
+  verseTiming.current = result;
+  return result;
 };
 
 export default useMemoizedVerseTiming;

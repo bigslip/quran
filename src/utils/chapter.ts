@@ -4,6 +4,7 @@ import random from 'lodash/random';
 
 import { formatStringNumber } from './number';
 import REVELATION_ORDER from './revelationOrder';
+import { isValidChapterId } from './validator';
 
 import Chapter from 'types/Chapter';
 import ChaptersData from 'types/ChaptersData';
@@ -13,18 +14,28 @@ const SUPPORTED_CHAPTER_LOCALES = [
   'en',
   'ar',
   'bn',
+  'fa',
   'fr',
   'id',
-  'ms',
   'it',
   'nl',
+  'pt',
   'ru',
+  'sq',
+  'th',
   'tr',
   'ur',
   'zh',
+  'ms',
   'es',
   'sw',
+  'vi',
 ];
+
+const chaptersCache = new Map<string, Record<string, Chapter>>();
+let pageToChapterMappingsCache: any = null;
+let juzToChapterMappingsCache: any = null;
+let juzToChapterVerseMappingsCache: any = null;
 
 /**
  * Get chapters data from the json file, by language
@@ -32,22 +43,17 @@ const SUPPORTED_CHAPTER_LOCALES = [
  * @param {string} lang
  * @returns {Promise<Record<string, Chapter>>} chapter
  */
-export const getAllChaptersData = (
+export const getAllChaptersData = async (
   lang: string = DEFAULT_LANGUAGE,
 ): Promise<Record<string, Chapter>> => {
-  if (SUPPORTED_CHAPTER_LOCALES.includes(lang)) {
-    return new Promise((res) => {
-      import(`../../data/chapters/${lang}.json`).then((data) => {
-        res(data.default);
-      });
-    });
+  const targetLang = SUPPORTED_CHAPTER_LOCALES.includes(lang) ? lang : 'en';
+  if (chaptersCache.has(targetLang)) {
+    return chaptersCache.get(targetLang)!;
   }
-  return new Promise((res) => {
-    import(`../../data/chapters/en.json`).then((data) => {
-      // @ts-ignore
-      res(data.default);
-    });
-  });
+  const data = await import(`../../data/chapters/${targetLang}.json`);
+  const chapters = data.default;
+  chaptersCache.set(targetLang, chapters);
+  return chapters;
 };
 
 /**
@@ -61,17 +67,41 @@ export const getChapterData = (chapters: ChaptersData, id: string): Chapter | un
   (chapters || {})[formatStringNumber(id)];
 
 /**
+ * Resolves a chapter ID or slug to chapter ID synchronously from chaptersData.
+ *
+ * @param {ChaptersData} chapters
+ * @param {string} slugOrId
+ * @returns {string | undefined}
+ */
+export const getChapterIdBySlugOrId = (
+  chapters: ChaptersData,
+  slugOrId: string,
+): string | undefined => {
+  if (!slugOrId || !chapters) return undefined;
+  if (isValidChapterId(slugOrId)) {
+    return formatStringNumber(slugOrId);
+  }
+  const param = slugOrId.toLowerCase();
+  const match = Object.entries(chapters).find(
+    ([, ch]) =>
+      ch.slug?.toLowerCase() === param ||
+      ch.slugs?.some((s) => s.slug?.toLowerCase() === param),
+  );
+  return match ? match[0] : undefined;
+};
+
+/**
  * Given a pageId, get chapter ids from a json file
  *
  * @param {string} pageId
  * @returns {Promise<string[]>} chapterIds
  */
-export const getChapterIdsForPage = (pageId: string): Promise<string[]> => {
-  return new Promise((res) => {
-    import(`@/data/page-to-chapter-mappings.json`).then((data) => {
-      res(data.default[pageId]);
-    });
-  });
+export const getChapterIdsForPage = async (pageId: string): Promise<string[]> => {
+  if (!pageToChapterMappingsCache) {
+    const data = await import(`@/data/page-to-chapter-mappings.json`);
+    pageToChapterMappingsCache = data.default;
+  }
+  return pageToChapterMappingsCache[pageId];
 };
 
 /**
@@ -81,11 +111,11 @@ export const getChapterIdsForPage = (pageId: string): Promise<string[]> => {
  * @returns {string[]} chapterIds
  */
 export const getChapterIdsForJuz = async (juzId: string): Promise<string[]> => {
-  return new Promise((res) => {
-    import(`@/data/juz-to-chapter-mappings.json`).then((data) => {
-      res(data.default[juzId]);
-    });
-  });
+  if (!juzToChapterMappingsCache) {
+    const data = await import(`@/data/juz-to-chapter-mappings.json`);
+    juzToChapterMappingsCache = data.default;
+  }
+  return juzToChapterMappingsCache[juzId];
 };
 
 type ChapterAndVerseMapping = { [chapter: string]: string };
@@ -94,12 +124,12 @@ type ChapterAndVerseMapping = { [chapter: string]: string };
  *
  * @returns {[juz: string]: ChapterAndVerseMapping}
  */
-export const getAllJuzMappings = (): Promise<{ [juz: string]: ChapterAndVerseMapping }> => {
-  return new Promise((res) => {
-    import('@/data/juz-to-chapter-verse-mappings.json').then((data) => {
-      res(data.default);
-    });
-  });
+export const getAllJuzMappings = async (): Promise<{ [juz: string]: ChapterAndVerseMapping }> => {
+  if (!juzToChapterVerseMappingsCache) {
+    const data = await import('@/data/juz-to-chapter-verse-mappings.json');
+    juzToChapterVerseMappingsCache = data.default;
+  }
+  return juzToChapterVerseMappingsCache;
 };
 
 /**
@@ -108,7 +138,7 @@ export const getAllJuzMappings = (): Promise<{ [juz: string]: ChapterAndVerseMap
  * @param {string} juzId
  * @returns {[chapter: string]: string}
  *
- * original data source: https://api.quran.com/api/v4/juzs
+ * original data source: https://api.quran.ir/api/v4/juzs
  *
  * Example:
  * getChapterAndVerseMappingForJuz("1") // { "1": "1-7", "2" : "1-141"}

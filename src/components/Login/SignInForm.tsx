@@ -1,5 +1,7 @@
 import { FC, useState } from 'react';
 
+import classNames from 'classnames';
+
 import useTranslation from 'next-translate/useTranslation';
 
 import AuthInput from './AuthInput';
@@ -24,14 +26,15 @@ interface FormData {
   password: string;
 }
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   redirect?: string;
 }
 
-const SignInForm: FC<Props> = ({ redirect }) => {
+const SignInForm: FC<Props> = ({ redirect, className, ...props }) => {
   const { t } = useTranslation('login');
   const { redirectWithToken } = useAuthRedirect();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const formFields: FormBuilderFormField[] = [
     {
@@ -100,7 +103,7 @@ const SignInForm: FC<Props> = ({ redirect }) => {
   );
 
   return (
-    <div className={styles.formContainer}>
+    <div className={classNames(styles.formContainer, className)} {...props}>
       <FormBuilder
         formFields={formFields}
         onSubmit={handleSubmit}

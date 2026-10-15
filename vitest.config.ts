@@ -15,7 +15,12 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: 'jsdom',
-    include: ['**/src/**/*.test.{js,ts,jsx,tsx}'],
+    include: [
+      '**/src/**/*.test.{js,ts,jsx,tsx}',
+      '**/tests/**/*.test.{js,ts,jsx,tsx}',
+      '**/configs/**/*.test.{js,ts,jsx,tsx}',
+      '*.test.{js,ts,jsx,tsx}',
+    ],
   },
   esbuild: {
     tsconfigRaw: JSON.stringify({
@@ -47,7 +52,10 @@ export default defineConfig({
       '@/lib': path.resolve(__dirname, './src/lib'),
       '@/hooks': path.resolve(__dirname, './src/hooks'),
       '@/components': path.resolve(__dirname, './src/components'),
+      '@/tests': path.resolve(__dirname, './tests'),
       '@/*': `${path.resolve(__dirname, './src')}/*`,
+      '@/pages': path.resolve(__dirname, './src/pages'),
+      '@/public': path.resolve(__dirname, './public'),
       '@/icons': path.resolve(__dirname, './public/icons'),
       '@/dls': path.resolve(__dirname, './src/components/dls'),
     },

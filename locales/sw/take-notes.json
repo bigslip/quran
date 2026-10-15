@@ -2,7 +2,7 @@
   "benefits": {
     "access-anywhere": {
       "bullet-points": [
-        "Maelezo yako yamehifadhiwa kwa usalama katika akaunti yako ya Quran.com.",
+        "Maelezo yako yamehifadhiwa kwa usalama katika akaunti yako ya Quran.ir.",
         "Sawazisha kwenye vifaa vyote—endelea na masomo yako kwenye simu ya mkononi, kompyuta kibao au eneo-kazi."
       ],
       "description": "Maelezo yako husawazishwa kwenye vifaa vyote ikiwa umeingia, hivyo kukuruhusu kufikia tafakari zako iwe unatumia simu, kompyuta kibao au kompyuta yako.",
@@ -59,7 +59,7 @@
         "Je, unaweza kuunganisha muktadha wa aya, aya nyingine za Qur'ani, hadith, au matukio mengine?"
       ],
       "description": "Inakujia hivi karibuni: uwezo wa kushiriki maelezo maalum na marafiki, familia au vikundi vya masomo. Shirikiana katika kuelewa na kueneza maarifa yenye manufaa.",
-      "paragraph1": "Ingawa maelezo kwenye Quran.com yamehifadhiwa kwa faragha, hata hivyo una chaguo la kushiriki tafakari maalum hadharani kwenye <0>QuranReflect.com</0>. Hili ni jukwaa la jumuiya isiyo ya faida iliyobuniwa kuhimiza mashirikiano ya kina na Qur'ani - si kwa njia ya tafsir ya kielimu (ambayo imetengwa kwa ajili ya wasomi waliohitimu), lakini kupitia tafakari za dhati, za kibinafsi ambazo hupitiwa upya na kuboreshwa na timu ya usimamizi iliyohitimu.",
+      "paragraph1": "Ingawa maelezo kwenye Quran.ir yamehifadhiwa kwa faragha, hata hivyo una chaguo la kushiriki tafakari maalum hadharani kwenye <0>QuranReflect.com</0>. Hili ni jukwaa la jumuiya isiyo ya faida iliyobuniwa kuhimiza mashirikiano ya kina na Qur'ani - si kwa njia ya tafsir ya kielimu (ambayo imetengwa kwa ajili ya wasomi waliohitimu), lakini kupitia tafakari za dhati, za kibinafsi ambazo hupitiwa upya na kuboreshwa na timu ya usimamizi iliyohitimu.",
       "paragraph2": "Mwenyezi Mungu anawaita waumini wote, na sio wanachuoni tu, kushiriki katika tadabbur:",
       "quote": "Na hiki Kitabu, tumekuteremshia wewe, kimebarikiwa, ili wazizingatie Aya zake, na wawaidhike wenye akili. (Sura Sad 38:29)",
       "reflection-prompt": "Mifano ya Maswali ya Tafakari ya Kibinafsi ambayo unaweza kutumia kutafakari:",
@@ -74,7 +74,7 @@
     },
     "title": "Faida za Kutumia Kipengele cha Kuandika Maelezo"
   },
-  "description": "Gundua sababu 5 muhimu za kuandika maelezo kwenye Quran.com na jinsi maelezo haya yanaweza kukuza Safari yako na Qur'ani.",
+  "description": "Gundua sababu 5 muhimu za kuandika maelezo kwenye Quran.ir na jinsi maelezo haya yanaweza kukuza Safari yako na Qur'ani.",
   "heading": "Sababu 5 Muhimu za Kuandika Maelezo - Na Jinsi Zinavyoweza Kubadilisha Safari Yako na Qur'ani",
   "how-to-use": {
     "saved-note-explanation": "Mara tu unapohifadhi maelezo yako kuhusu aya flani, aikoni ya maelezo itageuka kuwa rangi ya samawati, na hivyo kurahisisha kutambua aya ambazo umezifafanua hapo awali wakati wa usomaji wa siku zijazo.",
@@ -96,10 +96,10 @@
       "caption": "Kipengele cha kuandika maelezo kinapatikana karibu na kila ayah"
     }
   },
-  "introduction": "Kipengele cha Maelezo kwenye Quran.com ni njia ya maana ya kukuza uhusiano wako na Qur'ani. Iwe unasoma, unatafakari, au unajaribu kuelewa ujumbe vizuri zaidi, kuandika maelezo kunaweza kukusaidia kuunganishwa kwa kina zaidi na aya na kuhifadhi maarifa ambayo yanaweza kusahaulika.",
+  "introduction": "Kipengele cha Maelezo kwenye Quran.ir ni njia ya maana ya kukuza uhusiano wako na Qur'ani. Iwe unasoma, unatafakari, au unajaribu kuelewa ujumbe vizuri zaidi, kuandika maelezo kunaweza kukusaidia kuunganishwa kwa kina zaidi na aya na kuhifadhi maarifa ambayo yanaweza kusahaulika.",
   "meta": {
-    "description": "Jifunze jinsi ya kutumia kipengele cha kuandika maelezo kwenye Quran.com ili kuboresha uzoefu wako wa kusoma Qur'ani.",
-    "title": "Andika Maelezo - Quran.com"
+    "description": "Jifunze jinsi ya kutumia kipengele cha kuandika maelezo kwenye Quran.ir ili kuboresha uzoefu wako wa kusoma Qur'ani.",
+    "title": "Andika Maelezo - Quran.ir"
   },
   "table-of-contents": {
     "items": [

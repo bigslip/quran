@@ -8,12 +8,13 @@ import useTranslation from 'next-translate/useTranslation';
 import { getChapterIdBySlug, getChapterVerses, getPagesLookup, getRangeVerses } from '@/api';
 import NextSeoWrapper from '@/components/NextSeoWrapper';
 import QuranReader from '@/components/QuranReader';
+import ChapterJsonLd from '@/components/seo/ChapterJsonLd';
 import { getChapterOgImageUrl } from '@/lib/og';
 import { logErrorToSentry } from '@/lib/sentry';
 import { getQuranReaderStylesInitialState } from '@/redux/defaultSettings/util';
 import { QuranReaderDataType } from '@/types/QuranReader';
 import { getDefaultWordFields, getMushafId } from '@/utils/api';
-import { getAllChaptersData, getChapterData } from '@/utils/chapter';
+import { getAllChaptersData, getChapterData, getChapterIdBySlugOrId } from '@/utils/chapter';
 import {
   toLocalizedNumber,
   getLocaleName,
@@ -31,8 +32,13 @@ import {
   REVALIDATION_PERIOD_ON_ERROR_SECONDS,
   ONE_WEEK_REVALIDATION_PERIOD_SECONDS,
 } from '@/utils/staticPageGeneration';
+import { getSurahSeoTitle, isAyatulKursi } from '@/utils/seo';
 import { isRangesStringValid, isValidChapterId, isValidVerseKey } from '@/utils/validator';
-import { getVerseAndChapterNumbersFromKey } from '@/utils/verse';
+import {
+  getChapterNumberFromKey,
+  getVerseNumberFromKey,
+  getVerseAndChapterNumbersFromKey,
+} from '@/utils/verse';
 import { parseVerseRange, generateVerseKeysBetweenTwoVerseKeys } from '@/utils/verseKeys';
 import { ChapterResponse, VersesResponse, PagesLookUpResponse } from 'types/ApiResponses';
 import ChaptersData from 'types/ChaptersData';
@@ -43,9 +49,6 @@ type ChapterProps = {
   quranReaderDataType: QuranReaderDataType;
   chaptersData: ChaptersData;
 };
-
-const isAyatulKursi = (chapterId: string, verseNumber: number): boolean =>
-  chapterId === '2' && verseNumber === 255;
 
 const Chapter: NextPage<ChapterProps> = ({
   chapterResponse,
@@ -95,26 +98,20 @@ const Chapter: NextPage<ChapterProps> = ({
     return getVerseNavigationUrl(chapterResponse.chapter.slug, verseNumber.toString());
   };
   const path = getPath();
-  const getCanonicalUrlValue = () => {
-    if (isRange) {
-      return getCanonicalUrl(lang, path);
-    }
-    if (isChapter) {
-      return getCanonicalUrl(lang, path);
-    }
-    const { verseNumber } = versesResponse.verses[0];
-    // if it's Ayatul Kursi
-    if (isAyatulKursi(chapterResponse.chapter.id as string, verseNumber)) {
-      return getCanonicalUrl(lang, path);
-    }
-    return getCanonicalUrl(lang, path);
-  };
+  const canonicalUrl = getCanonicalUrl(lang, path);
 
   const getSEOTitle = () => {
-    if (isRange) {
-      return getTitle();
-    }
-    return `${t('surah')} ${chapterResponse.chapter.transliteratedName} - ${getTitle()}`;
+    if (isRange) return getTitle();
+    return getSurahSeoTitle({
+      chapter: chapterResponse.chapter,
+      lang,
+      isChapter,
+      verseNumber: !isChapter ? versesResponse?.verses?.[0]?.verseNumber : undefined,
+      isAyatulKursi: isAyatulKursi(
+        chapterResponse.chapter.id as string,
+        versesResponse?.verses?.[0]?.verseNumber,
+      ),
+    });
   };
 
   const getOGImage = () => {
@@ -140,7 +137,7 @@ const Chapter: NextPage<ChapterProps> = ({
       });
     }
     return !isChapter
-      ? versesResponse.verses[0].textImlaeiSimple
+      ? versesResponse.verses[0]?.textImlaeiSimple
       : t('chapter:meta-description', {
           transliteratedName: chapterResponse.chapter.transliteratedName,
           translatedName: chapterResponse.chapter.translatedName as string,
@@ -155,16 +152,24 @@ const Chapter: NextPage<ChapterProps> = ({
     <>
       <NextSeoWrapper
         title={getSEOTitle()}
-        canonical={getCanonicalUrlValue()}
+        titleTemplate="%s"
+        canonical={canonicalUrl}
         image={getOGImage()}
         imageWidth={1200}
         imageHeight={630}
         description={getDescription()}
         languageAlternates={getLanguageAlternates(path)}
       />
+      {chapterResponse?.chapter && (
+        <ChapterJsonLd chapter={chapterResponse.chapter} lang={lang} currentPath={path} />
+      )}
       <QuranReader
         initialData={versesResponse}
-        id={isRange ? null : chapterResponse.chapter.id}
+        id={
+          isRange
+            ? `${versesResponse.pagesLookup?.lookupRange?.from}-${versesResponse.pagesLookup?.lookupRange?.to}`
+            : chapterResponse.chapter.id
+        }
         quranReaderDataType={quranReaderDataType}
       />
     </>
@@ -176,9 +181,48 @@ const AYAH_KURSI_SLUGS = ['ayatul-kursi', 'آیت الکرسی'];
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   let chapterIdOrVerseKeyOrSlug = String(params.chapterId);
-  let isValidChapter = isValidChapterId(chapterIdOrVerseKeyOrSlug);
+  const isAyahKursiSlug = AYAH_KURSI_SLUGS.includes(chapterIdOrVerseKeyOrSlug.toLowerCase());
   const chaptersData = await getAllChaptersData(locale);
+
+  let isValidChapter = isValidChapterId(chapterIdOrVerseKeyOrSlug);
   const isValidRanges = isRangesStringValid(chaptersData, chapterIdOrVerseKeyOrSlug);
+
+  // If a numeric chapter ID is passed directly (e.g. /1, /2), redirect permanently to its canonical slug
+  if (isValidChapter) {
+    const chapterData = getChapterData(chaptersData, chapterIdOrVerseKeyOrSlug);
+    if (chapterData?.slug) {
+      return {
+        redirect: {
+          destination: getSurahNavigationUrl(chapterData.slug),
+          permanent: true,
+        },
+      };
+    }
+  }
+
+  // If a single verse key is passed directly at root level (e.g. /2:255), redirect to its canonical URL
+  if (isValidVerseKey(chaptersData, chapterIdOrVerseKeyOrSlug)) {
+    const [extractedChapterId, verseNumber] =
+      getVerseAndChapterNumbersFromKey(chapterIdOrVerseKeyOrSlug);
+    const chapterData = getChapterData(chaptersData, extractedChapterId);
+    if (chapterData?.slug) {
+      if (isAyatulKursi(extractedChapterId, Number(verseNumber))) {
+        return {
+          redirect: {
+            destination: '/ayatul-kursi',
+            permanent: true,
+          },
+        };
+      }
+      return {
+        redirect: {
+          destination: getVerseNavigationUrl(chapterData.slug, verseNumber),
+          permanent: true,
+        },
+      };
+    }
+  }
+
   // initialize the value as if it's chapter
   let chapterId = chapterIdOrVerseKeyOrSlug;
   if (
@@ -187,15 +231,18 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     !isValidVerseKey(chaptersData, chapterIdOrVerseKeyOrSlug)
   ) {
     // if the value is a slug of Ayatul Kursi
-    if (AYAH_KURSI_SLUGS.includes(chapterIdOrVerseKeyOrSlug.toLowerCase())) {
+    if (isAyahKursiSlug) {
       chapterIdOrVerseKeyOrSlug = '2:255';
     } else {
-      const sluggedChapterId = await getChapterIdBySlug(chapterIdOrVerseKeyOrSlug, locale);
-      // if it's not a valid slug
-      if (!sluggedChapterId) {
+      // In-memory synchronous slug lookup first before network call
+      const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterIdOrVerseKeyOrSlug);
+      const resolvedChapterId =
+        localChapterId || (await getChapterIdBySlug(chapterIdOrVerseKeyOrSlug, locale));
+
+      if (!resolvedChapterId) {
         return { notFound: true };
       }
-      chapterId = sluggedChapterId;
+      chapterId = resolvedChapterId;
       isValidChapter = true;
     }
   }
@@ -249,19 +296,24 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
         revalidate: ONE_WEEK_REVALIDATION_PERIOD_SECONDS, // chapters will be generated at runtime if not found in the cache, then cached for subsequent requests for 7 days.
       };
     }
-    // if it's a verseKey
+    let versesResponse: VersesResponse;
     if (!isValidChapter) {
       const [extractedChapterId, verseNumber] =
         getVerseAndChapterNumbersFromKey(chapterIdOrVerseKeyOrSlug);
       chapterId = extractedChapterId;
       // only get 1 verse
       apiParams = { ...apiParams, ...{ page: verseNumber, perPage: 1 } };
-      pagesLookupResponse = await getPagesLookup({
-        chapterNumber: Number(chapterId),
-        mushaf: defaultMushafId,
-        from: chapterIdOrVerseKeyOrSlug,
-        to: chapterIdOrVerseKeyOrSlug,
-      });
+      const [lookupRes, versesRes] = await Promise.all([
+        getPagesLookup({
+          chapterNumber: Number(chapterId),
+          mushaf: defaultMushafId,
+          from: chapterIdOrVerseKeyOrSlug,
+          to: chapterIdOrVerseKeyOrSlug,
+        }),
+        getChapterVerses(formatStringNumber(chapterId), locale, apiParams),
+      ]);
+      pagesLookupResponse = lookupRes;
+      versesResponse = versesRes;
     } else {
       // if it's a chapter
       pagesLookupResponse = await getPagesLookup({
@@ -276,16 +328,33 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
 
       const firstPageOfChapter = Object.keys(pagesLookupResponse.pages)[0];
       const firstPageOfChapterLookup = pagesLookupResponse.pages[firstPageOfChapter];
+
+      const fromVerseNumber =
+        getChapterNumberFromKey(firstPageOfChapterLookup.from) === Number(chapterId)
+          ? getVerseNumberFromKey(firstPageOfChapterLookup.from)
+          : getVerseNumberFromKey(pagesLookupResponse.lookupRange.from);
+
+      const toVerseNumber =
+        getChapterNumberFromKey(firstPageOfChapterLookup.to) === Number(chapterId)
+          ? getVerseNumberFromKey(firstPageOfChapterLookup.to)
+          : getVerseNumberFromKey(pagesLookupResponse.lookupRange.to);
+
       apiParams = {
         ...apiParams,
         ...{
           perPage: 'all',
-          from: firstPageOfChapterLookup.from,
-          to: firstPageOfChapterLookup.to,
+          from: fromVerseNumber,
+          to: toVerseNumber,
         },
       };
+      versesResponse = await getChapterVerses(formatStringNumber(chapterId), locale, apiParams);
     }
-    const versesResponse = await getChapterVerses(formatStringNumber(chapterId), locale, apiParams);
+    if (!versesResponse?.verses || !versesResponse.verses.length) {
+      return {
+        notFound: true,
+        revalidate: REVALIDATION_PERIOD_ON_ERROR_SECONDS,
+      };
+    }
     const metaData = { numberOfVerses };
 
     versesResponse.metaData = metaData;

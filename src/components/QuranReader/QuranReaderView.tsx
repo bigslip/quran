@@ -4,15 +4,17 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 import useSyncReadingProgress from './hooks/useSyncReadingProgress';
-import StudyModeContainer from './StudyModeContainer';
 import TranslationView from './TranslationView';
-import VerseActionModalContainer from './VerseActionModalContainer';
 
 import QuranReaderStyles from '@/redux/types/QuranReaderStyles';
 import { QuranReaderDataType, ReadingPreference } from '@/types/QuranReader';
 import { VersesResponse } from 'types/ApiResponses';
 
 const ReadingView = dynamic(() => import('./ReadingView'));
+const StudyModeContainer = dynamic(() => import('./StudyModeContainer'), { ssr: false });
+const VerseActionModalContainer = dynamic(() => import('./VerseActionModalContainer'), {
+  ssr: false,
+});
 
 interface Props {
   isReadingPreference: boolean;
