@@ -27,7 +27,7 @@
   <img src="https://img.shields.io/badge/Next.js-14-black?logo=next.js" alt="Next.js" />
   <img src="https://img.shields.io/badge/React-18-blue?logo=react" alt="React 18" />
   <img src="https://img.shields.io/badge/TypeScript-5-blue?logo=typescript" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Node-18.x-green?logo=node.js" alt="Node 18" />
+  <img src="https://img.shields.io/badge/Node-20%2B-green?logo=node.js" alt="Node 20+" />
   <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License" />
 </p>
 
@@ -74,7 +74,7 @@
 
 ### Prerequisites
 
-- **Node.js**: `18.x`
+- **Node.js**: `>=20.9.0` (Node 20+ LTS recommended)
 - **Package Manager**: [Yarn](https://yarnpkg.com/) (`npm install -g yarn`)
 
 ### 1. Clone the Repository
