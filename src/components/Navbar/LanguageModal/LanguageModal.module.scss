@@ -21,22 +21,22 @@
 @keyframes desktopContentIn {
   0% {
     opacity: 0;
-    transform: translate(-50%, -12px) scale(0.98);
+    transform: translateY(-12px) scale(0.98);
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, 0) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes desktopContentOut {
   0% {
     opacity: 1;
-    transform: translate(-50%, 0) scale(1);
+    transform: translateY(0) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -8px) scale(0.98);
+    transform: translateY(-8px) scale(0.98);
   }
 }
 
@@ -82,9 +82,9 @@
 .content {
   box-sizing: border-box;
   position: fixed;
-  inset-inline-start: 50%;
+  inset-inline: 0;
   inset-block-start: 10vh;
-  transform: translateX(-50%);
+  margin-inline: auto;
   inline-size: calc(100% - 32px);
   max-inline-size: 580px;
   max-block-size: min(640px, 80vh);
@@ -119,6 +119,7 @@
     inset: 0;
     inset-block-start: 0;
     inset-inline-start: 0;
+    margin-inline: 0;
     transform: none;
     inline-size: 100vw;
     block-size: 100dvh;

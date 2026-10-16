@@ -28,9 +28,9 @@
 .sliderContainer {
   display: inline-block;
   position: fixed;
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
-  margin: 0;
+  inset-inline: 0;
+  margin-block: 0;
+  margin-inline: auto;
   inline-size: 100%;
   block-size: calc(1.25 * var(--spacing-xxsmall));
   transition: var(--transition-regular);
