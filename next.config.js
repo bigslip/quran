@@ -31,6 +31,17 @@ const withPWAConfig = withPWA({
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
+  outputFileTracingExcludes: {
+    '*': [
+      'mobile/**',
+      'public/audio/**',
+      'public/data/qdc/download/**',
+      '.agents/**',
+      'docs/**',
+      'node_modules/@swc/core-linux-x64-musl/**',
+      'node_modules/@esbuild/**',
+    ],
+  },
   modularizeImports: {
     lodash: {
       transform: 'lodash/{{member}}',
