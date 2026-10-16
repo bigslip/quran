@@ -67,9 +67,15 @@ export const getBasePath = (): string => {
     return window.location.origin;
   }
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
-    return `${process.env.NEXT_PUBLIC_VERCEL_ENV === 'development' ? 'http' : 'https'}://${
-      process.env.NEXT_PUBLIC_VERCEL_URL
-    }`;
+    return `${
+      process.env.NEXT_PUBLIC_VERCEL_ENV === 'development' ? 'http' : 'https'
+    }://${process.env.NEXT_PUBLIC_VERCEL_URL.replace(/^https?:\/\//, '')}`;
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
   }
   const port = process.env.PORT || 4000;
   return `http://localhost:${port}`;
@@ -80,9 +86,10 @@ export const getProxiedServiceUrl = (service: QuranFoundationService, path: stri
   if (typeof window !== 'undefined') {
     return `${PROXY_PATH}${path}`;
   }
-  const BASE_PATH = isStaticBuild && process.env.API_GATEWAY_URL
-    ? `${process.env.API_GATEWAY_URL}/${service}`
-    : `${getBasePath()}${PROXY_PATH}`;
+  const BASE_PATH =
+    isStaticBuild && process.env.API_GATEWAY_URL
+      ? `${process.env.API_GATEWAY_URL}/${service}`
+      : `${getBasePath()}${PROXY_PATH}`;
   return `${BASE_PATH}${path}`;
 };
 
