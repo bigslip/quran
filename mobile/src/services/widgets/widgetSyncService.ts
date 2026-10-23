@@ -147,12 +147,25 @@ export async function syncWidgetData(
     cityNameFa = resolved.cityNameFa;
     latitude = resolved.latitude;
     longitude = resolved.longitude;
-  } else if (options.cityId) {
-    const foundCity = IRANIAN_PROVINCIAL_CAPITALS.find((c) => c.id === options.cityId);
-    if (foundCity) {
-      cityNameFa = foundCity.nameFa;
-      latitude = foundCity.latitude;
-      longitude = foundCity.longitude;
+  } else {
+    let targetCityId = options.cityId;
+    if (!targetCityId) {
+      try {
+        const persistedCityId = await readingStorage.getItem('quran_selected_city_id');
+        if (typeof persistedCityId === 'string' && persistedCityId.trim()) {
+          targetCityId = persistedCityId.trim();
+        }
+      } catch {
+        // Ignore storage read failure
+      }
+    }
+    if (targetCityId) {
+      const foundCity = IRANIAN_PROVINCIAL_CAPITALS.find((c) => c.id === targetCityId);
+      if (foundCity) {
+        cityNameFa = foundCity.nameFa;
+        latitude = foundCity.latitude;
+        longitude = foundCity.longitude;
+      }
     }
   }
 

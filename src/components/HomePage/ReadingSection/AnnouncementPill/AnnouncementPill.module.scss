@@ -24,6 +24,10 @@
 
     .arrowIcon {
       transform: translateX(2px);
+
+      [dir='rtl'] & {
+        transform: rotate(180deg) translateX(2px);
+      }
     }
   }
 
@@ -48,4 +52,8 @@
   block-size: 10px;
   fill: currentColor;
   transition: transform var(--transition-fast) ease;
+
+  [dir='rtl'] & {
+    transform: rotate(180deg);
+  }
 }

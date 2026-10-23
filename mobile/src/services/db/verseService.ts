@@ -20,12 +20,23 @@ export async function getVersesByChapter(
   const verses = await db.getAllAsync<Verse>(query, [chapterId, limit, offset]);
 
   if (includeWords && verses.length > 0) {
-    const wordsQuery = `
+    const minVerseNumber = verses[0].verse_number;
+    const maxVerseNumber = verses[verses.length - 1].verse_number;
+    const wordsQuery =
+      limit !== undefined
+        ? `
+      SELECT * FROM words
+      WHERE chapter_id = ? AND verse_number BETWEEN ? AND ?
+      ORDER BY verse_number ASC, position ASC;
+    `
+        : `
       SELECT * FROM words
       WHERE chapter_id = ?
       ORDER BY verse_number ASC, position ASC;
     `;
-    const allWords = await db.getAllAsync<Word>(wordsQuery, [chapterId]);
+    const wordsParams =
+      limit !== undefined ? [chapterId, minVerseNumber, maxVerseNumber] : [chapterId];
+    const allWords = await db.getAllAsync<Word>(wordsQuery, wordsParams);
 
     const wordsByVerse = new Map<string, Word[]>();
     for (const w of allWords) {

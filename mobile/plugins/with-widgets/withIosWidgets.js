@@ -88,22 +88,24 @@ struct PrayerTimelineProvider: TimelineProvider {
                    let cityName = prayerTimes["cityNameFa"] as? String,
                    let schedule = prayerTimes["schedule"] as? [[String: Any]] {
 
+                    var previousDate = now
                     for day in schedule {
                         if let milestones = day["milestones"] as? [[String: Any]] {
                             for m in milestones {
-                                if let ts = m["timestamp"] as? Double,
+                                if let ts = (m["timestamp"] as? NSNumber)?.doubleValue,
                                    let nameFa = m["nameFa"] as? String,
                                    let timeFa = m["timeFa"] as? String {
                                     let milestoneDate = Date(timeIntervalSince1970: ts / 1000.0)
                                     if milestoneDate > now {
                                         entries.append(PrayerEntry(
-                                            date: entries.isEmpty ? now : milestoneDate.addingTimeInterval(-1800),
+                                            date: previousDate,
                                             targetDate: milestoneDate,
                                             prayerNameFa: nameFa,
                                             timeFa: timeFa,
                                             cityNameFa: cityName,
                                             isPast: false
                                         ))
+                                        previousDate = milestoneDate
                                     }
                                 }
                             }

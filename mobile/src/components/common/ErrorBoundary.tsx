@@ -1,7 +1,16 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { AlertTriangle, RefreshCw } from 'lucide-react-native';
-import { colors, fonts, fontSizes, borderRadius, spacing } from '@/theme';
+import {
+  colors,
+  fonts,
+  fontSizes,
+  borderRadius,
+  spacing,
+  rtlRow,
+  themePalettes as THEME_PALETTES,
+} from '@/theme';
+import { useReadingStore } from '@/stores/useReadingStore';
 
 export interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -51,29 +60,47 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
         return this.props.fallback;
       }
 
+      const activeTheme = useReadingStore.getState()?.theme || 'emerald';
+      const palette = THEME_PALETTES[activeTheme] || colors;
+
       return (
-        <View style={styles.container} testID={this.props.testID || 'error-boundary-container'}>
-          <View style={styles.card}>
+        <View
+          style={[styles.container, { backgroundColor: palette.background }]}
+          testID={this.props.testID || 'error-boundary-container'}
+        >
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: palette.surfaceCard,
+                borderColor: palette.borderSubtle,
+              },
+            ]}
+          >
             <View style={styles.iconContainer}>
-              <AlertTriangle size={32} color={colors.warning} />
+              <AlertTriangle size={32} color={palette.warning} />
             </View>
 
-            <Text style={styles.heading}>خطایی در بارگذاری رخ داد</Text>
+            <Text style={[styles.heading, { color: palette.textPrimary }]}>
+              خطایی در بارگذاری رخ داد
+            </Text>
 
-            <Text style={styles.body}>
+            <Text style={[styles.body, { color: palette.textMuted }]}>
               متأسفانه در اجرای این بخش مشکلی پیش آمد. برای ادامه، دکمه تلاش مجدد را لمس کنید.
             </Text>
 
             <TouchableOpacity
-              style={styles.retryButton}
+              style={[styles.retryButton, { backgroundColor: palette.primary }]}
               onPress={this.handleReset}
               testID="error-boundary-retry-button"
               activeOpacity={0.8}
               accessibilityRole="button"
               accessibilityLabel="تلاش مجدد"
             >
-              <RefreshCw size={18} color={colors.textInverse} style={styles.buttonIcon} />
-              <Text style={styles.retryButtonText}>تلاش مجدد</Text>
+              <RefreshCw size={18} color={palette.textInverse} style={styles.buttonIcon} />
+              <Text style={[styles.retryButtonText, { color: palette.textInverse }]}>
+                تلاش مجدد
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -132,7 +159,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xxl,
   },
   retryButton: {
-    flexDirection: 'row',
+    flexDirection: rtlRow,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.primary,
@@ -143,7 +170,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
   },
   buttonIcon: {
-    marginRight: spacing.sm,
+    marginHorizontal: spacing.xs,
   },
   retryButtonText: {
     fontFamily: fonts.uiBold,

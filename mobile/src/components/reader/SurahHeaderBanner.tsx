@@ -113,29 +113,31 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
           </View>
 
           {/* Info Button with guaranteed >= 44x44px touch target (Left in RTL) */}
-          <TouchableOpacity
-            testID={`${testID}-info-button`}
-            activeOpacity={0.7}
-            onPress={handleInfoPress}
-            style={[
-              styles.infoButton,
-              {
-                backgroundColor: colors.surfaceCard,
-                borderColor: colors.borderSubtle,
-              },
-            ]}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel={accessibilityInfoLabel}
-            accessibilityHint="برای مشاهده اطلاعات و مشخصات سوره ضربه بزنید"
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <Info
-              size={READER_COMPONENT_CONTRACTS.surahHeader.infoIconSize}
-              color={colors.primaryLight}
-              strokeWidth={2}
-            />
-          </TouchableOpacity>
+          {onPressInfo ? (
+            <TouchableOpacity
+              testID={`${testID}-info-button`}
+              activeOpacity={0.7}
+              onPress={handleInfoPress}
+              style={[
+                styles.infoButton,
+                {
+                  backgroundColor: colors.surfaceCard,
+                  borderColor: colors.borderSubtle,
+                },
+              ]}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={accessibilityInfoLabel}
+              accessibilityHint="برای مشاهده اطلاعات و مشخصات سوره ضربه بزنید"
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Info
+                size={READER_COMPONENT_CONTRACTS.surahHeader.infoIconSize}
+                color={colors.primaryLight}
+                strokeWidth={2}
+              />
+            </TouchableOpacity>
+          ) : null}
         </View>
 
         {/* Centerpiece: Sacred Calligraphy & Persian Title */}
@@ -249,116 +251,116 @@ export const SurahHeaderBanner: React.FC<SurahHeaderBannerProps> = ({
 const createStyles = (colors: ColorTheme) =>
   StyleSheet.create({
     outerCard: {
-    backgroundColor: colors.surfaceCard,
-    borderRadius: borderRadius.xl,
-    borderWidth: READER_COMPONENT_CONTRACTS.surahHeader.containerBorderWidth,
-    borderColor: colors.borderIridescent,
-    padding: spacing.lg,
-    minHeight: READER_COMPONENT_CONTRACTS.surahHeader.minHeight,
-    overflow: 'hidden',
-  },
-  innerFrame: {
-    backgroundColor: colors.surfaceFloating,
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    padding: spacing.md,
-  },
-  topControlBar: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: spacing.xs,
-  },
-  infoButton: {
-    minWidth: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize,
-    minHeight: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize,
-    width: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize,
-    height: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize,
-    borderRadius: borderRadius.circle,
-    backgroundColor: colors.surfaceCard,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cornerNumberEmblem: {
-    width: READER_COMPONENT_CONTRACTS.surahHeader.emblemSize,
-    height: READER_COMPONENT_CONTRACTS.surahHeader.emblemSize,
-    borderRadius: borderRadius.circle,
-    backgroundColor: colors.surfaceCard,
-    borderWidth: 1,
-    borderColor: colors.borderIridescent,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cornerNumberEmblemInner: {
-    width: READER_COMPONENT_CONTRACTS.surahHeader.emblemInnerSize,
-    height: READER_COMPONENT_CONTRACTS.surahHeader.emblemInnerSize,
-    borderRadius: borderRadius.circle,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cornerNumberText: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.sm,
-    color: colors.primaryLight,
-  },
-  calligraphySection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing.sm,
-  },
-  arabicTitle: {
-    fontFamily: fonts.quranHafs,
-    fontSize: READER_COMPONENT_CONTRACTS.surahHeader.arabicFontSize,
-    lineHeight: READER_COMPONENT_CONTRACTS.surahHeader.arabicLineHeight,
-    color: colors.goldAccent,
-    textAlign: 'center',
-  },
-  persianTitle: {
-    fontFamily: fonts.uiBold,
-    fontSize: READER_COMPONENT_CONTRACTS.surahHeader.persianFontSize,
-    lineHeight: READER_COMPONENT_CONTRACTS.surahHeader.persianLineHeight,
-    color: colors.textPrimary,
-    textAlign: 'center',
-    marginTop: spacing.xs,
-  },
-  badgesRow: {
-    flexDirection: 'row-reverse',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.xs,
-    marginTop: spacing.md,
-  },
-  badgeChip: {
-    backgroundColor: colors.primarySubtle,
-    borderWidth: READER_COMPONENT_CONTRACTS.surahHeader.badgeBorderWidth,
-    borderColor: colors.primaryGlow,
-    borderRadius: borderRadius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  badgeChipText: {
-    fontFamily: fonts.uiMedium || fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.textSecondary,
-  },
-  badgeMakkiChip: {
-    backgroundColor: colors.badgeMakki,
-    borderColor: colors.goldGlow,
-  },
-  badgeMakkiText: {
-    color: colors.badgeMakkiText,
-  },
-  badgeMadaniChip: {
-    backgroundColor: colors.badgeMadani,
-    borderColor: colors.primaryGlow,
-  },
-  badgeMadaniText: {
-    color: colors.badgeMadaniText,
-  },
-});
+      backgroundColor: colors.surfaceCard,
+      borderRadius: borderRadius.xl,
+      borderWidth: READER_COMPONENT_CONTRACTS.surahHeader.containerBorderWidth,
+      borderColor: colors.borderIridescent,
+      padding: spacing.lg,
+      minHeight: READER_COMPONENT_CONTRACTS.surahHeader.minHeight,
+      overflow: 'hidden',
+    },
+    innerFrame: {
+      backgroundColor: colors.surfaceFloating,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      padding: spacing.md,
+    },
+    topControlBar: {
+      flexDirection: 'row-reverse',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: spacing.xs,
+    },
+    infoButton: {
+      minWidth: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize,
+      minHeight: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize,
+      width: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize,
+      height: READER_COMPONENT_CONTRACTS.surahHeader.infoButtonSize,
+      borderRadius: borderRadius.circle,
+      backgroundColor: colors.surfaceCard,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    cornerNumberEmblem: {
+      width: READER_COMPONENT_CONTRACTS.surahHeader.emblemSize,
+      height: READER_COMPONENT_CONTRACTS.surahHeader.emblemSize,
+      borderRadius: borderRadius.circle,
+      backgroundColor: colors.surfaceCard,
+      borderWidth: 1,
+      borderColor: colors.borderIridescent,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    cornerNumberEmblemInner: {
+      width: READER_COMPONENT_CONTRACTS.surahHeader.emblemInnerSize,
+      height: READER_COMPONENT_CONTRACTS.surahHeader.emblemInnerSize,
+      borderRadius: borderRadius.circle,
+      borderWidth: 1,
+      borderColor: colors.borderSubtle,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    cornerNumberText: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.sm,
+      color: colors.primaryLight,
+    },
+    calligraphySection: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: spacing.sm,
+    },
+    arabicTitle: {
+      fontFamily: fonts.quranHafs,
+      fontSize: READER_COMPONENT_CONTRACTS.surahHeader.arabicFontSize,
+      lineHeight: READER_COMPONENT_CONTRACTS.surahHeader.arabicLineHeight,
+      color: colors.goldAccent,
+      textAlign: 'center',
+    },
+    persianTitle: {
+      fontFamily: fonts.uiBold,
+      fontSize: READER_COMPONENT_CONTRACTS.surahHeader.persianFontSize,
+      lineHeight: READER_COMPONENT_CONTRACTS.surahHeader.persianLineHeight,
+      color: colors.textPrimary,
+      textAlign: 'center',
+      marginTop: spacing.xs,
+    },
+    badgesRow: {
+      flexDirection: 'row-reverse',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.xs,
+      marginTop: spacing.md,
+    },
+    badgeChip: {
+      backgroundColor: colors.primarySubtle,
+      borderWidth: READER_COMPONENT_CONTRACTS.surahHeader.badgeBorderWidth,
+      borderColor: colors.primaryGlow,
+      borderRadius: borderRadius.sm,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+    },
+    badgeChipText: {
+      fontFamily: fonts.uiMedium || fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.textSecondary,
+    },
+    badgeMakkiChip: {
+      backgroundColor: colors.badgeMakki,
+      borderColor: colors.goldGlow,
+    },
+    badgeMakkiText: {
+      color: colors.badgeMakkiText,
+    },
+    badgeMadaniChip: {
+      backgroundColor: colors.badgeMadani,
+      borderColor: colors.primaryGlow,
+    },
+    badgeMadaniText: {
+      color: colors.badgeMadaniText,
+    },
+  });

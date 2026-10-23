@@ -11,6 +11,7 @@ import SearchResultText from './SearchResultText';
 import Link from '@/dls/Link/Link';
 import { setIsExpanded } from '@/redux/slices/CommandBar/state';
 import { stopMicrophone } from '@/redux/slices/microphone';
+import { setIsSearchModalOpen } from '@/redux/slices/navbar';
 import QueryParam from '@/types/QueryParam';
 import {
   SearchNavigationResult,
@@ -92,6 +93,7 @@ const SearchResultItem: React.FC<Props> = ({ source, service, result }) => {
 
     // Close the dropdown/search results
     dispatch({ type: setIsExpanded.type, payload: false });
+    dispatch(setIsSearchModalOpen(false));
 
     // Check if we're navigating to the same URL as current page
     if (isSameUrl(router.asPath, url)) {

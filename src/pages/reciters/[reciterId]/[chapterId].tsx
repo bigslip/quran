@@ -34,7 +34,7 @@ import {
   getSurahNavigationUrl,
 } from '@/utils/navigation';
 import { REVALIDATION_PERIOD_ON_ERROR_SECONDS } from '@/utils/staticPageGeneration';
-import { getCurrentPath } from '@/utils/url';
+import { getCurrentPath, getWindowOrigin } from '@/utils/url';
 import { isValidChapterId } from '@/utils/validator';
 import { selectCurrentAudioReciterId } from '@/xstate/actors/audioPlayer/selectors';
 import { AudioPlayerMachineContext } from '@/xstate/AudioPlayerMachineContext';
@@ -74,6 +74,7 @@ const RecitationPage = ({ selectedReciter, selectedChapter }: ShareRecitationPag
   const onCopyLinkClicked = () => {
     logButtonClick('share-recitation-copy-link');
     const path = getCurrentPath();
+    const origin = getWindowOrigin(lang);
     if (origin) {
       clipboardCopy(path).then(() => {
         toast(t('common:shared'), { status: ToastStatus.Success });
@@ -195,8 +196,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     // If it's not a valid numeric ID, resolve the slug
     if (!isValidId) {
       const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterId);
-      const sluggedChapterId =
-        localChapterId || (await getChapterIdBySlug(chapterId, locale));
+      const sluggedChapterId = localChapterId || (await getChapterIdBySlug(chapterId, locale));
       if (!sluggedChapterId) {
         return { notFound: true };
       }

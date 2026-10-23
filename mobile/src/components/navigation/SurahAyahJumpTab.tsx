@@ -86,7 +86,10 @@ const SurahListItem = React.memo<SurahListItemProps>(
         {/* Surah Title & Details */}
         <View style={styles.surahItemDetails}>
           <View style={styles.surahItemNameRow}>
-            <Text style={[styles.surahItemNameFa, isSelected && styles.surahItemNameFaSelected]}>
+            <Text
+              style={[styles.surahItemNameFa, isSelected && styles.surahItemNameFaSelected]}
+              numberOfLines={1}
+            >
               سوره {cleanSurahNameFa(item.name_fa)}
             </Text>
             <View
@@ -105,21 +108,22 @@ const SurahListItem = React.memo<SurahListItemProps>(
               </Text>
             </View>
           </View>
-          <Text style={styles.surahItemVerses}>{toPersianDigits(item.verses_count)} آیه</Text>
+          <Text style={styles.surahItemVerses} numberOfLines={1}>
+            {toPersianDigits(item.verses_count)} آیه
+          </Text>
         </View>
 
         {/* Arabic Calligraphy & Selection / Arrow Indicator */}
         <View style={styles.surahItemEnd}>
           <Text
             style={[styles.surahItemNameArabic, isSelected && styles.surahItemNameArabicSelected]}
+            numberOfLines={1}
           >
             {item.name_arabic}
           </Text>
           {isSelected && isTuning ? (
             <View style={styles.tuningBadge}>
-              <Text style={styles.tuningBadgeText}>
-                آیه {toPersianDigits(selectedVerseNumber)}
-              </Text>
+              <Text style={styles.tuningBadgeText}>آیه {toPersianDigits(selectedVerseNumber)}</Text>
             </View>
           ) : isSelected ? (
             <View style={styles.selectedCheckmark}>
@@ -459,7 +463,9 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
               </View>
 
               <TouchableOpacity
-                onPress={() => onConfirmJump?.(selectedSurah.id, selectedVerseNumber, selectedSurah, true)}
+                onPress={() =>
+                  onConfirmJump?.(selectedSurah.id, selectedVerseNumber, selectedSurah, true)
+                }
                 style={styles.directAyahJumpBtn}
                 accessible={true}
                 accessibilityRole="button"
@@ -493,8 +499,8 @@ export const SurahAyahJumpTab: React.FC<SurahAyahJumpTabProps> = ({
         maxToRenderPerBatch={25}
         windowSize={5}
         getItemLayout={(_data, index) => ({
-          length: 54,
-          offset: 54 * index,
+          length: 64,
+          offset: 64 * index,
           index,
         })}
         renderItem={({ item }) => {
@@ -800,6 +806,7 @@ const createStyles = (colors: ColorTheme) =>
       paddingVertical: spacing.xs,
       paddingHorizontal: spacing.sm,
       marginBottom: 6,
+      height: 58,
       minHeight: 48,
     },
     surahListItemSelected: {

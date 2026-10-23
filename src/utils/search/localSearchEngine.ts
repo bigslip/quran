@@ -1,3 +1,4 @@
+/* eslint-disable max-lines, react-func/max-lines-per-function, @typescript-eslint/naming-convention, no-restricted-syntax, no-await-in-loop, jsdoc/require-returns, no-underscore-dangle, no-restricted-globals */
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -164,9 +165,9 @@ export async function getSearchIndex(): Promise<SearchEngineIndex> {
   if (!searchIndexPromise) {
     searchIndexPromise = (async () => {
       const candidates = [
-        path.join(process.cwd(), 'public/data/search/search-index.json'),
-        path.join(process.cwd(), 'data/search/search-index.json'),
-        path.join(process.cwd(), 'data/qdc/search-index.json'),
+        path.join(process.cwd(), 'data', 'search', 'search-index.json'),
+        path.join(process.cwd(), 'public', 'data', 'search', 'search-index.json'),
+        path.join(process.cwd(), 'data', 'qdc', 'search-index.json'),
       ];
 
       for (const filePath of candidates) {
@@ -225,7 +226,29 @@ export function highlightText(text: string, query: string): string {
   for (const term of terms) {
     const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(${escaped})`, 'gi');
+    const before = highlighted;
     highlighted = highlighted.replace(regex, '<mark>$1</mark>');
+
+    // If direct match didn't match and term has Arabic/Persian chars, try diacritic-insensitive matching
+    if (highlighted === before && /[\u0600-\u06FF]/.test(term)) {
+      const normTerm = normalizeArabicText(term);
+      if (normTerm.length > 1) {
+        const diacriticsPattern = '[\\u064B-\\u065F\\u0670\\u06D6-\\u06ED\\u0640]*';
+        const charPatterns = Array.from(normTerm).map((ch) => {
+          if (ch === 'ا') return '[اأإآٱ]';
+          if (ch === 'ه') return '[هة]';
+          if (ch === 'ی') return '[یيىئ]';
+          if (ch === 'ک') return '[کك]';
+          if (ch === 'و') return '[وؤ]';
+          return ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        });
+        const arRegex = new RegExp(
+          `(${charPatterns.join(diacriticsPattern)}${diacriticsPattern})`,
+          'gi',
+        );
+        highlighted = highlighted.replace(arRegex, '<mark>$1</mark>');
+      }
+    }
   }
   return highlighted;
 }
@@ -300,7 +323,11 @@ export async function handleNavigateQuery(rawQuery: string): Promise<SearchNavig
   const naturalVerseMatch = latinNormalized.match(
     /^(?:surah|chapter)?\s*([a-z\s]+|\d{1,3})\s+(?:ayah|verse|ayat)?\s*(\d{1,3})$/,
   );
-  if (naturalVerseMatch && !latinNormalized.startsWith('page') && !latinNormalized.startsWith('juz')) {
+  if (
+    naturalVerseMatch &&
+    !latinNormalized.startsWith('page') &&
+    !latinNormalized.startsWith('juz')
+  ) {
     const chIdentifier = naturalVerseMatch[1].trim();
     const verseNum = Number(naturalVerseMatch[2]);
 
@@ -310,11 +337,23 @@ export async function handleNavigateQuery(rawQuery: string): Promise<SearchNavig
 
     if (!chapter) {
       const cleanCh = chIdentifier.replace(/[^a-z0-9]/g, '');
-      chapter = index.chapters.find(
-        (c) =>
-          normalizeLatinText(c.name).replace(/[^a-z0-9]/g, '') === cleanCh ||
-          c.aliases.some((a) => normalizeLatinText(a).replace(/[^a-z0-9]/g, '') === cleanCh),
-      ) || null;
+      const cleanChNoAl = cleanCh.replace(/^al/, '');
+      chapter =
+        index.chapters.find((c) => {
+          const cNameClean = normalizeLatinText(c.name).replace(/[^a-z0-9]/g, '');
+          return (
+            cNameClean === cleanCh ||
+            (cleanChNoAl.length > 0 && cNameClean.replace(/^al/, '') === cleanChNoAl) ||
+            c.aliases.some((a) => {
+              const aClean = normalizeLatinText(a).replace(/[^a-z0-9]/g, '');
+              return (
+                aClean.length > 0 &&
+                (aClean === cleanCh ||
+                  (cleanChNoAl.length > 0 && aClean.replace(/^al/, '') === cleanChNoAl))
+              );
+            })
+          );
+        }) || null;
     }
 
     if (chapter && verseNum >= 1 && verseNum <= chapter.versesCount) {
@@ -393,17 +432,25 @@ export async function handleNavigateQuery(rawQuery: string): Promise<SearchNavig
   // -------------------------------------------------------------
   // 7. Popular Ayahs Matching (e.g., "ayatul kursi", "throne verse", "amanar rasul", "nur", "yasin 58")
   // -------------------------------------------------------------
+  const hasArabicQueryChars = /[\u0600-\u06FF]/.test(arabicNormalized);
   for (const popular of index.popularAyahs) {
     const matchesAlias = popular.aliases.some((alias) => {
       const normAlias = normalizeLatinText(alias);
       const normArAlias = normalizeArabicText(alias);
-      return (
-        normAlias === latinNormalized ||
-        latinNormalized.includes(normAlias) ||
-        normAlias.includes(latinNormalized) ||
-        normArAlias === arabicNormalized ||
-        arabicNormalized.includes(normArAlias)
-      );
+      const isLatinMatch =
+        normAlias.length > 0 &&
+        latinNormalized.length > 0 &&
+        (normAlias === latinNormalized ||
+          latinNormalized.includes(normAlias) ||
+          normAlias.includes(latinNormalized));
+      const isArabicMatch =
+        hasArabicQueryChars &&
+        normArAlias.length > 0 &&
+        /[\u0600-\u06FF]/.test(normArAlias) &&
+        (normArAlias === arabicNormalized ||
+          arabicNormalized.includes(normArAlias) ||
+          normArAlias.includes(arabicNormalized));
+      return isLatinMatch || isArabicMatch;
     });
 
     if (matchesAlias || popular.key === query) {
@@ -420,48 +467,88 @@ export async function handleNavigateQuery(rawQuery: string): Promise<SearchNavig
   // -------------------------------------------------------------
   // 8. Surah Name Matching (Exact & Fuzzy)
   // -------------------------------------------------------------
-  const matchedChapters: { score: number; chapter: typeof index.chapters[0] }[] = [];
+  const matchedChapters: { score: number; chapter: (typeof index.chapters)[0] }[] = [];
+  const queryAr = arabicNormalized.replace(/^(?:سوره|سورة)\s+/, '').trim();
+  const queryArWithoutAl = queryAr.replace(/^ال/, '');
 
   for (const ch of index.chapters) {
     const cleanSimple = normalizeLatinText(ch.name);
     const cleanComplex = normalizeLatinText(ch.nameComplex);
     const cleanAr = normalizeArabicText(ch.nameArabic);
+    const cleanArWithoutAl = cleanAr.replace(/^ال/, '');
     const cleanTranslated = normalizeLatinText(ch.translatedName);
     const cleanQuery = latinNormalized;
 
     let score = 0;
 
-    // Exact ID
-    if (String(ch.id) === cleanQuery) {
-      score = 100;
+    if (cleanQuery.length > 0) {
+      // Exact ID
+      if (String(ch.id) === cleanQuery) {
+        score = 100;
+      }
+      // Exact name match
+      else if (cleanSimple === cleanQuery || cleanComplex === cleanQuery) {
+        score = 90;
+      }
+      // Starts with query
+      else if (cleanSimple.startsWith(cleanQuery) || cleanComplex.startsWith(cleanQuery)) {
+        score = 80;
+      }
+      // Translated name match (e.g. "The Cow", "The Opener", "Cave")
+      else if (cleanTranslated === cleanQuery || cleanTranslated.includes(cleanQuery)) {
+        score = 70;
+      }
+      // Aliases match
+      else if (
+        ch.aliases.some((a) => {
+          const na = normalizeLatinText(a);
+          return na.length > 0 && na.includes(cleanQuery);
+        })
+      ) {
+        score = 60;
+      }
+      // Substring match
+      else if (cleanSimple.includes(cleanQuery)) {
+        score = 50;
+      }
     }
-    // Exact name match
-    else if (cleanSimple === cleanQuery || cleanComplex === cleanQuery) {
-      score = 90;
-    }
-    // Exact Arabic name match
-    else if (cleanAr === arabicNormalized) {
-      score = 90;
-    }
-    // Starts with query
-    else if (cleanSimple.startsWith(cleanQuery) || cleanComplex.startsWith(cleanQuery)) {
-      score = 80;
-    }
-    // Arabic starts with
-    else if (cleanAr.startsWith(arabicNormalized)) {
-      score = 80;
-    }
-    // Translated name match (e.g. "The Cow", "The Opener", "Cave")
-    else if (cleanTranslated === cleanQuery || cleanTranslated.includes(cleanQuery)) {
-      score = 70;
-    }
-    // Aliases match
-    else if (ch.aliases.some((a) => normalizeLatinText(a).includes(cleanQuery) || normalizeArabicText(a).includes(arabicNormalized))) {
-      score = 60;
-    }
-    // Substring match
-    else if (cleanSimple.includes(cleanQuery) || cleanAr.includes(arabicNormalized)) {
-      score = 50;
+
+    if (score === 0 && hasArabicQueryChars && queryAr.length > 0) {
+      // Exact Arabic name match (with or without leading Al-)
+      if (
+        cleanAr === queryAr ||
+        cleanArWithoutAl === queryAr ||
+        cleanArWithoutAl === queryArWithoutAl
+      ) {
+        score = 95;
+      }
+      // Arabic starts with
+      else if (
+        cleanAr.startsWith(queryAr) ||
+        (queryArWithoutAl.length > 0 && cleanArWithoutAl.startsWith(queryArWithoutAl))
+      ) {
+        score = 85;
+      }
+      // Arabic aliases match
+      else if (
+        ch.aliases.some((a) => {
+          const na = normalizeArabicText(a);
+          return (
+            na.length > 0 &&
+            /[\u0600-\u06FF]/.test(na) &&
+            (na.includes(queryAr) || (queryArWithoutAl.length > 1 && na.includes(queryArWithoutAl)))
+          );
+        })
+      ) {
+        score = 75;
+      }
+      // Arabic substring match
+      else if (
+        cleanAr.includes(queryAr) ||
+        (queryArWithoutAl.length > 1 && cleanAr.includes(queryArWithoutAl))
+      ) {
+        score = 65;
+      }
     }
 
     if (score > 0) {
@@ -526,7 +613,6 @@ export async function handleSearchQuery(params: LocalSearchParams): Promise<any>
     params.highlight === '1' ||
     params.highlight === 'true';
 
-
   if (!query) {
     return {
       result: {
@@ -558,16 +644,23 @@ export async function handleSearchQuery(params: LocalSearchParams): Promise<any>
   const arabicNormalized = normalizeArabicText(query);
   const queryWords = latinNormalized.split(' ').filter((w) => w.length > 1);
 
-  const matchedVerses: { score: number; verse: typeof index.verses[0]; matchType: 'arabic' | 'translation' }[] = [];
+  const matchedVerses: {
+    score: number;
+    verse: (typeof index.verses)[0];
+    matchType: 'arabic' | 'translation';
+    matchedField: 'arabic' | 'fa' | 'en';
+  }[] = [];
 
   for (const v of index.verses) {
     let score = 0;
     let matchType: 'arabic' | 'translation' = 'translation';
+    let matchedField: 'arabic' | 'fa' | 'en' = 'en';
 
     // A. Check exact verse key (e.g. "2:255")
     if (v.verseKey === query || v.verseKey === latinNormalized) {
       score = 200;
       matchType = 'translation';
+      matchedField = 'en';
     }
 
     // B. Check Arabic text match
@@ -578,6 +671,7 @@ export async function handleSearchQuery(params: LocalSearchParams): Promise<any>
       if (cleanArImlaei.includes(arabicNormalized) || cleanArUthmani.includes(arabicNormalized)) {
         score = 150;
         matchType = 'arabic';
+        matchedField = 'arabic';
       }
     }
 
@@ -587,23 +681,26 @@ export async function handleSearchQuery(params: LocalSearchParams): Promise<any>
       if (cleanEn.includes(latinNormalized)) {
         score = 100;
         matchType = 'translation';
+        matchedField = 'en';
       } else if (queryWords.length > 0 && queryWords.every((w) => cleanEn.includes(w))) {
         score = 80;
         matchType = 'translation';
+        matchedField = 'en';
       }
     }
 
     // D. Check Persian translation match
-    if (score === 0 && v.faTranslation && (arabicNormalized.length > 1 || latinNormalized.length > 1)) {
+    if (score === 0 && v.faTranslation && arabicNormalized.length > 1) {
       const cleanFa = normalizeArabicText(v.faTranslation);
       if (cleanFa.includes(arabicNormalized)) {
         score = 90;
         matchType = 'translation';
+        matchedField = 'fa';
       }
     }
 
     if (score > 0) {
-      matchedVerses.push({ score, verse: v, matchType });
+      matchedVerses.push({ score, verse: v, matchType, matchedField });
     }
   }
 
@@ -618,25 +715,30 @@ export async function handleSearchQuery(params: LocalSearchParams): Promise<any>
   const startIndex = (page - 1) * perPage;
   const paginatedMatches = matchedVerses.slice(startIndex, startIndex + perPage);
 
-  const formattedVerses = paginatedMatches.map(({ verse, matchType }) => {
+  const formattedVerses = paginatedMatches.map(({ verse, matchType, matchedField }) => {
     const chapter = index.chapters.find((c) => c.id === verse.chapterId);
     const chapterName = chapter ? chapter.name : `Surah ${verse.chapterId}`;
 
-    const arabicText = shouldHighlight && matchType === 'arabic'
-      ? highlightText(verse.textUthmani, rawQuery)
-      : verse.textUthmani;
+    const arabicText =
+      shouldHighlight && matchType === 'arabic'
+        ? highlightText(verse.textUthmani, rawQuery)
+        : verse.textUthmani;
 
-    let translationText = verse.enTranslation || verse.faTranslation || '';
+    let translationText =
+      matchedField === 'fa'
+        ? verse.faTranslation || verse.enTranslation || ''
+        : verse.enTranslation || verse.faTranslation || '';
     if (shouldHighlight && matchType === 'translation') {
       translationText = highlightText(translationText, rawQuery);
     }
 
     return {
-      resultType: matchType === 'arabic' ? SearchNavigationType.AYAH : SearchNavigationType.TRANSLATION,
+      resultType:
+        matchType === 'arabic' ? SearchNavigationType.AYAH : SearchNavigationType.TRANSLATION,
       name: translationText || verse.textImlaeiSimple,
       key: verse.verseKey,
       arabic: arabicText,
-      isArabic: matchType === 'arabic',
+      isArabic: false,
       isTransliteration: false,
       chapterName,
     };

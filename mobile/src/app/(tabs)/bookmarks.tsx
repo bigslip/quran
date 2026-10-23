@@ -420,6 +420,8 @@ export default function BookmarksScreen() {
               { backgroundColor: colors.surfaceFloating, borderColor: colors.borderSubtle },
             ]}
             onPress={() => {
+              setLocalSearchText('');
+              setDebouncedSearchQuery('');
               setSearchQuery('');
               setSelectedTagId(null);
             }}

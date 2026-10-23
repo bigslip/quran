@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
+import React, { RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
@@ -23,8 +23,8 @@ import useSearchWithVoice from '@/hooks/useSearchWithVoice';
 import { selectMicrophoneActive } from '@/redux/slices/microphone';
 import { selectNavbar, setIsSearchModalOpen, setLockVisibilityState } from '@/redux/slices/navbar';
 import { selectSelectedTranslations } from '@/redux/slices/QuranReader/translations';
-import SearchQuerySource from '@/types/SearchQuerySource';
 import SearchService from '@/types/Search/SearchService';
+import SearchQuerySource from '@/types/SearchQuerySource';
 import { makeNewSearchResultsUrl } from '@/utils/apiPaths';
 import { areArraysEqual } from '@/utils/array';
 import { logButtonClick } from '@/utils/eventLogger';
@@ -55,6 +55,8 @@ const SearchModal: React.FC = () => {
 
   const isOpen = useSelector(selectNavbar, shallowEqual).isSearchDrawerOpen;
   const isMicActive = useSelector(selectMicrophoneActive);
+  const wasOpenRef = useRef(false);
+  const bodyContainerRef = useRef<HTMLDivElement>(null);
 
   // Debounce search query to avoid having to call the API on every keystroke
   const debouncedSearchQuery = useDebounce<string>(searchQuery, DEBOUNCING_PERIOD_MS);
@@ -78,8 +80,10 @@ const SearchModal: React.FC = () => {
   // Lock navbar visibility state when search modal is open
   useEffect(() => {
     if (isOpen) {
+      wasOpenRef.current = true;
       dispatch(setLockVisibilityState(true));
-    } else {
+    } else if (wasOpenRef.current) {
+      wasOpenRef.current = false;
       dispatch(setLockVisibilityState(false));
     }
   }, [dispatch, isOpen]);
@@ -136,11 +140,12 @@ const SearchModal: React.FC = () => {
   const trimmedSearchQuery = useMemo(() => debouncedSearchQuery.trim(), [debouncedSearchQuery]);
 
   const quickSearchQuery = useMemo(() => {
+    if (!trimmedSearchQuery) return null;
     return getQuickSearchQuery(trimmedSearchQuery, 10, selectedTranslations);
   }, [trimmedSearchQuery, selectedTranslations]);
 
   const searchFetcher = useCallback(() => {
-    if (!trimmedSearchQuery) return null;
+    if (!trimmedSearchQuery || !quickSearchQuery) return null;
     return getNewSearchResults(quickSearchQuery).then((response) => ({
       ...response,
       service: SearchService.KALIMAT,
@@ -206,6 +211,35 @@ const SearchModal: React.FC = () => {
     [searchInputRef],
   );
 
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+      if (!bodyContainerRef.current) return;
+
+      const items = Array.from(
+        bodyContainerRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ).filter((el) => !(el.tagName === 'BUTTON' && el.closest('a[href]')));
+
+      if (items.length === 0) return;
+
+      event.preventDefault();
+      const activeEl = document.activeElement as HTMLElement | null;
+      const currentIndex = activeEl ? items.indexOf(activeEl) : -1;
+
+      if (event.key === 'ArrowDown') {
+        const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+        items[nextIndex]?.focus();
+      } else if (event.key === 'ArrowUp') {
+        if (currentIndex <= 0) {
+          searchInputRef.current?.focus();
+        } else {
+          items[currentIndex - 1]?.focus();
+        }
+      }
+    },
+    [searchInputRef],
+  );
+
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogPrimitive.Portal>
@@ -216,6 +250,7 @@ const SearchModal: React.FC = () => {
           onInteractOutside={handleInteractOutside}
           onEscapeKeyDown={onClose}
           onOpenAutoFocus={handleOpenAutoFocus}
+          onKeyDown={handleKeyDown}
           data-testid="search-modal-container"
         >
           <VisuallyHidden>
@@ -238,15 +273,26 @@ const SearchModal: React.FC = () => {
             onClose={onClose}
           />
 
-          <div className={styles.bodyContainer}>
-            {isOpen && (
-              <DataFetcher
-                queryKey={trimmedSearchQuery ? makeNewSearchResultsUrl(quickSearchQuery) : null}
-                render={renderSearchResults}
-                fetcher={searchFetcher}
-                loading={renderLoading}
-              />
-            )}
+          <div className={styles.bodyContainer} ref={bodyContainerRef}>
+            {isOpen &&
+              (quickSearchQuery ? (
+                <DataFetcher
+                  queryKey={makeNewSearchResultsUrl(quickSearchQuery)}
+                  render={renderSearchResults}
+                  fetcher={searchFetcher}
+                  loading={renderLoading}
+                />
+              ) : (
+                <SearchBodyContainer
+                  onSearchKeywordClicked={onSearchKeywordClicked}
+                  searchQuery={trimmedSearchQuery}
+                  searchResult={null}
+                  isSearching={false}
+                  hasError={false}
+                  shouldSuggestFullSearchWhenNoResults
+                  source={SearchQuerySource.SearchModal}
+                />
+              ))}
           </div>
 
           <SearchModalFooter searchQuery={searchQuery} onClose={onClose} />

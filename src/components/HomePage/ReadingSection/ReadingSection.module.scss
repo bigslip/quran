@@ -72,3 +72,67 @@
     justify-content: space-between;
   }
 }
+
+.cardOuterContainer {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-micro);
+  font-weight: var(--font-weight-semibold);
+  inline-size: 100%;
+}
+
+.cardWithIcon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-xsmall-px);
+
+  @include breakpoints.tablet {
+    font-size: var(--font-size-large-px);
+  }
+}
+
+.iconContainer {
+  display: flex;
+  padding-inline-end: var(--spacing-xxsmall-px);
+
+  @include breakpoints.tablet {
+    padding-inline-end: var(--spacing-small-px);
+  }
+
+  svg {
+    inline-size: var(--spacing-medium2-px);
+    block-size: var(--spacing-medium2-px);
+
+    @include breakpoints.tablet {
+      inline-size: var(--spacing-large-px);
+      block-size: var(--spacing-large-px);
+    }
+  }
+}
+
+.arrowIconRight {
+  [dir='rtl'] & {
+    transform: rotate(180deg);
+  }
+
+  @include breakpoints.smallerThanTablet {
+    svg {
+      inline-size: 12px !important;
+      block-size: 12px !important;
+    }
+  }
+}
+
+.stayConsistentText {
+  padding-block-start: var(--spacing-xxsmall-px);
+  font-size: var(--font-size-xsmall-px);
+  color: var(--color-text-secondary);
+
+  @include breakpoints.tablet {
+    padding-block-start: var(--spacing-small-px);
+    font-size: var(--font-size-normal-px);
+  }
+}

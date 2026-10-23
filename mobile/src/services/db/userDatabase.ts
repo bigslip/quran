@@ -149,12 +149,16 @@ export async function getUserDatabase(): Promise<SQLiteLikeDb> {
           await rawDb.execAsync('PRAGMA journal_mode = WAL;');
           await rawDb.execAsync('PRAGMA foreign_keys = ON;');
         }
-      } catch {
-        // Fallback for Node test environments (hidden from Metro bundler AST parser)
-        // eslint-disable-next-line @typescript-eslint/no-implied-eval
-        const dynamicImport = new Function('specifier', 'return import(specifier);');
-        const { DatabaseSync } = (await dynamicImport('node:' + 'sqlite')) as any;
-        rawDb = new DatabaseSync(':memory:');
+      } catch (err) {
+        if (typeof process !== 'undefined' && Boolean(process.versions?.node)) {
+          // Fallback for Node test environments (hidden from Metro bundler AST parser)
+          // eslint-disable-next-line @typescript-eslint/no-implied-eval
+          const dynamicImport = new Function('specifier', 'return import(specifier);');
+          const { DatabaseSync } = (await dynamicImport('node:' + 'sqlite')) as any;
+          rawDb = new DatabaseSync(':memory:');
+        } else {
+          throw err;
+        }
       }
 
       rawDbInstance = rawDb;
@@ -174,12 +178,23 @@ export async function getUserDatabase(): Promise<SQLiteLikeDb> {
 }
 
 export async function closeUserDatabase(): Promise<void> {
+  const pending = initPromise;
+  initPromise = null;
+  if (pending) {
+    try {
+      await pending;
+    } catch {}
+  }
   if (rawDbInstance) {
-    if (typeof rawDbInstance.closeAsync === 'function') {
-      await rawDbInstance.closeAsync();
-    } else if (typeof rawDbInstance.close === 'function') {
-      rawDbInstance.close();
-    }
+    const currentRaw = rawDbInstance;
+    rawDbInstance = null;
+    try {
+      if (typeof currentRaw.closeAsync === 'function') {
+        await currentRaw.closeAsync();
+      } else if (typeof currentRaw.close === 'function') {
+        currentRaw.close();
+      }
+    } catch {}
   }
   rawDbInstance = null;
   userDbInstance = null;

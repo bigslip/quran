@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,7 @@ import {
   spacing,
   borderRadius,
   useThemeColors,
+  emeraldColors,
   formatRTLText,
   rtlTextAlign,
 } from '@/theme';
@@ -65,6 +66,15 @@ export function WidgetSettingsSection() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
+  const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (syncTimeoutRef.current) {
+        clearTimeout(syncTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Initialize selected city from readingStorage
   useEffect(() => {
@@ -129,7 +139,13 @@ export function WidgetSettingsSection() {
     try {
       await loadWidgetData(selectedCity, true);
       setSyncSuccess(true);
-      setTimeout(() => setSyncSuccess(false), 2500);
+      if (syncTimeoutRef.current) {
+        clearTimeout(syncTimeoutRef.current);
+      }
+      syncTimeoutRef.current = setTimeout(() => {
+        syncTimeoutRef.current = null;
+        setSyncSuccess(false);
+      }, 2500);
     } catch {
       // Non-fatal
     } finally {
@@ -336,7 +352,7 @@ export function WidgetSettingsSection() {
             styles.widgetPreviewCard,
             {
               backgroundColor: '#071811', // Dark emerald theme
-              borderColor: colors.borderSubtle,
+              borderColor: emeraldColors.borderSubtle,
             },
           ]}
         >
@@ -344,57 +360,61 @@ export function WidgetSettingsSection() {
             <View style={styles.previewPrayerContent}>
               <View style={styles.previewCardTopRow}>
                 <View style={styles.previewBadge}>
-                  <Text style={[styles.previewBadgeText, { color: colors.goldAccent }]}>
+                  <Text style={[styles.previewBadgeText, { color: emeraldColors.goldAccent }]}>
                     {toPersianDigits(nextPrayer.milestone.timeFa)}
                   </Text>
                 </View>
                 <View style={styles.previewCardTitleGroup}>
-                  <Text style={[styles.previewNextPrayerTitle, { color: colors.textPrimary }]}>
+                  <Text
+                    style={[styles.previewNextPrayerTitle, { color: emeraldColors.textPrimary }]}
+                  >
                     {formatRTLText(nextPrayer.milestone.nameFa)}
                   </Text>
-                  <Text style={[styles.previewCountdownText, { color: colors.goldAccent }]}>
+                  <Text style={[styles.previewCountdownText, { color: emeraldColors.goldAccent }]}>
                     {formatRTLText(nextPrayer.countdownFa)}
                   </Text>
                 </View>
               </View>
 
               <View style={styles.previewCityTagRow}>
-                <Text style={[styles.previewCityTag, { color: colors.textFaded }]}>
+                <Text style={[styles.previewCityTag, { color: emeraldColors.textFaded }]}>
                   {formatRTLText(`افق ${selectedCity.nameFa}`)}
                 </Text>
-                <Clock size={12} color={colors.textFaded} />
+                <Clock size={12} color={emeraldColors.textFaded} />
               </View>
 
               <View style={[styles.milestonesStrip, { borderColor: 'rgba(255, 255, 255, 0.08)' }]}>
                 <View style={styles.milestoneMiniItem}>
-                  <Text style={[styles.miniTime, { color: colors.textSecondary }]}>
+                  <Text style={[styles.miniTime, { color: emeraldColors.textSecondary }]}>
                     {toPersianDigits(milestoneTimes.fajr || '')}
                   </Text>
-                  <Text style={[styles.miniLabel, { color: colors.textFaded }]}>صبح</Text>
+                  <Text style={[styles.miniLabel, { color: emeraldColors.textFaded }]}>صبح</Text>
                 </View>
                 <View style={styles.milestoneMiniItem}>
-                  <Text style={[styles.miniTime, { color: colors.textSecondary }]}>
+                  <Text style={[styles.miniTime, { color: emeraldColors.textSecondary }]}>
                     {toPersianDigits(milestoneTimes.sunrise || '')}
                   </Text>
-                  <Text style={[styles.miniLabel, { color: colors.textFaded }]}>طلوع</Text>
+                  <Text style={[styles.miniLabel, { color: emeraldColors.textFaded }]}>طلوع</Text>
                 </View>
                 <View style={styles.milestoneMiniItem}>
-                  <Text style={[styles.miniTime, { color: colors.textSecondary }]}>
+                  <Text style={[styles.miniTime, { color: emeraldColors.textSecondary }]}>
                     {toPersianDigits(milestoneTimes.dhuhr || '')}
                   </Text>
-                  <Text style={[styles.miniLabel, { color: colors.textFaded }]}>ظهر</Text>
+                  <Text style={[styles.miniLabel, { color: emeraldColors.textFaded }]}>ظهر</Text>
                 </View>
                 <View style={styles.milestoneMiniItem}>
-                  <Text style={[styles.miniTime, { color: colors.textSecondary }]}>
+                  <Text style={[styles.miniTime, { color: emeraldColors.textSecondary }]}>
                     {toPersianDigits(milestoneTimes.maghrib || '')}
                   </Text>
-                  <Text style={[styles.miniLabel, { color: colors.textFaded }]}>مغرب</Text>
+                  <Text style={[styles.miniLabel, { color: emeraldColors.textFaded }]}>مغرب</Text>
                 </View>
                 <View style={styles.milestoneMiniItem}>
-                  <Text style={[styles.miniTime, { color: colors.textSecondary }]}>
+                  <Text style={[styles.miniTime, { color: emeraldColors.textSecondary }]}>
                     {toPersianDigits(milestoneTimes.midnight || '')}
                   </Text>
-                  <Text style={[styles.miniLabel, { color: colors.textFaded }]}>نیمه‌شب</Text>
+                  <Text style={[styles.miniLabel, { color: emeraldColors.textFaded }]}>
+                    نیمه‌شب
+                  </Text>
                 </View>
               </View>
             </View>
@@ -404,11 +424,11 @@ export function WidgetSettingsSection() {
             <View style={styles.previewAyahContent}>
               <View style={styles.previewCardTopRow}>
                 <View style={styles.previewBadge}>
-                  <Text style={[styles.previewBadgeText, { color: colors.goldAccent }]}>
+                  <Text style={[styles.previewBadgeText, { color: emeraldColors.goldAccent }]}>
                     {formatRTLText('آیه امروز')}
                   </Text>
                 </View>
-                <Text style={[styles.previewAyahCitation, { color: colors.primary }]}>
+                <Text style={[styles.previewAyahCitation, { color: emeraldColors.primary }]}>
                   {formatRTLText(
                     widgetData?.dailyAyah?.surahNameFa
                       ? `${widgetData.dailyAyah.surahNameFa} • آیه ${toPersianDigits(
@@ -420,7 +440,7 @@ export function WidgetSettingsSection() {
               </View>
 
               <Text
-                style={[styles.previewArabicScripture, { color: colors.textPrimary }]}
+                style={[styles.previewArabicScripture, { color: emeraldColors.textPrimary }]}
                 numberOfLines={2}
               >
                 {widgetData?.dailyAyah?.arabicText ||
@@ -428,7 +448,7 @@ export function WidgetSettingsSection() {
               </Text>
 
               <Text
-                style={[styles.previewTranslationText, { color: colors.textSecondary }]}
+                style={[styles.previewTranslationText, { color: emeraldColors.textSecondary }]}
                 numberOfLines={2}
               >
                 {formatRTLText(
@@ -443,12 +463,12 @@ export function WidgetSettingsSection() {
             <View style={styles.previewLastReadContent}>
               <View style={styles.previewCardTopRow}>
                 <View style={styles.previewBadge}>
-                  <BookOpen size={12} color={colors.goldAccent} />
-                  <Text style={[styles.previewBadgeText, { color: colors.goldAccent }]}>
+                  <BookOpen size={12} color={emeraldColors.goldAccent} />
+                  <Text style={[styles.previewBadgeText, { color: emeraldColors.goldAccent }]}>
                     {formatRTLText('آخرین تلاوت')}
                   </Text>
                 </View>
-                <Text style={[styles.previewLastReadSurah, { color: colors.primary }]}>
+                <Text style={[styles.previewLastReadSurah, { color: emeraldColors.primary }]}>
                   {formatRTLText(
                     widgetData?.lastRead?.surahNameFa
                       ? `سوره ${widgetData.lastRead.surahNameFa}`
@@ -458,14 +478,14 @@ export function WidgetSettingsSection() {
               </View>
 
               <View style={styles.previewLastReadBody}>
-                <Text style={[styles.previewLastReadMeta, { color: colors.textPrimary }]}>
+                <Text style={[styles.previewLastReadMeta, { color: emeraldColors.textPrimary }]}>
                   {formatRTLText(
                     `آیه ${toPersianDigits(lastReadAyah || 1)} • صفحه ${toPersianDigits(
                       lastReadPage || 1,
                     )} • جزء ${toPersianDigits(lastReadJuz || 1)}`,
                   )}
                 </Text>
-                <Text style={[styles.previewLastReadPrompt, { color: colors.textFaded }]}>
+                <Text style={[styles.previewLastReadPrompt, { color: emeraldColors.textFaded }]}>
                   {formatRTLText('لمس ویجت برای ورود مستقیم به آیه در قرآن')}
                 </Text>
               </View>
@@ -473,11 +493,14 @@ export function WidgetSettingsSection() {
               <View
                 style={[
                   styles.previewContinuePill,
-                  { backgroundColor: colors.surfaceFloating, borderColor: colors.primary },
+                  {
+                    backgroundColor: emeraldColors.surfaceFloating,
+                    borderColor: emeraldColors.primary,
+                  },
                 ]}
               >
-                <ChevronLeft size={14} color={colors.primary} />
-                <Text style={[styles.previewContinueText, { color: colors.primary }]}>
+                <ChevronLeft size={14} color={emeraldColors.primary} />
+                <Text style={[styles.previewContinueText, { color: emeraldColors.primary }]}>
                   {formatRTLText('ادامه تلاوت')}
                 </Text>
               </View>

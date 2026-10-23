@@ -4,6 +4,9 @@ import ayahOfTheDayData from '@/data/ayah_of_the_day.json';
 
 // Convert array to Map for O(1) lookups instead of O(n) Array.find()
 const ayahDataMap = new Map(ayahOfTheDayData.map((entry) => [entry.date, entry.verseKey]));
+const dayMonthDataMap = new Map(
+  ayahOfTheDayData.map((entry) => [entry.date.slice(0, 6), entry.verseKey]),
+);
 
 // Cache for today's result to avoid repeated date formatting and lookups
 let cachedDate: string | null = null;
@@ -33,8 +36,14 @@ const getCurrentDayAyah = (): { chapter: number; verse: number } | null => {
     return cachedResult;
   }
 
-  // Look up the verse key in the Map (O(1) operation)
-  const verseKey = ayahDataMap.get(todayString);
+  // Look up the verse key in the Map (O(1) operation), falling back to DD/MM/ prefix or day-of-year modulo
+  let verseKey = ayahDataMap.get(todayString) ?? dayMonthDataMap.get(`${day}/${month}/`);
+
+  if (!verseKey && ayahOfTheDayData.length > 0) {
+    const startOfYear = Date.UTC(year, 0, 0);
+    const dayOfYear = Math.floor((today.getTime() - startOfYear) / (1000 * 60 * 60 * 24));
+    verseKey = ayahOfTheDayData[Math.abs(dayOfYear) % ayahOfTheDayData.length]?.verseKey;
+  }
 
   if (!verseKey) {
     cachedDate = todayString;

@@ -236,10 +236,161 @@ class PrayerWidgetProvider : AppWidgetProvider() {
             }
             val pendingIntent = PendingIntent.getBroadcast(context, 201, intent, flags)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                    } else {
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                    }
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                } else {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                }
+            } catch (e: SecurityException) {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+            }
+        }
+    }
+}
+`;
+}
+
+/**
+ * Kotlin Template: PrayerWidgetSmallProvider
+ */
+function generatePrayerWidgetSmallProviderKt() {
+  return `package ${WIDGETS_PACKAGE}
+
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProvider
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.widget.RemoteViews
+import org.json.JSONObject
+
+class PrayerWidgetSmallProvider : AppWidgetProvider() {
+
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        for (appWidgetId in appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
+    }
+
+    companion object {
+        private const val PREFS_NAME = "ir.quran.app.widget_data"
+        private const val DATA_KEY = "widget_data"
+        private const val DEFAULT_DEEP_LINK = "quranir://prayers"
+
+        fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+            val packageName = context.packageName
+            val layoutId = context.resources.getIdentifier("widget_prayer_small", "layout", packageName)
+            val views = RemoteViews(packageName, layoutId)
+
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val rawJson = prefs.getString(DATA_KEY, null)
+
+            var nextPrayerName = "اذان ظهر"
+            var nextPrayerTime = "۱۲:۰۰"
+            var countdownText = "هم‌اکنون"
+            var nextMilestoneTimestamp = 0L
+
+            if (!rawJson.isNullOrEmpty()) {
+                try {
+                    val root = JSONObject(rawJson)
+                    val prayerTimes = root.optJSONObject("prayerTimes")
+                    if (prayerTimes != null) {
+                        val scheduleArr = prayerTimes.optJSONArray("schedule")
+                        if (scheduleArr != null && scheduleArr.length() > 0) {
+                            val today = scheduleArr.getJSONObject(0)
+                            val milestones = today.optJSONArray("milestones")
+                            val now = System.currentTimeMillis()
+
+                            if (milestones != null) {
+                                for (i in 0 until milestones.length()) {
+                                    val m = milestones.getJSONObject(i)
+                                    val ts = m.optLong("timestamp", 0L)
+                                    if (ts > now) {
+                                        nextPrayerName = m.optString("nameFa", "نماز")
+                                        nextPrayerTime = m.optString("timeFa", "")
+                                        nextMilestoneTimestamp = ts
+                                        val remainingMin = (ts - now) / 60000
+                                        countdownText = "$remainingMin دقیقه"
+                                        break
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            val nameId = context.resources.getIdentifier("widget_prayer_name", "id", packageName)
+                .takeIf { it != 0 } ?: context.resources.getIdentifier("prayer_small_name", "id", packageName)
+            val timeId = context.resources.getIdentifier("widget_prayer_time", "id", packageName)
+                .takeIf { it != 0 } ?: context.resources.getIdentifier("prayer_small_time", "id", packageName)
+            val countdownId = context.resources.getIdentifier("widget_prayer_countdown", "id", packageName)
+                .takeIf { it != 0 } ?: context.resources.getIdentifier("prayer_small_countdown", "id", packageName)
+
+            if (nameId != 0) views.setTextViewText(nameId, nextPrayerName)
+            if (timeId != 0) views.setTextViewText(timeId, nextPrayerTime)
+            if (countdownId != 0) views.setTextViewText(countdownId, countdownText)
+
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(DEFAULT_DEEP_LINK)).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             } else {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                PendingIntent.FLAG_UPDATE_CURRENT
+            }
+            val pendingIntent = PendingIntent.getActivity(context, 104, intent, flags)
+            val containerId = context.resources.getIdentifier("widget_container", "id", packageName)
+                .takeIf { it != 0 } ?: context.resources.getIdentifier("prayer_small_root", "id", packageName)
+            if (containerId != 0) {
+                views.setOnClickPendingIntent(containerId, pendingIntent)
+            }
+
+            appWidgetManager.updateAppWidget(appWidgetId, views)
+
+            if (nextMilestoneTimestamp > System.currentTimeMillis()) {
+                scheduleNextAlarm(context, nextMilestoneTimestamp)
+            }
+        }
+
+        private fun scheduleNextAlarm(context: Context, triggerAtMillis: Long) {
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager ?: return
+            val intent = Intent(context, WidgetAlarmReceiver::class.java).apply {
+                action = "ir.quran.app.ACTION_PRAYER_TICK"
+            }
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            } else {
+                PendingIntent.FLAG_UPDATE_CURRENT
+            }
+            val pendingIntent = PendingIntent.getBroadcast(context, 201, intent, flags)
+
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                    } else {
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                    }
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                } else {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+                }
+            } catch (e: SecurityException) {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
             }
         }
     }
@@ -440,6 +591,13 @@ class WidgetAlarmReceiver : BroadcastReceiver() {
 
         for (appWidgetId in appWidgetIds) {
             PrayerWidgetProvider.updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
+
+        val prayerSmallComponent = ComponentName(context, PrayerWidgetSmallProvider::class.java)
+        val smallWidgetIds = appWidgetManager.getAppWidgetIds(prayerSmallComponent)
+
+        for (appWidgetId in smallWidgetIds) {
+            PrayerWidgetSmallProvider.updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
 }
@@ -702,6 +860,10 @@ function withAndroidWidgets(config, options = {}) {
         generatePrayerWidgetProviderKt(),
       );
       fs.writeFileSync(
+        path.join(javaDir, 'PrayerWidgetSmallProvider.kt'),
+        generatePrayerWidgetSmallProviderKt(),
+      );
+      fs.writeFileSync(
         path.join(javaDir, 'DailyAyahWidgetProvider.kt'),
         generateDailyAyahWidgetProviderKt(),
       );
@@ -778,6 +940,7 @@ module.exports.default = withAndroidWidgets;
 module.exports.withAndroidWidgets = withAndroidWidgets;
 module.exports.modifyAndroidManifest = modifyAndroidManifest;
 module.exports.generatePrayerWidgetProviderKt = generatePrayerWidgetProviderKt;
+module.exports.generatePrayerWidgetSmallProviderKt = generatePrayerWidgetSmallProviderKt;
 module.exports.generateDailyAyahWidgetProviderKt = generateDailyAyahWidgetProviderKt;
 module.exports.generateLastReadWidgetProviderKt = generateLastReadWidgetProviderKt;
 module.exports.generateWidgetAlarmReceiverKt = generateWidgetAlarmReceiverKt;

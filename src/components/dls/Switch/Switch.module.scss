@@ -60,6 +60,17 @@ $background-container-padding: calc(0.8 * var(--spacing-xxsmall));
         padding-inline-end: 0;
       }
     }
+
+    &[style*='translateX(-100%)'] {
+      padding-inline-start: 0;
+      padding-inline-end: var(--spacing-xmicro);
+      transform: translateX(calc(-100% - var(--spacing-xmicro))) !important;
+
+      .selectedItemBackground {
+        padding-inline-start: var(--spacing-xmicro);
+        padding-inline-end: 0;
+      }
+    }
   }
 }
 

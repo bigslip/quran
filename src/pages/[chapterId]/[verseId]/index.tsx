@@ -44,17 +44,22 @@ const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse 
   const { t, lang } = useTranslation('common');
   const router = useRouter();
   const verseIdFromQuery = router.query.verseId;
+  const versesList = versesResponse?.verses;
   const currentVerseId =
     (typeof verseIdFromQuery === 'string' ? verseIdFromQuery : null) ||
     (isVerse
-      ? versesResponse?.verses?.[0]?.verseNumber?.toString()
-      : `${versesResponse?.verses?.[0]?.verseNumber}-${versesResponse?.verses?.[versesResponse?.verses?.length - 1]?.verseNumber}`) ||
+      ? versesList?.[0]?.verseNumber?.toString()
+      : `${versesList?.[0]?.verseNumber}-${
+          versesList?.[(versesList?.length || 1) - 1]?.verseNumber
+        }`) ||
     '';
   const path = getVerseNavigationUrl(chapterResponse.chapter.slug, currentVerseId);
 
   const getSEOTitle = () => {
     if (!isVerse) {
-      return `${t('surah')} ${chapterResponse.chapter.transliteratedName} - ${toLocalizedVersesRange(currentVerseId, lang)}`;
+      return `${t('surah')} ${
+        chapterResponse.chapter.transliteratedName
+      } - ${toLocalizedVersesRange(currentVerseId, lang)}`;
     }
     const verseNumber = Number(currentVerseId);
     return getSurahSeoTitle({
@@ -84,7 +89,9 @@ const Verse: NextPage<VerseProps> = ({ chapterResponse, versesResponse, isVerse 
       />
       <QuranReader
         initialData={versesResponse}
-        id={isVerse ? `${chapterResponse.chapter.id}:${currentVerseId}` : chapterResponse.chapter.id}
+        id={
+          isVerse ? `${chapterResponse.chapter.id}:${currentVerseId}` : chapterResponse.chapter.id
+        }
         quranReaderDataType={
           isVerse ? QuranReaderDataType.Verse : QuranReaderDataType.ChapterVerseRanges
         }
@@ -113,8 +120,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
 
   // In-memory synchronous slug resolution first before network call
   const localChapterId = getChapterIdBySlugOrId(chaptersData, chapterIdOrSlug);
-  const resolvedChapterId =
-    localChapterId || (await getChapterIdBySlug(chapterIdOrSlug, locale));
+  const resolvedChapterId = localChapterId || (await getChapterIdBySlug(chapterIdOrSlug, locale));
 
   if (resolvedChapterId) {
     chapterIdOrSlug = resolvedChapterId;
@@ -198,7 +204,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     const chapterData = getChapterData(chaptersData, chapterIdOrSlug);
     if (!chapterData) {
       return {
-        props: {},
+        notFound: true,
         revalidate: REVALIDATION_PERIOD_ON_ERROR_SECONDS, // 35 seconds will be enough time before we re-try generating the page again.
       };
     }
@@ -242,9 +248,9 @@ const getOgDescription = (versesResponse: VersesResponse, isVerse: boolean, lang
   if (isVerse) {
     const verse = versesResponse.verses[0];
     ogText =
-      verse?.translations?.length > 0
+      (verse?.translations?.length > 0
         ? getPlainTranslationText(verse?.translations[0]?.text)
-        : verse?.textImlaeiSimple;
+        : verse?.textImlaeiSimple) || '';
   }
 
   // For verse ranges, return the first 3 verses in the format of `(verse number) verse translation text`
@@ -252,11 +258,11 @@ const getOgDescription = (versesResponse: VersesResponse, isVerse: boolean, lang
     const firstThreeVerses = versesResponse.verses.slice(0, 3);
     ogText = firstThreeVerses
       .map((verse) => {
-        return `(${toLocalizedNumber(Number(verse.verseNumber), lang)}) ${
-          verse?.translations?.length > 0
+        const verseText =
+          (verse?.translations?.length > 0
             ? getPlainTranslationText(verse?.translations[0]?.text)
-            : verse?.textImlaeiSimple
-        }`;
+            : verse?.textImlaeiSimple) || '';
+        return `(${toLocalizedNumber(Number(verse.verseNumber), lang)}) ${verseText}`.trim();
       })
       .join(' ');
   }

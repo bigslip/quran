@@ -23,6 +23,7 @@ import {
   filterSurahs,
   filterJuzs,
   toPersianDigits,
+  getJuzNavigationRoute,
   type CatalogTabId,
 } from '@/components/catalog';
 import { Chapter, Juz } from '@/types/quran';
@@ -92,7 +93,8 @@ export default function SurahsScreen() {
 
   const handleJuzPress = useCallback(
     (juz: Juz) => {
-      router.push(`/surah/${juz.first_chapter_id}` as any);
+      const route = getJuzNavigationRoute(juz) || `/surah/${juz.first_chapter_id}`;
+      router.push(route as any);
     },
     [router],
   );

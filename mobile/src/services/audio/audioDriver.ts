@@ -52,6 +52,7 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
   let hasFinishedCurrent = false;
   let activeOnFinish: (() => void) | null = null;
   let activeOnError: ((err: Error) => void) | null = null;
+  let opId = 0;
 
   const ensureMode = async () => {
     if (!isAudioModeSet && ExpoAudio?.setAudioModeAsync) {
@@ -112,10 +113,14 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
 
   return {
     playSound: async (url: string, onFinish?: () => void, onError?: (err: Error) => void) => {
+      const myOpId = ++opId;
       if (__DEV__) {
         console.log('[AudioDriver:expo-audio] playSound called with url:', url);
       }
       await ensureMode();
+      if (opId !== myOpId) {
+        return;
+      }
 
       activeOnFinish = onFinish || null;
       activeOnError = onError || null;
@@ -125,18 +130,17 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
         try {
           if (
             hasFinishedCurrent ||
+            player.playing ||
             (typeof (player as any).currentTime === 'number' && (player as any).currentTime > 0)
           ) {
             if (typeof (player as any).seekTo === 'function') {
               (player as any).seekTo(0);
             }
           }
-          if (!player.playing) {
-            player.play();
-            isSoundPlaying = true;
-            hasFinishedCurrent = false;
-            return;
-          }
+          player.play();
+          isSoundPlaying = true;
+          hasFinishedCurrent = false;
+          return;
         } catch (e) {
           console.warn(
             '[AudioDriver:expo-audio] Failed to resume/replay existing player, re-creating:',
@@ -217,6 +221,7 @@ export function createExpoAudioDriver(ExpoAudio: any): AudioDriver {
     },
 
     stopSound: async () => {
+      ++opId;
       activeOnFinish = null;
       activeOnError = null;
       hasFinishedCurrent = true;
@@ -255,6 +260,9 @@ export function createLegacyExpoAvDriver(AudioModule: any): AudioDriver {
   let isSoundPlaying = false;
   let currentLoadedUrl: string | null = null;
   let isAudioModeSet = false;
+  let activeOnFinish: (() => void) | null = null;
+  let activeOnError: ((err: Error) => void) | null = null;
+  let opId = 0;
 
   const ensureMode = async () => {
     if (!isAudioModeSet && AudioModule?.setAudioModeAsync) {
@@ -274,14 +282,33 @@ export function createLegacyExpoAvDriver(AudioModule: any): AudioDriver {
 
   return {
     playSound: async (url: string, onFinish?: () => void, onError?: (err: Error) => void) => {
+      const myOpId = ++opId;
       await ensureMode();
+      if (opId !== myOpId) {
+        return;
+      }
 
-      // If resuming same audio URL that is already loaded and paused
+      activeOnFinish = onFinish || null;
+      activeOnError = onError || null;
+
+      // If resuming or replaying same audio URL that is already loaded
       if (soundObject && currentLoadedUrl === url) {
         try {
           const status = await soundObject.getStatusAsync();
-          if (status.isLoaded && !status.isPlaying) {
+          if (opId !== myOpId) {
+            return;
+          }
+          if (status.isLoaded) {
+            if (typeof soundObject.setPositionAsync === 'function') {
+              await soundObject.setPositionAsync(0);
+              if (opId !== myOpId) {
+                return;
+              }
+            }
             await soundObject.playAsync();
+            if (opId !== myOpId) {
+              return;
+            }
             isSoundPlaying = true;
             return;
           }
@@ -292,13 +319,18 @@ export function createLegacyExpoAvDriver(AudioModule: any): AudioDriver {
 
       // Stop and unload previous sound before playing new sound
       if (soundObject) {
+        const prevSound = soundObject;
+        soundObject = null;
         try {
-          await soundObject.stopAsync();
-          await soundObject.unloadAsync();
+          await prevSound.stopAsync();
+          await prevSound.unloadAsync();
         } catch {
           // ignore
         }
-        soundObject = null;
+      }
+
+      if (opId !== myOpId) {
+        return;
       }
 
       currentLoadedUrl = url;
@@ -312,19 +344,31 @@ export function createLegacyExpoAvDriver(AudioModule: any): AudioDriver {
               isSoundPlaying = status.isPlaying;
               if (status.didJustFinish) {
                 isSoundPlaying = false;
-                onFinish?.();
+                activeOnFinish?.();
               }
             } else if (status.error) {
               isSoundPlaying = false;
-              onError?.(new Error(status.error));
+              activeOnError?.(new Error(status.error));
             }
           },
         );
+        if (opId !== myOpId) {
+          try {
+            await sound.stopAsync();
+            await sound.unloadAsync();
+          } catch {
+            // ignore
+          }
+          return;
+        }
         soundObject = sound;
         isSoundPlaying = true;
       } catch (err: any) {
+        if (opId !== myOpId) {
+          return;
+        }
         isSoundPlaying = false;
-        onError?.(err instanceof Error ? err : new Error(String(err)));
+        activeOnError?.(err instanceof Error ? err : new Error(String(err)));
       }
     },
 
@@ -351,16 +395,20 @@ export function createLegacyExpoAvDriver(AudioModule: any): AudioDriver {
     },
 
     stopSound: async () => {
+      ++opId;
+      activeOnFinish = null;
+      activeOnError = null;
+      currentLoadedUrl = null;
+      isSoundPlaying = false;
       if (soundObject) {
+        const prevSound = soundObject;
+        soundObject = null;
         try {
-          await soundObject.stopAsync();
-          await soundObject.unloadAsync();
+          await prevSound.stopAsync();
+          await prevSound.unloadAsync();
         } catch {
           // ignore
         }
-        soundObject = null;
-        currentLoadedUrl = null;
-        isSoundPlaying = false;
       }
     },
 

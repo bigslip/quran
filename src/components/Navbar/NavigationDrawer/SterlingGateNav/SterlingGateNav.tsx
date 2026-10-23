@@ -1,3 +1,4 @@
+/* eslint-disable max-lines, react-func/max-lines-per-function, no-underscore-dangle, no-param-reassign, consistent-return */
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import classNames from 'classnames';
@@ -9,16 +10,16 @@ import { useDispatch } from 'react-redux';
 
 import styles from './SterlingGateNav.module.scss';
 
-import ThemeSwitcher from '@/components/Navbar/NavigationDrawer/ThemeSwitcher';
 import NavbarLogoWrapper from '@/components/Navbar/Logo/NavbarLogoWrapper';
 import ProfileAvatarButton from '@/components/Navbar/NavbarBody/ProfileAvatarButton';
+import ThemeSwitcher from '@/components/Navbar/NavigationDrawer/ThemeSwitcher';
 import Button, { ButtonShape, ButtonSize, ButtonVariant } from '@/dls/Button/Button';
 import Link from '@/dls/Link/Link';
 import useGetContinueReadingUrl from '@/hooks/useGetContinueReadingUrl';
 import usePreventBodyScrolling from '@/hooks/usePreventBodyScrolling';
 import IconApps from '@/icons/apps.svg';
-import IconBookmarkFilled from '@/icons/bookmark_filled.svg';
 import IconBookOpen from '@/icons/book-open.svg';
+import IconBookmarkFilled from '@/icons/bookmark_filled.svg';
 import IconChevronRight from '@/icons/chevron-right.svg';
 import IconClose from '@/icons/close.svg';
 import IconCode from '@/icons/code.svg';
@@ -77,7 +78,8 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
 
   // Setup GSAP CustomEase and Shape hover listeners
   useEffect(() => {
-    if (!containerRef.current) return;
+    const containerEl = containerRef.current;
+    if (!containerEl) return;
 
     try {
       if (!gsap.parseEase('main')) {
@@ -89,8 +91,8 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
     }
 
     const ctx = gsap.context(() => {
-      const menuItems = containerRef.current!.querySelectorAll('[data-shape]');
-      const shapesContainer = containerRef.current!.querySelector(`.${styles.ambientBackgroundShapes}`);
+      const menuItems = containerEl.querySelectorAll('[data-shape]');
+      const shapesContainer = containerEl.querySelector(`.${styles.ambientBackgroundShapes}`);
 
       menuItems.forEach((item) => {
         const shapeIndex = item.getAttribute('data-shape');
@@ -100,7 +102,9 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
         const shapeEls = shape.querySelectorAll(`.${styles.shapeElement}`);
 
         const onEnter = () => {
-          shapesContainer?.querySelectorAll(`.${styles.bgShape}`).forEach((s) => s.classList.remove(styles.active));
+          shapesContainer
+            ?.querySelectorAll(`.${styles.bgShape}`)
+            .forEach((s) => s.classList.remove(styles.active));
           shape.classList.add(styles.active);
           gsap.fromTo(
             shapeEls,
@@ -140,16 +144,14 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
 
     return () => {
       ctx.revert();
-      if (containerRef.current) {
-        const items = containerRef.current.querySelectorAll('[data-shape]');
-        items.forEach((item: any) => item._cleanup && item._cleanup());
-      }
+      const items = containerEl.querySelectorAll('[data-shape]');
+      items.forEach((item: any) => item._cleanup && item._cleanup());
     };
-  }, []);
+  }, [lang]);
 
   // GSAP Reveal Animation on Open / Close
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) return undefined;
 
     const isRtl = document.documentElement.dir === 'rtl';
     const slideDirection = isRtl ? 100 : -100;
@@ -176,20 +178,42 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
         .fromTo(
           menuLinks,
           { yPercent: 60, opacity: 0 },
-          { yPercent: 0, opacity: 1, stagger: 0.03, duration: 0.4, ease: 'power2.out', overwrite: 'auto' },
+          {
+            yPercent: 0,
+            opacity: 1,
+            stagger: 0.03,
+            duration: 0.4,
+            ease: 'power2.out',
+            overwrite: 'auto',
+          },
           '<+=0.2',
         )
         .fromTo(closeIcon, { rotate: 0 }, { rotate: 180, duration: 0.4, overwrite: 'auto' }, '<');
     } else {
       tl.to(overlay, { autoAlpha: 0, duration: 0.25, overwrite: 'auto' })
         .to(
+          menu,
+          { xPercent: slideDirection, duration: 0.35, ease: 'power2.in', overwrite: 'auto' },
+          '<',
+        )
+        .to(
           bgPanels,
-          { xPercent: slideDirection, stagger: 0.04, duration: 0.35, ease: 'power2.in', overwrite: 'auto' },
+          {
+            xPercent: slideDirection,
+            stagger: 0.04,
+            duration: 0.35,
+            ease: 'power2.in',
+            overwrite: 'auto',
+          },
           '<',
         )
         .to(closeIcon, { rotate: 0, duration: 0.25, overwrite: 'auto' }, '<')
         .set(navWrap, { display: 'none' });
     }
+
+    return () => {
+      tl.kill();
+    };
   }, [isOpen]);
 
   // Close on Escape
@@ -310,14 +334,40 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
 
             <div className={styles.ambientBackgroundShapes}>
               {/* Shape 1: Subtle Emerald Orbs */}
-              <svg className={classNames(styles.bgShape, `${styles.bgShape}-1`)} viewBox="0 0 400 400" fill="none">
-                <circle className={styles.shapeElement} cx="80" cy="120" r="50" fill="rgba(16, 185, 129, 0.12)" />
-                <circle className={styles.shapeElement} cx="320" cy="90" r="70" fill="rgba(217, 119, 6, 0.08)" />
-                <circle className={styles.shapeElement} cx="220" cy="320" r="90" fill="rgba(16, 185, 129, 0.09)" />
+              <svg
+                className={classNames(styles.bgShape, `${styles.bgShape}-1`)}
+                viewBox="0 0 400 400"
+                fill="none"
+              >
+                <circle
+                  className={styles.shapeElement}
+                  cx="80"
+                  cy="120"
+                  r="50"
+                  fill="rgba(16, 185, 129, 0.12)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="320"
+                  cy="90"
+                  r="70"
+                  fill="rgba(217, 119, 6, 0.08)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="220"
+                  cy="320"
+                  r="90"
+                  fill="rgba(16, 185, 129, 0.09)"
+                />
               </svg>
 
               {/* Shape 2: Islamic Arabesque Wave */}
-              <svg className={classNames(styles.bgShape, `${styles.bgShape}-2`)} viewBox="0 0 400 400" fill="none">
+              <svg
+                className={classNames(styles.bgShape, `${styles.bgShape}-2`)}
+                viewBox="0 0 400 400"
+                fill="none"
+              >
                 <path
                   className={styles.shapeElement}
                   d="M0 180 Q100 80, 200 180 T 400 180"
@@ -335,21 +385,89 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
               </svg>
 
               {/* Shape 3: Geometric Star Points */}
-              <svg className={classNames(styles.bgShape, `${styles.bgShape}-3`)} viewBox="0 0 400 400" fill="none">
-                <circle className={styles.shapeElement} cx="60" cy="60" r="7" fill="rgba(16, 185, 129, 0.25)" />
-                <circle className={styles.shapeElement} cx="160" cy="60" r="7" fill="rgba(217, 119, 6, 0.25)" />
-                <circle className={styles.shapeElement} cx="260" cy="60" r="7" fill="rgba(16, 185, 129, 0.25)" />
-                <circle className={styles.shapeElement} cx="360" cy="60" r="7" fill="rgba(217, 119, 6, 0.25)" />
-                <circle className={styles.shapeElement} cx="110" cy="160" r="10" fill="rgba(16, 185, 129, 0.2)" />
-                <circle className={styles.shapeElement} cx="210" cy="160" r="10" fill="rgba(217, 119, 6, 0.2)" />
-                <circle className={styles.shapeElement} cx="310" cy="160" r="10" fill="rgba(16, 185, 129, 0.2)" />
-                <circle className={styles.shapeElement} cx="60" cy="260" r="8" fill="rgba(217, 119, 6, 0.25)" />
-                <circle className={styles.shapeElement} cx="160" cy="260" r="8" fill="rgba(16, 185, 129, 0.25)" />
-                <circle className={styles.shapeElement} cx="260" cy="260" r="8" fill="rgba(16, 185, 129, 0.25)" />
+              <svg
+                className={classNames(styles.bgShape, `${styles.bgShape}-3`)}
+                viewBox="0 0 400 400"
+                fill="none"
+              >
+                <circle
+                  className={styles.shapeElement}
+                  cx="60"
+                  cy="60"
+                  r="7"
+                  fill="rgba(16, 185, 129, 0.25)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="160"
+                  cy="60"
+                  r="7"
+                  fill="rgba(217, 119, 6, 0.25)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="260"
+                  cy="60"
+                  r="7"
+                  fill="rgba(16, 185, 129, 0.25)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="360"
+                  cy="60"
+                  r="7"
+                  fill="rgba(217, 119, 6, 0.25)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="110"
+                  cy="160"
+                  r="10"
+                  fill="rgba(16, 185, 129, 0.2)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="210"
+                  cy="160"
+                  r="10"
+                  fill="rgba(217, 119, 6, 0.2)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="310"
+                  cy="160"
+                  r="10"
+                  fill="rgba(16, 185, 129, 0.2)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="60"
+                  cy="260"
+                  r="8"
+                  fill="rgba(217, 119, 6, 0.25)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="160"
+                  cy="260"
+                  r="8"
+                  fill="rgba(16, 185, 129, 0.25)"
+                />
+                <circle
+                  className={styles.shapeElement}
+                  cx="260"
+                  cy="260"
+                  r="8"
+                  fill="rgba(16, 185, 129, 0.25)"
+                />
               </svg>
 
               {/* Shape 4: Sacred Geometry Crest */}
-              <svg className={classNames(styles.bgShape, `${styles.bgShape}-4`)} viewBox="0 0 400 400" fill="none">
+              <svg
+                className={classNames(styles.bgShape, `${styles.bgShape}-4`)}
+                viewBox="0 0 400 400"
+                fill="none"
+              >
                 <rect
                   className={styles.shapeElement}
                   x="120"
@@ -361,11 +479,21 @@ const SterlingGateNav: React.FC<SterlingGateNavProps> = ({
                   strokeWidth="8"
                   transform="rotate(45 200 200)"
                 />
-                <circle className={styles.shapeElement} cx="200" cy="200" r="60" fill="rgba(217, 119, 6, 0.08)" />
+                <circle
+                  className={styles.shapeElement}
+                  cx="200"
+                  cy="200"
+                  r="60"
+                  fill="rgba(217, 119, 6, 0.08)"
+                />
               </svg>
 
               {/* Shape 5: Light Beam Rays */}
-              <svg className={classNames(styles.bgShape, `${styles.bgShape}-5`)} viewBox="0 0 400 400" fill="none">
+              <svg
+                className={classNames(styles.bgShape, `${styles.bgShape}-5`)}
+                viewBox="0 0 400 400"
+                fill="none"
+              >
                 <line
                   className={styles.shapeElement}
                   x1="0"

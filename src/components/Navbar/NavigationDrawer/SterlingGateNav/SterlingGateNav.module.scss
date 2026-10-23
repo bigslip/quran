@@ -253,10 +253,14 @@
   border-inline-start: 3px solid var(--color-primary);
   opacity: 0;
   transform: scaleX(0.95);
-  transform-origin: inset-inline-start;
+  transform-origin: left;
   transition: opacity var(--transition-fast) ease, transform var(--transition-fast) ease;
   z-index: -1;
   border-radius: var(--border-radius-medium);
+
+  :global([dir='rtl']) & {
+    transform-origin: right;
+  }
 }
 
 .navLinkLeft {

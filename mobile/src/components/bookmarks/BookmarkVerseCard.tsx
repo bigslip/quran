@@ -428,7 +428,10 @@ export const BookmarkVerseCard: React.FC<BookmarkVerseCardProps> = React.memo(
         ) : (
           <TouchableOpacity
             style={styles.addNotePromptButton}
-            onPress={() => setIsEditingNote(true)}
+            onPress={() => {
+              setNoteInput(bookmark.note || '');
+              setIsEditingNote(true);
+            }}
             activeOpacity={0.7}
             accessibilityRole="button"
             accessibilityLabel="افزودن یادداشت"

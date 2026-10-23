@@ -333,6 +333,10 @@
   path {
     fill: currentColor;
   }
+
+  [dir='rtl'] & {
+    transform: rotate(180deg);
+  }
 }
 
 .thumbnailSkeleton {

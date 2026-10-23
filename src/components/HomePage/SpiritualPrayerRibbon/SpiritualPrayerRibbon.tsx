@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
 
@@ -60,18 +60,26 @@ const PRAYER_METADATA = [
 const SpiritualPrayerRibbon: React.FC = () => {
   const { t, lang } = useTranslation('home');
   const hasMounted = useHasMounted();
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    if (!hasMounted) return undefined;
+    setNow(new Date());
+    const intervalId = setInterval(() => {
+      setNow(new Date());
+    }, 60_000);
+    return () => clearInterval(intervalId);
+  }, [hasMounted]);
 
   const spiritualData = useMemo(() => {
     if (!hasMounted) return null;
-    return getDailySpiritualData(new Date(), lang);
-  }, [hasMounted, lang]);
+    return getDailySpiritualData(now, lang);
+  }, [hasMounted, now, lang]);
 
   const prayers: PrayerArchData[] = useMemo(() => {
     if (!spiritualData) return [];
 
-    const milestonesMap = new Map(
-      spiritualData.prayerMilestones.map((m) => [m.id, m]),
-    );
+    const milestonesMap = new Map(spiritualData.prayerMilestones.map((m) => [m.id, m]));
 
     return PRAYER_METADATA.map((meta) => {
       const milestone = milestonesMap.get(meta.id);
@@ -138,11 +146,7 @@ const SpiritualPrayerRibbon: React.FC = () => {
       {/* 5-Arch Islamic Prayer Grid inspired by namaz.png */}
       <div className={styles.archGrid} role="list">
         {prayers.map((prayer, index) => (
-          <PrayerArchCard
-            key={prayer.id}
-            prayer={prayer}
-            isStaggered={index % 2 === 1}
-          />
+          <PrayerArchCard key={prayer.id} prayer={prayer} isStaggered={index % 2 === 1} />
         ))}
       </div>
     </section>

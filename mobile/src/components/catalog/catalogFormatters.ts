@@ -65,7 +65,6 @@ export const CATALOG_TABS: readonly CatalogTab[] = [
   { id: 'revelation', label: 'ترتیب نزول' },
 ] as const;
 
-
 /**
  * Converts ASCII digits (0-9) to Persian digits (۰-۹).
  */
@@ -82,7 +81,7 @@ export function toPersianDigits(input: number | string): string {
 export function formatSurahBadgeNumber(
   surah: Pick<Chapter, 'id' | 'revelation_order'>,
   isRevelationOrder = false,
-  usePersian = true
+  usePersian = true,
 ): string {
   const num = isRevelationOrder ? surah.revelation_order : surah.id;
   return usePersian ? toPersianDigits(num) : String(num);
@@ -122,7 +121,7 @@ export function extractAyahNumberFromKey(verseKey: string): string {
 export function formatJuzStartInfo(
   firstSurahNameFa: string,
   firstVerseKey: string,
-  usePersian = true
+  usePersian = true,
 ): string {
   const ayahNum = extractAyahNumberFromKey(firstVerseKey);
   const formattedAyah = usePersian ? toPersianDigits(ayahNum) : ayahNum;
@@ -133,11 +132,7 @@ export function formatJuzStartInfo(
  * Formats page range indicator: e.g. "صفحات ۱ تا ۲۱".
  * Defaults to Persian digits (usePersian = true).
  */
-export function formatJuzPageRange(
-  pageStart: number,
-  pageEnd: number,
-  usePersian = true
-): string {
+export function formatJuzPageRange(pageStart: number, pageEnd: number, usePersian = true): string {
   const startStr = usePersian ? toPersianDigits(pageStart) : String(pageStart);
   const endStr = usePersian ? toPersianDigits(pageEnd) : String(pageEnd);
   return `صفحات ${startStr} تا ${endStr}`;
@@ -158,13 +153,15 @@ export function formatCanonicalSurahHint(surahId: number, usePersian = true): st
 export function formatSurahAccessibilityLabel(
   surah: Pick<Chapter, 'id' | 'name_fa' | 'name_arabic' | 'verses_count' | 'revelation_order'>,
   isRevelationOrder = false,
-  usePersian = true
+  usePersian = true,
 ): string {
   const surahIdStr = usePersian ? toPersianDigits(surah.id) : String(surah.id);
   const verseCountStr = formatAyahCount(surah.verses_count, usePersian);
 
   if (isRevelationOrder) {
-    const revOrderStr = usePersian ? toPersianDigits(surah.revelation_order) : String(surah.revelation_order);
+    const revOrderStr = usePersian
+      ? toPersianDigits(surah.revelation_order)
+      : String(surah.revelation_order);
     return `سوره ${surahIdStr}، ${surah.name_fa}، رتبه نزول ${revOrderStr}، ${surah.name_arabic}، ${verseCountStr}`;
   }
   return `سوره ${surahIdStr}، ${surah.name_fa}، ${surah.name_arabic}، ${verseCountStr}`;
@@ -174,8 +171,16 @@ export function formatSurahAccessibilityLabel(
  * Formats accessibility label for Juz card with Persian numerals by default.
  */
 export function formatJuzAccessibilityLabel(
-  juz: Pick<Juz, 'juz_number' | 'first_surah_name_fa' | 'first_verse_key' | 'page_start' | 'page_end' | 'verses_count'>,
-  usePersian = true
+  juz: Pick<
+    Juz,
+    | 'juz_number'
+    | 'first_surah_name_fa'
+    | 'first_verse_key'
+    | 'page_start'
+    | 'page_end'
+    | 'verses_count'
+  >,
+  usePersian = true,
 ): string {
   const badgeText = formatJuzBadge(juz.juz_number, usePersian);
   const startInfo = formatJuzStartInfo(juz.first_surah_name_fa, juz.first_verse_key, usePersian);
@@ -199,10 +204,18 @@ export function getSurahNavigationRoute(chapterId: number): string {
 }
 
 /**
- * Returns the router navigation target for a Juz (opens the first chapter of the Juz).
+ * Returns the router navigation target for a Juz (opens the first chapter of the Juz, or deep-links to its starting verse and page when a Juz object is provided).
  */
-export function getJuzNavigationRoute(firstChapterId: number): string {
-  return `/surah/${firstChapterId}`;
+export function getJuzNavigationRoute(
+  firstChapterIdOrJuz:
+    | number
+    | Pick<Juz, 'first_chapter_id' | 'first_verse_key' | 'page_start' | 'juz_number'>,
+): string {
+  if (typeof firstChapterIdOrJuz === 'number') {
+    return `/surah/${firstChapterIdOrJuz}`;
+  }
+  const ayahNum = extractAyahNumberFromKey(firstChapterIdOrJuz.first_verse_key);
+  return `/surah/${firstChapterIdOrJuz.first_chapter_id}?verse=${ayahNum}&page=${firstChapterIdOrJuz.page_start}&juz=${firstChapterIdOrJuz.juz_number}`;
 }
 
 /**
@@ -221,7 +234,7 @@ export function getJuzNavigationRoute(firstChapterId: number): string {
 export function normalizeSearchText(text: string): string {
   if (!text) return '';
   return String(text)
-    .replace(/[\u06F0-\u06F9]/g, (digit) => String(digit.charCodeAt(0) - 0x06F0))
+    .replace(/[\u06F0-\u06F9]/g, (digit) => String(digit.charCodeAt(0) - 0x06f0))
     .replace(/[\u0660-\u0669]/g, (digit) => String(digit.charCodeAt(0) - 0x0660))
     .replace(/[\u064B-\u065F\u0670\u0640\u200C\u200D]/g, '')
     .replace(/[يى]/g, 'ی')
@@ -360,4 +373,3 @@ export function filterJuzs(juzs: Juz[], query: string): Juz[] {
     return false;
   });
 }
-

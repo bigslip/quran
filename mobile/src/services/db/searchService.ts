@@ -94,21 +94,35 @@ export async function searchChapters(searchTerm: string, limit: number = 5): Pro
   }
 
   const normalized = normalizeSearchQuery(clean);
+  const rawPattern = `%${clean}%`;
   const pattern = `%${normalized}%`;
 
   const query = `
     SELECT id, slug, name_simple, name_arabic, name_fa, name_en, revelation_place, revelation_order, bismillah_pre, verses_count, pages_start, pages_end
     FROM chapters
-    WHERE name_fa LIKE ? OR name_arabic LIKE ? OR name_simple LIKE ? ${isNumeric ? 'OR id = ?' : ''}
+    WHERE name_fa LIKE ? OR name_fa LIKE ? OR name_arabic LIKE ? OR name_arabic LIKE ? OR name_simple LIKE ? ${
+      isNumeric ? 'OR id = ?' : ''
+    }
     ORDER BY 
-      CASE WHEN id = ? THEN 1 WHEN name_fa LIKE ? THEN 2 ELSE 3 END,
+      CASE WHEN id = ? THEN 1 WHEN name_fa LIKE ? OR name_fa LIKE ? THEN 2 ELSE 3 END,
       id ASC
     LIMIT ?;
   `;
 
   const params = isNumeric
-    ? [pattern, pattern, pattern, parsedId, parsedId, `${normalized}%`, limit]
-    : [pattern, pattern, pattern, -1, `${normalized}%`, limit];
+    ? [
+        rawPattern,
+        pattern,
+        rawPattern,
+        pattern,
+        pattern,
+        parsedId,
+        parsedId,
+        `${clean}%`,
+        `${normalized}%`,
+        limit,
+      ]
+    : [rawPattern, pattern, rawPattern, pattern, pattern, -1, `${clean}%`, `${normalized}%`, limit];
 
   if (typeof db.getAllAsync === 'function') {
     return await db.getAllAsync(query, params);

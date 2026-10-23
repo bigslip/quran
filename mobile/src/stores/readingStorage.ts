@@ -1,7 +1,23 @@
 import type { StateStorage } from 'zustand/middleware';
 
 const memoryStore = new Map<string, string>();
+const dirtyKeys = new Set<string>();
+const writeQueues = new Map<string, Promise<void>>();
 let customStorage: StateStorage | null = null;
+
+function enqueueKeyOp(key: string, op: () => Promise<void>): Promise<void> {
+  const prev = writeQueues.get(key) ?? Promise.resolve();
+  const next = prev.catch(() => {}).then(op);
+  writeQueues.set(
+    key,
+    next.finally(() => {
+      if (writeQueues.get(key) === next) {
+        writeQueues.delete(key);
+      }
+    }),
+  );
+  return next;
+}
 
 // Dynamically resolve Expo FileSystem if available (works out-of-the-box in Expo Go and prebuilt apps)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,6 +95,7 @@ export const readingStorage: StateStorage = {
     }
 
     // Asynchronous persistent lookup
+    dirtyKeys.delete(name);
     return (async (): Promise<string | null> => {
       // 1. Try Expo FileSystem
       if (hasFs) {
@@ -86,6 +103,9 @@ export const readingStorage: StateStorage = {
           const filePath = getStorageFilePath(name);
           if (filePath && fileSystemModule?.readAsStringAsync) {
             const content = await fileSystemModule.readAsStringAsync(filePath);
+            if (dirtyKeys.has(name)) {
+              return memoryStore.get(name) ?? null;
+            }
             if (typeof content === 'string') {
               memoryStore.set(name, content);
               return content;
@@ -100,6 +120,9 @@ export const readingStorage: StateStorage = {
       if (nativeAsyncStorageAvailable && asyncStorageModule) {
         try {
           const content = await asyncStorageModule.getItem(name);
+          if (dirtyKeys.has(name)) {
+            return memoryStore.get(name) ?? null;
+          }
           if (typeof content === 'string') {
             memoryStore.set(name, content);
             return content;
@@ -116,6 +139,7 @@ export const readingStorage: StateStorage = {
 
   setItem: async (name: string, value: string): Promise<void> => {
     // In-memory update is always immediate and synchronous
+    dirtyKeys.add(name);
     memoryStore.set(name, value);
 
     if (customStorage) {
@@ -133,7 +157,9 @@ export const readingStorage: StateStorage = {
       try {
         const filePath = getStorageFilePath(name);
         if (filePath && fileSystemModule.writeAsStringAsync) {
-          await fileSystemModule.writeAsStringAsync(filePath, value);
+          await enqueueKeyOp(name, async () => {
+            await fileSystemModule.writeAsStringAsync(filePath, value);
+          });
           persistedToFile = true;
         }
       } catch (fsErr) {
@@ -152,6 +178,7 @@ export const readingStorage: StateStorage = {
   },
 
   removeItem: async (name: string): Promise<void> => {
+    dirtyKeys.add(name);
     memoryStore.delete(name);
 
     if (customStorage) {
@@ -168,7 +195,9 @@ export const readingStorage: StateStorage = {
       try {
         const filePath = getStorageFilePath(name);
         if (filePath && fileSystemModule.deleteAsync) {
-          await fileSystemModule.deleteAsync(filePath, { idempotent: true });
+          await enqueueKeyOp(name, async () => {
+            await fileSystemModule.deleteAsync(filePath, { idempotent: true });
+          });
         }
       } catch {
         // Ignore deletion errors
@@ -188,6 +217,7 @@ export const readingStorage: StateStorage = {
 
 export function setCustomStorage(storage: StateStorage | null): void {
   customStorage = storage;
+  dirtyKeys.clear();
 }
 
 export function getMemoryStorageMap(): Map<string, string> {

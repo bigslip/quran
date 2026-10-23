@@ -150,6 +150,13 @@ export function setTafsirApiBaseUrl(url: string): void {
 }
 
 /**
+ * Returns the currently configured base URL for Tafsir API / download endpoints.
+ */
+export function getTafsirApiBaseUrl(): string {
+  return currentApiBaseUrl;
+}
+
+/**
  * Resets all internal caches and mocks (intended for test beforeEach/afterEach).
  */
 export function resetTafsirDownloaderForTesting(): void {
@@ -270,7 +277,9 @@ export async function isTafsirDownloaded(slug: string): Promise<boolean> {
     const fs = resolveFileSystem();
     const filePath = getTafsirDbPath(clean);
     const info = await fs.getInfoAsync(filePath);
-    return Boolean(info && info.exists && (info.size === undefined || info.size > 0));
+    return Boolean(
+      info && info.exists && (info.size === undefined || info.size >= MIN_TAFSIR_FILE_SIZE_BYTES),
+    );
   } catch {
     return false;
   }
@@ -514,6 +523,13 @@ export async function deleteTafsirDatabase(slug: string): Promise<boolean> {
     const fs = resolveFileSystem();
     const filePath = getTafsirDbPath(clean);
     const info = await fs.getInfoAsync(filePath);
+    for (const suffix of ['-wal', '-shm', '.download.tmp']) {
+      try {
+        await fs.deleteAsync(`${filePath}${suffix}`, { idempotent: true });
+      } catch {
+        // Ignore missing auxiliary/temp files
+      }
+    }
     if (info && info.exists) {
       await fs.deleteAsync(filePath, { idempotent: true });
       return true;

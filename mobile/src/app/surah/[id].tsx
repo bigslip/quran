@@ -34,6 +34,7 @@ import {
   ReaderSettingsModal,
   parseVerseParam,
   formatSurahTitleFa,
+  getSurahNameFa,
 } from '@/components/reader';
 import { toPersianDigits } from '@/components/catalog';
 import { AyahInsightsDrawer } from '../../components/insights';
@@ -138,6 +139,7 @@ export default function SurahReaderScreen() {
   const isUserInteractingRef = useRef(false);
   const userScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const jumpHighlightTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrollRetryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const scrollAccumulatorRef = useRef(createScrollDeltaAccumulator());
 
@@ -171,10 +173,8 @@ export default function SurahReaderScreen() {
 
   // Load user bookmarks on mount
   useEffect(() => {
-    if (bookmarkedKeys.size === 0) {
-      loadBookmarks();
-    }
-  }, [bookmarkedKeys.size, loadBookmarks]);
+    loadBookmarks();
+  }, [loadBookmarks]);
 
   // Zustand reading store - atomic selectors
   const viewMode = useReadingStore((s) => s.viewMode);
@@ -232,15 +232,27 @@ export default function SurahReaderScreen() {
               if (targetVerse) {
                 setLastRead(ch.id, targetVerse.verse_number, ch.name_fa);
               } else {
-                setLastRead(ch.id, 1, ch.name_fa);
+                const storeState = useReadingStore.getState();
+                const savedVerseNum =
+                  storeState.lastReadChapterId === ch.id && storeState.lastReadVerseNumber > 1
+                    ? storeState.lastReadVerseNumber
+                    : 1;
+                setLastRead(ch.id, savedVerseNum, ch.name_fa);
               }
             } else if (targetVerse && targetVerse.page_number) {
               setCurrentPage(targetVerse.page_number);
               setLastRead(ch.id, targetVerse.verse_number, ch.name_fa);
             } else {
-              const startPage = ch.pages_start ?? 1;
+              const storeState = useReadingStore.getState();
+              const savedVerseNum =
+                storeState.lastReadChapterId === ch.id && storeState.lastReadVerseNumber > 1
+                  ? storeState.lastReadVerseNumber
+                  : 1;
+              const savedVerse =
+                savedVerseNum > 1 ? vs.find((v) => v.verse_number === savedVerseNum) : null;
+              const startPage = savedVerse?.page_number ?? ch.pages_start ?? 1;
               setCurrentPage(startPage);
-              setLastRead(ch.id, 1, ch.name_fa);
+              setLastRead(ch.id, savedVerseNum, ch.name_fa);
             }
           }
         }
@@ -373,12 +385,26 @@ export default function SurahReaderScreen() {
   );
   const lastScrolledVerseKeyRef = React.useRef<string | null>(null);
 
-  // Unload audio on unmount
+  // Unload audio and clear timers on unmount
   useEffect(() => {
     return () => {
+      if (scrollRetryTimeoutRef.current) {
+        clearTimeout(scrollRetryTimeoutRef.current);
+        scrollRetryTimeoutRef.current = null;
+      }
+      if (userScrollTimeoutRef.current) {
+        clearTimeout(userScrollTimeoutRef.current);
+        userScrollTimeoutRef.current = null;
+      }
+      if (jumpHighlightTimeoutRef.current) {
+        clearTimeout(jumpHighlightTimeoutRef.current);
+        jumpHighlightTimeoutRef.current = null;
+      }
       audioPlayerService.stop();
+      setIsPlaying(false);
+      setActiveVerseKey(null);
     };
-  }, []);
+  }, [setIsPlaying, setActiveVerseKey]);
 
   // Keep screen awake while audio is actively reciting
   useEffect(() => {
@@ -720,7 +746,9 @@ export default function SurahReaderScreen() {
         const chId = parseInt(parts[0], 10);
         const vNum = parseInt(parts[1], 10);
         if (!isNaN(chId) && !isNaN(vNum)) {
-          setLastRead(chId, vNum, chapter.name_fa);
+          const surahNameFa =
+            chId === chapter.id ? chapter.name_fa : getSurahNameFa(chId) || chapter.name_fa;
+          setLastRead(chId, vNum, surahNameFa);
         }
       }
       await playAyahAudio(verseKey);
@@ -1022,7 +1050,12 @@ export default function SurahReaderScreen() {
                 offset: estimatedOffset,
                 animated: true,
               });
-              setTimeout(() => {
+              if (scrollRetryTimeoutRef.current) {
+                clearTimeout(scrollRetryTimeoutRef.current);
+              }
+              scrollRetryTimeoutRef.current = setTimeout(() => {
+                scrollRetryTimeoutRef.current = null;
+                if (!isMountedRef.current) return;
                 try {
                   flatListRef.current?.scrollToIndex({
                     index: info.index,

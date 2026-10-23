@@ -60,19 +60,20 @@ const LanguageSelector = ({
    */
   const onChange = async (newLocale: string) => {
     if (newLocale === lang) return;
+    const previousLocale = lang;
     const loggedIn = isLoggedIn();
 
     // Guest-only: keep locale-dependent content tabs (tafsir, lessons, reflections, etc.)
     // following defaults unless the user has customized those preferences.
     if (!loggedIn && !isUsingDefaultSettings) {
-      dispatch(syncLocaleDependentSettings({ prevLocale: lang, nextLocale: newLocale }));
+      dispatch(syncLocaleDependentSettings({ prevLocale: previousLocale, nextLocale: newLocale }));
     }
 
     // if the user didn't change the settings and he is transitioning to a new locale, we want to apply the default settings of the new locale
     if (isUsingDefaultSettings) {
       dispatch(resetSettings(newLocale));
     }
-    logValueChange('locale', lang, newLocale);
+    logValueChange('locale', previousLocale, newLocale);
 
     await setLanguage(newLocale);
     setLocaleCookie(newLocale);
@@ -90,8 +91,8 @@ const LanguageSelector = ({
               text: t('undo'),
               primary: true,
               onClick: async () => {
-                await setLanguage(newLocale);
-                setLocaleCookie(newLocale);
+                await setLanguage(previousLocale);
+                setLocaleCookie(previousLocale);
               },
             },
             {

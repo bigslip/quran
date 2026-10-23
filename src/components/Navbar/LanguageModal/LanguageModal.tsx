@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import * as DialogPrimitive from '@radix-ui/react-dialog';
@@ -6,6 +7,8 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
+import i18nConfig from '../../../../i18n.json';
 
 import styles from './LanguageModal.module.scss';
 
@@ -24,7 +27,6 @@ import {
 } from '@/redux/slices/navbar';
 import { logButtonClick } from '@/utils/eventLogger';
 import { getLocaleName } from '@/utils/locale';
-import i18nConfig from '../../../../i18n.json';
 
 const { locales } = i18nConfig;
 
@@ -58,20 +60,24 @@ const LanguageModal: React.FC = () => {
   const { isChangingLanguage, changingLocale, onLanguageChange } = useLanguageChange();
   const [searchFilter, setSearchFilter] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const wasOpenRef = useRef(false);
 
   usePreventBodyScrolling(isOpen);
 
   const onClose = useCallback(() => {
+    if (isChangingLanguage) return;
     logButtonClick('language_modal_close');
     dispatch(setIsLanguageModalOpen(false));
     setSearchFilter('');
-  }, [dispatch]);
+  }, [dispatch, isChangingLanguage]);
 
   // Lock navbar visibility while modal is open
   useEffect(() => {
     if (isOpen) {
+      wasOpenRef.current = true;
       dispatch(setLockVisibilityState(true));
-    } else {
+    } else if (wasOpenRef.current) {
+      wasOpenRef.current = false;
       dispatch(setLockVisibilityState(false));
     }
   }, [isOpen, dispatch]);
@@ -192,7 +198,11 @@ const LanguageModal: React.FC = () => {
           {/* Language Cards Body */}
           <div className={styles.bodyContainer}>
             {filteredLocales.length > 0 ? (
-              <div className={styles.languageGrid} role="radiogroup" aria-label={t('select-language')}>
+              <div
+                className={styles.languageGrid}
+                role="radiogroup"
+                aria-label={t('select-language')}
+              >
                 {filteredLocales.map((locale) => {
                   const isSelected = locale === lang;
                   const isThisChanging = isChangingLanguage && changingLocale === locale;
@@ -220,11 +230,8 @@ const LanguageModal: React.FC = () => {
                           )}
                       </div>
                       <div className={styles.checkIndicator}>
-                        {isThisChanging ? (
-                          <Spinner size={SpinnerSize.Small} />
-                        ) : isSelected ? (
-                          <CheckIcon />
-                        ) : null}
+                        {isThisChanging && <Spinner size={SpinnerSize.Small} />}
+                        {!isThisChanging && isSelected && <CheckIcon />}
                       </div>
                     </button>
                   );

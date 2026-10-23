@@ -94,7 +94,7 @@ const Switch = ({
               })}
               style={{
                 width: `${100 / items.length}%`,
-                transform: `translateX(${100 * i}%)`,
+                transform: `translateX(${isRTLLocale(locale) ? '-' : ''}${100 * i}%)`,
               }}
             />
           );

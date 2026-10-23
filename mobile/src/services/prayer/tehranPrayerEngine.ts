@@ -268,12 +268,9 @@ function computeRawDayPrayers(
         (Math.sin(altRad) - Math.sin(latRad) * Math.sin(deltaRad)) /
         (Math.cos(latRad) * Math.cos(deltaRad));
 
-      if (cosH > 1.0 || cosH < -1.0) {
-        // Polar extreme or unattainable angle
-        return t;
-      }
+      const clampedCosH = Math.max(-1.0, Math.min(1.0, cosH));
 
-      const H = radToDeg(Math.acos(cosH)) / 15.0;
+      const H = radToDeg(Math.acos(clampedCosH)) / 15.0;
       const tUtc = isEvening
         ? 12.0 - lng / 15.0 - sun.equationOfTime + H
         : 12.0 - lng / 15.0 - sun.equationOfTime - H;
@@ -300,11 +297,9 @@ function computeRawDayPrayers(
         (Math.sin(degToRad(asrAlt)) - Math.sin(latRad) * Math.sin(deltaRad)) /
         (Math.cos(latRad) * Math.cos(deltaRad));
 
-      if (cosH > 1.0 || cosH < -1.0) {
-        return t;
-      }
+      const clampedCosH = Math.max(-1.0, Math.min(1.0, cosH));
 
-      const H = radToDeg(Math.acos(cosH)) / 15.0;
+      const H = radToDeg(Math.acos(clampedCosH)) / 15.0;
       const tUtc = 12.0 - lng / 15.0 - sun.equationOfTime + H;
       t = fixHour(tUtc + tzOffset);
     }
@@ -317,7 +312,7 @@ function computeRawDayPrayers(
   const maghrib = timeForAngle(-4.5, dhuhr + 6.5, true);
   const isha = timeForAngle(-14.0, dhuhr + 7.5, true);
   const asr = computeAsr(dhuhr + 3.0);
-  const imsak = fajr - 10.0 / 60.0;
+  const imsak = fixHour(fajr - 10.0 / 60.0);
 
   return { imsak, fajr, sunrise, dhuhr, asr, sunset, maghrib, isha };
 }
@@ -329,9 +324,9 @@ export function formatTime(decimalHour: number): string {
   if (decimalHour == null || Number.isNaN(decimalHour)) {
     return '--:--';
   }
-  const roundedMinutes = Math.round(decimalHour * 60.0);
-  const h = Math.floor(roundedMinutes / 60.0) % 24;
-  const m = roundedMinutes % 60;
+  const normMinutes = ((Math.round(decimalHour * 60.0) % 1440) + 1440) % 1440;
+  const h = Math.floor(normMinutes / 60);
+  const m = normMinutes % 60;
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
 

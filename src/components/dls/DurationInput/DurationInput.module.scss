@@ -51,33 +51,17 @@
     }
   }
 
-  // first input, border radius on left only
+  // first input, border radius on start only
   & > div:first-child > input {
-    [dir='ltr'] & {
-      border-start-start-radius: var(--border-radius-rounded);
-      border-end-start-radius: var(--border-radius-rounded);
-    }
-
-    [dir='rtl'] & {
-      border-start-end-radius: var(--border-radius-rounded);
-      border-end-end-radius: var(--border-radius-rounded);
-    }
-
+    border-start-start-radius: var(--border-radius-rounded);
+    border-end-start-radius: var(--border-radius-rounded);
     border: 1px solid var(--color-borders-hairline);
   }
 
-  // last input, border radius on right only
+  // last input, border radius on end only
   & > div:last-child > input {
-    [dir='ltr'] & {
-      border-start-end-radius: var(--border-radius-rounded);
-      border-end-end-radius: var(--border-radius-rounded);
-    }
-
-    [dir='rtl'] & {
-      border-start-start-radius: var(--border-radius-rounded);
-      border-end-start-radius: var(--border-radius-rounded);
-    }
-
+    border-start-end-radius: var(--border-radius-rounded);
+    border-end-end-radius: var(--border-radius-rounded);
     border: 1px solid var(--color-borders-hairline);
   }
 }

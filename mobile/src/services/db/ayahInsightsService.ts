@@ -4,6 +4,7 @@ import {
   getDownloadedTafsirDb,
   AVAILABLE_DOWNLOADABLE_TAFSIRS,
   resolveDefaultApiBaseUrl,
+  getTafsirApiBaseUrl,
 } from './tafsirDownloadService.ts';
 
 import { adaptDatabase, type SQLiteLikeDb } from './databaseAdapter.ts';
@@ -563,10 +564,12 @@ function deriveLinguisticSummary(words: WordLinguisticInfo[], verseRow: any): st
  * Retrieves the complete offline Tafsir excerpts for an Ayah.
  */
 export async function getTafsirExcerpts(verseKey: string, db?: any): Promise<TafsirExcerpt[]> {
-  if (CURATED_TAFSIRS[verseKey]) {
-    return CURATED_TAFSIRS[verseKey];
-  }
-  const synthesized = await synthesizeTafsirExcerpts(verseKey, db);
+  const synthesized: TafsirExcerpt[] = CURATED_TAFSIRS[verseKey]
+    ? CURATED_TAFSIRS[verseKey].map((item) => ({
+        ...item,
+        points: item.points ? [...item.points] : undefined,
+      }))
+    : await synthesizeTafsirExcerpts(verseKey, db);
 
   try {
     const [nemouneh, noor] = await Promise.all([
@@ -754,8 +757,8 @@ export interface TafsirContent {
   languageName: string;
 }
 
-/** Base URL for the sovereign backend proxy API (overridable for testing). */
-let tafsirForVerseApiBaseUrl = resolveDefaultApiBaseUrl();
+/** Base URL override for the sovereign backend proxy API (null uses getTafsirApiBaseUrl()). */
+let tafsirForVerseApiBaseUrl: string | null = null;
 
 /**
  * Overrides the base URL used by getTafsirForVerse for API calls.
@@ -770,7 +773,7 @@ export function setTafsirForVerseApiBaseUrl(url: string): void {
  * Call in afterEach / test teardown.
  */
 export function resetTafsirForVerseApiBaseUrl(): void {
-  tafsirForVerseApiBaseUrl = resolveDefaultApiBaseUrl();
+  tafsirForVerseApiBaseUrl = null;
 }
 
 /**
@@ -909,7 +912,9 @@ export async function getTafsirForVerse(
 
   // Path 3: Sovereign backend proxy API
   try {
-    const base = tafsirForVerseApiBaseUrl.replace(/\/+$/, '');
+    const activeBaseUrl =
+      tafsirForVerseApiBaseUrl || getTafsirApiBaseUrl() || resolveDefaultApiBaseUrl();
+    const base = activeBaseUrl.replace(/\/+$/, '');
     const apiIdentifier =
       typeof tafsirId === 'string' && !/^\d+$/.test(tafsirId)
         ? tafsirId
@@ -917,7 +922,25 @@ export async function getTafsirForVerse(
     const url = `${base}/api/proxy/content/api/qdc/tafsirs/${encodeURIComponent(
       apiIdentifier,
     )}/by_ayah/${encodeURIComponent(verseKey)}`;
-    const response = await fetch(url);
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller
+      ? setTimeout(() => {
+          try {
+            controller.abort();
+          } catch {
+            // ignore
+          }
+        }, 6000)
+      : null;
+
+    let response: Response;
+    try {
+      response = await fetch(url, controller ? { signal: controller.signal } : undefined);
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
     if (!response.ok) {
       return null;
     }
@@ -933,6 +956,10 @@ export async function getTafsirForVerse(
       points: Array.isArray(tafsir['points']) ? (tafsir['points'] as string[]) : [],
       languageName: typeof tafsir['language_name'] === 'string' ? tafsir['language_name'] : 'fa',
     };
+
+    if (!result.text || !result.text.trim()) {
+      return null;
+    }
 
     // Save to local cache table using canonical slug as the key
     if (userDb && userDb.run) {

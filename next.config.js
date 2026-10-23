@@ -36,6 +36,8 @@ const nextConfig = {
       'mobile/**',
       'public/audio/**',
       'public/data/qdc/download/**',
+      'data/qdc/download/**',
+      'public/data/search/**',
       '.agents/**',
       'docs/**',
       'node_modules/@swc/core-linux-x64-musl/**',

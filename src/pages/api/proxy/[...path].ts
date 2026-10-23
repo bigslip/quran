@@ -1,5 +1,7 @@
+/* eslint-disable react-func/max-lines-per-function */
 import fs from 'fs';
 import pathModule from 'path';
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { getLocalApiResponse } from '@/utils/localDataEngine';
@@ -31,12 +33,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const fileStream = fs.createReadStream(filePath);
       return fileStream.pipe(res);
     }
+    if (typeof res.redirect === 'function') {
+      return res.redirect(307, `/data/qdc/download/tafsirs/${encodeURIComponent(fileName)}`);
+    }
     return res.status(404).json({ error: 'Database not found' });
   }
 
   try {
     const data = await getLocalApiResponse(pathString, req.query);
-    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    const isStaticQdcContent =
+      pathString.includes('content/api/qdc/') &&
+      !pathString.includes('/search') &&
+      !pathString.includes('/navigate');
+    if (isStaticQdcContent) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      res.setHeader('Cache-Control', 'no-store');
+    }
     return res.status(200).json(data);
   } catch (error: any) {
     console.error(`Local proxy error for ${pathString}:`, error?.message || error);

@@ -97,7 +97,7 @@
 }
 
 .arabicName {
-  font-family: var(--font-family-display);
+  font-family: 'surahnames' !important;
   font-size: var(--font-size-small-px);
   color: var(--color-text-secondary);
   line-height: 1;
@@ -133,6 +133,10 @@
     inline-size: 14px;
     block-size: 14px;
     fill: currentColor;
+  }
+
+  [dir='rtl'] & svg {
+    transform: scaleX(-1);
   }
 
   @include breakpoints.smallerThanTablet {

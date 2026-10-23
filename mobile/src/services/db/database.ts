@@ -94,9 +94,24 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
  * Closes the active database connection.
  */
 export async function closeDatabase(): Promise<void> {
+  const pending = initPromise;
+  initPromise = null;
+  if (pending) {
+    try {
+      const pendingDb = await pending;
+      if (pendingDb && pendingDb !== dbInstance) {
+        try {
+          await pendingDb.closeAsync();
+        } catch {}
+      }
+    } catch {}
+  }
   if (dbInstance) {
-    await dbInstance.closeAsync();
+    const current = dbInstance;
     dbInstance = null;
+    try {
+      await current.closeAsync();
+    } catch {}
   }
   initPromise = null;
 }

@@ -31,6 +31,7 @@ import { JumpDestination } from '@/services/db/quickJumpContracts';
 import { searchQuran, searchChapters } from '@/services/db/searchService';
 import { SearchResult, Chapter } from '@/types/quran';
 import { useReadingStore } from '@/stores/useReadingStore';
+import { getSurahVersesCount } from '@/components/reader';
 
 const quickSurahs = [
   { id: 36, name: 'یس', desc: 'قلب قرآن' },
@@ -62,6 +63,21 @@ export default function HomeScreen() {
   const lastReadChapterId = useReadingStore((s) => s.lastReadChapterId);
   const lastReadVerseNumber = useReadingStore((s) => s.lastReadVerseNumber);
   const lastReadChapterNameFa = useReadingStore((s) => s.lastReadChapterNameFa);
+  const lastReadPage = useReadingStore((s) => s.lastReadPage);
+
+  const handleContinueReading = useCallback(() => {
+    const chId = lastReadChapterId || 1;
+    const vNum = lastReadVerseNumber || 1;
+    const pageParam = lastReadPage ? `&page=${lastReadPage}` : '';
+    router.push(`/surah/${chId}?verse=${vNum}${pageParam}` as any);
+  }, [lastReadChapterId, lastReadVerseNumber, lastReadPage, router]);
+
+  const continueProgressPercent = useMemo(() => {
+    const totalVerses = getSurahVersesCount(lastReadChapterId || 1) || 7;
+    const currentVerse = Math.max(1, lastReadVerseNumber || 1);
+    const ratio = Math.round((currentVerse / totalVerses) * 100);
+    return `${Math.min(100, Math.max(2, ratio))}%` as `${number}%`;
+  }, [lastReadChapterId, lastReadVerseNumber]);
 
   const handleQuickJump = useCallback(
     (destination: JumpDestination) => {
@@ -256,7 +272,7 @@ export default function HomeScreen() {
                 { backgroundColor: colors.primary, shadowColor: colors.primary },
               ]}
               activeOpacity={0.8}
-              onPress={() => router.push(`/surah/${lastReadChapterId}` as any)}
+              onPress={handleContinueReading}
               accessible={true}
               accessibilityRole="button"
               accessibilityLabel={`ادامه تلاوت سوره ${lastReadChapterNameFa}، آیه ${lastReadVerseNumber}`}
@@ -267,7 +283,10 @@ export default function HomeScreen() {
 
           <View style={styles.progressBarBg}>
             <View
-              style={[styles.progressBarFill, { width: '45%', backgroundColor: colors.primary }]}
+              style={[
+                styles.progressBarFill,
+                { width: continueProgressPercent, backgroundColor: colors.primary },
+              ]}
             />
           </View>
         </SanctuaryCard>
@@ -409,6 +428,7 @@ export default function HomeScreen() {
               { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
             ]}
             activeOpacity={0.75}
+            onPress={() => router.push(`/surah/${lastReadChapterId || 36}` as any)}
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="رادیو ۲۴ ساعته، پخش زنده تلاوت قرآن"
@@ -428,6 +448,7 @@ export default function HomeScreen() {
               { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
             ]}
             activeOpacity={0.75}
+            onPress={() => router.push('/(tabs)/settings' as any)}
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="قاریان برگزیده، اساتید ایرانی و جهان اسلام"
@@ -447,6 +468,7 @@ export default function HomeScreen() {
               { backgroundColor: colors.surfaceCard, borderColor: colors.borderSubtle },
             ]}
             activeOpacity={0.75}
+            onPress={() => router.push('/prayers' as any)}
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="برنامه‌های آموزشی، تجوید و تفسیر کاربردی"

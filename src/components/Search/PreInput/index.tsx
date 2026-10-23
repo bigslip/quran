@@ -1,6 +1,7 @@
 import React from 'react';
 
 import useTranslation from 'next-translate/useTranslation';
+import { useDispatch } from 'react-redux';
 
 import Header from './Header';
 import styles from './PreInput.module.scss';
@@ -11,6 +12,7 @@ import SearchHistory from '@/components/Search/SearchHistory';
 import Link from '@/dls/Link/Link';
 import useGetChaptersData from '@/hooks/useGetChaptersData';
 import TrendUpIcon from '@/icons/trend-up.svg';
+import { setIsSearchModalOpen } from '@/redux/slices/navbar';
 import { SearchNavigationType } from '@/types/Search/SearchNavigationResult';
 import SearchQuerySource from '@/types/SearchQuerySource';
 import { getChapterData } from '@/utils/chapter';
@@ -27,6 +29,7 @@ const POPULAR_SEARCH_QUERIES = { Mulk: 67, Noah: 71, Kahf: 18, Yaseen: 36 };
 
 const PreInput: React.FC<Props> = ({ onSearchKeywordClicked, source }) => {
   const { t, lang } = useTranslation('common');
+  const dispatch = useDispatch();
   const chaptersData = useGetChaptersData(lang);
   if (!chaptersData) {
     return <></>;
@@ -64,13 +67,19 @@ const PreInput: React.FC<Props> = ({ onSearchKeywordClicked, source }) => {
             const chapterData = getChapterData(chaptersData, chapterId);
             const url = getSurahNavigationUrl(chapterData?.slug || chapterId);
             return (
-              <Link href={url} key={url} className={styles.popularSearchItem}>
+              <Link
+                href={url}
+                key={url}
+                className={styles.popularSearchItem}
+                onClick={() => dispatch(setIsSearchModalOpen(false))}
+              >
                 <SearchItem
                   prefix={<TrendUpIcon />}
                   title={chapterData.transliteratedName}
                   key={url}
                   onClick={() => {
                     logButtonClick(`${source}_popular_search_${popularSearchQuery}`);
+                    dispatch(setIsSearchModalOpen(false));
                   }}
                 />
               </Link>

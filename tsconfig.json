@@ -6,11 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "noEmit": true,
@@ -21,36 +17,15 @@
     "target": "es5",
     "incremental": true,
     "paths": {
-      "@/icons/*": [
-        "./public/icons/*"
-      ],
-      "@/public/*": [
-        "./public/*"
-      ],
-      "@/dls/*": [
-        "./src/components/dls/*"
-      ],
-      "@/data/*": [
-        "./data/*"
-      ],
-      "@/types/*": [
-        "./types/*"
-      ],
-      "@/tests/*": [
-        "./tests/*"
-      ],
-      "@/*": [
-        "./src/*"
-      ]
+      "@/icons/*": ["./public/icons/*"],
+      "@/public/*": ["./public/*"],
+      "@/dls/*": ["./src/components/dls/*"],
+      "@/data/*": ["./data/*"],
+      "@/types/*": ["./types/*"],
+      "@/tests/*": ["./tests/*"],
+      "@/*": ["./src/*"]
     }
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".svg"
-  ]
+  "exclude": ["node_modules", "mobile"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".svg"]
 }

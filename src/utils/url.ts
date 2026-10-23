@@ -105,10 +105,14 @@ export const resolveSafeRedirect = (rawUrl: string): string => {
 
   try {
     const base = getBasePath();
+    const baseOrigin = new URL(base).origin;
     const url = rawUrl.startsWith('http') ? new URL(rawUrl) : new URL(rawUrl, base);
 
-    // For SSO platform URLs, return the full URL
-    return url.href;
+    if (url.origin === baseOrigin) {
+      return url.href;
+    }
+
+    return '/';
   } catch (error) {
     // If URL parsing fails, assume it's a relative path
     // Remove any leading slashes and dangerous characters

@@ -267,15 +267,23 @@ export function getNextPrayerMilestone(
   let prevMilestone: PrayerMilestone;
 
   if (nextIdx === -1) {
-    // Current time is after all of today's milestones (after midnight)
-    // The next prayer is tomorrow's imsak
-    const tomorrow = new Date(nowMs + 24 * 3600 * 1000);
-    const tomorrowSchedule = computeDayPrayerSchedule(tomorrow);
-    nextMilestone = tomorrowSchedule.milestones[0];
+    // Current time is after all of today's milestones (after Sharia midnight)
+    // The next prayer is tomorrow's imsak shifted by +24 hours on the caller's city schedule
+    nextMilestone = {
+      ...milestones[0],
+      timestamp: milestones[0].timestamp + 24 * 3600 * 1000,
+    };
     prevMilestone = milestones[milestones.length - 1];
+  } else if (nextIdx === 0) {
+    nextMilestone = milestones[0];
+    const lastMilestone = milestones[milestones.length - 1];
+    prevMilestone = {
+      ...lastMilestone,
+      timestamp: lastMilestone.timestamp - 24 * 3600 * 1000,
+    };
   } else {
     nextMilestone = milestones[nextIdx];
-    prevMilestone = nextIdx > 0 ? milestones[nextIdx - 1] : milestones[milestones.length - 1];
+    prevMilestone = milestones[nextIdx - 1];
   }
 
   const remainingMs = Math.max(0, nextMilestone.timestamp - nowMs);

@@ -1,3 +1,4 @@
+/* eslint-disable react-func/max-lines-per-function, jsdoc/require-returns */
 export type TimeOfDayPeriod = 'morning' | 'afternoon' | 'evening' | 'night';
 
 export interface PrayerTimeMilestone {
@@ -75,7 +76,10 @@ export const getTimeOfDayPeriod = (date: Date = new Date()): TimeOfDayPeriod => 
 export const getFormattedHijriDate = (date: Date = new Date(), locale: string = 'en'): string => {
   try {
     const safeDate = getValidDate(date);
-    const calendarLocale = locale.startsWith('ar') ? 'ar-SA-u-ca-islamic-umalqura' : 'en-u-ca-islamic-umalqura';
+    const safeLocale = locale || 'en';
+    const calendarLocale = safeLocale.startsWith('ar')
+      ? 'ar-SA-u-ca-islamic-umalqura'
+      : `${safeLocale}-u-ca-islamic-umalqura`;
     const formatter = new Intl.DateTimeFormat(calendarLocale, {
       day: 'numeric',
       month: 'long',
@@ -83,30 +87,55 @@ export const getFormattedHijriDate = (date: Date = new Date(), locale: string = 
     });
     return formatter.format(safeDate);
   } catch {
-    return '1448 AH';
+    try {
+      const safeDate = getValidDate(date);
+      return new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }).format(safeDate);
+    } catch {
+      return '1448 AH';
+    }
   }
 };
 
 /**
  * Computes standard representative prayer times for the daily ribbon.
  */
-export const getDailySpiritualData = (date: Date = new Date(), locale: string = 'en'): SpiritualTimeData => {
+export const getDailySpiritualData = (
+  date: Date = new Date(),
+  locale: string = 'en',
+): SpiritualTimeData => {
   const safeDate = getValidDate(date);
   const hijri = getFormattedHijriDate(safeDate, locale);
-  const gregorian = new Intl.DateTimeFormat(locale.startsWith('ar') ? 'ar' : 'en', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-  }).format(safeDate);
+  let gregorian: string;
+  try {
+    gregorian = new Intl.DateTimeFormat(locale || 'en', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    }).format(safeDate);
+  } catch {
+    gregorian = new Intl.DateTimeFormat('en', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    }).format(safeDate);
+  }
 
   const hours = safeDate.getHours();
   const minutes = safeDate.getMinutes();
   const currentMinutesFromMidnight = hours * 60 + minutes;
 
   // Approximate solar prayer times in minutes from midnight for aesthetic display
-  const prayerSchedule: { id: PrayerTimeMilestone['id']; nameKey: string; mins: number; timeStr: string }[] = [
+  const prayerSchedule: {
+    id: PrayerTimeMilestone['id'];
+    nameKey: string;
+    mins: number;
+    timeStr: string;
+  }[] = [
     { id: 'fajr', nameKey: 'Fajr', mins: 5 * 60 + 12, timeStr: '05:12' },
-    { id: 'sunrise', nameKey: 'Sunrise', mins: 6 * 60 + 35, timeStr: '06:35' },
     { id: 'dhuhr', nameKey: 'Dhuhr', mins: 12 * 60 + 48, timeStr: '12:48' },
     { id: 'asr', nameKey: 'Asr', mins: 16 * 60 + 20, timeStr: '16:20' },
     { id: 'maghrib', nameKey: 'Maghrib', mins: 19 * 60 + 5, timeStr: '19:05' },
@@ -152,4 +181,3 @@ export const getDailySpiritualData = (date: Date = new Date(), locale: string = 
     timeOfDay: getTimeOfDayPeriod(date),
   };
 };
-

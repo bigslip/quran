@@ -43,7 +43,10 @@ const SearchBodyContainer: React.FC<Props> = ({
     searchResult.pagination.totalRecords === 0 &&
     !searchResult.result.navigation.length;
   const isPreInputLayout =
-    !searchQuery || isSearching || hasError || (!isSearching && !hasError && isEmptyResponse);
+    !searchQuery.trim() ||
+    isSearching ||
+    hasError ||
+    (!isSearching && !hasError && isEmptyResponse);
   return (
     <div
       data-testid="search-drawer-container"
@@ -51,7 +54,7 @@ const SearchBodyContainer: React.FC<Props> = ({
         [styles.internalContainer]: isPreInputLayout,
       })}
     >
-      {!searchQuery ? (
+      {!searchQuery.trim() ? (
         <PreInput onSearchKeywordClicked={onSearchKeywordClicked} source={source} />
       ) : (
         <>

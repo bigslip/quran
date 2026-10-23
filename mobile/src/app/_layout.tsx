@@ -67,6 +67,7 @@ export default function RootLayout() {
           >
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="surah/[id]" options={{ presentation: 'card' }} />
+            <Stack.Screen name="prayers" options={{ animation: 'slide_from_left' }} />
           </Stack>
         </View>
       </SafeAreaProvider>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   Modal,
   View,
@@ -92,6 +92,15 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
     const [reflectionNote, setReflectionNote] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
     const [isCopied, setIsCopied] = useState<boolean>(false);
+    const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+      return () => {
+        if (copyTimeoutRef.current) {
+          clearTimeout(copyTimeoutRef.current);
+        }
+      };
+    }, []);
 
     const handleTabChange = useCallback((tab: InsightDrawerTabId) => {
       setActiveTab(tab);
@@ -156,7 +165,11 @@ export const AyahInsightsDrawer: React.FC<AyahInsightsDrawerProps> = React.memo(
       }
 
       setIsCopied(true);
-      setTimeout(() => {
+      if (copyTimeoutRef.current) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+      copyTimeoutRef.current = setTimeout(() => {
+        copyTimeoutRef.current = null;
         setIsCopied(false);
       }, 2000);
     }, [verse]);
@@ -459,147 +472,147 @@ AyahInsightsDrawer.displayName = 'AyahInsightsDrawer';
 const createStyles = (colors: ColorTheme) =>
   StyleSheet.create({
     modalOverlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFill,
-  },
-  sheetContainer: {
-    backgroundColor: colors.surfaceCard,
-    borderColor: colors.borderSubtle,
-    borderWidth: 1,
-    borderTopLeftRadius: borderRadius.xl,
-    borderTopRightRadius: borderRadius.xl,
-    paddingTop: spacing.xs,
-    paddingHorizontal: spacing.md,
-    paddingBottom: spacing.xl,
-    height: '92%',
-    maxHeight: '94%', // maxHeight: '90%' expanded to 94%
-    flexDirection: 'column',
-    ...shadows.card,
-  },
-  dragHandleContainer: {
-    alignItems: 'center',
-    paddingVertical: spacing.xs,
-    marginVertical: spacing.xs,
-  },
-  dragHandle: {
-    width: INSIGHTS_COMPONENT_CONTRACTS.dragHandleWidth,
-    height: INSIGHTS_COMPONENT_CONTRACTS.dragHandleHeight,
-    backgroundColor: colors.borderSubtle,
-    borderRadius: borderRadius.pill,
-  },
-  headerBar: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderSeparator,
-    marginBottom: spacing.sm,
-  },
-  headerTitleContainer: {
-    alignItems: 'flex-end',
-    flexShrink: 1,
-    gap: 2,
-  },
-  ayahTitleText: {
-    fontFamily: fonts.uiBold,
-    fontSize: fontSizes.md,
-    color: colors.textPrimary,
-    textAlign: 'right',
-  },
-  juzBadge: {
-    backgroundColor: colors.surfaceCardHover,
-    borderColor: colors.borderSubtle,
-    borderWidth: 1,
-    borderRadius: borderRadius.sm,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    alignSelf: 'flex-end',
-  },
-  juzBadgeText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.xs,
-    color: colors.goldAccent,
-    textAlign: 'right',
-  },
-  actionBar: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    gap: 2,
-  },
-  actionButton: {
-    minWidth: INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinWidth,
-    minHeight: INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinHeight,
-    width: INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinWidth,
-    height: INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinHeight,
-    borderRadius: borderRadius.circle,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scripturePreview: {
-    marginVertical: spacing.xs,
-  },
-  tabsContainer: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    gap: spacing.sm,
-    marginVertical: spacing.sm,
-  },
-  tabButton: {
-    flex: 1,
-    minHeight: INSIGHTS_COMPONENT_CONTRACTS.tabButtonMinHeight,
-    minWidth: INSIGHTS_COMPONENT_CONTRACTS.tabButtonMinWidth,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.xs,
-    borderRadius: borderRadius.pill,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1.5,
-  },
-  tabButtonActive: {
-    backgroundColor: colors.primarySubtle,
-    borderColor: colors.primary,
-  },
-  tabButtonInactive: {
-    backgroundColor: colors.surfaceCardHover,
-    borderColor: colors.borderSubtle,
-  },
-  tabButtonText: {
-    fontSize: fontSizes.sm,
-    textAlign: 'center',
-  },
-  tabButtonTextActive: {
-    fontFamily: fonts.uiBold,
-    color: colors.primaryLight,
-  },
-  tabButtonTextInactive: {
-    fontFamily: fonts.uiMedium,
-    color: colors.textSecondary,
-  },
-  scrollBody: {
-    flex: 1,
-  },
-  scrollBodyContent: {
-    paddingVertical: spacing.xs,
-    paddingBottom: spacing.xxl,
-  },
-  loadingContainer: {
-    paddingVertical: spacing.xl,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.sm,
-  },
-  loadingText: {
-    fontFamily: fonts.uiRegular,
-    fontSize: fontSizes.sm,
-    color: colors.textSecondary,
-    textAlign: 'center',
-  },
-  vocabularyList: {
-    gap: spacing.xs,
-  },
-});
+      flex: 1,
+      justifyContent: 'flex-end',
+      backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    },
+    backdrop: {
+      ...StyleSheet.absoluteFill,
+    },
+    sheetContainer: {
+      backgroundColor: colors.surfaceCard,
+      borderColor: colors.borderSubtle,
+      borderWidth: 1,
+      borderTopLeftRadius: borderRadius.xl,
+      borderTopRightRadius: borderRadius.xl,
+      paddingTop: spacing.xs,
+      paddingHorizontal: spacing.md,
+      paddingBottom: spacing.xl,
+      height: '92%',
+      maxHeight: '94%', // maxHeight: '90%' expanded to 94%
+      flexDirection: 'column',
+      ...shadows.card,
+    },
+    dragHandleContainer: {
+      alignItems: 'center',
+      paddingVertical: spacing.xs,
+      marginVertical: spacing.xs,
+    },
+    dragHandle: {
+      width: INSIGHTS_COMPONENT_CONTRACTS.dragHandleWidth,
+      height: INSIGHTS_COMPONENT_CONTRACTS.dragHandleHeight,
+      backgroundColor: colors.borderSubtle,
+      borderRadius: borderRadius.pill,
+    },
+    headerBar: {
+      flexDirection: 'row-reverse',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingBottom: spacing.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.borderSeparator,
+      marginBottom: spacing.sm,
+    },
+    headerTitleContainer: {
+      alignItems: 'flex-end',
+      flexShrink: 1,
+      gap: 2,
+    },
+    ayahTitleText: {
+      fontFamily: fonts.uiBold,
+      fontSize: fontSizes.md,
+      color: colors.textPrimary,
+      textAlign: 'right',
+    },
+    juzBadge: {
+      backgroundColor: colors.surfaceCardHover,
+      borderColor: colors.borderSubtle,
+      borderWidth: 1,
+      borderRadius: borderRadius.sm,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      alignSelf: 'flex-end',
+    },
+    juzBadgeText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.xs,
+      color: colors.goldAccent,
+      textAlign: 'right',
+    },
+    actionBar: {
+      flexDirection: 'row-reverse',
+      alignItems: 'center',
+      gap: 2,
+    },
+    actionButton: {
+      minWidth: INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinWidth,
+      minHeight: INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinHeight,
+      width: INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinWidth,
+      height: INSIGHTS_COMPONENT_CONTRACTS.headerButtonMinHeight,
+      borderRadius: borderRadius.circle,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    scripturePreview: {
+      marginVertical: spacing.xs,
+    },
+    tabsContainer: {
+      flexDirection: 'row-reverse',
+      alignItems: 'center',
+      gap: spacing.sm,
+      marginVertical: spacing.sm,
+    },
+    tabButton: {
+      flex: 1,
+      minHeight: INSIGHTS_COMPONENT_CONTRACTS.tabButtonMinHeight,
+      minWidth: INSIGHTS_COMPONENT_CONTRACTS.tabButtonMinWidth,
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.xs,
+      borderRadius: borderRadius.pill,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1.5,
+    },
+    tabButtonActive: {
+      backgroundColor: colors.primarySubtle,
+      borderColor: colors.primary,
+    },
+    tabButtonInactive: {
+      backgroundColor: colors.surfaceCardHover,
+      borderColor: colors.borderSubtle,
+    },
+    tabButtonText: {
+      fontSize: fontSizes.sm,
+      textAlign: 'center',
+    },
+    tabButtonTextActive: {
+      fontFamily: fonts.uiBold,
+      color: colors.primaryLight,
+    },
+    tabButtonTextInactive: {
+      fontFamily: fonts.uiMedium,
+      color: colors.textSecondary,
+    },
+    scrollBody: {
+      flex: 1,
+    },
+    scrollBodyContent: {
+      paddingVertical: spacing.xs,
+      paddingBottom: spacing.xxl,
+    },
+    loadingContainer: {
+      paddingVertical: spacing.xl,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.sm,
+    },
+    loadingText: {
+      fontFamily: fonts.uiRegular,
+      fontSize: fontSizes.sm,
+      color: colors.textSecondary,
+      textAlign: 'center',
+    },
+    vocabularyList: {
+      gap: spacing.xs,
+    },
+  });

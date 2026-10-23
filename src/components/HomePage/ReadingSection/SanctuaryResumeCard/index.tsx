@@ -5,6 +5,7 @@ import useTranslation from 'next-translate/useTranslation';
 import styles from './SanctuaryResumeCard.module.scss';
 
 import DataContext from '@/contexts/DataContext';
+import Link from '@/dls/Link/Link';
 import ArrowIcon from '@/icons/arrow.svg';
 import PlayIcon from '@/icons/play-arrow.svg';
 import { getChapterData } from '@/utils/chapter';
@@ -35,11 +36,13 @@ const SanctuaryResumeCard: React.FC<Props> = ({
     : getChapterWithStartingVerseUrl(`${surahNumber}:${verseNumber}`, chapterData?.slug);
 
   const handleClick = useCallback(() => {
-    logButtonClick(isContinueReading ? 'resume_reading_ribbon_click' : 'begin_reading_ribbon_click');
+    logButtonClick(
+      isContinueReading ? 'resume_reading_ribbon_click' : 'begin_reading_ribbon_click',
+    );
   }, [isContinueReading]);
 
   return (
-    <a
+    <Link
       href={link}
       onClick={handleClick}
       className={styles.resumeContainer}
@@ -74,7 +77,7 @@ const SanctuaryResumeCard: React.FC<Props> = ({
           {isContinueReading ? t('continue-read') : t('start-read')}
         </span>
       </div>
-    </a>
+    </Link>
   );
 };
 
