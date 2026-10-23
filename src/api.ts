@@ -145,7 +145,8 @@ export const fetcher = async function fetcher<T>(
     });
     const { getLocalApiResponse } = await import('@/utils/localDataEngine');
     const rawData = await getLocalApiResponse(parsedUrl.pathname, queryObj);
-    const camelized = camelizeKeys(rawData) as T;
+    const serializedData = rawData !== undefined ? JSON.parse(JSON.stringify(rawData)) : rawData;
+    const camelized = camelizeKeys(serializedData) as T;
 
     if (isGet) {
       if (serverApiCache.size > 500) {

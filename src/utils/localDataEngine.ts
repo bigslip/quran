@@ -1378,8 +1378,8 @@ export async function getLocalApiResponse(
 
         return {
           ...r,
-          profilePicture: r.profile_picture || r.profilePicture,
-          profile_picture: r.profile_picture || r.profilePicture,
+          profilePicture: r.profile_picture || r.profilePicture || null,
+          profile_picture: r.profile_picture || r.profilePicture || null,
           reciterId: r.reciter_id || r.reciterId || r.id,
           reciter_id: r.reciter_id || r.reciterId || r.id,
           is_available: isAvailable,
